@@ -10,6 +10,10 @@ const productController = require("../controllers/product");
 
 //#region APIs
 
+router.get("/", (req, res) => {
+    res.send("Endpoint funcando")
+})
+
 router.get("/product", productController.getProducts);
 
 //#endregion

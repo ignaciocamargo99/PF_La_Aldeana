@@ -1,17 +1,23 @@
 
-let products = require("../data/dummyDB");
+//let products = require("../data/dummyDB");
+const db = require("../connection");
+
 
 async function getProducts(req, res) {
-    try {
-        res.status(200).json({
-            data: products
-        });
-    } catch (err) {
-        res.status(400).json({
-            message: "Some error occured",
-            err
-        });
-    }
+
+    const sqlSelect = "SELECT * FROM PRODUCTS";
+    
+    // Get connection
+    await db.getConnection()
+        .then(conn => {
+            conn.query(sqlSelect, (err, result) => {
+                if (err) throw err;
+                else res.send(result);
+            })
+            .then(rows => {
+                console.log(rows)
+            })
+        })
 };
 
-module.exports = {getProducts};
+module.exports = { getProducts };
