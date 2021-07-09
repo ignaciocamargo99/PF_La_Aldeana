@@ -1,9 +1,7 @@
-const express = require("express");
-const router = express.Router();
 
 let products = require("../data/dummyDB");
 
-router.get("/products", async (req, res) => {
+async function getProducts(req, res) {
     try {
         res.status(200).json({
             data: products
@@ -14,6 +12,6 @@ router.get("/products", async (req, res) => {
             err
         });
     }
-});
+};
 
-module.exports = router;
+module.exports = {getProducts};
