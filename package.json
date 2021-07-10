@@ -9,5 +9,8 @@
     "start-web": "concurrently \"npm run server\" \"npm run web_client\"",
     "server": "nodemon server/bin/www",
     "web_client": "node start_web_client.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }

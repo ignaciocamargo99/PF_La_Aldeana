@@ -1,14 +1,17 @@
+import Index from '../views/Index';
 
-function App() {
+
+export default function App() {
   return (
     <div className="App">
       <header className="App-header">
         <p>
           La Aldeana app
         </p>
+        <Index />
+
       </header>
     </div>
   );
 }
 
-export default App;
