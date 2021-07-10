@@ -3,16 +3,15 @@ import Axios from 'axios';
 
 export default function Index() {
 
-    const [productsExample, setProductsExample] = useState('');
+    const [productsExample, setProductsExample] = useState(null);
 
     useEffect(() => {
-        Axios.get('https://localhost:3001/api/product')
+        Axios.get('http://localhost:3001/api/product')
             .then((response) => setProductsExample(response.data))
             .catch((err) => console.error(err))
     }, [])
 
-    console.log(productsExample)
-
+    console.log(productsExample);
 
     return (
         <table className="table">
@@ -20,19 +19,20 @@ export default function Index() {
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">First</th>
-
                 </tr>
             </thead>
-            {/* {productsExample.map((element, i) => {
-                return(
-                <tbody key={i}>
-                    <tr>
-                        <td scope="row">{element.id}</td>
-                        <td>{element.nombre}</td>
-                    </tr>
-                </tbody>
-
-            )})} */}
+            <tbody>
+                {
+                    productsExample?.map((element, i) => {
+                        return (
+                            <tr key={i} key={i}>
+                                <td scope="row">{element.id}</td>
+                                <td>{element.nombre}</td>
+                            </tr>
+                        );
+                    })
+                }
+            </tbody>
         </table>
     );
 }
