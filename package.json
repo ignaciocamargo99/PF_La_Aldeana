@@ -2,8 +2,7 @@
   "name": "pf_la_aldeana",
   "description": "Proyecto final de la carrera de grado perteneciente a estudiantes de Ingeniería en Sistemas de Información de la Universidad Tecnológica Nacional Facultad Regional Córdoba. 2021",
   "devDependencies": {
-    "concurrently": "^6.2.0",
-    "nodemon": "^2.0.11"
+    "concurrently": "^6.2.0"
   },
   "scripts": {
     "start-web": "concurrently \"npm run server\" \"npm run web_client\"",
