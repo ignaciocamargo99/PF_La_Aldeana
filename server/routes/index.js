@@ -11,7 +11,7 @@ const productController = require("../controllers/product");
 //#region APIs
 
 router.get("/", (req, res) => {
-    res.send("Endpoint funcando")
+    res.send("Endpoints /api")
 })
 
 router.get("/product", productController.getProducts);

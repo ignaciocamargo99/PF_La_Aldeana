@@ -1,5 +1,5 @@
+import React from 'react';
 import Index from '../views/Index';
-
 
 export default function App() {
   return (
@@ -9,7 +9,6 @@ export default function App() {
           La Aldeana app
         </p>
         <Index />
-
       </header>
     </div>
   );
