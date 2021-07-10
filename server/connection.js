@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const mariadb = require('mariadb');
+const mariadb = require('mysql');
 
 
 const data_base = mariadb.createPool({

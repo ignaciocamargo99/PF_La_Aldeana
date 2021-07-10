@@ -24,10 +24,9 @@ function normalizePort(val) {
   return false;
 }
 
-
 //Event listener for HTTP server "listening" event.
 function onListening() {
-  // Catch de address server
+  // Catch the address server
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
