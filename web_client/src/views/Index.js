@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
+const PORT = require('../config');
+
 export default function Index() {
 
     const [productsExample, setProductsExample] = useState(null);
 
     useEffect(() => {
-        Axios.get('http://localhost:3001/api/product')
+        Axios.get(PORT() + '/api/product')
             .then((response) => setProductsExample(response.data))
             .catch((err) => console.error(err))
     }, [])
-
-    console.log(productsExample);
 
     return (
         <table className="table">
@@ -25,8 +25,8 @@ export default function Index() {
                 {
                     productsExample?.map((element, i) => {
                         return (
-                            <tr key={i} key={i}>
-                                <td scope="row">{element.id}</td>
+                            <tr key={i}>
+                                <td>{element.id}</td>
                                 <td>{element.nombre}</td>
                             </tr>
                         );
