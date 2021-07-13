@@ -6,11 +6,9 @@
     "nodemon": "^2.0.12"
   },
   "scripts": {
-    "start-web": "concurrently \"npm run server\" \"npm run web_client\"",
-    "server": "nodemon server/bin/www",
-    "web_client": "node start_web_client.js"
-  },
-  "dependencies": {
-    "axios": "^0.21.1"
+    "start-web": "(cd web_client && npm install) && (cd ../server && npm install) && (cd .. && concurrently \"npm run web_server\" \"npm run web_client\")",
+    "web_server": "nodemon server/bin/www",
+    "web_client": "node start_web_client.js",
+    "server": "node server/bin/www"
   }
 }

@@ -6,7 +6,7 @@ const URL_PORT = () => {
 
     switch (ENVIRONMENT) {
         case 'L':
-            return 'http://localhost:3001';
+            return '';
 
         case 'D':
             return /** APIs SERVER DEVELOPMENT */;
