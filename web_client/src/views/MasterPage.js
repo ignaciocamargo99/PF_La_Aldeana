@@ -1,5 +1,6 @@
 import React from 'react';
 import Index from '../views/Index';
+import RegisterProduct from './RegisterProduct/RegisterProduct';
 
 export default function App() {
   return (
@@ -8,7 +9,8 @@ export default function App() {
         <p>
           La Aldeana app
         </p>
-        <Index />
+        {/*<Index />*/}
+        <RegisterProduct/>
       </header>
     </div>
   );
