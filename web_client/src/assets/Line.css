@@ -1,0 +1,8 @@
+.line {
+    position: absolute;
+    width: 90%;
+    height: 0px;
+
+    border: 1px solid #000000;
+    transform: rotate(180deg);
+}
