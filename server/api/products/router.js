@@ -9,6 +9,8 @@ router.get("/typeProduct", productController.getTypeProducts);
 
 router.get("/supplies", productController.getSupplies);
 
+router.post("/typeProduct/new", productController.postTypeProducts);
+
 //#endregion
 
 module.exports = router;

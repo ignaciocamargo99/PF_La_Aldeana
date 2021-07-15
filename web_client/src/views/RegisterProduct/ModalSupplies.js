@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import Axios from 'axios';
 import Combo from '../../common/Combo';
-import success from '../../utils/success';
+import success from '../../utils/successTypeProduct';
 import InputImage from '../../common/InputImage';
 import Line from '../../common/Line';
 import Buttons from '../../common/Buttons';
