@@ -10,6 +10,14 @@ h2 {
     font-size: 2em;
     margin-left: 1em;
 }
+h5 {
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+
+    font-size: 1em;
+    margin-left: 1em;
+}
 
 label {
     
@@ -28,7 +36,7 @@ label {
     margin-bottom: 3em;
 }
 
-.inputText {
+input {
 
     background: #FFFFFF;
     border: 1px solid #000000;
@@ -38,6 +46,11 @@ label {
     margin-right: 5%;
     width: 50em;
     height: 2.5em;
+}
+
+.camp {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 select{
@@ -89,4 +102,8 @@ textarea {
 
 .lbRadio {
     padding-top: 1em;
+}
+
+label {
+    padding-top: 0.4em;
 }

@@ -11,8 +11,8 @@ const InputImage = (props) => {
 
     return(
         <>
-            <label className='col-3'>{props.label}</label>
-            <input type='file' className='inputText col-8' onChange={handleImg}></input>
+            <label className='col-md-3'>{props.label}</label>
+            <input type='file' className='inputText col-md-8' onChange={handleImg}></input>
             <BeShowed show={isImgLoad}>
                 <img></img>
             </BeShowed>

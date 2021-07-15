@@ -5,6 +5,9 @@ import InputComboPlus from '../../common/InputComboPlus';
 import InputImage from '../../common/InputImage';
 import Line from '../../common/Line';
 import RadioButton from '../../common/RadioButton';
+import BeShowed from '../../common/BeShowed';
+import ModalSupplies from './ModalSupplies';
+import ModalTypeProduct from './ModalTypeProduct';
 
 const FormRegisterProduct = (props) => {
 
@@ -12,6 +15,8 @@ const FormRegisterProduct = (props) => {
     const [ready, setReady] = useState(false);
     const [checkedI, setCheckedI] = useState(false);
     const [heading, setHeading] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modal, setModal] = useState('');
 
     const handlerHeading = (e) => {
         if (e.target.value === "iceCream") {
@@ -24,29 +29,41 @@ const FormRegisterProduct = (props) => {
         }
     }
 
+    const openModal = (mod) => {
+        console.log(showModal);
+        setModal(mod);
+        setShowModal(true);
+    }
+
+    const close = () => {
+        console.log(showModal);
+        setShowModal(false);
+    }
+
     return (
 
         <Form>
             <form className='formBody needs-validation'>
                 <h2>Registrar Producto</h2>
                 <Line/>
+                <br/>
                 <div id='General'>
-                    <div className="row justify-content-start">
+                    <div className="row justify-content-start camp">
                         <label className='col-3'>Nombre*</label>
                         <input type='text' className='inputText col-8' placeholder='Ingrese nombre del producto...'></input>
                     </div>
                     
-                    <div className="row justify-content-start">
+                    <div className="row justify-content-start camp">
                         <label className='col-3 lbTexttarea'>Descripción</label>
                         <textarea type='text' className='col-8' placeholder='Ingrese descripción del producto...'></textarea>
                     </div>
 
-                    <div className="row justify-content-start">
+                    <div className="row justify-content-start camp">
                         <label className='col-3'>Precio*</label>
                         <input type='number' className='inputText col-8'></input>
                     </div>
 
-                    <div className="row justify-content-start">
+                    <div className="row justify-content-start camp">
                         <label className='col-md-3 lbRadio'>Rubro*</label>
                         <div className="col-md-3">
                             <RadioButton handlerOnChange={handlerHeading} descriptionRadio="Heladería" id="iceCream" value="iceCream" name="isIceCream" checked={checkedI} />
@@ -61,19 +78,21 @@ const FormRegisterProduct = (props) => {
                 <br/>
                 <div id='extra'>
 
-                    <div className="row justify-content-start">
-                        <InputComboPlus label='Tipo*'/>
+                    <div className="row justify-content-start camp">
+                        <InputComboPlus label='Tipo*' open={openModal}  optiondefault={<option disabled value="-1">Seleccione tipo de producto...</option>}/>
+                        <ModalTypeProduct close={close} show={showModal && modal === 'Tipo*'}/>
                     </div>
                     
-                    <div className="row justify-content-start">
-                        <InputComboPlus label='Insumos*'/>
+                    <div className="row justify-content-start camp">
+                        <InputComboPlus label='Insumos*' open={openModal}  optiondefault={<option disabled value="-1">Seleccione insumos...</option>}/>
+                        <ModalSupplies close={close} show={showModal && modal === 'Insumos*'}/>
                     </div>
 
-                    <div className="row justify-content-start">
+                    <div className="row justify-content-start camp">
                         <InputImage label='Imagen'/>
                     </div>
                 </div>
-
+                <br/>
                 <Buttons label='Registrar' ready={ready} data={data}/>
             </form>
         </Form>

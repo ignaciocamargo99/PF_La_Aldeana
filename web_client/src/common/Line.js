@@ -1,7 +1,7 @@
 import '../assets/Line.css';
 
 const Line = () => {
-    return <div class='line'></div>;
+    return <div className='line'></div>;
 }
 
 export default Line;
