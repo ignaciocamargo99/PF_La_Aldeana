@@ -5,7 +5,9 @@ const productController = require("./controller");
 
 //#region APIs
 
-router.get("/product", productController.getProducts);
+router.get("/typeProduct", productController.getTypeProducts);
+
+router.get("/supplies", productController.getSupplies);
 
 //#endregion
 

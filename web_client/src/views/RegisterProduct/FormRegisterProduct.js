@@ -8,6 +8,9 @@ import RadioButton from '../../common/RadioButton';
 import BeShowed from '../../common/BeShowed';
 import ModalSupplies from './ModalSupplies';
 import ModalTypeProduct from './ModalTypeProduct';
+import useHTTPGet from '../../hooks/useHTTPGet';
+
+const PORT = require('../../config');
 
 const FormRegisterProduct = (props) => {
 
@@ -17,6 +20,9 @@ const FormRegisterProduct = (props) => {
     const [heading, setHeading] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modal, setModal] = useState('');
+    const typeProduct = useHTTPGet(PORT() + '/api/typeProduct')
+    const supplies = useHTTPGet(PORT() + '/api/supplies')
+
 
     const handlerHeading = (e) => {
         if (e.target.value === "iceCream") {
@@ -45,14 +51,14 @@ const FormRegisterProduct = (props) => {
         <Form>
             <form className='formBody needs-validation'>
                 <h2>Registrar Producto</h2>
-                <Line/>
-                <br/>
+                <Line />
+                <br />
                 <div id='General'>
                     <div className="row justify-content-start camp">
                         <label className='col-3'>Nombre*</label>
                         <input type='text' className='inputText col-8' placeholder='Ingrese nombre del producto...'></input>
                     </div>
-                    
+
                     <div className="row justify-content-start camp">
                         <label className='col-3 lbTexttarea'>Descripción</label>
                         <textarea type='text' className='col-8' placeholder='Ingrese descripción del producto...'></textarea>
@@ -73,27 +79,31 @@ const FormRegisterProduct = (props) => {
                         </div>
                     </div>
                 </div>
-                <br/>
-                <Line/>
-                <br/>
+                <br />
+                <Line />
+                <br />
                 <div id='extra'>
 
                     <div className="row justify-content-start camp">
-                        <InputComboPlus label='Tipo*' open={openModal}  optiondefault={<option disabled value="-1">Seleccione tipo de producto...</option>}/>
-                        <ModalTypeProduct close={close} show={showModal && modal === 'Tipo*'}/>
-                    </div>
-                    
-                    <div className="row justify-content-start camp">
-                        <InputComboPlus label='Insumos*' open={openModal}  optiondefault={<option disabled value="-1">Seleccione insumos...</option>}/>
-                        <ModalSupplies close={close} show={showModal && modal === 'Insumos*'}/>
+                        <InputComboPlus label='Tipo*' open={openModal}
+                            options={typeProduct?.map((element, i) => (<option key={i} value={element.id_product_type}> {element.name}</option>))}
+                            optiondefault={<option disabled value="-1">Seleccione tipo de producto...</option>} />
+                        <ModalTypeProduct close={close} show={showModal && modal === 'Tipo*'} />
                     </div>
 
                     <div className="row justify-content-start camp">
-                        <InputImage label='Imagen'/>
+                        <InputComboPlus label='Insumos*' open={openModal}
+                        options={supplies?.map((element, i) => (<option key={i} value={element.id_supply}> {element.name}</option>))}
+                        optiondefault={<option disabled value="-1">Seleccione insumos...</option>} />
+                        <ModalSupplies close={close} show={showModal && modal === 'Insumos*'} />
+                    </div>
+
+                    <div className="row justify-content-start camp">
+                        <InputImage label='Imagen' />
                     </div>
                 </div>
-                <br/>
-                <Buttons label='Registrar' ready={ready} data={data}/>
+                <br />
+                <Buttons label='Registrar' ready={ready} data={data} />
             </form>
         </Form>
 
