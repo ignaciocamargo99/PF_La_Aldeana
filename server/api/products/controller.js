@@ -1,7 +1,7 @@
 
-const db = require("../connection");
+const db = require("../../config/connection");
 
-
+// HTTP:GET
 async function getProducts(req, res) {
 
     const sqlSelect = "SELECT * FROM PRODUCTS";
