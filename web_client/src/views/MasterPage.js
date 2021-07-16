@@ -7,7 +7,7 @@ export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar options={['Inicio']} />
+        <Navbar options={[{title: 'Inicio', ref:'/'}]} />
       </header>
       <div className="container">
         <Login imageURL={logo_expandido} text={'Iniciar Sesion'}/>
@@ -15,4 +15,3 @@ export default function App() {
     </div>
   );
 }
-
