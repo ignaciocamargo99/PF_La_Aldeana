@@ -1,4 +1,4 @@
-import '../assets/Form.css'
+//import '../assets/Form.css'
 import BeShowed from './BeShowed'
 
 export default function Combo(props) {
