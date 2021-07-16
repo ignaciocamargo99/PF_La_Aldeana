@@ -1,0 +1,15 @@
+.viewContainer {
+    padding: 1em;
+}
+
+@media (min-width: 768px) {
+    .viewContainer {
+        padding: 3em;
+    }
+}
+
+@media (min-width: 992px) {
+    .viewContainer {
+        padding: 5em;
+    }
+}

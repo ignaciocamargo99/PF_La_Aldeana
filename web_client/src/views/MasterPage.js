@@ -1,13 +1,13 @@
 import React from 'react';
-import RegisterProduct from './RegisterProduct/RegisterProduct';
+//import RegisterProduct from './RegisterProduct/RegisterProduct';
+import RegisterProductView from './RegisterProduct/RegisterProductView';
+import './MasterPage.css';
 
 export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <RegisterProduct/>
-      </header>
-    </div>
+    <div className="viewContainer">
+      <RegisterProductView/>
+    </div> 
   );
 }
 
