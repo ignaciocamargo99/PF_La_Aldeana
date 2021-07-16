@@ -10,8 +10,6 @@ const TypeProduct = (props) => {
     const typeProduct = useHTTPGet(PORT() + '/api/typeProduct');
     const [showModal, setShowModal] = useState(false);
     const [modal, setModal] = useState('');
-
-
     const refType = useRef({});
 
     useEffect(() =>{
@@ -38,7 +36,7 @@ const TypeProduct = (props) => {
 
     return (
         <>
-            <InputComboPlus label='Tipo*' open={openModal} htmlForData="productType" ref={refType}
+            <InputComboPlus label='Tipo*' open={openModal} htmlfordata="productType"
                         options={typeProduct?.map((element, i) => (<option key={i} value={element.id_product_type}> {element.name}</option>))}
                         optiondefault={<option disabled value="-1">Seleccione tipo de producto...</option>} />
             <ModalTypeProduct close={close} show={showModal && modal === 'Tipo*'} />

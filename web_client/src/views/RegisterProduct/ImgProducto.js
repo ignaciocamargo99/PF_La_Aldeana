@@ -3,7 +3,7 @@ import InputImage from "../../common/InputImage";
 const ImgProducto = (props) => {
     return (
         <div className="formRow">
-            <InputImage label='Imagen' htmlForData="productImage"/>
+            <InputImage label='Imagen' htmlfordata="productImage"/>
         </div>
     );
 }

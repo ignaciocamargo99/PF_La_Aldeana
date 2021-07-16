@@ -26,7 +26,7 @@ const SuppliesProduct = (props) => {
 
     return (
         <>
-            <InputComboPlus label='Insumos*' open={openModal} htmlForData="productSupplies"
+            <InputComboPlus label='Insumos*' open={openModal} htmlfordata="productSupplies"
                         options={supplies?.map((element, i) => (<option key={i} value={element.id_supply}> {element.name}</option>))}
                         optiondefault={<option disabled value="-1">Seleccione insumos...</option>} />
             <ModalSupplies close={close} show={showModal && modal === 'Insumos*'} />

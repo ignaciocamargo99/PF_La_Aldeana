@@ -5,11 +5,11 @@ export default function Combo(props) {
     return (
         <>
             <div className="form-control-label">
-                <label htmlFor={props.htmlForData} >{props.descriptioncombo}</label>
+                <label htmlFor={props.htmlfordata} >{props.descriptioncombo}</label>
             </div>
             <div className="form-control-input">
                 <BeShowed show={props.children}>
-                    <select className="form-control" id={props.htmlForData} {...props}>
+                    <select className="form-control" id={props.htmlfordata} {...props}>
                         {props.optiondefault}
                         {props.options}
                     </select>

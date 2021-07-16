@@ -12,9 +12,9 @@ const InputImage = (props) => {
     return(
         <>
             <div className="form-control-label">
-                <label htmlFor={props.htmlForData} >{props.label}</label>
+                <label htmlFor={props.htmlfordata} >{props.label}</label>
             </div>
-            <input type='file' className="form-control" onChange={handleImg} id={props.htmlForData}></input>
+            <input type='file' className="form-control" onChange={handleImg} id={props.htmlfordata}></input>
             <BeShowed show={isImgLoad}>
                 <img></img>
             </BeShowed>
