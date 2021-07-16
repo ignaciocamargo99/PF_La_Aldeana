@@ -11,8 +11,10 @@ const InputImage = (props) => {
 
     return(
         <>
-            <label className='col-md-3'>{props.label}</label>
-            <input type='file' className='inputText col-md-8' onChange={handleImg}></input>
+            <div className="form-control-label">
+                <label htmlFor={props.htmlForData} >{props.label}</label>
+            </div>
+            <input type='file' className="form-control" onChange={handleImg} id={props.htmlForData}></input>
             <BeShowed show={isImgLoad}>
                 <img></img>
             </BeShowed>

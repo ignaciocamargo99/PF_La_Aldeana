@@ -8,8 +8,9 @@ const InputComboPlus = (props) => {
     }
 
     return (
-        <div className="row justify-content-start">
+        <div className="formRow">
             <Combo
+                htmlForData="productType"
                 descriptioncombo={props.label} 
                 optiondefault={props.optiondefault}
                 defaultValue='-1' 

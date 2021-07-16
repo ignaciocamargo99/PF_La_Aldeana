@@ -1,6 +1,55 @@
+import { useEffect, useState } from 'react';
+import Buttons from '../../common/Buttons';
+import GeneralDataProd from './GeneralDataProd';
+import ExtraDataProd from './ExtraDataProd';
 import './RegisterProductView.css';
+import validationProductRegister from '../../utils/validationProductRegister';
 
-const RegisterProductView = () => {
+const RegisterProductView = (props) => {
+
+    const [data, setData] = useState({name: '', description: '', price: -1, type: {}, supplies: [{}], img: null});
+    const [ready, setReady] = useState(false);
+
+    useEffect(
+        ()=>{
+            //const isValidate = validationProductRegister(data.name, data.price, data.type);
+            //if (isValidate === true) setReady(true);
+            console.log(data)
+
+        }
+        ,[data]);
+
+    const register = () => {
+        console.log('hola');
+    }
+
+    return (
+        <>
+            <div className="viewTitle">
+                <h1>Registrar Producto</h1>
+            </div>
+
+            <div className="viewBody">
+
+
+                <form>
+
+                    <GeneralDataProd load={setData} data={data}/>
+                        
+                    <ExtraDataProd load={setData} data={data}/>
+
+                    <Buttons label='Registrar' ready={ready} data={data} register={register}/>
+
+                </form>
+
+
+            </div>
+        </>
+    );
+}
+
+export default RegisterProductView;
+{/*const RegisterProductView = () => {
     return (
         <>
             <div className="viewTitle">
@@ -68,3 +117,4 @@ const RegisterProductView = () => {
 }
 
 export default RegisterProductView;
+*/}
