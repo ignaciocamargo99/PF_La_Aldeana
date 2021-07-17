@@ -107,3 +107,8 @@ textarea {
 .color-red{
     color: 'red'
 }
+
+.title{
+    text-align: center;
+    font-size: 3em;
+}

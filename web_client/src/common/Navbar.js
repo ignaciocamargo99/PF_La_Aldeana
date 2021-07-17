@@ -25,7 +25,7 @@ const Navbar = (props) => {
                 </ul>
                 </div>
                 <BeShowed show={props.user.nick_user !== ''}>
-                    <label>{`Usuario: ${props.user.first_name} ${props.user.last_name}`}</label>
+                    <label><b className='color-blue'>{`Usuario: ${props.user.first_name} ${props.user.last_name}`}</b></label>
                 </BeShowed>
             </div>
         </nav>

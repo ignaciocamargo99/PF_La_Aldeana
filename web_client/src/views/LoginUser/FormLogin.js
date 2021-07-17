@@ -13,8 +13,8 @@ const FormLogin = (props) => {
                     <label className ="col-sm-2 col-form-label"><b>Usuario</b></label>
                     <input type="text" className="col-sm-7 inputText" id="nickUser" placeholder="Nombre de usuario" onChange={(e) => {props.updateNick(e.target.value)}}></input>
                     <br></br>
-                    <BeShowed show={props.nick==='' || props.nick.length <= 7}>
-                        <span className="text-muted color-red offset-sm-2"><b>*Usuario no valido</b></span>
+                    <BeShowed show={props.nick===''}>
+                        <span className="text-muted offset-sm-2"><b>*Este es un campo obligatorio</b></span>
                     </BeShowed>
                 </div>
                 <br></br>
@@ -22,8 +22,8 @@ const FormLogin = (props) => {
                     <label className ="col-sm-2 col-form-label"><b>Contraseña</b></label>
                     <input type="password" className="col-sm-7 inputText" id="password" placeholder="Password" onChange={(e) => {props.updatePassword(e.target.value)}}></input>
                     <br></br>
-                    <BeShowed show={ props.password==='' || props.password.length <= 7}>
-                        <span className="text-muted color-red offset-sm-2"><b>*Este es un campo obligatorio</b></span>
+                    <BeShowed show={ props.password===''}>
+                        <span className="text-muted offset-sm-2"><b>*Este es un campo obligatorio</b></span>
                     </BeShowed>
                 </div>
             </form>
