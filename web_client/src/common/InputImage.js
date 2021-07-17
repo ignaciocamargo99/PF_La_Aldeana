@@ -1,12 +1,16 @@
 import { useRef, useState } from 'react';
 import BeShowed from './BeShowed';
+import validateImage from '../utils/Validations/validateImages';
 
 const InputImage = (props) => {
 
     const [isImgLoad, setImgLoad] = useState(false);
+    const inputImg = useRef(null);
 
-    const handleImg = () => {
+    const handleImg = (e) => {
         setImgLoad(true);
+        const imageFile= inputImg.current
+        validateImage(imageFile);
     }
 
     return(
@@ -14,7 +18,7 @@ const InputImage = (props) => {
             <div className="form-control-label">
                 <label htmlFor={props.htmlfordata} >{props.label}</label>
             </div>
-            <input type='file' className="form-control" onChange={handleImg} id={props.htmlfordata}></input>
+            <input type='file' className="form-control" ref={inputImg} onChange={handleImg} id="files"></input>
             <BeShowed show={isImgLoad}>
                 <img></img>
             </BeShowed>

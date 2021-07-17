@@ -1,6 +1,6 @@
 import NameProduct from "./NameProduct";
 
-const GeneralDataProd = (props) => {
+const GeneralDataProduct = (props) => {
 
     return (
         <>
@@ -37,7 +37,7 @@ const GeneralDataProd = (props) => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked></input>
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" defaultChecked></input>
                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                             Cafetería
                         </label>
@@ -48,4 +48,4 @@ const GeneralDataProd = (props) => {
     );
 }
 
-export default GeneralDataProd;
+export default GeneralDataProduct;

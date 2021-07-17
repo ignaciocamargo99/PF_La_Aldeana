@@ -12,16 +12,16 @@ const TypeProduct = (props) => {
     const [modal, setModal] = useState('');
     const refType = useRef({});
 
-    useEffect(() =>{
-        const data = props.data;
-        const type = refType.current.value;
+    // useEffect(() =>{
+    //     const data = props.data;
+    //     const type = refType.current.value;
 
-        if (type !== '') {
-            data.type = type;
-            console.log(data.type + '  ' + type)
-            props.load(data);
-        }
-    }, [refType.current.value]);
+    //     if (type !== '') {
+    //         data.type = type;
+    //         console.log(data.type + '  ' + type)
+    //         props.load(data);
+    //     }
+    // }, [refType.current.value]);
 
     const openModal = (mod) => {
         console.log(showModal);

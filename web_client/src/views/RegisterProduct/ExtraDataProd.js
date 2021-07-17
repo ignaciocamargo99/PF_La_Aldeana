@@ -1,14 +1,15 @@
-import Line from '../../common/Line';
 import TypeProduct from './TypeProduct';
 import SuppliesProduct from './SuppliesProduct';
-import ImgProducto from './ImgProducto';
+import InputImage from '../../common/InputImage';
 
 const ExtraDataProd = (props) => {
     return (
         <>
-            <TypeProduct load={props.load} data={props.data}/>
-            <SuppliesProduct load={props.load} data={props.data}/>
-            <ImgProducto load={props.load} data={props.data}/>
+            <TypeProduct load={props.load} data={props.data} />
+            <SuppliesProduct load={props.load} data={props.data} />
+            <div className="formRow">
+                <InputImage load={props.load} data={props.data} label="Imagen" htmlfordata="productImage" />
+            </div>
         </>
     );
 }

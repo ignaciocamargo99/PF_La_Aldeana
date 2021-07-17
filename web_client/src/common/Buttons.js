@@ -9,7 +9,7 @@ const Buttons = (props) => {
                 <button className='sendOk' onClick={props.register}>{props.label}</button>
             </BeShowed>
             <BeShowed show={!props.ready}>
-                <button className='sendNotOk'>{props.label}</button>
+                <button className='sendNotOk' onClick={props.register}>{props.label}</button>
             </BeShowed>
             <button className='cancel' onClick={props.close}>Cancelar</button>
         </div>

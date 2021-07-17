@@ -1,6 +1,6 @@
-import errorNameProduct from './ErrorMessages/errorNameProduct';
-import errorPriceProduct from './ErrorMessages/errorPriceProduct';
-import errorTypeProduct from './ErrorMessages/errorTypeProduct';
+import errorNameProduct from '../ErrorMessages/errorNameProduct';
+import errorPriceProduct from '../ErrorMessages/errorPriceProduct';
+import errorTypeProduct from '../ErrorMessages/errorTypeProduct';
 
 export default function validationProductRegister(name, price, type) {
     try {
