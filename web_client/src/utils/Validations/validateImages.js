@@ -6,7 +6,7 @@ const validateImage = (obj) => {
         return;
     }
 
-    if (!(/\.(jpeg|png|gif)$/i).test(uploadFile.name)) {
+    if (!(/\.(jpg|jpeg|png)$/i).test(uploadFile.name)) {
         alert('El archivo a adjuntar no es una imagen');
         return
     }
