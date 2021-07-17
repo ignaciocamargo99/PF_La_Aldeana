@@ -1,5 +1,5 @@
-import TypeProduct from './TypeProduct';
-import SuppliesProduct from './SuppliesProduct';
+import TypeProduct from './components/TypeProduct';
+import SuppliesProduct from './components/SuppliesProduct';
 import InputImage from '../../common/InputImage';
 
 const ExtraDataProd = (props) => {

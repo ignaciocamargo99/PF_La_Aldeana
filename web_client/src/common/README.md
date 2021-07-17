@@ -1,1 +1,1 @@
-# Componentes comunes a varios otros componentes
+# Componentes reutilizables en toda la aplicación

@@ -1,4 +1,4 @@
-import NameProduct from "./NameProduct";
+import NameProduct from "./components/NameProduct";
 
 const GeneralDataProduct = (props) => {
 

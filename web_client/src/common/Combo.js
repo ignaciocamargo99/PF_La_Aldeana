@@ -15,7 +15,7 @@ export default function Combo(props) {
                     </select>
                 </BeShowed>
                 {/*
-                <BeShowed show={!props.children}>
+                    <BeShowed show={!props.children}>
                     <select className='col-md-8' {...props}>
                         {props.optiondefault}
                         {props.options}

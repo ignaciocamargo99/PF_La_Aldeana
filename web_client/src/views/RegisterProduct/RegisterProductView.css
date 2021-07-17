@@ -16,6 +16,7 @@ form {
 .formRow {
     display: flex;
     margin: 0.5em 0;
+    max-width: 80em;
 }
 
 .form-control-label {
@@ -46,9 +47,6 @@ d-flex {
     }
     .form-control-label, .form-radio-group {
         padding-top: .375rem;
-    }
-    textarea, input {
-        max-width: 40em;
     }
     .viewBody {
         padding: 0 2em;

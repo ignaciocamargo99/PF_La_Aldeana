@@ -1,19 +1,16 @@
-import React from 'react';
-import { useRef, useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
-import Axios from 'axios';
+import React, { useState } from 'react';
+import { FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import modalStyles from '../../assets/modalStyles';
+import Buttons from '../../common/Buttons';
 import Combo from '../../common/Combo';
-import success from '../../utils/SuccessMessages/successTypeProduct';
 import InputImage from '../../common/InputImage';
 import Line from '../../common/Line';
-import Buttons from '../../common/Buttons';
-import BeShowed from '../../common/BeShowed';
-import modalStyles from '../../assets/modalStyles';
+import success from '../../utils/SuccessMessages/successTypeProduct';
 
 export default function ModalSale(props) {
 
-    const [data, setData] = useState({});
-    const [ready, setReady] = useState(false);
+    const [data] = useState({});
+    const [ready] = useState(false);
 
 
     const typesSupplies = [1, 2, 3];
