@@ -1,0 +1,24 @@
+.viewTitle {
+    padding: 0 2em;
+    border-bottom: solid black 2px;
+}
+
+.viewBody {
+    margin-top: 1.5em;
+    padding: 0 1em;
+}
+
+@media (min-width: 768px) {
+    .viewBody {
+        padding: 0 2em;
+    }
+}
+
+/*
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+*/
