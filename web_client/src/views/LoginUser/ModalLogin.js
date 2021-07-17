@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import {connect} from 'react-redux';
 import { isCorrectFormat } from '../../common/functionsValidateUsers';
+import errrorLogin from '../../utils/errorLogin';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import FormLogin from './FormLogin';
 import Buttons from '../../common/Buttons';
@@ -15,20 +16,20 @@ const ModalLogin = (props) => {
         if(isCorrectFormat(props.nick) && isCorrectFormat(props.password)){
             Axios.get(`http://localhost:3001/api/user/filter/${props.nick}`)
             .then((response) => {
-                if(response.data.length > 0){
+                if(response.data.length > 0 && response.data[0].password === props.password){
                     props.updateUser(response.data[0])
                     props.close()
                 }
                 else{
-                    alert('No se ha encontrado ningun usuario')
+                    errrorLogin('Atencion','Usuario o Password incorrectos')
                 }
             })
             .catch((error) => {
-                alert('Error en el servidor')
+                errrorLogin('Oops...','Error en el servidor')
             })
         }
         else{
-            alert('Usuario o Password incorrectos')
+            errrorLogin('Atencion','Usuario o Password incorrectos')
         }
         
     }
