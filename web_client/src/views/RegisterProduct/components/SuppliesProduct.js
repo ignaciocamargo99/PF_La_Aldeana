@@ -5,7 +5,7 @@ import '../styles/FormComboButton.css';
 
 const PORT = require('../../../config');
 
-const SuppliesProduct = (props) => {
+const SuppliesProduct = () => {
 
     const supplies = useHTTPGet(PORT() + '/api/supplies');
     const [showModal, setShowModal] = useState(false);

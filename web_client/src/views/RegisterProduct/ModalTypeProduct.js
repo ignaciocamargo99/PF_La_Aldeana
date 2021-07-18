@@ -23,7 +23,6 @@ export default function ModalSale(props) {
             return
         }
         else setReady(true);
-
         Axios.post(PORT() + '/api/typeProduct/new', {
             name: name,
             description: description
@@ -34,7 +33,10 @@ export default function ModalSale(props) {
     }
 
     const onChangeButton = () => {
-        if (inputName.current.value !== "") setReady(true);
+        if (inputName.current.value !== "") {
+            setReady(true);
+            labelObligatoryField.current.innerHTML = "";
+        }
         else setReady(false);
     }
 

@@ -8,7 +8,7 @@ import './RegisterProductViewNew.css';
 const RegisterProductView = (props) => {
 
     const [data, setData] = useState({ name: '', description: '', price: -1, type: {}, supplies: [{}], img: null });
-    const [ready, setReady] = useState(false);
+    const [ready] = useState(false);
 
     useEffect(
         () => {

@@ -1,11 +1,29 @@
-import NameProduct from "./components/NameProduct";
+import React, { useRef } from "react";
 
-const GeneralDataProduct = (props) => {
+const GeneralDataProduct = () => {
+
+    const inputPrice = useRef(null);
+    const labelValidationPrice = useRef(null);
+    const inputName = useRef(null);
+
+
+    const onChangePrice = () => {
+        if (inputPrice.current.value <= 0) labelValidationPrice.current.innerHTML = "Ingrese un número mayor a 0"
+        else labelValidationPrice.current.innerHTML = "";
+    }
+
 
     return (
         <>
-            <NameProduct load={props.load} data={props.data} />
-
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="productName" >Nombre*</label>
+                </div>
+                <div className="form-control-input">
+                    <input className="form-control" id="productName" type="text" ref={inputName} placeholder="Ingrese nombre del producto...">
+                    </input>
+                </div>
+            </div>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="productDescription">Descripción</label>
@@ -20,8 +38,8 @@ const GeneralDataProduct = (props) => {
                     <label htmlFor="productPrice" >Precio*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className="form-control" id="productPrice" type="number" placeholder="Ingrese precio del producto...">
-                    </input>
+                    <input className="form-control" id="productPrice" type="number" min="0" ref={inputPrice} onChange={onChangePrice} placeholder="Ingrese precio del producto..." />
+                    <label style={{ color: 'red' }} ref={labelValidationPrice} />
                 </div>
             </div>
 

@@ -1,31 +1,34 @@
+import errorImageFormat from "../ErrorMessages/errorImageFormat";
+import warningImageMeasurements from "../WarningMessages/warningImageMeasurements";
+import warningSizeImages from "../WarningMessages/warningSizeImages";
+import warningSupportImages from "../WarningMessages/warningSupportImages";
+
 const validateImage = (obj) => {
-    var uploadFile = obj.files[0];
+    let uploadFile = obj.files[0];
 
     if (!window.FileReader) {
-        alert('El navegador no soporta la lectura de archivos');
+        warningSupportImages();
         return;
     }
 
     if (!(/\.(jpg|jpeg|png)$/i).test(uploadFile.name)) {
-        alert('El archivo a adjuntar no es una imagen');
-        return
+        errorImageFormat();
+        return obj.value = ""
     }
     else {
-        var img = new Image();
+        let img = new Image();
         img.onload = function () {
-            if (this.width.toFixed(0) != 1920 && this.height.toFixed(0) != 1080) {
-                alert('Las medidas deben ser: 200 * 200');
+            if (this.width.toFixed(0) < 1920 && this.height.toFixed(0) < 1080) {
+                warningImageMeasurements();
+                return obj.value = "";
             }
-            else if (uploadFile.size > 70000)
-            {
-                alert('El peso de la imagen no puede exceder los 700kb')
-            }
-            else {
-                alert('Imagen correcta :)')                
+            else if (uploadFile.size > 7000000) {
+                warningSizeImages();
+                return obj.value = "";
             }
         };
         img.src = URL.createObjectURL(uploadFile);
-    }                 
+    }
 }
 
 export default validateImage;

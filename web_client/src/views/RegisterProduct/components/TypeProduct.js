@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
 import ModalTypeProduct from '../ModalTypeProduct';
 import '../styles/FormComboButton.css';
@@ -6,24 +6,11 @@ import '../styles/FormComboButton.css';
 
 const PORT = require('../../../config');
 
-const TypeProduct = (props) => {
+const TypeProduct = () => {
 
     const typeProduct = useHTTPGet(PORT() + '/api/typeProduct');
     const [showModal, setShowModal] = useState(false);
     const [modal, setModal] = useState('');
-    const refType = useRef({});
-
-    // useEffect(() =>{
-    //     const data = props.data;
-    //     const type = refType.current.value;
-
-    //     if (type !== '') {
-    //         data.type = type;
-    //         console.log(data.type + '  ' + type)
-    //         props.load(data);
-    //     }
-    // }, [refType.current.value]);
-
 
     const openModal = (mod) => {
         console.log(showModal);
