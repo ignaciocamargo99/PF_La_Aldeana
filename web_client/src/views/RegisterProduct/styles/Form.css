@@ -1,6 +1,5 @@
 .formRow {
     margin: 1em 0;
-    max-width: 80em;
     display: flex;
     flex-direction: column;
 }
