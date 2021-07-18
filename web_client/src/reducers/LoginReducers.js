@@ -24,8 +24,16 @@ const userReducer = (state = userInitialState, action) => {
     return state
 }
 
+const permissionsReducer = (state = ['Inicio'] , action) => {
+    if(action.type === 'UPDATE_PERMISSIONS'){
+        return [...state,action.payload]
+    }
+    return state
+}
+
 export default combineReducers({
     nick: nickReducer,
     password: passwordReducer,
-    user: userReducer
+    user: userReducer,
+    permissions: permissionsReducer
 })

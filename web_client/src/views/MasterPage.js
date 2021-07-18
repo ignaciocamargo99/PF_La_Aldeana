@@ -1,13 +1,15 @@
 import React from 'react';
 import Navbar from '../common/Navbar';
-import Login from './LoginUser/Login'
+import Login from './LoginUser/Login';
+import { connect } from 'react-redux';
 import logo_expandido from '../images/logo_expandido.png'
 
-export default function App() {
+const App = (props) => {
+
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar options={[{title: 'Inicio', ref:'/'}]} />
+        <Navbar options={props.permissions} />
       </header>
       <div className="container">
         <Login imageURL={logo_expandido} text={'Iniciar Sesion'}/>
@@ -15,3 +17,9 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return { permissions: state.permissions}
+}
+
+export default connect(mapStateToProps)(App);

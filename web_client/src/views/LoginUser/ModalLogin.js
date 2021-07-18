@@ -8,7 +8,7 @@ import FormLogin from './FormLogin';
 import Buttons from '../../common/Buttons';
 import Line from '../../common/Line';
 import '../../assets/Forms.css';
-import { updateNick, updatePassword , updateUser} from '../../actions/LoginActions';
+import { updateNick, updatePassword , updateUser, updatePermissions} from '../../actions/LoginActions';
 
 const ModalLogin = (props) => {
 
@@ -18,7 +18,16 @@ const ModalLogin = (props) => {
             .then((response) => {
                 if(response.data.length > 0 && response.data[0].password === props.password){
                     props.updateUser(response.data[0])
-                    props.close()
+                    Axios.get(`http://localhost:3001/api/permission/filter/1`)
+                    .then((response) => {
+                        for(let i = 0; i< response.data.length; i++){
+                            props.updatePermissions(response.data[i].name)
+                        }
+                        props.close()
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
                 }
                 else{
                     errrorLogin('Atencion','Usuario o Password incorrectos')
@@ -57,14 +66,16 @@ const ModalLogin = (props) => {
 
 const mapStateToProps = state => {
     return { nick: state.nick,
-            password: state.password        
+            password: state.password,
+            user: state.user        
     }
 }
 
 const mapDispatchToProps = {
     updatePassword,
     updateNick,
-    updateUser
+    updateUser,
+    updatePermissions
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(ModalLogin);

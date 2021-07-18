@@ -11,7 +11,7 @@ const Navbar = (props) => {
         <nav className="navbar navbar-expand-lg navbar-light back-orange" >
             <div className="container-fluid">
                 <a className="navbar-brand" href="/">
-                    <img src={logo} height="50"></img>
+                    <img src={logo} alt="" height="50"></img>
                     &nbsp;<b className="color-blue">La Aldeana</b>
                     </a>
                 <div className="collapse navbar-collapse" id="navbarNav">
@@ -19,7 +19,7 @@ const Navbar = (props) => {
                     {props.options.map((option,i) => {
                         return(
                             <li className="nav-item" key={i}>
-                                <a className="nav-link active" href={option.ref}><b className="color-blue">{option.title}</b></a>
+                                <a className="nav-link active" href={`/${option}`}><b className="color-blue">{option}</b></a>
                             </li>)
                     })}
                 </ul>

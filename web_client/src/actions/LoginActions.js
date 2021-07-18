@@ -19,3 +19,10 @@ export const updateUser = (user) => {
         payload: user
     }
 }
+
+export const updatePermissions = (permissions) => {
+    return{
+        type: 'UPDATE_PERMISSIONS',
+        payload: permissions
+    }
+}
