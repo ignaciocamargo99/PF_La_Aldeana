@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
 import ModalTypeProduct from '../ModalTypeProduct';
-import '../styles/FormComboButton.css';
-
+import '../styles/Form.css';
 
 const PORT = require('../../../config');
 
@@ -16,12 +15,12 @@ const TypeProduct = () => {
         console.log(showModal);
         setModal(mod);
         setShowModal(true);
-    }
+    };
 
     const close = () => {
         console.log(showModal);
         setShowModal(false);
-    }
+    };
 
     return (
         <>
@@ -29,8 +28,8 @@ const TypeProduct = () => {
                 <div className="form-control-label">
                     <label htmlFor="productType">Tipo*</label>
                 </div>
-                <div className="combo-input-container">
-                    <div className="form-group-input-button">
+                <div className="form-combo-btn">
+                    <div className="d-flex">
                         <div className="form-combo">
                             <input className="form-control " list="productTypesdatalist" id="productType" placeholder="Seleccione tipo de producto...">
                             </input>
@@ -43,7 +42,7 @@ const TypeProduct = () => {
                                 })}
                             </datalist>
                         </div>
-                        <div className="form-add-btn">
+                        <div className="d-flex-col form-add-btn">
                             <button type="button" className="btn btn-primary" onClick={openModal}>+</button>
                         </div>
                     </div>

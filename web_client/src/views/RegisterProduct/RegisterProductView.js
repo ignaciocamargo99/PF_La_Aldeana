@@ -3,7 +3,6 @@ import Buttons from '../../common/Buttons';
 import GeneralDataProduct from './GeneralDataProduct';
 import ExtraDataProd from './ExtraDataProd';
 import './RegisterProductView.css';
-import './RegisterProductViewNew.css';
 
 const RegisterProductView = (props) => {
 

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
-
 label, input, textarea {
     font-size: 1.2rem !important;
     font-family: 'Abel', sans-serif;
@@ -7,4 +6,13 @@ label, input, textarea {
 
 h1 {
     font-family: 'Abel', sans-serif;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-flex-col {
+    display: flex;
+    flex-direction: column;
 }
