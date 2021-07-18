@@ -1,4 +1,3 @@
-
 const db = require("../../config/connection");
 
 // HTTP: GET 

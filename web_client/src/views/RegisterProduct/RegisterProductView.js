@@ -33,8 +33,8 @@ const RegisterProductView = (props) => {
                     <ExtraDataProd load={setData} data={data} />
                     <Buttons label='Registrar' ready={ready} data={data} register={register} />
                     <div className="form-btn-actions">
-                        <button type="button" class="btn btn-primary">Registrar</button>
-                        <button type="button" class="btn btn-light cancel-btn">Cancelar</button>
+                        <button type="button" className="btn btn-primary">Registrar</button>
+                        <button type="button" className="btn btn-light cancel-btn">Cancelar</button>
                     </div>
                 </form>
             </div>
