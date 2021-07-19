@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
-import ModalSupplies from '../ModalSupplies';
+import ModalSupplies from './modals/ModalSupplies';
 import '../styles/Form.css';
 
 const PORT = require('../../../config');
@@ -48,7 +48,6 @@ const SuppliesProduct = () => {
                     </div>
                 </div>
             </div>
-
             <ModalSupplies close={close} show={showModal} />
         </>
     );

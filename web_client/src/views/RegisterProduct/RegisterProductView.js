@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Buttons from '../../common/Buttons';
 import GeneralDataProduct from './GeneralDataProduct';
-import ExtraDataProd from './ExtraDataProd';
+import ExtraDataProduct from './ExtraDataProduct';
 import './RegisterProductView.css';
 
 const RegisterProductView = (props) => {
@@ -30,7 +30,7 @@ const RegisterProductView = (props) => {
             <div className="viewBody">
                 <form>
                     <GeneralDataProduct load={setData} data={data} />
-                    <ExtraDataProd load={setData} data={data} />
+                    <ExtraDataProduct load={setData} data={data} />
                     <Buttons label='Registrar' ready={ready} data={data} register={register} />
                     <div className="form-btn-actions">
                         <button type="button" className="btn btn-primary">Registrar</button>

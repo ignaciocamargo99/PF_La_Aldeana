@@ -8,7 +8,7 @@ import ModalLogin from './ModalLogin';
 
 const Login = (props) => {
 
-    const [printModal,setPrintModal] = useState(false);
+    const [printModal, setPrintModal] = useState(false);
 
     const changePrintModal = () => {
         setPrintModal(!printModal)
@@ -17,16 +17,16 @@ const Login = (props) => {
 
     }
 
-    return(
+    return (
         <div className="row justify-content-sm-center">
             <div className="row col-sm-6">
                 <div className="row">
                     <img src={props.imageURL} alt=""></img>
                     <BeShowed show={props.user.nick_user === ''}>
-                        <button className="btn-Access" onClick={changePrintModal}>Iniciar Sesion</button>
+                        <button className="btn-Access" onClick={changePrintModal}>Iniciar sesión</button>
                     </BeShowed>
                 </div>
-                <ModalLogin show={printModal} close={changePrintModal}/>
+                <ModalLogin show={printModal} close={changePrintModal} />
             </div>
             <div className="row col-sm-8 offset-2">
                 <BeShowed show={props.user.nick_user !== ''}>
@@ -34,13 +34,14 @@ const Login = (props) => {
                 </BeShowed>
             </div>
         </div>
-        )
+    )
 }
 
 const mapStateToProps = state => {
-    return { nick: state.nick,
-            password: state.password,
-            user: state.user        
+    return {
+        nick: state.nick,
+        password: state.password,
+        user: state.user
     }
 }
 
@@ -49,4 +50,4 @@ const mapDispatchToProps = {
     updateNick
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

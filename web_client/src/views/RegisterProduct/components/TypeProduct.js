@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
-import ModalTypeProduct from '../ModalTypeProduct';
+import ModalTypeProduct from '../components/modals/ModalTypeProduct';
 import '../styles/Form.css';
 
 const PORT = require('../../../config');

@@ -8,11 +8,8 @@ const GeneralDataProduct = () => {
     return (
         <>
             <NameProduct />
-
             <DescriptionProduct />
-
             <PriceProduct />
-
             <SectorProduct />
         </>
     );

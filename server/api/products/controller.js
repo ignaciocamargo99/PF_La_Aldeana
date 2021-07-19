@@ -35,5 +35,18 @@ async function postTypeProducts(req, res) {
     })
 }
 
+// HTTP: GET 
+async function getTypeSupplies(req, res) {
 
-module.exports = { getTypeProducts, getSupplies, postTypeProducts };
+    const sqlSelect = "SELECT id_supply_type, name FROM SUPPLY_TYPES"
+
+    await db.query(sqlSelect, (err, result) => {
+        if (err) throw err;
+        else res.send(result);
+    })
+}
+
+
+
+
+module.exports = { getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies };
