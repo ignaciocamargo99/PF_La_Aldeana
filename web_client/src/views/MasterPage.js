@@ -13,12 +13,12 @@ const App = (props) => {
       <header className="App-header">
         <Navbar options={props.permissions} />
       </header>
-      <div className="viewContainer">
+      {/* <div className="viewContainer">
         <RegisterProductView />
-      </div> 
-      {/* <div className="container">
+      </div>  */}
+      <div className="container">
         <Login imageURL={logo_expandido} text={'Iniciar Sesion'} />
-      </div> */}
+      </div> 
     </div>
   );
 }

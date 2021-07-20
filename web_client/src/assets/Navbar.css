@@ -1,0 +1,24 @@
+
+:root{
+    --radio: 10px;
+}
+
+.back-orange{
+    background-color: #F68634;
+}
+
+.color-blue{
+    color: #383C77
+}
+
+label {  
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+
+    font-size: 1em;
+}
+
+b {
+    font-family: Abel;
+}

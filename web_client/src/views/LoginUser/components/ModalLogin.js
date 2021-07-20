@@ -1,17 +1,16 @@
 import React from 'react';
 import Axios from 'axios';
 import {connect} from 'react-redux';
-import { isCorrectFormat } from '../../common/functionsValidateUsers';
-import errrorLogin from '../../utils/ErrorMessages/errorLogin';
+import { isCorrectFormat } from '../../../utils/Validations/validateUsers';
+import errrorLogin from '../../../utils/ErrorMessages/errorLogin';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
-import FormLogin from './FormLogin';
-import Buttons from '../../common/Buttons';
-import Line from '../../common/Line';
-import '../../assets/Forms.css';
-import { updateNick, updatePassword , updateUser, updatePermissions} from '../../actions/LoginActions';
+import FormLogin from '../components/FormLogin';
+import Buttons from '../../../common/Buttons';
+import Line from '../../../common/Line';
+import { updateNick, updatePassword , updateUser, updatePermissions} from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
 
-const PORT = require('../../config');
+const PORT = require('../../../config');
 
 const ModalLogin = (props) => {
 
@@ -22,7 +21,8 @@ const ModalLogin = (props) => {
                 let compare = bcryptjs.compareSync(props.password,response.data[0].password)
                 if(response.data.length > 0 && compare){
                     props.updateUser(response.data[0])
-                    Axios.get(PORT() + `/api/permission/filter/${response.data[0].Rol}`)
+                    console.log(response.data[0])
+                    Axios.get(PORT() + `/api/permission/filter/${response.data[0].rol_ID}`)
                     .then((response) => {
                         for(let i = 0; i< response.data.length; i++){
                             props.updatePermissions(response.data[i].name)

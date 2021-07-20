@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateNick, updatePassword } from '../../actions/LoginActions';
-import useHTTPGet from '../../hooks/useHTTPGet';
 import '../../assets/Buttons.css';
-import '../../assets/Forms.css';
 import BeShowed from '../../common/BeShowed';
-import ModalLogin from './ModalLogin';
+import ModalLogin from './components/ModalLogin';
+import './styles/LoginForm.css';
 
 const Login = (props) => {
 

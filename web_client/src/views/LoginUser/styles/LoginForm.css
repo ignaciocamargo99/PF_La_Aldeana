@@ -1,7 +1,4 @@
-/*https://www.w3schools.com/css/css_padding.asp*/
-:root{
-    --radio: 10px;
-}
+
 h2 {
     font-family: Abel;
     font-style: normal;
@@ -11,17 +8,6 @@ h2 {
     margin-left: 1em;
 }
 
-b {
-    font-family: Abel;
-}
-
-label {  
-    font-family: Abel;
-    font-style: normal;
-    font-weight: normal;
-
-    font-size: 1em;
-}
 
 .formBody {
     margin-left: 5%;
@@ -94,14 +80,6 @@ textarea {
 
 .back-ligthblue{
     background-color: #A5DEF9;
-}
-
-.back-orange{
-    background-color: #F68634;
-}
-
-.color-blue{
-    color: #383C77
 }
 
 .color-red{

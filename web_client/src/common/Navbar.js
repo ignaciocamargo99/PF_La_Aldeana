@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import logo from '../images/logo.png';
-import '../assets/Forms.css';
+import '../assets/Navbar.css';
 import BeShowed from './BeShowed';
 
 const Navbar = (props) => {

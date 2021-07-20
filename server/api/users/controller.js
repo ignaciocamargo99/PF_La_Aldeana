@@ -17,7 +17,7 @@ async function getUsers(req, res) {
 // [HTTP:GET:nick]
 async function getUsersByNick(req, res) {
 
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol " + 
+    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol, u.id_rol as rol_ID " + 
     "FROM USERS u " + 
     "INNER JOIN ROLES r ON u.id_rol = r.id_rol " + 
     "WHERE u.nick_user = ?";
