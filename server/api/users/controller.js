@@ -1,4 +1,5 @@
 const db = require("../../config/connection");
+const bcryptjs = require('bcryptjs')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
@@ -33,10 +34,11 @@ async function postUser(req, res) {
     const last_name = req.body.last_name;
     const password = req.body.password;
     const id_rol = req.body.id_rol;
+    let passwordHash = await bcryptjs.hash(password, 8)
 
     const sqlInsert =
         "INSERT INTO USERS (nick_user, first_name, last_name, password, id_rol) " +
-        "VALUES ('"+ nick +"','"+ first_name +"','"+ last_name +"','"+ password +"',"+ id_rol + ")";
+        "VALUES ('"+ nick +"','"+ first_name +"','"+ last_name +"','"+ passwordHash +"',"+ id_rol + ")";
         //"VALUES (?)";
 
     await db.query(sqlInsert, [req.body], (err, result) => {

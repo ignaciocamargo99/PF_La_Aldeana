@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateNick, updatePassword } from '../../actions/LoginActions';
+import useHTTPGet from '../../hooks/useHTTPGet';
 import '../../assets/Buttons.css';
 import '../../assets/Forms.css';
 import BeShowed from '../../common/BeShowed';
@@ -16,6 +17,11 @@ const Login = (props) => {
         props.updatePassword('')
 
     }
+
+    useEffect(() => {
+        //aqui va la consulta sobre la sessiones...
+    })
+
 
     return (
         <div className="row justify-content-sm-center">
