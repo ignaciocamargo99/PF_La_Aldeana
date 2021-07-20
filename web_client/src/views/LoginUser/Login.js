@@ -5,6 +5,7 @@ import '../../assets/Buttons.css';
 import BeShowed from '../../common/BeShowed';
 import ModalLogin from './components/ModalLogin';
 import './styles/LoginForm.css';
+import logo_expandido from '../../images/logo_expandido.png';
 
 const Login = (props) => {
 
@@ -26,7 +27,7 @@ const Login = (props) => {
         <div className="row justify-content-sm-center">
             <div className="row col-sm-6">
                 <div className="row">
-                    <img src={props.imageURL} alt=""></img>
+                    <img src={logo_expandido} alt=""></img>
                     <BeShowed show={props.user.nick_user === ''}>
                         <button className="btn-Access" onClick={changePrintModal}>Iniciar sesión</button>
                     </BeShowed>

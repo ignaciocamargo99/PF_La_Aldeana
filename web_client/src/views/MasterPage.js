@@ -1,25 +1,28 @@
 import React from 'react';
-import RegisterProductView from './RegisterProduct/RegisterProductView';
-import './MasterPage.css';
-import Navbar from '../common/Navbar';
-import Login from './LoginUser/Login';
 import { connect } from 'react-redux';
-import logo_expandido from '../images/logo_expandido.png'
+import { BrowserRouter, Route } from 'react-router-dom';
+import Navbar from '../common/Navbar';
+import logo_expandido from '../images/logo_expandido.png';
+import Login from './LoginUser/Login';
+import './MasterPage.css';
+import RegisterProductView from './RegisterProduct/RegisterProductView';
 
 const App = (props) => {
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar options={props.permissions} />
-      </header>
-      {/* <div className="viewContainer">
-        <RegisterProductView />
-      </div>  */}
-      <div className="container">
-        <Login imageURL={logo_expandido} text={'Iniciar Sesion'} />
-      </div> 
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <Navbar options={props.permissions} />
+        </header>
+        <BrowserRouter>
+          <div className="viewContainer">
+            <Route path='/products' component={RegisterProductView}></Route>
+          </div>
+          <div className="container">
+            <Route path='/index' component={Login}></Route>
+          </div>
+        </BrowserRouter>
+      </div>
   );
 }
 

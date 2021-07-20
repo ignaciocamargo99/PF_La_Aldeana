@@ -1,24 +1,33 @@
-
-:root{
-    --radio: 10px;
+:root {
+  --radio: 10px;
 }
 
-.back-orange{
-    background-color: #F68634;
+.back-orange {
+  background-color: #f68634;
 }
 
-.color-blue{
-    color: #383C77
+.color-blue {
+  color: #383c77;
 }
 
-label {  
-    font-family: Abel;
-    font-style: normal;
-    font-weight: normal;
+label {
+  font-family: Abel;
+  font-style: normal;
+  font-weight: normal;
 
-    font-size: 1em;
+  font-size: 1em;
 }
 
 b {
-    font-family: Abel;
+  font-family: Abel;
+}
+
+.dropdown {
+  background-color: #f68634 !important;
+  border-color: #f68634 !important;
+  font-family: Abel !important;
+  font-weight: bolder !important;
+  color: #383c77 !important;
+  font-size: 1rem !important;
+  padding: 3.6px 0px 0px 6px !important;
 }
