@@ -1,10 +1,38 @@
+import React, { useRef, useState, useEffect } from "react";
+import BeShowed from "../../../common/BeShowed";
 import useHTTPGet from '../../../hooks/useHTTPGet';
+import validateTypeProduct from '../../../utils/Validations/validateTypeProduct';
 
 const PORT = require('../../../config');
 
-const TypeProduct = () => {
+const TypeProduct = (props) => {
 
     const typeProduct = useHTTPGet(PORT() + '/api/typeProduct');
+
+
+    const inputType = useRef(null);
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [type, setType] = useState("null");
+    const [prevType, setPrevType] = useState("null");
+
+    const handleType = () => {
+        setPrevType(type);
+        setType(inputType.current.value);
+        console.log(type)
+    }
+
+    useEffect(() => {
+        setErrorMessage(validateTypeProduct(inputType.current.value));
+        if (inputType.current.value >= 0) {
+
+            let data = props.data;
+            
+            data.type = inputType.current.value;
+
+            props.load(data);
+        }
+    }, [type]);
 
     return (
         <div className="formRow">
@@ -14,7 +42,7 @@ const TypeProduct = () => {
             <div className="form-combo-btn">
                 <div className="d-flex">
                     <div className="form-combo">
-                        <input className="form-control " list="productTypesdatalist" id="productType" placeholder="Seleccione tipo de producto...">
+                        <input className="form-control " list="productTypesdatalist" id="productType" placeholder="Seleccione tipo de producto..." ref={inputType} onChange={handleType}>
                         </input>
                         <datalist id="productTypesdatalist">
                             {typeProduct?.map((tp) => {
@@ -24,10 +52,15 @@ const TypeProduct = () => {
                                 )
                             })}
                         </datalist>
+                        <BeShowed show={errorMessage !== "null" && prevType !== "null"}>
+                            <div style={{ color: 'red' }}>{errorMessage}</div>
+                        </BeShowed>
                     </div>
+                    {/*
                     <div className="d-flex-col form-add-btn">
                         <button type="button" className="btn btn-primary" >+</button>
                     </div>
+                    */}
                 </div>
             </div>
         </div>
