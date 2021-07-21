@@ -9,8 +9,10 @@ import Buttons from '../../../common/Buttons';
 import Line from '../../../common/Line';
 import { updateNick, updatePassword , updateUser, updatePermissions} from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
+import Cookies from 'universal-cookie';
 
 const PORT = require('../../../config');
+const cookies = new Cookies();
 
 const ModalLogin = (props) => {
 
@@ -20,18 +22,18 @@ const ModalLogin = (props) => {
             .then((response) => {
                 let compare = bcryptjs.compareSync(props.password,response.data[0].password)
                 if(response.data.length > 0 && compare){
-                    props.updateUser(response.data[0])
-                    console.log(response.data[0])
-                    Axios.get(PORT() + `/api/permission/filter/${response.data[0].rol_ID}`)
+                    cookies.set('nick_user',response.data[0].nick_user, {path: '/'})
+                    cookies.set('first_name',response.data[0].first_name, {path: '/'})
+                    cookies.set('last_name',response.data[0].last_name, {path: '/'})
+                    Axios.get( PORT() + `/api/permission/filter/${response.data[0].rol_ID}`)
                     .then((response) => {
-                        for(let i = 0; i< response.data.length; i++){
-                            props.updatePermissions(response.data[i].name)
+                        let permissions = ['Inicio']
+                        for(let i=0; i< response.data.length ; i++){
+                          permissions.push(response.data[i].name)
                         }
-                        props.close()
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
+                        cookies.set('permissions',permissions, {path: '/'})
+                        window.location.href = './index'
+                  })
                 }
                 else{
                     errrorLogin('Atención','Usuario o Password incorrectos')

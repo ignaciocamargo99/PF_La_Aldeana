@@ -4,9 +4,18 @@ import { connect } from 'react-redux';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
+export default function Navbar (props){
 
-const Navbar = (props) => {
+    const signOut = () =>{
+        cookies.remove('nick_user', {path: '/'})
+        cookies.remove('first_name', {path: '/'})
+        cookies.remove('last_name', {path: '/'})
+        cookies.remove('permissions', {path: '/'})
+        window.location.href = './index'
+    }
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
@@ -44,16 +53,11 @@ const Navbar = (props) => {
                         {showOptionsWithPermissions()}
                     </ul>
                 </div>
-                <BeShowed show={props.user.nick_user !== ''}>
-                    <label><b className='color-blue'>{`Usuario: ${props.user.first_name} ${props.user.last_name}`}</b></label>
+                <BeShowed show={cookies.get('nick_user')!= undefined}>
+                    <label><b className='color-blue'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}</b></label>
+                    <button className="btn btn-primary" onClick={signOut}>Cerrar Sesion</button>
                 </BeShowed>
             </div>
         </nav>
     )
 }
-
-const mapStateToProps = state => {
-    return { user: state.user }
-}
-
-export default connect(mapStateToProps)(Navbar);
