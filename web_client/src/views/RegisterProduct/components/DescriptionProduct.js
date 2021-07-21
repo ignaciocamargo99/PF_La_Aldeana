@@ -1,5 +1,4 @@
 import React from "react";
-import '../styles/Form.css';
 
 const DescriptionProduct = () => {
     return (

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import Line from '../../../../common/Line';
-import '../../styles/Form.css';
 
 export default function DetailSupplies() {
 

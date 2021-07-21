@@ -1,5 +1,4 @@
-//import '../assets/Form.css'
-import BeShowed from './BeShowed'
+import BeShowed from './BeShowed';
 
 export default function Combo(props) {
     return (
@@ -14,14 +13,6 @@ export default function Combo(props) {
                         {props.options}
                     </select>
                 </BeShowed>
-                {/*
-                    <BeShowed show={!props.children}>
-                    <select className='col-md-8' {...props}>
-                        {props.optiondefault}
-                        {props.options}
-                    </select>
-                </BeShowed>
-                */}
                 {props.children}
             </div>
         </>

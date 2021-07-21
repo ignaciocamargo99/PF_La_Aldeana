@@ -1,26 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import '../../assets/Buttons.css';
 import Buttons from '../../common/Buttons';
-import GeneralDataProduct from './GeneralDataProduct';
 import ExtraDataProduct from './ExtraDataProduct';
+import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
+import './styles/ProductForm.css';
 
-const RegisterProductView = (props) => {
+const RegisterProductView = () => {
 
     const [data, setData] = useState({ name: '', description: '', price: -1, type: {}, supplies: [{}], img: null });
     const [ready] = useState(false);
-
-    useEffect(
-        () => {
-            //const isValidate = validationProductRegister(data.name, data.price, data.type);
-            //if (isValidate === true) setReady(true);
-            console.log(data)
-
-        }
-        , [data]);
-
-    const register = () => {
-        console.log('hola');
-    }
 
     return (
         <>
@@ -28,15 +17,9 @@ const RegisterProductView = (props) => {
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
-                <form>
-                    <GeneralDataProduct load={setData} data={data} />
-                    <ExtraDataProduct load={setData} data={data} />
-                    <Buttons label='Registrar' ready={ready} data={data} register={register} />
-                    <div className="form-btn-actions">
-                        <button type="button" className="btn btn-primary">Registrar</button>
-                        <button type="button" className="btn btn-light cancel-btn">Cancelar</button>
-                    </div>
-                </form>
+                <GeneralDataProduct load={setData} data={data} />
+                <ExtraDataProduct load={setData} data={data} />
+                <Buttons label='Registrar' ready={ready} data={data} />
             </div>
         </>
     );

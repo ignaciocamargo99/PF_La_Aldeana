@@ -1,0 +1,8 @@
+footer{
+    position: fixed;
+    bottom: 0;
+    background-color: #383C77;
+    width: 100%;
+    font-family: Abel;
+    padding: 5px 0px 0px 0px;
+}

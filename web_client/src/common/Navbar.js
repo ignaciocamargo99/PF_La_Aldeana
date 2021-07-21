@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import logo from '../images/logo.png';
-import '../assets/Navbar.css';
-import BeShowed from './BeShowed';
+import React from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import '../assets/Navbar.css';
+import logo from '../images/logo.png';
+import BeShowed from './BeShowed';
 
 
 const Navbar = (props) => {
@@ -11,7 +11,6 @@ const Navbar = (props) => {
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
         const permissionVentas = props.options.find(option => option === "Ventas")
-
         if (permissionVentas === "Ventas") {
             return (
                 <>
@@ -20,7 +19,7 @@ const Navbar = (props) => {
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="#/action-1">Tipos de producto</Dropdown.Item>
+                            <Dropdown.Item href="/typeProducts">Tipos de producto</Dropdown.Item>
                             <Dropdown.Item href="#/action-2">Insumos</Dropdown.Item>
                             <Dropdown.Item href="/products">Productos</Dropdown.Item>
                         </Dropdown.Menu>

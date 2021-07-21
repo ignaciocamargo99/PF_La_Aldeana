@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Footer from '../common/Footer';
 import Navbar from '../common/Navbar';
-import logo_expandido from '../images/logo_expandido.png';
 import Login from './LoginUser/Login';
 import './MasterPage.css';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
+import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
+import '../assets/Footer.css';
 
 const App = (props) => {
 
@@ -17,11 +19,13 @@ const App = (props) => {
         <BrowserRouter>
           <div className="viewContainer">
             <Route path='/products' component={RegisterProductView}></Route>
-          </div>
-          <div className="container">
+            <Route path='/typeProducts' component={RegisterTypeProductView}></Route>
             <Route path='/index' component={Login}></Route>
           </div>
         </BrowserRouter>
+        <footer className="footer text-center">
+          <Footer />
+        </footer>
       </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
 import ModalSupplies from './modals/ModalSupplies';
-import '../styles/Form.css';
 import TableSuppliesUp from './TableSuppliesUp';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import UploadSuppliesByName from './UploadSuppliesByName';

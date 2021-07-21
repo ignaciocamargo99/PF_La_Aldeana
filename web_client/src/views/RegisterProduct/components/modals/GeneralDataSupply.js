@@ -2,7 +2,6 @@
 import Line from '../../../../common/Line';
 import React from 'react'
 import useHTTPGet from '../../../../hooks/useHTTPGet';
-import '../../styles/Form.css';
 import ImageProduct from '../ImageProduct';
 
 const PORT = require('../../../../config');

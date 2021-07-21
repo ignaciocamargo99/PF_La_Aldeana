@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import '../styles/Form.css';
 
 const NameProduct = () => {
     const inputName = useRef(null);

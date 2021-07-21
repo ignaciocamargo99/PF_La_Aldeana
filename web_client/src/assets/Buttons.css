@@ -1,6 +1,8 @@
 .buttons {
     margin-top: 5em;
     margin-left: 70%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn-Access {
