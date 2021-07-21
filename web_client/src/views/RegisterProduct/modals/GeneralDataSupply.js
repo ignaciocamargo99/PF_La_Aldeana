@@ -1,10 +1,10 @@
 
-import Line from '../../../../common/Line';
+import Line from '../../../common/Line';
 import React from 'react'
-import useHTTPGet from '../../../../hooks/useHTTPGet';
-import ImageProduct from '../ImageProduct';
+import useHTTPGet from '../../../hooks/useHTTPGet';
+import ImageProduct from '../components/ImageProduct';
 
-const PORT = require('../../../../config');
+const PORT = require('../../../config');
 
 export default function GeneralDataSupply() {
 

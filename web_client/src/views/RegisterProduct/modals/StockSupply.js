@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Line from '../../../../common/Line';
+import Line from '../../../common/Line';
 
 export default function DetailSupplies() {
 

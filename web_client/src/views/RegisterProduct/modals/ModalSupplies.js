@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import modalStyles from '../../../../assets/modalStyles';
-import Buttons from '../../../../common/Buttons';
-import success from '../../../../utils/SuccessMessages/successTypeProduct';
+import modalStyles from '../../../assets/modalStyles';
+import Buttons from '../../../common/Buttons';
+import success from '../../../utils/SuccessMessages/successTypeProduct';
 import GeneralDataSupply from './GeneralDataSupply';
 import PriceSupply from './PriceSupply';
 import StockSupply from './StockSupply';

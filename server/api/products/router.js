@@ -13,6 +13,8 @@ router.post("/typeProduct/new", productController.postTypeProducts);
 
 router.get("/typeSupplies", productController.getTypeSupplies);
 
+router.post("/product/new", productController.postProduct);
+
 //#endregion
 
 module.exports = router;
