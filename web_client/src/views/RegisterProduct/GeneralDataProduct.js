@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import DescriptionProduct from "./components/DescriptionProduct";
 import NameProduct from './components/NameProduct';
 import PriceProduct from './components/PriceProduct';
@@ -14,10 +14,10 @@ const GeneralDataProduct = (props) => {
     }
     return (
         <>
-            <NameProduct load={load}  data={props.data}/>
-            <DescriptionProduct load={load}  data={props.data} />
-            <PriceProduct  load={load}  data={props.data}/>
-            <SectorProduct  load={load}  data={props.data}/>
+            <NameProduct load={load} data={props.data} />
+            <DescriptionProduct load={load} data={props.data} />
+            <PriceProduct load={load} data={props.data} />
+            <SectorProduct load={load} data={props.data} />
         </>
     );
 }

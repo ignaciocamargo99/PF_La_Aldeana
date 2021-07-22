@@ -13,21 +13,25 @@ const validateImage = (obj) => {
 
     if (!(/\.(jpg|jpeg|png)$/i).test(uploadFile.name)) {
         errorImageFormat();
-        return obj.value = ""
+        obj.value = ""
     }
     else {
         let img = new Image();
+        let flag = true;
         img.onload = function () {
-            if (this.width.toFixed(0) < 1920 && this.height.toFixed(0) < 1080) {
+            if (this.width.toFixed(0) > 200 && this.height.toFixed(0) > 200) {
                 warningImageMeasurements();
-                return obj.value = "";
+                flag = false;
             }
             else if (uploadFile.size > 7000000) {
                 warningSizeImages();
-                return obj.value = "";
+                flag = false;
             }
+            return flag;
         };
-        img.src = URL.createObjectURL(uploadFile);
+        console.log(flag);
+        if(flag) return img.src = URL.createObjectURL(uploadFile);
+        else return null;
     }
 }
 

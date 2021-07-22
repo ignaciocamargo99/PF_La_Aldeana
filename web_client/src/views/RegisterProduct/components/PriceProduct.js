@@ -1,12 +1,16 @@
 import React, { useRef } from "react";
 
-const PriceProduct = () => {
+const PriceProduct = (props) => {
+    
     const inputPrice = useRef(null);
     const divPriceValidation = useRef(null);
 
     const onChangePrice = () => {
-        if (inputPrice.current.value <= 0) divPriceValidation.current.innerHTML = "Ingrese un número mayor a 0"
+        if (inputPrice.current.value <= 0) divPriceValidation.current.innerHTML = "Ingrese un número mayor a 0";
         else divPriceValidation.current.innerHTML = "";
+        let data = props.data;
+        data.price = inputPrice.current.value;
+        props.load(data);
     };
 
     return (

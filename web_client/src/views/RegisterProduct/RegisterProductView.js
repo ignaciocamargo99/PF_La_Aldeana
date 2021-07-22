@@ -12,11 +12,19 @@ const PORT = require('../../config');
 
 const RegisterProductView = () => {
 
-    const [data, setData] = useState({ name: '', description: '', price: -1, type: {}, supplies: [{}], img: null });
+    const [data, setData] = useState({ name: '', description: '', price: -1, sector: '', typeProduct: {}, img: null });
+    const [nameProductChild, setNameProductChild] = useState('');
+    const [descriptionProductChild, setDescriptionProductChild] = useState('');
+    const [priceProductChild, setPriceProductChild] = useState('');
+    const [sectorProductChild, setSectorProductChild] = useState('');
     const [ready, setReady] = useState(false);
 
     const load = (childData) => {
-        setData(childData);
+        setData(childData)
+        setNameProductChild(childData.name);
+        setDescriptionProductChild(childData.description);
+        setPriceProductChild(childData.price);
+        setSectorProductChild(childData.sector);
     }
 
     const postProduct = () => {
@@ -34,9 +42,9 @@ const RegisterProductView = () => {
 
     useEffect(() => {
         console.log(data);
-        if (data.name !== '' && data.price >= 0 && data.type !== {}) setReady(true);
+        if (data.name !== '' && data.price > 0 && data.sector > 0) setReady(true);
         else setReady(false);
-    }, [data]);
+    }, [nameProductChild, priceProductChild, sectorProductChild]);
 
     return (
         <>
@@ -44,11 +52,9 @@ const RegisterProductView = () => {
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
-                <a>{data.name}hola</a>
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons label='Registrar' actionOk={postProduct} ready={ready} data={data} />
-                <button onClick={postProduct}>Registrar que anda sin validaciones a modo de prueba xd</button>
             </div>
         </>
     );

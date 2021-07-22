@@ -16,12 +16,9 @@ const NameProduct = (props) => {
 
     useEffect(() => {
         setErrorMessage(validateName(inputName.current.value));
-        if (inputName.current.value.length > 0 && inputName.current.value.length <= 80) {
-
+        if (inputName.current.value.length >= 0 && inputName.current.value.length <= 80) {
             let data = props.data;
-            
             data.name = inputName.current.value;
-
             props.load(data);
         }
     }, [name]);

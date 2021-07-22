@@ -1,10 +1,9 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
-import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 export default function Navbar (props){
@@ -53,7 +52,7 @@ export default function Navbar (props){
                         {showOptionsWithPermissions()}
                     </ul>
                 </div>
-                <BeShowed show={cookies.get('nick_user')!= undefined}>
+                <BeShowed show={cookies.get('nick_user')!== undefined}>
                     <label><b className='color-blue'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}</b></label>
                     <button className="btn btn-primary" onClick={signOut}>Cerrar Sesion</button>
                 </BeShowed>

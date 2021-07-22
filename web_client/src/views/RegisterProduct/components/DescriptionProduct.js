@@ -16,16 +16,13 @@ const DescriptionProduct = (props) => {
 
     useEffect(() => {
         setErrorMessage(validateDescription(inputDescription.current.value));
-        if (inputDescription.current.value.length > 0 && inputDescription.current.value.length <= 249) {
-
+        if (inputDescription.current.value.length > 0 && inputDescription.current.value.length <= 200) {
             let data = props.data;
-            
             data.description = inputDescription.current.value;
-
             props.load(data);
         }
     }, [description]);
-    
+
     return (
         <div className="formRow">
             <div className="form-control-label">

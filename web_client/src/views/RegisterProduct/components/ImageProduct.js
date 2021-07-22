@@ -11,7 +11,8 @@ const ImageProduct = () => {
     const handleImg = (e) => {
         const objImg = inputImg.current;
         if (objImg.files[0] !== undefined) {
-            validateImage(objImg);
+            const hola = validateImage(objImg);
+            console.log(hola);
             setPreviewImg(URL.createObjectURL(e.target.files[0]));
         }
     }
