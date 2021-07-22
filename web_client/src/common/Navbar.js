@@ -4,6 +4,9 @@ import Cookies from 'universal-cookie';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
+import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSignOutAlt , faSignInAlt} from '@fortawesome/free-solid-svg-icons' 
 
 const cookies = new Cookies();
 export default function Navbar (props){
@@ -16,9 +19,15 @@ export default function Navbar (props){
         window.location.href = './index'
     }
 
+    const signIn = () => {
+        window.location.href = './index'
+    }
+
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        const permissionVentas = props.options.find(option => option === "Ventas")
+        let permisos = []
+        props.options.map((option) => {permisos.push(decrypt(option))})
+        const permissionVentas = permisos.find(option => option === "Ventas")
         if (permissionVentas === "Ventas") {
             return (
                 <>
@@ -52,9 +61,12 @@ export default function Navbar (props){
                         {showOptionsWithPermissions()}
                     </ul>
                 </div>
-                <BeShowed show={cookies.get('nick_user')!== undefined}>
-                    <label><b className='color-blue'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}</b></label>
-                    <button className="btn btn-primary" onClick={signOut}>Cerrar Sesion</button>
+                <BeShowed show={cookies.get('nick_user')!= undefined}>
+                    <label><b className='color-blue'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}&nbsp;</b></label>
+                    <button className="btn" onClick={signOut}><FontAwesomeIcon icon={faSignOutAlt} /></button>
+                </BeShowed>
+                <BeShowed show={cookies.get('nick_user') === undefined}>
+                    <button className="btn" onClick={signIn}><label><b className='color-blue'>Iniciar sesion&nbsp;</b></label><FontAwesomeIcon icon={faSignInAlt} /></button>
                 </BeShowed>
             </div>
         </nav>

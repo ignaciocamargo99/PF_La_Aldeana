@@ -9,6 +9,7 @@ import Buttons from '../../../common/Buttons';
 import Line from '../../../common/Line';
 import { updateNick, updatePassword , updateUser, updatePermissions} from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
+import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
 import Cookies from 'universal-cookie';
 
 const PORT = require('../../../config');
@@ -27,9 +28,9 @@ const ModalLogin = (props) => {
                     cookies.set('last_name',response.data[0].last_name, {path: '/'})
                     Axios.get( PORT() + `/api/permission/filter/${response.data[0].rol_ID}`)
                     .then((response) => {
-                        let permissions = ['Inicio']
+                        let permissions = [encrypt('Inicio')]
                         for(let i=0; i< response.data.length ; i++){
-                          permissions.push(response.data[i].name)
+                          permissions.push(encrypt(response.data[i].name))
                         }
                         cookies.set('permissions',permissions, {path: '/'})
                         window.location.href = './index'
