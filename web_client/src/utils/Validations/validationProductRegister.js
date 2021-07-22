@@ -1,18 +1,26 @@
 import errorNameProduct from '../ErrorMessages/errorNameProduct';
 import errorPriceProduct from '../ErrorMessages/errorPriceProduct';
 import errorTypeProduct from '../ErrorMessages/errorTypeProduct';
+import errorSectorProduct from '../ErrorMessages/errorSectorProduct';
 
-export default function validationProductRegister(name, price, type) {
+export default function validationProductRegister(data) {
+    const name = data.name;
+    const price = data.price;
+    const sector = data.sector;
+    const type = data.type;
+
     try {
-        var passValidations = false;
+        //var passValidations = false;
 
-        if (name === "") throw errorNameProduct();
+        if (name === "") errorNameProduct();
 
-        else if (price <= 0) throw errorPriceProduct();
+        else if (price <= 0) errorPriceProduct();
 
-        else if (type === {}) throw errorTypeProduct();
+        else if (sector <= 0) errorSectorProduct();
 
-        else return !passValidations;
+        else if (type <= 0) errorTypeProduct();
+
+        //else return !passValidations;
     }
 
     catch (e) {

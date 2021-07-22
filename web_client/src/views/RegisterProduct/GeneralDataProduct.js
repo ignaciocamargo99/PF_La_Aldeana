@@ -6,6 +6,7 @@ import SectorProduct from './components/SectorProduct';
 
 const GeneralDataProduct = (props) => {
 
+
     const [data, setData] = useState({});
 
     const load = (childData) => {

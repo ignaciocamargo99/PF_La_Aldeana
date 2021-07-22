@@ -7,16 +7,18 @@ import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
+import validationProductRegister from '../../utils/Validations/validationProductRegister';
 
 const PORT = require('../../config');
 
 const RegisterProductView = () => {
 
-    const [data, setData] = useState({ name: '', description: '', price: -1, sector: '', typeProduct: {}, img: null });
+    const [data, setData] = useState({ name: '', description: '', price: -1, sector: '', typeProduct: -1, img: null });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
     const [sectorProductChild, setSectorProductChild] = useState('');
+    const [typeProductChild, setTypeProductChild] = useState(-1);
     const [ready, setReady] = useState(false);
 
     const load = (childData) => {
@@ -25,6 +27,7 @@ const RegisterProductView = () => {
         setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
         setSectorProductChild(childData.sector);
+        setTypeProductChild(childData.typeProduct);
     }
 
     const postProduct = () => {
@@ -42,9 +45,10 @@ const RegisterProductView = () => {
 
     useEffect(() => {
         console.log(data);
-        if (data.name !== '' && data.price > 0 && data.sector > 0) setReady(true);
+        if (data.name !== '' && data.price > 0 && data.sector > 0 && data.typeProduct >= 0
+        && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild]);
+    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, descriptionProductChild]);
 
     return (
         <>
@@ -54,7 +58,9 @@ const RegisterProductView = () => {
             <div className="viewBody">
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
-                <Buttons label='Registrar' actionOk={postProduct} ready={ready} data={data} />
+                <Buttons label='Registrar' actionOK={postProduct} 
+                    //actionNotOK={validationProductRegister}
+                    ready={ready} data={data} />
             </div>
         </>
     );
