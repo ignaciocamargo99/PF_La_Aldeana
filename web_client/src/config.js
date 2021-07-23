@@ -9,7 +9,7 @@ const URL_PORT = () => {
             return '';
 
         case 'D':
-            return /** APIs SERVER DEVELOPMENT */;
+            return 'https://la-aldeana-dev.herokuapp.com';
 
         case 'PP':
             return /** APIs SERVER PRE-PRODUCTION */;

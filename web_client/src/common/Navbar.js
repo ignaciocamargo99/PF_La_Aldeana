@@ -16,18 +16,18 @@ export default function Navbar (props){
         cookies.remove('first_name', {path: '/'})
         cookies.remove('last_name', {path: '/'})
         cookies.remove('permissions', {path: '/'})
-        window.location.href = './index'
+        window.location.href = '/app/index'
     }
 
     const signIn = () => {
-        window.location.href = './index'
+        window.location.href = '/app/index'
     }
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permissions = []
-        props.options.map((option) => {permissions.push(decrypt(option))})
-        const permissionVentas = permissions.find(option => option === "Ventas")
+        let permisos = []
+        props.options.map((option) => {permisos.push(decrypt(option))})
+        const permissionVentas = permisos.find(option => option === "Ventas")
         if (permissionVentas === "Ventas") {
             return (
                 <>
@@ -36,10 +36,10 @@ export default function Navbar (props){
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/typeProducts">Tipos de producto</Dropdown.Item>
+                            <Dropdown.Item href="/app/typeProducts">Tipos de producto</Dropdown.Item>
                             <Dropdown.Item href="#/action-2">Insumos</Dropdown.Item>
-                            <Dropdown.Item href="/registerProducts">Registrar Productos</Dropdown.Item>
-                            <Dropdown.Item href="/listProducts">Productos</Dropdown.Item>
+                            <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
+                            {/* <Dropdown.Item href="/listProducts">Productos</Dropdown.Item> */}
                         </Dropdown.Menu>
                     </Dropdown>
                 </>
@@ -50,14 +50,14 @@ export default function Navbar (props){
     return (
         <nav className="navbar navbar-expand-lg navbar-light back-orange" >
             <div className="container-fluid">
-                <a className="navbar-brand" href="/index">
+                <a className="navbar-brand" href="/app/index">
                     <img src={logo} alt="" height="50"></img>
                     &nbsp;<b className="color-blue">La Aldeana</b>
                 </a>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link active" href='/index'><b className="color-blue">Inicio</b></a>
+                            <a className="nav-link active" href='/app/index'><b className="color-blue">Inicio</b></a>
                         </li>
                         {showOptionsWithPermissions()}
                     </ul>

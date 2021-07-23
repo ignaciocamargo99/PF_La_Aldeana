@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const logger = require('morgan');
+const path = require("path");
 const app = express();
 const productsRouter = require('./api/products/router');
 const usersRouter = require('./api/users/router');
@@ -13,6 +14,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
+
+
+app.get("/app/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
+});
 
 /** Routes apis and errors */
 app.use('/api', productsRouter);
