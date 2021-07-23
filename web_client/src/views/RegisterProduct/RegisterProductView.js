@@ -65,9 +65,11 @@ const RegisterProductView = () => {
             <div className="viewBody">
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
-                <Buttons label='Registrar' actionOK={registerProduct}
+                <Buttons
+                    label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
-                    ready={ready} data={data} />
+                    ready={ready}
+                    data={data} />
             </div>
         </>
     );
