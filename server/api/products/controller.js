@@ -9,6 +9,17 @@ const diskStorage = multer.diskStorage({
     }
 })
 
+// HTTP: GET 
+async function getProducts(req, res) {
+
+    const sqlSelect = "SELECT id_product, name FROM PRODUCTS"
+
+    await db.query(sqlSelect, (err, result) => {
+        if (err) throw err;
+        else res.send(result);
+    })
+}
+
 // HTTP: POST
 async function postProduct(req, res) {
     const name = req.body.name;
@@ -75,4 +86,4 @@ async function getTypeSupplies(req, res) {
 
 
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies };
+module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts };

@@ -38,7 +38,8 @@ export default function Navbar (props){
                         <Dropdown.Menu>
                             <Dropdown.Item href="/typeProducts">Tipos de producto</Dropdown.Item>
                             <Dropdown.Item href="#/action-2">Insumos</Dropdown.Item>
-                            <Dropdown.Item href="/products">Productos</Dropdown.Item>
+                            <Dropdown.Item href="/registerProducts">Registrar Productos</Dropdown.Item>
+                            <Dropdown.Item href="/listProducts">Productos</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </>

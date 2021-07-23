@@ -9,6 +9,7 @@ import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductVi
 import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
+import ListProducts from './ListProducts/ListProducts';
 
 const cookies = new Cookies();
 
@@ -22,8 +23,9 @@ export default function App(props) {
       <BrowserRouter>
         <div className="viewContainer">
           <BeShowed show={cookies.get('nick_user') !== undefined}>
-            <Route path='/products' component={RegisterProductView}></Route>
+            <Route path='/registerProducts' component={RegisterProductView}></Route>
             <Route path='/typeProducts' component={RegisterTypeProductView}></Route>
+            <Route path='/listProducts' component={ListProducts}></Route>
           </BeShowed>
           <Route path='/index' component={Login}></Route>
         </div>

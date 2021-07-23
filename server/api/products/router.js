@@ -21,6 +21,8 @@ const fileUpload = multer({
 
 router.get("/typeProduct", productController.getTypeProducts);
 
+router.get("/products", productController.getProducts);
+
 router.get("/supplies", productController.getSupplies);
 
 router.post("/typeProduct/new", productController.postTypeProducts);
