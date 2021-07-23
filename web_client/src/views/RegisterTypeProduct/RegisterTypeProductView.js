@@ -62,7 +62,7 @@ export default function RegisterTypeProductView() {
                         <textarea type='text' className='form-control' ref={inputDescription} placeholder='Ingrese descripción del producto...'></textarea>
                     </div>
                 </div>
-                <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionCancel={cancelTypeProduct} />
+                <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={registerTypeProduct} actionCancel={cancelTypeProduct} />
             </div>
         </>
     )
