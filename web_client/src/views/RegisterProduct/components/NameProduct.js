@@ -22,7 +22,7 @@ const NameProduct = (props) => {
             let data = props.data;
             data.name = inputName.current.value;
             props.load(data);
-        }else if (prevName !== "null") {
+        } else if (prevName !== "null") {
             setIsValidClass("form-control is-invalid");
             let data = props.data;
             data.name = "error";

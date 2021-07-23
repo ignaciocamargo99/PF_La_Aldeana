@@ -19,6 +19,7 @@ const RegisterProductView = () => {
     const [priceProductChild, setPriceProductChild] = useState('');
     const [sectorProductChild, setSectorProductChild] = useState('');
     const [typeProductChild, setTypeProductChild] = useState(-1);
+    const [imgProductChild, setImgProductChild] = useState('');
     const [ready, setReady] = useState(false);
 
     const load = (childData) => {
@@ -28,27 +29,33 @@ const RegisterProductView = () => {
         setPriceProductChild(childData.price);
         setSectorProductChild(childData.sector);
         setTypeProductChild(childData.typeProduct);
+        setImgProductChild(childData.img);
     }
 
-    const postProduct = () => {
-        Axios.post(PORT() + '/api/product/new', {
-            name: 'producto de prueba 2',
-            description: 'h<bf<gb<<fhla',
-            image: null,
-            price: 200,
-            id_sector: 2,
-            id_product_type: 1
-        })
+    const registerProduct = () => {
+        console.log(data.img)
+        if (!imgProductChild) {
+            alert("Ingrese imagen")
+            return;
+        }
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('description', data.description);
+        formData.append('image', data.img)
+        formData.append('price', data.price);
+        formData.append('id_sector', data.sector);
+        formData.append('id_product_type', data.typeProduct);
+
+        Axios.post(PORT() + '/api/product/new', formData)
             .then(success())
-            .catch(err => console.error(err))
+            .catch(error => console.log(error))
     };
 
     useEffect(() => {
-        console.log(data);
         if (data.name !== '' && data.price > 0 && data.sector > 0 && data.typeProduct >= 0
-        && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
+            && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, descriptionProductChild]);
+    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
 
     return (
         <>
@@ -58,7 +65,7 @@ const RegisterProductView = () => {
             <div className="viewBody">
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
-                <Buttons label='Registrar' actionOK={postProduct} 
+                <Buttons label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
                     ready={ready} data={data} />
             </div>

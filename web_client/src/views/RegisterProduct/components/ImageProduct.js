@@ -1,21 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import validateImage from '../../../utils/Validations/validateImages';
 import BeShowed from "../../../common/BeShowed";
 
-const ImageProduct = () => {
+const ImageProduct = (props) => {
 
     const [previewImg, setPreviewImg] = useState();
-
     const inputImg = useRef(null);
 
     const handleImg = (e) => {
         const objImg = inputImg.current;
         if (objImg.files[0] !== undefined) {
-            const hola = validateImage(objImg);
-            console.log(hola);
             setPreviewImg(URL.createObjectURL(e.target.files[0]));
+            validateImage(objImg);
         }
+        else setPreviewImg(false);
     }
+    useEffect(() => {
+        let data = props.data;
+        data.img = inputImg.current.files[0];
+        props.load(data);
+    }, [previewImg]);
 
     return (
         <>
@@ -27,7 +31,7 @@ const ImageProduct = () => {
                     <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
                 </div>
             </div>
-            <BeShowed show={inputImg}>
+            <BeShowed show={previewImg}>
                 <img className="rounded mx-auto d-block img-thumbnail" id="imagenPrevisualizacion" src={previewImg}></img>
             </BeShowed>
         </>

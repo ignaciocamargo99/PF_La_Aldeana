@@ -25,9 +25,9 @@ export default function Navbar (props){
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permisos = []
-        props.options.map((option) => {permisos.push(decrypt(option))})
-        const permissionVentas = permisos.find(option => option === "Ventas")
+        let permissions = []
+        props.options.map((option) => {permissions.push(decrypt(option))})
+        const permissionVentas = permissions.find(option => option === "Ventas")
         if (permissionVentas === "Ventas") {
             return (
                 <>

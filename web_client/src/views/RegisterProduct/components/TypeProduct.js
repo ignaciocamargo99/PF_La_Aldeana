@@ -5,7 +5,7 @@ import validateTypeProduct from '../../../utils/Validations/validateTypeProduct'
 
 const PORT = require('../../../config');
 
-export default function TypeProduct (props) {
+export default function TypeProduct(props) {
 
     const typeProduct = useHTTPGet(PORT() + '/api/typeProduct');
 
@@ -21,11 +21,8 @@ export default function TypeProduct (props) {
     useEffect(() => {
         setErrorMessage(validateTypeProduct(type));
         if (type >= 0) {
-
             let data = props.data;
-
             data.typeProduct = type;
-
             props.load(data);
         }
     }, [type]);
@@ -38,25 +35,14 @@ export default function TypeProduct (props) {
             <div className="form-control-input">
                 <select className="form-control" id="selectTypeProduct"
                     defaultValue='-1'
-                    onChange = {handleType}>
-                        <option disabled value="-1">Seleccione tipo de producto...</option>
-                        {
+                    onChange={handleType}>
+                    <option disabled value="-1">Seleccione tipo de producto...</option>
+                    {
                         typeProduct?.map((tp, i) => (
                             <option key={i} value={tp.id_product_type}>{tp.name}</option>
                         ))
-                        }
+                    }
                 </select>
-                {/*<input className="form-control " list="productTypesdatalist" id="productType" placeholder="Seleccione tipo de producto..." 
-                ref={inputType} onChange={handleType}>
-                </input>
-                <datalist id="productTypesdatalist">
-                    {typeProduct?.map((tp) => {
-                        return (
-                            <option key={tp.id_product_type} value={tp.name}>
-                            </option>
-                        )
-                    })}
-                </datalist>*/}
                 <BeShowed show={errorMessage !== "null" && prevType !== "null"}>
                     <div style={{ color: 'red' }}>{errorMessage}</div>
                 </BeShowed>

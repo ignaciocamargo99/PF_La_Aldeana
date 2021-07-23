@@ -16,22 +16,29 @@ const validateImage = (obj) => {
         obj.value = ""
     }
     else {
-        let img = new Image();
-        let flag = true;
-        img.onload = function () {
-            if (this.width.toFixed(0) > 200 && this.height.toFixed(0) > 200) {
+        function validateImage(heightImage, widthImage, flag) {
+            if (widthImage.toFixed(0) > 200 && heightImage.toFixed(0) > 200){
                 warningImageMeasurements();
-                flag = false;
-            }
-            else if (uploadFile.size > 7000000) {
+                return obj.value = "";
+            } 
+            else if (uploadFile.size > 7000000){
                 warningSizeImages();
-                flag = false;
-            }
-            return flag;
+                return obj.value = "";
+            } 
         };
-        console.log(flag);
-        if(flag) return img.src = URL.createObjectURL(uploadFile);
-        else return null;
+
+        function addImageProcess() {
+            let img = new Image();
+            img.onload = () => validateImage(img.height, img.width)
+            img.src = URL.createObjectURL(uploadFile);
+            return img.onload();
+        }
+
+        async function process() {
+            const f = await addImageProcess();
+            return f
+        }
+        return process()
     }
 }
 
