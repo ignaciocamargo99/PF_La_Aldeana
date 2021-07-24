@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
+const supplyController = require("../controllers/supplyController");
 const db = require('../../config/connection');
 const multer = require('multer');
 const path = require('path');
@@ -30,6 +31,8 @@ router.post("/typeProduct/new", productController.postTypeProducts);
 router.get("/typeSupplies", productController.getTypeSupplies);
 
 router.post("/product/new", fileUpload, productController.postProduct);
+
+router.post("/supply/new", supplyController.postSupply);
 
 //#endregion
 
