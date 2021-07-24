@@ -1,0 +1,39 @@
+.price-form-body {
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+}
+
+.price-title {
+    margin-bottom: 0.5em;
+    border-bottom: solid #383C77 1px;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-type-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-type-label {
+    align-self: flex-end;
+}
+
+@media (min-width: 768px) {
+    .price-container, .price-type-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .price-type-label {
+        align-self: center;
+    }
+    .price-type-container {
+        width: 45%;
+    }
+    .price-label {
+        margin-right: 2em;
+    }
+}

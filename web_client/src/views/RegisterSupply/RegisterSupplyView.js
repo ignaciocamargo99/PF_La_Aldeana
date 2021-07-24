@@ -1,3 +1,4 @@
+import './styles/PriceType.css';
 import Buttons from '../../common/Buttons';
 
 const RegisterSupplyView = () => {
@@ -24,25 +25,24 @@ const RegisterSupplyView = () => {
                         <textarea className="form-control" id="supplyDescription" placeholder="Ingrese descripción del insumo..." rows="3"></textarea>
                     </div>
                 </div>
-                <div className="formRow">
-                    <div className="form-control-label">
-                        <label htmlFor="supplySinglePrice">Precio por menor*</label>
+                <div className="price-form-body ">
+                    <div className="price-title">
+                        <label >Precio*</label>
                     </div>
-                    <div className="form-control-input">
-                        <input className="form-control" id="supplySinglePrice" type="number" min="0" placeholder="Ingrese precio por menor..." />
+                    <div className="price-container">
+                        <div className="price-type-container">
+                            <label htmlFor="supplySinglePrice" className="price-type-label price-label">Minorista*</label>
+                            <input id="supplySinglePrice" className="form-control" type="number" min="0" placeholder="Ingrese precio por menor..." />
+                        </div>
+                        <div className="price-type-container">
+                            <label htmlFor="supplyMultiplePrice" className="price-type-label price-label">Mayorista*</label>
+                            <input id="supplyMultiplePrice" className="form-control" type="number" min="0" placeholder="Ingrese precio por mayor..." />
+                        </div>
                     </div>
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label htmlFor="supplyMultiplePrice">Precio por mayor*</label>
-                    </div>
-                    <div className="form-control-input">
-                        <input className="form-control" id="supplyMultiplePrice" type="number" min="0" placeholder="Ingrese precio por mayor..." />
-                    </div>
-                </div>
-                <div className="formRow">
-                    <div className="form-control-label">
-                        <label htmlFor="supplyType">Tipo de insumo*</label>
+                        <label htmlFor="supplyType">Tipo*</label>
                     </div>
                     <div className="form-control-input">
                         <select className="form-control" id="supplyType"
@@ -53,7 +53,7 @@ const RegisterSupplyView = () => {
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label htmlFor="lotStock">Stock de lotes*</label>
+                        <label htmlFor="lotStock">Stock lotes*</label>
                     </div>
                     <div className="form-control-input">
                         <input className="form-control" id="lotStock" type="number" min="0" placeholder="Ingrese stock de lotes..." />
@@ -61,7 +61,7 @@ const RegisterSupplyView = () => {
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label htmlFor="unitsPerLot">Cantidad de unidades por lote*</label>
+                        <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
                     </div>
                     <div className="form-control-input">
                         <input className="form-control" id="unitsPerLot" type="number" min="0" placeholder="Ingrese cantidad de unidades por lote..." />
