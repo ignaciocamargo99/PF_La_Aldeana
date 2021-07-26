@@ -38,15 +38,15 @@ export default function SuppliesPairTables (props) {
             });
     }, []);
 
-    const upload = (id) => {
-        if (listTable[id].amount > 0){
+    const upload = (i) => {
+        if (listTable[i].amount > 0){
             let aux = [];
             let auxDestiny = destinyTable;
-            listTable?.map((e) => {
-                if (e.id_supply !== id) {
-                    aux[e.id_supply] = e;
+            listTable?.map((e, j) => {
+                if (j !== i) {
+                    aux[j] = e;
                 } else {
-                    auxDestiny[e.id_supply] = e;
+                    auxDestiny[j] = e;
                 }
             });
 
@@ -55,16 +55,16 @@ export default function SuppliesPairTables (props) {
         }
     }
 
-    const download = (id) => {
+    const download = (i) => {
         let aux = [];
         let auxList = listTable;
 
-        destinyTable?.map((e) => {
-            if (e.id_supply !== id) {
-                aux[e.id_supply] = e;
+        destinyTable?.map((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
             } else {
                 e.amount = 0;
-                auxList[e.id_supply] = e;
+                auxList[j] = e;
             }
         });
 

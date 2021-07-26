@@ -11,9 +11,9 @@ export default function TableSuppliesUp(props) {
 
     const [amounts, setAmounts] = useState([]);
 
-    const handlerAmount = (amount, id) => {
+    const handlerAmount = (amount, i) => {
         let aux = props.supplies;
-        aux[id].amount = amount;
+        aux[i].amount = amount;
         setAmounts(aux);
     }
 
@@ -35,10 +35,10 @@ export default function TableSuppliesUp(props) {
                             <tbody key={i}>
                                 <tr>
                                     <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center' }}><SuppliesAmount supplies={element} load={handlerAmount} supply={element.id_supply}/></td>
+                                    <td style={{ textAlign: 'center' }}><SuppliesAmount supplies={element} load={handlerAmount} supply={i}/></td>
                                     <td style={{ textAlign: 'center' }}>
                                         <button type="button" className="btn btn-success btn-sm px-3"
-                                            onClick={(e) => props.upload(element.id_supply)}><FontAwesomeIcon icon={faPlus} /></button>
+                                            onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

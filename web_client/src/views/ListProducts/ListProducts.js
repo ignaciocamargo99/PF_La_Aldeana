@@ -1,5 +1,4 @@
 import ProductTable from "./components/ProductTable";
-import SuppliesPairTables from "../RegisterProduct/components/SuppliesPairTables/SuppliesPairTables";
 
 export default function ListProducts (props) {
     return (
@@ -9,7 +8,6 @@ export default function ListProducts (props) {
             </div>
             <div className="viewBody">
                 <ProductTable/>
-                <SuppliesPairTables/>
             </div>
         </>
     );

@@ -11,6 +11,14 @@ export default function ProductTable (props) {
 
     const products = useHTTPGet(PORT() + '/api/products');
 
+    const handleEdit = () => {
+        console.log('edit')
+    }
+
+    const handleDelete = () => {
+        console.log('delete')
+    }
+
     return (
         <>
             <Table>
