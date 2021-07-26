@@ -1,26 +1,51 @@
+import { useState, useEffect } from 'react';
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
-import { faMinus, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useHTTPGet from '../../../hooks/useHTTPGet';
+import Axios from 'axios';
+import DeleteProductButton from './DeleteProductButton';
+import EditProductButton from './EditProductButton';
+import LoaderSpinner from '../../../common/LoaderSpinner';
 
 const PORT = require('../../../config');
 
 export default function ProductTable (props) {
 
-    const products = useHTTPGet(PORT() + '/api/products');
+    const [products, setProducts] = useState([]);
 
-    const handleEdit = () => {
-        console.log('edit')
-    }
+    const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
-    const handleDelete = () => {
-        console.log('delete')
-    }
+    useEffect(() => {
+        Axios.get(PORT() + '/api/products')
+            .then((response) => {
+                handlerLoadingSpinner();
+                let auxSupply = response.data;
+                setProducts(auxSupply);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+
+    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
         <>
+        {isLoadingSpinner && (
+                    <>
+                        <div className="row justify-content-center">
+                            <div className="col-auto">
+                                <LoaderSpinner color = "primary" />
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="col-auto">
+                                <label className="text-muted" style={{margin: '10px', padding: '10px 50px 50px 50px'}}>Cargando productos...</label>
+                            </div>
+                        </div>
+                    </>
+                )}
             <Table>
                 <HeaderTable
                     th={
@@ -42,10 +67,10 @@ export default function ProductTable (props) {
                     }
                                     <td style={{ textAlign: 'center' }}>{elemento.name}</td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn btn-success btn-sm px-3"><FontAwesomeIcon icon={faEdit} /></button>
+                                        <EditProductButton product={elemento}/>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn btn-danger btn-sm px-3"><FontAwesomeIcon icon={faMinus} /></button>
+                                        <DeleteProductButton product={elemento}/>
                                     </td>
                                 </tr>
                             </tbody>

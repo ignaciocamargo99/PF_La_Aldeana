@@ -50,7 +50,7 @@ async function getTypeProducts(req, res) {
 // HTTP: GET 
 async function getSupplies(req, res) {
 
-    const sqlSelect = "SELECT id_supply, name FROM SUPPLIES"
+    const sqlSelect = "SELECT * FROM SUPPLIES"
 
     await db.query(sqlSelect, (err, result) => {
         if (err) throw err;
