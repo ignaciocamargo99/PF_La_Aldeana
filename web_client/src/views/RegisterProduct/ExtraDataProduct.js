@@ -15,9 +15,11 @@ const ExtraDataProduct = (props) => {
     return (
         <>
             <TypeProduct load={props.load} data={props.data}/>
+            <hr />
             <h2>Insumos</h2>
             <SuppliesPairTables load={props.load}/>
             {/* <SuppliesProduct load={props.load} data={props.data} /> */}
+            <hr />
             <h2>Imagen</h2>
             <ImageProduct load={props.load} data={props.data} />
         </>

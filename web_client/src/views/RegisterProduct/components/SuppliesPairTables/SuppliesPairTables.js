@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import { useEffect, useState } from "react";
 import LoaderSpinner from '../../../../common/LoaderSpinner';
+import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
 import TableSuppliesDown from "./TableSuppliesDown";
 import TableSuppliesUp from "./TableSuppliesUp";
 
@@ -49,6 +50,7 @@ export default function SuppliesPairTables(props) {
             setListTable(aux);
             setDestinyTable(auxDestiny);
         }
+        else return warningCountProduct();
     }
 
     const download = (i) => {
