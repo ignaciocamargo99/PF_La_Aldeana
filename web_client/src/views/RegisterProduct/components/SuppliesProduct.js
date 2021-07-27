@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useHTTPGet from '../../../hooks/useHTTPGet';
-import ModalSupplies from '../modals/ModalSupplies';
+
 import TableSuppliesUp from './SuppliesPairTables/TableSuppliesUp';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import UploadSuppliesByName from './UploadSuppliesByName';
@@ -94,7 +94,7 @@ const SuppliesProduct = () => {
                     </div>
                 </div>
             </div>
-            <ModalSupplies close={close} show={showModal} />
+            {/* <ModalSupplies close={close} show={showModal} /> */}
         </>
     );
 }

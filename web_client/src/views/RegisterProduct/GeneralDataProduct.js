@@ -15,6 +15,7 @@ const GeneralDataProduct = (props) => {
     }
     return (
         <>
+            <h2>Datos generales</h2>
             <NameProduct load={load} data={props.data} />
             <DescriptionProduct load={load} data={props.data} />
             <PriceProduct load={load} data={props.data} />

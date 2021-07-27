@@ -29,7 +29,7 @@ export default function TableSuppliesDown(props) {
                                     <td style={{ textAlign: 'center' }}>{element.amount}</td>
                                     <td style={{ textAlign: 'center' }}>
                                         <button type="button" className="btn btn-success btn-sm px-3"
-                                            onClick={(e) => props.download(element.id_supply)}><FontAwesomeIcon icon={faMinus} /></button>
+                                            onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>
