@@ -2,13 +2,12 @@ const db = require('../../config/connection');
 
 // HTTP: POST
 async function postSupply(req, res) {
-    const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?,?)';
+    const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?)';
 
     db.query(sqlInsert, [
         null,
         req.body.name,
         req.body.description,
-        req.body.imageSupply,
         req.body.id_supply_type,
         req.body.price_wholesale,
         req.body.price_retail,
