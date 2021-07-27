@@ -27,6 +27,17 @@ export default function ProductTable (props) {
             });
     }, []);
 
+    const deleteProduct = (i) => {
+        let aux = [];
+        products?.map((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
+            }
+        });
+
+        setProducts(aux);
+    }
+
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -70,7 +81,7 @@ export default function ProductTable (props) {
                                         <EditProductButton product={elemento}/>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <DeleteProductButton product={elemento}/>
+                                        <DeleteProductButton deleteProduct={deleteProduct} product={elemento} index={i}/>
                                     </td>
                                 </tr>
                             </tbody>

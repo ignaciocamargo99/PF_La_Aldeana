@@ -12,9 +12,22 @@ const diskStorage = multer.diskStorage({
 // HTTP: GET 
 async function getProducts(req, res) {
 
-    const sqlSelect = "SELECT id_product, name FROM PRODUCTS"
+    const sqlSelect = "SELECT  * FROM  PRODUCTS p WHERE active = 1"
 
     await db.query(sqlSelect, (err, result) => {
+        if (err) throw err;
+        else res.send(result);
+    })
+}
+
+// HTTP: UPDATE 
+async function deleteProduct(req, res) {
+
+    const id_product = req.body.id_product;
+
+    const sqlSelect = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
+
+    await db.query(sqlSelect, [id_product],(err, result) => {
         if (err) throw err;
         else res.send(result);
     })
@@ -86,4 +99,4 @@ async function getTypeSupplies(req, res) {
 
 
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts };
+module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct };

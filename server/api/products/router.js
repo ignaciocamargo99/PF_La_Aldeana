@@ -23,6 +23,8 @@ router.get("/typeProduct", productController.getTypeProducts);
 
 router.get("/products", productController.getProducts);
 
+router.put("/products/delete/", productController.deleteProduct);
+
 router.get("/supplies", productController.getSupplies);
 
 router.post("/typeProduct/new", productController.postTypeProducts);
