@@ -12,6 +12,7 @@ export default function SuppliesPairTables(props) {
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [listTable, setListTable] = useState([]);
     const [destinyTable, setDestinyTable] = useState([]);
+    const [load, setLoad] = useState(false);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -24,22 +25,27 @@ export default function SuppliesPairTables(props) {
                 let auxSupply = response.data;
                 auxSupply?.map((e, i)=>e.amount = 0)
                 setListTable(auxSupply);
+                setLoad(true);
             })
             .catch((error) => {
                 console.log(error);
             });
 
-        Axios.get(PORT() + '/api/productsSuppliess', {id_product: props.data.id_product})
-            .then((response) => {
-                handlerLoadingSpinner();
-                console.log(response.data)
-                let auxSupply = putOnList(response.data, listTable);
-                setDestinyTable(auxSupply);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
     }, []);
+
+    useEffect(() => {
+
+        Axios.get(PORT() + '/api/productsSuppliess/', {id: props.data.id_product})
+        .then((response) => {
+            handlerLoadingSpinner();
+            console.log(response.data)
+            let auxSupply = putOnList(response.data, listTable);
+            setDestinyTable(auxSupply);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, [load]);
 
     const upload = (i) => {
         if (listTable[i].amount > 0) {

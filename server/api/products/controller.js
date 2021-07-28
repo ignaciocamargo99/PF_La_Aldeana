@@ -23,14 +23,13 @@ async function getProducts(req, res) {
 // HTTP: GET 
 async function getProductsSuppliess(req, res) {
 
-    const id_product = req.body.id_product;
-    console.log(req.body.id_product);
-    console.log(id_product)
-    console.log(req.params.id_product)
+    const id_product = req.body.id;
+    console.log(req.body.id);
+    console.log(req.params.id)
 
-    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = 7"
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = ?"
 
-    await db.query(sqlSelect,  [req.params.id_product], (err, result) => {
+    await db.query(sqlSelect,  [req.body.id], (err, result) => {
         console.log(result)
         if (err) throw err;
         else res.send(result);
