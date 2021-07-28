@@ -22,18 +22,26 @@ async function getProducts(req, res) {
 
 // HTTP: POST
 async function postProduct(req, res) {
-    const name = req.body.name;
-    const description = req.body.description;
-    const price = req.body.price;
-    const id_sector = req.body.id_sector;
-    const id_product_type = req.body.id_product_type;
-    const imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+    try {
+        const name = req.body.name;
+        const description = req.body.description;
+        const price = req.body.price;
+        const id_sector = req.body.id_sector;
+        const id_product_type = req.body.id_product_type;
+        let imageProduct = req.file;
 
-    const sqlInsert = 'INSERT INTO PRODUCTS(name, description, image, price, id_sector, id_product_type) VALUES(?,?,?,?,?,?)'
-    db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
+        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+        else imageProduct = null;
+
+        const sqlInsert = 'INSERT INTO PRODUCTS(name, description, image, price, id_sector, id_product_type) VALUES(?,?,?,?,?,?)'
+        db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type], (error, result) => {
+            if (error) throw error;
+            else res.send(result);
+        })
+    }
+    catch {
+        res.send("Faltan datos obligatorios o se produjo un error");
+    }
 };
 
 // HTTP: GET 

@@ -8,15 +8,7 @@ import TableSuppliesUp from "./TableSuppliesUp";
 const PORT = require('../../../../config');
 
 export default function SuppliesPairTables(props) {
-    const [data, setData] = useState({});
-
-    const load = (childData) => {
-        setData(childData);
-        props.load(childData);
-    }
-
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
-    //const [typeOfUpload, setTypeOfUpload] = useState('text');
     const [listTable, setListTable] = useState([]);
     const [destinyTable, setDestinyTable] = useState([]);
 
@@ -68,6 +60,12 @@ export default function SuppliesPairTables(props) {
         setListTable(auxList);
         setDestinyTable(aux);
     }
+
+    useEffect(() => {
+        let data = props.data;
+        data.supplies = destinyTable;
+        props.load(data);
+    }, [destinyTable, listTable])
 
 
     return (
