@@ -1,14 +1,13 @@
 //Reducers
-import {combineReducers} from 'redux';
 
-const nickReducer = (state = '' ,action) => {
+export const nickReducer = (state = '' ,action) => {
     if(action.type === 'UPDATE_NICK'){
         return action.payload
     }
     return state
 }
 
-const passwordReducer = (state = '', action) => {
+export const passwordReducer = (state = '', action) => {
     if(action.type === 'UPDATE_PASSWORD'){
         return action.payload
     }
@@ -17,23 +16,16 @@ const passwordReducer = (state = '', action) => {
 
 const userInitialState = {nick_user:"",first_name:"",last_name:"",password:"",Rol:""}
 
-const userReducer = (state = userInitialState, action) => {
+export const userReducer = (state = userInitialState, action) => {
     if(action.type === 'UPDATE_USER'){
         return action.payload
     }
     return state
 }
 
-const permissionsReducer = (state = ['Inicio'] , action) => {
+export const permissionsReducer = (state = ['Inicio'] , action) => {
     if(action.type === 'UPDATE_PERMISSIONS'){
         return [...state,action.payload]
     }
     return state
 }
-
-export default combineReducers({
-    nick: nickReducer,
-    password: passwordReducer,
-    user: userReducer,
-    permissions: permissionsReducer
-})

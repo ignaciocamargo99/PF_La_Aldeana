@@ -1,0 +1,95 @@
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { updatePurchaseSupplies , addPurchaseQuantity , removePurchaseQuantity } from '../../../actions/PurchaseSuppliesActions';
+import React, { useEffect, useState } from 'react';
+import BeShowed from '../../../common/BeShowed';
+import UploadByName from '../../../common/UploadByName';
+import SuppliesTable from './SuppliesTable';
+import PurchaseTable from './PurchaseTable';
+
+const PORT = require('../../../config');
+
+const ListSupplies = (props) => {
+    
+    const [supplies,setSupplies] = useState([])
+    const [searchByName,setSearchByName] = useState(true)
+
+    useEffect(()=>{
+        axios.get( PORT() + `/api/supplies`)
+        .then((response) => {
+            setSupplies(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    },[true === false])
+
+    const upload = (id) => {
+        let supplyAdd = supplies.find(supply => supply.id_supply == id)
+        let aux = supplies.filter(supply => supply.id_supply!=id)
+        setSupplies(aux)
+        let auxDestiny = props.purchaseSupplies
+        auxDestiny = [...auxDestiny,supplyAdd]
+        props.updatePurchaseSupplies(auxDestiny)
+        props.addPurchaseQuantity(0)
+    }
+
+    const download = (id,i) => {
+        let supplyRemove = props.purchaseSupplies.find(supply => supply.id_supply == id)
+        let auxDestiny = props.purchaseSupplies.filter(supply => supply.id_supply!=id)
+        props.updatePurchaseSupplies(auxDestiny)
+        let aux = supplies
+        aux = [...supplies,supplyRemove]
+        setSupplies(aux)
+        props.removePurchaseQuantity(i)
+    }
+
+    return(
+        <div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="purchaseSupplies" >Insumos:</label>
+                </div>
+            </div>
+            <div className="formRow offset-sm-2 col-sm-8">
+                <div className="form-control-label">
+                    <button type="button" onClick={() => {setSearchByName(true)}}><label>Buscar insumo por nombre</label></button>
+                </div>
+                <div className="form-control-label">
+                    <button type="button" onClick={() => {setSearchByName(false)}}><label>Listar todos los insumos</label></button>
+                </div>
+            </div>
+            <BeShowed show={searchByName}>
+                <UploadByName list={supplies} upload={upload} itemName="Insumo" listName="suppliesList" 
+                                placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" />
+            </BeShowed>
+            <BeShowed show={!searchByName}>
+                <div className="viewBody">
+                    <SuppliesTable supplies={supplies} upload={upload}/>
+                </div>
+            </BeShowed>
+            <div className="offset-sm-4">
+                <label style={{ textAlign: 'center' , marginTop: 30}} >Detalle de compra</label>
+            </div>
+            <div className="viewBody">
+                <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download}/>
+            </div>
+        </div>
+    )
+}
+
+
+const mapStateToProps = state => {
+    return {
+        purchaseSupplies: state.purchaseSupplies,
+        purchaseQuantity: state.purchaseQuantity
+    }
+}
+
+const mapDispatchToProps = {
+    updatePurchaseSupplies,
+    addPurchaseQuantity,
+    removePurchaseQuantity
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListSupplies);
