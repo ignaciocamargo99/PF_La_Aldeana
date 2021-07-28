@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function EditProductButton (props) {
 
     const handleEdit = () => {
-        console.log('edit')
+        let aux = props.product;
+        aux.title = aux.name;
+        props.edit(aux);
     }
     
     return (

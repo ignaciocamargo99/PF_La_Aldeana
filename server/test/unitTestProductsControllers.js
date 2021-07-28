@@ -111,6 +111,28 @@ describe('Tests unitarios sobre API Products',()=>{
 
     });
 
+    describe('Check getProductsSuppliess',()=>{
+        it('Recibe correctamente la funcion', (done) => {
+            chai.request(url)
+                .get('/productsSuppliess')
+                .send({id_product: 7})
+                .end( function(err,res){
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+        it('Trae los datos como json', (done) => {
+            chai.request(url)
+                .get('/productsSuppliess')
+                .send({id_product: 7})
+                .end( function(err,res){
+                    expect(res).to.be.json;
+                    done();
+                });
+        });
+
+    });
+
 });
 
    

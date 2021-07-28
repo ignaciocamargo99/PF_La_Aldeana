@@ -20,6 +20,23 @@ async function getProducts(req, res) {
     })
 }
 
+// HTTP: GET 
+async function getProductsSuppliess(req, res) {
+
+    const id_product = req.body.id_product;
+    console.log(req.body.id_product);
+    console.log(id_product)
+    console.log(req.params.id_product)
+
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = 7"
+
+    await db.query(sqlSelect,  [req.params.id_product], (err, result) => {
+        console.log(result)
+        if (err) throw err;
+        else res.send(result);
+    })
+}
+
 // HTTP: UPDATE 
 async function deleteProduct(req, res) {
 
@@ -99,4 +116,4 @@ async function getTypeSupplies(req, res) {
 
 
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct };
+module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess };

@@ -1,9 +1,7 @@
 import swal from 'sweetalert';
 
 export default function confirmDelete(actionTrue, actionFalse, e) {
-
-  let success = 'hola';
-
+  
   return swal({
     title: "¿Seguro que desea eliminarlo?",
     text: "El elemento seleccionado ya no será visible para el personal de la empresa.",
