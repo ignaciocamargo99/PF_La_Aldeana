@@ -18,8 +18,8 @@ const SectorProduct = (props) => {
 
     const handlerOnChange = (e) => {
         let data = props.data;
-        if (e.target.value === "iceCreamShop") data.sector = 1;
-        else data.sector = 2;
+        if (e.target.value === "iceCreamShop") data.id_sector = 1;
+        else data.id_sector = 2;
         props.load(data);
     }
 

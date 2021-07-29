@@ -23,13 +23,11 @@ async function getProducts(req, res) {
 // HTTP: GET 
 async function getProductsSuppliess(req, res) {
 
-    const id_product = req.body.id;
-    console.log(req.body.id);
-    console.log(req.params.id)
+    const id_product = req.params.id;
 
     const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = ?"
 
-    await db.query(sqlSelect,  [req.body.id], (err, result) => {
+    await db.query(sqlSelect,  [id_product], (err, result) => {
         console.log(result)
         if (err) throw err;
         else res.send(result);
@@ -49,20 +47,55 @@ async function deleteProduct(req, res) {
     })
 }
 
+// HTTP: UPDATE
+async function updateProduct(req, res) {
+    try {
+        const id_product = req.body.id_product;
+        const name = req.body.name;
+        const description = req.body.description;
+        const price = req.body.price;
+        const id_sector = req.body.id_sector;
+        const id_product_type = req.body.id_product_type;
+        let imageProduct = req.file;
+
+        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+        else imageProduct = null;
+
+        console.log(name)
+        const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?'
+        db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
+            if (error) throw error;
+            else res.send(result);
+        })
+    }
+    catch {
+        res.send("Faltan datos obligatorios o se produjo un error");
+    }
+};
+
+
 // HTTP: POST
 async function postProduct(req, res) {
-    const name = req.body.name;
-    const description = req.body.description;
-    const price = req.body.price;
-    const id_sector = req.body.id_sector;
-    const id_product_type = req.body.id_product_type;
-    const imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+    try {
+        const name = req.body.name;
+        const description = req.body.description;
+        const price = req.body.price;
+        const id_sector = req.body.id_sector;
+        const id_product_type = req.body.id_product_type;
+        let imageProduct = req.file;
 
-    const sqlInsert = 'INSERT INTO PRODUCTS(name, description, image, price, id_sector, id_product_type) VALUES(?,?,?,?,?,?)'
-    db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
+        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+        else imageProduct = null;
+
+        const sqlInsert = 'INSERT INTO PRODUCTS(name, description, image, price, id_sector, id_product_type) VALUES(?,?,?,?,?,?)'
+        db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type], (error, result) => {
+            if (error) throw error;
+            else res.send(result);
+        })
+    }
+    catch {
+        res.send("Faltan datos obligatorios o se produjo un error");
+    }
 };
 
 // HTTP: GET 
@@ -115,4 +148,4 @@ async function getTypeSupplies(req, res) {
 
 
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess };
+module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct };

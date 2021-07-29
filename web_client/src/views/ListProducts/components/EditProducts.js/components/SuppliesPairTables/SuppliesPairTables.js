@@ -17,7 +17,6 @@ export default function SuppliesPairTables(props) {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(() => {
-        console.log(props.data.id_product)
 
         Axios.get(PORT() + '/api/supplies')
             .then((response) => {
@@ -35,10 +34,9 @@ export default function SuppliesPairTables(props) {
 
     useEffect(() => {
 
-        Axios.get(PORT() + '/api/productsSuppliess/', {id: props.data.id_product})
+        Axios.get(PORT() + `/api/productsSuppliess/${props.data.id_product}`)
         .then((response) => {
             handlerLoadingSpinner();
-            console.log(response.data)
             let auxSupply = putOnList(response.data, listTable);
             setDestinyTable(auxSupply);
         })

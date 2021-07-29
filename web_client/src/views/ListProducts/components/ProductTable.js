@@ -51,9 +51,6 @@ export default function ProductTable (props) {
         setBackup(product);
         setEditing(aux);
         
-        console.log(aux);
-        console.log(product);
-        
         setIsEditing(true);
     }
 
@@ -80,6 +77,9 @@ export default function ProductTable (props) {
                     </>
                 )}
             <BeShowed show={!isEditing}>
+                <div className="viewTitle">
+                    <h1>Productos</h1>
+                </div>
                 <Table>
                     <HeaderTable
                         th={
