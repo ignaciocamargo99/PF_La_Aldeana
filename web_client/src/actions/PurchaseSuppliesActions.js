@@ -47,3 +47,70 @@ export const removePurchaseQuantity = (id) => {
         payload: id
     }
 }
+
+export const resetPurchaseQuantity = () => {
+    return{
+        type: 'RESET_PURCHASE_QUANTITY'
+    }
+}
+
+export const updatePurchasePrice = (price,id) =>{
+    return{
+        type: 'UPDATE_PURCHASE_PRICES',
+        payload: {price,id}
+    }
+}
+
+export const addPurchasePrice = (price) => {
+    return{
+        type: 'ADD_PURCHASE_PRICES',
+        payload: price
+    }
+}
+
+export const removePurchasePrice = (id) => {
+    return{
+        type: 'REMOVE_PURCHASE_PRICES',
+        payload: id
+    }
+}
+
+export const resetPurchasePrice = () => {
+    return{
+        type: 'RESET_PURCHASE_PRICES'
+    }
+}
+
+export const updatePurchaseSubtotal = (subtotal,id) =>{
+    return{
+        type: 'UPDATE_PURCHASE_SUBTOTAL',
+        payload: {subtotal,id}
+    }
+}
+
+export const addPurchaseSubtotal = (subtotal) => {
+    return{
+        type: 'ADD_PURCHASE_SUBTOTAL',
+        payload: subtotal
+    }
+}
+
+export const removePurchaseSubtotal = (id) => {
+    return{
+        type: 'REMOVE_PURCHASE_SUBTOTAL',
+        payload: id
+    }
+}
+
+export const resetPurchaseSubtotal = () => {
+    return{
+        type: 'RESET_PURCHASE_SUBTOTAL'
+    }
+}
+
+export const updatePurchaseTotal = (total) => {
+    return{
+        type: 'UPDATE_PURCHASE_TOTAL',
+        payload: total
+    }
+}

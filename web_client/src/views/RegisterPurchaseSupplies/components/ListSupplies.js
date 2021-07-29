@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { updatePurchaseSupplies , addPurchaseQuantity , removePurchaseQuantity } from '../../../actions/PurchaseSuppliesActions';
+import { updatePurchaseSupplies , addPurchaseQuantity , removePurchaseQuantity, addPurchasePrice , removePurchasePrice, addPurchaseSubtotal, removePurchaseSubtotal} from '../../../actions/PurchaseSuppliesActions';
 import React, { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import UploadByName from '../../../common/UploadByName';
@@ -32,6 +32,8 @@ const ListSupplies = (props) => {
         auxDestiny = [...auxDestiny,supplyAdd]
         props.updatePurchaseSupplies(auxDestiny)
         props.addPurchaseQuantity(0)
+        props.addPurchasePrice(0)
+        props.addPurchaseSubtotal(0)
     }
 
     const download = (id,i) => {
@@ -42,8 +44,12 @@ const ListSupplies = (props) => {
         aux = [...supplies,supplyRemove]
         setSupplies(aux)
         props.removePurchaseQuantity(i)
+        props.removePurchasePrice(i)
+        props.removePurchaseSubtotal(i)
     }
 
+
+    
     return(
         <div>
             <div className="formRow">
@@ -74,6 +80,9 @@ const ListSupplies = (props) => {
             <div className="viewBody">
                 <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download}/>
             </div>
+            <div className="offset-sm-9 col-sm-3">
+                <label>Total: ${props.purchaseTotal}</label>
+            </div>
         </div>
     )
 }
@@ -82,14 +91,21 @@ const ListSupplies = (props) => {
 const mapStateToProps = state => {
     return {
         purchaseSupplies: state.purchaseSupplies,
-        purchaseQuantity: state.purchaseQuantity
+        purchaseQuantity: state.purchaseQuantity,
+        purchasePrice: state.purchasePrice,
+        purchaseSubtotal: state.purchaseSubtotal,
+        purchaseTotal: state.purchaseTotal
     }
 }
 
 const mapDispatchToProps = {
     updatePurchaseSupplies,
     addPurchaseQuantity,
-    removePurchaseQuantity
+    removePurchaseQuantity,
+    addPurchasePrice,
+    removePurchasePrice,
+    addPurchaseSubtotal,
+    removePurchaseSubtotal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSupplies);

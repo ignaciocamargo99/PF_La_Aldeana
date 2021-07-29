@@ -1,6 +1,6 @@
 import { combineReducers } from "redux"
 import { nickReducer, passwordReducer, userReducer , permissionsReducer } from "./LoginReducers"
-import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity } from "./PurchaseSuppliesReducer"
+import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity, purchasePrice, purchaseSubtotal, purchaseTotal } from "./PurchaseSuppliesReducer"
 
 export default combineReducers({
     nick: nickReducer,
@@ -11,5 +11,8 @@ export default combineReducers({
     purchaseDate: purchaseDate,
     purchaseSupplier: purchaseSupplier,
     purchaseSupplies: purchaseSupplies,
-    purchaseQuantity: purchaseQuantity
+    purchaseQuantity: purchaseQuantity,
+    purchasePrice: purchasePrice,
+    purchaseSubtotal: purchaseSubtotal,
+    purchaseTotal: purchaseTotal
 })

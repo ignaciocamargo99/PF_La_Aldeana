@@ -18,7 +18,7 @@ const PurchaseSupplier = (props) => {
 
     useEffect(() => {
         setErrorMessage(validateSupplier(inputSupplier.current.value));
-        if (inputSupplier.current.value.length > 0 && inputSupplier.current.value.length < 100) {
+        if (inputSupplier.current.value.length > 0 && inputSupplier.current.value.length <= 100) {
             setIsValidClass("form-control is-valid");
             props.updatePurchaseSupplier(inputSupplier.current.value)
         } else if (prevSupplier !== "null") {
@@ -32,7 +32,7 @@ const PurchaseSupplier = (props) => {
                 <label htmlFor="purchaseSupplier" >Proveedor*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="purchaseSupplier" type="text" ref={inputSupplier} placeholder="Ingrese el proveedor" onChange={handleSupplier}>
+                <input className={isValidClass} id="purchaseSupplier" type="text" ref={inputSupplier} placeholder="Ingrese el proveedor" maxLength="100" onChange={handleSupplier}>
                 </input>
                 <BeShowed show={errorMessage !== "null" && prevSupplier !== "null"}>
                     <div style={{ color: 'red' }}>{errorMessage}</div>
