@@ -77,7 +77,7 @@ async function postPurchase(req, res) {
                                     throw error;
                                 });
                             }
-                            res.send("Transacción correcta");
+                            //res.send("Transacción correcta");
                         })
                     })
                 
