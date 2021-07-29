@@ -31,29 +31,35 @@ export default function RegisterProductView() {
         setTypeProductChild(childData.typeProduct);
         setImgProductChild(childData.img);
         setSupplyProductChild(childData.supplies)
-        console.log(childData.supplies)
     }
 
     const registerProduct = () => {
+        let urlApi = '';
         const formData = new FormData();
+        const suppliesValues = data.supplies.filter(() => true);
+
+        if (suppliesValues.length > 0) urlApi = '/api/productSupply/new';
+        else urlApi = '/api/product/new'
+
+        const jsonArrSupplies = JSON.stringify(suppliesValues);
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('image', data.img)
         formData.append('price', data.price);
         formData.append('id_sector', data.sector);
         formData.append('id_product_type', data.typeProduct);
+        formData.append('supplies', jsonArrSupplies);
 
-        Axios.post(PORT() + '/api/product/new', formData)
+        Axios.post(PORT() + urlApi, formData)
             .then(success())
             .catch(error => console.log(error))
     };
-
 
     useEffect(() => {
         if (data.name !== '' && data.price > 0 && data.sector > 0 && data.typeProduct >= 0
             && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
+    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
 
     return (
         <>
