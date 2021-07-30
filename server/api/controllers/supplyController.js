@@ -1,35 +1,20 @@
-const db = require('../../config/connection');
+const { createSupply } = require('../services/supply.service')
 
 // HTTP: POST
 async function postSupply(req, res) {
-    const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?)';
+    try {
+        await createSupply(req.body);
 
-    db.query(sqlInsert, [
-        null,
-        req.body.name,
-        req.body.description,
-        req.body.id_supply_type,
-        req.body.price_wholesale,
-        req.body.price_retail,
-        req.body.stock_lot,
-        req.body.stock_unit,
-        req.body.unit_x_lot
-    ], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
+        res.json([{
+            Ok: true,
+            Message: 'Insumo registrado exitosamente.'
+        }]);
+    } catch (e) {
+        res.json([{
+            Ok: false,
+            Message: e.message
+        }]);
+    };
 };
-/*
-// HTTP: GET
-async function getSupplies(req, res) {
-
-    const sqlSelect = "SELECT id_supply, name FROM SUPPLIES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-*/
 
 module.exports = { postSupply };
