@@ -40,12 +40,12 @@ const PurchaseTable  = (props) => {
         let total = 0
         props.purchaseSupplies?.map((supply,i) => {
             total += props.purchaseSubtotal[i]
-            document.getElementById(`quantityInput${i}`).value = props.purchaseQuantity[i]
-            document.getElementById(`priceInput${i}`).value = props.purchasePrice[i]
+            document.getElementById(`quantityInput${i}`).value = props.purchaseQuantity[i] == 0?"":props.purchaseQuantity[i]
+            document.getElementById(`priceInput${i}`).value = props.purchasePrice[i] == 0?"":props.purchasePrice[i]
             document.getElementById(`lblSubtotal${i}`).innerText = `$${props.purchaseSubtotal[i]}`  
         })
         props.updatePurchaseTotal(total)
-    })
+    },[props.purchaseSupplies?.length])
 
     return (
         <>
@@ -53,11 +53,11 @@ const PurchaseTable  = (props) => {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col"  style={{ textAlign: 'center' }}>Nombre</th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}>Precio</th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}>Cantidad</th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}>Subtotal</th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '100px' }}>Eliminar</th>
+                            <th scope="col"  style={{ textAlign: 'center' }}><label><b>Nombre</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Precio</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Cantidad</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Subtotal</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '100px' }}><label><b>Eliminar</b></label></th>
                         </>
                     }
                 />
@@ -66,18 +66,18 @@ const PurchaseTable  = (props) => {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center' }}>{element.name}</td>
+                                    <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`priceInput${i}`} type="number" min="0" defaultValue="0" onBlur={(e) => {changePrice(e.target.value,i)}}></input>
+                                        <input id={`priceInput${i}`} type="number" min="0" onBlur={(e) => {changePrice(e.target.value,i)}}></input>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`quantityInput${i}`} type="number" min="0" defaultValue="0" onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
+                                        <input id={`quantityInput${i}`} type="number" min="0" onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
                                         <label id={`lblSubtotal${i}`}></label>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button id={`downloadSupplyButton${i}`} type="button" className="btn btn-danger btn-sm px-3" onClick={() => {props.download(element.id_supply,i)}}><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button id={`downloadSupplyButton${i}`} type="button" className="btn-sm px-3" style={{backgroundColor: '#F68634', borderColor: '#F68634'}} onClick={() => {props.download(element.id_supply,i)}}><FontAwesomeIcon style={{color: 'white'}}icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

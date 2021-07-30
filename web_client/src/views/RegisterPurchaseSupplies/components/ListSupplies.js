@@ -59,10 +59,10 @@ const ListSupplies = (props) => {
             </div>
             <div className="formRow offset-sm-2 col-sm-8">
                 <div className="form-control-label">
-                    <button type="button" onClick={() => {setSearchByName(true)}}><label>Buscar insumo por nombre</label></button>
+                    <button type="button" style={{backgroundColor: '#A5DEF9', borderColor: '#A5DEF9'}} onClick={() => {setSearchByName(true)}}><label style={{color: '#383C77'}}><b>Buscar insumo por nombre</b></label></button>
                 </div>
                 <div className="form-control-label">
-                    <button type="button" onClick={() => {setSearchByName(false)}}><label>Listar todos los insumos</label></button>
+                    <button type="button" style={{backgroundColor: '#A5DEF9', borderColor: '#A5DEF9'}} onClick={() => {setSearchByName(false)}}><label style={{color: '#383C77'}}><b>Listar todos los insumos</b></label></button>
                 </div>
             </div>
             <BeShowed show={searchByName}>
@@ -75,7 +75,7 @@ const ListSupplies = (props) => {
                 </div>
             </BeShowed>
             <div className="offset-sm-4">
-                <label style={{ textAlign: 'center' , marginTop: 30}} >Detalle de compra</label>
+                <h3 style={{marginTop: "5%"}} ><b>Detalle de compra</b></h3>
             </div>
             <div className="viewBody">
                 <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download}/>

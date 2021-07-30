@@ -19,6 +19,19 @@ const RegisterPurchaseSupplies = (props) => {
         window.location.href = './index'
     }
 
+    const thenPostPurchase = () => {
+        successPurchaseSupplies()
+        props.updatePurchaseSupplies(null)
+        props.resetPurchasePrice()
+        props.resetPurchaseQuantity()
+        props.resetPurchaseSubtotal()
+        props.updatePurchaseNumber(props.purchaseNumber+1)
+        props.updatePurchaseDate(props.purchaseDate)
+        props.updatePurchaseSupplier("")
+        props.updatePurchaseTotal(0)
+    }
+
+
     const registerPurchaseSupplies = () => {
         let send = true
         if(props.purchaseSupplier === null){
@@ -52,17 +65,7 @@ const RegisterPurchaseSupplies = (props) => {
                 "total": props.purchaseTotal,
                 "details": details}
             axios.post( PORT() + `/api/purchase/new`,purchase)
-            .then(() => {
-                props.updatePurchaseSupplies(null)
-                props.resetPurchasePrice()
-                props.resetPurchaseQuantity()
-                props.resetPurchaseSubtotal()
-                props.updatePurchaseNumber(props.purchaseNumber+1)
-                props.updatePurchaseDate(props.purchaseDate)
-                props.updatePurchaseSupplier("")
-                props.updatePurchaseTotal(0)
-                return successPurchaseSupplies()
-            })
+            .then(thenPostPurchase())
             .catch((err) => {console.log(err)})
         }           
     }
