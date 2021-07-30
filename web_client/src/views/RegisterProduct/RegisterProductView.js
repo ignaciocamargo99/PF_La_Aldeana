@@ -61,6 +61,8 @@ export default function RegisterProductView() {
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
 
+    const cancelTypeProduct = () => window.location.reload();
+
     return (
         <>
             <div className="viewTitle">
@@ -74,7 +76,9 @@ export default function RegisterProductView() {
                     label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
                     ready={ready}
-                    data={data} />
+                    data={data}
+                    actionCancel={cancelTypeProduct}
+                />
             </div>
         </>
     );
