@@ -21,8 +21,6 @@ export default function validationProductRegister(data) {
 
         else if (type <= 0) errorTypeProduct();
 
-        else if (img) validateImage(img);
-
     }
 
     catch (e) {

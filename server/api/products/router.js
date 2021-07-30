@@ -2,10 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
-const db = require('../../config/connection');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const diskStorage = multer.diskStorage({
     destination: path.join(__dirname, './images/'),
     filename: (req, file, cb) => {
@@ -29,7 +27,9 @@ router.post("/typeProduct/new", productController.postTypeProducts);
 
 router.get("/typeSupplies", productController.getTypeSupplies);
 
-router.post("/product/new", fileUpload, productController.postProduct);
+router.post("/productSupply/new", fileUpload, productController.postProductsSupplies);
+
+router.post("/product/new", fileUpload, productController.postProducts);
 
 //#endregion
 

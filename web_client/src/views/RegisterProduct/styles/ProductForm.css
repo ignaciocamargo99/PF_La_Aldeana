@@ -34,6 +34,11 @@
   font-size: 1.2rem !important; 
 }
 
+.table-control{
+  font-family: 'Abel', sans-serif !important;
+  font-size: 1.1rem !important;
+}
+
 @media (min-width: 768px) {
   .formRow,
   .form-radio-group {
