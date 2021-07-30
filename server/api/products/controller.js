@@ -61,11 +61,78 @@ async function updateProduct(req, res) {
         if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
         else imageProduct = null;
 
-        console.log(name)
-        const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?'
+
+        const sqlInsert1 = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
+
+        db.query(sqlInsert1, [id_product], (error, result) => {
+            if (error) {
+                return transaction.rollback(() => { throw error; })
+            }
+        })
+
+        const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
         db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
             if (error) throw error;
             else res.send(result);
+        })
+    }
+    catch {
+        res.send("Faltan datos obligatorios o se produjo un error");
+    }
+};
+
+
+// HTTP: UPDATE TRANSACTION
+async function updateProductsSupplies(req, res) {
+    try {
+        const name = req.body.name;
+        const description = req.body.description;
+        const price = req.body.price;
+        const id_sector = req.body.id_sector;
+        const id_product_type = req.body.id_product_type;
+        const id_product = req.body.id_product;
+        let imageProduct = req.file;
+        let jsonSupplies = req.body.supplies;
+        let arrSupplies = JSON.parse(jsonSupplies);
+
+        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
+        else imageProduct = null;
+
+        await db.getConnection((error, transaction) => {
+
+            transaction.beginTransaction((error) => {
+                if (error) throw error;
+                const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+
+                transaction.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
+                    if (error) {
+                        return transaction.rollback(() => { throw error; })
+                    }
+
+                    const sqlInsert = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
+
+                    transaction.query(sqlInsert, [id_product], (error, result) => {
+                        if (error) {
+                            return transaction.rollback(() => { throw error; })
+                        }
+                        
+                        const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
+
+                        for (let i = 0; i < arrSupplies.length; i++) {
+                            transaction.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error, result) => {
+                                if (error) {
+                                    transaction.rollback(() => { throw error; })
+                                }
+                                transaction.commit((error) => {
+                                    if (error) {
+                                        return transaction.rollback(() => { throw error; })
+                                    }
+                                })
+                            })
+                        }
+                    })
+                })
+            })
         })
     }
     catch {
@@ -148,4 +215,4 @@ async function getTypeSupplies(req, res) {
 
 
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct };
+module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies };

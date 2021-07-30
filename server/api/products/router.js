@@ -27,7 +27,9 @@ router.get("/productsSuppliess/:id", productController.getProductsSuppliess);
 
 router.put("/products/delete/", productController.deleteProduct);
 
-router.put("/products/update", productController.updateProduct);
+router.put("/products/update", fileUpload, productController.updateProduct);
+
+router.put("/productSupply/update", fileUpload, productController.updateProductsSupplies);
 
 router.get("/supplies", productController.getSupplies);
 

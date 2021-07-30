@@ -136,7 +136,7 @@ describe('Tests unitarios sobre API Products',()=>{
         it('Se actualiza correctamente', (done) => {
             chai.request(url)
                 .put('/products/update')
-                .send({name: 'prueba update from test', description: 'test update', price: 500, id_sector: 2, id_product_type: 1, id_product: 45})
+                .send({name: 'prueba update from test', description: 'test update', price: 500, id_sector: 2, id_product_type: 1, id_product: 56})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
@@ -150,7 +150,7 @@ describe('Tests unitarios sobre API Products',()=>{
         it('Se actualiza correctamente', (done) => {
             chai.request(url)
                 .put('/products/delete/')
-                .send({id_product: 45})
+                .send({id_product: 56})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
