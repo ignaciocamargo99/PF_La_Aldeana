@@ -16,7 +16,21 @@ async function getProducts(req, res) {
 
     await db.query(sqlSelect, (err, result) => {
         if (err) throw err;
-        else res.send(result);
+        else {
+/*
+            result.map(product => {
+                fs.writeFileSync(path.join(__dirname,'../dbimages/' + product.id_product + '-.jpg'),product.image);
+            });
+
+            const imagenesHelados = fs.readdirSync(path.join(__dirname,'../dbimages/'));
+
+            result.map(product => {
+                product.image = 'http://localhost:3001/' + product.id_product + "-.jpg";
+            });
+            */
+             
+            res.send(result);
+        }
     })
 }
 
