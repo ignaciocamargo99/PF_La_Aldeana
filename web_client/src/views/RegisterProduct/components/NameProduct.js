@@ -1,11 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
-import BeShowed from "../../../common/BeShowed";
-import validateName from '../../../utils/Validations/validateName';
+import React, { useEffect, useRef, useState } from "react";
 
 const NameProduct = (props) => {
     const inputName = useRef(null);
-
-    const [errorMessage, setErrorMessage] = useState("");
     const [name, setName] = useState("null");
     const [prevName, setPrevName] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
@@ -16,16 +12,16 @@ const NameProduct = (props) => {
     }
 
     useEffect(() => {
-        setErrorMessage(validateName(inputName.current.value));
-        if (inputName.current.value.length > 0 && inputName.current.value.length < 80) {
+        if (inputName.current.value.length > 0 && inputName.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
             data.name = inputName.current.value;
             props.load(data);
-        } else if (prevName !== "null") {
-            setIsValidClass("form-control is-invalid");
+        }
+        else {
+            setIsValidClass("form-control")
             let data = props.data;
-            data.name = "error";
+            data.name = inputName.current.value;
             props.load(data);
         }
     }, [name]);
@@ -36,11 +32,8 @@ const NameProduct = (props) => {
                 <label htmlFor="productName" >Nombre*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productName" type="text" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}>
+                <input className={isValidClass} id="productName" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}>
                 </input>
-                <BeShowed show={errorMessage !== "null" && prevName !== "null"}>
-                    <div style={{ color: 'red' }}>{errorMessage}</div>
-                </BeShowed>
             </div>
         </div>
     );

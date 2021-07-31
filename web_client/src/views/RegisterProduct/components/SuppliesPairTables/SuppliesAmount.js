@@ -6,8 +6,12 @@ export default function SuppliesAmount(props) {
     const divAmountSuppliesValidation = useRef(null);
 
     const onChangeAmount = () => {
-        if (inputAmountSupplies.current.value < 0) {
+        if (inputAmountSupplies.current.value < 0 && inputAmountSupplies.current.value.length <= 3) {
             divAmountSuppliesValidation.current.innerHTML = "Ingrese un número mayor a 0";
+            props.load("error", props.supply);
+        }
+        else if(inputAmountSupplies.current.value.length > 3){
+            divAmountSuppliesValidation.current.innerHTML = "Hasta 3 cifras como máximo"
             props.load("error", props.supply);
         }
         else {
