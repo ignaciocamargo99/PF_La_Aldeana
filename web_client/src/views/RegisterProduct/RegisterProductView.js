@@ -12,7 +12,7 @@ import './styles/ProductForm.css';
 const PORT = require('../../config');
 
 export default function RegisterProductView() {
-    const [data, setData] = useState({ name: '', description: '', price: -1, sector: '', typeProduct: -1, img: null, supplies: [] });
+    const [data, setData] = useState({ name: 'null', description: '', price: -1, sector: '', typeProduct: -1, img: null, supplies: [] });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
@@ -31,6 +31,7 @@ export default function RegisterProductView() {
         setTypeProductChild(childData.typeProduct);
         setImgProductChild(childData.img);
         setSupplyProductChild(childData.supplies)
+        console.log(data)
     }
 
     const registerProduct = () => {
@@ -56,10 +57,11 @@ export default function RegisterProductView() {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price > 0 && data.sector > 0 && data.typeProduct >= 0
-            && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
+        if (data.name !== '' && data.price > 0 && data.name !== 'null' && data.sector > 0 && data.typeProduct >= 0) setReady(true);
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
+
+    const cancelTypeProduct = () => window.location.reload();
 
     return (
         <>
@@ -74,7 +76,9 @@ export default function RegisterProductView() {
                     label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
                     ready={ready}
-                    data={data} />
+                    data={data}
+                    actionCancel={cancelTypeProduct}
+                />
             </div>
         </>
     );
