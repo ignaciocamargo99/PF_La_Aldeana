@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+  - "14.17"
+
+cache:
+  directories: 
+    - $HOME/.npm
+
+jobs: 
+  include:
+    - stage: test
+      script: 
+        - npm install
+        - npm test
+
+stages:
+  - name: test
+    if: type = push AND branch = staging
