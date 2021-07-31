@@ -9,6 +9,10 @@
     "start-web": "(cd web_client && npm install) && (cd ../server && npm install) && (cd .. && concurrently \"npm run web_server\" \"npm run web_client\")",
     "web_server": "nodemon server/bin/www",
     "web_client": "node start_web_client.js",
-    "server": "node server/bin/www"
-  }
+    "server": "cd server && npm install && cd .. && node server/bin/www",
+    "heroku-postbuild": "cd web_client && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "web_client/node_modules"
+  ]
 }
