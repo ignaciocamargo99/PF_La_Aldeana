@@ -1,0 +1,20 @@
+{
+  "name": "pf_la_aldeana",
+  "description": "Proyecto final de la carrera de grado perteneciente a estudiantes de Ingeniería en Sistemas de Información de la Universidad Tecnológica Nacional Facultad Regional Córdoba. 2021",
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.12",
+    "npm-run-all": "^4.1.5"
+  },
+  "scripts": {
+    "start-web": "(cd web_client && npm install) && (cd ../server && npm install) && (cd .. && concurrently \"npm run web_server\" \"npm run web_client\")",
+    "web_server": "nodemon server/bin/www",
+    "web_client": "node start_web_client.js",
+    "server": "cd server && npm install && cd .. && node server/bin/www",
+    "test": "(cd server && npm install && npm-run-all -p -r start test)",
+    "heroku-postbuild": "cd web_client && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "web_client/node_modules"
+  ]
+}
