@@ -25,7 +25,7 @@ const ImageProduct = (props) => {
 
     useEffect(() => {
         let data = props.data;
-        data.image = inputImg.current.files[0];
+        data.img = inputImg.current.files[0];
         props.load(data);
     }, [previewImg]);
 

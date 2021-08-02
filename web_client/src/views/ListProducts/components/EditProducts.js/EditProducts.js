@@ -34,7 +34,14 @@ export default function EditProducts (props) {
     }
 
     const registerProduct = () => {
+
+        let urlApi = '';
         const formData = new FormData();
+        const suppliesValues = data.supplies.filter(() => true);
+
+        if (suppliesValues.length > 0) urlApi = '/api/productSupply/update';
+        else urlApi = '/api/products/update'
+
         formData.append('id_product', data.id_product);
         formData.append('name', data.name);
         formData.append('description', data.description);
@@ -43,14 +50,17 @@ export default function EditProducts (props) {
         formData.append('id_sector', data.id_sector);
         formData.append('id_product_type', data.id_product_type);
 
-        Axios.put(PORT() + '/api/products/update', {
+        const jsonArrSupplies = JSON.stringify(suppliesValues);
+
+        Axios.put(PORT() + urlApi, {
                 id_product: data.id_product,
                 name: data.name,
                 description: data.description,
                 image: data.image,
                 price: data.price,
                 id_sector: data.id_sector,
-                id_product_type: data.id_product_type
+                id_product_type: data.id_product_type,
+                supplies: jsonArrSupplies
             })
             .then(success())
             .catch(error => console.log(error))
