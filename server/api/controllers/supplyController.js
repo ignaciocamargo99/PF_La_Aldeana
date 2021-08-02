@@ -5,15 +5,15 @@ async function postSupply(req, res) {
     try {
         await createSupply(req.body);
 
-        res.json([{
+        res.json({
             Ok: true,
             Message: 'Insumo registrado exitosamente.'
-        }]);
+        });
     } catch (e) {
-        res.json([{
+        res.json({
             Ok: false,
             Message: e.message
-        }]);
+        });
     };
 };
 

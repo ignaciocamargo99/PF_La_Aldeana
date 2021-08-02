@@ -4,14 +4,13 @@ import useHTTPGet from '../../hooks/useHTTPGet';
 import { useRef, useEffect, useState } from 'react';
 import Axios from 'axios';
 import success from '../../utils/SuccessMessages/successTypeProduct';
+import displayError from '../../utils/ErrorMessages/errorMessage';
 
 const PORT = require('../../config');
 
 const RegisterSupplyView = () => {
 
     const typeSupplies = useHTTPGet(PORT() + '/api/typeSupplies');
-
-
 
     // const [nameSupply, setNameSupply] = useState('');
     const inputSupplyName = useRef('');
@@ -61,7 +60,14 @@ const RegisterSupplyView = () => {
         };
 
         Axios.post(PORT() + '/api/supply/new', data)
-            .then(success())
+            .then(({ data }) => {
+                if (data.Ok) {
+                    success();
+                }
+                else {
+                    displayError('Ha ocurrido un error al registrar un insumo.');
+                }
+            })
             .catch(error => console.log(error))
     };
 
