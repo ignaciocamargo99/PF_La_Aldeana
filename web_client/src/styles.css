@@ -8,6 +8,14 @@ h1 {
     font-family: 'Abel', sans-serif;
 }
 
+h2 {
+    font-family: 'Abel', sans-serif;
+}
+
+h4 {
+    font-family: 'Abel', sans-serif;
+}
+
 .d-flex {
     display: flex;
 }

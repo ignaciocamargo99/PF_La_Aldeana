@@ -11,7 +11,7 @@ import validationProductRegister from '../../../../utils/Validations/validationP
 
 const PORT = require('../../../../config');
 
-export default function EditProducts (props) {
+export default function EditProducts(props) {
     const [data, setData] = useState(props.product);
     const [nameProductChild, setNameProductChild] = useState(props.product.name);
     const [descriptionProductChild, setDescriptionProductChild] = useState(props.product.description);
@@ -21,7 +21,7 @@ export default function EditProducts (props) {
     const [imgProductChild, setImgProductChild] = useState(props.product.image);
     const [supplyProductChild, setSupplyProductChild] = useState(props.product.supplies);
     const [ready, setReady] = useState(true);
-    
+
     const load = (childData) => {
         setData(childData)
         setNameProductChild(childData.name);
@@ -53,15 +53,15 @@ export default function EditProducts (props) {
         const jsonArrSupplies = JSON.stringify(suppliesValues);
 
         Axios.put(PORT() + urlApi, {
-                id_product: data.id_product,
-                name: data.name,
-                description: data.description,
-                image: data.image,
-                price: data.price,
-                id_sector: data.id_sector,
-                id_product_type: data.id_product_type,
-                supplies: jsonArrSupplies
-            })
+            id_product: data.id_product,
+            name: data.name,
+            description: data.description,
+            image: data.image,
+            price: data.price,
+            id_sector: data.id_sector,
+            id_product_type: data.id_product_type,
+            supplies: jsonArrSupplies
+        })
             .then(success())
             .catch(error => console.log(error))
     };
@@ -75,20 +75,16 @@ export default function EditProducts (props) {
 
     return (
         <>
-            <div className="viewTitle">
-                <h1>Editar {props.product.title}</h1>
-            </div>
-            <div className="viewBody">
-                <GeneralDataProduct load={load} data={data} />
-                <hr />
-                <ExtraDataProduct load={load} data={data} />
-                <Buttons
-                    label='Registrar' actionOK={registerProduct}
-                    actionNotOK={validationProductRegister}
-                    actionCancel={props.end}
-                    ready={ready}
-                    data={data} />
-            </div>
+            <h2 style={{ fontWeight: 'bold' }}>Editar {props.product.title}</h2>
+            <br />
+            <GeneralDataProduct load={load} data={data} />
+            <ExtraDataProduct load={load} data={data} />
+            <Buttons
+                label='Registrar' actionOK={registerProduct}
+                actionNotOK={validationProductRegister}
+                actionCancel={props.end}
+                ready={ready}
+                data={data} />
         </>
     );
 }

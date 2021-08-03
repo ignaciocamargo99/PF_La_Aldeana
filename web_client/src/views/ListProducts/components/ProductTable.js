@@ -12,7 +12,7 @@ import backupProduct from '../../../utils/backupProduct';
 
 const PORT = require('../../../config');
 
-export default function ProductTable (props) {
+export default function ProductTable(props) {
 
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -47,10 +47,10 @@ export default function ProductTable (props) {
     const editProduct = (product) => {
         let aux = backupProduct(product);
         aux.name = product.name;
-        
+
         setBackup(product);
         setEditing(aux);
-        
+
         setIsEditing(true);
     }
 
@@ -62,60 +62,59 @@ export default function ProductTable (props) {
 
     return (
         <>
-        {isLoadingSpinner && (
-                    <>
-                        <div className="row justify-content-center">
-                            <div className="col-auto">
-                                <LoaderSpinner color = "primary" />
-                            </div>
+            {isLoadingSpinner && (
+                <>
+                    <div className="row justify-content-center">
+                        <div className="col-auto">
+                            <LoaderSpinner color="primary" />
                         </div>
-                        <div className="row justify-content-center">
-                            <div className="col-auto">
-                                <label className="text-muted" style={{margin: '10px', padding: '10px 50px 50px 50px'}}>Cargando productos...</label>
-                            </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-auto">
+                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando productos...</label>
                         </div>
-                    </>
-                )}
-            <BeShowed show={!isEditing}>
-                <div className="viewTitle">
-                    <h1>Productos</h1>
-                </div>
-                <Table>
-                    <HeaderTable
-                        th={
-                            <>
-                                {//<th scope="col" className="d-none" style={{ textAlign: 'center', width: '150px' }}>Id</th>
-                        }
-                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '400px', verticalAlign: 'middle' }}>Nombre</th>
-                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Editar</th>
-                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Eliminar</th>
-                            </>
-                        }
-                    />
-                    <BodyTable
-                        tbody={products?.map((elemento, i) => {
-                            return (
-                                <tbody key={i}>
-                                    <tr>
-                                        {//<td className="d-none" style={{ textAlign: 'center' }}>{elemento.id_product}</td>
-                        }
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{elemento.name}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditProductButton product={elemento} edit={editProduct}/>
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductButton deleteProduct={deleteProduct} product={elemento} index={i}/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            )
-                        })
-                        }
-                    />
-                </Table>
-            </BeShowed>
+                    </div>
+                </>
+            )}
+            {!isLoadingSpinner && (
+                <BeShowed show={!isEditing}>
+                    <Table>
+                        <HeaderTable
+                            th={
+                                <>
+                                    {//<th scope="col" className="d-none" style={{ textAlign: 'center', width: '150px' }}>Id</th>
+                                    }
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '400px', verticalAlign: 'middle' }}>Nombre</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Editar</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Eliminar</th>
+                                </>
+                            }
+                        />
+                        <BodyTable
+                            tbody={products?.map((elemento, i) => {
+                                return (
+                                    <tbody key={i}>
+                                        <tr>
+                                            {//<td className="d-none" style={{ textAlign: 'center' }}>{elemento.id_product}</td>
+                                            }
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{elemento.name}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                <EditProductButton product={elemento} edit={editProduct} />
+                                            </td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                <DeleteProductButton deleteProduct={deleteProduct} product={elemento} index={i} />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                )
+                            })
+                            }
+                        />
+                    </Table>
+                </BeShowed>
+            )}
             <BeShowed show={isEditing}>
-                <EditProducts end={endEditProduct} product={editing}/>
+                <EditProducts end={endEditProduct} product={editing} />
             </BeShowed>
         </>
     );
