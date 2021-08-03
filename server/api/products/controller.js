@@ -1,13 +1,6 @@
 const db = require('../../config/connection');
-const multer = require('multer')
 const path = require('path')
 const fs = require('fs');
-const diskStorage = multer.diskStorage({
-    destination: path.join(__dirname, '../images'),
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-})
 
 // HTTP: GET 
 async function getProducts(req, res) {
@@ -83,7 +76,7 @@ async function updateProduct(req, res) {
                 return transaction.rollback(() => { throw error; })
             }
         })
-
+        
         const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
         db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
             if (error) throw error;
