@@ -10,6 +10,7 @@ import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
+import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
 
 const cookies = new Cookies();
 
@@ -26,6 +27,7 @@ export default function App(props) {
             <Route path='/app/products' component={RegisterProductView}></Route>
             <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
             <Route path='/listProducts' component={ListProducts}></Route>
+            <Route path='/app/franchise' component={RegisterFranchise}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>
