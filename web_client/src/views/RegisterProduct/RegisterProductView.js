@@ -3,23 +3,23 @@ import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
 import Buttons from '../../common/Buttons';
 import success from '../../utils/SuccessMessages/successTypeProduct';
+import validationProductRegister from '../../utils/Validations/validationProductRegister';
 import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
-import validationProductRegister from '../../utils/Validations/validationProductRegister';
 
 const PORT = require('../../config');
 
-const RegisterProductView = () => {
-
-    const [data, setData] = useState({ name: '', description: '', price: -1, sector: '', typeProduct: -1, img: null });
+export default function RegisterProductView() {
+    const [data, setData] = useState({ name: null, description: '', price: null, sector: 2, typeProduct: -1, img: null, supplies: [] });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
     const [sectorProductChild, setSectorProductChild] = useState('');
     const [typeProductChild, setTypeProductChild] = useState(-1);
     const [imgProductChild, setImgProductChild] = useState('');
+    const [supplyProductChild, setSupplyProductChild] = useState('');
     const [ready, setReady] = useState(false);
 
     const load = (childData) => {
@@ -30,32 +30,38 @@ const RegisterProductView = () => {
         setSectorProductChild(childData.sector);
         setTypeProductChild(childData.typeProduct);
         setImgProductChild(childData.img);
+        setSupplyProductChild(childData.supplies)
+        console.log(data)
     }
 
     const registerProduct = () => {
-        console.log(data.img)
-        if (!imgProductChild) {
-            alert("Ingrese imagen")
-            return;
-        }
+        let urlApi = '';
         const formData = new FormData();
+        const suppliesValues = data.supplies.filter(() => true);
+
+        if (suppliesValues.length > 0) urlApi = '/api/productSupply/new';
+        else urlApi = '/api/product/new'
+
+        const jsonArrSupplies = JSON.stringify(suppliesValues);
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('image', data.img)
         formData.append('price', data.price);
         formData.append('id_sector', data.sector);
         formData.append('id_product_type', data.typeProduct);
+        formData.append('supplies', jsonArrSupplies);
 
-        Axios.post(PORT() + '/api/product/new', formData)
+        Axios.post(PORT() + urlApi, formData)
             .then(success())
             .catch(error => console.log(error))
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price > 0 && data.sector > 0 && data.typeProduct >= 0
-            && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
+        if (data.name !== '' && data.price && data.name && data.sector > 0 && data.typeProduct >= 0) setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
+    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
+
+    const cancelTypeProduct = () => window.location.reload();
 
     return (
         <>
@@ -64,15 +70,16 @@ const RegisterProductView = () => {
             </div>
             <div className="viewBody">
                 <GeneralDataProduct load={load} data={data} />
+                <hr />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons
                     label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
                     ready={ready}
-                    data={data} />
+                    data={data}
+                    actionCancel={cancelTypeProduct}
+                />
             </div>
         </>
     );
 }
-
-export default RegisterProductView;

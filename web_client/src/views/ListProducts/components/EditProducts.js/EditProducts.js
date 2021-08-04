@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
 import Buttons from '../../../../common/Buttons';
 import success from '../../../../utils/SuccessMessages/successTypeProduct';
-import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
+import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import './EditProductView.css';
 import '../../styles/ProductForm.css';
@@ -55,8 +55,6 @@ export default function EditProducts(props) {
         .then(success())
         .catch(error => console.log(error));
     };
-
-
 
 
     useEffect(() => {

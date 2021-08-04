@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
-import validateImage from '../../../utils/Validations/validateImages';
+import React, { useEffect, useRef, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
+import warningSizeImages from "../../../utils/WarningMessages/warningSizeImages";
 
 const ImageProduct = (props) => {
 
@@ -9,12 +9,20 @@ const ImageProduct = (props) => {
 
     const handleImg = (e) => {
         const objImg = inputImg.current;
-        if (objImg.files[0] !== undefined) {
-            setPreviewImg(URL.createObjectURL(e.target.files[0]));
-            validateImage(objImg);
+        if (objImg.files[0]) {
+            if (objImg.files[0].size > 3000000) {
+                inputImg.current.value = "";
+                warningSizeImages();
+                return;
+            }
+            else setPreviewImg(URL.createObjectURL(e.target.files[0]));
         }
-        else setPreviewImg(false);
+        else {
+            setPreviewImg(false);
+        }
     }
+
+
     useEffect(() => {
         let data = props.data;
         data.img = inputImg.current.files[0];

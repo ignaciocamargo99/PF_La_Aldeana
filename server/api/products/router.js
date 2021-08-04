@@ -36,7 +36,9 @@ router.post("/typeProduct/new", productController.postTypeProducts);
 
 router.get("/typeSupplies", productController.getTypeSupplies);
 
-router.post("/product/new", fileUpload, productController.postProduct);
+router.post("/productSupply/new", fileUpload, productController.postProductsSupplies);
+
+router.post("/product/new", fileUpload, productController.postProducts);
 
 router.get("/image/:id", productController.getImage);
 
