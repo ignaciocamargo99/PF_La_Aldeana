@@ -5,23 +5,24 @@ const fs = require('fs');
 // HTTP: GET 
 async function getProducts(req, res) {
 
-    const sqlSelect = "SELECT  * FROM  PRODUCTS p WHERE active = 1"
+    const sqlSelect = "SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS " +
+                        "WHERE active = 1"
 
     await db.query(sqlSelect, (err, result) => {
         if (err) throw err;
         else {
-/*
-            result.map(product => {
-                fs.writeFileSync(path.join(__dirname,'../dbimages/' + product.id_product + '-.jpg'),product.image);
-            });
+            /*
+                        result.map(product => {
+                            fs.writeFileSync(path.join(__dirname,'../dbimages/' + product.id_product + '-.jpg'),product.image);
+                        });
+            
+                        const imagenesHelados = fs.readdirSync(path.join(__dirname,'../dbimages/'));
+            
+                        result.map(product => {
+                            product.image = 'http://localhost:3001/' + product.id_product + "-.jpg";
+                        });
+                        */
 
-            const imagenesHelados = fs.readdirSync(path.join(__dirname,'../dbimages/'));
-
-            result.map(product => {
-                product.image = 'http://localhost:3001/' + product.id_product + "-.jpg";
-            });
-            */
-             
             res.send(result);
         }
     })
@@ -34,8 +35,7 @@ async function getProductsSuppliess(req, res) {
 
     const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = ?"
 
-    await db.query(sqlSelect,  [id_product], (err, result) => {
-        console.log(result)
+    await db.query(sqlSelect, [id_product], (err, result) => {
         if (err) throw err;
         else res.send(result);
     })
@@ -48,7 +48,7 @@ async function deleteProduct(req, res) {
 
     const sqlSelect = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
 
-    await db.query(sqlSelect, [id_product],(err, result) => {
+    await db.query(sqlSelect, [id_product], (err, result) => {
         if (err) throw err;
         else res.send(result);
     })
@@ -76,7 +76,7 @@ async function updateProduct(req, res) {
                 return transaction.rollback(() => { throw error; })
             }
         })
-        
+
         const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
         db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
             if (error) throw error;
@@ -122,7 +122,7 @@ async function updateProductsSupplies(req, res) {
                         if (error) {
                             return transaction.rollback(() => { throw error; })
                         }
-                        
+
                         const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
 
                         for (let i = 0; i < arrSupplies.length; i++) {
@@ -219,7 +219,35 @@ async function getTypeSupplies(req, res) {
     })
 }
 
+async function getImage(req, res) {
+    db.getConnection((err, conn) => {
+        const id_product = req.params.id;
+        if (err) return res.status(500).send('Error server');
+        conn.query('SELECT * FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
+            if (err) return res.status(500).send('Server error');
+
+            rows.map(img => {
+                if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
+            })
+            const imagedir = fs.readdirSync(path.join(__dirname, './dbImages/'))
+            res.json(imagedir);
+        })
+    })
+}
 
 
+async function getProductsById(req, res) {
+    const id_product = req.params.id;
 
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies };
+    const sqlSelect = "SELECT * FROM PRODUCTS WHERE id_product = ?"
+    await db.query(sqlSelect, [id_product], (err, result) => {
+        if (err) throw err;
+        else res.send(result);
+    })
+}
+
+
+module.exports = {
+    postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getImage,
+    getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies, getProductsById
+};

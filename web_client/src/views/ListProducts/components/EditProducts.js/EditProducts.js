@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
 import Buttons from '../../../../common/Buttons';
 import success from '../../../../utils/SuccessMessages/successTypeProduct';
-import ExtraDataProduct from './ExtraDataProduct';
-import GeneralDataProduct from './GeneralDataProduct';
+import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
+import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import './EditProductView.css';
 import '../../styles/ProductForm.css';
 import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
@@ -54,20 +54,9 @@ export default function EditProducts(props) {
         Axios.put(PORT() + urlApi, formData)
         .then(success())
         .catch(error => console.log(error));
-
-        // Axios.put(PORT() + urlApi, {
-        //     id_product: data.id_product,
-        //     name: data.name,
-        //     description: data.description,
-        //     image: data.image,
-        //     price: data.price,
-        //     id_sector: data.id_sector,
-        //     id_product_type: data.id_product_type,
-        //     supplies: jsonArrSupplies
-        // })
-        //     .then(success())
-        //     .catch(error => console.log(error))
     };
+
+
 
 
     useEffect(() => {

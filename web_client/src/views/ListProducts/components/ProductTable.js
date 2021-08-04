@@ -13,12 +13,10 @@ import backupProduct from '../../../utils/backupProduct';
 const PORT = require('../../../config');
 
 export default function ProductTable(props) {
-
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editing, setEditing] = useState({});
     const [backup, setBackup] = useState({});
-
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     useEffect(() => {
@@ -40,17 +38,14 @@ export default function ProductTable(props) {
                 aux[j] = e;
             }
         });
-
         setProducts(aux);
     }
 
     const editProduct = (product) => {
         let aux = backupProduct(product);
         aux.name = product.name;
-
         setBackup(product);
         setEditing(aux);
-
         setIsEditing(true);
     }
 
@@ -82,8 +77,6 @@ export default function ProductTable(props) {
                         <HeaderTable
                             th={
                                 <>
-                                    {//<th scope="col" className="d-none" style={{ textAlign: 'center', width: '150px' }}>Id</th>
-                                    }
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '400px', verticalAlign: 'middle' }}>Nombre</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Editar</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Eliminar</th>
@@ -95,8 +88,6 @@ export default function ProductTable(props) {
                                 return (
                                     <tbody key={i}>
                                         <tr>
-                                            {//<td className="d-none" style={{ textAlign: 'center' }}>{elemento.id_product}</td>
-                                            }
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{elemento.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <EditProductButton product={elemento} edit={editProduct} />

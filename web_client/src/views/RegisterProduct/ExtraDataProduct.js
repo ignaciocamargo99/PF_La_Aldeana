@@ -14,7 +14,6 @@ const ExtraDataProduct = (props) => {
     return (
         <>
             <TypeProduct load={props.load} data={props.data}/>
-            {/* <SuppliesProduct load={props.load} data={props.data} /> */}
             <ImageProduct load={props.load} data={props.data} />
         </>
     );
