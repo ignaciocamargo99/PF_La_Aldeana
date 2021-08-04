@@ -21,7 +21,7 @@ export default function AddressFranchise (props) {
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.address = inputAddress.current.value;
+            data.address = "";
             props.load(data);
         }
     }, [address]);

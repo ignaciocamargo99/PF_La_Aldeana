@@ -12,9 +12,11 @@ import './styles/FranchiseForm.css';
 const PORT = require('../../config');
 
 export default function RegisterFranchise() {
-    const [data, setData] = useState({ name: 'null', address: '', city: '', province: '', name_manager: '', last_name_manager: '', dni_manager: 0 });
-    const [nameFranchiseChild, setNameFranchiseChild] = useState('');
+    const [data, setData] = useState({ start_date: "", address: '', address_number: -1, city: '', province: '',
+    name_manager: '', last_name_manager: '', dni_manager: 0 });
+    const [startDateChild, setStartDateChild] = useState('');
     const [addressChild, setAddressChild] = useState('');
+    const [addressNumberChild, setAddressNumberChild] = useState('');
     const [cityChild, setCityChild] = useState('');
     const [provinceChild, setProvinceChild] = useState('');
     const [nameManagerChild, setNameManagerChild] = useState('');
@@ -24,8 +26,9 @@ export default function RegisterFranchise() {
 
     const load = (childData) => {
         setData(childData);
-        setNameFranchiseChild(childData.name);
+        setStartDateChild(childData.start_date);
         setAddressChild(childData.address);
+        setAddressNumberChild(childData.address_number);
         setCityChild(childData.city);
         setProvinceChild(childData.province);
         setNameManagerChild(childData.name_manager);
@@ -38,8 +41,9 @@ export default function RegisterFranchise() {
         let urlApi = '';
         const formData = new FormData();
 
-        formData.append('name', data.name);
+        formData.append('start_date', data.start_date);
         formData.append('address', data.address);
+        formData.append('address_number', data.address_number);
         formData.append('city', data.city)
         formData.append('province', data.province);
         formData.append('name_manager', data.name_manager);
@@ -52,15 +56,17 @@ export default function RegisterFranchise() {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.name !== 'null' &&
+        console.log(data)
+        if (data.start_date !== '' && data.start_date !== 'null' &&
         data.address !== '' && data.address !== 'null'  &&
+        data.address_number >= 0 && data.address_number <= 99999  &&
         data.city !== '' && data.city !== 'null'  &&
         data.province !== '' && data.province !== 'null'  &&
         data.name_manager !== '' && data.name_manager !== 'null'  &&
         data.last_name_manager !== '' && data.last_name_manager !== 'null'  &&
         data.dni_manager > 0) setReady(true);
         else setReady(false);
-    }, [nameFranchiseChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild]);
+    }, [startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
 
     const cancelRegisterFranchise = () => window.location.reload();
 

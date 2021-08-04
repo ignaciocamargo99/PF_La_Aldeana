@@ -21,7 +21,7 @@ export default function ProvinceFranchise (props) {
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.province = inputProvince.current.value;
+            data.province = "";
             props.load(data);
         }
     }, [province]);

@@ -1,32 +1,34 @@
 import React, { useRef, useState } from "react";
 
-export default function DniManager (props) {
+export default function AddressNumberFrabchise (props) {
     
-    const inputDni = useRef(null);
+    const inputNumber = useRef(null);
     const [isValidClass, setIsValidClass] = useState("form-control");
 
-    const onChangeDni = () => {
-        if (inputDni.current.value > 10000000 && inputDni.current.value.length == 8) {
+    const onChangeNumber = () => {
+        if (inputNumber.current.value >= 0 && inputNumber.current.value.length <= 5) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.dni_manager = inputDni.current.value;
+            data.address_number = inputNumber.current.value;
             props.load(data);
         }
         else {
             setIsValidClass("form-control is-invalid");
             let data = props.data;
-            data.dni_manager = 0;
+            data.address_number = -1;
             props.load(data);
         }
     };
 
+
+
     return (
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="dni" >DNI*</label>
+                <label htmlFor="address_number" >Número*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="dni" type="number" min="10000000" max="99999999" ref={inputDni} onChange={onChangeDni} placeholder="Ingrese DNI del encargado..." />
+                <input className={isValidClass} id="address_number" type="number" min="0" max="99999" ref={inputNumber} onChange={onChangeNumber} placeholder="Ingrese número de calle..." />
             </div>
         </div>
     );

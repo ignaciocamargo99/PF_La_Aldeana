@@ -21,7 +21,7 @@ export default function NameManager (props) {
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.name_manager = inputName.current.value;
+            data.name_manager = "";
             props.load(data);
         }
     }, [name]);

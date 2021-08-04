@@ -14,7 +14,7 @@ const DataManager = (props) => {
     }
     return (
         <>
-            <h2>Encargado</h2>
+            <h5>Franquiciado</h5>
             <NameManager load={load} data={props.data} />
             <LastNameManager load={load} data={props.data} />
             <DniManager load={load} data={props.data} />

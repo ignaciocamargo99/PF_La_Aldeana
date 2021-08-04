@@ -21,7 +21,7 @@ export default function CityFranchise (props) {
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.city = inputCity.current.value;
+            data.city = "";
             props.load(data);
         }
     }, [city]);

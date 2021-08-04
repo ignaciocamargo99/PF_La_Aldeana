@@ -15,13 +15,13 @@ export default function LastNameManager (props) {
         if (inputName.current.value.length > 0 && inputName.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.name = inputName.current.value;
+            data.last_name_manager = inputName.current.value;
             props.load(data);
         }
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.last_name_manager = inputName.current.value;
+            data.last_name_manager = "";
             props.load(data);
         }
     }, [name]);
