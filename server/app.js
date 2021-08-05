@@ -14,6 +14,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
+app.use(express.static(path.join(__dirname, './api/products/dbImages')));
 
 
 app.get("/app/*", function (req, res) {

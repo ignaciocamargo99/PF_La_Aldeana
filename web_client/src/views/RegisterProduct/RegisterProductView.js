@@ -57,11 +57,11 @@ export default function RegisterProductView() {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price && data.name && data.sector > 0 && data.typeProduct >= 0) setReady(true);
+        if (data.name !== '' && data.price && data.price > 0 && data.name && data.sector > 0 && data.typeProduct >= 0) setReady(true);
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
 
-    const cancelTypeProduct = () => window.location.reload();
+    const cancelTypeProduct = () => window.location.replace('/app/products');
 
     return (
         <>

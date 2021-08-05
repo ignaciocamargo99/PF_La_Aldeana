@@ -52,8 +52,8 @@ export default function EditProducts(props) {
         formData.append('supplies', jsonArrSupplies);
 
         Axios.put(PORT() + urlApi, formData)
-        .then(success())
-        .catch(error => console.log(error));
+            .then(success())
+            .catch(error => console.log(error));
     };
 
 

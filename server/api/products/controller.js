@@ -268,14 +268,16 @@ async function getImage(req, res) {
     db.getConnection((err, conn) => {
         const id_product = req.params.id;
         if (err) return res.status(500).send('Error server');
-        conn.query('SELECT * FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
+        conn.query('SELECT image, id_product FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
             if (err) return res.status(500).send('Server error');
-
+            
             rows.map(img => {
                 if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
-            })
-            const imagedir = fs.readdirSync(path.join(__dirname, './dbImages/'))
-            res.json(imagedir);
+            }) 
+             
+            const imagedir = fs.readdirSync(path.join(__dirname, `./dbImages/`))
+            const imagedirFilter = imagedir.filter((valor) => valor === `${id_product}-product.png`)
+            res.json(imagedirFilter);
         })
     })
 }

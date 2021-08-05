@@ -6,7 +6,7 @@ import Axios from 'axios';
 import DeleteProductButton from './DeleteProductButton';
 import EditProductButton from './EditProductButton';
 import LoaderSpinner from '../../../common/LoaderSpinner';
-import EditProducts from './EditProducts.js/EditProducts';
+import EditProducts from './EditProducts/EditProducts';
 import BeShowed from '../../../common/BeShowed';
 import backupProduct from '../../../utils/backupProduct';
 
