@@ -12,10 +12,13 @@ export default function AddressFranchise (props) {
     }
 
     useEffect(() => {
-        if (inputAddress.current.value.length > 0 && inputAddress.current.value.length <= 80) {
+
+        let val = inputAddress.current.value;
+        
+        if (val.trim().length > 0 && inputAddress.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.address = inputAddress.current.value;
+            data.address = val.trim();
             props.load(data);
         }
         else {

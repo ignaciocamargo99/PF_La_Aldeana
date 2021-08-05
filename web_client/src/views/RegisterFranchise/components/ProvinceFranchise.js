@@ -12,10 +12,13 @@ export default function ProvinceFranchise (props) {
     }
 
     useEffect(() => {
-        if (inputProvince.current.value.length > 0 && inputProvince.current.value.length <= 80) {
+
+        let val = inputProvince.current.value;
+
+        if (val.trim().length > 0 && inputProvince.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.province = inputProvince.current.value;
+            data.province = val.trim();
             props.load(data);
         }
         else {

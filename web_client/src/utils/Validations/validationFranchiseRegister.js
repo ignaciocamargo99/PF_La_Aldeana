@@ -6,12 +6,14 @@ import errorProvinceFranchice from "../ErrorMessages/errorProvinceFranchice";
 import errorNameManager from "../ErrorMessages/errorNameManager";
 import errorLastNameManager from "../ErrorMessages/errorLastNameManager";
 import errorDniManager from "../ErrorMessages/errorDniManager";
+import errorNameFranchise from "../ErrorMessages/errorNameFranchise";
 
 export default function validationProductRegister(data) {
 
     try {
 
-        if (data.start_date === "") errorStartDate();
+        if (data.name === "") errorNameFranchise();
+        else if (data.start_date === "") errorStartDate();
         else if (data.address === "") errorAddressFranchise();
         else if (data.address_number < 0) errorNumberAddress();
         else if (data.city === "") errorCityFranchise();

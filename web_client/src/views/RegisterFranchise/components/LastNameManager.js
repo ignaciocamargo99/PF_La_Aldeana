@@ -12,10 +12,13 @@ export default function LastNameManager (props) {
     }
 
     useEffect(() => {
-        if (inputName.current.value.length > 0 && inputName.current.value.length <= 80) {
+
+        let val = inputName.current.value;
+
+        if (val.trim().length > 0 && inputName.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.last_name_manager = inputName.current.value;
+            data.last_name_manager = val.trim();
             props.load(data);
         }
         else {

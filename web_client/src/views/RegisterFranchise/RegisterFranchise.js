@@ -12,8 +12,9 @@ import './styles/FranchiseForm.css';
 const PORT = require('../../config');
 
 export default function RegisterFranchise() {
-    const [data, setData] = useState({ start_date: "", address: '', address_number: -1, city: '', province: '',
+    const [data, setData] = useState({ name: '', start_date: '', address: '', address_number: -1, city: '', province: '',
     name_manager: '', last_name_manager: '', dni_manager: 0 });
+    const [nameChild, setNameChild] = useState('');
     const [startDateChild, setStartDateChild] = useState('');
     const [addressChild, setAddressChild] = useState('');
     const [addressNumberChild, setAddressNumberChild] = useState('');
@@ -26,6 +27,7 @@ export default function RegisterFranchise() {
 
     const load = (childData) => {
         setData(childData);
+        setNameChild(childData.name);
         setStartDateChild(childData.start_date);
         setAddressChild(childData.address);
         setAddressNumberChild(childData.address_number);
@@ -41,6 +43,7 @@ export default function RegisterFranchise() {
         let urlApi = '';
         const formData = new FormData();
 
+        formData.append('name', data.name);
         formData.append('start_date', data.start_date);
         formData.append('address', data.address);
         formData.append('address_number', data.address_number);
@@ -57,7 +60,8 @@ export default function RegisterFranchise() {
 
     useEffect(() => {
         console.log(data)
-        if (data.start_date !== '' && data.start_date !== 'null' &&
+        if (data.name !== '' && data.name !== 'null' &&
+        data.start_date !== '' && data.start_date !== 'null' &&
         data.address !== '' && data.address !== 'null'  &&
         data.address_number >= 0 && data.address_number <= 99999  &&
         data.city !== '' && data.city !== 'null'  &&
@@ -66,7 +70,7 @@ export default function RegisterFranchise() {
         data.last_name_manager !== '' && data.last_name_manager !== 'null'  &&
         data.dni_manager > 0) setReady(true);
         else setReady(false);
-    }, [startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
+    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
 
     const cancelRegisterFranchise = () => window.location.reload();
 

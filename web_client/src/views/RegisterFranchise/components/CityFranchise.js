@@ -12,10 +12,13 @@ export default function CityFranchise (props) {
     }
 
     useEffect(() => {
-        if (inputCity.current.value.length > 0 && inputCity.current.value.length <= 80) {
+
+        let val = inputCity.current.value;
+
+        if (val.trim().length > 0 && inputCity.current.value.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.city = inputCity.current.value;
+            data.city = val.trim();
             props.load(data);
         }
         else {
