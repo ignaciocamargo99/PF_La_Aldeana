@@ -9,14 +9,14 @@ const franchisePostDB = (newFranchise) => {
         db.query(sqlInsert, [
             null,
             name,
-            start_date,
-            address,
-            address_number,
             city,
+            address_number,
             province,
             name_manager,
             last_name_manager,
-            dni_manager
+            dni_manager,
+            start_date,
+            address
         ], (error) => {
             if (error) {
                 console.log(error.sqlMessage);
