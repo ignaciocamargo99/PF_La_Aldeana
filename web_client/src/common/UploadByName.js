@@ -12,7 +12,7 @@ const UploadByName = (props) => {
     
     const upload = () => {
         let x = -1
-        props.list.map((item, i) => {
+        props.list.forEach((item) => {
             if (item.name.toUpperCase() === input.current.value.toUpperCase()) {
                 x = item.id_supply
             }
@@ -48,7 +48,7 @@ const UploadByName = (props) => {
             </BeShowed>
             <div className="formRow">
                 <div className="form-control-input">
-                    <input className="form-control" type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
+                    <input className={errorMessage?'form-control is-invalid':'form-control'} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
                 <BeShowed show={errorMessage !== "null"}>
                     <div style={{ color: 'red' }}>{errorMessage}</div>
                 </BeShowed>

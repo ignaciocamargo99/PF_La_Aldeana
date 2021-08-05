@@ -19,7 +19,7 @@ const RegisterPurchaseSupplies = (props) => {
         window.location.href = './index'
     }
 
-    const thenPostPurchase = () => {
+    const resetStates = () => {
         successPurchaseSupplies()
         props.updatePurchaseSupplies(null)
         props.resetPurchasePrice()
@@ -65,7 +65,7 @@ const RegisterPurchaseSupplies = (props) => {
                 "total": props.purchaseTotal,
                 "details": details}
             axios.post( PORT() + `/api/purchase/new`,purchase)
-            .then(thenPostPurchase())
+            .then(resetStates())
             .catch((err) => {console.log(err)})
         }           
     }
