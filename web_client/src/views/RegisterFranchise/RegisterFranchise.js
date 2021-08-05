@@ -8,6 +8,7 @@ import DataFranchise from './DataFranchise';
 import DataManager from './DataManager';
 import './RegisterFranchise.css';
 import './styles/FranchiseForm.css';
+import displayError from '../../utils/ErrorMessages/errorMesage';
 
 const PORT = require('../../config');
 
@@ -40,7 +41,7 @@ export default function RegisterFranchise() {
     }
 
     const registerFranchise = () => {
-        let urlApi = '';
+        let urlApi = '/api/franchise/new';
         const formData = new FormData();
 
         formData.append('name', data.name);
@@ -53,8 +54,17 @@ export default function RegisterFranchise() {
         formData.append('last_name_manager', data.last_name_manager);
         formData.append('dni_manager', data.dni_manager);
 
-        Axios.post(PORT() + urlApi, formData)
-            .then(success())
+        
+
+        Axios.post(PORT() + urlApi, data)
+            .then(({ data }) => {
+                if (data.Ok) {
+                    success();
+                }
+                else {
+                    displayError('Ha ocurrido un error al registrar un insumo. \n' + data.Message);
+                }
+            })
             .catch(error => console.log(error))
     };
 
