@@ -10,6 +10,6 @@ export default function EditProductButton (props) {
     }
     
     return (
-        <button id='editProductButton' type="button" className="btn btn-success btn-sm px-3" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+        <button id='editProductButton' type="button" className="btn btn-primary btn-sm px-3" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
     );
 }
