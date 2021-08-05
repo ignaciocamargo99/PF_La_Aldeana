@@ -1,16 +1,19 @@
+import Table from '../../../common/Table/Table';
+import HeaderTable from '../../../common/Table/HeaderTable';
+import BodyTable from '../../../common/Table/BodyTable';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Table from '../../../common/Table/Table';
-import BodyTable from '../../../common/Table/BodyTable';
-import HeaderTable from '../../../common/Table/HeaderTable';
-import { updateFlavorQuantity } from '../../../actions/FlavorActions';
-import { connect } from 'react-redux';
+import { useState, useEffect } from 'react';
+import FlavorsAmount from './FlavorsAmount';
 
+export default function TableFlavorsUp(props) {
 
-const TableFlavorsUp = (props) => {
+    const [amounts, setAmounts] = useState([]);
 
-    const changeQuantity = (quantity,i) => {
-        props.updateFlavorQuantity(quantity,i)
+    const handlerAmount = (amount, i) => {
+        let aux = props.flavors;
+        aux[i].amount = amount;
+        setAmounts(aux);
     }
 
     return (
@@ -32,12 +35,10 @@ const TableFlavorsUp = (props) => {
                             <tbody key={i}>
                                 <tr>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <input style={{ width: '150px'}} className="form-control-md" id="flavorsAmount" type="number" min="1" onChange={(e) => {changeQuantity(e.target.value,i)}} placeholder="0" />
-                                    </td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}><FlavorsAmount flavors={element} load={handlerAmount} flavor={i}/></td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <button type="button" className="btn btn-primary btn-sm px-3" style={{ backgroundColor: '#2284B6' }}
-                                            onClick={() => {props.upload(element.id_flavor)}}><FontAwesomeIcon icon={faPlus} /></button>
+                                            onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -49,17 +50,4 @@ const TableFlavorsUp = (props) => {
             </Table>
         </>
     );
-
 }
-
-const mapStateToProps = state => {
-    return {
-        flavorQuantity: state.flavorQuantity
-    }
-}
-
-const mapDispatchToProps = {
-    updateFlavorQuantity
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TableFlavorsUp);

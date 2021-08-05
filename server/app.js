@@ -28,7 +28,7 @@ app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
 app.use('/api', flavorsRouter);
-//app.use('/api', productionsRouter);
+app.use('/api', productionsRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

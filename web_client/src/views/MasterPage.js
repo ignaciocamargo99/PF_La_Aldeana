@@ -10,7 +10,7 @@ import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
-import RegisterProductionView from './RegisterProduction/RegisterProductionViejo';
+import RegisterProductionView from './RegisterProduction/RegisterProduction';
 
 const cookies = new Cookies();
 

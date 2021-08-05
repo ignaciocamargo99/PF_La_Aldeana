@@ -8,10 +8,14 @@ export default function FlavorsAmount (props) {
     const onChangeAmount = () => {
         if (inputAmountFlavors.current.value <= 0) {
             divAmountFlavorsValidation.current.innerHTML = "Ingrese un número mayor a 0";
-            props.load("error", props.flavor);
+            props.load(inputAmountFlavors.current.value, props.flavor);
+        }
+        else if (inputAmountFlavors.current.value > 0 && inputAmountFlavors.current.value <= 100) {
+            divAmountFlavorsValidation.current.innerHTML = "";
+            props.load(inputAmountFlavors.current.value, props.flavor);
         }
         else {
-            divAmountFlavorsValidation.current.innerHTML = "";
+            divAmountFlavorsValidation.current.innerHTML = "Ingrese un número menor a 100";
             props.load(inputAmountFlavors.current.value, props.flavor);
         }
     };
