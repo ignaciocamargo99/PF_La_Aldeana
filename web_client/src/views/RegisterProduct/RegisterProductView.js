@@ -12,7 +12,7 @@ import './styles/ProductForm.css';
 const PORT = require('../../config');
 
 export default function RegisterProductView() {
-    const [data, setData] = useState({ name: null, description: '', price: null, sector: 2, typeProduct: -1, img: null, supplies: [] });
+    const [data, setData] = useState({ name: null, description: '', price: null, id_sector: 2, id_product_type: null, img: null, supplies: [] });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
@@ -27,11 +27,10 @@ export default function RegisterProductView() {
         setNameProductChild(childData.name);
         setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
-        setSectorProductChild(childData.sector);
-        setTypeProductChild(childData.typeProduct);
+        setSectorProductChild(childData.id_sector);
+        setTypeProductChild(childData.id_product_type);
         setImgProductChild(childData.img);
         setSupplyProductChild(childData.supplies)
-        console.log(data)
     }
 
     const registerProduct = () => {
@@ -47,8 +46,8 @@ export default function RegisterProductView() {
         formData.append('description', data.description);
         formData.append('image', data.img)
         formData.append('price', data.price);
-        formData.append('id_sector', data.sector);
-        formData.append('id_product_type', data.typeProduct);
+        formData.append('id_sector', data.id_sector);
+        formData.append('id_product_type', data.id_product_type);
         formData.append('supplies', jsonArrSupplies);
 
         Axios.post(PORT() + urlApi, formData)
@@ -57,7 +56,7 @@ export default function RegisterProductView() {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price && data.price > 0 && data.name && data.sector > 0 && data.typeProduct >= 0) setReady(true);
+        if (data.name !== '' && data.price && data.price > 0 && data.name && data.id_sector > 0 && data.id_product_type) setReady(true);
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
 

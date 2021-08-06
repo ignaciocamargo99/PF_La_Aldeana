@@ -49,22 +49,30 @@ async function updateProduct(req, res) {
         const price = req.body.price;
         const id_sector = req.body.id_sector;
         const id_product_type = req.body.id_product_type;
+        let flagImageUpdate = req.body.flagImageUpdate;
         let imageProduct = req.file;
-
+        let valuesIntoUpdate = [];
+        let sqlInsert = "";
         if (imageProduct) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
         else imageProduct = null;
 
-
         const sqlInsert1 = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
-
         db.query(sqlInsert1, [id_product], (error, result) => {
             if (error) {
                 return transaction.rollback(() => { throw error; })
             }
         })
 
-        const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-        db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
+        // Check if the image is modified from the front ...
+        if (flagImageUpdate === true) {
+            sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+            valuesIntoUpdate = [name, description, imageProduct, price, id_sector, id_product_type, id_product]
+        }
+        else {
+            sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+            valuesIntoUpdate = [name, description, price, id_sector, id_product_type, id_product]
+        }
+        db.query(sqlInsert, valuesIntoUpdate, (error, result) => {
             if (error) throw error;
             else res.send(result);
         })
@@ -87,20 +95,27 @@ async function updateProductsSupplies(req, res) {
         let imageProduct = req.file;
         let jsonSupplies = req.body.supplies;
         let arrSupplies = JSON.parse(jsonSupplies);
-
+        let sqlInsert = "";
+        let valuesIntoUpdate = [];
+        let flagImageUpdate = req.body.flagImageUpdate;
         if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
         else imageProduct = null;
 
         await db.getConnection((error, transaction) => {
-
             transaction.beginTransaction((error) => {
                 if (error) throw error;
-                const sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
 
-                transaction.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type, id_product], (error, result) => {
-                    if (error) {
-                        return transaction.rollback(() => { throw error; })
-                    }
+                // Check if the image is modified from the front ...
+                if (flagImageUpdate === 'true') {
+                    sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+                    valuesIntoUpdate = [name, description, imageProduct, price, id_sector, id_product_type, id_product]
+                }
+                else {
+                    sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+                    valuesIntoUpdate = [name, description, price, id_sector, id_product_type, id_product]
+                }
+                transaction.query(sqlInsert, valuesIntoUpdate, (error, result) => {
+                    if (error) return transaction.rollback(() => { throw error; });
 
                     const sqlInsert = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
 
@@ -108,7 +123,6 @@ async function updateProductsSupplies(req, res) {
                         if (error) {
                             return transaction.rollback(() => { throw error; })
                         }
-
                         const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
 
                         for (let i = 0; i < arrSupplies.length; i++) {
@@ -157,8 +171,6 @@ async function postProducts(req, res) {
     catch {
         res.send("Faltan datos obligatorios o se produjo un error");
     }
-
-
 }
 
 
@@ -264,17 +276,18 @@ async function getTypeSupplies(req, res) {
     })
 }
 
+// HTTP: GET
 async function getImage(req, res) {
-    db.getConnection((err, conn) => {
+    await db.getConnection((err, conn) => {
         const id_product = req.params.id;
         if (err) return res.status(500).send('Error server');
         conn.query('SELECT image, id_product FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
             if (err) return res.status(500).send('Server error');
-            
+
             rows.map(img => {
                 if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
-            }) 
-             
+            })
+
             const imagedir = fs.readdirSync(path.join(__dirname, `./dbImages/`))
             const imagedirFilter = imagedir.filter((valor) => valor === `${id_product}-product.png`)
             res.json(imagedirFilter);
@@ -283,18 +296,7 @@ async function getImage(req, res) {
 }
 
 
-async function getProductsById(req, res) {
-    const id_product = req.params.id;
-
-    const sqlSelect = "SELECT * FROM PRODUCTS WHERE id_product = ?"
-    await db.query(sqlSelect, [id_product], (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-
 module.exports = {
-    postProducts, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getImage, postProductsSupplies,
-    getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies, getProductsById
+    postProducts, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getImage, 
+    postProductsSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies,
 };

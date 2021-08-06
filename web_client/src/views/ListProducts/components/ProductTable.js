@@ -26,9 +26,7 @@ export default function ProductTable(props) {
                 let auxSupply = response.data;
                 setProducts(auxSupply);
             })
-            .catch((error) => {
-                console.log(error);
-            });
+            .catch((error) => console.log(error));
     }, []);
 
     const deleteProduct = (i) => {

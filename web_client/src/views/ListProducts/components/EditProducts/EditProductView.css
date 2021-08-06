@@ -10,6 +10,14 @@
   flex-direction: row;
 }
 
+.btnTitle {
+  
+  display: flex;
+  flex-direction: row;
+  margin-left: 79.5%;
+  justify-content: flex-end;
+}
+
 .viewBody {
   margin-top: 1.5em;
   padding: 0 1em;

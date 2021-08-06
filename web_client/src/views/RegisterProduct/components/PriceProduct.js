@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
+import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 
 const PriceProduct = (props) => {
 
@@ -21,16 +21,15 @@ const PriceProduct = (props) => {
         }
     };
 
-
-
     return (
         <div className="formRow">
             <div className="form-control-label">
                 <label htmlFor="productPrice" >Precio*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice} onChange={onChangePrice} placeholder="Ingrese precio del producto..."
-                    defaultValue={props.data.price} />
+                <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice}
+                    onChange={onChangePrice} placeholder="Ingrese precio del producto..."
+                    defaultValue={props.data.price} onKeyDown={(e) => validateFloatNumbers(e)} />
             </div>
         </div>
     );

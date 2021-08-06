@@ -22,8 +22,6 @@ router.get("/products", productController.getProducts);
 
 router.get("/productsSuppliess/:id", productController.getProductsSuppliess);
 
-router.get("/products/:id", productController.getProductsById);
-
 router.put("/products/delete/", productController.deleteProduct);
 
 router.put("/products/update", fileUpload, productController.updateProduct);

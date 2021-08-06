@@ -20,6 +20,7 @@ export default function EditProducts(props) {
     const [typeProductChild, setTypeProductChild] = useState(props.product.id_product_type);
     const [imgProductChild, setImgProductChild] = useState(props.product.image);
     const [supplyProductChild, setSupplyProductChild] = useState(props.product.supplies);
+    const [flagImageUpdate, setFlagImageUpdate] = useState();
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
@@ -27,10 +28,11 @@ export default function EditProducts(props) {
         setNameProductChild(childData.name);
         setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
-        setSectorProductChild(childData.sector);
+        setSectorProductChild(childData.id_sector);
         setTypeProductChild(childData.typeProduct);
         setImgProductChild(childData.img);
-        setSupplyProductChild(childData.supplies)
+        setSupplyProductChild(childData.supplies);
+        setFlagImageUpdate(childData.flagImageUpdate);
     }
 
     const registerProduct = () => {
@@ -50,12 +52,12 @@ export default function EditProducts(props) {
         formData.append('id_sector', data.id_sector);
         formData.append('id_product_type', data.id_product_type);
         formData.append('supplies', jsonArrSupplies);
+        formData.append('flagImageUpdate', data.flagImageUpdate);
 
         Axios.put(PORT() + urlApi, formData)
             .then(success())
             .catch(error => console.log(error));
     };
-
 
     useEffect(() => {
         if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0

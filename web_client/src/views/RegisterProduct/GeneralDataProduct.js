@@ -5,8 +5,6 @@ import PriceProduct from '../RegisterProduct/components/PriceProduct';
 import SectorProduct from '../RegisterProduct/components/SectorProduct';
 
 const GeneralDataProduct = (props) => {
-
-
     const [data, setData] = useState({});
 
     const load = (childData) => {

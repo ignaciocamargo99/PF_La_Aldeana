@@ -9,7 +9,9 @@ export default function ListProducts() {
         <>
             <div className="viewTitleBtn">
                 <h1>Productos</h1>
-                <button id='editProductButton' onClick={onClickNewProduct} type="button" className="btn btn-success px-3"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                <div className="btnTitle">
+                    <button id='editProductButton' onClick={onClickNewProduct} type="button" className="btn btn-success px-3"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                </div>
             </div>
             <div className="viewBody">
                 <ProductTable />

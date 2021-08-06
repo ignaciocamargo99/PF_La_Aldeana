@@ -15,17 +15,15 @@ export default function ImageProduct(props) {
     const handleImg = (e) => {
         const objImg = inputImg.current;
         if (objImg.files[0]) {
-            if (objImg.files[0].size > 3000000) {
+            // Bytes
+            if (objImg.files[0].size > 500000) {
                 inputImg.current.value = "";
                 warningSizeImages();
                 return;
             }
             else setPreviewImg(URL.createObjectURL(e.target.files[0]));
         }
-        else {
-            setPreviewImg(false);
-        }
-        console.log(inputImg.current);
+        else setPreviewImg(false);
     }
 
     useEffect(() => {
@@ -33,15 +31,18 @@ export default function ImageProduct(props) {
             .then((response) => {
                 handlerLoadingSpinner();
                 setImage(response.data);
-                console.log(response.data);
+                if (response.data) props.data.flagImageUpdate = false;
             })
-            .catch((error) => console.error(error))
+            .catch((error) => console.log(error))
     }, [])
-
 
     useEffect(() => {
         let data = props.data;
-        data.img = inputImg.current.files[0];
+        if (inputImg.current.files[0]) {
+            data.flagImageUpdate = true
+            data.img = inputImg.current.files[0];
+        }
+        else data.flagImageUpdate = false;
         props.load(data);
     }, [previewImg]);
 
