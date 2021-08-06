@@ -1,4 +1,4 @@
-const db = require('../../config/connection');
+const db = require('../config/connection');
 
 const franchisePostDB = (newFranchise) => {
     const sqlInsert = 'INSERT INTO FRANCHISE VALUES(?,?,?,?,?,?,?,?,?,?)';

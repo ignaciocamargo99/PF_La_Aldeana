@@ -37,24 +37,10 @@ export default function RegisterFranchise() {
         setNameManagerChild(childData.name_manager);
         setLastNameManagerChild(childData.last_name_manager);
         setDniManagerChild(childData.dni_manager);
-        console.log(data)
     }
 
     const registerFranchise = () => {
-        let urlApi = '/api/franchise/new';
-        const formData = new FormData();
-
-        formData.append('name', data.name);
-        formData.append('start_date', data.start_date);
-        formData.append('address', data.address);
-        formData.append('address_number', data.address_number);
-        formData.append('city', data.city)
-        formData.append('province', data.province);
-        formData.append('name_manager', data.name_manager);
-        formData.append('last_name_manager', data.last_name_manager);
-        formData.append('dni_manager', data.dni_manager);
-
-        
+        let urlApi = '/api/franchise/new';        
 
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {
@@ -69,7 +55,6 @@ export default function RegisterFranchise() {
     };
 
     useEffect(() => {
-        console.log(data)
         if (data.name !== '' && data.name !== 'null' &&
         data.start_date !== '' && data.start_date !== 'null' &&
         data.address !== '' && data.address !== 'null'  &&

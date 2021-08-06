@@ -1,4 +1,4 @@
-const { createFranchise, franchises } = require('../services/franchiseService')
+const { createFranchise, franchises } = require('../../services/franchiseService')
 
 // HTTP: POST
 async function postFranchise(req, res) {
