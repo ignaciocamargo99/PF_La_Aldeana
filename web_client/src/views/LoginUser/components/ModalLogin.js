@@ -21,7 +21,7 @@ const ModalLogin = (props) => {
         if(isCorrectFormat(props.nick) && isCorrectFormat(props.password)){
             Axios.get(PORT() + `/api/user/filter/${props.nick}`)
             .then((response) => {
-                let compare = bcryptjs.compareSync(props.password,response.data[0].password)
+                let compare = bcryptjs.compareSync(props.password,response.data.token)
                 if(response.data.length > 0 && compare){
                     cookies.set('nick_user',response.data[0].nick_user, {path: '/'})
                     cookies.set('first_name',response.data[0].first_name, {path: '/'})

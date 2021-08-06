@@ -1,5 +1,7 @@
 const db = require("../../config/connection");
-const bcryptjs = require('bcryptjs')
+const bcryptjs = require('bcryptjs');
+
+const { logIn } = require('../../services/sessionsService')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
@@ -16,16 +18,27 @@ async function getUsers(req, res) {
 
 // [HTTP:GET:nick]
 async function getUsersByNick(req, res) {
-
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol, u.id_rol as rol_ID " + 
-    "FROM USERS u " + 
-    "INNER JOIN ROLES r ON u.id_rol = r.id_rol " + 
-    "WHERE u.nick_user = ?";
-
-    await db.query(sqlSelect, [req.params.nick], (err, result) => {
-        if (result != null) res.send(result);
-        else res.send(err);
-    })
+    try {
+        let rest = await logIn(req.params.nick);
+        
+        if(rest.length > 0){
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.',
+                token: rest[0].password
+            });
+        } else {
+            res.json({
+                Ok: false,
+                Message: 'Usuario o contraseña incorrecto.'
+            });
+        }
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    };
 };
 
 async function postUser(req, res) {
