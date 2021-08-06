@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import BeShowed from "../../../common/BeShowed";
 
 const NameProduct = (props) => {
     const inputName = useRef(null);
@@ -32,8 +33,8 @@ const NameProduct = (props) => {
                 <label htmlFor="productName" >Nombre*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productName" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}>
-                </input>
+                <input className={isValidClass} id="productName" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}
+                    defaultValue={props.data.name} />
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import useHTTPGet from '../../../hooks/useHTTPGet';
 import validateTypeProduct from '../../../utils/Validations/validateTypeProduct';
+import getNameTypeProduct from './getNameTypeProduct';
 
 const PORT = require('../../../config');
 
@@ -22,7 +23,7 @@ export default function TypeProduct(props) {
         setErrorMessage(validateTypeProduct(type));
         if (type >= 0) {
             let data = props.data;
-            data.typeProduct = type;
+            data.id_product_type = type;
             props.load(data);
         }
     }, [type]);
@@ -36,7 +37,12 @@ export default function TypeProduct(props) {
                 <select className="form-control" id="selectTypeProduct"
                     defaultValue='-1'
                     onChange={handleType}>
-                    <option disabled value="-1">Seleccione tipo de producto...</option>
+                    <BeShowed show={props.data.id_product_type}>
+                        <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
+                    </BeShowed>
+                    <BeShowed show={!props.data.id_product_type}>
+                        <option disabled value="-1">Seleccione tipo de producto...</option>
+                    </BeShowed>
                     {
                         typeProduct?.map((tp, i) => (
                             <option key={i} value={tp.id_product_type}>{tp.name}</option>

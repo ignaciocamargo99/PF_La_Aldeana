@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
+import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 
 const PriceProduct = (props) => {
-    
+
     const inputPrice = useRef(null);
     const [isValidClass, setIsValidClass] = useState("form-control");
 
@@ -20,15 +21,15 @@ const PriceProduct = (props) => {
         }
     };
 
-
-
     return (
         <div className="formRow">
             <div className="form-control-label">
                 <label htmlFor="productPrice" >Precio*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice} onChange={onChangePrice} placeholder="Ingrese precio del producto..." />
+                <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice}
+                    onChange={onChangePrice} placeholder="Ingrese precio del producto..."
+                    defaultValue={props.data.price} onKeyDown={(e) => validateFloatNumbers(e)} />
             </div>
         </div>
     );

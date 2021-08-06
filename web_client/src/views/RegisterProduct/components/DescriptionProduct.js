@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import BeShowed from "../../../common/BeShowed";
 
 const DescriptionProduct = (props) => {
     const inputDescription = useRef(null);
@@ -31,7 +32,8 @@ const DescriptionProduct = (props) => {
                 <label htmlFor="productDescription">Descripción</label>
             </div>
             <div className="form-control-input">
-                <textarea ref={inputDescription} className={isValidClass} maxLength="200" id="productDescription" placeholder="Ingrese descripción del producto..." rows="3" onChange={handleDescription}></textarea>
+                <textarea ref={inputDescription} className={isValidClass} maxLength="200" id="productDescription" placeholder="Ingrese descripción del producto..." rows="3" onChange={handleDescription}
+                    defaultValue={props.data.description}></textarea>
             </div>
         </div>
     );
