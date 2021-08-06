@@ -1,161 +1,69 @@
-import TableFlavorsUp from './components/TableFlavorsUp'
-import TableFlavorsDown from './components/TableFlavorsDown'
-import { useState, useEffect, useRef } from "react";
-import Axios from 'axios';
-import useHTTPGet from "../../hooks/useHTTPGet";
-import LoaderSpinner from '../../common/LoaderSpinner';
+import React, { useEffect, useState } from 'react';
+import DateProduction from './components/DateProduction';
+import FlavorsTable from './components/FlavorsTable';
+import { connect } from 'react-redux';
+import { updateDate } from '../../actions/DateActions';
 import Buttons from '../../common/Buttons';
-import warningMessage from '../../utils/WarningMessages/warningMessage';
+import Axios from 'axios';
 import successMessage from '../../utils/SuccessMessages/successMenssage';
-import DatePicker from 'react-datepicker';
-import formattedDate from '../../utils/date/formattedDate';
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import warningMessage from '../../utils/WarningMessages/warningMessage';
 
-const PORT = require('../../config');
-
-export default function RegisterProductionView (props) {
-    
-    const [listTable, setListTable] = useState([]);
-    const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
-    const [destinyTable, setDestinyTable] = useState([]);
+function RegisterProductionView (props){
+   
+    const PORT = require('../../config');
     const [ready, setReady] = useState(false);
-    const [startDate, setstartDate] = useState(new Date());
-    const [dateProduc, setDateProduc] = useState(startDate);
 
-    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
+    const cancelRegisterProduction = () => window.location.reload();
 
-    useEffect(() => {
-        Axios.get(PORT() + '/api/flavors')
-            .then((response) => {
-                handlerLoadingSpinner();
-                let auxFlavor = response.data;
-                auxFlavor?.map((e, i)=>e.amount = 0)
-                setListTable(auxFlavor);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
-
-    const upload = (i) => {
-        if (listTable[i].amount > 0 && listTable[i].amount <= 100) {
-            let aux = [];
-            let auxDestiny = destinyTable;
-            listTable?.map((e, j) => {
-                if (j !== i) {
-                    aux[j] = e;
-                } else {
-                    auxDestiny[j] = e;
-                }
-            });
-
-            setListTable(aux);
-            setDestinyTable(auxDestiny);
-        }
-        if (listTable[i].amount < 0) {
-            warningMessage("Error","La cantidad debe ser mayor a 0.","error");
-        }
-        if (listTable[i].amount > 100) {
-            warningMessage("Error","La cantidad debe ser menor a 100.","error");
-        } 
-    }
-
-    const download = (i) => {
-        let aux = [];
-        let auxList = listTable;
-
-        destinyTable?.map((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            } else {
-                e.amount = 0;
-                auxList[j] = e;
-            }
-        });
-
-        setListTable(auxList);
-        setDestinyTable(aux);
-    }
-    
     const registerProduction = () => {
         
-        const flavorsValues = destinyTable.filter(() => true);
-
         if (ready) {
-            Axios.post(PORT() + '/api/productions/new', {
-                dateProduction: dateProduc,
-                flavors: flavorsValues
-            })
-                .then(successMessage("Atención", "Producción Registrada", "success"))
-                .catch(err => console.error(err))
+            const flavorsValues = props.productionFlavors.filter(() => true);
+            let production = { "dateProduction":props.date, "flavors":flavorsValues }
+            
+            Axios.post(PORT() + '/api/productions/new', production)
+            .then(successMessage("Atención", "Producción Registrada", "success"))
         }
-        //else throw new Error
-    
-
-        setDestinyTable([]);
-        
+        else {
+            warningMessage("Error","Se debe ingresar al menos un sabor para registrar la producción.","error");
+        }
     }
-
+    
     useEffect(() => {
-        setDateProduc(formattedDate(startDate));
-        if (destinyTable.length > 0 ) {
+        if (props.productionFlavors.length > 0) {
             setReady(true);
         }
         else
         {
             setReady(false);
         }
-    },[listTable, destinyTable, startDate])
-
-    const cancelRegisterProduction = () => window.location.reload();
-
-    const onChangeDate = (startDate) => setstartDate(startDate);
-
-    return (
+    },[props.productionFlavors])
+    
+    return(
         <>
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
-
+            
             <div className="viewBody">
-
-                <div className="form-row">
-                    <div className="form-control-label">
-                        <label className="col-3">Fecha</label>
-                    </div>
-                    <div className="row justify-content-end">
-                        <DatePicker selected={startDate} maxDate={new Date()} minDate={new Date(2001,0,1)} onChange={onChangeDate} dateFormat="dd/MM/yyyy"/>
-                    </div>
-                </div>
-
-                {isLoadingSpinner && (
-                    <>
-                        <div className="row justify-content-center">
-                            <div className="col-auto">
-                                <LoaderSpinner color = "primary" />
-                            </div>
-                        </div>
-                        <div className="row justify-content-center">
-                            <div className="col-auto">
-                                <label className="text-muted" style={{margin: '10px', padding: '10px 50px 50px 50px'}}>Cargando sabores...</label>
-                            </div>
-                        </div>
-                    </>
-                )}     
-                
-                {!isLoadingSpinner && (
-                    <>
-                        <TableFlavorsUp flavors={listTable} upload={upload}></TableFlavorsUp>
-                        <TableFlavorsDown flavors={destinyTable} download={download}/>
-                    </>
-                )}
-
-                <Buttons label="Registrar " ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={cancelRegisterProduction}></Buttons>
-                
-                
-            </div>
+                <DateProduction></DateProduction>
+                <br></br>
+                <FlavorsTable></FlavorsTable>
+                <Buttons label="Registrar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={cancelRegisterProduction}></Buttons>
+            </div> 
         </>
-    );
+    )
 }
+
+const mapStateToProps = state => {
+    return {
+        date: state.date,
+        productionFlavors: state.productionFlavors
+    }
+}
+
+const mapDispatchToProps = {
+    updateDate
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterProductionView);

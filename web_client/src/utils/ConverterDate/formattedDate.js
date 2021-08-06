@@ -1,4 +1,4 @@
-export default function formattedDate (dateState) {
+function formattedDate (dateState) {
     var year = dateState.getFullYear();
     var month = dateState.getMonth() + 1;
     var day = dateState.getDate();
@@ -22,3 +22,5 @@ export default function formattedDate (dateState) {
 
     return dateFormatted;
 }
+
+export default formattedDate;

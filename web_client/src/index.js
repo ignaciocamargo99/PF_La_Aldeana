@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import MasterPage from './views/MasterPage';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import reducers from '../src/reducers/LoginReducers';
+import reducers from '../src/reducers/Reducers';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
