@@ -280,7 +280,7 @@ async function getTypeSupplies(req, res) {
 async function getImage(req, res) {
     await db.getConnection((err, conn) => {
         const id_product = req.params.id;
-        if (err) return res.status(500).send('Error server');
+        if (err) return res.status(500).send(err);
         conn.query('SELECT image, id_product FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
             if (err) return res.status(500).send('Server error');
 
@@ -292,6 +292,7 @@ async function getImage(req, res) {
             const imagedirFilter = imagedir.filter((valor) => valor === `${id_product}-product.png`)
             res.json(imagedirFilter);
         })
+        conn.end();
     })
 }
 
