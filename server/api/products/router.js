@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
+const productControllers = require("../../controllers/productController");
 const multer = require('multer');
 const path = require('path');
+
 const diskStorage = multer.diskStorage({
     destination: path.join(__dirname, './images/'),
     filename: (req, file, cb) => {
@@ -14,13 +16,14 @@ const fileUpload = multer({
     storage: diskStorage,
 }).single('image');
 
+
 //#region APIs
 
-router.get("/typeProduct", productController.getTypeProducts);
+router.get("/typeProducts", productControllers.getTypeProduct); // listo
 
-router.get("/products", productController.getProducts);
+router.get("/products", productControllers.getProduct); // listo
 
-router.get("/productsSuppliess/:id", productController.getProductsSuppliess);
+router.get("/productSupply/:id", productControllers.getProductSupply); // listo
 
 router.put("/products/delete/", productController.deleteProduct);
 
@@ -34,9 +37,9 @@ router.post("/typeProduct/new", productController.postTypeProducts);
 
 router.get("/typeSupplies", productController.getTypeSupplies);
 
-router.post("/productSupply/new", fileUpload, productController.postProductsSupplies);
+router.post("/productSupply/new", fileUpload, productControllers.postProductSupply); // listo
 
-router.post("/product/new", fileUpload, productController.postProducts);
+router.post("/product/new", fileUpload, productControllers.postProduct); // listo
 
 router.get("/image/:id", productController.getImage);
 

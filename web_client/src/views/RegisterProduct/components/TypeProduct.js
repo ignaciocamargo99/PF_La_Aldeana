@@ -8,7 +8,7 @@ const PORT = require('../../../config');
 
 export default function TypeProduct(props) {
 
-    const typeProduct = useHTTPGet(PORT() + '/api/typeProduct');
+    const typeProduct = useHTTPGet(PORT() + '/api/typeProducts');
 
     const [errorMessage, setErrorMessage] = useState("");
     const [type, setType] = useState("null");

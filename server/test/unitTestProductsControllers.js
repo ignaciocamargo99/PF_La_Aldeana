@@ -12,7 +12,7 @@ describe('Tests unitarios sobre API Products',()=>{
     describe('Check getTypeProducts',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
-                .get('/typeProduct')
+                .get('/typeProducts')
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
@@ -20,7 +20,7 @@ describe('Tests unitarios sobre API Products',()=>{
         });
         it('Trae los datos como json', (done) => {
             chai.request(url)
-                .get('/typeProduct')
+                .get('/typeProducts')
                 .end( function(err,res){
                     expect(res).to.be.json;
                     done();
