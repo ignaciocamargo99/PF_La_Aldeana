@@ -5,7 +5,7 @@ const createSupply = async (newSupply) => {
         await supplyPostDB(newSupply);
     }
     catch {
-        throw new Error('Error. No se ha podido registrar el insumo.')
+        throw Error('Error. No se ha podido registrar el insumo.')
     };
 };
 
