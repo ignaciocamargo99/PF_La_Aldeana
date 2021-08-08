@@ -4,8 +4,8 @@ const fs = require('fs');
 
 
 const productGetDB = () => {
-    const sqlSelect = "SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS " +
-        "WHERE active = 1";
+    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS ' +
+        'WHERE active = 1';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -22,7 +22,7 @@ const productGetDB = () => {
 
 
 const productTypeGetDB = () => {
-    const sqlSelect = "SELECT id_product_type, name FROM PRODUCT_TYPES";
+    const sqlSelect = 'SELECT id_product_type, name FROM PRODUCT_TYPES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -40,7 +40,7 @@ const productTypeGetDB = () => {
 
 const productSupplyGetDB = (productID) => {
 
-    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY WHERE id_product = ?";
+    const sqlSelect = 'SELECT * FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -96,13 +96,13 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
             db.query(selectMaxIdProduct, (error, row) => {
-                if(error) reject(error);
+                if (error) reject(error);
                 else id_product = row[0].last_id_product + 1;
             })
             db.beginTransaction((error) => {
                 if (error) reject(error);
-                    
-                db.query(sqlInsertProducts, [ null, name, description, image, price, id_sector, id_product_type, 1], (error, result) => {
+
+                db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1], (error, result) => {
                     if (error) {
                         return db.rollback(() => reject(error))
                     }
@@ -121,12 +121,143 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
                     }
                 })
                 db.release();
-                console.log(pool._freeConnections.indexOf(db));
             })
         })
     });
 };
 
 
+const imageProductGetDB = (productID) => {
 
-module.exports = { productGetDB, productTypeGetDB, productSupplyGetDB, productPostDB, productSupplyPostDB };
+    const sqlSelect = 'SELECT image, id_product FROM PRODUCTS WHERE id_product = ?';
+    if (!productID) throw Error('El id del producto es null o undefined');
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, [productID], (error, result) => {
+                if (error) reject(error);
+
+                result.map(img => {
+                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, '../api/products/dbImages/' + img.id_product + '-product.png'), img.image);
+                })
+                const imagedir = fs.readdirSync(path.join(__dirname, `../api/products/dbImages/`))
+                const imagedirFilter = imagedir.filter((valor) => valor === `${productID}-product.png`)
+                resolve(imagedirFilter);
+            });
+            db.release();
+            console.log(pool._freeConnections.indexOf(db));
+        })
+    });
+};
+
+
+const typeSupplyGetDB = () => {
+    const sqlSelect = "SELECT id_supply_type, name FROM SUPPLY_TYPES";
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+
+const supplyGetDB = () => {
+    const sqlSelect = "SELECT id_supply, name, description FROM SUPPLIES ORDER BY name"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+
+const typeProductPostDB = (newTypeProduct) => {
+
+    const sqlInsert = "INSERT INTO PRODUCT_TYPES (name, description) VALUES (?, ?)"
+    const { name, description } = newTypeProduct;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlInsert, [name, description], (error) => {
+                if (error) reject(error);
+                else resolve();
+            });
+            db.release();
+        })
+    });
+};
+
+const productDeleteDB = (productDeleteID) => {
+
+    const sqlUpdate = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlUpdate, [productDeleteID], (error) => {
+                if (error) reject(error);
+                else resolve();
+            });
+            db.release();
+        })
+    });
+};
+
+const  productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
+
+    const { id_product, name, description, price, id_sector, id_product_type } = productUpdate;
+    let image = imageUpdate;
+    let valuesToUpdate = [];
+    let sqlInsert = "";
+
+    if (image) image = fs.readFileSync(path.join(__dirname, '../api/products/images/' + image.filename));
+    else image = null;
+
+    // Check if the image is modified from the front ...
+    if (flagImage == 'true') {
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, id_product]
+    }
+    else {
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, price, id_sector, id_product_type, id_product]
+    }
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlInsert, valuesToUpdate, (error) => {
+                if (error) reject(error);
+                else resolve();
+            });
+            db.release();
+        })
+    });
+};
+
+
+
+module.exports = {
+    productGetDB, productTypeGetDB, productSupplyGetDB,
+    productPostDB, productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
+    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB
+};

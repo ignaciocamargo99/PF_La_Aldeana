@@ -1,5 +1,6 @@
 const { productGetDB, productTypeGetDB, productSupplyGetDB, productPostDB,
-    productSupplyPostDB } = require('../models/productDb');
+    productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
+    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB } = require('../models/productDb');
 
 const readProduct = async () => {
     try {
@@ -55,4 +56,75 @@ const createProductSupply = async (newProduct, imageProduct) => {
 };
 
 
-module.exports = { readProduct, readTypeProduct, readProductSupply, createProduct, createProductSupply };
+const readImageProduct = async (productID) => {
+    try {
+        let res = await imageProductGetDB(productID);
+        return res;
+    }
+    catch {
+        let res = await imageProductGetDB();
+        throw Error(res);
+    };
+};
+
+const readTypeSupply = async () => {
+    try {
+        let res = await typeSupplyGetDB();
+        return res;
+    }
+    catch {
+        let res = await typeSupplyGetDB();
+        throw Error(res);
+    };
+};
+
+const readSupply = async () => {
+    try {
+        let res = await supplyGetDB();
+        return res;
+    }
+    catch {
+        let res = await supplyGetDB();
+        throw Error(res);
+    };
+};
+
+
+const createTypeProduct = async (newTypeProduct) => {
+    try {
+        await typeProductPostDB(newTypeProduct);
+    }
+    catch {
+        let res = await typeProductPostDB(newTypeProduct);
+        throw Error(res);
+    };
+};
+
+
+const deleteProduct = async (productDeleteID) => {
+    try {
+        await productDeleteDB(productDeleteID);
+    }
+    catch {
+        let res = await productDeleteDB(productDeleteID);
+        throw Error(res);
+    };
+};
+
+
+const updateProduct = async (productUpdate, imageUpdate, flagImage) => {
+    try {
+        await productUpdateDB(productUpdate, imageUpdate, flagImage);
+    }
+    catch {
+        let res = await productUpdateDB(productUpdate, imageUpdate, flagImage);
+        throw Error(res);
+    };
+};
+
+
+module.exports = {
+    readProduct, readTypeProduct, readProductSupply, createProduct,
+    createProductSupply, readImageProduct, readTypeSupply, readSupply,
+    createTypeProduct, deleteProduct, updateProduct
+};

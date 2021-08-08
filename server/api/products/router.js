@@ -25,23 +25,23 @@ router.get("/products", productControllers.getProduct); // listo
 
 router.get("/productSupply/:id", productControllers.getProductSupply); // listo
 
-router.put("/products/delete/", productController.deleteProduct);
+router.put("/products/delete/", productControllers.deleteProducts); // listo
 
-router.put("/products/update", fileUpload, productController.updateProduct);
+router.put("/products/update", fileUpload, productControllers.updateProducts); // 
 
 router.put("/productSupply/update", fileUpload, productController.updateProductsSupplies);
 
-router.get("/supplies", productController.getSupplies);
+router.get("/supplies", productControllers.getSupplies); // listo
 
-router.post("/typeProduct/new", productController.postTypeProducts);
+router.post("/typeProduct/new", productControllers.postTypeProduct);  // listo
 
-router.get("/typeSupplies", productController.getTypeSupplies);
+router.get("/typeSupplies", productControllers.getTypeSupplies); // listo
 
 router.post("/productSupply/new", fileUpload, productControllers.postProductSupply); // listo
 
 router.post("/product/new", fileUpload, productControllers.postProduct); // listo
 
-router.get("/image/:id", productController.getImage);
+router.get("/image/:id", productControllers.getImage); // listo
 
 //#endregion
 
