@@ -27,6 +27,7 @@ export default function App(props) {
             <Route path='/app/products' component={ListProducts}></Route>
             <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
             <Route path='/app/franchise' component={RegisterFranchise}></Route>
+            <Route path='/app/registerProducts' component = {RegisterProductView}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>
