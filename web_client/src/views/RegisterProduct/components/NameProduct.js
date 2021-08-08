@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
 
 const NameProduct = (props) => {
     const inputName = useRef(null);
@@ -13,16 +12,17 @@ const NameProduct = (props) => {
     }
 
     useEffect(() => {
-        if (inputName.current.value.length > 0 && inputName.current.value.length <= 80) {
+        const name = inputName.current.value.trim();
+        if (name.length > 0 && name.length <= 80) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.name = inputName.current.value;
+            data.name = name;
             props.load(data);
         }
         else {
             setIsValidClass("form-control")
             let data = props.data;
-            data.name = inputName.current.value;
+            data.name = name;
             props.load(data);
         }
     }, [name]);
@@ -33,7 +33,7 @@ const NameProduct = (props) => {
                 <label htmlFor="productName" >Nombre*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productName" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}
+                <input className={isValidClass} id="productName" autoFocus type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre del producto..." onChange={handleName}
                     defaultValue={props.data.name} />
             </div>
         </div>

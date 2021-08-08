@@ -8,6 +8,7 @@ import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
+import displayError from '../../utils/ErrorMessages/displayError';
 
 const PORT = require('../../config');
 
@@ -51,7 +52,10 @@ export default function RegisterProductView() {
         formData.append('supplies', jsonArrSupplies);
 
         Axios.post(PORT() + urlApi, formData)
-            .then(success())
+            .then((formData) => {
+                if(formData.data.Ok) success();
+                else displayError('Ha ocurrido un error al registrar el producto. \n' + data.Message);
+            })
             .catch(error => console.log(error))
     };
 

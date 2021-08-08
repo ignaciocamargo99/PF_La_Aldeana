@@ -1,5 +1,6 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '../../../assets/Buttons.css';
 
 export default function EditProductButton (props) {
 
@@ -10,6 +11,6 @@ export default function EditProductButton (props) {
     }
     
     return (
-        <button id='editProductButton' type="button" className="btn btn-primary btn-sm px-3" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+        <button id='editProductButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
     );
 }

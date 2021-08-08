@@ -1,303 +1,197 @@
-const db = require('../../config/connection');
-const path = require('path')
-const fs = require('fs');
+const { readProduct, readTypeProduct, readProductSupply, createProduct,
+    createProductSupply, readImageProduct, readTypeSupply, readSupply,
+    createTypeProduct, deleteProduct, updateProduct, updateProductSupply } = require('./service');
 
-// HTTP: GET 
-async function getProducts(req, res) {
-
-    const sqlSelect = "SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS " +
-        "WHERE active = 1"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-// HTTP: GET 
-async function getProductsSuppliess(req, res) {
-
-    const id_product = req.params.id;
-
-    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY pxs WHERE id_product = ?"
-
-    await db.query(sqlSelect, [id_product], (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-// HTTP: UPDATE 
-async function deleteProduct(req, res) {
-
-    const id_product = req.body.id_product;
-
-    const sqlSelect = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
-
-    await db.query(sqlSelect, [id_product], (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-// HTTP: UPDATE
-async function updateProduct(req, res) {
+// HTTP: GET
+async function getProduct(req, res) {
     try {
-        const id_product = req.body.id_product;
-        const name = req.body.name;
-        const description = req.body.description;
-        const price = req.body.price;
-        const id_sector = req.body.id_sector;
-        const id_product_type = req.body.id_product_type;
-        let flagImageUpdate = req.body.flagImageUpdate;
-        let imageProduct = req.file;
-        let valuesIntoUpdate = [];
-        let sqlInsert = "";
-        if (imageProduct) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
-        else imageProduct = null;
-
-        const sqlInsert1 = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
-        db.query(sqlInsert1, [id_product], (error, result) => {
-            if (error) {
-                return transaction.rollback(() => { throw error; })
-            }
-        })
-
-        // Check if the image is modified from the front ...
-        if (flagImageUpdate === true) {
-            sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-            valuesIntoUpdate = [name, description, imageProduct, price, id_sector, id_product_type, id_product]
-        }
-        else {
-            sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-            valuesIntoUpdate = [name, description, price, id_sector, id_product_type, id_product]
-        }
-        db.query(sqlInsert, valuesIntoUpdate, (error, result) => {
-            if (error) throw error;
-            else res.send(result);
+        const result = await readProduct();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
         })
     }
-    catch {
-        res.send("Faltan datos obligatorios o se produjo un error");
-    }
-};
-
-
-// HTTP: UPDATE TRANSACTION
-async function updateProductsSupplies(req, res) {
-    try {
-        const name = req.body.name;
-        const description = req.body.description;
-        const price = req.body.price;
-        const id_sector = req.body.id_sector;
-        const id_product_type = req.body.id_product_type;
-        const id_product = req.body.id_product;
-        let imageProduct = req.file;
-        let jsonSupplies = req.body.supplies;
-        let arrSupplies = JSON.parse(jsonSupplies);
-        let sqlInsert = "";
-        let valuesIntoUpdate = [];
-        let flagImageUpdate = req.body.flagImageUpdate;
-        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
-        else imageProduct = null;
-
-        await db.getConnection((error, transaction) => {
-            transaction.beginTransaction((error) => {
-                if (error) throw error;
-
-                // Check if the image is modified from the front ...
-                if (flagImageUpdate === 'true') {
-                    sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-                    valuesIntoUpdate = [name, description, imageProduct, price, id_sector, id_product_type, id_product]
-                }
-                else {
-                    sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-                    valuesIntoUpdate = [name, description, price, id_sector, id_product_type, id_product]
-                }
-                transaction.query(sqlInsert, valuesIntoUpdate, (error, result) => {
-                    if (error) return transaction.rollback(() => { throw error; });
-
-                    const sqlInsert = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
-
-                    transaction.query(sqlInsert, [id_product], (error, result) => {
-                        if (error) {
-                            return transaction.rollback(() => { throw error; })
-                        }
-                        const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
-
-                        for (let i = 0; i < arrSupplies.length; i++) {
-                            transaction.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error, result) => {
-                                if (error) {
-                                    transaction.rollback(() => { throw error; })
-                                }
-                                transaction.commit((error) => {
-                                    if (error) {
-                                        return transaction.rollback(() => { throw error; })
-                                    }
-                                })
-                            })
-                        }
-                    })
-                })
-            })
-        })
-    }
-    catch {
-        res.send("Faltan datos obligatorios o se produjo un error");
-    }
-};
-
-
-// HTTP: POST 
-async function postProducts(req, res) {
-    try {
-        const name = req.body.name;
-        const description = req.body.description;
-        const price = req.body.price;
-        const id_sector = req.body.id_sector;
-        const id_product_type = req.body.id_product_type;
-        let imageProduct = req.file;
-
-        const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
-        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
-
-        else imageProduct = null;
-        await db.query(sqlInsert, [null, name, description, imageProduct, price, id_sector, id_product_type, 1], (error, result) => {
-            if (error) throw error;
-            else res.send(result);
-        })
-
-    }
-    catch {
-        res.send("Faltan datos obligatorios o se produjo un error");
-    }
-}
-
-
-// HTTP: POST TRANSACTION
-async function postProductsSupplies(req, res) {
-    try {
-        const name = req.body.name;
-        const description = req.body.description;
-        const price = req.body.price;
-        const id_sector = req.body.id_sector;
-        const id_product_type = req.body.id_product_type;
-        let id_product = 0;
-        let imageProduct = req.file;
-        let jsonSupplies = req.body.supplies;
-        let arrSupplies = JSON.parse(jsonSupplies);
-
-        if (imageProduct !== undefined) imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
-        else imageProduct = null;
-
-        await db.getConnection((error, transaction) => {
-
-            transaction.query("SELECT MAX(id_product) AS last_id_product FROM PRODUCTS", (err, rows) => {
-                if (err) return res.status(500).send('Server error')
-                id_product = rows[0].last_id_product + 1;
-            })
-            transaction.beginTransaction((error) => {
-                if (error) throw error;
-                const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
-
-                transaction.query(sqlInsert, [null, name, description, imageProduct, price, id_sector, id_product_type, 1], (error, result) => {
-                    if (error) {
-                        return transaction.rollback(() => { throw error; })
-                    }
-                    const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
-
-                    for (let i = 0; i < arrSupplies.length; i++) {
-                        transaction.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error, result) => {
-                            if (error) {
-                                transaction.rollback(() => { throw error; })
-                            }
-                            transaction.commit((error) => {
-                                if (error) {
-                                    return transaction.rollback(() => { throw error; })
-                                }
-                            })
-                        })
-                    }
-                })
-            })
-        })
-    }
-    catch {
-        res.send("Faltan datos obligatorios o se produjo un error");
-    }
-};
-
-
-
-// HTTP: GET 
-async function getTypeProducts(req, res) {
-
-    const sqlSelect = "SELECT id_product_type, name FROM PRODUCT_TYPES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-// HTTP: GET 
-async function getSupplies(req, res) {
-
-    const sqlSelect = "SELECT id_supply, name, description FROM SUPPLIES ORDER BY name"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
-}
-
-// HTTP: POST
-async function postTypeProducts(req, res) {
-
-    const name = req.body.name;
-    const description = req.body.description;
-
-    const sqlInsert = "INSERT INTO PRODUCT_TYPES (name, description) VALUES (?, ?)"
-
-    await db.query(sqlInsert, [name, description], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
-}
-
-// HTTP: GET 
-async function getTypeSupplies(req, res) {
-
-    const sqlSelect = "SELECT id_supply_type, name FROM SUPPLY_TYPES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
 }
 
 // HTTP: GET
-async function getImage(req, res) {
-    await db.getConnection((err, conn) => {
-        const id_product = req.params.id;
-        if (err) return res.status(500).send(err);
-        conn.query('SELECT image, id_product FROM PRODUCTS WHERE id_product = ?', [id_product], (err, rows) => {
-            if (err) return res.status(500).send('Server error');
-
-            rows.map(img => {
-                if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
-            })
-
-            const imagedir = fs.readdirSync(path.join(__dirname, `./dbImages/`))
-            const imagedirFilter = imagedir.filter((valor) => valor === `${id_product}-product.png`)
-            res.json(imagedirFilter);
+async function getTypeProduct(req, res) {
+    try {
+        const result = await readTypeProduct();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
         })
-        conn.end();
-    })
+    }
+}
+
+// HTTP: GET :id
+async function getProductSupply(req, res) {
+    try {
+        const result = await readProductSupply(req.params.id);
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: POST
+async function postProduct(req, res) {
+    try {
+        await createProduct(req.body, req.file);
+        res.json({
+            Ok: true,
+            Message: 'Producto registrado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: POST TRANSACTION
+async function postProductSupply(req, res) {
+    try {
+        await createProductSupply(req.body, req.file);
+        res.json({
+            Ok: true,
+            Message: 'Producto e insumos registrados exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET :id
+async function getImage(req, res) {
+    try {
+        const result = await readImageProduct(req.params.id);
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET
+async function getTypeSupplies(req, res) {
+    try {
+        const result = await readTypeSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET
+async function getSupplies(req, res) {
+    try {
+        const result = await readSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: POST
+async function postTypeProduct(req, res) {
+    try {
+        await createTypeProduct(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Tipo de producto registrado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: PUT
+async function deleteProducts(req, res) {
+    try {
+        await deleteProduct(req.body.id_product);
+        res.json({
+            Ok: true,
+            Message: 'Producto eliminado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
 
+// HTTP: PUT
+async function updateProducts(req, res) {
+    try {
+        await updateProduct(req.body, req.file, req.body.flagImageUpdate);
+        res.json({
+            Ok: true,
+            Message: 'Producto actualizado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+
+// HTTP: PUT TRANSACTION
+async function updateProductsSupplies(req, res) {
+    try {
+        await updateProductSupply(req.body, req.file, req.body.flagImageUpdate);
+        res.json({
+            Ok: true,
+            Message: 'Producto e insumos actualizados exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
 module.exports = {
-    postProducts, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getImage, 
-    postProductsSupplies, getProducts, deleteProduct, getProductsSuppliess, updateProduct, updateProductsSupplies,
-};
+    getProduct, getTypeProduct, getProductSupply, postProduct,
+    postProductSupply, getImage, getTypeSupplies, getSupplies,
+    postTypeProduct, deleteProducts, updateProducts, updateProductsSupplies
+}

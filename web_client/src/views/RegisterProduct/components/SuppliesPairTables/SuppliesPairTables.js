@@ -31,7 +31,7 @@ export default function SuppliesPairTables(props) {
     }, []);
 
     useEffect(() => {
-        Axios.get(PORT() + `/api/productsSuppliess/${props.data.id_product}`)
+        Axios.get(PORT() + `/api/productSupply/${props.data.id_product}`)
         .then((response) => {
             handlerLoadingSpinner();
             let auxSupply = putOnList(response.data, listTable);

@@ -3,6 +3,7 @@ const router = express.Router();
 const productController = require("./controller");
 const multer = require('multer');
 const path = require('path');
+
 const diskStorage = multer.diskStorage({
     destination: path.join(__dirname, './images/'),
     filename: (req, file, cb) => {
@@ -14,31 +15,32 @@ const fileUpload = multer({
     storage: diskStorage,
 }).single('image');
 
+
 //#region APIs
 
-router.get("/typeProduct", productController.getTypeProducts);
+router.get("/typeProducts", productController.getTypeProduct);
 
-router.get("/products", productController.getProducts);
+router.get("/products", productController.getProduct);
 
-router.get("/productsSuppliess/:id", productController.getProductsSuppliess);
+router.get("/productSupply/:id", productController.getProductSupply);
 
-router.put("/products/delete/", productController.deleteProduct);
+router.put("/products/delete/", productController.deleteProducts);
 
-router.put("/products/update", fileUpload, productController.updateProduct);
+router.put("/products/update", fileUpload, productController.updateProducts);
 
 router.put("/productSupply/update", fileUpload, productController.updateProductsSupplies);
 
-router.get("/supplies", productController.getSupplies);
+router.get("/supplies", productController.getSupplies); 
 
-router.post("/typeProduct/new", productController.postTypeProducts);
+router.post("/typeProduct/new", productController.postTypeProduct);  
 
-router.get("/typeSupplies", productController.getTypeSupplies);
+router.get("/typeSupplies", productController.getTypeSupplies); 
 
-router.post("/productSupply/new", fileUpload, productController.postProductsSupplies);
+router.post("/productSupply/new", fileUpload, productController.postProductSupply); 
 
-router.post("/product/new", fileUpload, productController.postProducts);
+router.post("/product/new", fileUpload, productController.postProduct); 
 
-router.get("/image/:id", productController.getImage);
+router.get("/image/:id", productController.getImage); 
 
 //#endregion
 

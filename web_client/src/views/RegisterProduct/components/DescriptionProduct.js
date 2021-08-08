@@ -13,15 +13,16 @@ const DescriptionProduct = (props) => {
     }
 
     useEffect(() => {
-        if (inputDescription.current.value.length <= 200 && inputDescription.current.value.length > 0) {
+        const descriptions = inputDescription.current.value.trim();
+        if (descriptions.length <= 200 && descriptions.length > 0) {
             if (inputDescription.current.value.length > 0) setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.description = inputDescription.current.value;
+            data.description = descriptions;
             props.load(data);
-        } else if (inputDescription.current.value.length === 0) {
+        } else if (descriptions.length === 0) {
             setIsValidClass("form-control");
             let data = props.data;
-            data.description = inputDescription.current.value;
+            data.description = descriptions;
             props.load(data);
         }
     }, [description]);
