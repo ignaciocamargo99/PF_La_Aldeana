@@ -1,3 +1,20 @@
+const { readFlavors } = require('./service');
+
+// HTTP: GET
+async function getFlavors(req, res) {
+    try {
+        const result = await readFlavors();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+/*
 const db = require("../../config/connection");
 
 // [HTTP:GET]
@@ -10,6 +27,6 @@ async function getFlavors(req, res) {
         else res.send(err);
     })
 };  
-
+*/
 
 module.exports = { getFlavors };  

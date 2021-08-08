@@ -1,19 +1,19 @@
-const db = require("../../config/connection");
+const { createProduction } = require("./service");
 
 async function postProductions(req, res) {
-    const dateProduction = req.body.dateProduction;
-    const flavors = req.body.flavors;
-
-    const sqlInsert = "INSERT INTO PRODUCTIONS " +
-                      "VALUES (?, ?, ?)";
-
-    for (let i = 0; i < flavors.length; i++) {
-        if (flavors[i].id_flavor) {
-            await db.query(sqlInsert, [dateProduction, flavors[i].id_flavor, flavors[i].amount], (err, result) => {
-                
-            }) 
-        }   
-    } 
+    try {
+        await createProduction(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Producción registrada exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
 module.exports = { postProductions };   

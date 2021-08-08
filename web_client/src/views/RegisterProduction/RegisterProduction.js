@@ -7,6 +7,7 @@ import Buttons from '../../common/Buttons';
 import Axios from 'axios';
 import successMessage from '../../utils/SuccessMessages/successMenssage';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
+import displayError from '../../utils/ErrorMessages/displayError';
 
 function RegisterProductionView (props){
    
@@ -20,9 +21,12 @@ function RegisterProductionView (props){
         if (ready) {
             const flavorsValues = props.productionFlavors.filter(() => true);
             let production = { "dateProduction":props.date, "flavors":flavorsValues }
-            
             Axios.post(PORT() + '/api/productions/new', production)
-            .then(successMessage("Atención", "Producción Registrada", "success"))
+            .then((production) => {
+                if(production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
+                else displayError('Ha ocurrido un error al registrar la producción. \n' + production.data.Message);
+            })
+            .catch(error => console.log(error))
         }
         else {
             warningMessage("Error","Se debe ingresar al menos un sabor para registrar la producción.","error");
