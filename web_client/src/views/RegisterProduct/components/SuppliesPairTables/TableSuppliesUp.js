@@ -5,6 +5,7 @@ import BodyTable from '../../../../common/Table/BodyTable';
 import HeaderTable from '../../../../common/Table/HeaderTable';
 import Table from '../../../../common/Table/Table';
 import SuppliesAmount from './SuppliesAmount';
+import '../../../../assets/Buttons.css';
 
 export default function TableSuppliesUp(props) {
 
@@ -39,8 +40,7 @@ export default function TableSuppliesUp(props) {
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
                                     <SuppliesAmount supplies={element} load={handlerAmount} supply={i} />
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <button className="btn btn-primary btn-sm px-3" type="button" style={{ backgroundColor: '#2284B6' }}
-                                            onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
+                                        <button className="sendAdd" type="button" onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

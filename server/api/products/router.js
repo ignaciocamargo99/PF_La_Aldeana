@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
-const productControllers = require("../../controllers/productController");
 const multer = require('multer');
 const path = require('path');
 
@@ -19,29 +18,29 @@ const fileUpload = multer({
 
 //#region APIs
 
-router.get("/typeProducts", productControllers.getTypeProduct); // listo
+router.get("/typeProducts", productController.getTypeProduct);
 
-router.get("/products", productControllers.getProduct); // listo
+router.get("/products", productController.getProduct);
 
-router.get("/productSupply/:id", productControllers.getProductSupply); // listo
+router.get("/productSupply/:id", productController.getProductSupply);
 
-router.put("/products/delete/", productControllers.deleteProducts); // listo
+router.put("/products/delete/", productController.deleteProducts);
 
-router.put("/products/update", fileUpload, productControllers.updateProducts); // 
+router.put("/products/update", fileUpload, productController.updateProducts);
 
 router.put("/productSupply/update", fileUpload, productController.updateProductsSupplies);
 
-router.get("/supplies", productControllers.getSupplies); // listo
+router.get("/supplies", productController.getSupplies); 
 
-router.post("/typeProduct/new", productControllers.postTypeProduct);  // listo
+router.post("/typeProduct/new", productController.postTypeProduct);  
 
-router.get("/typeSupplies", productControllers.getTypeSupplies); // listo
+router.get("/typeSupplies", productController.getTypeSupplies); 
 
-router.post("/productSupply/new", fileUpload, productControllers.postProductSupply); // listo
+router.post("/productSupply/new", fileUpload, productController.postProductSupply); 
 
-router.post("/product/new", fileUpload, productControllers.postProduct); // listo
+router.post("/product/new", fileUpload, productController.postProduct); 
 
-router.get("/image/:id", productControllers.getImage); // listo
+router.get("/image/:id", productController.getImage); 
 
 //#endregion
 

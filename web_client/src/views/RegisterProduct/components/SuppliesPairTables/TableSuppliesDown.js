@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BodyTable from '../../../../common/Table/BodyTable';
 import HeaderTable from '../../../../common/Table/HeaderTable';
 import Table from '../../../../common/Table/Table';
+import '../../../../assets/Buttons.css';
 
 export default function TableSuppliesDown(props) {
     return (
@@ -26,9 +27,9 @@ export default function TableSuppliesDown(props) {
                                 <tr>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px'}}>{element.amount}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <button type="button" className="btn btn-danger btn-sm px-3"
+                                        <button type="button" className="sendDelete"
                                             onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>

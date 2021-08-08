@@ -1,5 +1,5 @@
-const pool = require('../config/connection');
-const path = require('path')
+const pool = require('../../config/connection');
+const path = require('path');
 const fs = require('fs');
 
 
@@ -59,10 +59,10 @@ const productSupplyGetDB = (productID) => {
 const productPostDB = (newProduct, imageProduct) => {
 
     const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
-    let image = imageProduct
+    let image = imageProduct;
     const { name, description, price, id_sector, id_product_type } = newProduct;
 
-    if (image) image = fs.readFileSync(path.join(__dirname, '../api/products/images/' + image.filename));
+    if (image) image = fs.readFileSync(path.join(__dirname, './images/' + image.filename));
     else image = null;
 
     return new Promise((resolve, reject) => {
@@ -85,7 +85,7 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
     let image = imageProduct;
     let arrSupplies = JSON.parse(supplies);
 
-    if (image) image = fs.readFileSync(path.join(__dirname, '../api/products/images/' + image.filename));
+    if (image) image = fs.readFileSync(path.join(__dirname, './images/' + image.filename));
     else image = null;
 
     const selectMaxIdProduct = 'SELECT MAX(id_product) AS last_id_product FROM PRODUCTS';
@@ -109,20 +109,21 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
                     for (let i = 0; i < arrSupplies.length; i++) {
                         db.query(sqlInsertProductsSupplies, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error) => {
                             if (error) {
-                                return db.rollback(() => reject(error))
+                                return db.rollback(() => reject(error));
                             }
                             db.commit((error) => {
                                 if (error) {
-                                    return db.rollback(() => reject(error))
+                                    return db.rollback(() => reject(error));
                                 }
                                 else resolve();
-                            })
-                        })
-                    }
-                })
+                            });
+                        });
+                    };
+                });
                 db.release();
-            })
-        })
+            });
+            
+        });
     });
 };
 
@@ -140,14 +141,13 @@ const imageProductGetDB = (productID) => {
                 if (error) reject(error);
 
                 result.map(img => {
-                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, '../api/products/dbImages/' + img.id_product + '-product.png'), img.image);
+                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
                 })
-                const imagedir = fs.readdirSync(path.join(__dirname, `../api/products/dbImages/`))
-                const imagedirFilter = imagedir.filter((valor) => valor === `${productID}-product.png`)
+                const imagedir = fs.readdirSync(path.join(__dirname, `./dbImages/`));
+                const imagedirFilter = imagedir.filter((valor) => valor === `${productID}-product.png`);
                 resolve(imagedirFilter);
             });
             db.release();
-            console.log(pool._freeConnections.indexOf(db));
         })
     });
 };
@@ -205,6 +205,7 @@ const typeProductPostDB = (newTypeProduct) => {
     });
 };
 
+
 const productDeleteDB = (productDeleteID) => {
 
     const sqlUpdate = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
@@ -222,14 +223,15 @@ const productDeleteDB = (productDeleteID) => {
     });
 };
 
-const  productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
+
+const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
     const { id_product, name, description, price, id_sector, id_product_type } = productUpdate;
     let image = imageUpdate;
     let valuesToUpdate = [];
     let sqlInsert = "";
 
-    if (image) image = fs.readFileSync(path.join(__dirname, '../api/products/images/' + image.filename));
+    if (image) image = fs.readFileSync(path.join(__dirname, './images/' + image.filename));
     else image = null;
 
     // Check if the image is modified from the front ...
@@ -255,9 +257,69 @@ const  productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 };
 
 
+const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
+    const { id_product, name, description, price, id_sector, id_product_type, supplies } = productUpdate;
+    let arrSupplies = JSON.parse(supplies);
+    let image = imageUpdate;
+    let valuesToUpdate = [];
+    let sqlInsert = "";
+
+    if (image) image = fs.readFileSync(path.join(__dirname, './images/' + image.filename));
+    else image = null;
+
+    // Check if the image is modified from the front ...
+    if (flagImage == 'true') {
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, id_product]
+    }
+    else {
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, price, id_sector, id_product_type, id_product]
+    }
+
+    const sqlDelete = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
+    const sqlInsertProductSupply = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+
+                db.query(sqlInsert, valuesToUpdate, (error) => {
+                    if (error) {
+                        return db.rollback(() => reject(error))
+                    }
+
+                    db.query(sqlDelete, [id_product], (error) => {
+                        if (error) {
+                            return db.rollback(() => reject(error));
+                        };
+                        for (let i = 0; i < arrSupplies.length; i++) {
+                            db.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error) => {
+                                if (error) {
+                                    db.rollback(() => { throw error; })
+                                }
+                                db.commit((error) => {
+                                    if (error) {
+                                        return db.rollback(() => { throw error; })
+                                    }
+                                    else resolve();
+                                })
+                            })
+                        }
+                    })
+                })
+                db.release();
+            });
+        })
+    });
+};
+
 
 module.exports = {
-    productGetDB, productTypeGetDB, productSupplyGetDB,
+    productGetDB, productTypeGetDB, productSupplyGetDB, productSupplyUpdateDB,
     productPostDB, productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
     supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB
 };

@@ -1,10 +1,11 @@
 import Axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState} from 'react';
 import Buttons from '../../common/Buttons';
 import success from '../../utils/SuccessMessages/successTypeProduct';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
 import './RegisterTypeProductView.css';
 import './styles/TypeProductForm.css';
+import displayError from '../../utils/ErrorMessages/displayError';
 
 const PORT = require('../../config');
 
@@ -16,15 +17,18 @@ export default function RegisterTypeProductView() {
     const [isValidName, setIsValidName] = useState("form-control");
 
     const registerTypeProduct = () => {
-        const name = inputName.current.value;
-        const description = inputDescription.current.value;
+        const name = inputName.current.value.trim();
+        const description = inputDescription.current.value.trim();
         try {
             if (ready) {
                 Axios.post(PORT() + '/api/typeProduct/new', {
                     name: name,
                     description: description
                 })
-                    .then(success())
+                    .then(({data}) =>{
+                        if(data.Ok) success();
+                        else displayError('Ha ocurrido un error al registrar el tipo de producto. \n' + data.Message);
+                    })
                     .catch(err => console.error(err))
             }
             else throw new Error
@@ -33,12 +37,13 @@ export default function RegisterTypeProductView() {
     }
 
     const onChangeName = () => {
-        if (inputName.current.value.length > 0 && inputName.current.value.length < 50) {
+        const name = inputName.current.value.trim();
+        if (name.length > 0 && name.length < 50) {
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
             setReady(true);
         }
-        else if(inputName.current.value.length > 0 && inputName.current.value.length < 50){
+        else if(name.length > 0 && name.length < 50){
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
         }
@@ -62,8 +67,8 @@ export default function RegisterTypeProductView() {
                         <label className='col-3'>Nombre*</label>
                     </div>
                     <div className="form-control-input">
-                        <input type='text' className={isValidName} ref={inputName} onChange={onChangeName} placeholder='Ingrese nombre del producto...'></input>
-                        <div style={{ color: 'red' }} ref={divNameValidation} />
+                        <input type='text' className={isValidName} ref={inputName} autoFocus onChange={onChangeName} placeholder='Ingrese nombre del producto...'></input>
+                        <div style={{ color: 'red', fontFamily:'Abel', fontWeight: 'bold' }} ref={divNameValidation} />
                     </div>
                 </div>
                 <div className="formRow">

@@ -10,11 +10,10 @@
   flex-direction: row;
 }
 
-.btnTitle {
-  
+.btnTitle { 
   display: flex;
   flex-direction: row;
-  margin-left: 79.5%;
+  margin-left: 77.5%;
   justify-content: flex-end;
 }
 

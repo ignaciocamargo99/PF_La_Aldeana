@@ -10,7 +10,7 @@ const ImageProduct = (props) => {
     const handleImg = (e) => {
         const objImg = inputImg.current;
         if (objImg.files[0]) {
-            if (objImg.files[0].size > 3000000) {
+            if (objImg.files[0].size > 500000) {
                 inputImg.current.value = "";
                 warningSizeImages();
                 return;
