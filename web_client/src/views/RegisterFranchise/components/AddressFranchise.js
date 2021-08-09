@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import validateTextOnly from '../../../utils/Validations/validateTextOnly';
 
 export default function AddressFranchise (props) {
     const inputAddress = useRef(null);
@@ -35,8 +36,8 @@ export default function AddressFranchise (props) {
                 <label htmlFor="address" >Dirección*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="address" type="text" maxLength="80" ref={inputAddress} placeholder="Ingrese dirección de la franquicia..." onChange={handleAddress}>
-                </input>
+                <input className={isValidClass} id="address" type="text" maxLength="80" ref={inputAddress} placeholder="Ingrese dirección de la franquicia..." onChange={handleAddress}
+                onKeyDown={(e) => validateTextOnly(e)}/>
             </div>
         </div>
     );

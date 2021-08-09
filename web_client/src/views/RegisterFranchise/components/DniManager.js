@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 
 export default function DniManager (props) {
     
@@ -9,7 +10,8 @@ export default function DniManager (props) {
         if (inputDni.current.value > 10000000 && inputDni.current.value.length == 8) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.dni_manager = inputDni.current.value;
+            let int = Math.trunc(inputDni.current.value);
+            data.dni_manager = int;
             props.load(data);
         }
         else {
@@ -26,7 +28,8 @@ export default function DniManager (props) {
                 <label htmlFor="dni" >DNI*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="dni" type="number" min="10000000" max="99999999" ref={inputDni} onChange={onChangeDni} placeholder="Ingrese DNI del encargado..." />
+                <input className={isValidClass} id="dni" type="number" min="10000000" max="99999999" ref={inputDni} onChange={onChangeDni}
+                placeholder="Ingrese DNI del encargado..." onKeyDown={(e) => validateFloatNumbers(e)}/>
             </div>
         </div>
     );
