@@ -240,7 +240,7 @@ const RegisterSupplyView = () => {
         const data = {
             name: inputSupplyName.current.value,
             description: inputSupplyDescription.current.value,
-            id_supply_type: divSupplyTypeValidation.current.value,
+            id_supply_type: selectSupplyType.current.value,
             price_wholesale: inputSupplyMultiplePrice.current.value,
             price_retail: inputSupplySinglePrice.current.value,
             stock_lot: inputSupplyStock.current.value,
