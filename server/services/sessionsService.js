@@ -1,4 +1,4 @@
-const { logInDB } = require('../models/logInDB');
+const { logInDB, getUserDB } = require('../models/logInDB');
 
 const logIn = async (user) => {
     try {
@@ -7,9 +7,20 @@ const logIn = async (user) => {
     }
     catch {
         let res = await logInDB(user);
-        throw new Error("Error al iniciar sesión - " + res.sqlMessage);
+        throw new Error("Error al extraer token de sesión - " + res.sqlMessage);
+    };
+};
+
+const getUser = async (user) => {
+    try {
+        let res = await getUserDB(user);
+        return res;
+    }
+    catch {
+        let res = await getUserDB(user);
+        throw new Error("Error al extraer datos de sesión - " + res.sqlMessage);
     };
 };
 
 
-module.exports = { logIn }
+module.exports = { logIn, getUser }

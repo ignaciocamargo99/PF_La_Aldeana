@@ -1,7 +1,7 @@
 const db = require("../../config/connection");
 const bcryptjs = require('bcryptjs');
 
-const { logIn } = require('../../services/sessionsService')
+const { logIn, getUser } = require('../../services/sessionsService')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
@@ -28,9 +28,42 @@ async function getUsersByNick(req, res) {
                 token: rest[0].password
             });
         } else {
+            let random = Math.round(Math.random()* (1000 - 1) + 1).toString();
+            console.log(random)
+            let notIsAToken = await bcryptjs.hash(random, 8);
+
+            console.log(notIsAToken)
             res.json({
-                Ok: false,
-                Message: 'Usuario o contraseña incorrecto.'
+                Ok: true,
+                Message: 'Validando usuario.',
+                token: notIsAToken
+            });
+        }
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    };
+};
+
+async function getDataUsersByNick(req, res) {
+    try {
+        let rest = await getUser(req.params.nick);
+        
+        if(rest.length > 0){
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.',
+                nick_user: rest[0].nick_user,
+                first_name: rest[0].first_name,
+                last_name: rest[0].last_name,
+                rol_ID: rest[0].rol_ID
+            });
+        } else {
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.'
             });
         }
     } catch (e) {
@@ -72,7 +105,7 @@ async function getLogin(req, res) {
 
 
 
-module.exports = { getUsers, getUsersByNick, postUser};
+module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick };
 
 
 
