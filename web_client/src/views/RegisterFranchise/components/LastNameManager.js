@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import validateTextOnly from '../../../utils/Validations/validateTextOnly';
 
 export default function LastNameManager (props) {
     const inputName = useRef(null);
@@ -35,8 +36,8 @@ export default function LastNameManager (props) {
                 <label htmlFor="lastNameManager" >Apellido*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="lastNameManager" type="text" maxLength="80" ref={inputName} placeholder="Ingrese apellido del encargado..." onChange={handleName}>
-                </input>
+                <input className={isValidClass} id="lastNameManager" type="text" maxLength="80" ref={inputName} placeholder="Ingrese apellido del encargado..." onChange={handleName}
+                onKeyDown={(e) => validateTextOnly(e)}/>
             </div>
         </div>
     );

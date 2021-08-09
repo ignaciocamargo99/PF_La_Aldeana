@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 
 export default function AddressNumberFrabchise (props) {
     
@@ -9,7 +10,8 @@ export default function AddressNumberFrabchise (props) {
         if (inputNumber.current.value >= 0 && inputNumber.current.value.length <= 5) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
-            data.address_number = inputNumber.current.value;
+            let int = Math.trunc(inputNumber.current.value);
+            data.address_number = int;
             props.load(data);
         }
         else {
@@ -28,7 +30,8 @@ export default function AddressNumberFrabchise (props) {
                 <label htmlFor="address_number" >Número*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="address_number" type="number" min="0" max="99999" ref={inputNumber} onChange={onChangeNumber} placeholder="Ingrese número de calle..." />
+                <input className={isValidClass} id="address_number" type="number" min="0" max="99999" ref={inputNumber} onChange={onChangeNumber}
+                 placeholder="Ingrese número de calle..." onKeyDown={(e) => validateFloatNumbers(e)}/>
             </div>
         </div>
     );
