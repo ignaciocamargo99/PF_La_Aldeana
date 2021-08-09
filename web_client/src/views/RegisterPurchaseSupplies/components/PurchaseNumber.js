@@ -27,7 +27,7 @@ const PurchaseNumber = (props) => {
             }
         })
         .catch((err) => console.log(err))
-    },[true === false])
+    },[true])
 
 
     const onChangeDate = () => {

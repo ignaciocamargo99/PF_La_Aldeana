@@ -7,7 +7,7 @@ const purchasesSuppliesController = require("./controller");
 
 router.get("/purchase", purchasesSuppliesController.getPurchases);
 router.get("/purchase/last", purchasesSuppliesController.getLastPurchase);
-router.post("/purchase/new", purchasesSuppliesController.postPurchase);
+router.post("/purchase/new", purchasesSuppliesController.postPurchaseSupplies);
 
 //#endregion
 

@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Table from '../../../common/Table/Table';
 import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 
 const PurchaseTable  = (props) => {
+
+    const [refreshTotal,setRefreshTotal] = useState(true)
 
     const changeQuantity = (quantity,i) => {
         if(quantity < 0 || quantity == ""){
@@ -19,8 +21,7 @@ const PurchaseTable  = (props) => {
         let subtotal = props.purchaseQuantity[i]*props.purchasePrice[i]
         props.updatePurchaseSubtotal(subtotal,i)
         document.getElementById(`lblSubtotal${i}`).innerText = `$${subtotal}`
-        let total = props.purchaseTotal + subtotal
-        props.updatePurchaseTotal(total)
+        setRefreshTotal(!refreshTotal)
     }
 
     const changePrice = (price,i) => {
@@ -32,8 +33,7 @@ const PurchaseTable  = (props) => {
         let subtotal = props.purchaseQuantity[i]*props.purchasePrice[i]
         props.updatePurchaseSubtotal(subtotal,i)
         document.getElementById(`lblSubtotal${i}`).innerText = `$${subtotal}`
-        let total = props.purchaseTotal + subtotal
-        props.updatePurchaseTotal(total)
+        setRefreshTotal(!refreshTotal)        
     }
     
     useEffect(() => {
@@ -45,7 +45,7 @@ const PurchaseTable  = (props) => {
             document.getElementById(`lblSubtotal${i}`).innerText = `$${props.purchaseSubtotal[i]}`  
         })
         props.updatePurchaseTotal(total)
-    },[props.purchaseSupplies?.length])
+    },[props.purchaseSupplies?.length, refreshTotal])
 
     return (
         <>

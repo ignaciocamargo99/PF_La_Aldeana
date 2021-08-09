@@ -35,7 +35,7 @@ export const purchaseQuantity = (state = null,action) => {
     }
     if(action.type === 'ADD_PURCHASE_QUANTITY'){
         let x
-        if(state === null){
+        if(state == null){
             x = [0]
         }else{
             state.push(0)
@@ -45,9 +45,9 @@ export const purchaseQuantity = (state = null,action) => {
     }
     if(action.type === 'REMOVE_PURCHASE_QUANTITY'){
         let x
-        if (action.payload === 0){
+        if (action.payload == 0){
             x = state.slice(1,state.length)
-        }else if(action.payload === state.length-1){
+        }else if(action.payload == state.length-1){
             state.pop()
             return state
         }else{
@@ -79,9 +79,9 @@ export const purchasePrice = (state = null,action) => {
     }
     if(action.type === 'REMOVE_PURCHASE_PRICES'){
         let x
-        if (action.payload === 0){
+        if (action.payload == 0){
             x = state.slice(1,state.length)
-        }else if(action.payload === state.length-1){
+        }else if(action.payload == state.length-1){
             state.pop()
             return state
         }else{
@@ -103,7 +103,7 @@ export const purchaseSubtotal = (state = null,action) => {
     }
     if(action.type === 'ADD_PURCHASE_SUBTOTAL'){
         let x
-        if(state === null){
+        if(state == null){
             x = [0]
         }else{
             state.push(0)
@@ -113,9 +113,9 @@ export const purchaseSubtotal = (state = null,action) => {
     }
     if(action.type === 'REMOVE_PURCHASE_SUBTOTAL'){
         let x
-        if (action.payload === 0){
+        if (action.payload == 0){
             x = state.slice(1,state.length)
-        }else if(action.payload === state.length-1){
+        }else if(action.payload == state.length-1){
             state.pop()
             return state
         }else{

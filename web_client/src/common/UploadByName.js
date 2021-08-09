@@ -50,7 +50,7 @@ const UploadByName = (props) => {
                 <div className="form-control-input">
                     <input className={errorMessage?'form-control is-invalid':'form-control'} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
                 <BeShowed show={errorMessage !== "null"}>
-                    <div style={{ color: 'red' }}>{errorMessage}</div>
+                    <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
                 </BeShowed>
                 </div>
                 <div className="form-control-button">
