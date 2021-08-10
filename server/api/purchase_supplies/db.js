@@ -74,20 +74,22 @@ const purchaseSuppliesPostDB = (newPurchase) => {
                     let sqlUpdate;
 
                     for (var i = 0; i < arrDetails.length; i++) {
-
-                        sqlUpdate = `UPDATE SUPPLIES SET stock_lot = stock_lot + ${arrDetails[i].quantity}, stock_unit = stock_unit + (${arrDetails[i].quantity} * unit_x_lot) WHERE id_supply = ${arrDetails[i].id_supply}`
+                        if(arrDetails[i].stock){
+                            sqlUpdate = `UPDATE SUPPLIES SET stock_lot = stock_lot + ${arrDetails[i].quantity}, stock_unit = stock_unit + (${arrDetails[i].quantity} * unit_x_lot) WHERE id_supply = ${arrDetails[i].id_supply}`
     
-                        db.query(sqlUpdate, (error) => {
-                            if (error) {
-                                db.rollback(() => reject(error));
-                            }
-                            db.commit((error) => {
+                            db.query(sqlUpdate, (error) => {
                                 if (error) {
-                                    return db.rollback(() => reject(error));
+                                    db.rollback(() => reject(error));
                                 }
-                                else resolve();
+                                db.commit((error) => {
+                                    if (error) {
+                                        return db.rollback(() => reject(error));
+                                    }
+                                    else resolve();
+                                })
                             })
-                        })
+                        }
+                        else resolve();
                     }
                 });
                 db.release();

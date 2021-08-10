@@ -8,6 +8,7 @@ import Buttons from '../../common/Buttons';
 import errorNameSupplier from '../../utils/ErrorMessages/errorNameSupplier';
 import errorPricesQuantities from '../../utils/ErrorMessages/errorPricesQuantities';
 import errorInputSupplies from '../../utils/ErrorMessages/errorInputSupplies';
+import errorPurchaseSupplies from '../../utils/ErrorMessages/errorPurchaseSupplies';
 import successPurchaseSupplies from '../../utils/SuccessMessages/successPurchaseSupplies';
 import axios from 'axios';
 
@@ -19,8 +20,8 @@ const RegisterPurchaseSupplies = (props) => {
         window.location.href = './index'
     }
 
-    const resetStates = () => {
-        successPurchaseSupplies()
+    const resetStates = (message) => {
+        successPurchaseSupplies(message)
         props.updatePurchaseSupplies(null)
         props.resetPurchasePrice()
         props.resetPurchaseQuantity()
@@ -49,7 +50,8 @@ const RegisterPurchaseSupplies = (props) => {
             let detail = {  "purchase_number":props.purchaseNumber, 
                             "id_supply": supply.id_supply, 
                             "quantity": props.purchaseQuantity[i],
-                            "subtotal": props.purchaseSubtotal[i]}
+                            "subtotal": props.purchaseSubtotal[i],
+                            "stock": supply.stock_lot?true:false}
             details.push(detail)
         })
         if(props.purchaseSupplies.length === 0){
@@ -65,7 +67,14 @@ const RegisterPurchaseSupplies = (props) => {
                 "total": props.purchaseTotal,
                 "details": details}
             axios.post( PORT() + `/api/purchase/new`,purchase)
-            .then(resetStates())
+            .then((response) => {
+                if(response.data.Ok){
+                    resetStates(response.data.Message)
+                }
+                else{
+                    errorPurchaseSupplies(response.data.Message)
+                }
+            })
             .catch((err) => {console.log(err)})
         }           
     }

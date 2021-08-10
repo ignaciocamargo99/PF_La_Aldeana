@@ -6,15 +6,19 @@ import Table from '../../../common/Table/Table';
 import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import React, { useEffect, useState } from "react";
+import BeShowed from "../../../common/BeShowed";
 
 
 const PurchaseTable  = (props) => {
 
     const [refreshTotal,setRefreshTotal] = useState(true)
+    const [priceIncorrect,setPriceIncorrect] = useState(false)
+    const [quantityIncorrect,setQuantityIncorrect] = useState(false)
 
     const changeQuantity = (quantity,i) => {
         if(quantity < 0 || quantity == ""){
-            document.getElementById(`quantityInput${i}`).value = 0
+            document.getElementById(`quantityInput${i}`).value = ""
+            setQuantityIncorrect(false)
             quantity = 0
         }
         props.updatePurchaseQuantity(quantity,i)
@@ -26,7 +30,8 @@ const PurchaseTable  = (props) => {
 
     const changePrice = (price,i) => {
         if(price < 0 || price == ""){
-            document.getElementById(`priceInput${i}`).value = 0
+            document.getElementById(`priceInput${i}`).value = ""
+            setPriceIncorrect(false)
             price = 0
         }    
         props.updatePurchasePrice(price,i)
@@ -36,6 +41,24 @@ const PurchaseTable  = (props) => {
         setRefreshTotal(!refreshTotal)        
     }
     
+    const validatePrice = (e) => {
+        if(e.target.value < 0){
+            setPriceIncorrect(true)
+        }
+        else{
+            setPriceIncorrect(false)
+        }
+    }
+
+    const validateQuantity = (e) => {
+        if(e.target.value < 0){
+            setQuantityIncorrect(true)
+        }
+        else{
+            setQuantityIncorrect(false)
+        }
+    }
+
     useEffect(() => {
         let total = 0
         props.purchaseSupplies?.map((supply,i) => {
@@ -68,10 +91,12 @@ const PurchaseTable  = (props) => {
                                 <tr>
                                     <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`priceInput${i}`} type="number" min="0" onBlur={(e) => {changePrice(e.target.value,i)}}></input>
+                                        <input id={`priceInput${i}`} type="number" min="0" onChange={(e) => {validatePrice(e)}} onBlur={(e) => {changePrice(e.target.value,i)}}></input>
+                                        <BeShowed show={priceIncorrect}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`quantityInput${i}`} type="number" min="0" onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
+                                        <input id={`quantityInput${i}`} type="number" min="0" onChange={(e) => {validateQuantity(e)}} onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
+                                        <BeShowed show={quantityIncorrect}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
                                         <label id={`lblSubtotal${i}`}></label>

@@ -5,7 +5,7 @@ const suppliesController = require("./controller");
 
 //#region APIs
 
-router.get("/supplies", suppliesController.getSupplies);
+router.get("/supplies/all", suppliesController.getSupplies);
 
 //#endregion
 

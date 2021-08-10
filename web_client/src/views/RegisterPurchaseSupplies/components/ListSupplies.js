@@ -15,14 +15,14 @@ const ListSupplies = (props) => {
     const [searchByName,setSearchByName] = useState(true)
 
     useEffect(()=>{
-        axios.get( PORT() + `/api/supplies`)
+        axios.get( PORT() + `/api/supplies/all`)
         .then((response) => {
             setSupplies(response.data)
         })
         .catch((err) => {
             console.log(err)
         })
-    },[true === false])
+    },[true])
 
     const upload = (id) => {
         let supplyAdd = supplies.find(supply => supply.id_supply == id)
@@ -81,7 +81,7 @@ const ListSupplies = (props) => {
                 <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download}/>
             </div>
             <div className="offset-sm-9 col-sm-3">
-                <label>Total: ${props.purchaseTotal}</label>
+                <label><b>Total: ${props.purchaseTotal}</b></label>
             </div>
         </div>
     )

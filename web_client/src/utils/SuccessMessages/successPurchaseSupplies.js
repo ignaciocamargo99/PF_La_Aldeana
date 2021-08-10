@@ -1,8 +1,8 @@
 import swal from 'sweetalert';
 
-export default function successPurchaseSupplies() {
+export default function successPurchaseSupplies(message) {
 
-    return swal("Atención", "La compra fue registrada exitosamente", "success")
+    return swal("Atención", message, "success")
         .then(() => {
             window.location.reload();
         })
