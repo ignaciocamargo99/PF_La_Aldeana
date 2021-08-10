@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';

@@ -5,6 +5,7 @@ const productionPostDB = (newProduction) => {
     const flavors = newProduction.flavors;
 
     const sqlInsert = "INSERT INTO PRODUCTIONS VALUES (?, ?, ?)";
+    const sqlUpdate = "UPDATE FLAVORS SET stock = stock + ? WHERE id_flavor = ?";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -18,11 +19,16 @@ const productionPostDB = (newProduction) => {
                         if (error) {
                             return db.rollback(() => reject(error));
                         }
-                        db.commit((error) => {
+                        db.query(sqlUpdate, [flavors[i].amount, flavors[i].id_flavor], (error) => {
                             if (error) {
                                 return db.rollback(() => reject(error));
                             }
-                            else resolve();
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() => reject(error));
+                                }
+                                else resolve();
+                            }); 
                         });
                     });
                 };

@@ -3,7 +3,7 @@ import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import FlavorsAmount from './FlavorsAmount';
 
 export default function TableFlavorsUp(props) {

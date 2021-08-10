@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const flavorsGetDB = () => {
-    const sqlSelect = 'SELECT id_flavor, name FROM FLAVORS ' +
+    const sqlSelect = 'SELECT id_flavor, name, stock FROM FLAVORS ' +
         'WHERE active = 1';
 
     return new Promise((resolve, reject) => {

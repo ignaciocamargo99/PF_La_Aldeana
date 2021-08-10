@@ -24,7 +24,7 @@ function RegisterProductionView (props){
             Axios.post(PORT() + '/api/productions/new', production)
             .then((production) => {
                 if(production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-                else displayError('Ha ocurrido un error al registrar la producción. \n' + production.data.Message);
+                else displayError('Ha ocurrido un error al registrar la producción.');
             })
             .catch(error => console.log(error))
         }
