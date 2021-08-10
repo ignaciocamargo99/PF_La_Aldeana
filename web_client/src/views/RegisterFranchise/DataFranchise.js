@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import AddressFranchise from './components/AddressFranchise';
 import AddressNumberFrabchise from "./components/AddressNumberFrabchise";
 import CityFranchise from './components/CityFranchise';
@@ -8,11 +7,7 @@ import NameFranchise from "./components/NameFranchise";
 
 const DataFranchise = (props) => {
 
-
-    const [data, setData] = useState({});
-
     const load = (childData) => {
-        setData(childData);
         props.load(childData);
     }
     return (

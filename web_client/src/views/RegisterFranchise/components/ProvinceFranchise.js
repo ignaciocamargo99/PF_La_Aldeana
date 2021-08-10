@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import validateTextOnly from '../../../utils/Validations/validateTextOnly';
 
 export default function ProvinceFranchise (props) {
     const inputProvince = useRef(null);
     const [province, setProvince] = useState("null");
-    const [prevProvince, setPrevProvince] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const handleProvince = () => {
-        setPrevProvince(province);
         setProvince(inputProvince.current.value);
     }
 
@@ -36,8 +33,8 @@ export default function ProvinceFranchise (props) {
                 <label htmlFor="province" >Provincia*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="province" type="text" maxLength="80" ref={inputProvince} placeholder="Ingrese provincia de la franquicia..." onChange={handleProvince}
-                onKeyDown={(e) => validateTextOnly(e)}/>
+                <input className={isValidClass} id="province" type="text" maxLength="80" ref={inputProvince} placeholder="Ingrese provincia de la franquicia..."
+                onChange={handleProvince}/>
             </div>
         </div>
     );

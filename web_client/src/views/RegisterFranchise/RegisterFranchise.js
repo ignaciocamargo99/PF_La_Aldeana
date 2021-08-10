@@ -48,7 +48,7 @@ export default function RegisterFranchise() {
                     success();
                 }
                 else {
-                    displayError('Ha ocurrido un error al registrar un insumo. \n' + data.Message);
+                    displayError('Ha ocurrido un error al registrar un insumo.');
                 }
             })
             .catch(error => console.log(error))
