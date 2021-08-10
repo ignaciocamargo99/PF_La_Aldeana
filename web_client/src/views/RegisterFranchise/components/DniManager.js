@@ -7,7 +7,7 @@ export default function DniManager (props) {
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const onChangeDni = () => {
-        if (inputDni.current.value > 10000000 && inputDni.current.value.length == 8) {
+        if (inputDni.current.value > 10000000 && inputDni.current.value.length === 8) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
             let int = Math.trunc(inputDni.current.value);

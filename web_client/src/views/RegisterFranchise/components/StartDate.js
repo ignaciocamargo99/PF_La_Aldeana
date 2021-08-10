@@ -4,11 +4,9 @@ import formattedDate from "../../../utils/formattedDate";
 export default function StartDate (props) {
     const inputDate = useRef(null);
     const [date, setDate] = useState("null");
-    const [prevDate, setPrevDate] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const handleDate = () => {
-        setPrevDate(date);
         setDate(inputDate.current.value);
     }
 

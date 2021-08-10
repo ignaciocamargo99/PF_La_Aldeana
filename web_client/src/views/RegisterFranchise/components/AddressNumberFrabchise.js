@@ -7,7 +7,7 @@ export default function AddressNumberFrabchise (props) {
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const onChangeNumber = () => {
-        if (inputNumber.current.value >= 0 && inputNumber.current.value.length <= 5) {
+        if (inputNumber.current.value >= 0 && inputNumber.current.value.length <= 5 && inputNumber.current.value.length > 0) {
             setIsValidClass("form-control is-valid");
             let data = props.data;
             let int = Math.trunc(inputNumber.current.value);

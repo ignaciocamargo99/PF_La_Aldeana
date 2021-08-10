@@ -1,17 +1,13 @@
-import React, { useState } from "react";
 import NameManager from './components/NameManager';
 import LastNameManager from './components/LastNameManager';
 import DniManager from './components/DniManager';
 
 const DataManager = (props) => {
 
-
-    const [data, setData] = useState({});
-
     const load = (childData) => {
-        setData(childData);
         props.load(childData);
     }
+
     return (
         <>
             <h5>Franquiciado</h5>

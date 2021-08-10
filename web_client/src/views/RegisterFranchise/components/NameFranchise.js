@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import validateTextOnly from '../../../utils/Validations/validateTextOnly';
 
 export default function NameFranchise (props) {
     const inputName = useRef(null);
     const [name, setName] = useState("null");
-    const [prevName, setPrevName] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const handleName = () => {
-        setPrevName(name);
         setName(inputName.current.value);
     }
 
@@ -36,8 +33,8 @@ export default function NameFranchise (props) {
                 <label htmlFor="name" >Nombre*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="name" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre de la franquicia..." onChange={handleName}
-                onKeyDown={(e) => validateTextOnly(e)}/>
+                <input className={isValidClass} id="name" type="text" maxLength="80" ref={inputName} placeholder="Ingrese nombre de la franquicia..."
+                onChange={handleName}/>
             </div>
         </div>
     );
