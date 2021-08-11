@@ -17,7 +17,7 @@ describe('Obtener todas las compras de insumos: ',()=>{
     });
 });
 
-
+/*
 describe('Obtener el ultimo numero de compra de las compras de insumos: ',()=>{
     it('Deberia traer el ultimo numero de compra', (done) => {
     chai.request(url)
@@ -46,7 +46,7 @@ describe('Obtener el ultimo numero de compra de las compras de insumos: ',()=>{
     })
 });      
 
-/*
+
 describe('Insercion de compra',()=>{
     it('Deberia mostrar un mensaje de error cuando el campo fecha de compra esta vacio', (done) => {
     chai.request(url)
