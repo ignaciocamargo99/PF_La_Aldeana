@@ -3,17 +3,13 @@ import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from 'react';
 import FlavorsAmount from './FlavorsAmount';
 
 export default function TableFlavorsUp(props) {
 
-    const [amounts, setAmounts] = useState([]);
-
     const handlerAmount = (amount, i) => {
         let aux = props.flavors;
-        aux[i].amount = amount;
-        setAmounts(aux);
+        aux[i].amount = amount;  
     }
 
     return (

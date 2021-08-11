@@ -29,19 +29,19 @@ function RegisterProductionView (props){
             .catch(error => console.log(error))
         }
         else {
-            warningMessage("Error","Se debe ingresar al menos un sabor para registrar la producción.","error");
+            warningMessage("Error","Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.","error");
         }
     }
     
     useEffect(() => {
-        if (props.productionFlavors.length > 0) {
+        if (props.productionFlavors.length > 0 && props.date) {
             setReady(true);
         }
         else
         {
             setReady(false);
         }
-    },[props.productionFlavors])
+    },[props.productionFlavors, props.date])
     
     return(
         <>

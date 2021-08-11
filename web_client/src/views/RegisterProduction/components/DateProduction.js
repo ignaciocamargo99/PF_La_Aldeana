@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { updateDate } from '../../../actions/DateActions';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import formattedDate from '../../../utils/ConverterDate/formattedDate'
 
 const DateProduction = (props) => {
     
-    const [startDate, setStartDate] = useState(new Date());
+    const startDate = formattedDate(new Date());
+    const inputDate = useRef(null);
+    const [isValidClass, setIsValidClass] = useState("form-control");
 
-    const onChangeDate = (startDate) => {        
-        setStartDate(startDate);
-        props.updateDate(startDate);
+    const onChangeDate = () => {
+        props.updateDate(inputDate.current.value);
+        setIsValidClass("form-control is-valid");
     }
 
     return (
-        <div className="form-row">
+        <div className="formRow">
             <div className="form-control-label">
-                <label className="col-sm-6">Fecha</label>
-                <DatePicker selected={startDate} maxDate={new Date()} minDate={new Date(2001,0,1)} onChange={onChangeDate} dateFormat="dd/MM/yyyy"/>
+                <label htmlFor="date">Fecha</label>
+            </div>
+            <div className="form-control-input">
+                <input className={isValidClass} id="date" type="date" ref={inputDate} onChange={onChangeDate} min={"2021-01-01"} max={startDate}></input>
             </div>
         </div>
     )
