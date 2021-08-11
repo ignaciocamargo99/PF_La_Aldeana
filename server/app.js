@@ -7,6 +7,8 @@ const productsRouter = require('./api/products/router');
 const usersRouter = require('./api/users/router');
 const permissionsRouter = require('./api/permissions/router');
 const sessionsRouter = require('./api/sessions/router');
+const purchaseSuppliesRouter = require('./api/purchase_supplies/router');
+const suppliesRouter = require('./api/supplies/router');
 const middleware = require('./middleware/index');
 const franchiseRouter = require('./api/franchise/router');
 
@@ -27,7 +29,12 @@ app.use('/api', productsRouter);
 app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
+<<<<<<< HEAD
 app.use('/api', franchiseRouter);
+=======
+app.use('/api', purchaseSuppliesRouter);
+app.use('/api', suppliesRouter);
+>>>>>>> US/350-Registrar-compras-insumos
 
 app.use(middleware.error404);
 app.use(middleware.error500);
