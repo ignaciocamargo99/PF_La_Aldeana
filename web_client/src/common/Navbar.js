@@ -45,7 +45,7 @@ export default function Navbar (props){
                     </Dropdown>
                 </>
         }
-        const permissionCompras = permisos.find(option => option === "Compras")
+        const permissionCompras = permissions.find(option => option === "Compras")
         let compras
         if(permissionCompras === "Compras"){
             compras =
