@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "react": "17.0.1",
+    "react-desktop-menus": "^1.0.8",
     "react-native": "0.64.2",
     "react-native-windows": "^0.64.0-0"
   },
