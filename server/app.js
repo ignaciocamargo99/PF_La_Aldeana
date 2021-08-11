@@ -29,12 +29,9 @@ app.use('/api', productsRouter);
 app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
-<<<<<<< HEAD
 app.use('/api', franchiseRouter);
-=======
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', suppliesRouter);
->>>>>>> US/350-Registrar-compras-insumos
 
 app.use(middleware.error404);
 app.use(middleware.error500);
