@@ -92,11 +92,11 @@ const PurchaseTable  = (props) => {
                                     <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
                                         <input id={`priceInput${i}`} type="number" min="0" onChange={(e) => {validatePrice(e)}} onBlur={(e) => {changePrice(e.target.value,i)}}></input>
-                                        <BeShowed show={priceIncorrect}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
+                                        <BeShowed show={priceIncorrect && document.getElementById(`priceInput${i}`)?.value < 0}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
                                         <input id={`quantityInput${i}`} type="number" min="0" onChange={(e) => {validateQuantity(e)}} onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
-                                        <BeShowed show={quantityIncorrect}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
+                                        <BeShowed show={quantityIncorrect && document.getElementById(`quantityInput${i}`)?.value < 0}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '50px' }}>
                                         <label id={`lblSubtotal${i}`}></label>

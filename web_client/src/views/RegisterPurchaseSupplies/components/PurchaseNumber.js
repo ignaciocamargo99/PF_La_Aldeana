@@ -16,7 +16,6 @@ const PurchaseNumber = (props) => {
         let date = new Date()
         let dateString = dateFormat(date)
         inputDate.current.max = dateString
-        console.log(dateString)
         props.updatePurchaseDate(dateString)
         axios.get(PORT() + `/api/purchase/last`)
         .then((respone) => {

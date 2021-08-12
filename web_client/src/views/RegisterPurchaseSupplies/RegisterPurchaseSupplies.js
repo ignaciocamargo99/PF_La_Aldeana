@@ -88,7 +88,7 @@ const RegisterPurchaseSupplies = (props) => {
                <PurchaseNumber />
                <PurchaseSupplier />
                <ListSupplies />
-               <Buttons ready={true} label={"Registrar compra"} actionCancel={cancel} actionOK={registerPurchaseSupplies}/>            
+               <Buttons ready={true} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies}/>            
             </div>
         </>
     )

@@ -6,13 +6,14 @@ import BeShowed from '../../../common/BeShowed';
 import UploadByName from '../../../common/UploadByName';
 import SuppliesTable from './SuppliesTable';
 import PurchaseTable from './PurchaseTable';
+import TabOption from './TabOption';
 
 const PORT = require('../../../config');
 
 const ListSupplies = (props) => {
     
     const [supplies,setSupplies] = useState([])
-    const [searchByName,setSearchByName] = useState(true)
+    const [typeOfUpload,setTypeOfUpload] = useState('text')
 
     useEffect(()=>{
         axios.get( PORT() + `/api/supplies/all`)
@@ -48,34 +49,30 @@ const ListSupplies = (props) => {
         props.removePurchaseSubtotal(i)
     }
 
-
+    const handlerTabSelection = (value) => setTypeOfUpload(value);
     
     return(
         <div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="purchaseSupplies" >Insumos:</label>
+                    <h3>Insumos</h3>
                 </div>
             </div>
-            <div className="formRow offset-sm-2 col-sm-8">
-                <div className="form-control-label">
-                    <button type="button" style={{backgroundColor: '#A5DEF9', borderColor: '#A5DEF9'}} onClick={() => {setSearchByName(true)}}><label style={{color: '#383C77'}}><b>Buscar insumo por nombre</b></label></button>
-                </div>
-                <div className="form-control-label">
-                    <button type="button" style={{backgroundColor: '#A5DEF9', borderColor: '#A5DEF9'}} onClick={() => {setSearchByName(false)}}><label style={{color: '#383C77'}}><b>Listar todos los insumos</b></label></button>
-                </div>
+            <div className="formRow">
+                <TabOption handler={handlerTabSelection} select={typeOfUpload}></TabOption>
             </div>
-            <BeShowed show={searchByName}>
+            <BeShowed show={typeOfUpload==="text"}>
                 <UploadByName list={supplies} upload={upload} itemName="Insumo" listName="suppliesList" 
                                 placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" />
             </BeShowed>
-            <BeShowed show={!searchByName}>
+            <BeShowed show={typeOfUpload==="list"}>
                 <div className="viewBody">
                     <SuppliesTable supplies={supplies} upload={upload}/>
                 </div>
             </BeShowed>
+            <hr></hr>
             <div className="offset-sm-4">
-                <h3 style={{marginTop: "5%"}} ><b>Detalle de compra</b></h3>
+                <h3 style={{marginTop:'5%'}}>Detalle de compra</h3>
             </div>
             <div className="viewBody">
                 <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download}/>
