@@ -1,31 +1,33 @@
-import { useState, useEffect } from 'react';
-import Table from '../../../../common/Table/Table';
-import HeaderTable from '../../../../common/Table/HeaderTable';
-import BodyTable from '../../../../common/Table/BodyTable';
-import BeShowed from "../../../../common/BeShowed";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from 'react';
+import BodyTable from '../../../../common/Table/BodyTable';
+import HeaderTable from '../../../../common/Table/HeaderTable';
+import Table from '../../../../common/Table/Table';
 import SuppliesAmount from './SuppliesAmount';
+import '../../../../assets/Buttons.css';
 
 export default function TableSuppliesUp(props) {
 
     const [amounts, setAmounts] = useState([]);
 
-    const handlerAmount = (amount, id) => {
+    const handlerAmount = (amount, i) => {
         let aux = props.supplies;
-        aux[id].amount = amount;
+        aux[i].amount = amount;
         setAmounts(aux);
     }
 
     return (
         <>
+            <h4 className="text-secondary">Insumos disponibles:</h4>
             <Table>
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center' }}>Nombre</th>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center', width: '150px' }}>Cantidad</th>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center', width: '150px' }}>Eliminar</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Nombre</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Descripción</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>Cantidad</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acción</th>
                         </>
                     }
                 />
@@ -34,11 +36,11 @@ export default function TableSuppliesUp(props) {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center' }}><SuppliesAmount supplies={element} load={handlerAmount} supply={element.id_supply}/></td>
-                                    <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn btn-success btn-sm px-3"
-                                            onClick={(e) => props.upload(element.id_supply)}><FontAwesomeIcon icon={faPlus} /></button>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                    <SuppliesAmount supplies={element} load={handlerAmount} supply={i} />
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                        <button className="sendAdd" type="button" onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

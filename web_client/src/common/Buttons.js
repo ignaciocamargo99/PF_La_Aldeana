@@ -1,10 +1,8 @@
 import BeShowed from './BeShowed';
 
 const Buttons = (props) => {
-
-    const actionNotOK = () => {
-        props.actionNotOK(props.data)
-    }
+    
+    const actionNotOK = () => props.actionNotOK(props.data)
 
     return (
         <div className='buttons'>

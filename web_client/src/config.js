@@ -1,4 +1,4 @@
-const ENVIRONMENT = 'L'
+const ENVIRONMENT = 'PP'
 
 //-------------------- 'L': localhost  ;  'D': development  ;  'PP': pre-production  ;  'P': production -----------------------------
 
@@ -12,7 +12,7 @@ const URL_PORT = () => {
             return 'https://la-aldeana-dev.herokuapp.com';
 
         case 'PP':
-            return /** APIs SERVER PRE-PRODUCTION */;
+            return 'https://la-aldeana-staging.herokuapp.com';
 
         case 'P':
             return /** APIs SERVER PRODUCTION */;

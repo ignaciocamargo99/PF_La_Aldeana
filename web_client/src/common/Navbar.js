@@ -25,9 +25,9 @@ export default function Navbar (props){
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permisos = []
-        props.options.map((option) => {permisos.push(decrypt(option))})
-        const permissionVentas = permisos.find(option => option === "Ventas")
+        let permissions = []
+        props.options.map((option) => {permissions.push(decrypt(option))})
+        const permissionVentas = permissions.find(option => option === "Ventas")
         if (permissionVentas === "Ventas") {
             return (
                 <>
@@ -36,10 +36,9 @@ export default function Navbar (props){
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/typeProducts">Tipos de producto</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Insumos</Dropdown.Item>
-                            <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
-                            {/* <Dropdown.Item href="/listProducts">Productos</Dropdown.Item> */}
+                            <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
+                            <Dropdown.Item href="/app/products">Productos</Dropdown.Item>
+                            <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </>
@@ -62,7 +61,7 @@ export default function Navbar (props){
                         {showOptionsWithPermissions()}
                     </ul>
                 </div>
-                <BeShowed show={cookies.get('nick_user')!= undefined}>
+                <BeShowed show={cookies.get('nick_user')!== undefined}>
                     <label><b className='color-blue'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}&nbsp;</b></label>
                     <button className="btn" onClick={signOut}><FontAwesomeIcon icon={faSignOutAlt} /></button>
                 </BeShowed>
