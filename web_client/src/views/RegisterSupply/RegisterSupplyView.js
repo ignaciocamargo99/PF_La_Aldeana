@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { connect } from 'react-redux';
 import { updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply } from '../../actions/SupplyActions';
 import NameSupply from './components/NameSupply';
@@ -7,14 +7,11 @@ import SinglePrice from './components/SinglePrice';
 import MultiplePrice from './components/MultiplePrice';
 import Stock from './components/Stock';
 import TypeSupply from './components/TypeSupply';
-
 import Buttons from '../../common/Buttons';
-/*import errorNameSupplier from '../../utils/ErrorMessages/errorNameSupplier';
-import errorPricesQuantities from '../../utils/ErrorMessages/errorPricesQuantities';
-import errorInputSupplies from '../../utils/ErrorMessages/errorInputSupplies';
-import errorPurchaseSupplies from '../../utils/ErrorMessages/errorPurchaseSupplies';
-import successPurchaseSupplies from '../../utils/SuccessMessages/successPurchaseSupplies';
-*/import axios from 'axios';
+import validateSupplyRegister from '../../utils/Validations/validateSupplyRegister';
+import success from '../../utils/SuccessMessages/successTypeProduct';
+import displayError from '../../utils/ErrorMessages/errorMessage';
+import Axios from 'axios';
 
 const PORT = require('../../config');
 
@@ -36,51 +33,43 @@ const RegisterPurchaseSupplies = (props) => {
         props.updateUnitSupply(0)
     }
 
+    const [data, setData] = useState({name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
+        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0});
+    const [ready, setReady] = useState(false);
 
+    useEffect(()=>{
+        
+        setData({
+            name: props.nameSupply,
+            description: props.descriptionSupply,
+            id_supply_type: props.typeSupply,
+            price_wholesale: props.multiplePrice,
+            price_retail: props.singlePrice,
+            stock_lot: props.lotSupply,
+            stock_unit: props.unitSupply,
+            unit_x_lot: props.unitPerLotSupply
+        });
+
+        if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.typeSupply >= 0 && props.multiplePrice > 0 &&
+        props.singlePrice > 0 && props.lotSupply > 0 && props.unitSupply > 0 && props.unitPerLotSupply > 0) {
+            setReady(true);
+        } else {
+            setReady(false);
+        }
+    }, [props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
     const registerPurchaseSupplies = () => {
-        let send = true
-        /*if(props.purchaseSupplier === null){
-            errorNameSupplier()
-            send = false
-            return
-        }
-        let details = []
-        props.purchaseSupplies.map((supply,i) => {
-            if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0){
-                errorPricesQuantities()
-                send = false
-                return
-            }
-            let detail = {  "purchase_number":props.purchaseNumber, 
-                            "id_supply": supply.id_supply, 
-                            "quantity": props.purchaseQuantity[i],
-                            "subtotal": props.purchaseSubtotal[i],
-                            "stock": supply.stock_lot?true:false}
-            details.push(detail)
-        })
-        if(props.purchaseSupplies.length === 0){
-            send = false
-            errorInputSupplies()
-            return
-        }
-
-        if(send){
-            let purchase = {
-                "date_purchase": props.purchaseDate,
-                "supplier": props.purchaseSupplier,
-                "total": props.purchaseTotal,
-                "details": details}
-            axios.post( PORT() + `/api/purchase/new`,purchase)
-            .then((response) => {
-                if(response.data.Ok){
-                    resetStates(response.data.Message)
+        
+        Axios.post(PORT() + '/api/supply/new', data)
+            .then(({ data }) => {
+                if (data.Ok) {
+                    resetStates('Registro completado');
+                    success();
                 }
-                else{
-                    errorPurchaseSupplies(response.data.Message)
+                else {
+                    displayError('Ha ocurrido un error al registrar un insumo.');
                 }
             })
-            .catch((err) => {console.log(err)})
-        }           */
+            .catch(() => displayError('Ha ocurrido un error en el servidor.', 'Error'));
     }
 
     return(
@@ -102,7 +91,7 @@ const RegisterPurchaseSupplies = (props) => {
                 </div>
                 <TypeSupply />
                 <Stock />
-                <Buttons ready={true} label={"Registrar Insumo"} actionCancel={cancel} actionOK={registerPurchaseSupplies}/>            
+                <Buttons ready={ready} label={"Registrar Insumo"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data}/>            
             </div>
         </>
     )

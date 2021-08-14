@@ -20,6 +20,7 @@ const SinglePrice = (props) => {
             props.updateSinglePrice(Math.trunc(inputSinglePrice.current.value));
         } else if (prevSinglePrice !== "null") {
             setIsValidClass("form-control is-invalid");
+            props.updateSinglePrice(0);
         }
     }, [props.singlePrice]);
 

@@ -21,6 +21,7 @@ const MultiplePrice = (props) => {
             props.updateMultiplePrice(Math.trunc(inputMultiplePrice.current.value));
         } else if (prevMultiplePrice !== "null") {
             setIsValidClass("form-control is-invalid");
+            props.updateMultiplePrice(0);
         }
     }, [props.multiplePrice]);
 

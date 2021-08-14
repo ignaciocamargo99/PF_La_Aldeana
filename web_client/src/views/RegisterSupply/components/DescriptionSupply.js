@@ -20,6 +20,7 @@ const DescriptionSupply = (props) => {
             props.updateDescriptionSupply(supplyDescription);
         } else if (prevDescriptionSupply !== "null") {
             setIsValidClass("form-control is-invalid");
+            props.updateDescriptionSupply('null');
         }
     }, [props.descriptionSupply]);
 
@@ -27,7 +28,7 @@ const DescriptionSupply = (props) => {
         
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="supplyDescription">Descripción*</label>
+                <label htmlFor="supplyDescription">Descripción</label>
             </div>
             <div className="form-control-input">
                 <textarea className={isValidClass} id="supplyDescription" maxLength="200" ref={inputSupplyDescription} onChange={handleDescriptionChange} placeholder="Ingrese descripción del insumo..." rows="3"></textarea>

@@ -1,12 +1,12 @@
 //Reducers
-export const nameSupply = (state = null ,action) => {
+export const nameSupply = (state = 'null' ,action) => {
     if(action.type === 'UPDATE_NAME_SUPPLY'){
         return action.payload
     }
     return state
 }
 
-export const descriptionSupply = (state = null ,action) => {
+export const descriptionSupply = (state = 'null' ,action) => {
     if(action.type === 'UPDATE_DESCRIPTION_SUPPLY'){
         return action.payload
     }

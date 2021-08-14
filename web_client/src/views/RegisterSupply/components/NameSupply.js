@@ -20,6 +20,7 @@ const NameSupply = (props) => {
             props.updateNameSupply(supplyName);
         } else if (prevSupplyName !== "null") {
             setIsValidClass("form-control is-invalid");
+            props.updateNameSupply('null');
         }
     }, [props.nameSupply]);
 

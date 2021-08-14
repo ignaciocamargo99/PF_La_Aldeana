@@ -33,7 +33,7 @@ const Stock = (props) => {
     }
 
     useEffect(() => {
-        if (inputSupplyStockLot.current.value > 0 && inputSupplyStockLot.current.value <= 99999999) {
+        if (inputSupplyStockLot.current.value > 0 && inputSupplyStockLot.current.value <= 9999) {
             setIsValidSupplyStockLotClass("form-control is-valid");
             props.updateLotSupply(Math.trunc(inputSupplyStockLot.current.value));
 
@@ -45,11 +45,12 @@ const Stock = (props) => {
 
         } else if (prevSupplyStockLot !== "null") {
             setIsValidSupplyStockLotClass("form-control is-invalid");
+            props.updateLotSupply(0);
         }
     }, [props.lotSupply]);
 
     useEffect(() => {
-        if (inputSupplyUnitsByLot.current.value > 0 && inputSupplyUnitsByLot.current.value <= 99999999) {
+        if (inputSupplyUnitsByLot.current.value > 0 && inputSupplyUnitsByLot.current.value <= 99999) {
             setIsValidSupplyUnitsByLotClass("form-control is-valid");
             props.updateUnitPerLotSupply(Math.trunc(inputSupplyUnitsByLot.current.value));
             
@@ -61,6 +62,7 @@ const Stock = (props) => {
 
         } else if (prevSupplyUnitsByLot !== "null") {
             setIsValidSupplyUnitsByLotClass("form-control is-invalid");
+            props.updateUnitPerLotSupply(0);
         }
     }, [props.unitPerLotSupply]);
 
@@ -73,6 +75,7 @@ const Stock = (props) => {
 
         } else if (prevSupplyStock !== "null") {
             setIsValidSupplyStockClass("form-control is-invalid");
+            props.updateUnitSupply(0);
             setError('El stock por unidad debe ser un número mayor o igual a ' + inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value
             + ' y menor que ' + (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value);
         }
