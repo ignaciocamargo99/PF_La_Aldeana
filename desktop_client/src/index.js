@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './views/App';
+import MasterView from './views/MasterView';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode >
-    <App />
+    <div>
+      <MasterView />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
