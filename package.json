@@ -8,7 +8,9 @@
   },
   "scripts": {
     "start-web": "(cd web_client && npm install) && (cd ../server && npm install) && (cd .. && concurrently \"npm run web_server\" \"npm run web_client\")",
+    "start-desktop": "(cd desktop_client && npm install) && (cd ../server && npm install) && (cd .. && concurrently \"npm run web_server\" \"npm run desktop_client\")",
     "web_server": "nodemon server/bin/www",
+    "desktop_client": "node start_desktop_client.js",
     "web_client": "node start_web_client.js",
     "server": "cd server && npm install && cd .. && node server/bin/www",
     "test": "(cd server && npm install && npm-run-all -p -r start test)",
