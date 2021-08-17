@@ -91,7 +91,7 @@ const RegisterPurchaseSupplies = (props) => {
                 </div>
                 <TypeSupply />
                 <Stock />
-                <Buttons ready={ready} label={"Registrar Insumo"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data}/>            
+                <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data}/>            
             </div>
         </>
     )
