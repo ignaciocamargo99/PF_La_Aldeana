@@ -1,33 +1,52 @@
 import Axios from 'axios';
-import React, { useRef, useState} from 'react';
+import React, { useRef, useState, useEffect} from 'react';
 import Buttons from '../../common/Buttons';
 import success from '../../utils/SuccessMessages/successTypeProduct';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
 import './RegisterTypeProductView.css';
 import './styles/TypeProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
+import SectorProduct from '../RegisterProduct/components/SectorProduct';
 
 const PORT = require('../../config');
 
 export default function RegisterTypeProductView() {
+    const [data, setData] = useState({name: 'null', description: 'null', id_sector: 2});
     const [ready, setReady] = useState(false);
     const inputName = useRef(null);
     const inputDescription = useRef(null);
     const divNameValidation = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
+    const [sectorTypeProductChild, setSectorTypeProductChild] = useState(2);
+
+
+    const load = (childData) => {
+        setData(childData)
+        setSectorTypeProductChild(childData.id_sector);
+    }
+
+    useEffect(()=>{
+        console.log(data)
+        if (data.id_sector > -1 && sectorTypeProductChild > -1 && 
+            data.name.length > 0 && data.name.length < 50 && data.name !== 'null'){
+                setReady(true);
+            } else {
+                setReady(false);
+            }
+    }, [sectorTypeProductChild, data]);
 
     const registerTypeProduct = () => {
-        const name = inputName.current.value.trim();
         const description = inputDescription.current.value.trim();
         try {
             if (ready) {
                 Axios.post(PORT() + '/api/typeProduct/new', {
-                    name: name,
-                    description: description
+                    name: data.name,
+                    description: description,
+                    id_sector: data.id_sector
                 })
                     .then(({data}) =>{
                         if(data.Ok) success();
-                        else displayError('Ha ocurrido un error al registrar el tipo de producto. \n' + data.Message);
+                        else displayError(data.Message);
                     })
                     .catch(err => console.error(err))
             }
@@ -41,16 +60,23 @@ export default function RegisterTypeProductView() {
         if (name.length > 0 && name.length < 50) {
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
-            setReady(true);
+            let dat = data;
+            dat.name = name;
+            setData(dat);
         }
         else if(name.length > 0 && name.length < 50){
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
+            let dat = data;
+            dat.name = name;
+            setData(dat);
         }
         else {
             setIsValidName("form-control is-invalid");
             divNameValidation.current.innerHTML = "El nombre es un campo obligatorio y debe ser menor a 50 caracteres.";
-            setReady(false);
+            let dat = data;
+            dat.name = 'null';
+            setData(dat);
         }
     }
 
@@ -79,6 +105,7 @@ export default function RegisterTypeProductView() {
                         <textarea type='text' className="form-control" ref={inputDescription} placeholder='Ingrese descripción del producto...' maxLength="150"></textarea>
                     </div>
                 </div>
+                <SectorProduct load={load} data={data}/>
                 <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={registerTypeProduct} actionCancel={cancelTypeProduct} />
             </div>
         </>
