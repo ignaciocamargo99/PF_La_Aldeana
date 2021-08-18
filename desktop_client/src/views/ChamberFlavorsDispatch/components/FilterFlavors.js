@@ -15,12 +15,12 @@ const ListFlavors = () => {
         Axios.get(`${PORT()}/api/typeFlavors`)
             .then(response => setTypeFlavor(response.data))
             .catch(error => console.error(error))
-    })
+    },[])
     useEffect(() => {
         Axios.get(`${PORT()}/api/familyFlavors`)
             .then(response => setFamilyFlavor(response.data))
             .catch(error => console.error(error))
-    })
+    }, [])
 
     const handlerOnChangeTypeFlavor = (e) => {
         if (e.target.value === 'typeFlavor') inputTypeFlavor.current.value = e.target.value;
@@ -49,27 +49,28 @@ const ListFlavors = () => {
                     </label>
                 </div>
             </div>
-            <BeShowed show={inputTypeFlavor.current.checked}>
-                <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1'>
-                    <option disabled value="-1">Seleccione tipo de sabor</option>
-                    {
-                        typeFlavor?.map((element, i) => (
-                            <option key={i} value={element.id_type_flavor}>{element.name}</option>
-                        ))
-                    }
-                </select>
-            </BeShowed>
-            <BeShowed show={inputFamilyFlavor.current.checked}>
-            <br /><br />
-                <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1'>
-                    <option disabled value="-1">Seleccione familia</option>
-                    {
-                        familyFlavor?.map((element, i) => (
-                            <option key={i} value={element.id_family_flavor}>{element.name}</option>
-                        ))
-                    }
-                </select>
-            </BeShowed>
+            <div className="formRow">
+                <BeShowed show={inputTypeFlavor.current.checked}>
+                    <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1'>
+                        <option disabled value="-1">Seleccione tipo de sabor</option>
+                        {
+                            typeFlavor?.map((element, i) => (
+                                <option key={i} value={element.id_type_flavor}>{element.name}</option>
+                            ))
+                        }
+                    </select>
+                </BeShowed>
+                <BeShowed show={inputFamilyFlavor.current.checked}>
+                    <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1'>
+                        <option disabled value="-1">Seleccione familia</option>
+                        {
+                            familyFlavor?.map((element, i) => (
+                                <option key={i} value={element.id_family_flavor}>{element.name}</option>
+                            ))
+                        }
+                    </select>
+                </BeShowed>
+            </div>
         </>
     );
 }

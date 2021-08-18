@@ -14,7 +14,7 @@ const ListFlavors = () => {
         Axios.get(`${PORT()}/api/flavors`)
             .then(response => setFlavors(response.data))
             .catch(error => console.error(error))
-    })
+    },[])
 
     return (
         <>
