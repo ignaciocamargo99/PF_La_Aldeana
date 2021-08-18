@@ -1,0 +1,13 @@
+.logo {
+    height: 50%;
+    width: height/4;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 10%;
+    transform: translate(-40%, -50%);
+}
+.root {
+    height: 100vh;
+    background-color: white;
+}
