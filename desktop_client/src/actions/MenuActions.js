@@ -6,16 +6,30 @@ export const toRoot = () =>{
     }
 }
 
-export const toSales = () =>{
+export const toChamberFlavorsDispatch = () =>{
     return{
-        type: 'TO_SALES',
+        type: 'TO_CHAMBER_FLAVORS_DISPATCH',
         payload: 1
     }
 }
 
-export const toChamberFlavorsDispatch = () =>{
+export const toRegisterAttendance = () =>{
     return{
-        type: 'TO_CHAMBER_FLAVORS_DISPATCH',
+        type: 'TO_REGISTER_ATTENDANCE',
         payload: 2
+    }
+}
+
+export const lockMenu = () =>{
+    return{
+        type: 'LOCK_MENU',
+        payload: true
+    }
+}
+
+export const unlockMenu = () =>{
+    return{
+        type: 'UNLOCK_MENU',
+        payload: false
     }
 }

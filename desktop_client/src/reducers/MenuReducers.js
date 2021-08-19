@@ -1,6 +1,25 @@
 //Reducers
 export const location = (state = 0 ,action) => {
-    if(action.type === 'UPDATE_PURCHASE_NUMBER'){
+    if(action.type === 'TO_ROOT'){
+        return action.payload
+    }
+
+    if(action.type === 'TO_CHAMBER_FLAVORS_DISPATCH'){
+        return action.payload
+    }
+
+    if(action.type === 'TO_REGISTER_ATTENDANCE'){
+        return action.payload
+    }
+    return state
+}
+
+export const menu = (state = false ,action) => {
+    if(action.type === 'LOCK_MENU'){
+        return action.payload
+    }
+
+    if(action.type === 'UNLOCK_MENU'){
         return action.payload
     }
     return state

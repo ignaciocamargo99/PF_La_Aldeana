@@ -1,6 +1,7 @@
 import { combineReducers } from "redux"
-import { location } from "./MenuReducers"
+import { location, menu } from "./MenuReducers"
 
 export default combineReducers({
-    location: location
+    location: location,
+    menu: menu
 })

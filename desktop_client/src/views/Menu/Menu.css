@@ -1,4 +1,7 @@
-.menu {
-    background-color: lightskyblue;
-    height: 100%;
+.menuBar {
+    transform: translate(-10px);
+}
+
+.itemMenu {
+    position: relative;
 }
