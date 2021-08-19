@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { updateNick, updatePassword } from '../../../actions/LoginActions';
 import BeShowed from '../../../common/BeShowed';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const FormLogin = (props) => {
+    const passwordInput = useRef(null);
+
+    const [passwordHidden, setPasswordHidden] = useState(true);
+
+    const seePassEyeOnClick = () => {
+        passwordInput.current.type = 'text';
+        setPasswordHidden(false);
+    };
+
+    const hidePassEyeOnClick = () => {
+        passwordInput.current.type = 'password';
+        setPasswordHidden(true);
+    };
 
     return (
         <>
@@ -19,7 +34,13 @@ const FormLogin = (props) => {
                 <br></br>
                 <div className="form-group">
                     <label className="col-sm-2 col-form-label"><b>Contraseña</b></label>
-                    <input type="password" className="col-sm-7 inputText" id="password" placeholder="Password" onChange={(e) => { props.updatePassword(e.target.value) }}></input>
+                    <input ref={passwordInput} type="password" className="col-sm-7 inputText" id="password" placeholder="Password" onChange={(e) => { props.updatePassword(e.target.value) }}>
+                    </input>
+                    {
+                        passwordHidden ?
+                            <FontAwesomeIcon className="see-pass-eye" icon={faEye} onClick={seePassEyeOnClick} /> :
+                            <FontAwesomeIcon className="hide-pass-eye" onClick={hidePassEyeOnClick} icon={faEyeSlash} />
+                    }
                     <br></br>
                     <BeShowed show={props.password === ''}>
                         <span className="text-muted offset-sm-2"><b>*Este es un campo obligatorio</b></span>
