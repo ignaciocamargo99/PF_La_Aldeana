@@ -23,6 +23,8 @@ router.get("/typeProduct", productController.getTypeProducts);
 
 router.get("/products", productController.getProducts);
 
+router.get("/products/all", productController.getProductsAll);
+
 router.get("/supplies", productController.getSupplies);
 
 router.post("/typeProduct/new", productController.postTypeProducts);

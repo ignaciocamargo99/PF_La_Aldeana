@@ -35,7 +35,7 @@ let menuApplication = [
 
 function createWindow() {
   mainWindow = new BrowserWindow({ width: 900, height: 680, icon:__dirname + '/heladeria.ico' });
-  mainWindow.loadURL(isDev ? `${URL_PORT}/flavorsChamber` : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(isDev ? `${URL_PORT}/salesDelivery` : `file://${path.join(__dirname, '../build/index.html')}`);
 
   // Open the DevTools.
   //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
