@@ -1,3 +1,9 @@
+.App {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .viewContainer {
     padding: 1em;
 }
