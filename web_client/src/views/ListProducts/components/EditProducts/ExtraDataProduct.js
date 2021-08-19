@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ImageProduct from './components/ImageProduct';
-import SuppliesPairTables from './components/SuppliesPairTables/SuppliesPairTables';
-import TypeProduct from './components/TypeProduct';
+import SuppliesPairTables from '../../../RegisterProduct/components/SuppliesPairTables/SuppliesPairTables';
+import TypeProduct from '../../../RegisterProduct/components/TypeProduct';
 
 const ExtraDataProduct = (props) => {
     const [data, setData] = useState({});
