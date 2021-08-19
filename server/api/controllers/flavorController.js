@@ -4,7 +4,8 @@ const {readFlavor, readTypeFlavor, readFamilyFlavor} = require('../services/flav
 // HTTP: GET
 async function getFlavor(req, res) {
     try {
-        const result = await readFlavor();
+        const result = await readFlavor(req.query.type_flavor, req.query.family_flavor);
+
         res.send(result)
     }
     catch (e) {

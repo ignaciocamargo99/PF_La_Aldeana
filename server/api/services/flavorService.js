@@ -1,8 +1,8 @@
 const { flavorGetDB, typeFlavorGetDB, familyFlavorGetDB } = require('../db/flavorDb');
 
-const readFlavor = async () => {
+const readFlavor = async (id_type_flavor, id_family_flavor) => {
     try {
-        let res = await flavorGetDB();
+        let res = await flavorGetDB(id_type_flavor, id_family_flavor);
         return res;
     }
     catch {

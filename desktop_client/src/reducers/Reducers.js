@@ -1,6 +1,7 @@
 import { combineReducers } from "redux"
-import { flavorsDispatchDate } from "./ChamberFlavorsDispatchReducer";
+import { flavorsDispatchDate, flavorsDispatchFilters } from "./ChamberFlavorsDispatchReducer";
 
 export default combineReducers({
-    flavorsDispatchDate: flavorsDispatchDate
-})
+    flavorsDispatchDate: flavorsDispatchDate,
+    flavorsDispatchFilters: flavorsDispatchFilters
+});
