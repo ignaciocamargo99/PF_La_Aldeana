@@ -4,6 +4,7 @@ import { updateChamberFlavorsDate } from '../../../actions/ChamberFlavorsDispatc
 import dateFormat from '../../../utils/DateFormat/dateFormat';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
+import ListFlavorsDown from './ListFlavorsDown';
 import ListFlavorsUp from './ListFlavorsUp';
 
 const ChamberFlavorsDispatch = (props) => {
@@ -42,6 +43,7 @@ const ChamberFlavorsDispatch = (props) => {
                 </div>
                 <FilterFlavors />
                 <ListFlavorsUp />
+                <ListFlavorsDown />
             </div>
         </>
     );

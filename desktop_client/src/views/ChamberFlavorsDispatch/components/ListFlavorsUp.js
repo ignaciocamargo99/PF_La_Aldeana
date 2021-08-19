@@ -1,20 +1,26 @@
 
-import React, { useState, useEffect } from 'react';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFiltersFlavors, updateFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 
 const PORT = require('../../../config');
 
-const ListFlavors = (props) => {
-    const [flavors, setFlavors] = useState();
+const ListFlavorsUp = (props) => {
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/flavors?type_flavor=${props.flavorsDispatchFilters[0]}&family_flavor=${props.flavorsDispatchFilters[1]}`)
-            .then(response => setFlavors(response.data))
-            .catch(error => console.error(error))
+        if (props.flavorsDispatchFilters[0]) {
+            Axios.get(`${PORT()}/api/flavors/${props.flavorsDispatchFilters[0]}`)
+                .then(response => props.updateFlavors(response.data))
+                .catch(error => console.error(error))
+        }
+        else {
+            Axios.get(`${PORT()}/api/flavors`)
+                .then(response => props.updateFlavors(response.data))
+                .catch(error => console.error(error))
+        }
     }, [props.flavorsDispatchFilters]);
 
 
@@ -29,7 +35,7 @@ const ListFlavors = (props) => {
                             <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Añadir</th>
                         </tr>
                     </thead>
-                    {flavors?.map((element, i) => {
+                    {props.flavorsDispatch?.map((element, i) => {
                         return (
                             <tbody key={i}>
                                 <tr>
@@ -40,7 +46,6 @@ const ListFlavors = (props) => {
                                     </td>
                                 </tr>
                             </tbody>
-
                         )
                     })}
                 </table>
@@ -51,12 +56,14 @@ const ListFlavors = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        flavorsDispatchFilters: state.flavorsDispatchFilters
+        flavorsDispatchFilters: state.flavorsDispatchFilters,
+        flavorsDispatch: state.flavorsDispatch
     }
 }
 
 const mapDispatchToProps = {
-    updateFiltersFlavors
+    updateFiltersFlavors,
+    updateFlavors
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListFlavors);
+export default connect(mapStateToProps, mapDispatchToProps)(ListFlavorsUp);

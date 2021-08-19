@@ -1,8 +1,18 @@
-const { flavorGetDB, typeFlavorGetDB, familyFlavorGetDB } = require('../db/flavorDb');
+const { flavorGetDB, flavorsGetDB, typeFlavorGetDB, familyFlavorGetDB } = require('../db/flavorDb');
 
-const readFlavor = async (id_type_flavor, id_family_flavor) => {
+const readFlavorID = async (id_family_flavor) => {
     try {
-        let res = await flavorGetDB(id_type_flavor, id_family_flavor);
+        let res = await flavorGetDB(id_family_flavor);
+        return res;
+    }
+    catch {
+        throw Error('Error. No se han podido leer los sabores de helado.')
+    };
+};
+
+const readFlavor = async () => {
+    try {
+        let res = await flavorsGetDB();
         return res;
     }
     catch {
@@ -31,4 +41,4 @@ const readFamilyFlavor = async () => {
 };
 
 
-module.exports = { readFlavor, readTypeFlavor, readFamilyFlavor };
+module.exports = { readFlavorID, readFlavor, readTypeFlavor, readFamilyFlavor };

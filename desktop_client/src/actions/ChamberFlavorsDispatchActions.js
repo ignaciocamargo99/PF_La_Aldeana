@@ -12,3 +12,10 @@ export const updateFiltersFlavors = (filters) => {
         payload: filters
     };
 };
+
+export const updateFlavors = (flavors) => {
+    return {
+        type: 'UPDATE_FLAVORS',
+        payload: flavors
+    };
+};

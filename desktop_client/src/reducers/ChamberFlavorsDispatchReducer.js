@@ -7,3 +7,8 @@ export const flavorsDispatchFilters = (state = [], action) => {
     if(action.type === 'UPDATE_FLAVORS_FILTERS') return action.payload;
     return state;
 }
+
+export const flavorsDispatch = (state = [], action) => {
+    if(action.type === 'UPDATE_FLAVORS') return action.payload;
+    return state;
+}
