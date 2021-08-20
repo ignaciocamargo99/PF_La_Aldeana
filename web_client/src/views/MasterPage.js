@@ -11,6 +11,7 @@ import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
 import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
+import '../assets/Form.css';
 
 const cookies = new Cookies();
 

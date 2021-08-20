@@ -1,5 +1,6 @@
 /*https://www.w3schools.com/css/css_padding.asp*/
-:root{
+
+/* :root{
     --radio: 10px;
 }
 h2 {
@@ -106,4 +107,16 @@ textarea {
 
 label {
     padding-top: 0.4em;
+} */
+
+.formRow {
+    margin: 1em 0;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .formRow {
+        flex-direction: row;
+    }
 }
