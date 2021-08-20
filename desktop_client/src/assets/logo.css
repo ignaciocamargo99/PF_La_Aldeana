@@ -1,24 +1,16 @@
 .logo {
-    height: 50%;
-    width: height/4;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: 10%;
-    transform: translate(-40%, -50%);
-}
-
-.logoMax {
-    height: 50%;
-    width: height/4;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: 10%;
-    transform: translate(-50%, -50%);
+    height: 30em;
+    top: 20em;
+    transform: translate(10em 10em);
 }
 
 .root {
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:white; 
+    font-family: "Abel", sans-serif;
     height: 100vh;
-    background-color: white;
+    width: 100%;
 }

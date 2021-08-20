@@ -13,23 +13,24 @@ const Main = (props) => {
     <>
       <BeShowed show={!props.menu}>
         <div className='row root'>
-          <div className='row col-sm-2'>
+          <div className='row col-sm-3' style={{width: '15em'}}>
             <SideMenu />
           </div>
 
         
-          <div className="row justify-content-sm-center col-sm-10">
+          <div className="row justify-content-sm-center col-sm-9 main">
 
-                <BeShowed show={props.location === 1}>
-                  <ChamberFlavorsDispatch />
-                </BeShowed>
+            <BeShowed show={props.location === 1}>
+              <ChamberFlavorsDispatch />
+            </BeShowed>
+
+            <BeShowed show={props.location === 0}>
+              <img className='logo' src={logo} alt="" style={{width: '70em'}}></img>
+            </BeShowed>
 
           </div>
         </div>
         
-        <BeShowed show={props.location === 0}>
-          <img className='logo' src={logo} alt=""></img>
-        </BeShowed>
       </BeShowed>
       <BeShowed show={props.menu}>
         <div className='row root'>
@@ -40,16 +41,16 @@ const Main = (props) => {
         
           <div className="row justify-content-sm-center col-sm-11">
 
-                <BeShowed show={props.location === 1}>
-                  <ChamberFlavorsDispatch />
-                </BeShowed>
+            <BeShowed show={props.location === 1}>
+              <ChamberFlavorsDispatch />
+            </BeShowed>
 
+            <BeShowed show={props.location === 0}>
+              <img className='logo' src={logo} alt="" style={{width: '70em'}}></img>
+            </BeShowed>
           </div>
         </div>
         
-        <BeShowed show={props.location === 0}>
-          <img className='logoMax' src={logo} alt=""></img>
-        </BeShowed>
       </BeShowed>
     </>
 

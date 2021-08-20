@@ -9,17 +9,13 @@ import { ProSidebar, Menu, MenuItem, SubMenu, SidebarFooter, SidebarContent } fr
 import 'react-pro-sidebar/dist/css/styles.css';
 import './Menu.css';
 import BeShowed from '../../common/BeShowed';
-import logo from '../../images/logo_expandido.png';
+import sidebarBg from '../../images/background1.jpg';
 
 const SideMenu = (props) => {
-
-  const openSales = () => {
-    console.log('Abrir ventana');
-  }
-
   return (
     <>
-      <ProSidebar collapsed={props.menu} className='menuBar'>
+      <ProSidebar collapsed={props.menu} className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
+      image={sidebarBg}>
 
         <SidebarContent>
           <Menu iconShape="square">
@@ -27,8 +23,8 @@ const SideMenu = (props) => {
             <MenuItem onClick={props.toChamberFlavorsDispatch} icon={<GoTasklist/>}>Salida de camara</MenuItem>
             
             <SubMenu title="Ventas" icon={<GoBell />}>
-              <MenuItem onClick={openSales}>Venta en local</MenuItem>
-              <MenuItem onClick={props.toSales}>Venta por delivery</MenuItem>
+              <MenuItem >Venta en local</MenuItem>
+              <MenuItem >Venta por delivery</MenuItem>
             </SubMenu>
 
             <MenuItem onClick={props.toRegisterAttendance} icon={<IoFingerPrint/>}>Registrar asistencia</MenuItem>
