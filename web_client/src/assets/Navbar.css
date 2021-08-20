@@ -39,7 +39,7 @@
   color: black !important;
 }
 
-nav {
+.navbar-header {
   padding: 0 1em;
   display: flex;
   min-height: 10vh;
@@ -125,7 +125,7 @@ nav {
   body {
     overflow-x: hidden;
   }
-  nav {
+  .navbar-header {
     justify-content: space-between;
   }
   .burger {

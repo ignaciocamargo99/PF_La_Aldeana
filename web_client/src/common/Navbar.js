@@ -69,7 +69,7 @@ export default function Navbar(props) {
     }
 
     return (
-        <nav>
+        <nav className="navbar-header">
             <div className="navbar-left">
                 <a className="navbar-brand" href="/app/index">
                     <img src={logo} alt="" height="50"></img>
