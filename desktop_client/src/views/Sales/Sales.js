@@ -1,9 +1,23 @@
-import React from "react";
+import React, {useEffect} from "react";
 import DetailSale from './components/DetailSale';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
+import { updateProducts } from '../../actions/SalesActions';
+import Axios from "axios";
+import { connect } from 'react-redux';
 
-export default function Sales(){
+const PORT = require('../../config');
+
+const Sales = (props) => {
+    
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/allProducts`) 
+            .then(response => {
+                props.updateProducts(response.data);
+            })
+            .catch(error => console.error(error))
+    },[])
+
     return(
         <>
             <div className="viewContent">
@@ -25,3 +39,15 @@ export default function Sales(){
         </>
     );
 }
+
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+}
+
+const mapDispatchToProps = {
+    updateProducts
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sales);

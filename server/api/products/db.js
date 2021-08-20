@@ -20,6 +20,22 @@ const productGetDB = () => {
     });
 };
 
+const productAllGetDB = () => {
+    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS ' +
+        'WHERE active = 1';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
 
 const productTypeGetDB = () => {
     const sqlSelect = 'SELECT id_product_type, name FROM PRODUCT_TYPES';
@@ -321,5 +337,5 @@ const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 module.exports = {
     productGetDB, productTypeGetDB, productSupplyGetDB, productSupplyUpdateDB,
     productPostDB, productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
-    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB
+    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB, productAllGetDB
 };
