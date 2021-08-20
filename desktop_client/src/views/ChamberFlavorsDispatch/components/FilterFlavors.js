@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import Axios from 'axios';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFlavors, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import DynamicSearch from '../../../common/DynamicSearch';
 
 const PORT = require('../../../config');
@@ -13,8 +13,6 @@ const ListFlavors = (props) => {
     const [boolSearchNameFlavor, setBoolSearchNameFlavor] = useState();
     const [boolFamilyFlavor, setBoolFamilyFlavor] = useState();
     const [nameSearch, setNameSearch] = useState('');
-    // const [selectTypeFlavor, setSelectTypeFlavor] = useState();
-
     const [selectFamilyFlavor, setSelectFamilyFlavor] = useState();
     const inputSearchNameFlavor = useRef(null);
     const inputFamilyFlavor = useRef(null);
@@ -41,24 +39,23 @@ const ListFlavors = (props) => {
         else setBoolFamilyFlavor(false);
     };
 
-
-
     useEffect(() => {
-        if(nameSearch !== ""){
+        const aux = [props.flavorsDispatch];
+        if (nameSearch.trim()) {
             let x = []
             x.length = props.flavorsDispatch.length;
-            props.flavorsDispatch.map((flavor,i) => {
-                if(flavor.name.toUpperCase().includes(nameSearch.toUpperCase())){
-                    x[i] = flavor
-                }
+            props.flavorsDispatch.map((flavor, i) => {
+                if (flavor.name.toUpperCase().includes(nameSearch.toUpperCase())) x[i] = flavor;
             })
-            // setSuppliesFilter(x)
+            props.updateFlavors(x);
         }
-        // else setSuppliesFilter(props.flavorsDispatch)
-    },[nameSearch,props.flavorsDispatch]);
-
-
-    // const onChangeTypeProduct = (e) => setSelectTypeFlavor(e.target.value);
+        // else props.updateFlavors(aux);
+        // else {
+        //     Axios.get(`${PORT()}/api/flavors`)
+        //         .then(response => props.updateFlavors(response.data))
+        //         .catch(error => console.error(error))
+        // }
+    }, [nameSearch, props.flavorsDispatch]);
 
     const onChangeFamilyProduct = (e) => setSelectFamilyFlavor(e.target.value);
 
@@ -83,7 +80,7 @@ const ListFlavors = (props) => {
                 </div>
             </div>
             <BeShowed show={boolSearchNameFlavor}>
-                <div className="formRow"><DynamicSearch placeholder="Nombre helado" setSearchState={setNameSearch} /></div>
+                <div className="formRow"><DynamicSearch placeholder="Nombre helado..." setSearchState={setNameSearch} /></div>
             </BeShowed>
             <BeShowed show={boolFamilyFlavor}>
                 <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1' onChange={e => onChangeFamilyProduct(e)}>
@@ -107,7 +104,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    updateFiltersFlavors
+    updateFiltersFlavors,
+    updateFlavors
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavors);
