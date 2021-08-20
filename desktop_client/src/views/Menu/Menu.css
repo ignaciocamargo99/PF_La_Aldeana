@@ -1,0 +1,10 @@
+.menuBar {
+    transform: translate(-20px);
+}
+.menuBarCollapsed {
+    transform: translate(-20px);
+    position: absolute;
+}
+.itemMenu {
+    position: relative;
+}
