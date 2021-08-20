@@ -11,7 +11,7 @@ import SectorProduct from '../RegisterProduct/components/SectorProduct';
 const PORT = require('../../config');
 
 export default function RegisterTypeProductView() {
-    const [data, setData] = useState({name: 'null', description: 'null', id_sector: 2});
+    const [data, setData] = useState({name: 'null', description: 'null', id_sector: 3});
     const [ready, setReady] = useState(false);
     const inputName = useRef(null);
     const inputDescription = useRef(null);
