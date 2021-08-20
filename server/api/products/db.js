@@ -38,7 +38,7 @@ const productAllGetDB = () => {
 };
 
 const productTypeGetDB = () => {
-    const sqlSelect = 'SELECT id_product_type, name FROM PRODUCT_TYPES';
+    const sqlSelect = 'SELECT * FROM PRODUCT_TYPES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

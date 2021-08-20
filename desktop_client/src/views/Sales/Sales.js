@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import DetailSale from './components/DetailSale';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
-import { updateProducts } from '../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered } from '../../actions/SalesActions';
 import Axios from "axios";
 import { connect } from 'react-redux';
 
@@ -14,6 +14,7 @@ const Sales = (props) => {
         Axios.get(`${PORT()}/api/allProducts`) 
             .then(response => {
                 props.updateProducts(response.data);
+                props.updateProductsFiltered(response.data);
             })
             .catch(error => console.error(error))
     },[])
@@ -42,12 +43,14 @@ const Sales = (props) => {
 
 const mapStateToProps = state => {
     return {
-        products: state.products
+        products: state.products,
+        productsFiltered: state.productsFiltered
     }
 }
 
 const mapDispatchToProps = {
-    updateProducts
+    updateProducts,
+    updateProductsFiltered
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sales);
