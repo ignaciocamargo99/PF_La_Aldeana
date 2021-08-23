@@ -9,12 +9,16 @@ import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import errorNextStepThree from '../../../utils/ErrorMessages/errorNextStepThree';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
 import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
+import RadioButtons from './RadioButtons';
+import { Spinner } from 'reactstrap';
+import ModalFlavorSelect from './ModalFlavorSelect';
 
 const PORT = require('../../../config');
 
 const DeliverySales = (props) => {
     const [step,setStep] = useState(1);
     const [products,setProducts] = useState([]);
+    const [filterProducts,setFilterProducts] = useState([]);
     const [productsDetail, setProductsDetail] = useState([]);
     const [quantities,setQuantities] = useState([]);
     const [subtotals,setSubtotals] = useState([]);
@@ -40,6 +44,7 @@ const DeliverySales = (props) => {
         axios.get( PORT() + `/api/products/all`)
         .then((response) => {
             setProducts(response.data)
+            setFilterProducts(response.data)
         })
         .catch((err) => {
             console.log(err)
@@ -181,7 +186,18 @@ const DeliverySales = (props) => {
                     <div className="formRow">
                         <h3><b>Productos</b></h3>
                     </div>
-                    <ListProducts products={products} onClick={upload} icon={'+'}/>
+                    <RadioButtons products={products} setFilterProducts={setFilterProducts}/>
+                    <hr />
+                    <ModalFlavorSelect show={true} />
+                    <BeShowed show={products.length === 0}>
+                        <div className="row justify-content-center align-items-center">
+                            <Spinner color="dark" />
+                            <label className="offset-sm-10">Cargando productos...</label>
+                        </div>
+                    </BeShowed>
+                    <BeShowed show={products.length !== 0}>
+                        <ListProducts products={filterProducts} onClick={upload} icon={'+'}/>
+                    </BeShowed>
                     <div className="formRow">
                         <h3><b>Detalle de venta</b></h3>
                     </div>
@@ -203,7 +219,7 @@ const DeliverySales = (props) => {
                         <div className="form-control-input">
                             <input type="number" className="form-control" maxLength="10" onChange={(e) => {onChangeCellphone(e)}} placeholder="Ingrese el celular del cliente..." value={cellphone}></input>
                             <BeShowed show={errorCellphone}>
-                                <b style={{color:'gray'}}>*Número de 10 digitos</b>
+                                <b style={{color:'gray'}}>Número de 10 digitos</b>
                             </BeShowed>
                         </div>
                     </div>
@@ -214,7 +230,7 @@ const DeliverySales = (props) => {
                         <div className="form-control-input">
                             <input  type="text" className="form-control" maxLength="50" onChange={(e) => onChangeNames(e)} placeholder="Ingrese el nombre completo del cliente..." value={names}></input>
                             <BeShowed show={errorNames}>
-                                <b style={{color:'gray'}}>*Texto de 1 a 50 caractéres</b>
+                                <b style={{color:'gray'}}>Texto de 1 a 50 caractéres</b>
                             </BeShowed>
                         </div>
                     </div>
@@ -225,7 +241,7 @@ const DeliverySales = (props) => {
                         <div className="form-control-input col-sm-5">
                             <input type="text" className="form-control" maxLength="25" onChange={(e) => {onChangeStreet(e)}} placeholder="Ingrese el la calle..." value={street}></input>
                             <BeShowed show={errorStreet}>
-                                <b style={{color:'gray'}}>*Texto de 1 a 25 caractéres</b>
+                                <b style={{color:'gray'}}>Texto de 1 a 25 caractéres</b>
                             </BeShowed>
                         </div>
                         <div className="form-control-label offset-sm-1 col-sm-1">
@@ -234,7 +250,7 @@ const DeliverySales = (props) => {
                         <div className="form-control-input col-sm-3">
                             <input type="number" className="form-control" maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} placeholder="Ingrese el nro..." value={streetNumber}></input>
                             <BeShowed show={errorStreetNumber}>
-                                <b style={{color:'gray'}}>*Número de 1 a 4 digitos</b>
+                                <b style={{color:'gray'}}>Número de 1 a 4 digitos</b>
                             </BeShowed>
                         </div>
                     </div>
@@ -260,7 +276,7 @@ const DeliverySales = (props) => {
                         <div className="form-control-input">
                             <input type="number" className="form-control" placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e)}} value={amount}></input>
                             <BeShowed show={errorAmount}>
-                                <b style={{color:'gray'}}>*Cantidad entera mayor al total</b>
+                                <b style={{color:'gray'}}>Cantidad entera mayor al total</b>
                             </BeShowed>
                         </div>
                     </div>

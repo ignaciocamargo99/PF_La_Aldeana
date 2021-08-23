@@ -54,7 +54,7 @@ const ListProducts = (props) => {
                                         <>
                                         <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" maxLength="4" onChange={(e) => {validateQuantity(e,i)}}>
                                         </input>
-                                        <label id={`quantityValidation${i}`} style={{color:'red'}}></label>
+                                        <b id={`quantityValidation${i}`} style={{color:'gray'}}></b>
                                         </>
                                         :props.quantities[i]}
                                     </td>

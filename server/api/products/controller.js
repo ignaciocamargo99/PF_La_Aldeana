@@ -23,7 +23,7 @@ async function getProducts(req, res) {
 // HTTP: GET 
 async function getProductsAll(req, res) {
 
-    const sqlSelect = "SELECT id_product, name, price, id_sector, id_product_type FROM PRODUCTS"
+    const sqlSelect = "SELECT id_product, name, price, id_sector, id_product_type FROM PRODUCTS WHERE active='1'"
 
     await db.query(sqlSelect, (err, result) => {
         if (err) throw err;
