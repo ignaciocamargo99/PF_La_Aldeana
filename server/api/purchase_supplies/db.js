@@ -41,7 +41,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
     const total = newPurchase.total;
     const arrDetails = newPurchase.details;
 
-    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES (purchase_date,supplier,total) VALUES ('${date_purchase}','${supplier}',${total})`
+    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES ('${arrDetails[0].purchase_number}','${date_purchase}','${supplier}',${total})`
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

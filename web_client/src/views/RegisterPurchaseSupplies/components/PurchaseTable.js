@@ -7,7 +7,8 @@ import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
-
+import validateFloatNumbers from "../../../utils/Validations/validateFloatNumbers";
+import swal from 'sweetalert';
 
 const PurchaseTable  = (props) => {
 
@@ -16,10 +17,13 @@ const PurchaseTable  = (props) => {
     const [quantityIncorrect,setQuantityIncorrect] = useState(false)
 
     const changeQuantity = (quantity,i) => {
-        if(quantity < 0 || quantity == ""){
+        if(quantity < 0 || quantity == "" || quantity > 99999){
             document.getElementById(`quantityInput${i}`).value = ""
-            setQuantityIncorrect(false)
+            setQuantityIncorrect(true)
             quantity = 0
+            swal("Atención","Ingrese valores entre 1 y 99999", "warning")
+        } else if (quantity > 0){
+            setQuantityIncorrect(false);
         }
         props.updatePurchaseQuantity(quantity,i)
         let subtotal = props.purchaseQuantity[i]*props.purchasePrice[i]
@@ -29,37 +33,23 @@ const PurchaseTable  = (props) => {
     }
 
     const changePrice = (price,i) => {
-        if(price < 0 || price == ""){
-            document.getElementById(`priceInput${i}`).value = ""
-            setPriceIncorrect(false)
-            price = 0
-        }    
+        if(price < 0 || price == "" || price > 99999){
+            document.getElementById(`priceInput${i}`).value = "";
+            setPriceIncorrect(true);
+            price = 0;
+            swal("Atención","Ingrese valores entre 1 y 99999", "warning")
+        } else if (price > 0){
+            setPriceIncorrect(false);
+        }
         props.updatePurchasePrice(price,i)
         let subtotal = props.purchaseQuantity[i]*props.purchasePrice[i]
         props.updatePurchaseSubtotal(subtotal,i)
         document.getElementById(`lblSubtotal${i}`).innerText = `$${subtotal}`
         setRefreshTotal(!refreshTotal)        
     }
-    
-    const validatePrice = (e) => {
-        if(e.target.value < 0){
-            setPriceIncorrect(true)
-        }
-        else{
-            setPriceIncorrect(false)
-        }
-    }
-
-    const validateQuantity = (e) => {
-        if(e.target.value < 0){
-            setQuantityIncorrect(true)
-        }
-        else{
-            setQuantityIncorrect(false)
-        }
-    }
 
     useEffect(() => {
+        
         let total = 0
         props.purchaseSupplies?.map((supply,i) => {
             total += props.purchaseSubtotal[i]
@@ -77,10 +67,10 @@ const PurchaseTable  = (props) => {
                     th={
                         <>
                             <th scope="col"  style={{ textAlign: 'center' }}><label><b>Nombre</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Precio</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Cantidad</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '50px' }}><label><b>Subtotal</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '100px' }}><label><b>Eliminar</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Precio</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Cantidad</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Subtotal</b></label></th>
+                            <th scope="col"  style={{ textAlign: 'center', width: '10em' }}><label><b>Eliminar</b></label></th>
                         </>
                     }
                 />
@@ -90,15 +80,13 @@ const PurchaseTable  = (props) => {
                             <tbody key={i}>
                                 <tr>
                                     <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
-                                    <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`priceInput${i}`} type="number" min="0" onChange={(e) => {validatePrice(e)}} onBlur={(e) => {changePrice(e.target.value,i)}}></input>
-                                        <BeShowed show={priceIncorrect && document.getElementById(`priceInput${i}`)?.value < 0}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
+                                    <td style={{ textAlign: 'center', width: '7em' }}>
+                                        <input id={`priceInput${i}`} type="number" min="0" max="99999" onBlur={(e) => {changePrice(e.target.value,i)}} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
                                     </td>
-                                    <td style={{ textAlign: 'center', width: '50px' }}>
-                                        <input id={`quantityInput${i}`} type="number" min="0" onChange={(e) => {validateQuantity(e)}} onBlur={(e) => {changeQuantity(e.target.value,i)}}></input>
-                                        <BeShowed show={quantityIncorrect && document.getElementById(`quantityInput${i}`)?.value < 0}><div><b style={{ color: 'red' }}>No ingresar valores menores a cero</b></div></BeShowed>
+                                    <td style={{ textAlign: 'center', width: '7em' }}>
+                                        <input id={`quantityInput${i}`} type="number" min="0" max="99999" onBlur={(e) => {changeQuantity(e.target.value,i)}} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
                                     </td>
-                                    <td style={{ textAlign: 'center', width: '50px' }}>
+                                    <td style={{ textAlign: 'center', width: '7em' }}>
                                         <label id={`lblSubtotal${i}`}></label>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>

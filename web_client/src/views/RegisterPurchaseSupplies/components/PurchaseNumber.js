@@ -43,14 +43,14 @@ const PurchaseNumber = (props) => {
 
     return(
         <div className="formRow">
-            <div className="form-control-label offset-sm-9">
+            <div className="form-control-label ms-auto mb-2 mb-lg-0">
                 <BeShowed show={props.purchaseNumber === null}> 
                     <Spinner size="sm" color="secondary" /><label htmlFor="purchaseNumber" className="col-sm-4">...&nbsp;</label>
                 </BeShowed>
                 <BeShowed show={props.purchaseNumber !== null}>
-                    <label htmlFor="purchaseNumber" className="col-sm-6">Compra N° {props.purchaseNumber} &nbsp;</label>
+                    <label htmlFor="purchaseNumber" className="col-sm-4">Compra N° {props.purchaseNumber} &nbsp;</label>
                 </BeShowed>
-                <input type="date" id='PurchaseDate' className="col-sm-6" defaultValue={props.purchaseDate} ref={inputDate} min="2021-01-01" onChange={onChangeDate}></input>
+                <input type="date" id='PurchaseDate' className="col-sm-7" defaultValue={props.purchaseDate} ref={inputDate} min="2021-01-01" onChange={onChangeDate} ></input>
             </div>
         </div>
     )
