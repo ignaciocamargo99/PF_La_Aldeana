@@ -8,6 +8,7 @@ const usersRouter = require('./api/users/router');
 const permissionsRouter = require('./api/permissions/router');
 const sessionsRouter = require('./api/sessions/router');
 const middleware = require('./middleware/index');
+const flavorsRouter = require('./api/routes/flavorRoute');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -20,11 +21,13 @@ app.get("/app/*", function (req, res) {
     res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
 });
 
+
 /** Routes apis and errors */
 app.use('/api', productsRouter);
 app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
+app.use('/api', flavorsRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
