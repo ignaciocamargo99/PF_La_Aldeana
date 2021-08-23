@@ -71,7 +71,7 @@ const ListSupplies = (props) => {
                 </div>
             </BeShowed>
             <hr></hr>
-            <div className="offset-sm-4">
+            <div className="form-control-label">
                 <h3 style={{marginTop:'5%'}}>Detalle de compra</h3>
             </div>
             <div className="viewBody">

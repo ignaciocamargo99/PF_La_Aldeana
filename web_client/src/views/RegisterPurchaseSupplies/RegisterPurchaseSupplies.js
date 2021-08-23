@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updatePurchaseNumber, updatePurchaseDate, updatePurchaseSupplier, updatePurchaseTotal, updatePurchaseSupplies, resetPurchaseQuantity, resetPurchaseSubtotal, resetPurchasePrice } from '../../actions/PurchaseSuppliesActions';
 import PurchaseNumber from './components/PurchaseNumber';
@@ -10,19 +10,23 @@ import errorPricesQuantities from '../../utils/ErrorMessages/errorPricesQuantiti
 import errorInputSupplies from '../../utils/ErrorMessages/errorInputSupplies';
 import errorPurchaseSupplies from '../../utils/ErrorMessages/errorPurchaseSupplies';
 import successPurchaseSupplies from '../../utils/SuccessMessages/successPurchaseSupplies';
+import swal from 'sweetalert';
 import axios from 'axios';
 
 const PORT = require('../../config');
 
 const RegisterPurchaseSupplies = (props) => {
 
+    const [ready, setReady] = useState(false)
+    const [details, setDetails] = useState([])
+
     const cancel = () => {
-        window.location.href = './index'
+        window.location.href = './purchaseSupplies'
     }
 
     const resetStates = (message) => {
         successPurchaseSupplies(message)
-        props.updatePurchaseSupplies(null)
+        props.updatePurchaseSupplies([])
         props.resetPurchasePrice()
         props.resetPurchaseQuantity()
         props.resetPurchaseSubtotal()
@@ -32,51 +36,82 @@ const RegisterPurchaseSupplies = (props) => {
         props.updatePurchaseTotal(0)
     }
 
-
-    const registerPurchaseSupplies = () => {
-        let send = true
+    const validate = () => {
         if(props.purchaseSupplier === null){
             errorNameSupplier()
-            send = false
-            return
-        }
-        let details = []
-        props.purchaseSupplies.map((supply,i) => {
-            if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0){
-                errorPricesQuantities()
-                send = false
-                return
-            }
-            let detail = {  "purchase_number":props.purchaseNumber, 
-                            "id_supply": supply.id_supply, 
-                            "quantity": props.purchaseQuantity[i],
-                            "subtotal": props.purchaseSubtotal[i],
-                            "stock": supply.stock_lot?true:false}
-            details.push(detail)
-        })
-        if(props.purchaseSupplies.length === 0){
-            send = false
-            errorInputSupplies()
-            return
-        }
+        } else {
 
-        if(send){
-            let purchase = {
-                "date_purchase": props.purchaseDate,
-                "supplier": props.purchaseSupplier,
-                "total": props.purchaseTotal,
-                "details": details}
-            axios.post( PORT() + `/api/purchase/new`,purchase)
-            .then((response) => {
-                if(response.data.Ok){
-                    resetStates(response.data.Message)
-                }
-                else{
-                    errorPurchaseSupplies(response.data.Message)
+            let details = []
+            props.purchaseSupplies.map((supply,i) => {
+                if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0 || props.purchaseQuantity[i] > 99999 || props.purchasePrice[i] > 99999){
+                    errorPricesQuantities()
                 }
             })
-            .catch((err) => {console.log(err)})
-        }           
+
+            if(props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null){
+                errorInputSupplies()
+            } else {
+                if (props.purchaseTotal <= 0){
+                    swal("Atención","Almenos 1 insumo debe tener precio y cantidad validos", "warning")
+                } 
+            }
+        }
+    }
+
+    useEffect(()=>{
+
+        if(props.purchaseSupplier === null){
+            setReady(false)
+        } else {
+
+            let details = []
+
+            if(props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null){
+                setReady(false)
+            } else {
+                props.purchaseSupplies.map((supply,i) => {
+                    if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0 || props.purchaseQuantity[i] > 99999 || props.purchasePrice[i] > 99999){
+                        setReady(false)
+                    }
+                    let detail = {  "purchase_number":props.purchaseNumber, 
+                                    "id_supply": supply.id_supply, 
+                                    "quantity": props.purchaseQuantity[i],
+                                    "subtotal": props.purchaseSubtotal[i],
+                                    "stock": supply.stock_lot?true:false}
+                    details.push(detail)
+                    setDetails(details)
+                })
+
+                if (props.purchaseTotal <= 0){
+                    setReady(false)
+                } else {
+                    setReady(true)
+                }
+            }
+        }
+
+    }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
+
+    const registerPurchaseSupplies = () => {
+
+        
+        let purchase = {
+            "date_purchase": props.purchaseDate,
+            "supplier": props.purchaseSupplier,
+            "total": props.purchaseTotal,
+            "details": details}
+        axios.post( PORT() + `/api/purchase/new`,purchase)
+        .then((response) => {
+            if(response.data.Ok){
+                resetStates(response.data.Message)
+
+            }
+            else{
+                errorPurchaseSupplies(response.data.Message)
+            }
+        })
+        .catch((err) => {console.log(err)})
+                   
     }
 
     return(
@@ -88,7 +123,7 @@ const RegisterPurchaseSupplies = (props) => {
                <PurchaseNumber />
                <PurchaseSupplier />
                <ListSupplies />
-               <Buttons ready={true} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies}/>            
+               <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validate}/>            
             </div>
         </>
     )

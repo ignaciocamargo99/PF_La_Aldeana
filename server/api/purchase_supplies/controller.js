@@ -9,28 +9,29 @@ async function getPurchases(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
-        })
+            Message: "Error al traer los datos de las compras",
+            })
+        }
     }
-}
-
-// HTTP: GET
-async function getLastPurchase(req, res) {
-    try {
-        const result = await readLastPurchase();
-        res.send(result)
+    
+    // HTTP: GET
+    async function getLastPurchase(req, res) {
+        try {
+            const result = await readLastPurchase();
+            res.send(result)
+        }
+        catch (e) {
+            res.json({
+                Ok: false,
+                Message: "Error a traer datos de la última compra",
+            })
+        }
     }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        })
-    }
-}
 
 // HTTP: POST TRANSACTION
 async function postPurchaseSupplies(req, res) {
     try {
+        console.log(req.body)
         await createPurchaseSupplies(req.body);
         res.json({
             Ok: true,
@@ -38,9 +39,10 @@ async function postPurchaseSupplies(req, res) {
         });
     }
     catch (e) {
+        console.log(e.message)
         res.json({
             Ok: false,
-            Message: e.message,
+            Message: "No se pudo realizar correctamente el registro",
         })
     }
 }
