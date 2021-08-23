@@ -18,3 +18,17 @@ export const updateDetailProducts = (array) =>{
         payload: array
     }
 }
+
+export const updatePayType = (id) => {
+    return {
+        type: 'UPDATE_PAY_TYPE',
+        payload: id
+    }
+}
+
+export const updateTotalAmount = (amount) => {
+    return {
+        type: 'UPDATE_TOTAL_AMOUNT',
+        payload: amount
+    }
+}

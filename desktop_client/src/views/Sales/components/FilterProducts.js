@@ -43,7 +43,7 @@ const FilterProducts = (props) => {
     return(
         <>
             <h4>Filtrar por:</h4>
-            <div className="form-radio-group formRow">
+            <div className="formRow">
                 <button id="btn_heladeria" onClick={onClickHeladeria}>Heladería</button>
                 <button id="btn_cafeteria" onClick={onClickCafeteria}>Cafetería</button>
                 <button id="btn_cafeteria" onClick={onClickCancel}>Cancelar</button>

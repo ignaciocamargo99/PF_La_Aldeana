@@ -18,3 +18,17 @@ export const detailProductsReducer = (state = [], action) => {
     }
     return state
 }
+
+export const payTypeReducer = (state = null, action) => {
+    if(action.type === 'UPDATE_PAY_TYPE'){
+        return action.payload
+    }
+    return state
+}
+
+export const totalAmountReducer = (state = null, action) => {
+    if(action.type === 'UPDATE_TOTAL_AMOUNT'){
+        return action.payload
+    }
+    return state
+}
