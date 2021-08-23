@@ -13,14 +13,9 @@ const ListProducts = (props) => {
     
     const [printModal, setPrintModal] = useState(false);
 
-    //sacar!!!
-    const Pagination = (array, pageSize, currentPage) => {
-        var totalItems = array.length;
-        var totalPages = Math.ceil(totalItems / pageSize);
-    }
-
     const changePrintModal = (id_product) => {
-        setPrintModal(true);   
+        setPrintModal(true);
+        console.log(id_product)
     }
 
     return(
@@ -29,7 +24,7 @@ const ListProducts = (props) => {
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (
                 <div key={i}>
-                    <button style={{width: 150, height: 150}} type='button' onClick={changePrintModal}>{product.name}</button>
+                    <button style={{width: 150, height: 150}} type='button' value={product.id_product} onClick={changePrintModal}>{product.name}</button>
                 </div>
             )})}></DivGeneric>
             <ModalProduct show={printModal}></ModalProduct>

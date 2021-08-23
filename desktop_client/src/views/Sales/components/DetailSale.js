@@ -11,9 +11,11 @@ const DetailSale = (props) => {
 
     const [payTypes, setPayTypes] = useState([]);
     const [boolPayCash, setBoolPayCash] = useState(false);
+    const [boolPayCard, setBoolPayCard] = useState(false);
     const [turned, setTurned] = useState(null);
     const inputPay = useRef(null);
     const [classNamePay, setclassNamePay] = useState("form-control");
+    const divPayValidation = useRef(null);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/payTypes`) 
@@ -31,6 +33,7 @@ const DetailSale = (props) => {
         if (props.payType == 1)
         {
             setBoolPayCash(true);
+            setBoolPayCard(false);
             
             // HARCODEADO !!!!
             props.updateTotalAmount(150);
@@ -38,6 +41,7 @@ const DetailSale = (props) => {
         else if (props.payType == 2)
         {
             setBoolPayCash(false);
+            setBoolPayCard(true);
         }
     },[props.payType])
 
@@ -45,12 +49,13 @@ const DetailSale = (props) => {
         if (inputPay.current.value >= props.totalAmount) {
             setTurned(inputPay.current.value - props.totalAmount);
             setclassNamePay("form-control is-valid");
+            divPayValidation.current.innerHTML = "";
         }
         else {
             setclassNamePay("form-control is-invalid");
             setTurned(null);
+            divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total"
         }
-        
     }
 
     return(
@@ -75,10 +80,17 @@ const DetailSale = (props) => {
                     <div className='formRow'>
                         <label>Abona con:  $  </label>
                         <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" onChange={onChangePay} ref={inputPay}></input>
+                        <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
                     </div>
                     <div className='formRow'>
                         <label>Vuelto:  $  </label>
                         <label id="id_turned">{turned}</label>
+                    </div>
+                </BeShowed>
+                <BeShowed show={boolPayCard}>
+                    <div className='formRow'>
+                        <label>Monto Total:  $  </label>
+                        <label id="id_total">{props.totalAmount}</label>
                     </div>
                 </BeShowed>
             </div>
