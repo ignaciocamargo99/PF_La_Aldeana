@@ -12,3 +12,13 @@ export const flavorsDispatch = (state = [], action) => {
     if(action.type === 'UPDATE_FLAVORS') return action.payload;
     return state;
 }
+
+export const allFlavorsDispatch = (state = [], action) => {
+    if(action.type === 'UPDATE_ALL_FLAVORS') return action.payload;
+    return state;
+}
+
+export const flavorsListDownDispatch = (state = [], action) => {
+    if(action.type === 'UPDATE_LISTDOWN_FLAVORS') return action.payload;
+    return state;
+}

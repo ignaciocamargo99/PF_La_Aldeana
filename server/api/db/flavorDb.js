@@ -21,7 +21,6 @@ const flavorGetDB = (id_family_flavor) => {
     });
 };
 
-
 const typeFlavorGetDB = () => {
     const sqlSelect = 'SELECT id_type_flavor, name FROM FLAVOR_TYPES';
 

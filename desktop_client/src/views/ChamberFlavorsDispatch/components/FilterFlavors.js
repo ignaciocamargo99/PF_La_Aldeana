@@ -5,6 +5,7 @@ import Axios from 'axios';
 import { connect } from 'react-redux';
 import { updateFlavors, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import DynamicSearch from '../../../common/DynamicSearch';
+import toFilterFlavors from './toFilterFlavors';
 
 const PORT = require('../../../config');
 
@@ -27,6 +28,7 @@ const ListFlavors = (props) => {
         if (inputSearchNameFlavor.current.checked) {
             setBoolSearchNameFlavor(true);
             setBoolFamilyFlavor(false);
+            // props.updateFlavors(props.allFlavorsDispatch);
         }
         else setBoolFamilyFlavor(false);
     };
@@ -35,27 +37,14 @@ const ListFlavors = (props) => {
         if (inputFamilyFlavor.current.checked === true) {
             setBoolFamilyFlavor(true);
             setBoolSearchNameFlavor(false);
+            // props.updateFlavors(props.allFlavorsDispatch);
         }
         else setBoolFamilyFlavor(false);
     };
 
     useEffect(() => {
-        const aux = [props.flavorsDispatch];
-        if (nameSearch.trim()) {
-            let x = []
-            x.length = props.flavorsDispatch.length;
-            props.flavorsDispatch.map((flavor, i) => {
-                if (flavor.name.toUpperCase().includes(nameSearch.toUpperCase())) x[i] = flavor;
-            })
-            props.updateFlavors(x);
-        }
-        // else props.updateFlavors(aux);
-        // else {
-        //     Axios.get(`${PORT()}/api/flavors`)
-        //         .then(response => props.updateFlavors(response.data))
-        //         .catch(error => console.error(error))
-        // }
-    }, [nameSearch, props.flavorsDispatch]);
+        toFilterFlavors(nameSearch, props.flavorsDispatch, props.allFlavorsDispatch, props.updateFlavors);
+    }, [nameSearch]);
 
     const onChangeFamilyProduct = (e) => setSelectFamilyFlavor(e.target.value);
 
@@ -99,7 +88,9 @@ const ListFlavors = (props) => {
 const mapStateToProps = (state) => {
     return {
         flavorsDispatchFilters: state.flavorsDispatchFilters,
-        flavorsDispatch: state.flavorsDispatch
+        flavorsDispatch: state.flavorsDispatch,
+        allFlavorsDispatch: state.allFlavorsDispatch,
+        flavorsLisDownDispatch: state.flavorsLisDownDispatch,
     };
 };
 

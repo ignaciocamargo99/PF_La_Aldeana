@@ -19,3 +19,17 @@ export const updateFlavors = (flavors) => {
         payload: flavors
     };
 };
+
+export const updateAllFlavors = (flavors) => {
+    return {
+        type: 'UPDATE_ALL_FLAVORS',
+        payload: flavors
+    };
+};
+
+export const updateFlavorsListDown = (flavors) => {
+    return {
+        type: 'UPDATE_LISTDOWN_FLAVORS',
+        payload: flavors
+    };
+};
