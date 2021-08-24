@@ -11,13 +11,14 @@ import SectorProduct from '../RegisterProduct/components/SectorProduct';
 const PORT = require('../../config');
 
 export default function RegisterTypeProductView() {
-    const [data, setData] = useState({name: 'null', description: 'null', id_sector: 3});
+    const [data, setData] = useState({name: 'null', description: 'null', id_sector: -1});
     const [ready, setReady] = useState(false);
     const inputName = useRef(null);
     const inputDescription = useRef(null);
     const divNameValidation = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
     const [sectorTypeProductChild, setSectorTypeProductChild] = useState(2);
+    const [nameTypeProductChild, setNameTypeProductChild] = useState('null');
 
 
     const load = (childData) => {
@@ -26,14 +27,13 @@ export default function RegisterTypeProductView() {
     }
 
     useEffect(()=>{
-        console.log(data)
         if (data.id_sector > -1 && sectorTypeProductChild > -1 && 
             data.name.length > 0 && data.name.length < 50 && data.name !== 'null'){
                 setReady(true);
             } else {
                 setReady(false);
             }
-    }, [sectorTypeProductChild, data]);
+    }, [sectorTypeProductChild, nameTypeProductChild]);
 
     const registerTypeProduct = () => {
         const description = inputDescription.current.value.trim();
@@ -60,6 +60,7 @@ export default function RegisterTypeProductView() {
         if (name.length > 0 && name.length < 50) {
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
+            setNameTypeProductChild(name)
             let dat = data;
             dat.name = name;
             setData(dat);
@@ -67,6 +68,7 @@ export default function RegisterTypeProductView() {
         else if(name.length > 0 && name.length < 50){
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
+            setNameTypeProductChild(name)
             let dat = data;
             dat.name = name;
             setData(dat);
@@ -74,6 +76,7 @@ export default function RegisterTypeProductView() {
         else {
             setIsValidName("form-control is-invalid");
             divNameValidation.current.innerHTML = "El nombre es un campo obligatorio y debe ser menor a 50 caracteres.";
+            setNameTypeProductChild('null')
             let dat = data;
             dat.name = 'null';
             setData(dat);
