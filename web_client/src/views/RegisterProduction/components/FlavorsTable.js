@@ -52,6 +52,9 @@ const FlavorsTable = (props) => {
         if (listTable[i].amount > 100) {
             warningMessage("Error","La cantidad debe ser menor a 100.","error");
         } 
+        if (listTable[i].amount == 0) {
+            warningMessage("Atención","Se debe ingresar una cantidad válida para el sabor.","info");
+        }
     }
 
     const download = (i) => {
