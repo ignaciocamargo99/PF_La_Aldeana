@@ -32,3 +32,10 @@ export const totalAmountReducer = (state = null, action) => {
     }
     return state
 }
+
+export const productSelectedReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_PRODUCT_SELECTED'){
+        return action.payload
+    }
+    return state
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react";
 import Axios from "axios";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateProductSelected } from '../../../actions/SalesActions';
 import "../styles/listProduct.css";
 import ModalProduct from "./ModalProduct";
 import BeShowed from "../../../common/BeShowed";
@@ -13,9 +13,13 @@ const ListProducts = (props) => {
     
     const [printModal, setPrintModal] = useState(false);
 
-    const changePrintModal = (id_product) => {
+    const changePrintModal = (e) => {
+        const id = e.target.value;
+        props.updateProductSelected(props.productsFiltered.find(n => n.id_product == id));
+        props.updateProducts(props.productsFiltered.find(n => n.id_product == id));
+
         setPrintModal(true);
-        console.log(id_product)
+
     }
 
     return(
@@ -35,13 +39,15 @@ const ListProducts = (props) => {
 const mapStateToProps = state => {
     return {
         products: state.products,
-        productsFiltered: state.productsFiltered
+        productsFiltered: state.productsFiltered,
+        productSelected: state.productSelected
     }
 }
 
 const mapDispatchToProps = {
     updateProducts,
-    updateProductsFiltered
+    updateProductsFiltered,
+    updateProductSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListProducts);

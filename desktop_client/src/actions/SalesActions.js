@@ -32,3 +32,10 @@ export const updateTotalAmount = (amount) => {
         payload: amount
     }
 }
+
+export const updateProductSelected = (product) => {
+    return {
+        type: 'UPDATE_PRODUCT_SELECTED',
+        payload: product
+    }
+}
