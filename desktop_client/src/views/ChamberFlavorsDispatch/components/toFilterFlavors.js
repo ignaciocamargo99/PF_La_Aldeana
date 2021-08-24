@@ -1,6 +1,6 @@
 
 export default function toFilterFlavors(nameToSearch, flavorsToDispatch, allFlavorsToDispatch, updateFlavors) {
-    if (nameToSearch.trim() && nameToSearch.length >= 3) {
+    if (nameToSearch.trim() && nameToSearch.length >= 10) {
         let x = []
         x.length = flavorsToDispatch.length;
         flavorsToDispatch.filter((flavor, i) => {

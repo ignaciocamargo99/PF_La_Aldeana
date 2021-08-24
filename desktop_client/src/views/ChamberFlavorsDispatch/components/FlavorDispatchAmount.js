@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import validateFloatNumbers from '../../../utils/Validations/validateFloatNumber';
 import { connect } from 'react-redux';
-import { updateFlavorsListDown, updateFlavors, } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateTableUp } from '../../../actions/TableUpDownActions';
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumber';
 
 const FlavorDispatchAmount = (props) => {
     const inputAmountFlavors = useRef(null);
@@ -11,7 +11,7 @@ const FlavorDispatchAmount = (props) => {
         if (inputAmountFlavors.current.value < 0 && inputAmountFlavors.current.value.length <= 2) divAmountFlavorsValidation.current.innerHTML = 'Ingrese un número mayor a 0';
         else {
             divAmountFlavorsValidation.current.innerHTML = '';
-            props.flavorsDispatch[props.keyElement].amount = inputAmountFlavors.current.value;
+            props.elementsTableUp[props.keyElement].amount = inputAmountFlavors.current.value;
         }
     }
 
@@ -33,14 +33,12 @@ const FlavorDispatchAmount = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        flavorsListDownDispatch: state.flavorsListDownDispatch,
-        flavorsDispatch: state.flavorsDispatch
+        elementsTableUp: state.elementsTableUp
     }
 }
 
 const mapDispatchToProps = {
-    updateFlavorsListDown,
-    updateFlavors
+    updateTableUp
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlavorDispatchAmount);

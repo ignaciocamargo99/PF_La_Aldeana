@@ -1,13 +1,16 @@
 import { combineReducers } from "redux"
-import {
-    flavorsDispatchDate, flavorsDispatchFilters,
-    flavorsDispatch, allFlavorsDispatch, flavorsListDownDispatch
-} from "./ChamberFlavorsDispatchReducer";
+import { flavorsDispatchDate, flavorsDispatchFilters, } from "./ChamberFlavorsDispatchReducer";
+
+import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
 
 export default combineReducers({
+    // Chamber flavors
     flavorsDispatchDate: flavorsDispatchDate,
     flavorsDispatchFilters: flavorsDispatchFilters,
-    flavorsDispatch: flavorsDispatch,
-    allFlavorsDispatch: allFlavorsDispatch,
-    flavorsListDownDispatch: flavorsListDownDispatch
+    // Table Up-Down
+    elementsTableUp: elementsTableUp,
+    allElements: allElements,
+    elementsTableDown: elementsTableDown
+
+
 });

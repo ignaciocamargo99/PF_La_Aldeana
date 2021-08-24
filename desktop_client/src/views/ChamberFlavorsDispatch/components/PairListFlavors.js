@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateFlavors, updateFlavorsListDown } from '../../../actions/ChamberFlavorsDispatchActions';
-import warningCountProduct from '../../../utils/WarningMessages/warningCountProduct';
+import { updateTableDown, updateTableUp } from '../../../actions/TableUpDownActions';
+import warningMessage from '../../../utils/WarningMessages/warningMessage';
 import ListFlavorsDown from './ListFlavorsDown';
 import ListFlavorsUp from './ListFlavorsUp';
 
@@ -9,38 +9,32 @@ const PairListFlavors = (props) => {
 
     const download = (i) => {
         let aux = [];
-        let auxList = props.flavorsDispatch;
-        props.flavorsListDownDispatch.map((e, j) => {
-            if (j !== i) aux[j] = e;
+        let auxList = props.elementsTableUp;
+        props.elementsTableDown.forEach((e, j) => {
+            if (j !== i) aux.push(e);
             else {
                 e.amount = 0;
-                auxList[j] = e;
+                auxList.push(e);
             }
         });
-        props.updateFlavors(auxList);
-        props.updateFlavorsListDown(aux);
-        console.log(props.flavorsDispatch);
-        console.log(props.flavorsListDownDispatch)
+        // Update states of redux...
+        props.updateTableUp(auxList);
+        props.updateTableDown(aux);
     }
 
-
     const upload = (i) => {
-        if (props.flavorsDispatch[i].amount > 0) {
+        if (i.amount > 0) {
             let aux = [];
-            let auxDestiny = props.flavorsListDownDispatch;
-            props.flavorsDispatch?.map((e, j) => {
-                if (j !== i) {
-                    aux[j] = e;
-                } else {
-                    auxDestiny[j] = e;
-                }
+            let auxDestiny = props.elementsTableDown;
+            props.elementsTableUp.forEach((e, j) => {
+                if (i.id_flavor !== e.id_flavor) aux[j] = e;
+                else auxDestiny.push(e);
             });
-            props.updateFlavors(aux);
-            props.updateFlavorsListDown(auxDestiny);
-            console.log(props.flavorsDispatch);
-            console.log(props.flavorsListDownDispatch)
+            // Update states of redux...
+            props.updateTableUp(aux);
+            props.updateTableDown(auxDestiny);
         }
-        else return warningCountProduct();
+        else return warningMessage('Atención', 'Ingrese un número válido para el sabor');
     }
 
     return (
@@ -55,14 +49,14 @@ const PairListFlavors = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        flavorsListDownDispatch: state.flavorsListDownDispatch,
-        flavorsDispatch: state.flavorsDispatch
+        elementsTableUp: state.elementsTableUp,
+        elementsTableDown: state.elementsTableDown
     }
 }
 
 const mapDispatchToProps = {
-    updateFlavorsListDown,
-    updateFlavors,
+    updateTableUp,
+    updateTableDown
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PairListFlavors);

@@ -12,24 +12,3 @@ export const updateFiltersFlavors = (filters) => {
         payload: filters
     };
 };
-
-export const updateFlavors = (flavors) => {
-    return {
-        type: 'UPDATE_FLAVORS',
-        payload: flavors
-    };
-};
-
-export const updateAllFlavors = (flavors) => {
-    return {
-        type: 'UPDATE_ALL_FLAVORS',
-        payload: flavors
-    };
-};
-
-export const updateFlavorsListDown = (flavors) => {
-    return {
-        type: 'UPDATE_LISTDOWN_FLAVORS',
-        payload: flavors
-    };
-};

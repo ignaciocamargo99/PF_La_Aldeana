@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors, updateFlavors, updateAllFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateAllElements, updateTableUp } from '../../../actions/TableUpDownActions';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import FlavorDispatchAmount from "./FlavorDispatchAmount";
 
@@ -16,19 +17,16 @@ const ListFlavorsUp = (props) => {
 
     useEffect(() => {
         if (props.flavorsDispatchFilters[0]) {
-            Axios.get(`${PORT()}/api/flavors/${props.flavorsDispatchFilters[0]}`)
-                .then(response => {
-                    handlerLoadingSpinner();
-                    props.updateFlavors(response.data)
-                })
-                .catch(error => console.log(error))
+            let filterFamilyFlavors = [];
+            filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor == props.flavorsDispatchFilters[0])));
+            props.updateTableUp(filterFamilyFlavors);
         }
         else {
-            Axios.get(`${PORT()}/api/flavors`)
+            Axios.get(`${PORT()}/api/allFlavors`)
                 .then(response => {
                     handlerLoadingSpinner();
-                    props.updateFlavors(response.data);
-                    props.updateAllFlavors(response.data);
+                    props.updateTableUp(response.data);
+                    props.updateAllElements(response.data);
                 })
                 .catch(error => console.log(error))
         }
@@ -41,9 +39,9 @@ const ListFlavorsUp = (props) => {
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" description="Cargando sabores. Aguarde..." />
             )}
-            {(flavorValues = props.flavorsDispatch.filter(() => true),
+            {(flavorValues = props.elementsTableUp.filter(() => true),
                 flavorValues.length === 0 && !isLoadingSpinner
-                    ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores con los filtros cargados...</h4>
+                    ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores con los filtros cargados o ya cargó todos los disponibles...</h4>
                     : !isLoadingSpinner && (
                         <div className="table-responsive">
                             <table className="table">
@@ -54,14 +52,14 @@ const ListFlavorsUp = (props) => {
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Añadir</th>
                                     </tr>
                                 </thead>
-                                {props.flavorsDispatch?.map((element, i) => {
+                                {props.elementsTableUp.map((element, i) => {
                                     return (
                                         <tbody key={i}>
                                             <tr>
                                                 <td style={{ textAlign: 'center' }}>{element.name}</td>
                                                 <FlavorDispatchAmount keyElement={i} />
                                                 <td style={{ textAlign: 'center' }}>
-                                                    <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(i)}><FontAwesomeIcon icon={faPlus} /></button>
+                                                    <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -77,14 +75,15 @@ const ListFlavorsUp = (props) => {
 const mapStateToProps = (state) => {
     return {
         flavorsDispatchFilters: state.flavorsDispatchFilters,
-        flavorsDispatch: state.flavorsDispatch
+        elementsTableUp: state.elementsTableUp,
+        allElements: state.allElements
     }
 }
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
-    updateFlavors,
-    updateAllFlavors
+    updateTableUp,
+    updateAllElements
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavorsUp);

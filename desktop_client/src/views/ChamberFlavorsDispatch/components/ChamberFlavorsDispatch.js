@@ -1,13 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateChamberFlavorsDate } from '../../../actions/ChamberFlavorsDispatchActions';
+import Buttons from '../../../common/Buttons';
 import dateFormat from '../../../utils/DateFormat/dateFormat';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
+import warningMessage from '../../../utils/WarningMessages/warningMessage';
+import validateWarning from '../../../utils/WarningMessages/validateWarning';
 
 const ChamberFlavorsDispatch = (props) => {
     const inputDate = useRef();
+    const [ready, setReady] = useState();
 
     useEffect(() => {
         let date = new Date()
@@ -15,6 +19,13 @@ const ChamberFlavorsDispatch = (props) => {
         inputDate.current.max = dateString
         props.updateChamberFlavorsDate(dateString)
     }, [true]);
+
+    useEffect(() => {
+        const flavors = props.elementsTableDown.filter((flavor) => true && flavor.amount > 0);
+        console.log(flavors)
+        if (flavors.length > 0) setReady(true);
+        else setReady(false);
+    }, [props.elementsTableDown, props.elementsTableUp])
 
     const onChangeDate = () => {
         let date = new Date();
@@ -26,6 +37,8 @@ const ChamberFlavorsDispatch = (props) => {
         else props.updateChamberFlavorsDate(inputDate.current.value);
     };
 
+
+    const cancelTypeProduct = () => window.location.replace('/app/flavorsChamber');
 
     return (
         <>
@@ -42,6 +55,12 @@ const ChamberFlavorsDispatch = (props) => {
                 </div>
                 <FilterFlavors />
                 <PairListFlavors />
+                <Buttons label='Registrar' ready={ready}
+                    // actionOK={registerProduct}
+                    // actionNotOK={validateWarning(ready ,'Atención', 'Cargue uno o más sabores a la lista')}
+                    // data={ready}
+                    actionCancel={cancelTypeProduct}
+                />
             </div>
         </>
     );
@@ -50,9 +69,9 @@ const ChamberFlavorsDispatch = (props) => {
 const mapStateToProps = (state) => {
     return {
         flavorsDispatchDate: state.flavorsDispatchDate,
-        flavorsDispatchFilters: state.flavorsDispatchFilters
+        elementsTableDown: state.elementsTableDown,
+        elementsTableUp: state.elementsTableUp,
     }
-
 }
 
 const mapDispatchToProps = {

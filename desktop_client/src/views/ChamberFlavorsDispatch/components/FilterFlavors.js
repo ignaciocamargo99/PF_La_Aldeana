@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState, useRef } from 'react';
-import BeShowed from '../../../common/BeShowed';
 import Axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateFlavors, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateTableUp } from '../../../actions/TableUpDownActions';
+import BeShowed from '../../../common/BeShowed';
 import DynamicSearch from '../../../common/DynamicSearch';
 import toFilterFlavors from './toFilterFlavors';
 
@@ -26,32 +27,48 @@ const ListFlavors = (props) => {
 
     const handlerOnChangeSearchNameFlavor = () => {
         if (inputSearchNameFlavor.current.checked) {
+            let filterFlavorsWithDownList = [];
             setBoolSearchNameFlavor(true);
             setBoolFamilyFlavor(false);
-            // props.updateFlavors(props.allFlavorsDispatch);
+            // Filter without repeating what was loaded in the ListFlavorsDown
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            props.updateTableUp(filterFlavorsWithDownList);
         }
         else setBoolFamilyFlavor(false);
     };
 
     const handlerOnChangeFamilyFlavor = () => {
         if (inputFamilyFlavor.current.checked === true) {
+            let filterFlavorsWithDownList = [];
             setBoolFamilyFlavor(true);
             setBoolSearchNameFlavor(false);
-            // props.updateFlavors(props.allFlavorsDispatch);
+            // Filter without repeating what was loaded in the ListFlavorsDown
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            props.updateTableUp(filterFlavorsWithDownList);
         }
         else setBoolFamilyFlavor(false);
     };
 
     useEffect(() => {
-        toFilterFlavors(nameSearch, props.flavorsDispatch, props.allFlavorsDispatch, props.updateFlavors);
+        // Filter without repeating what was loaded in the ListFlavorsDown
+        let filterFlavorsWithDownList = [];
+        filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+        toFilterFlavors(nameSearch, props.elementsTableUp, filterFlavorsWithDownList, props.updateTableUp);
     }, [nameSearch]);
 
-    const onChangeFamilyProduct = (e) => setSelectFamilyFlavor(e.target.value);
+    const onChangeFamilyProduct = (e) => {
+        if (e.target.value === "all_flavors") {
+            let filterFlavorsWithDownList = [];
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            props.updateTableUp(filterFlavorsWithDownList);
+        }
+        else setSelectFamilyFlavor(e.target.value);
+    }
 
     useEffect(() => {
         let filters = [selectFamilyFlavor];
         props.updateFiltersFlavors(filters)
-    }, [selectFamilyFlavor])
+    }, [selectFamilyFlavor, props.updateFiltersFlavors]);
 
     return (
         <>
@@ -72,8 +89,8 @@ const ListFlavors = (props) => {
                 <div className="formRow"><DynamicSearch placeholder="Nombre helado..." setSearchState={setNameSearch} /></div>
             </BeShowed>
             <BeShowed show={boolFamilyFlavor}>
-                <select className="form-combo-btn" id="selectTypeProduct" defaultValue='-1' onChange={e => onChangeFamilyProduct(e)}>
-                    <option disabled value="-1">Seleccione familia</option>
+                <select className="form-combo-btn" id="selectTypeProduct" onChange={e => onChangeFamilyProduct(e)}>
+                    <option value="all_flavors">Todos los sabores</option>
                     {
                         familyFlavor?.map((element, i) => (
                             <option key={i} value={element.id_family_flavor}>{element.name}</option>
@@ -87,16 +104,14 @@ const ListFlavors = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        flavorsDispatchFilters: state.flavorsDispatchFilters,
-        flavorsDispatch: state.flavorsDispatch,
-        allFlavorsDispatch: state.allFlavorsDispatch,
-        flavorsLisDownDispatch: state.flavorsLisDownDispatch,
+        elementsTableUp: state.elementsTableUp,
+        allElements: state.allElements
     };
 };
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
-    updateFlavors
+    updateTableUp,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavors);

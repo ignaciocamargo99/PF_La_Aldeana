@@ -1,20 +1,6 @@
 
-const {readFlavorID, readFlavor, readTypeFlavor, readFamilyFlavor} = require('../services/flavorService');
+const { readFlavor, readTypeFlavor, readFamilyFlavor } = require('../services/flavorService');
 
-// HTTP: GET
-async function getFlavorID(req, res) {
-    try {
-        const result = await readFlavorID(req.params.family_flavor);
-
-        res.send(result)
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        })
-    }
-}
 
 // HTTP: GET
 async function getFlavor(req, res) {
@@ -60,4 +46,4 @@ async function getFamilyFlavor(req, res) {
 }
 
 
-module.exports = { getFlavorID, getTypeFlavor, getFamilyFlavor, getFlavor }
+module.exports = { getTypeFlavor, getFamilyFlavor, getFlavor }
