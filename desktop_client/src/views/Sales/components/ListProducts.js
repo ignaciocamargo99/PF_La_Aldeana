@@ -24,7 +24,7 @@ const ListProducts = (props) => {
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (
                 <div key={i}>
-                    <button style={{width: 150, height: 150}} type='button' value={product.id_product} onClick={changePrintModal}>{product.name}</button>
+                    <button style={{width: 150, height: 150}} type='button' value={product.id_product} onClick={(e) => changePrintModal(e)}>{product.name}</button>
                 </div>
             )})}></DivGeneric>
             <ModalProduct show={printModal}></ModalProduct>
