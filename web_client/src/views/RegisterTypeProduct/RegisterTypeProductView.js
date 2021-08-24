@@ -17,7 +17,7 @@ export default function RegisterTypeProductView() {
     const inputDescription = useRef(null);
     const divNameValidation = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
-    const [sectorTypeProductChild, setSectorTypeProductChild] = useState(2);
+    const [sectorTypeProductChild, setSectorTypeProductChild] = useState(-1);
     const [nameTypeProductChild, setNameTypeProductChild] = useState('null');
 
 
@@ -37,22 +37,25 @@ export default function RegisterTypeProductView() {
 
     const registerTypeProduct = () => {
         const description = inputDescription.current.value.trim();
-        try {
-            if (ready) {
-                Axios.post(PORT() + '/api/typeProduct/new', {
-                    name: data.name,
-                    description: description,
-                    id_sector: data.id_sector
+        if (ready) {
+            Axios.post(PORT() + '/api/typeProduct/new', {
+                name: data.name,
+                description: description,
+                id_sector: data.id_sector
+            })
+                .then(({data}) =>{
+                    if(data.Ok) success();
+                    else displayError(data.Message);
                 })
-                    .then(({data}) =>{
-                        if(data.Ok) success();
-                        else displayError(data.Message);
-                    })
-                    .catch(err => console.error(err))
-            }
-            else throw new Error
+                .catch(err => console.error(err))
         }
-        catch (Error) { throw warningMessage('Atención', 'Ingrese un nombre válido para el tipo de producto', 'warning') };
+    }
+
+    const validate = () => {
+        if (nameTypeProductChild === 'null') {
+            warningMessage('Atención', 'Ingrese un nombre valido para el tipo de producto', 'warning')
+        } else if (sectorTypeProductChild < 0){
+            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')}
     }
 
     const onChangeName = () => {
@@ -109,7 +112,7 @@ export default function RegisterTypeProductView() {
                     </div>
                 </div>
                 <SectorProduct load={load} data={data}/>
-                <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={registerTypeProduct} actionCancel={cancelTypeProduct} />
+                <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={validate} actionCancel={cancelTypeProduct} />
             </div>
         </>
     )
