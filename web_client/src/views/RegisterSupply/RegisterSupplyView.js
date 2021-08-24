@@ -18,7 +18,8 @@ const PORT = require('../../config');
 const RegisterPurchaseSupplies = (props) => {
 
     const cancel = () => {
-        window.location.href = './index'
+        resetStates();
+        window.location.href = './supplies'
     }
 
     const resetStates = (message) => {
