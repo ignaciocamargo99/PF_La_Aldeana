@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import validateFloatNumbers from "../../../utils/Validations/validateFloatNumbers";
 
 export default function FlavorsAmount (props) {
     
@@ -22,7 +23,7 @@ export default function FlavorsAmount (props) {
 
     return (
         <div style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-            <input style={{ width: '150px'}} className="form-control-md" id="flavorsAmount" type="number" min="1" ref={inputAmountFlavors} onChange={onChangeAmount} placeholder="0" />
+            <input style={{ width: '150px'}} className="form-control-md" id="flavorsAmount" type="number" min="1" onKeyDown={(e) => validateFloatNumbers(e)} ref={inputAmountFlavors} onChange={onChangeAmount} placeholder="0" />
             <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountFlavorsValidation} />
         </div>
     );

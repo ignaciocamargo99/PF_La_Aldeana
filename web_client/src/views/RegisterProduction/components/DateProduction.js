@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { updateDate } from '../../../actions/DateActions';
 import formattedDate from '../../../utils/ConverterDate/formattedDate'
@@ -8,6 +8,10 @@ const DateProduction = (props) => {
     const startDate = formattedDate(new Date());
     const inputDate = useRef(null);
     const [isValidClass, setIsValidClass] = useState("form-control");
+
+    useEffect(() => {
+        props.updateDate(startDate)
+    },[])
 
     const onChangeDate = () => {
         props.updateDate(inputDate.current.value);
@@ -20,7 +24,7 @@ const DateProduction = (props) => {
                 <label htmlFor="date">Fecha</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="date" type="date" ref={inputDate} onChange={onChangeDate} min={"2021-01-01"} max={startDate}></input>
+                <input className={isValidClass} id="date" type="date" ref={inputDate} value={props.date} onChange={onChangeDate} min={"2021-01-01"} max={startDate}></input>
             </div>
         </div>
     )
