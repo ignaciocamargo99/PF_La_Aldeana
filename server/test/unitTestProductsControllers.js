@@ -12,7 +12,7 @@ describe('Tests unitarios sobre API Products',()=>{
     describe('Check getTypeProducts',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
-                .get('/typeProduct')
+                .get('/typeProducts')
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
@@ -20,7 +20,7 @@ describe('Tests unitarios sobre API Products',()=>{
         });
         it('Trae los datos como json', (done) => {
             chai.request(url)
-                .get('/typeProduct')
+                .get('/typeProducts')
                 .end( function(err,res){
                     expect(res).to.be.json;
                     done();
@@ -103,6 +103,54 @@ describe('Tests unitarios sobre API Products',()=>{
             chai.request(url)
                 .post('/product/new')
                 .send({name: 'Fanta 1 ml', description: 'Bebida con gas grande', price: 500, id_sector: 2, id_product_type: 1})
+                .end( function(err,res){
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+
+    });
+
+    describe('Check getProductsSuppliess',()=>{
+        it('Recibe correctamente la funcion', (done) => {
+            chai.request(url)
+                .get('/productSupply/7')
+                .end( function(err,res){
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+        it('Trae los datos como json', (done) => {
+            chai.request(url)
+                .get('/productSupply/7')
+                .end( function(err,res){
+                    expect(res).to.be.json;
+                    done();
+                });
+        });
+
+    });
+
+
+    describe('Check updateProduct',()=>{
+        it('Se actualiza correctamente', (done) => {
+            chai.request(url)
+                .put('/products/update')
+                .send({name: 'prueba update from test', description: 'test update', price: 500, id_sector: 2, id_product_type: 1, id_product: 56})
+                .end( function(err,res){
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+
+    });
+
+
+    describe('Check deleteProduct',()=>{
+        it('Se actualiza correctamente', (done) => {
+            chai.request(url)
+                .put('/products/delete/')
+                .send({id_product: 56})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();

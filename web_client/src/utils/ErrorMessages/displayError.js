@@ -1,4 +1,4 @@
-  import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 const displayError = (text = 'Ha ocurrido un error.', title = '¡Lo sentimos!') => {
     Swal.fire({
