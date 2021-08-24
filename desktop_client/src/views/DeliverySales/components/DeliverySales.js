@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import DateFormat from '../../../utils/DateFormat/DateFormat';
+import DateFormat from '../../../utils/DateFormat/dateFormat';
 import ListProducts from './ListProducts';
 import BeShowed from '../../../common/BeShowed';
 import axios from 'axios';
@@ -35,6 +35,10 @@ const DeliverySales = (props) => {
     const [errorStreet,setErrorStreet] = useState(true);
     const [errorStreetNumber,setErrorStreetNumber] = useState(true);
 
+    const [showModal,setShowModal] = useState(false);
+    const [arrayFlavors,setArrayFlavors] = useState([]);
+    const [cancel,setCancel] = useState(false);
+
     const inputDate = useRef(null);
 
 
@@ -52,11 +56,22 @@ const DeliverySales = (props) => {
     },[])
 
     const upload = (id,i) => {
+        setCancel(false)
         let inputQuantity = document.getElementById(`quantityInput${i}`)
         if(inputQuantity.value > 0){
             let productToAdd = products.find(product => product.id_product === id)
             let newProducts = products.filter(product => product.id_product !== id)
             let newProductsDetail = productsDetail
+            if(productToAdd.id_sector === 1){
+                let aux = []
+                for(let i = 0 ; i < inputQuantity.value ; i++){
+                    aux.push(i) 
+                }
+                let newArrayFlavors = arrayFlavors
+                newArrayFlavors.push(aux)
+                setArrayFlavors(newArrayFlavors)
+                setShowModal(true)
+            }
             newProductsDetail.push(productToAdd)
             setProducts(newProducts)
             setProductsDetail(newProductsDetail)
@@ -188,7 +203,7 @@ const DeliverySales = (props) => {
                     </div>
                     <RadioButtons products={products} setFilterProducts={setFilterProducts}/>
                     <hr />
-                    <ModalFlavorSelect show={true} />
+                    <ModalFlavorSelect show={showModal} setShowModal={setShowModal} setCancel={setCancel} arrayFlavors={arrayFlavors}/>
                     <BeShowed show={products.length === 0}>
                         <div className="row justify-content-center align-items-center">
                             <Spinner color="dark" />
