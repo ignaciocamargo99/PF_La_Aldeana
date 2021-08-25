@@ -40,24 +40,41 @@ const RegisterPurchaseSupplies = (props) => {
 
     useEffect(()=>{
         
-        setData({
-            name: props.nameSupply,
-            description: props.descriptionSupply,
-            id_supply_type: props.typeSupply,
-            price_wholesale: props.multiplePrice,
-            price_retail: props.singlePrice,
-            stock_lot: props.lotSupply,
-            stock_unit: props.unitSupply,
-            unit_x_lot: props.unitPerLotSupply
-        });
+        if (props.typeSupply !== 3){
+            setData({
+                name: props.nameSupply,
+                description: props.descriptionSupply,
+                id_supply_type: props.typeSupply,
+                price_wholesale: props.multiplePrice,
+                price_retail: props.singlePrice,
+                stock_lot: props.lotSupply,
+                stock_unit: props.unitSupply,
+                unit_x_lot: props.unitPerLotSupply
+            });
+        } else {
+            setData({
+                name: props.nameSupply,
+                description: props.descriptionSupply,
+                id_supply_type: props.typeSupply,
+                price_wholesale: props.multiplePrice,
+                price_retail: props.singlePrice,
+                stock_lot: null,
+                stock_unit: null,
+                unit_x_lot: null
+            });
+        }
 
-        if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.typeSupply >= 0 && props.multiplePrice > 0 &&
+        if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.typeSupply >= 0 && props.typeSupply < 3 && props.multiplePrice > 0 &&
         props.singlePrice > 0 && props.lotSupply > 0 && props.unitSupply > 0 && props.unitPerLotSupply > 0) {
+            setReady(true);
+        } else if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.typeSupply === 3 && props.multiplePrice > 0 &&
+        props.singlePrice > 0) {
             setReady(true);
         } else {
             setReady(false);
         }
     }, [props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
+    
     const registerPurchaseSupplies = () => {
         
         Axios.post(PORT() + '/api/supply/new', data)
