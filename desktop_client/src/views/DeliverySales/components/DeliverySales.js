@@ -101,6 +101,9 @@ const DeliverySales = (props) => {
         let newTotal = subtotal + total
         setTotal(newTotal)
         inputQuantity.value = null
+        if(amount < newTotal){
+            setErrorAmount(true)
+        }
     }
 
     const download = (id,i) => {
@@ -145,6 +148,40 @@ const DeliverySales = (props) => {
                 break;
             case 3:
                 if(!errorAmount){
+                    let saleDetail = []
+                    let j = -1
+                    productsDetail.map((productDetail,i) => {
+                        let detail
+                        if(productDetail.id_sector === 1){
+                            j ++
+                            detail = {
+                                'sale_number': 1,
+                                'detail_number': i,
+                                'id_product': productDetail.id_product,
+                                'flavors': arrayFlavors[j],
+                                'quantity': quantities[i],
+                                'subtotal': subtotals[i]
+                            }
+                        }else{
+                            detail = {
+                                'sale_number': 1,
+                                'detail_number': i,
+                                'id_product': productDetail.id_product,
+                                'flavors': [],
+                                'quantity': quantities[i],
+                                'subtotal': subtotals[i]
+                            }
+                        }
+                        saleDetail.push(detail)
+                    })
+                    let sale = {
+                        "details": saleDetail,
+                        "total": total,
+                        "client_cellphone": cellphone,
+                        "pay_type": typePay,
+                        "amount": amount
+                    }
+                    console.log(sale)
                     succesMessageDeliverySale('Se ha registrado la venta correctamente')
                 }
                 else{
