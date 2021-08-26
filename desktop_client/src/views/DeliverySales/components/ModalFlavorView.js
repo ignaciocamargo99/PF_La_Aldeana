@@ -8,6 +8,7 @@ import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
 import UploadByName from '../../../common/UploadByName';
 import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
+import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
 
 const PORT = require('../../../config');
 
@@ -17,7 +18,6 @@ const ModalFlavorView = (props) => {
     const [flavors,setFlavors] = useState([]);
     const [selectedFalvors,setSelectedFlavors] = useState([]);
     const [lastI,setLastI] = useState(0);
-    const [refresh,setRefresh] = useState(true);
 
     useEffect(() => {
         axios.get( PORT() + `/api/flavors`)
@@ -31,6 +31,7 @@ const ModalFlavorView = (props) => {
     },[])
     
     useEffect(()=> {
+        console.log(props.flavorsToView)
         if(props.flavorsToView.length > 0){
             let newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== props.flavorsToView[0][0].id_flavor)
             for(let i = 1 ; i < props.flavorsToView[0].length ; i++){
@@ -39,7 +40,7 @@ const ModalFlavorView = (props) => {
             setFlavors(newFlavors)
             setSelectedFlavors(props.flavorsToView[0])
         }
-    },[props.flavorsToView,])
+    },[props.show])
 
     const uploadFlavor = (id) => {
         if(id < 0){
@@ -67,26 +68,41 @@ const ModalFlavorView = (props) => {
         setSelectedFlavors(newSelectedFlavors)
     }
 
-    const onClickRB = (i) => {
+    const onClickRB = (e,i) => {
         let flavorsToView = props.flavorsToView
-        if(selectedFalvors > 0){
+        if(selectedFalvors.length > 0){
             flavorsToView[lastI] = selectedFalvors
+            console.log('FLAVORS TO VIEW [LAST I]')
+            console.log(flavorsToView[lastI])
+            console.log('LO QUE VA A ESTAR COMO SELECTED FLAVORS')
+            console.log(props.flavorsToView[i])
+            setSelectedFlavors(props.flavorsToView[i])
+            let newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][0].id_flavor)
+            for(let j = 1 ; j < flavorsToView[i].length ; j++){
+                newFlavors = newFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][j].id_flavor)
+            }
+            setFlavors(newFlavors)
+            setLastI(i)
         }
-        let newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][0].id_flavor)
-        for(let j = 1 ; j < flavorsToView[i].length ; j++){
-            newFlavors = newFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][j].id_flavor)
+        else{
+            e.target.checked = false
+            document.getElementById(`rb${lastI+1}`).checked = true
+            errorConfirmFlavors()
         }
-        setSelectedFlavors(flavorsToView[i])
-        setFlavors(newFlavors)
-        setLastI(i)
+        
     }
     
     const confirm = () => {
-        props.setShowModalView(false)
+        if(selectedFalvors.length > 0 ){
+            console.log(props.flavorsToView)
+            props.setShowModalView(false)
+        }
+        else{
+            errorConfirmFlavors()
+        }
     }
 
     const cancel = () => {
-        setRefresh(!refresh)
         props.setShowModalView(false)
     }
 
@@ -107,7 +123,7 @@ const ModalFlavorView = (props) => {
                             {props.flavorsToView?.map((f,i) => {
                                 return(
                                     <div className="form-check form-check-inline">
-                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={() => {onClickRB(i)}}></input>
+                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={(e) => {onClickRB(e,i)}}></input>
                                         <label className="form-check-label" for={`rb${i+1}`}>{i+1}</label>
                                     </div>
                                 )

@@ -1,7 +1,7 @@
 import swal from 'sweetalert';
 
-export default function succesMessageDeliverySale() {
+export default function succesMessageDeliverySale(msg) {
 
-    return swal("Correcto!", "Se ha registrado la venta correctamente", "success");
+    return swal("Correcto!", msg , "success");
 
 }

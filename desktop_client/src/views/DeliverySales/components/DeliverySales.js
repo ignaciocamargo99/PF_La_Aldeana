@@ -12,6 +12,7 @@ import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
 import RadioButtons from './RadioButtons';
 import { Spinner } from 'reactstrap';
 import ModalFlavorSelect from './ModalFlavorSelect';
+import ModalFlavorShow from './ModalFlavorShow';
 import ModalFlavorView from './ModalFlavorView';
 
 const PORT = require('../../../config');
@@ -119,7 +120,7 @@ const DeliverySales = (props) => {
         setTotal(newTotal)
         if(productToQuit.id_sector === 1){
             let indice = findIndex(productToQuit)
-            let newArrayFlavors = arrayFlavors.slice(0,indice).concat(arrayFlavors.slice(indice,arrayFlavors.length))
+            let newArrayFlavors = arrayFlavors.slice(0,indice).concat(arrayFlavors.slice(indice+1,arrayFlavors.length))
             setArrayFlavors(newArrayFlavors)
         }
     }
@@ -144,7 +145,7 @@ const DeliverySales = (props) => {
                 break;
             case 3:
                 if(!errorAmount){
-                    succesMessageDeliverySale()
+                    succesMessageDeliverySale('Se ha registrado la venta correctamente')
                 }
                 else{
                     errorNextStepThree()
@@ -242,7 +243,8 @@ const DeliverySales = (props) => {
                     <RadioButtons products={products} setFilterProducts={setFilterProducts}/>
                     <hr />
                     <ModalFlavorSelect show={showModal} setShowModal={setShowModal} objectToAdd={objectToAdd} finishUpload={finishUpload} arrayFlavors={arrayFlavors} setArrayFlavors={setArrayFlavors}/>
-                    <ModalFlavorView show={showModalView} setShowModalView={setShowModalView} flavorsToView={flavorsToView}/>
+                    <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} flavorsToView={flavorsToView} productName={productToView?.name}/>
+                    {/*<ModalFlavorView show={showModalView} setShowModalView={setShowModalView} flavorsToView={flavorsToView}/>*/}
                     <BeShowed show={products.length === 0}>
                         <div className="row justify-content-center align-items-center">
                             <Spinner color="dark" />
