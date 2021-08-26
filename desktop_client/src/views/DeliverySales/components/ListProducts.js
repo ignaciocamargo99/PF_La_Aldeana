@@ -1,7 +1,7 @@
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus, faIceCream } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BeShowed from '../../../common/BeShowed';
 
@@ -43,7 +43,7 @@ const ListProducts = (props) => {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center', width: '45%'}}>{elemento.name}</td>
+                                    <td style={{ textAlign: 'center', width: '40%'}}>{elemento.name}</td>
                                     <BeShowed show={props.icon==='+'}>
                                         <td style={{ textAlign: 'center', width: '15%'}}>
                                             {elemento.price}
@@ -62,8 +62,11 @@ const ListProducts = (props) => {
                                         <td style={{ textAlign: 'center', width: '15%'}}>
                                             {props.subtotals?`$${props.subtotals[i]}`:null}
                                         </td>
-                                    </BeShowed>
-                                    <td style={{ textAlign: 'center', width: '10%'}}>
+                                    </BeShowed>    
+                                    <td style={{ textAlign: 'center', width: '12%'}}>
+                                        <BeShowed show={props.icon==='-' && elemento.id_sector === 1}>
+                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.showFlavors(elemento)}} ><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
+                                        </BeShowed>
                                         <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(elemento.id_product,i)}}><FontAwesomeIcon icon={props.icon === '+'?faPlus:faMinus} /></button>
                                     </td>
                                 </tr>

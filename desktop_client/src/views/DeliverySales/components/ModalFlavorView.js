@@ -1,34 +1,45 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect , useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
-import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 import UploadByName from '../../../common/UploadByName';
-import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
+import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 
 const PORT = require('../../../config');
 
-const ModalFlavorSelect = (props) => {
-    
-    const [allFlavors,setAllFlavors] = useState([])
+const ModalFlavorView = (props) => {
+
+    const [allFlavors,setAllFlavors] = useState([]);
     const [flavors,setFlavors] = useState([]);
     const [selectedFalvors,setSelectedFlavors] = useState([]);
     const [lastI,setLastI] = useState(0);
+    const [refresh,setRefresh] = useState(true);
 
-    useEffect(()=> {
+    useEffect(() => {
         axios.get( PORT() + `/api/flavors`)
         .then((response) => {
-            setAllFlavors(response.data)
             setFlavors(response.data)
+            setAllFlavors(response.data)
         })
         .catch((err) => {
             console.log(err)
         })
     },[])
+    
+    useEffect(()=> {
+        if(props.flavorsToView.length > 0){
+            let newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== props.flavorsToView[0][0].id_flavor)
+            for(let i = 1 ; i < props.flavorsToView[0].length ; i++){
+                newFlavors = newFlavors.filter(flavor => flavor.id_flavor !== props.flavorsToView[0][i].id_flavor)
+            }
+            setFlavors(newFlavors)
+            setSelectedFlavors(props.flavorsToView[0])
+        }
+    },[props.flavorsToView,])
 
     const uploadFlavor = (id) => {
         if(id < 0){
@@ -57,61 +68,33 @@ const ModalFlavorSelect = (props) => {
     }
 
     const onClickRB = (i) => {
-        let arrayFlavorsSelected = props.arrayFlavors[props.arrayFlavors.length-1]
-        if(selectedFalvors.length > 0){
-            arrayFlavorsSelected[lastI] = selectedFalvors
+        let flavorsToView = props.flavorsToView
+        if(selectedFalvors > 0){
+            flavorsToView[lastI] = selectedFalvors
         }
-        if(arrayFlavorsSelected[i][0] !== undefined){
-            let newSelectedFlavors = arrayFlavorsSelected[i]
-            let newFlavors
-            newFlavors = allFlavors.filter( flavor => flavor.id_flavor !== newSelectedFlavors[0].id_flavor)
-            for(let i = 1 ; i < newSelectedFlavors.length ; i++){
-                newFlavors = newFlavors.filter( flavor => flavor.id_flavor !== newSelectedFlavors[i].id_flavor)
-            }
-            setSelectedFlavors(newSelectedFlavors)
-            setFlavors(newFlavors)
+        let newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][0].id_flavor)
+        for(let j = 1 ; j < flavorsToView[i].length ; j++){
+            newFlavors = newFlavors.filter(flavor => flavor.id_flavor !== flavorsToView[i][j].id_flavor)
         }
-        else{
-            setSelectedFlavors([])
-            setFlavors(allFlavors)
-        }
+        setSelectedFlavors(flavorsToView[i])
+        setFlavors(newFlavors)
         setLastI(i)
+    }
+    
+    const confirm = () => {
+        props.setShowModalView(false)
     }
 
     const cancel = () => {
-        let newArrayFlavors = props.arrayFlavors.slice(0,props.arrayFlavors.length-1)
-        props.setArrayFlavors(newArrayFlavors)
-        props.setShowModal(false)
-    }
-
-    const confirm = () => {
-        let arrayFlavorsSelected = props.arrayFlavors[props.arrayFlavors.length-1]
-        if(selectedFalvors.length > 0){
-            arrayFlavorsSelected[lastI] = selectedFalvors
-        }
-        let finish = true
-        arrayFlavorsSelected.map((flavorsSelected) => {
-            if(typeof(flavorsSelected) !== 'object'){
-                finish = false
-            }
-        })
-        if(finish){
-            props.finishUpload(props.objectToAdd.productToAdd,props.objectToAdd.inputQuantity,props.objectToAdd.id)
-            setSelectedFlavors([])
-            setFlavors(allFlavors)
-            setLastI(0)
-            props.setShowModal(false)
-        }
-        else{
-            errorConfirmFlavors()
-        }
+        setRefresh(!refresh)
+        props.setShowModalView(false)
     }
 
     return(
         <>
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader>
-                    <label className="font-weight-bold text-align-center">Seleccion de sabores de helados</label>
+                    <label className="font-weight-bold text-align-center">Sabores seleccionados de {props.productName}</label>
                 </ModalHeader>
                 <ModalBody>
                     <FormGroup>
@@ -121,10 +104,10 @@ const ModalFlavorSelect = (props) => {
                         </div>
                         <hr />
                         <div className="container">
-                            {props.arrayFlavors[props.arrayFlavors.length-1]?.map((f,i) => {
+                            {props.flavorsToView?.map((f,i) => {
                                 return(
                                     <div className="form-check form-check-inline">
-                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={(e) => {onClickRB(e.target.value)}}></input>
+                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={() => {onClickRB(i)}}></input>
                                         <label className="form-check-label" for={`rb${i+1}`}>{i+1}</label>
                                     </div>
                                 )
@@ -160,12 +143,12 @@ const ModalFlavorSelect = (props) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter className="back-ligthblue">
-                    <button className="btn btn-success" onClick={confirm}>Confirmar</button>
-                    <button className="btn btn-danger" onClick={cancel}>Cancelar</button>
+                    <button className="btn btn-success" onClick={confirm} >Confirmar</button>
+                    <button className="btn btn-danger" onClick={cancel} >Cancelar</button>
                 </ModalFooter>
             </Modal>
         </>
     )
 }
 
-export default ModalFlavorSelect
+export default ModalFlavorView

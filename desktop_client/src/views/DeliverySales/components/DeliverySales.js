@@ -12,6 +12,7 @@ import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
 import RadioButtons from './RadioButtons';
 import { Spinner } from 'reactstrap';
 import ModalFlavorSelect from './ModalFlavorSelect';
+import ModalFlavorView from './ModalFlavorView';
 
 const PORT = require('../../../config');
 
@@ -37,7 +38,12 @@ const DeliverySales = (props) => {
 
     const [showModal,setShowModal] = useState(false);
     const [arrayFlavors,setArrayFlavors] = useState([]);
-    const [cancel,setCancel] = useState(false);
+    const [objectToAdd,setObjectToAdd] = useState(null);
+
+
+    const [showModalView,setShowModalView] = useState(false);
+    const [flavorsToView,setFlavorsToView] = useState([]);
+    const [productToView,setProductToView] = useState(null);
 
     const inputDate = useRef(null);
 
@@ -56,12 +62,9 @@ const DeliverySales = (props) => {
     },[])
 
     const upload = (id,i) => {
-        setCancel(false)
         let inputQuantity = document.getElementById(`quantityInput${i}`)
         if(inputQuantity.value > 0){
             let productToAdd = products.find(product => product.id_product === id)
-            let newProducts = products.filter(product => product.id_product !== id)
-            let newProductsDetail = productsDetail
             if(productToAdd.id_sector === 1){
                 let aux = []
                 for(let i = 0 ; i < inputQuantity.value ; i++){
@@ -70,24 +73,33 @@ const DeliverySales = (props) => {
                 let newArrayFlavors = arrayFlavors
                 newArrayFlavors.push(aux)
                 setArrayFlavors(newArrayFlavors)
+                setObjectToAdd({'id':id,'productToAdd':productToAdd,'inputQuantity': inputQuantity})
                 setShowModal(true)
             }
-            newProductsDetail.push(productToAdd)
-            setProducts(newProducts)
-            setProductsDetail(newProductsDetail)
-            let newQuantities = quantities
-            let newSubtotals = subtotals
-            newQuantities.push(inputQuantity.value)
-            let subtotal = inputQuantity.value * productToAdd.price
-            newSubtotals.push(subtotal)
-            setQuantities(newQuantities)
-            setSubtotals(newSubtotals)
-            let newTotal = subtotal + total
-            setTotal(newTotal)
-            inputQuantity.value = null
+            else{
+                finishUpload(productToAdd,inputQuantity,id)
+            }
         }else{
             errorInputQuantities()
         }
+    }
+
+    const finishUpload = (productToAdd,inputQuantity,id) => {
+        let newProducts = products.filter(product => product.id_product !== id)
+        let newProductsDetail = productsDetail
+        newProductsDetail.push(productToAdd)
+        setProducts(newProducts)
+        setProductsDetail(newProductsDetail)
+        let newQuantities = quantities
+        let newSubtotals = subtotals
+        newQuantities.push(inputQuantity.value)
+        let subtotal = inputQuantity.value * productToAdd.price
+        newSubtotals.push(subtotal)
+        setQuantities(newQuantities)
+        setSubtotals(newSubtotals)
+        let newTotal = subtotal + total
+        setTotal(newTotal)
+        inputQuantity.value = null
     }
 
     const download = (id,i) => {
@@ -105,6 +117,11 @@ const DeliverySales = (props) => {
         setSubtotals(newSubtotals)
         let newTotal = total - subtotals[i]
         setTotal(newTotal)
+        if(productToQuit.id_sector === 1){
+            let indice = findIndex(productToQuit)
+            let newArrayFlavors = arrayFlavors.slice(0,indice).concat(arrayFlavors.slice(indice,arrayFlavors.length))
+            setArrayFlavors(newArrayFlavors)
+        }
     }
 
     const nextStep = () => {
@@ -184,6 +201,27 @@ const DeliverySales = (props) => {
         }
     }
 
+    const showFlavors = (product) => {
+        setProductToView(product)
+        let indice = findIndex(product)
+        setFlavorsToView(arrayFlavors[indice])
+        setShowModalView(true)
+    }
+
+    const findIndex = (product) => {
+        let i = -1
+        let indice
+        productsDetail.map((productDetail) => {
+            if(productDetail.id_sector == 1){
+                i = i + 1 
+            }
+            if(productDetail.id_product === product.id_product){
+                indice = i
+            }
+        })
+        return indice
+    }
+
     return(
         <>
             <div className="viewContent">
@@ -203,7 +241,8 @@ const DeliverySales = (props) => {
                     </div>
                     <RadioButtons products={products} setFilterProducts={setFilterProducts}/>
                     <hr />
-                    <ModalFlavorSelect show={showModal} setShowModal={setShowModal} setCancel={setCancel} arrayFlavors={arrayFlavors}/>
+                    <ModalFlavorSelect show={showModal} setShowModal={setShowModal} objectToAdd={objectToAdd} finishUpload={finishUpload} arrayFlavors={arrayFlavors} setArrayFlavors={setArrayFlavors}/>
+                    <ModalFlavorView show={showModalView} setShowModalView={setShowModalView} flavorsToView={flavorsToView}/>
                     <BeShowed show={products.length === 0}>
                         <div className="row justify-content-center align-items-center">
                             <Spinner color="dark" />
@@ -216,7 +255,7 @@ const DeliverySales = (props) => {
                     <div className="formRow">
                         <h3><b>Detalle de venta</b></h3>
                     </div>
-                    <ListProducts products={productsDetail} onClick={download} icon={'-'} quantities={quantities} subtotals={subtotals}/>
+                    <ListProducts products={productsDetail} showFlavors={showFlavors} onClick={download} icon={'-'} quantities={quantities} subtotals={subtotals}/>
                     <div className="formRow">
                         <div className="col-sm-3 offset-sm-9">
                             <label>Total: ${total}</label>
