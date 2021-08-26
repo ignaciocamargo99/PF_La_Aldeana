@@ -14,7 +14,7 @@ export const productsFilteredReducer = (state = [], action) => {
 
 export const detailProductsReducer = (state = [], action) => {
     if(action.type === 'UPDATE_DETAIL_PRODUCTS'){
-        return action.payload
+        return [...state, action.payload]
     }
     return state
 }

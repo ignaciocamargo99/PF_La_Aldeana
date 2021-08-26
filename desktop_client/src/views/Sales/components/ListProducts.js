@@ -16,10 +16,7 @@ const ListProducts = (props) => {
     const changePrintModal = (e) => {
         const id = e.target.value;
         props.updateProductSelected(props.productsFiltered.find(n => n.id_product == id));
-        props.updateProducts(props.productsFiltered.find(n => n.id_product == id));
-
         setPrintModal(true);
-
     }
 
     return(
@@ -31,7 +28,7 @@ const ListProducts = (props) => {
                     <button style={{width: 150, height: 150}} type='button' value={product.id_product} onClick={(e) => changePrintModal(e)}>{product.name}</button>
                 </div>
             )})}></DivGeneric>
-            <ModalProduct show={printModal}></ModalProduct>
+            <ModalProduct show={printModal} setShowModal={setPrintModal}></ModalProduct>
         </>
     )
 }

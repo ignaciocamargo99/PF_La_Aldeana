@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import DetailSale from './components/DetailSale';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
+import PaymentSale from "./components/PaymentSale";
 import { updateProducts, updateProductsFiltered } from '../../actions/SalesActions';
 import Axios from "axios";
 import { connect } from 'react-redux';
@@ -33,7 +34,9 @@ const Sales = (props) => {
 
                     <div className="col-4">
                         <h3>Detalle de la venta</h3>
+                        
                         <DetailSale></DetailSale>
+                        <PaymentSale></PaymentSale>
                     </div>
                 </div> 
             </div>
