@@ -204,12 +204,8 @@ async function updateProductsSupplies(req, res) {
     }
 }
 
-<<<<<<< HEAD
-module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, getProductsAll };
-=======
 module.exports = {
     getProduct, getTypeProduct, getProductSupply, postProduct,
     postProductSupply, getImage, getTypeSupplies, getSupplies,
     postTypeProduct, deleteProducts, updateProducts, updateProductsSupplies, getAllProduct
 }
->>>>>>> origin/US/413-Registrar-ventas
