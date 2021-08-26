@@ -1,9 +1,4 @@
 
-
-
-
-
-
 .inputText {
 
     background: #FFFFFF;
@@ -12,18 +7,6 @@
     border-radius: var(--radio);
 
     margin-right: 5%;
-    width: 50em;
-    height: 2.5em;
-}
-
-select{
-
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    box-sizing: border-box;
-    border-radius: var(--radio);
-
-    width: 50em;
     height: 2.5em;
 }
 
@@ -43,24 +26,6 @@ select{
     height: 2em;
     width: 2em;
     margin-left: 2em;
-}
-
-textarea {
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    box-sizing: border-box;
-    border-radius: var(--radio);
-    
-    font-family: Abel;
-    font-style: normal;
-    font-weight: normal;
-
-    font-size: 1em;
-    height: 5em;
-}
-
-.lbTexttarea {
-    text-align:initial
 }
 
 .lbRadio {

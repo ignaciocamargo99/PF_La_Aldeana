@@ -1,100 +1,215 @@
-const db = require('../../config/connection');
-const multer = require('multer')
-const path = require('path')
-const fs = require('fs');
-const diskStorage = multer.diskStorage({
-    destination: path.join(__dirname, '../images'),
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
+const { readProduct, readTypeProduct, readProductSupply, createProduct,
+    createProductSupply, readImageProduct, readTypeSupply, readSupply,
+    createTypeProduct, deleteProduct, updateProduct, updateProductSupply, readAllProduct } = require('./service');
+
+// HTTP: GET
+async function getProduct(req, res) {
+    try {
+        const result = await readProduct();
+        res.send(result)
     }
-})
-
-// HTTP: GET 
-async function getProducts(req, res) {
-
-    const sqlSelect = "SELECT id_product, name FROM PRODUCTS"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
-// HTTP: GET 
-async function getProductsAll(req, res) {
+// HTTP: GET
+async function getAllProduct(req, res) {
+    try {
+        const result = await readAllProduct();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
-    const sqlSelect = "SELECT id_product, name, price, id_sector, id_product_type FROM PRODUCTS WHERE active='1'"
+// HTTP: GET
+async function getTypeProduct(req, res) {
+    try {
+        const result = await readTypeProduct();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
+// HTTP: GET :id
+async function getProductSupply(req, res) {
+    try {
+        const result = await readProductSupply(req.params.id);
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
 // HTTP: POST
 async function postProduct(req, res) {
-    const name = req.body.name;
-    const description = req.body.description;
-    const price = req.body.price;
-    const id_sector = req.body.id_sector;
-    const id_product_type = req.body.id_product_type;
-    const imageProduct = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename))
-
-    const sqlInsert = 'INSERT INTO PRODUCTS(name, description, image, price, id_sector, id_product_type) VALUES(?,?,?,?,?,?)'
-    db.query(sqlInsert, [name, description, imageProduct, price, id_sector, id_product_type], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
-};
-
-// HTTP: GET 
-async function getTypeProducts(req, res) {
-
-    const sqlSelect = "SELECT id_product_type, name FROM PRODUCT_TYPES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
+    try {
+        await createProduct(req.body, req.file);
+        res.json({
+            Ok: true,
+            Message: 'Producto registrado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
-// HTTP: GET 
+// HTTP: POST TRANSACTION
+async function postProductSupply(req, res) {
+    try {
+        await createProductSupply(req.body, req.file);
+        res.json({
+            Ok: true,
+            Message: 'Producto e insumos registrados exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET :id
+async function getImage(req, res) {
+    try {
+        const result = await readImageProduct(req.params.id);
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET
+async function getTypeSupplies(req, res) {
+    try {
+        const result = await readTypeSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET
 async function getSupplies(req, res) {
-
-    const sqlSelect = "SELECT id_supply, name FROM SUPPLIES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
+    try {
+        const result = await readSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
 // HTTP: POST
-async function postTypeProducts(req, res) {
-
-    const name = req.body.name;
-    const description = req.body.description;
-
-    const sqlInsert = "INSERT INTO PRODUCT_TYPES (name, description) VALUES (?, ?)"
-
-    await db.query(sqlInsert, [name, description], (error, result) => {
-        if (error) throw error;
-        else res.send(result);
-    })
+async function postTypeProduct(req, res) {
+    try {
+        await createTypeProduct(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Tipo de producto registrado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
-// HTTP: GET 
-async function getTypeSupplies(req, res) {
-
-    const sqlSelect = "SELECT id_supply_type, name FROM SUPPLY_TYPES"
-
-    await db.query(sqlSelect, (err, result) => {
-        if (err) throw err;
-        else res.send(result);
-    })
+// HTTP: PUT
+async function deleteProducts(req, res) {
+    try {
+        await deleteProduct(req.body.id_product);
+        res.json({
+            Ok: true,
+            Message: 'Producto eliminado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
 }
 
 
+// HTTP: PUT
+async function updateProducts(req, res) {
+    try {
+        await updateProduct(req.body, req.file, req.body.flagImageUpdate);
+        res.json({
+            Ok: true,
+            Message: 'Producto actualizado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
 
+// HTTP: PUT TRANSACTION
+async function updateProductsSupplies(req, res) {
+    try {
+        await updateProductSupply(req.body, req.file, req.body.flagImageUpdate);
+        res.json({
+            Ok: true,
+            Message: 'Producto e insumos actualizados exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+<<<<<<< HEAD
 module.exports = { postProduct, getTypeProducts, getSupplies, postTypeProducts, getTypeSupplies, getProducts, getProductsAll };
+=======
+module.exports = {
+    getProduct, getTypeProduct, getProductSupply, postProduct,
+    postProductSupply, getImage, getTypeSupplies, getSupplies,
+    postTypeProduct, deleteProducts, updateProducts, updateProductsSupplies, getAllProduct
+}
+>>>>>>> origin/US/413-Registrar-ventas
