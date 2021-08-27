@@ -52,7 +52,7 @@ const RegisterPurchaseSupplies = (props) => {
                 errorInputSupplies()
             } else {
                 if (props.purchaseTotal <= 0){
-                    swal("Atención","Almenos 1 insumo debe tener precio y cantidad validos", "warning")
+                    swal("Atención","Todos los insumos deben tener precio y cantidad validos", "warning")
                 } 
             }
         }
