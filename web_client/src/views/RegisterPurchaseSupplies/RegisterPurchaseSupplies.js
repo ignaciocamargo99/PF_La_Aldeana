@@ -37,13 +37,13 @@ const RegisterPurchaseSupplies = (props) => {
     }
 
     const validate = () => {
-        if(props.purchaseSupplier === null){
+        if(props.purchaseSupplier === 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null){
             errorNameSupplier()
         } else {
 
             let details = []
             props.purchaseSupplies.map((supply,i) => {
-                if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0 || props.purchaseQuantity[i] > 99999 || props.purchasePrice[i] > 99999){
+                if(props.purchaseSubtotal[i] <= 0){
                     errorPricesQuantities()
                 }
             })
@@ -60,35 +60,33 @@ const RegisterPurchaseSupplies = (props) => {
 
     useEffect(()=>{
 
-        if(props.purchaseSupplier === null){
-            setReady(false)
+        let isReady = true;
+        if(props.purchaseSupplier == 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null){
+            isReady = false
         } else {
 
             let details = []
 
             if(props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null){
-                setReady(false)
+                isReady = false;
             } else {
                 props.purchaseSupplies.map((supply,i) => {
-                    if(props.purchaseQuantity[i] <= 0 || props.purchasePrice[i] <= 0 || props.purchaseQuantity[i] > 99999 || props.purchasePrice[i] > 99999){
-                        setReady(false)
-                    }
                     let detail = {  "purchase_number":props.purchaseNumber, 
                                     "id_supply": supply.id_supply, 
                                     "quantity": props.purchaseQuantity[i],
                                     "subtotal": props.purchaseSubtotal[i],
                                     "stock": supply.stock_lot?true:false}
+                    if(detail.subtotal <= 0) {
+                        isReady = false;
+                    }
                     details.push(detail)
                     setDetails(details)
                 })
-
-                if (props.purchaseTotal <= 0){
-                    setReady(false)
-                } else {
-                    setReady(true)
-                }
             }
         }
+
+        console.log(props.purchaseSupplier)
+        setReady(isReady)
 
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 
