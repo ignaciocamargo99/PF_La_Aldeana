@@ -7,21 +7,20 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe('Tests unitarios sobre API Users',()=>{
+describe('Tests unitarios sobre API Franchise',()=>{
     
-    describe('Check getUsers',()=>{
+    describe('Check getFranchises',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
-                .get('/user')
+                .get('/franchise')
                 .end( function(err,res){
-                    //console.log(res.body);
                     expect(res).to.have.status(200);
                     done();
                 });
         });
         it('Trae los datos como json', (done) => {
             chai.request(url)
-                .get('/user')
+                .get('/franchise')
                 .end( function(err,res){
                     expect(res).to.be.json;
                     done();
@@ -29,24 +28,18 @@ describe('Tests unitarios sobre API Users',()=>{
         });
     });
 
-    describe('Check getUsersByNick',()=>{
-        it('Trae el usuario correcto', (done) => {
+    describe('Check postFranchise',()=>{
+        it('Se inserta correctamente', (done) => {
             chai.request(url)
-                .get('/user/filter/Usuario20.')
+                .post('/franchise/new')
+                .send({ name: 'test', start_date: '2021-1-1', address: 'a', address_number: 123, city: 'a', province: 'a',
+                name_manager: 'a', last_name_manager: 'a', dni_manager: 10100100 })
                 .end( function(err,res){
-                    expect(res.body).to.have.property('Message').to.be.equal('Validando usuario.');
                     expect(res).to.have.status(200);
+                    expect(res.body.Ok).to.equal(true);
                     done();
                 });
         });
-        it('Trae el usuario como json', (done) => {
-            chai.request(url)
-                .get('/user/filter/Usuario20.')
-                .end( function(err,res){
-                    expect(res).to.be.json;
-                    done();
-                });
-        });
-        
     });
+
 });

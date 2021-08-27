@@ -9,6 +9,7 @@ const permissionsRouter = require('./api/permissions/router');
 const sessionsRouter = require('./api/sessions/router');
 const middleware = require('./middleware/index');
 const flavorsRouter = require('./api/routes/flavorRoute');
+const franchiseRouter = require('./api/franchise/router');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -28,6 +29,7 @@ app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
 app.use('/api', flavorsRouter);
+app.use('/api', franchiseRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
