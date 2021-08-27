@@ -1,13 +1,17 @@
+import Axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateChamberFlavorsDate } from '../../../actions/ChamberFlavorsDispatchActions';
 import Buttons from '../../../common/Buttons';
 import dateFormat from '../../../utils/DateFormat/dateFormat';
+import errorMessage from '../../../utils/ErrorMessages/errorMessage';
+import successMessage from '../../../utils/SuccessMessages/successMessage';
+import validateWarning from '../../../utils/WarningMessages/validateWarning';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
-import warningMessage from '../../../utils/WarningMessages/warningMessage';
-import validateWarning from '../../../utils/WarningMessages/validateWarning';
+
+const PORT = require('../../../config');
 
 const ChamberFlavorsDispatch = (props) => {
     const inputDate = useRef();
@@ -22,7 +26,6 @@ const ChamberFlavorsDispatch = (props) => {
 
     useEffect(() => {
         const flavors = props.elementsTableDown.filter((flavor) => true && flavor.amount > 0);
-        console.log(flavors)
         if (flavors.length > 0) setReady(true);
         else setReady(false);
     }, [props.elementsTableDown, props.elementsTableUp])
@@ -37,13 +40,27 @@ const ChamberFlavorsDispatch = (props) => {
         else props.updateChamberFlavorsDate(inputDate.current.value);
     };
 
+    const registerProduct = () => {
+        if (ready) {
+            let flavorsToDispatch = [];
+            props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
+            flavorsToDispatch = props.elementsTableDown;
+            console.log(flavorsToDispatch)
+            Axios.post(`${PORT()}/api/chamberFlavorsDispatch/new`, flavorsToDispatch)
+                .then((flavorsToDispatch) => {
+                    if (flavorsToDispatch.data.Ok) successMessage('Atención', 'Salida de helados de cámara regitrado exitosamente.');
+                    else errorMessage('Error', 'Ha ocurrido un problema al registrar la salida de helados')
+                })
+                .catch((error) => console.log(error));
+        }
+    }
 
     const cancelTypeProduct = () => window.location.replace('/app/flavorsChamber');
 
     return (
         <>
             <div className="viewContent">
-                <h1 className="display-5">Registrar salida de productos de cámara</h1>
+                <h1 className="display-5">Registrar salida de helados de cámara</h1>
                 <hr />
                 <div className="formRowDate">
                     <div className="form-control-label-date">
@@ -55,12 +72,7 @@ const ChamberFlavorsDispatch = (props) => {
                 </div>
                 <FilterFlavors />
                 <PairListFlavors />
-                <Buttons label='Registrar' ready={ready}
-                    // actionOK={registerProduct}
-                    // actionNotOK={validateWarning(ready ,'Atención', 'Cargue uno o más sabores a la lista')}
-                    // data={ready}
-                    actionCancel={cancelTypeProduct}
-                />
+                <Buttons label='Registrar' ready={ready} actionOK={registerProduct} actionNotOK={validateWarning} data={ready} actionCancel={cancelTypeProduct} />
             </div>
         </>
     );

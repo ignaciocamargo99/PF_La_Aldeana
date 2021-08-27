@@ -6,7 +6,7 @@ const DynamicSearch = (props) => {
     return(
         <>
             <label className="col-sm-2">Buscar <FontAwesomeIcon icon={faSearch} /></label>
-            <input className="col-sm-5" type="text" placeholder={props.placeholder} onChange={(e) => props.setSearchState(e.target.value)}></input>
+            <input className="col-sm-5" id="inputSearchName" autoFocus type="text" placeholder={props.placeholder} onChange={(e) => props.setSearchState(e.target.value)}></input>
         </>
     )
 }

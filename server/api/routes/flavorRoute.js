@@ -8,6 +8,7 @@ const flavorController = require("../controllers/flavorController");
 router.get('/allFlavors', flavorController.getFlavor);
 router.get('/typeFlavors', flavorController.getTypeFlavor);
 router.get('/familyFlavors', flavorController.getFamilyFlavor);
+router.post('/chamberFlavorsDispatch/new', flavorController.postChamberFlavors)
 
 //#endregion
 

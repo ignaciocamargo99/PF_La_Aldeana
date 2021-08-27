@@ -23,7 +23,7 @@ const PairListFlavors = (props) => {
     }
 
     const upload = (i) => {
-        if (i.amount > 0) {
+        if (i.amount > 0 && i.stock >= i.amount) {
             let aux = [];
             let auxDestiny = props.elementsTableDown;
             props.elementsTableUp.forEach((e, j) => {
@@ -34,7 +34,7 @@ const PairListFlavors = (props) => {
             props.updateTableUp(aux);
             props.updateTableDown(auxDestiny);
         }
-        else return warningMessage('Atención', 'Ingrese un número válido para el sabor');
+        else return warningMessage('Atención', 'Ingrese un número válido para el sabor (recuerde que la cantidad que sale no puede ser mayor al stock disponible en la cámara)');
     }
 
     return (

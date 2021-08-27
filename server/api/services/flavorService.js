@@ -1,4 +1,4 @@
-const { flavorsGetDB, typeFlavorGetDB, familyFlavorGetDB } = require('../db/flavorDb');
+const { flavorsGetDB, typeFlavorGetDB, familyFlavorGetDB, chamberFlavorsDispatchPostDB } = require('../db/flavorDb');
 
 
 const readFlavor = async () => {
@@ -31,5 +31,15 @@ const readFamilyFlavor = async () => {
     };
 };
 
+const createChamberFlavorsDispatch = async (newFlavorsToDispatch) => {
+    try {
+        let res = await chamberFlavorsDispatchPostDB(newFlavorsToDispatch);
+        return res;
+    }
+    catch {
+        throw Error('Error. No se han podido registrar las salidas de helados.')
+    };
+};
 
-module.exports = { readFlavor, readTypeFlavor, readFamilyFlavor };
+
+module.exports = { readFlavor, readTypeFlavor, readFamilyFlavor, createChamberFlavorsDispatch };

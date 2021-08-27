@@ -9,13 +9,13 @@ const ListFlavorsDown = (props) => {
 
     return (
         <>
-            <h2>Productos que salen de cámara:</h2>
+            <h2>Helados que salen de cámara:</h2>
             <div className="table-responsive">
                 <table className="table">
                     <thead>
                         <tr>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Sabor</th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '300px' }}>Cantidad</th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '300px' }}>Cantidad (baldes)</th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Eliminar</th>
                         </tr>
                     </thead>

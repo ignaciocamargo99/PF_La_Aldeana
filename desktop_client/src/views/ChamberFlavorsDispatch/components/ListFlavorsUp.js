@@ -48,7 +48,8 @@ const ListFlavorsUp = (props) => {
                                 <thead>
                                     <tr>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Sabor</th>
-                                        <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '300px' }}>Cantidad</th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Stock disponible</th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '300px' }}>Cantidad (baldes)</th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Añadir</th>
                                     </tr>
                                 </thead>
@@ -57,6 +58,7 @@ const ListFlavorsUp = (props) => {
                                         <tbody key={i}>
                                             <tr>
                                                 <td style={{ textAlign: 'center' }}>{element.name}</td>
+                                                <td style={{ textAlign: 'center' }}>{element.stock}</td>
                                                 <FlavorDispatchAmount keyElement={i} />
                                                 <td style={{ textAlign: 'center' }}>
                                                     <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>

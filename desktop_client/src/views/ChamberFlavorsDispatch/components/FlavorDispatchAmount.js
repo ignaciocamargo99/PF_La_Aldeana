@@ -8,7 +8,7 @@ const FlavorDispatchAmount = (props) => {
     const divAmountFlavorsValidation = useRef(null);
 
     const onChangeAmount = () => {
-        if (inputAmountFlavors.current.value < 0 && inputAmountFlavors.current.value.length <= 2) divAmountFlavorsValidation.current.innerHTML = 'Ingrese un número mayor a 0';
+        if (inputAmountFlavors.current.value < 0 && inputAmountFlavors.current.value.length <= 3) divAmountFlavorsValidation.current.innerHTML = 'Ingrese un número mayor a 0';
         else {
             divAmountFlavorsValidation.current.innerHTML = '';
             props.elementsTableUp[props.keyElement].amount = inputAmountFlavors.current.value;
@@ -16,7 +16,7 @@ const FlavorDispatchAmount = (props) => {
     }
 
     const validate = (e) => {
-        if (e.target.value.length > 2) e.target.value = e.target.value.slice(0, 2);
+        if (e.target.value.length > 3) e.target.value = e.target.value.slice(0, 3);
     }
 
     return (
