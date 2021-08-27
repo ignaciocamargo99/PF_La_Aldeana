@@ -18,6 +18,7 @@ const PurchaseSupplier = (props) => {
 
     useEffect(() => {
         setErrorMessage(validateSupplier(inputSupplier.current.value));
+        props.updatePurchaseSupplier("null");
         if (inputSupplier.current.value.trim().length > 0 && inputSupplier.current.value.length <= 100) {
             setIsValidClass("form-control is-valid");
             props.updatePurchaseSupplier(inputSupplier.current.value)

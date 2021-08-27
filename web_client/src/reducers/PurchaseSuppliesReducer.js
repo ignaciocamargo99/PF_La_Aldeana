@@ -13,7 +13,7 @@ export const purchaseDate = (state = null ,action) => {
     return state
 }
 
-export const purchaseSupplier = (state = null ,action) => {
+export const purchaseSupplier = (state = 'null' ,action) => {
     if(action.type === 'UPDATE_PURCHASE_SUPPLIER'){
         return action.payload
     }

@@ -17,11 +17,11 @@ const PurchaseTable  = (props) => {
     const [quantityIncorrect,setQuantityIncorrect] = useState(false)
 
     const changeQuantity = (quantity,i) => {
-        if(quantity < 0 || quantity == "" || quantity > 99999){
+        if(quantity < 0 || quantity == "" || quantity > 999){
             document.getElementById(`quantityInput${i}`).value = ""
             setQuantityIncorrect(true)
             quantity = 0
-            swal("Atención","Ingrese valores entre 1 y 99999", "warning")
+            swal("Atención","Ingrese valores entre 1 y 999", "warning")
         } else if (quantity > 0){
             setQuantityIncorrect(false);
         }
@@ -84,7 +84,7 @@ const PurchaseTable  = (props) => {
                                         <input id={`priceInput${i}`} type="number" min="0" max="99999" onBlur={(e) => {changePrice(e.target.value,i)}} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '7em' }}>
-                                        <input id={`quantityInput${i}`} type="number" min="0" max="99999" onBlur={(e) => {changeQuantity(e.target.value,i)}} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
+                                        <input id={`quantityInput${i}`} type="number" min="0" max="999" onBlur={(e) => {changeQuantity(e.target.value,i)}} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
                                     </td>
                                     <td style={{ textAlign: 'center', width: '7em' }}>
                                         <label id={`lblSubtotal${i}`}></label>

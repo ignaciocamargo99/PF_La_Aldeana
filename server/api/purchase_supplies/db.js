@@ -41,15 +41,16 @@ const purchaseSuppliesPostDB = (newPurchase) => {
     const total = newPurchase.total;
     const arrDetails = newPurchase.details;
 
-    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES ('${arrDetails[0].purchase_number}','${date_purchase}','${supplier}',${total})`
+    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total})`
 
+    console.log(sqlInsertPurchase)
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
             db.beginTransaction((error) => {
                 if (error) reject(error);
 
-                db.query(sqlInsertPurchase, (error, result) => {
+                db.query(sqlInsertPurchase,[supplier], (error, result) => {
                     if (error) {
                         return db.rollback(() => reject(error))
                     }

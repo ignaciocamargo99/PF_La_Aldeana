@@ -47,10 +47,7 @@ const PurchaseNumber = (props) => {
                 <BeShowed show={props.purchaseNumber === null}> 
                     <Spinner size="sm" color="secondary" /><label htmlFor="purchaseNumber" className="col-sm-4">...&nbsp;</label>
                 </BeShowed>
-                <BeShowed show={props.purchaseNumber !== null}>
-                    <label htmlFor="purchaseNumber" className="col-sm-4">Compra N° {props.purchaseNumber} &nbsp;</label>
-                </BeShowed>
-                <input type="date" id='PurchaseDate' className="col-sm-7" defaultValue={props.purchaseDate} ref={inputDate} min="2021-01-01" onChange={onChangeDate} ></input>
+                <input type="date" id='PurchaseDate' className="col-sm-12" defaultValue={props.purchaseDate} ref={inputDate} min="2021-01-01" onChange={onChangeDate} ></input>
             </div>
         </div>
     )
