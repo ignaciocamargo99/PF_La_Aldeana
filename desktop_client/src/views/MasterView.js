@@ -1,4 +1,5 @@
-import ChamberFlavorsDispatch from './ChamberFlavorsDispatch/components/ChamberFlavorsDispatch';
+
+import Main from './Menu/Main';
 // import LoginUser from './LoginUser/LoginUser';
 import Sales from './Sales/Sales';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -10,7 +11,7 @@ export default function App() {
       <BrowserRouter>
         {/* <Route path='/app/loginUser' component={LoginUser}></Route> */}
         <Route path='/app/sales' component={Sales}></Route>
-        <Route path='/app/flavorsChamber' component={ChamberFlavorsDispatch}></Route>
+        <Route path='/app/flavorsChamber' component={Main}></Route>
       </BrowserRouter>
     </>
   );
