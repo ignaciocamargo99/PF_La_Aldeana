@@ -10,6 +10,7 @@ import validateWarning from '../../../utils/WarningMessages/validateWarning';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
+import { toChamberFlavorsDispatch} from '../../../actions/MenuActions';
 
 const PORT = require('../../../config');
 
@@ -87,7 +88,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    updateChamberFlavorsDate
+    updateChamberFlavorsDate,
+    toChamberFlavorsDispatch
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChamberFlavorsDispatch);

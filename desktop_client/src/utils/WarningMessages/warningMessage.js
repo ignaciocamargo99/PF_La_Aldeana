@@ -1,5 +1,5 @@
 import swal from 'sweetalert';
-import '../../assets/SwalModal.css';
+import '../../assets/swalModal.css';
 
 export default function warningCountProduct(typeMessage, message) {
 
