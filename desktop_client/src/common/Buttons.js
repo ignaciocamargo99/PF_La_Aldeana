@@ -16,7 +16,6 @@ const Buttons = (props) => {
             <button className='cancel' onClick={props.actionCancel}>Cancelar</button>
         </div>
     );
-
 }
 
 export default Buttons;
