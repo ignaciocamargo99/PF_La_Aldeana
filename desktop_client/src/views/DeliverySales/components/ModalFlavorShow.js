@@ -3,6 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstra
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
+import '../../../assets/Buttons.css'
 
 
 const ModalFlavorShow = (props) => {
@@ -25,7 +26,7 @@ const ModalFlavorShow = (props) => {
         <>
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader>
-                    <label className="font-weight-bold text-align-center">Sabores seleccionados de {props.productName}</label>
+                    <label className="font-weight-bold text-align-center">Sabores seleccionados de <b>{props.productName}</b></label>
                 </ModalHeader>
                 <ModalBody>
                     <FormGroup>
@@ -44,8 +45,8 @@ const ModalFlavorShow = (props) => {
                             <Table>
                                 <HeaderTable th={
                                     <>
-                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>#</th>
-                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Nombre</th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>#</label></th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
                                     </>
                                     }/>
                                 <BodyTable tbody={
@@ -53,8 +54,8 @@ const ModalFlavorShow = (props) => {
                                         return(
                                             <tbody key={i}>
                                                 <tr>
-                                                    <td style={{ textAlign: 'center', width: '15%'}}>{flavor.id_flavor}</td>
-                                                    <td style={{ textAlign: 'center', width: '85%'}}>{flavor.name}</td>
+                                                    <td style={{ textAlign: 'center', width: '15%'}}><label>{flavor.id_flavor}</label></td>
+                                                    <td style={{ textAlign: 'center', width: '85%'}}><label>{flavor.name}</label></td>
                                                 </tr>
                                             </tbody>
                                         )
@@ -65,7 +66,9 @@ const ModalFlavorShow = (props) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter className="back-ligthblue">
-                    <button className="btn btn-secondary" onClick={cancel} >Volver</button>
+                    <div className='buttons'>
+                        <button className="cancel" onClick={cancel} >Volver</button>
+                    </div>
                 </ModalFooter>
             </Modal>
         </>

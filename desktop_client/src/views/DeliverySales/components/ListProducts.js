@@ -1,9 +1,8 @@
 import Table from '../../../common/Table/Table';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import BodyTable from '../../../common/Table/BodyTable';
-import { faPlus, faMinus, faIceCream } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BeShowed from '../../../common/BeShowed';
 
 
 const ListProducts = (props) => {
@@ -26,48 +25,26 @@ const ListProducts = (props) => {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Nombre</th>
-                            <BeShowed show={props.icon==='+'}>    
-                                <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Precio</th>
-                            </BeShowed>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Cantidad</th>
-                            <BeShowed show={props.icon==='-'}>    
-                                <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Subtotal</th>
-                            </BeShowed>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Precio</label></th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Cantidad</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
                         </>
                     }
                 />
                 <BodyTable
-                    tbody={props.products?.map((elemento, i) => {
+                    tbody={props.products?.map((product, i) => {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center', width: '40%'}}>{elemento.name}</td>
-                                    <BeShowed show={props.icon==='+'}>
-                                        <td style={{ textAlign: 'center', width: '15%'}}>
-                                            {elemento.price}
-                                        </td>
-                                    </BeShowed>
+                                    <td style={{ textAlign: 'center', width: '58%'}}><label>{product.name}</label></td>
+                                    <td style={{ textAlign: 'center', width: '15%'}}><label>{product.price}</label></td>
                                     <td style={{ textAlign: 'center', width: '15%'}}>
-                                        {props.icon==='+'?
-                                        <>
-                                        <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" maxLength="4" onChange={(e) => {validateQuantity(e,i)}}>
-                                        </input>
+                                        <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" maxLength="4" onChange={(e) => {validateQuantity(e,i)}}></input>
                                         <b id={`quantityValidation${i}`} style={{color:'gray'}}></b>
-                                        </>
-                                        :props.quantities[i]}
-                                    </td>
-                                    <BeShowed show={props.icon==='-'}>
-                                        <td style={{ textAlign: 'center', width: '15%'}}>
-                                            {props.subtotals?`$${props.subtotals[i]}`:null}
-                                        </td>
-                                    </BeShowed>    
+                                    </td>   
                                     <td style={{ textAlign: 'center', width: '12%'}}>
-                                        <BeShowed show={props.icon==='-' && elemento.id_sector === 1}>
-                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.showFlavors(elemento)}} ><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
-                                        </BeShowed>
-                                        <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(elemento.id_product,i)}}><FontAwesomeIcon icon={props.icon === '+'?faPlus:faMinus} /></button>
+                                        <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

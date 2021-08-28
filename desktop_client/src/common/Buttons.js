@@ -1,4 +1,5 @@
 import BeShowed from './BeShowed';
+import '../assets/Buttons.css';
 
 const Buttons = (props) => {
     
