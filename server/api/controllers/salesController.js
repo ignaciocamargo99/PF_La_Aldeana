@@ -23,10 +23,9 @@ async function postSale(req, res) {
         });
     }
     catch (e) {
-        console.log(e.message)
         res.json({
             Ok: false,
-            Message: 'No se pudo realizar el registro de la venta.'
+            Message: e.message,
         })
     }
 }

@@ -59,7 +59,7 @@ const PaymentSale = (props) => {
         <>
             <div>
                 <h4>Tipo de Pago</h4>
-                <select className="form-combo-btn" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
+                <select className="form-combo" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
                     <option disabled value="-1">Seleccione el Tipo de Pago</option>
                     {
                         payTypes?.map((element,i) => (
@@ -73,9 +73,12 @@ const PaymentSale = (props) => {
                         <label id="id_total">{props.totalAmount}</label>
                     </div>
                     <div className='formRow'>
-                        <label>Abona con:  $  </label>
-                        <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" onChange={onChangePay} ref={inputPay}></input>
-                        <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
+                        <label>Abona con: $</label>
+                        <div>
+                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" onChange={onChangePay} ref={inputPay}></input>
+                            <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
+                        </div>
+                        
                     </div>
                     <div className='formRow'>
                         <label>Vuelto:  $  </label>
