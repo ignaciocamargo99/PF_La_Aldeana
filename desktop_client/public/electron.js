@@ -1,8 +1,8 @@
 const { app, BrowserWindow, Menu } = require('electron');
 
 const path = require('path');
-const isDev = require('electron-is-dev');
-const URL_PORT = 'http://localhost:3000/app';
+// const isDev = require('electron-is-dev');
+const URL_PORT = 'http://localhost:3000';
 
 let mainWindow;
 let menuApplication = [
@@ -34,12 +34,12 @@ let menuApplication = [
 ];
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680, icon:__dirname + '/heladeria.ico' });
-  mainWindow.loadURL(isDev ? `${URL_PORT}/flavorsChamber` : `file://${path.join(__dirname, '../build/index.html')}`);
-
+  mainWindow = new BrowserWindow({ width: 900, height: 680, icon: __dirname + '/heladeria.ico' });
+  mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(`${URL_PORT}/index`);
   // Open the DevTools.
   //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
-  if (isDev) mainWindow.webContents.openDevTools();
+  // if (isDev) mainWindow.webContents.openDevTools();
 
   let menu = Menu.buildFromTemplate(menuApplication);
   mainWindow.setMenu(menu);
@@ -49,13 +49,13 @@ function createWindow() {
 // To open option Sales
 function openSales() {
   let saleWindow = new BrowserWindow({
-    parent: mainWindow,
+    // parent: mainWindow,
     width: 900,
     height: 680,
-    show: false,
+    show: false
   });
-
-  saleWindow.loadURL(`${URL_PORT}/sales`);
+  saleWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+  // saleWindow.loadURL(`${URL_PORT}/sales`);
   // saleWindow.setMenu(null);
   saleWindow.once('ready-to-show', () => saleWindow.show());
 }

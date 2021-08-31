@@ -13,7 +13,7 @@ ReactDOM.render(
       <div>
         <MasterView />
       </div>
-    </React.StrictMode>,
+    </React.StrictMode>
   </Provider>,
   document.getElementById('root')
 );
