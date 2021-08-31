@@ -11,7 +11,7 @@ import BodyTable from '../../../common/Table/BodyTable';
 import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 import UploadByName from '../../../common/UploadByName';
 import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
-import { addFlavorsProduct, deleteFlavorsProduct,updateDeliveryProducts, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
+import { insertDeliveryProducts, addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
 
 const PORT = require('../../../config');
 
@@ -44,7 +44,6 @@ const ModalFlavorSelect = (props) => {
             })
             setReady(aux)
         }
-        
     },[refresh])
 
     const uploadFlavor = (id) => {
@@ -87,10 +86,8 @@ const ModalFlavorSelect = (props) => {
     }
 
     const cancel = () => {
-        let newProducts = props.products
         let productToQuit = props.detailsDelivery[props.detailsDelivery.length-1].product
-        newProducts.push(productToQuit)
-        props.updateDeliveryProducts(newProducts)
+        props.insertDeliveryProducts(productToQuit)
         props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal)
         props.deleteDetailDelivery(props.detailsDelivery.length-1)
         props.updateFlavorsProduct([])
@@ -182,9 +179,9 @@ const mapDispatchToProps = {
     updateDetailDelivery,
     deleteDetailDelivery,
     subtractTotalDelivery,
-    updateDeliveryProducts,
     addFlavorsProduct,
-    deleteFlavorsProduct
+    deleteFlavorsProduct,
+    insertDeliveryProducts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFlavorSelect);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import { connect } from 'react-redux';
 import { updateAmountDelivery, updatePayTypeDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
@@ -8,13 +8,17 @@ import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMes
 
 const Pay = (props) => {
     
-    const onChangeAmount = (e) => {
+    const onChangeAmount = (amount) => {
         props.updateErrorAmountDelivery(false)
-        props.updateAmountDelivery(e.target.value)
-        if(e.target.value < props.total){
+        props.updateAmountDelivery(amount)
+        if(amount < props.total){
             props.updateErrorAmountDelivery(true)
         }
     }
+
+    useEffect(() => {
+        onChangeAmount(props.amount)
+    },[props.total])
 
     return(
         <>
@@ -36,7 +40,7 @@ const Pay = (props) => {
                     <label>Monto*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className="form-control" placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e)}} value={props.amount}></input>
+                    <input type="number" className="form-control" placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} value={props.amount}></input>
                     <BeShowed show={props.errorAmount}>
                         <b style={{color:'gray'}}>Cantidad entera mayor al total</b>
                     </BeShowed>

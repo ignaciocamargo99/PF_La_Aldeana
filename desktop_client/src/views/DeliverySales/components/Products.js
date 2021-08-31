@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import RadioButtons from './RadioButtons';
 import Buttons from '../../../common/Buttons';
@@ -7,44 +7,45 @@ import ModalFlavorSelect from './ModalFlavorSelect';
 import ModalFlavorShow from './ModalFlavorShow';
 import { Spinner } from 'reactstrap';
 import {connect} from 'react-redux';
-import { updateDeliveryProducts, updateAllFlavorsProduct, addDetailDelivery, sumTotalDelivery, deleteDetailDelivery, subtractTotalDelivery} from '../../../actions/DeliverySalesActions';
+import { insertDeliveryProducts, updateDeliveryProducts, updateAllFlavorsProduct, addDetailDelivery, sumTotalDelivery, deleteDetailDelivery, subtractTotalDelivery} from '../../../actions/DeliverySalesActions';
 import errorInputQuantities from '../../../utils/ErrorMessages/errorInputQuantities';
 import SaleDetails from './SaleDetails';
 import errorNextStepOne from '../../../utils/ErrorMessages/errorNextStepOne';
 
 const Products = (props) => {
 
-    const [filterProducts,setFilterProducts] = useState([]);
+    const [filter,setFilter] = useState(0);
     const [nameShow,setNameShow] = useState('');
     const [showModal,setShowModal] = useState(false);
     const [showModalView,setShowModalView] = useState(false);
 
 
     const upload = (id,i) => {
-        let inputQuantity = document.getElementById(`quantityInput${i}`)
-        if(inputQuantity.value > 0){
+        let quantity = document.getElementById(`quantityInput${i}`).value
+        if(quantity > 0){
             let productToAdd = props.products.find(product => product.id_product === id)
             if(productToAdd.id_sector === 1){
                 let aux = []
-                for(let i = 0 ; i < inputQuantity.value ; i++){
+                for(let i = 0 ; i < quantity ; i++){
                     aux.push([])
                 }
                 props.updateAllFlavorsProduct(aux)
                 setShowModal(true)
             }
-            let subtotal = inputQuantity.value * productToAdd.price
+            let subtotal = quantity * productToAdd.price
             let detail = { 
                 'sale_number': null,
                 'detail_number': props.detailsDelivery.length,
                 'product': productToAdd,
                 'flavors': null,
-                'quantity': inputQuantity.value,
+                'quantity': quantity,
                 'subtotal': subtotal
             }
             props.addDetailDelivery(detail)
             props.sumTotalDelivery(subtotal)
             let newProducts = props.products.filter(product => product.id_product !== id)
             props.updateDeliveryProducts(newProducts)
+            
         }else{
             errorInputQuantities()
         }
@@ -57,9 +58,7 @@ const Products = (props) => {
                 productToQuit = detail.product
             }
         })
-        let newProducts = props.products
-        newProducts.push(productToQuit)
-        props.updateDeliveryProducts(newProducts)
+        props.insertDeliveryProducts(productToQuit)
         let restar = props.detailsDelivery[i].subtotal
         props.subtractTotalDelivery(restar)
         props.deleteDetailDelivery(i)
@@ -70,7 +69,7 @@ const Products = (props) => {
         <div className="formRow">
             <h3><b>Productos</b></h3>
         </div>
-        <RadioButtons products={props.products} setFilterProducts={setFilterProducts}/>
+        <RadioButtons products={props.products} setFilter={setFilter}/>
         <hr />
         <ModalFlavorSelect show={showModal} setShowModal={setShowModal} />
         <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
@@ -81,7 +80,7 @@ const Products = (props) => {
             </div>
         </BeShowed>
         <BeShowed show={props.products.length !== 0}>
-            <ListProducts products={filterProducts} onClick={upload}/>
+            <ListProducts onClick={upload} filter={filter}/>
         </BeShowed>
         <div className="formRow">
             <h3><b>Detalle de venta</b></h3>
@@ -101,7 +100,8 @@ const mapStateToProps = state => {
         detailsDelivery: state.detailsDelivery,
         total: state.totalDelivery,
         flavorsProduct: state.flavorsProductDelivery,
-        products: state.productsDelivery
+        products: state.productsDelivery,
+        quantities: state.quantitiesDelivery
     }
 }
 
@@ -111,7 +111,8 @@ const mapDispatchToProps = {
     sumTotalDelivery,
     deleteDetailDelivery,
     subtractTotalDelivery,
-    updateDeliveryProducts
+    updateDeliveryProducts,
+    insertDeliveryProducts,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

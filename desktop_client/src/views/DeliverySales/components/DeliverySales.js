@@ -20,6 +20,10 @@ const DeliverySales = (props) => {
         axios.get( PORT() + `/api/allProducts`)
         .then((response) => {
             props.updateDeliveryProducts(response.data)
+            let aux = []
+            response.data.map(() => {
+                aux.push('')
+            })
         })
         .catch((err) => {
             console.log(err)
@@ -62,12 +66,12 @@ const mapStateToProps = state => {
         errorNames: state.errorNamesDelivery,
         errorStreet: state.errorStreetDelivery,
         errorCellphone: state.errorCellphoneDelivery,
-        errorAmount: state.errorAmountDelivery
+        errorAmount: state.errorAmountDelivery,
     }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProducts
+    updateDeliveryProducts,
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);

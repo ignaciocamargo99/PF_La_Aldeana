@@ -1,22 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const RadioButtons = (props) => {
-    
-    const [valueRB,setValueRB] = useState(0)
-
-    useEffect(()=>{
-        onClickRB(valueRB)
-    },[props.products.length])
 
     const onClickRB = (value) => {
-        setValueRB(value)
-        if(value != 0){
-            let newFilterProducts = props.products.filter(product => product.id_sector == value)
-            props.setFilterProducts(newFilterProducts)
-        }else{
-            props.setFilterProducts(props.products)
-        }
-        
+        props.setFilter(value)
     }
 
     return(

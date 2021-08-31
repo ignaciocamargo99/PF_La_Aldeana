@@ -21,8 +21,8 @@ const productGetDB = () => {
 };
 
 const productAllGetDB = () => {
-    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS ' +
-        'WHERE active = 1';
+    const sqlSelect = `SELECT p.id_product, p.name, p.description, p.price, p.id_sector, p.id_product_type, p.active FROM PRODUCTS p WHERE p.active = 1 ORDER BY p.name`
+    
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
