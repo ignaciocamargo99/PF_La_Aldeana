@@ -10,13 +10,13 @@ const franchisePostDB = (newFranchise) => {
             null,
             name,
             city,
+            address,
             address_number,
             province,
             name_manager,
             last_name_manager,
             dni_manager,
-            start_date,
-            address
+            start_date
         ], (error) => {
             if (error) {
                 console.log(error.sqlMessage);
