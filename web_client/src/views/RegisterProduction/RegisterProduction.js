@@ -9,52 +9,51 @@ import successMessage from '../../utils/SuccessMessages/successMenssage';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
 import displayError from '../../utils/ErrorMessages/displayError';
 
-function RegisterProductionView (props){
-   
+function RegisterProductionView(props) {
+
     const PORT = require('../../config');
     const [ready, setReady] = useState(false);
 
     const cancelRegisterProduction = () => window.location.reload();
 
     const registerProduction = () => {
-        
+
         if (ready) {
             const flavorsValues = props.productionFlavors.filter(() => true);
-            let production = { "dateProduction":props.date, "flavors":flavorsValues }
+            let production = { "dateProduction": props.date, "flavors": flavorsValues }
             Axios.post(PORT() + '/api/productions/new', production)
-            .then((production) => {
-                if(production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-                else displayError('Ha ocurrido un error al registrar la producción.');
-            })
-            .catch(error => console.log(error))
+                .then((production) => {
+                    if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
+                    else displayError('Ha ocurrido un error al registrar la producción.');
+                })
+                .catch(error => console.log(error))
         }
         else {
-            warningMessage("Error","Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.","error");
+            warningMessage("Error", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "error");
         }
     }
-    
+
     useEffect(() => {
         if (props.productionFlavors.length > 0 && props.date) {
             setReady(true);
         }
-        else
-        {
+        else {
             setReady(false);
         }
-    },[props.productionFlavors, props.date])
-    
-    return(
+    }, [props.productionFlavors, props.date])
+
+    return (
         <>
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
-            
+
             <div className="viewBody">
-                <DateProduction></DateProduction>
-                <br></br>
+                <DateProduction />
+                <br />
                 <FlavorsTable></FlavorsTable>
                 <Buttons label="Registrar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={cancelRegisterProduction}></Buttons>
-            </div> 
+            </div>
         </>
     )
 }
@@ -70,4 +69,4 @@ const mapDispatchToProps = {
     updateDate
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(RegisterProductionView);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterProductionView);

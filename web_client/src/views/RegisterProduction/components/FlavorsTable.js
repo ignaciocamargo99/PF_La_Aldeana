@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import { updateProductionFlavors } from '../../../actions/FlavorActions';
@@ -11,25 +11,25 @@ const PORT = require('../../../config');
 
 const FlavorsTable = (props) => {
 
+    let flavorsDestiny = []
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
-
     const [listTable, setListTable] = useState([]);
     const [destinyTable, setDestinyTable] = useState([]);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
-    useEffect(()=>{
-        Axios.get( PORT() + '/api/flavors')
-        .then((response) => {
-            handlerLoadingSpinner();
-            let auxFlavor = response.data;
-            auxFlavor?.map((e, i)=>e.amount = 0);
-            setListTable(auxFlavor);
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    },[true === false])
+    useEffect(() => {
+        Axios.get(PORT() + '/api/flavors')
+            .then((response) => {
+                handlerLoadingSpinner();
+                let auxFlavor = response.data;
+                auxFlavor?.map((e, i) => e.amount = 0);
+                setListTable(auxFlavor);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
 
     const upload = (i) => {
         let auxDestiny = destinyTable;
@@ -44,16 +44,17 @@ const FlavorsTable = (props) => {
             });
             setListTable(aux);
             setDestinyTable(auxDestiny);
-            props.updateProductionFlavors(auxDestiny);
+            flavorsDestiny = auxDestiny.filter(() => true);
+            props.updateProductionFlavors(flavorsDestiny);
         }
-        if (listTable[i].amount < 0) {
-            warningMessage("Error","La cantidad debe ser mayor a 0.","error");
+        else if (listTable[i].amount < 0) {
+            warningMessage("Error", "La cantidad debe ser mayor a 0.", "error");
         }
-        if (listTable[i].amount > 100) {
-            warningMessage("Error","La cantidad debe ser menor a 100.","error");
-        } 
-        if (listTable[i].amount == 0) {
-            warningMessage("Atención","Se debe ingresar una cantidad válida para el sabor.","info");
+        else if (listTable[i].amount > 100) {
+            warningMessage("Error", "La cantidad debe ser menor a 100.", "error");
+        }
+        else if (listTable[i].amount == 0) {
+            warningMessage("Atención", "Se debe ingresar una cantidad válida para el sabor.", "info");
         }
     }
 
@@ -73,31 +74,31 @@ const FlavorsTable = (props) => {
         setDestinyTable(aux);
         props.updateProductionFlavors(aux);
     }
-    
+
     return (
         <>
             {isLoadingSpinner && (
                 <>
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <LoaderSpinner color = "primary" />
+                            <LoaderSpinner color="primary" />
                         </div>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <label className="text-muted" style={{margin: '10px', padding: '10px 50px 50px 50px'}}>Cargando sabores...</label>
+                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando sabores...</label>
                         </div>
                     </div>
                 </>
             )}
-            
+
             {!isLoadingSpinner && (
-                    <>
-                        <TableFlavorsUp flavors={listTable} upload={upload}></TableFlavorsUp>
-                        <TableFlavorsDown flavors={destinyTable} download={download}></TableFlavorsDown>
-                    </>
-                )}
-                           
+                <>
+                    <TableFlavorsUp flavors={listTable} upload={upload}></TableFlavorsUp>
+                    <TableFlavorsDown flavors={destinyTable} download={download}></TableFlavorsDown>
+                </>
+            )}
+
         </>
     )
 }

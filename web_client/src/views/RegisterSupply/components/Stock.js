@@ -83,35 +83,37 @@ const Stock = (props) => {
 
     return(
         <>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="lotStock">Stock lotes*</label>
+            <BeShowed show={props.typeSupply !== 3}>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="lotStock">Stock lotes*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot} onChange={handleSupplyStockLotChanged} type="number" min="0" placeholder="Ingrese stock de lotes..."
+                        onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                    </div>
                 </div>
-                <div className="form-control-input">
-                    <input className={isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot} onChange={handleSupplyStockLotChanged} type="number" min="0" placeholder="Ingrese stock de lotes..."
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot} onChange={handleSupplyUnitsByLotChanged} type="number" min="0" placeholder="Ingrese cantidad de unidades por lote..."
+                        onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                    </div>
                 </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="supplyStock">Stock actual del insumo*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidSupplyStockClass} id="supplyStock" ref={inputSupplyStock} onChange={handleSupplyStockChanged} type="number" min="0" placeholder="Ingrese stock actual del insumo..."
+                        onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                    </div>
                 </div>
-                <div className="form-control-input">
-                    <input className={isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot} onChange={handleSupplyUnitsByLotChanged} type="number" min="0" placeholder="Ingrese cantidad de unidades por lote..."
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
-                </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="supplyStock">Stock actual del insumo*</label>
-                </div>
-                <div className="form-control-input">
-                    <input className={isValidSupplyStockClass} id="supplyStock" ref={inputSupplyStock} onChange={handleSupplyStockChanged} type="number" min="0" placeholder="Ingrese stock actual del insumo..."
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
-                </div>
-            </div>
-            <BeShowed show={error !== ''}>
-                <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }}>{error} </div>
+                <BeShowed show={error !== ''}>
+                    <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }}>{error} </div>
+                </BeShowed>
             </BeShowed>
         </>
     )
@@ -121,6 +123,7 @@ const mapStateToProps = state => {
     return {
         unitPerLotSupply: state.unitPerLotSupply,
         unitSupply: state.unitSupply,
+        typeSupply: state.typeSupply,
         lotSupply: state.lotSupply
     }
 }

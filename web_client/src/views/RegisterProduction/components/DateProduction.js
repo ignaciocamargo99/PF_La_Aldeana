@@ -4,18 +4,21 @@ import { updateDate } from '../../../actions/DateActions';
 import formattedDate from '../../../utils/ConverterDate/formattedDate'
 
 const DateProduction = (props) => {
-    
+
     const startDate = formattedDate(new Date());
     const inputDate = useRef(null);
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     useEffect(() => {
-        props.updateDate(startDate)
-    },[])
+        inputDate.current.value = startDate;
+        props.updateDate(inputDate.current.value);
+    }, [])
 
     const onChangeDate = () => {
-        props.updateDate(inputDate.current.value);
-        setIsValidClass("form-control is-valid");
+        if (inputDate) {
+            props.updateDate(inputDate.current.value);
+            setIsValidClass("form-control is-valid");
+        }
     }
 
     return (
@@ -24,7 +27,9 @@ const DateProduction = (props) => {
                 <label htmlFor="date">Fecha</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="date" type="date" ref={inputDate} value={props.date} onChange={onChangeDate} min={"2021-01-01"} max={startDate}></input>
+                <input className={isValidClass}
+                    id="date" type="date" ref={inputDate} 
+                    onChange={onChangeDate} min={"2021-01-01"} max={startDate} />
             </div>
         </div>
     )
@@ -40,4 +45,4 @@ const mapDispatchToProps = {
     updateDate
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(DateProduction);
+export default connect(mapStateToProps, mapDispatchToProps)(DateProduction);
