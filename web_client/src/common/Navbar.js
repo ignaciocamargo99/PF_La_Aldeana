@@ -38,6 +38,7 @@ export default function Navbar (props){
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
                             <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
+                            <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
                             <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
                             <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
                         </Dropdown.Menu>

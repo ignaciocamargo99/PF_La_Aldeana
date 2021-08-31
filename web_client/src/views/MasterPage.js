@@ -6,11 +6,14 @@ import Login from './LoginUser/Login';
 import './MasterPage.css';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
+import RegisterSupplyView from './RegisterSupply/RegisterSupplyView';
 import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
 import RegisterProductionView from './RegisterProduction/RegisterProduction';
+import '../assets/Views.css';
+import '../assets/Forms.css';
 import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
 
 const cookies = new Cookies();
@@ -28,6 +31,7 @@ export default function App(props) {
             <Route path='/app/registerProducts' component={RegisterProductView}></Route>
             <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
             <Route path='/app/production' component={RegisterProductionView}></Route>
+            <Route path='/app/supplies' component={RegisterSupplyView}></Route>
             <Route path='/app/products' component={ListProducts}></Route>
             <Route path='/app/franchise' component={RegisterFranchise}></Route>
           </BeShowed>

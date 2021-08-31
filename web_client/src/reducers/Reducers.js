@@ -2,7 +2,7 @@ import { combineReducers } from "redux"
 import { nickReducer, passwordReducer, userReducer , permissionsReducer } from "./LoginReducers"
 import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
-
+import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply } from "./SupplyReducers"
 
 export default combineReducers({
     nick: nickReducer,
@@ -10,5 +10,13 @@ export default combineReducers({
     user: userReducer,
     permissions: permissionsReducer,
     date: dateReducer,
-    productionFlavors: productionFlavorsReducer
-}) 
+    productionFlavors: productionFlavorsReducer,
+    nameSupply: nameSupply,
+    descriptionSupply: descriptionSupply,
+    singlePrice: singlePrice,
+    multiplePrice: multiplePrice,
+    typeSupply: typeSupply,
+    lotSupply: lotSupply,
+    unitPerLotSupply: unitPerLotSupply,
+    unitSupply: unitSupply
+})

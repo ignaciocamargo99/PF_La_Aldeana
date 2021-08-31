@@ -1,5 +1,4 @@
 //Reducers
-
 export const nickReducer = (state = '' ,action) => {
     if(action.type === 'UPDATE_NICK'){
         return action.payload
