@@ -13,6 +13,7 @@ export default function SuppliesPairTables(props) {
     const [listTable, setListTable] = useState([]);
     const [destinyTable, setDestinyTable] = useState([]);
     const [load, setLoad] = useState(false);
+    const [refreshTable,setRefreshTable] = useState(false);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -74,6 +75,8 @@ export default function SuppliesPairTables(props) {
         });
         setListTable(auxList);
         setDestinyTable(aux);
+        setRefreshTable(!refreshTable);
+
     }
 
     useEffect(() => {
@@ -101,7 +104,7 @@ export default function SuppliesPairTables(props) {
             )}
             {!isLoadingSpinner && (
                 <>
-                    <TableSuppliesUp upload={upload} supplies={listTable} />
+                    <TableSuppliesUp upload={upload} supplies={listTable} refreshTable={refreshTable} />
                     <TableSuppliesDown download={download} supplies={destinyTable} />
                 </>
             )}

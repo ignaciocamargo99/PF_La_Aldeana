@@ -8,9 +8,12 @@ const SectorProduct = (props) => {
         if (props.data.id_sector == 1) {
             rb1.current.checked = true;
             rb2.current.checked = false;
-        } else {
+        } else if (props.data.id_sector == 2){
             rb1.current.checked = false;
             rb2.current.checked = true;
+        } else {
+            rb1.current.checked = false;
+            rb2.current.checked = false;
         }
     }, []);
 
