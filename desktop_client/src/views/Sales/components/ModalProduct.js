@@ -69,11 +69,11 @@ const ModalProduct = (props) => {
                     <div className='formRow'>
                         <div className='col-6'>
                             <label>Sector: </label>
-                            <label></label>
+                            <label>{props.productSelected.name_sector}</label>
                         </div>
                         <div className='col-6'>
                             <label>Tipo producto: </label>
-                            <label></label>
+                            <label>{props.productSelected.name_product_type}</label>
                         </div>
                     </div>
                     <div className='formRow'>

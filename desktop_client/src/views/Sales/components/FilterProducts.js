@@ -39,6 +39,10 @@ const FilterProducts = (props) => {
         const id_type_product_selected = e.target.value;
         props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected))
     }
+
+    useEffect(() => {
+        //AL TOCAR HELADERIA O CAFETERIA, reiniciar el select
+    })
  
     return(
         <>

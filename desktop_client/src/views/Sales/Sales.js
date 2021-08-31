@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import Buttons from "../../common/Buttons";
 import warningMessage from "../../utils/warningMessage";
 import dateFormat from "../../utils/DateFormat/dateFormat";
+import dateTimeFormat from "../../utils/DateFormat/dateTimeFormat";
 
 const PORT = require('../../config');
 
@@ -36,8 +37,8 @@ const Sales = (props) => {
 
     const registerSale = () => {
         if (ready) {
-            
-            let sale = { date_hour: dateFormat(new Date()), total_amount:props.totalAmount, id_pay_type:props.payType, details:JSON.stringify(props.detailProducts)}; 
+
+            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.totalAmount, id_pay_type:props.payType, details:JSON.stringify(props.detailProducts)}; 
 
             console.log(sale);
 

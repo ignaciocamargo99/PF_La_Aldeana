@@ -21,8 +21,12 @@ const productGetDB = () => {
 };
 
 const productAllGetDB = () => {
-    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS ' +
-        'WHERE active = 1';
+    const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
+        'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active ' +
+            'FROM PRODUCTS p ' +
+            'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
+            'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
+            'WHERE active = 1';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
