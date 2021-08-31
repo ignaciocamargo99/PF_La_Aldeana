@@ -1,3 +1,12 @@
+.App {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.viewContainer {
+    padding: 1em;
+}
 
 @media (min-width: 768px) {
     .viewContainer {

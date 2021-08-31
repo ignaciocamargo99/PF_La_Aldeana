@@ -11,6 +11,7 @@ import { updateNick, updatePassword , updateUser, updatePermissions} from '../..
 import bcryptjs from 'bcryptjs';
 import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
 import Cookies from 'universal-cookie';
+import './ModalLogin.css';
 
 const PORT = require('../../../config');
 const cookies = new Cookies();

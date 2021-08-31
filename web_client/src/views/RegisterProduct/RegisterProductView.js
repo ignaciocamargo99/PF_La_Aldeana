@@ -9,6 +9,7 @@ import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
+import Breadcrumb from '../../common/Breadcrumb';
 
 const PORT = require('../../config');
 
@@ -53,7 +54,7 @@ export default function RegisterProductView() {
 
         Axios.post(PORT() + urlApi, formData)
             .then((formData) => {
-                if(formData.data.Ok) success();
+                if (formData.data.Ok) success();
                 else displayError('Ha ocurrido un error al registrar el producto. \n' + data.Message);
             })
             .catch(error => console.log(error))
@@ -68,6 +69,7 @@ export default function RegisterProductView() {
 
     return (
         <>
+            <Breadcrumb parentName="Productos" parentLink="products" currentName="Registrar producto"/>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>
