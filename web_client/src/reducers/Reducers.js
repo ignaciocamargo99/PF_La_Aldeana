@@ -1,7 +1,7 @@
 
 import { combineReducers } from "redux"
 import { nickReducer, passwordReducer, userReducer , permissionsReducer } from "./LoginReducers"
-import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply } from "./SupplyReducers"
+import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply, deliverySupply, franchiseSupply } from "./SupplyReducers"
 
 export default combineReducers({
     nick: nickReducer,
@@ -15,5 +15,7 @@ export default combineReducers({
     typeSupply: typeSupply,
     lotSupply: lotSupply,
     unitPerLotSupply: unitPerLotSupply,
-    unitSupply: unitSupply
+    unitSupply: unitSupply,
+    deliverySupply: deliverySupply,
+    franchiseSupply: franchiseSupply
 })

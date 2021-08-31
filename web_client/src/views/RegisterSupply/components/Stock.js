@@ -84,6 +84,7 @@ const Stock = (props) => {
     return(
         <>
             <BeShowed show={props.typeSupply !== 3}>
+                <BeShowed show={props.typeSupply !== 1}>
                 <div className="formRow">
                     <div className="form-control-label">
                         <label htmlFor="lotStock">Stock lotes*</label>
@@ -102,6 +103,7 @@ const Stock = (props) => {
                         onKeyDown={(e) => validateFloatNumbers(e)}></input>
                     </div>
                 </div>
+                </BeShowed>
                 <div className="formRow">
                     <div className="form-control-label">
                         <label htmlFor="supplyStock">Stock actual del insumo*</label>

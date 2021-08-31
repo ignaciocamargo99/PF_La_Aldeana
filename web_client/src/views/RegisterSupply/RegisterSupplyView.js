@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { connect } from 'react-redux';
-import { updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply } from '../../actions/SupplyActions';
+import { updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply,
+    isDeliverySupply, isFranchiseSupply } from '../../actions/SupplyActions';
 import NameSupply from './components/NameSupply';
 import DescriptionSupply from './components/DescriptionSupply';
 import SinglePrice from './components/SinglePrice';
@@ -12,6 +13,8 @@ import validateSupplyRegister from '../../utils/Validations/validateSupplyRegist
 import success from '../../utils/SuccessMessages/successTypeProduct';
 import displayError from '../../utils/ErrorMessages/errorMessage';
 import Axios from 'axios';
+import ChecksSupply from './components/ChecksSupply';
+import BeShowed from '../../common/BeShowed';
 
 const PORT = require('../../config');
 
@@ -98,15 +101,22 @@ const RegisterPurchaseSupplies = (props) => {
             <div className="viewBody">
                 <NameSupply />
                 <DescriptionSupply />
-                <div className="price-form-body ">
-                    <div className="price-title">
-                        <label >Precio*</label>
+                <ChecksSupply />
+                <BeShowed show={props.deliverySupply || props.franchiseSupply}>
+                    <div className="price-form-body ">
+                        <div className="price-title">
+                            <label >Precio*</label>
+                        </div>
+                        <div className="price-container">
+                            <BeShowed show={props.deliverySupply}>
+                                <SinglePrice />
+                            </BeShowed>
+                            <BeShowed show={props.franchiseSupply}>
+                                <MultiplePrice />
+                            </BeShowed>
+                        </div>
                     </div>
-                    <div className="price-container">
-                        <SinglePrice />
-                        <MultiplePrice />
-                    </div>
-                </div>
+                </BeShowed>
                 <TypeSupply />
                 <Stock />
                 <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data}/>            
@@ -124,7 +134,9 @@ const mapStateToProps = state => {
         typeSupply: state.typeSupply,
         lotSupply: state.lotSupply,
         unitPerLotSupply: state.unitPerLotSupply,
-        unitSupply: state.unitSupply
+        unitSupply: state.unitSupply,
+        deliverySupply: state.deliverySupply,
+        franchiseSupply: state.franchiseSupply
     }
 }
 
@@ -136,7 +148,9 @@ const mapDispatchToProps = {
     updateTypeSupply,
     updateLotSupply,
     updateUnitPerLotSupply,
-    updateUnitSupply
+    updateUnitSupply,
+    isDeliverySupply,
+    isFranchiseSupply
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(RegisterPurchaseSupplies);
