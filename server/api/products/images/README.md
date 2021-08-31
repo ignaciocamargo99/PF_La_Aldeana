@@ -1,0 +1,1 @@
+Carpeta para almacenar imágenes que se obtienen desde la base de datos
