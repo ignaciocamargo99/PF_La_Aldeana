@@ -16,4 +16,4 @@ jobs:
 
 stages:
   - name: test
-    if: type = push AND branch = dev
+    if: type = push AND branch = staging
