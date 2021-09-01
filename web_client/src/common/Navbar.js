@@ -5,8 +5,8 @@ import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faSignOutAlt , faSignInAlt} from '@fortawesome/free-solid-svg-icons' 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSignOutAlt , faSignInAlt} from '@fortawesome/free-solid-svg-icons'; 
 
 const cookies = new Cookies();
 export default function Navbar (props){
