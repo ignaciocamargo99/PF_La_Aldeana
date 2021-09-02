@@ -1,6 +1,6 @@
 import { combineReducers } from "redux"
 import { flavorsDispatchDate } from "./ChamberFlavorsDispatchReducer";
-import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer} from "./SalesReducers";
+import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, refreshReducer} from "./SalesReducers";
 
 export default combineReducers({
     flavorsDispatchDate: flavorsDispatchDate,
@@ -9,5 +9,6 @@ export default combineReducers({
     detailProducts: detailProductsReducer,
     payType: payTypeReducer,
     totalAmount: totalAmountReducer,
-    productSelected: productSelectedReducer
+    productSelected: productSelectedReducer,
+    refresh: refreshReducer
 })

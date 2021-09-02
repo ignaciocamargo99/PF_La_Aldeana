@@ -40,7 +40,7 @@ const ListProducts = (props) => {
                     <button style={{width: 150, height: 150}} type='button' value={product.id_product} onClick={(e) => changePrintModal(e)}>{product.name}</button>
                 </div>
             )})}></DivGeneric>
-            <ModalProduct show={printModal} setShowModal={setPrintModal}></ModalProduct>
+            <ModalProduct show={printModal} setShowModal={setPrintModal} actionModal={actionModal}></ModalProduct>
         </>
     )
 }

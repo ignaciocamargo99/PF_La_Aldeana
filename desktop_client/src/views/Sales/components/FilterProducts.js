@@ -11,6 +11,7 @@ const FilterProducts = (props) => {
     const [boolTypeProduct, setBoolTypeProduct] = useState(false);
     const [typesProduct, setTypesProduct] = useState([]);
     const [typesProductSelected, setTypesProductSelected] = useState([]);
+    const [valueSelect, setValueSelect] = useState("-1");
     
     useEffect(() => {
         Axios.get(`${PORT()}/api/typeProducts`) 
@@ -21,13 +22,19 @@ const FilterProducts = (props) => {
     },[])
 
     const onClickHeladeria = () => {
-        setBoolTypeProduct(true);
+        actionsDefaultButtons();
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 1));
     }
 
     const onClickCafeteria = () => {
-        setBoolTypeProduct(true);
+        actionsDefaultButtons();
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 2));
+    }
+
+    const actionsDefaultButtons = () => {
+        setBoolTypeProduct(true);
+        props.updateProductsFiltered(props.products);
+        setValueSelect("-1");
     }
 
     const onClickCancel = () => {
@@ -37,6 +44,7 @@ const FilterProducts = (props) => {
 
     const onChangeTypeProduct = (e) => {
         const id_type_product_selected = e.target.value;
+        setValueSelect(id_type_product_selected);
         props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected))
     }
 
@@ -53,7 +61,7 @@ const FilterProducts = (props) => {
                 <button id="btn_cafeteria" onClick={onClickCancel}>Cancelar</button>
             </div>
             <BeShowed show={boolTypeProduct}>
-                <select className="form-combo-btn" id="id_selectTypeProduct" defaultValue='-1' onChange={e => onChangeTypeProduct(e)}>
+                <select className="form-combo-btn" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
                     <option disabled value="-1">Seleccione el Tipo de Producto</option>
                     {
                         typesProductSelected?.map((element,i) => (

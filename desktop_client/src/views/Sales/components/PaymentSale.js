@@ -12,6 +12,7 @@ const PaymentSale = (props) => {
     const [payTypes, setPayTypes] = useState([]);
     const [boolPayCash, setBoolPayCash] = useState(false);
     const [boolPayCard, setBoolPayCard] = useState(false);
+    const [amount, setAmount] = useState(null);
     const [turned, setTurned] = useState(null);
     const inputPay = useRef(0);
     const [classNamePay, setclassNamePay] = useState("form-control");
@@ -42,18 +43,22 @@ const PaymentSale = (props) => {
         }
     },[props.payType])
 
-    const onChangePay = () => {
-        if (inputPay.current.value >= props.totalAmount) {
-            setTurned(inputPay.current.value - props.totalAmount);
+    useEffect(() => {
+        setAmount(inputPay.current.value);
+    })
+
+    useEffect(() => {
+        if (amount >= props.totalAmount) {
+            setTurned(amount - props.totalAmount);
             setclassNamePay("form-control is-valid");
-            divPayValidation.current.innerHTML = "";
+            //divPayValidation.current.innerHTML = "";
         } 
         else {
             setclassNamePay("form-control is-invalid");
             setTurned(null);
-            divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total"
+            //divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total";
         }
-    }
+    },[amount, props.refresh])
       
     return(
         <>
@@ -75,7 +80,7 @@ const PaymentSale = (props) => {
                     <div className='formRow'>
                         <label>Abona con: $</label>
                         <div>
-                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" onChange={onChangePay} ref={inputPay}></input>
+                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" ref={inputPay}></input>
                             <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
                         </div>
                         
@@ -102,7 +107,8 @@ const mapStateToProps = state => {
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
         payType: state.payType,
-        totalAmount: state.totalAmount
+        totalAmount: state.totalAmount,
+        refresh: state.refresh
     }
 }
 

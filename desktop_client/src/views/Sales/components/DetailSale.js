@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify } from '../../../actions/SalesActions';
 import DivGeneric from "../../../common/DivGeneric";
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
@@ -11,6 +11,7 @@ import Table from "../../../common/Table/Table";
 const DetailSale = (props) => {
 
     const [ready, setReady] = useState(false);
+    //const [refresh, setRefresh] = useState(false);
     let aux = 0;
 
     useEffect(() => {
@@ -27,7 +28,7 @@ const DetailSale = (props) => {
 
         props.updateTotalAmount(aux);
 
-    },[props.detailProducts])
+    },[props.detailProducts, props.refresh])
 
     return (
         <>
@@ -67,7 +68,9 @@ const mapStateToProps = state => {
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
         payType: state.payType,
-        totalAmount: state.totalAmount
+        totalAmount: state.totalAmount,
+        productSelected: state.productSelected,
+        refresh: state.refresh
     }
 }
 
@@ -76,7 +79,8 @@ const mapDispatchToProps = {
     updateProductsFiltered,
     updateDetailProducts,
     updatePayType,
-    updateTotalAmount
+    updateTotalAmount,
+    updateDetailsProductsModify
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailSale);

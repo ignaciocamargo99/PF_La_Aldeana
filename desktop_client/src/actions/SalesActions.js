@@ -19,6 +19,13 @@ export const updateDetailProducts = (array) =>{
     }
 }
 
+export const updateDetailsProductsModify = (array) =>{
+    return {
+        type: 'UPDATE_DETAIL_PRODUCTS_MODIFY',
+        payload: array
+    }
+}
+
 export const updatePayType = (id) => {
     return {
         type: 'UPDATE_PAY_TYPE',
@@ -37,5 +44,12 @@ export const updateProductSelected = (product) => {
     return {
         type: 'UPDATE_PRODUCT_SELECTED',
         payload: product
+    }
+}
+
+export const updateRefresh = (bool) => {
+    return {
+        type: 'UPDATE_REFRESH',
+        payload: bool
     }
 }

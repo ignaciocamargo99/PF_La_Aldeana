@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef} from "react";
 import Axios from "axios";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh } from '../../../actions/SalesActions';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
@@ -35,17 +35,45 @@ const ModalProduct = (props) => {
         }   
     },[quantity])
 
+    useEffect(() => {
+        if (props.actionModal == "M") {
+            setQuantity(props.productSelected.quantity);
+            setSubtotal(props.productSelected.subtotal);
+        }
+        else {
+            setSubtotal(null);
+            setQuantity(0);
+        }
+    },[props.productSelected])
+
     const registerProduct = () => {
         if (ready) {
-            let aux = [props.productSelected];
+            if (props.actionModal == "A") 
+            {
+                let aux = [props.productSelected];
 
-            aux?.map((element, i) => {
-                element.quantity = quantity;
-                element.subtotal = subtotal;
-            });
-            props.updateProductSelected(aux);
-            props.updateDetailProducts(props.productSelected);
-            props.setShowModal(false);
+                aux?.map((element, i) => {
+                    element.quantity = quantity;
+                    element.subtotal = subtotal;
+                });
+                props.updateProductSelected(aux);
+                props.updateDetailProducts(props.productSelected);
+            }
+            else if (props.actionModal == "M") 
+            {
+                props.productSelected.quantity = quantity;
+                props.productSelected.subtotal = subtotal;
+                
+                //let pos = props.detailProducts.findIndex(n => n.id_product == props.productSelected.id_product);
+                //props.detailProducts[pos] = props.productSelected;
+
+
+                //let aux = props.productSelected;
+                props.updateDetailsProductsModify(props.productSelected);
+                             
+            }     
+            props.updateRefresh(!props.refresh);      
+            props.setShowModal(false);   
         } else { 
             warningMessage("Error!!","Debe ingresar un cantidad mayor a 0","error");
         }
@@ -79,7 +107,7 @@ const ModalProduct = (props) => {
                     <div className='formRow'>
                         <div className='col-6'>
                             <label>Cantidad: </label>
-                            <input type='number' min="1" id="id_quantity" ref={inputQuantity} placeholder="0" onChange={onChangeQuantity}></input>
+                            <input type='number' min="1" id="id_quantity" ref={inputQuantity} placeholder="0" value={quantity} onChange={onChangeQuantity}></input>
                         </div>
                         <div className='col-6'>
                             <label>Subtotal:  $ </label>
@@ -102,7 +130,8 @@ const mapStateToProps = state => {
         products: state.products,
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
-        productSelected: state.productSelected
+        productSelected: state.productSelected,
+        refresh: state.refresh
     }
 }
 
@@ -110,7 +139,9 @@ const mapDispatchToProps = {
     updateProducts,
     updateProductsFiltered,
     updateDetailProducts,
-    updateProductSelected
+    updateProductSelected,
+    updateDetailsProductsModify,
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalProduct);
