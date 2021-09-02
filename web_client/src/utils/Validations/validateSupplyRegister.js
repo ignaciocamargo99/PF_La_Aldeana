@@ -19,17 +19,17 @@ export default function validateSupplyRegister(data) {
 
         if (name === "null") errorNameSupply();
 
-        else if (price_retail <= 0) errorSinglePrice();
+        else if (price_retail <= 0 && data.deliverySupply) errorSinglePrice();
 
-        else if (price_wholesale <= 0) errorMultiplePrice();
+        else if (price_wholesale <= 0 && data.franchiseSupply) errorMultiplePrice();
 
         else if (id_supply_type < 0) errorTypeSupply();
 
-        else if (stock_lot <= 0) errorLotSupply();
+        else if (stock_lot <= 0 && id_supply_type === 2) errorLotSupply();
 
-        else if (unit_x_lot <= 0) errorUnitPerLotSupply();
+        else if (unit_x_lot <= 0 && id_supply_type === 2) errorUnitPerLotSupply();
 
-        else if (stock_unit <= 0) errorUnitSupply();
+        else if (stock_unit <= 0 && id_supply_type !== 3) errorUnitSupply();
 
     }
 
