@@ -14,6 +14,7 @@ import success from '../../utils/SuccessMessages/successTypeProduct';
 import displayError from '../../utils/ErrorMessages/errorMessage';
 import Axios from 'axios';
 import BeShowed from '../../common/BeShowed';
+import checkData from './checkData';
 
 const PORT = require('../../config');
 
@@ -41,57 +42,8 @@ const RegisterPurchaseSupplies = (props) => {
     const [ready, setReady] = useState(false);
 
     useEffect(()=>{
-        setReady(false);
 
-        if (props.typeSupply === 2){
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.franchiseSupply && props.multiplePrice > 0 &&
-            props.lotSupply > 0 && props.unitSupply > 0 && props.unitPerLotSupply > 0) {
-                setReady(true);
-
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.deliverySupply &&
-            props.singlePrice > 0 && props.lotSupply > 0 && props.unitSupply > 0 && props.unitPerLotSupply > 0) {
-                setReady(true);
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && !props.deliverySupply &&
-            !props.franchiseSupply && props.lotSupply > 0 && props.unitSupply > 0 && props.unitPerLotSupply > 0 && props.singlePrice === 0 && props.multiplePrice === 0) {
-                setReady(true);
-            }
-        } else if(props.typeSupply === 1){
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.franchiseSupply && props.multiplePrice > 0 &&
-            props.unitSupply > 0) {
-                setReady(true);
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.deliverySupply &&
-            props.singlePrice > 0 && props.unitSupply > 0) {
-                setReady(true);
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && !props.deliverySupply && !props.franchiseSupply && props.unitSupply > 0 &&
-            props.singlePrice === 0 && props.multiplePrice === 0) {
-                setReady(true);
-            }
-        } else if(props.typeSupply === 3) {
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.franchiseSupply && props.multiplePrice > 0) {
-                setReady(true);
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && props.deliverySupply && props.singlePrice > 0) {
-                setReady(true);
-            }
-
-            if (props.nameSupply !== '' && props.nameSupply !== 'null' && !props.deliverySupply && !props.franchiseSupply &&
-            props.singlePrice === 0 && props.multiplePrice === 0) {
-                setReady(true);
-            }
-        }
-
-        if (props.franchiseSupply && props.deliverySupply && (props.singlePrice <= 0 || props.multiplePrice <= 0)) setReady(false);
-
-        setData({
+        let aux = {
             name: props.nameSupply,
             description: props.descriptionSupply,
             id_supply_type: props.typeSupply,
@@ -102,7 +54,12 @@ const RegisterPurchaseSupplies = (props) => {
             unit_x_lot: props.unitPerLotSupply,
             franchiseSupply: props.franchiseSupply,
             deliverySupply: props.deliverySupply
-        });
+        }
+
+        setData(aux);
+        
+        setReady(checkData(aux));
+        
     }, [props.franchiseSupply, props.deliverySupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
     
     const registerPurchaseSupplies = () => {
