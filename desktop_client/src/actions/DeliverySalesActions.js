@@ -151,3 +151,10 @@ export const updateDeliveryProducts = (products) => {
         payload: products
     }
 }
+
+export const updateDeliveryDate = (date) => {
+    return{
+        type: 'UPDATE_DELIVERY_DATE',
+        payload: date
+    }
+}

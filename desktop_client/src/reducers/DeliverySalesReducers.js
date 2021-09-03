@@ -137,3 +137,10 @@ export const productsDeliveryReducer = (state = [], action) => {
     }
     return state
 }
+
+export const dateDeliveryReducer = (state = '', action) => {
+    if(action.type === 'UPDATE_DELIVERY_DATE'){
+        return action.payload
+    }
+    return state
+}

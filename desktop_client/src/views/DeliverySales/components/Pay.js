@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import { connect } from 'react-redux';
 import { updateAmountDelivery, updatePayTypeDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
-import Buttons from '../../../common/Buttons';
-import errorNextStepThree from '../../../utils/ErrorMessages/errorNextStepThree';
-import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
+import SaleDetails from './SaleDetails';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import '../../../assets/Buttons.css'
 
 const Pay = (props) => {
     
+    const [showDetail,setShowDeatil] = useState(false);
+
     const onChangeAmount = (amount) => {
         props.updateErrorAmountDelivery(false)
         props.updateAmountDelivery(amount)
@@ -37,21 +40,37 @@ const Pay = (props) => {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label>Monto*</label>
+                    <label>Monto a abonar por el cliente*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className="form-control" placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} value={props.amount}></input>
+                    <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} value={props.amount}></input>
                     <BeShowed show={props.errorAmount}>
                         <b style={{color:'gray'}}>Cantidad entera mayor al total</b>
                     </BeShowed>
                 </div>
+            </div>
+            <BeShowed show={!props.errorAmount}>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label>Vuelto para el cliente: <b>${props.amount - props.total}</b></label>
+                    </div>
                 </div>
+            </BeShowed>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label><b>Total a pagar: ${props.total}</b></label>
+                    <label>Total: <b>${props.total}</b></label>
                 </div>
             </div>
-            <Buttons label='Confirmar' ready={(!props.errorAmount)} actionCancel={() => {props.setStep(2)}} actionNotOK={() => {errorNextStepThree()}} actionOK={() => {succesMessageDeliverySale('Se ha registrado la venta correctamente')}}/>
+            <div className="formRow">
+                <label>Mostrar detalle de la venta</label>&nbsp;
+                <button style={{width: '7%',height: '5%'}} className="sendNew" onClick={() => {setShowDeatil(!showDetail)}}> 
+                    <FontAwesomeIcon icon={faInfo}/>
+                </button>
+            </div>
+            <BeShowed show={showDetail}>
+                <h3 style={{textAlign: 'center'}}><b>Detalle de venta</b></h3>
+                <SaleDetails buttons={false}/>
+            </BeShowed>
         </>
     )
 }
@@ -61,7 +80,8 @@ const mapStateToProps = state => {
         payType: state.payTypeDelivery,
         amount: state.amountDelivery,
         total: state.totalDelivery,
-        errorAmount: state.errorAmountDelivery
+        errorAmount: state.errorAmountDelivery,
+        total: state.totalDelivery
     }
 }
 

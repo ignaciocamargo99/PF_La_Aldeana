@@ -1,7 +1,7 @@
 import { combineReducers } from "redux"
 import { flavorsDispatchDate } from "./ChamberFlavorsDispatchReducer";
 import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer} from "./SalesReducers";
-import { payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
+import { dateDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
      cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
      streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
      detailsDeliveryReducer,flavorsProductDeliveryReducer, productsDeliveryReducer} from "./DeliverySalesReducers";
@@ -28,5 +28,6 @@ export default combineReducers({
     errorStreetNumberDelivery: errorStreetNumberDeliveryReducer,
     detailsDelivery: detailsDeliveryReducer,
     flavorsProductDelivery: flavorsProductDeliveryReducer,
-    productsDelivery: productsDeliveryReducer
+    productsDelivery: productsDeliveryReducer,
+    dateDelivery: dateDeliveryReducer
 })

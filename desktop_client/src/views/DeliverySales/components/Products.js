@@ -85,7 +85,7 @@ const Products = (props) => {
         <div className="formRow">
             <h3><b>Detalle de venta</b></h3>
         </div>
-        <SaleDetails onClick={download} setNameShow={setNameShow} setShowModalView={setShowModalView}/>
+        <SaleDetails buttons={true} onClick={download} setNameShow={setNameShow} setShowModalView={setShowModalView}/>
         <div className="formRow">
             <div className="col-sm-3 offset-sm-9">
                 <label>Total: ${props.total}</label>
@@ -112,7 +112,7 @@ const mapDispatchToProps = {
     deleteDetailDelivery,
     subtractTotalDelivery,
     updateDeliveryProducts,
-    insertDeliveryProducts,
+    insertDeliveryProducts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

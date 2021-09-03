@@ -18,11 +18,9 @@ const ListProducts = (props) => {
     const validateQuantity = (e,i) => {
         let quantity = parseInt(e.target.value)
         if(quantity >= 0 && typeof(quantity) === 'number'){
-            e.target.className = "form-control"
             document.getElementById(`quantityValidation${i}`).innerHTML = ""
         }
         else {
-            e.target.className = "form-control is-invalid"
             document.getElementById(`quantityValidation${i}`).innerHTML = "Número mayor a 0"            
         }
     }
