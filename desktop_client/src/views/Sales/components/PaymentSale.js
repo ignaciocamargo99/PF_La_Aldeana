@@ -43,22 +43,24 @@ const PaymentSale = (props) => {
         }
     },[props.payType])
 
-    useEffect(() => {
+    const onChangeAmount = () => {
         setAmount(inputPay.current.value);
-    })
+    }
 
     useEffect(() => {
-        if (amount >= props.totalAmount) {
-            setTurned(amount - props.totalAmount);
-            setclassNamePay("form-control is-valid");
-            //divPayValidation.current.innerHTML = "";
-        } 
-        else {
-            setclassNamePay("form-control is-invalid");
-            setTurned(null);
-            //divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total";
+        if (boolPayCash) {
+            if (amount >= props.totalAmount) {
+                setTurned(amount - props.totalAmount);
+                setclassNamePay("form-control is-valid");
+                divPayValidation.current.innerHTML = "";
+            } 
+            else {
+                setclassNamePay("form-control is-invalid");
+                setTurned(null);
+                divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total";
+            }
         }
-    },[amount, props.refresh])
+    },[amount, props.totalAmount, props.detailProducts])
       
     return(
         <>
@@ -80,7 +82,7 @@ const PaymentSale = (props) => {
                     <div className='formRow'>
                         <label>Abona con: $</label>
                         <div>
-                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" ref={inputPay}></input>
+                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" ref={inputPay} onChange={onChangeAmount}></input>
                             <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
                         </div>
                         

@@ -26,6 +26,13 @@ export const updateDetailsProductsModify = (array) =>{
     }
 }
 
+export const updateDetailsProductsDelete = (array) =>{
+    return {
+        type: 'UPDATE_DETAIL_PRODUCTS_DELETE',
+        payload: array
+    }
+}
+
 export const updatePayType = (id) => {
     return {
         type: 'UPDATE_PAY_TYPE',

@@ -13,7 +13,7 @@ const ListProducts = (props) => {
     
     const [printModal, setPrintModal] = useState(false);
     
-    // "A":add -- "M":modify
+    // "N":new -- "M":modify -- "A":add -- "D":delete
     const [actionModal, setActionModal] = useState();
 
     const changePrintModal = (e) => {
@@ -21,12 +21,12 @@ const ListProducts = (props) => {
         if (props.detailProducts.some(n => n.id_product == id))
         {
             props.updateProductSelected(props.detailProducts.find(n => n.id_product == id))
-            setActionModal("M");
+            setActionModal("A");
         }
         else
         {
             props.updateProductSelected(props.productsFiltered.find(n => n.id_product == id));
-            setActionModal("A");
+            setActionModal("N");
         }
         setPrintModal(true);
     }
