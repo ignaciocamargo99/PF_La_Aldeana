@@ -25,11 +25,12 @@ export default function Navbar (props){
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permissions = []
-        props.options.map((option) => {permissions.push(decrypt(option))})
-        const permissionVentas = permissions.find(option => option === "Ventas")
+        let permisos = []
+        props.options.forEach((option) => {permisos.push(decrypt(option))})
+        const permissionVentas = permisos.find(option => option === "Ventas")
+        let ventas 
         if (permissionVentas === "Ventas") {
-            return (
+            ventas =
                 <>
                     <Dropdown>
                         <Dropdown.Toggle className="dropdown">
@@ -44,8 +45,29 @@ export default function Navbar (props){
                         </Dropdown.Menu>
                     </Dropdown>
                 </>
-            )
         }
+        const permissionCompras = permisos.find(option => option === "Compras")
+        let compras
+        if(permissionCompras === "Compras"){
+            compras =
+                <>
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown">
+                            Compras
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </>
+        }
+
+        return(
+            <>
+                {ventas}
+                {compras}
+            </>
+        )
     }
 
     return (

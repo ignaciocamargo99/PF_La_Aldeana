@@ -3,6 +3,7 @@ import { nickReducer, passwordReducer, userReducer , permissionsReducer } from "
 import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
 import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply } from "./SupplyReducers"
+import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity, purchasePrice, purchaseSubtotal, purchaseTotal } from "./PurchaseSuppliesReducer"
 
 export default combineReducers({
     nick: nickReducer,
@@ -18,5 +19,13 @@ export default combineReducers({
     typeSupply: typeSupply,
     lotSupply: lotSupply,
     unitPerLotSupply: unitPerLotSupply,
-    unitSupply: unitSupply
+    unitSupply: unitSupply,
+    purchaseNumber: purchaseNumber,
+    purchaseDate: purchaseDate,
+    purchaseSupplier: purchaseSupplier,
+    purchaseSupplies: purchaseSupplies,
+    purchaseQuantity: purchaseQuantity,
+    purchasePrice: purchasePrice,
+    purchaseSubtotal: purchaseSubtotal,
+    purchaseTotal: purchaseTotal
 })

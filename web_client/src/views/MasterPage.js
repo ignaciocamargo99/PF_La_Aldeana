@@ -15,6 +15,7 @@ import RegisterProductionView from './RegisterProduction/RegisterProduction';
 import '../assets/Views.css';
 import '../assets/Forms.css';
 import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
+import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
 
 const cookies = new Cookies();
 
@@ -34,6 +35,7 @@ export default function App(props) {
             <Route path='/app/supplies' component={RegisterSupplyView}></Route>
             <Route path='/app/products' component={ListProducts}></Route>
             <Route path='/app/franchise' component={RegisterFranchise}></Route>
+            <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>
