@@ -4,6 +4,7 @@ import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
 import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply } from "./SupplyReducers"
 import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity, purchasePrice, purchaseSubtotal, purchaseTotal } from "./PurchaseSuppliesReducer"
+import { dateTo, dateFrom, productSales } from "./ReportsReducers"
 
 export default combineReducers({
     nick: nickReducer,
@@ -27,5 +28,8 @@ export default combineReducers({
     purchaseQuantity: purchaseQuantity,
     purchasePrice: purchasePrice,
     purchaseSubtotal: purchaseSubtotal,
-    purchaseTotal: purchaseTotal
+    purchaseTotal: purchaseTotal,
+    dateTo: dateTo,
+    dateFrom: dateFrom,
+    productSales: productSales
 })
