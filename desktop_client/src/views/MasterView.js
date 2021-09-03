@@ -1,16 +1,15 @@
 
-import Main from './Menu/Main';
-import Sales from './Sales/Sales';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Main from './Menu/Main';
 
 export default function App() {
 
   return (
     <>
       <BrowserRouter>
-        <Route path='/app/sales' component={Sales}></Route>
-        <Route path='/app/flavorsChamber' component={Main}></Route>
+        <Route path='/' component={Main}></Route>
       </BrowserRouter>
     </>
   );
 }
+
