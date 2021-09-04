@@ -47,26 +47,49 @@ export default function Navbar(props) {
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permissions = []
-        props.options.map((option) => {permissions.push(decrypt(option))})
-        const permissionVentas = permissions.find(option => option === "Ventas")
+        let permisos = []
+        props.options.forEach((option) => {permisos.push(decrypt(option))})
+        const permissionVentas = permisos.find(option => option === "Ventas")
+        let ventas 
         if (permissionVentas === "Ventas") {
-            return (
-                <li>
+            ventas =
+                <>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
+                            <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
+                            <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
                             <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
                             <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
-                            <Dropdown.Item href="/app/products">Productos</Dropdown.Item>
                             <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </li>
-            )
+                </>
         }
+        const permissionCompras = permisos.find(option => option === "Compras")
+        let compras
+        if(permissionCompras === "Compras"){
+            compras =
+                <>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Compras
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </>
+        }
+
+        return(
+            <>
+                {ventas}
+                {compras}
+            </>
+        )
     }
 
     return (
