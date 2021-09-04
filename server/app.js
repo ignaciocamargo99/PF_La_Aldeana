@@ -9,6 +9,7 @@ const permissionsRouter = require('./api/permissions/router');
 const sessionsRouter = require('./api/sessions/router');
 const middleware = require('./middleware/index');
 const flavorsRouter = require('./api/routes/flavorRoute');
+const clientsRouter = require('./api/routes/clientRoute');
 const franchiseRouter = require('./api/franchise/router');
 const salesRouter = require('./api/sales/router');
 
@@ -33,6 +34,7 @@ app.use('/api', sessionsRouter);
 app.use('/api', flavorsRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesRouter);
+app.use('/api', clientsRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

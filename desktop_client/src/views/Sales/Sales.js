@@ -38,7 +38,7 @@ const Sales = (props) => {
     const registerSale = () => {
         if (ready) {
 
-            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.totalAmount, id_pay_type:props.payType, details:JSON.stringify(props.detailProducts)}; 
+            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.totalAmount, id_pay_type:props.payType, cellphone_client:null, details:JSON.stringify(props.detailProducts)}; 
 
             console.log(sale);
 

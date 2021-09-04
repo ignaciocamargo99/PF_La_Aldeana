@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import DateFormat from '../../../utils/DateFormat/dateFormat';
@@ -6,19 +6,22 @@ import BeShowed from '../../../common/BeShowed';
 import Pay from './Pay';
 import Client from './Client';
 import Products from './Products';
-import { updateDeliveryDate,updateDeliveryProducts } from '../../../actions/DeliverySalesActions';
+import { updateDeliveryClients,updateDeliveryProducts } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
+import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
+import warningMessage from '../../../utils/warningMessage';
 
 const PORT = require('../../../config');
 
 const DeliverySales = (props) => {
     const [step,setStep] = useState(1);
+    const [date,setDate] = useState('');
 
     useEffect(() => {
         let date = DateFormat(new Date())
-        props.updateDeliveryDate(date)   
+        setDate(date)   
         axios.get( PORT() + `/api/allProducts`)
         .then((response) => {
             props.updateDeliveryProducts(response.data)
@@ -26,43 +29,39 @@ const DeliverySales = (props) => {
         .catch((err) => {
             console.log(err)
         })
+        axios.get( PORT() + `/api/clients`)
+        .then((response) => {
+            props.updateDeliveryClients(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     },[])
 
     const confirmSale = () => {
-        let sale_number = null
-        let date = new Date()
-        let total_amount = props.total
-        let typePay = 1
-        
         let details = []
         props.details.map((detail,i) => {
             details.push(
                 {
-                    "sale_number": sale_number,
-                    "detail_number": i,
                     "id_product": detail.product.id_product,
                     "quantity": detail.quantity,
                     "subtotal": detail.subtotal
                 }
             )
         })
-
-        let cellphone_number = props.cellphone
-        let names = props.names
-
-
-        let sale = {sale_number,date,total_amount,typePay,cellphone_number,details}
-        console.log(sale)
-
-        let client = {cellphone_number,names}
-        console.log(client)
-
-        let street = props.street
-        let street_number = props.streetNumber
-
-        let address = {street,street_number,cellphone_number}
-        console.log(address)
-        succesMessageDeliverySale('Se ha registrado la venta correctamente')
+        let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
+        axios.post(`${PORT()}/api/sales/new`, sale)
+            .then((sale) => {
+                if(sale.data.Ok) {
+                    succesMessageDeliverySale('Se ha registrado la venta correctamente');       
+                }
+                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+            })
+            .catch(error => console.log(error))
+        /*
+        let client = {cellphone:props.cellphone,names:props.names}
+        let address = {street_name:props.street,street_number:props.streetNumber,cellphone_number:props.cellphone}
+        */
     }
 
     return(
@@ -75,7 +74,7 @@ const DeliverySales = (props) => {
                         <label>Fecha:</label>
                     </div>
                     <div className="form-control-input col-sm-2" style={{width:'200px'}}>
-                        <input type="date" className="form-control" value={props.date} readOnly></input>
+                        <input type="date" className="form-control" value={date} readOnly></input>
                     </div>
                 </div>
 
@@ -99,6 +98,7 @@ const DeliverySales = (props) => {
 
 const mapStateToProps = state => {
     return {
+        products: state.productsDelivery,
         errorStreetNumber: state.errorStreetNumberDelivery,
         errorNames: state.errorNamesDelivery,
         errorStreet: state.errorStreetDelivery,
@@ -106,7 +106,7 @@ const mapStateToProps = state => {
         errorAmount: state.errorAmountDelivery,
         details: state.detailsDelivery,
         total: state.totalDelivery,
-        date: state.dateDelivery,
+        clients: state.clientsDelivery,
         cellphone: state.cellphoneDelivery,
         names: state.namesDelivery,
         street: state.streetDelivery,
@@ -116,7 +116,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     updateDeliveryProducts,
-    updateDeliveryDate
+    updateDeliveryClients
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);

@@ -49,7 +49,7 @@ const ListProducts = (props) => {
                                         <td style={{ textAlign: 'center', width: '15%'}}><label>{product.price}</label></td>
                                         <td style={{ textAlign: 'center', width: '15%'}}>
                                             <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" maxLength="4" onChange={(e) => {validateQuantity(e,i)}}></input>
-                                            <b id={`quantityValidation${i}`} style={{color:'gray'}}></b>
+                                            <label><b id={`quantityValidation${i}`} style={{color:'gray'}}></b></label>
                                         </td>   
                                         <td style={{ textAlign: 'center', width: '12%'}}>
                                             <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>

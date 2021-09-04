@@ -36,7 +36,7 @@ const Pay = (props) => {
                     <label>Tipo de pago* </label>
                 </div>
                 <div className="form-control-input">
-                    <select className="form-control" readOnly>
+                    <select className="form-control" style={{fontFamily:'abel'}} readOnly>
                         <option selected>{props.payType}</option>
                     </select>
                 </div>
@@ -48,7 +48,7 @@ const Pay = (props) => {
                 <div className="form-control-input">
                     <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} value={props.amount}></input>
                     <BeShowed show={props.errorAmount}>
-                        <b style={{color:'gray'}}>Cantidad entera mayor al total</b>
+                        <label><b style={{color:'gray'}}>Cantidad entera mayor al total</b></label>
                     </BeShowed>
                 </div>
             </div>

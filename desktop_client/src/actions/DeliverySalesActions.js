@@ -152,9 +152,9 @@ export const updateDeliveryProducts = (products) => {
     }
 }
 
-export const updateDeliveryDate = (date) => {
+export const updateDeliveryClients = (clients) => {
     return{
-        type: 'UPDATE_DELIVERY_DATE',
-        payload: date
+        type: 'UPDATE_DELIVERY_CLIENTS',
+        payload: clients
     }
 }

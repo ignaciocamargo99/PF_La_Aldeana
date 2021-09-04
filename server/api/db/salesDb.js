@@ -17,7 +17,7 @@ const PayTypesGetDB = () => {
 };
 
 const salePostDB = (newSale) => {
-    const { date_hour, total_amount, id_pay_type, details } = newSale;
+    const { date_hour, total_amount, id_pay_type, details, cellphone_client } = newSale;
     let id_sale;
     let arrDetails = JSON.parse(details);
 
@@ -34,7 +34,7 @@ const salePostDB = (newSale) => {
             })
             db.beginTransaction((error) => {
                 if (error) reject('1,5:' + error);
-                const sqlInsertSale = `INSERT INTO SALES VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type})`;
+                const sqlInsertSale = `INSERT INTO SALES VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type},${cellphone_client})`;
 
                 db.query(sqlInsertSale, (error, result) => {
                     if (error) {

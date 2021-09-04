@@ -1,9 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import BeShowed from '../../../common/BeShowed';
 import { updateCellphoneDelivery, updateErrorCellphoneDelivery, updateNamesDelivery, updateErrorNamesDelivery,
         updateStreetDelivery, updateErrorStreetDelivery, updateStreetNumberDelivery, updateErrorStreetNumberDelivery} from '../../../actions/DeliverySalesActions';
 import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
+
+const PORT = require('../../../config');
 
 const Client = (props) => {
 
@@ -45,6 +48,18 @@ const Client = (props) => {
         }
     }
 
+    const onBlurCellphone = (e) =>{
+        let x = props.clients.find( client => client.cellphone == e.target.value)
+        if(x !== undefined){
+            props.updateErrorNamesDelivery(false)
+            props.updateNamesDelivery(x.names)
+            props.updateErrorStreetDelivery(false)
+            props.updateStreetDelivery(x.street_name)
+            props.updateErrorStreetNumberDelivery(false)
+            props.updateStreetNumberDelivery(x.street_number)
+        }
+    }
+
     return(
         <>
             <div className="formRow">
@@ -55,9 +70,9 @@ const Client = (props) => {
                     <label>Numero de celular*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} maxLength="10" onChange={(e) => {onChangeCellphone(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
+                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onBlur={(e) => {onBlurCellphone(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
                     <BeShowed show={props.errorCellphone}>
-                        <b style={{color:'gray'}}>Número de 10 digitos</b>
+                        <label><b style={{color:'gray'}}>Número de 10 digitos</b></label>
                     </BeShowed>
                 </div>
             </div>
@@ -68,7 +83,7 @@ const Client = (props) => {
                 <div className="form-control-input">
                     <input  type="text" className={props.errorNames?"form-control":"form-control is-valid"} maxLength="50" onChange={(e) => onChangeNames(e)} placeholder="Ingrese el nombre completo del cliente..." value={props.names}></input>
                     <BeShowed show={props.errorNames}>
-                        <b style={{color:'gray'}}>Texto de 1 a 50 caractéres</b>
+                        <label><b style={{color:'gray'}}>Texto de 1 a 50 caractéres</b></label>
                     </BeShowed>
                 </div>
             </div>
@@ -79,7 +94,7 @@ const Client = (props) => {
                 <div className="form-control-input col-sm-5">
                     <input type="text" className={props.errorStreet?"form-control":"form-control is-valid"} maxLength="25" onChange={(e) => {onChangeStreet(e)}} placeholder="Ingrese el la calle..." value={props.street}></input>
                     <BeShowed show={props.errorStreet}>
-                        <b style={{color:'gray'}}>Texto de 1 a 25 caractéres</b>
+                        <label><b style={{color:'gray'}}>Texto de 1 a 25 caractéres</b></label>
                     </BeShowed>
                 </div>
                 <div className="form-control-label offset-sm-1 col-sm-1">
@@ -88,7 +103,7 @@ const Client = (props) => {
                 <div className="form-control-input col-sm-3">
                    <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
                     <BeShowed show={props.errorStreetNumber}>
-                        <b style={{color:'gray'}}>Número de 1 a 4 digitos</b>
+                        <label><b style={{color:'gray'}}>Número de 1 a 4 digitos</b></label>
                     </BeShowed>
                 </div>
             </div>
@@ -106,6 +121,7 @@ const mapStateToProps = state => {
         errorStreet: state.errorStreetDelivery,
         streetNumber: state.streetNumberDelivery,
         errorStreetNumber: state.errorStreetNumberDelivery,
+        clients: state.clientsDelivery
     }
 }
 

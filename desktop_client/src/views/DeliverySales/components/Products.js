@@ -75,13 +75,15 @@ const Products = (props) => {
         <hr />
         <ModalFlavorSelect show={showModal} setShowModal={setShowModal} quantityFlavor={quantityFlavor}/>
         <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
-        <BeShowed show={props.products.length === 0}>
-            <div className="row justify-content-center align-items-center">
-                <Spinner color="dark" />
-                <label className="offset-sm-10">Cargando productos...</label>
+        <BeShowed show={props.products.length === 0 && props.detailsDelivery.length === 0}>
+            <div className="col-md-2 offset-md-6">
+                <Spinner/>
             </div>
         </BeShowed>
-        <BeShowed show={props.products.length !== 0}>
+        <BeShowed show={props.products.length === 0 && props.detailsDelivery.length !== 0}>
+            <b><label style={{color: '#FFDB58'}} className="col-md-6 offset-md-4">No se encuentran más productos disponibles...</label></b>
+        </BeShowed>
+        <BeShowed show={props.products.length !== 0 }>
             <ListProducts onClick={upload} filter={filter}/>
         </BeShowed>
         <div className="formRow">
