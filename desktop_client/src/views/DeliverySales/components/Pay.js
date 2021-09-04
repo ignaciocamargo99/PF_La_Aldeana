@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import { connect } from 'react-redux';
 import { updateAmountDelivery, updatePayTypeDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
+import ModalFlavorShow from './ModalFlavorShow';
 import SaleDetails from './SaleDetails';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +10,9 @@ import '../../../assets/Buttons.css'
 
 const Pay = (props) => {
     
+    const [nameShow,setNameShow] = useState('');
     const [showDetail,setShowDeatil] = useState(false);
+    const [showModalView,setShowModalView] = useState(false);
 
     const onChangeAmount = (amount) => {
         props.updateErrorAmountDelivery(false)
@@ -69,7 +72,8 @@ const Pay = (props) => {
             </div>
             <BeShowed show={showDetail}>
                 <h3 style={{textAlign: 'center'}}><b>Detalle de venta</b></h3>
-                <SaleDetails buttons={false}/>
+                <SaleDetails buttons={false} setNameShow={setNameShow} setShowModalView={setShowModalView}/>
+                <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
             </BeShowed>
         </>
     )
@@ -81,7 +85,8 @@ const mapStateToProps = state => {
         amount: state.amountDelivery,
         total: state.totalDelivery,
         errorAmount: state.errorAmountDelivery,
-        total: state.totalDelivery
+        total: state.totalDelivery,
+        flavorsProduct: state.flavorsProductDelivery
     }
 }
 

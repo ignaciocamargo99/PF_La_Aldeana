@@ -51,8 +51,8 @@ const ModalFlavorSelect = (props) => {
         if(id < 0){
             errorSelectFlavor('Se debe seleccionar un sabor')
         }
-        else if(props.flavorsProduct[I].length >= 4){
-            errorSelectFlavor('El máximo de sabores a elegir son cuatro')
+        else if(props.flavorsProduct[I].length >= props.quantityFlavor){
+            errorSelectFlavor(`El máximo de sabores a elegir son ${props.quantityFlavor}`)
         }
         else{
             let flavorToAdd = flavors.find(flavor => flavor.id_flavor == id)

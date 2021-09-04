@@ -18,18 +18,20 @@ const Products = (props) => {
     const [nameShow,setNameShow] = useState('');
     const [showModal,setShowModal] = useState(false);
     const [showModalView,setShowModalView] = useState(false);
+    const [quantityFlavor,setQauntityFalvor] = useState();
 
 
     const upload = (id,i) => {
         let quantity = document.getElementById(`quantityInput${i}`).value
         if(quantity > 0){
             let productToAdd = props.products.find(product => product.id_product === id)
-            if(productToAdd.id_sector === 1){
+            if(productToAdd.quantity_flavor > 0){
                 let aux = []
                 for(let i = 0 ; i < quantity ; i++){
                     aux.push([])
                 }
                 props.updateAllFlavorsProduct(aux)
+                setQauntityFalvor(productToAdd.quantity_flavor)
                 setShowModal(true)
             }
             let subtotal = quantity * productToAdd.price
@@ -71,7 +73,7 @@ const Products = (props) => {
         </div>
         <RadioButtons products={props.products} setFilter={setFilter}/>
         <hr />
-        <ModalFlavorSelect show={showModal} setShowModal={setShowModal} />
+        <ModalFlavorSelect show={showModal} setShowModal={setShowModal} quantityFlavor={quantityFlavor}/>
         <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
         <BeShowed show={props.products.length === 0}>
             <div className="row justify-content-center align-items-center">

@@ -24,9 +24,7 @@ const SaleDetails = (props) => {
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Cantidad</label></th>   
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Subtotal</label></th>
-                            <BeShowed show={props.buttons}>
-                                <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
-                            </BeShowed>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>{props.buttons?'':'Sabores'}</label></th>
                         </>
                     }
                 />
@@ -35,17 +33,17 @@ const SaleDetails = (props) => {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center', width: '45%'}}><label>{detail.product.name}</label></td>
+                                    <td style={{ textAlign: 'center', width: '55%'}}><label>{detail.product.name}</label></td>
                                     <td style={{ textAlign: 'center', width: '15%'}}><label>{detail.quantity}</label></td>
                                     <td style={{ textAlign: 'center', width: '15%'}}><label>${detail.subtotal}</label></td>
-                                    <BeShowed show={props.buttons}> 
-                                        <td style={{ textAlign: 'center', width: '25%'}}>
-                                            <BeShowed show={detail.product.id_sector === 1}>
-                                                <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
-                                            </BeShowed>
+                                    <td style={{ textAlign: 'center', width: '15%'}}>
+                                        <BeShowed show={detail.product.quantity_flavor > 0}>
+                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
+                                        </BeShowed>
+                                        <BeShowed show={props.buttons}> 
                                             <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(detail.product.id_product,i)}}><FontAwesomeIcon icon={faMinus} /></button>
-                                        </td>
-                                    </BeShowed>
+                                        </BeShowed>
+                                    </td>
                                 </tr>
                             </tbody>
                         )

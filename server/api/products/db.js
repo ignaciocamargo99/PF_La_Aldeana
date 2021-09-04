@@ -21,7 +21,7 @@ const productGetDB = () => {
 };
 
 const productAllGetDB = () => {
-    const sqlSelect = `SELECT p.id_product, p.name, p.description, p.price, p.id_sector, p.id_product_type, p.active FROM PRODUCTS p WHERE p.active = 1 ORDER BY p.name`
+    const sqlSelect = `SELECT p.id_product, p.name, p.description, p.price, p.id_sector, p.id_product_type, p.active , p.quantity_flavor FROM PRODUCTS p WHERE p.active = 1 ORDER BY p.name`
     
 
     return new Promise((resolve, reject) => {
