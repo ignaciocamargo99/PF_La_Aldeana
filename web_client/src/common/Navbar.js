@@ -53,7 +53,7 @@ export default function Navbar(props) {
         let ventas 
         if (permissionVentas === "Ventas") {
             ventas =
-                <>
+                <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
                             Ventas
@@ -66,13 +66,13 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </>
+                </li>
         }
         const permissionCompras = permisos.find(option => option === "Compras")
         let compras
         if(permissionCompras === "Compras"){
             compras =
-                <>
+                <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
                             Compras
@@ -81,7 +81,7 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </>
+                </li>
         }
 
         return(
