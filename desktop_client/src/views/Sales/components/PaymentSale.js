@@ -12,6 +12,7 @@ const PaymentSale = (props) => {
     const [payTypes, setPayTypes] = useState([]);
     const [boolPayCash, setBoolPayCash] = useState(false);
     const [boolPayCard, setBoolPayCard] = useState(false);
+    const [amount, setAmount] = useState(null);
     const [turned, setTurned] = useState(null);
     const inputPay = useRef(0);
     const [classNamePay, setclassNamePay] = useState("form-control");
@@ -42,24 +43,30 @@ const PaymentSale = (props) => {
         }
     },[props.payType])
 
-    const onChangePay = () => {
-        if (inputPay.current.value >= props.totalAmount) {
-            setTurned(inputPay.current.value - props.totalAmount);
-            setclassNamePay("form-control is-valid");
-            divPayValidation.current.innerHTML = "";
-        } 
-        else {
-            setclassNamePay("form-control is-invalid");
-            setTurned(null);
-            divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total"
-        }
+    const onChangeAmount = () => {
+        setAmount(inputPay.current.value);
     }
+
+    useEffect(() => {
+        if (boolPayCash) {
+            if (amount >= props.totalAmount) {
+                setTurned(amount - props.totalAmount);
+                setclassNamePay("form-control is-valid");
+                divPayValidation.current.innerHTML = "";
+            } 
+            else {
+                setclassNamePay("form-control is-invalid");
+                setTurned(null);
+                divPayValidation.current.innerHTML = "El pago debe ser mayor al monto total";
+            }
+        }
+    },[amount, props.totalAmount, props.detailProducts])
       
     return(
         <>
             <div>
                 <h4>Tipo de Pago</h4>
-                <select className="form-combo-btn" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
+                <select className="form-combo" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
                     <option disabled value="-1">Seleccione el Tipo de Pago</option>
                     {
                         payTypes?.map((element,i) => (
@@ -73,9 +80,12 @@ const PaymentSale = (props) => {
                         <label id="id_total">{props.totalAmount}</label>
                     </div>
                     <div className='formRow'>
-                        <label>Abona con:  $  </label>
-                        <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" onChange={onChangePay} ref={inputPay}></input>
-                        <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
+                        <label>Abona con: $</label>
+                        <div>
+                            <input className={classNamePay} type="number" id="id_pay" min="1" placeholder="Ingrese con cuanto abona" ref={inputPay} onChange={onChangeAmount}></input>
+                            <div style={{ color: 'red', fontWeight: 'bold' }} ref={divPayValidation} />
+                        </div>
+                        
                     </div>
                     <div className='formRow'>
                         <label>Vuelto:  $  </label>
@@ -99,7 +109,8 @@ const mapStateToProps = state => {
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
         payType: state.payType,
-        totalAmount: state.totalAmount
+        totalAmount: state.totalAmount,
+        refresh: state.refresh
     }
 }
 

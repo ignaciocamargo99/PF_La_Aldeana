@@ -42,7 +42,7 @@ const salePostDB = (newSale) => {
                     }
                     for (let i = 0; i < arrDetails.length; i++) {
 
-                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${arrDetails[i].id_detail_sale},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${ arrDetails[i].subtotal})`;
+                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${i+1},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${ arrDetails[i].subtotal})`;
 
                         db.query(sqlInsertSaleDetailSale, (error) => {
                             if (error) {
