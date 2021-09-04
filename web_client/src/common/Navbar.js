@@ -73,7 +73,7 @@ export default function Navbar(props) {
         let compras
         if (permissionCompras === "Compras") {
             compras =
-                <li >
+                <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
                             Compras
@@ -82,7 +82,6 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
                 </li>
         }
 
