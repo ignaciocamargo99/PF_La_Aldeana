@@ -6,7 +6,7 @@ import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faPlus, faSignInAlt, faList } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile } from '@fortawesome/free-solid-svg-icons'
 
 const cookies = new Cookies();
 
@@ -126,11 +126,9 @@ export default function Navbar(props) {
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
-                            <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
-                            <Dropdown.Item href="/app/supplies">Registrar Insumo</Dropdown.Item>
-                            <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
-                            <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
+                            <Dropdown.Item href="">
+                                <FontAwesomeIcon icon={faFile} /> Ver Informes
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
@@ -146,7 +144,9 @@ export default function Navbar(props) {
                             Compras
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
+                            <Dropdown.Item href="/app/purchaseSupplies">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Compra de insumos
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
