@@ -7,9 +7,7 @@ import getNameTypeProduct from './getNameTypeProduct';
 const PORT = require('../../../config');
 
 export default function TypeProduct(props) {
-
     const typeProduct = useHTTPGet(PORT() + '/api/typeProducts');
-
     const [errorMessage, setErrorMessage] = useState("");
     const [type, setType] = useState("null");
     const [prevType, setPrevType] = useState("null");
@@ -21,8 +19,8 @@ export default function TypeProduct(props) {
 
     useEffect(() => {
         setErrorMessage(validateTypeProduct(type));
+        let data = props.data;
         if (type >= 0) {
-            let data = props.data;
             data.id_product_type = type;
             props.load(data);
         }
@@ -43,11 +41,10 @@ export default function TypeProduct(props) {
                     <BeShowed show={!props.data.id_product_type}>
                         <option disabled value="-1">Seleccione tipo de producto...</option>
                     </BeShowed>
-                    {
-                        typeProduct?.map((tp, i) => (
-                            <option key={i} value={tp.id_product_type}>{tp.name}</option>
-                        ))
-                    }
+                    {typeProduct && typeProduct.map((product, i) => {
+                        if (product.id_sector === props.data.id_sector)
+                            return (<option key={i} value={product.id_product_type}>{product.name}</option>)
+                    })}
                 </select>
                 <BeShowed show={errorMessage !== "null" && prevType !== "null"}>
                     <div style={{ color: 'red' }}>{errorMessage}</div>
