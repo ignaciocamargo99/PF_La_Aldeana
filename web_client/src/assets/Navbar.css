@@ -108,6 +108,10 @@
   font-size: 1.2rem;
 }
 
+.drop-item-new {
+  color: #A5DEF9;
+}
+
 @media (min-width: 768px) {
   .nav-dropdown {
     background-color: #f68634 !important;
