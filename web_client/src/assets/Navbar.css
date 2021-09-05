@@ -47,6 +47,7 @@
   align-items: center;
   align-self: center;
   background-color: #F68634;
+  position: relative;
 }
 
 .burger {
@@ -126,7 +127,7 @@
 }
 
 @media (max-width: 768px) {
-  body {
+  html, body {
     overflow-x: hidden;
   }
   .navbar-header {
