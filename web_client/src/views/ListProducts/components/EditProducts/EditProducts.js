@@ -2,7 +2,7 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
 import Buttons from '../../../../common/Buttons';
-import success from '../../../../utils/SuccessMessages/successTypeProduct';
+import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import './EditProductView.css';
@@ -55,7 +55,7 @@ export default function EditProducts(props) {
         formData.append('flagImageUpdate', data.flagImageUpdate);
 
         Axios.put(PORT() + urlApi, formData)
-            .then(success())
+            .then(successMessage('Atención', 'El producto se ha editado correctamente', 'success'))
             .catch(error => console.log(error));
     };
 

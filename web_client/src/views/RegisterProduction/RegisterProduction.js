@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { updateDate } from '../../actions/DateActions';
 import Buttons from '../../common/Buttons';
 import Axios from 'axios';
-import successMessage from '../../utils/SuccessMessages/successMenssage';
+import successMessage from '../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
 import displayError from '../../utils/ErrorMessages/displayError';
 

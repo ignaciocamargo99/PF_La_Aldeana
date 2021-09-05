@@ -19,7 +19,7 @@ import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchas
 
 const cookies = new Cookies();
 
-export default function App(props) {
+export default function App() {
 
   return (
     <div className="App">

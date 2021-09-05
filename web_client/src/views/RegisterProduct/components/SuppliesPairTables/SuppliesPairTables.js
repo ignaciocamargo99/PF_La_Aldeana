@@ -1,8 +1,8 @@
 import Axios from 'axios';
 import { useEffect, useState } from "react";
-import putOnList from "./putOnList";
 import LoaderSpinner from '../../../../common/LoaderSpinner';
 import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
+import putOnList from "./putOnList";
 import TableSuppliesDown from "./TableSuppliesDown";
 import TableSuppliesUp from "./TableSuppliesUp";
 
@@ -13,7 +13,7 @@ export default function SuppliesPairTables(props) {
     const [listTable, setListTable] = useState([]);
     const [destinyTable, setDestinyTable] = useState([]);
     const [load, setLoad] = useState(false);
-    const [refreshTable,setRefreshTable] = useState(false);
+    const [refreshTable, setRefreshTable] = useState(false);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -33,14 +33,14 @@ export default function SuppliesPairTables(props) {
 
     useEffect(() => {
         Axios.get(PORT() + `/api/productSupply/${props.data.id_product}`)
-        .then((response) => {
-            handlerLoadingSpinner();
-            let auxSupply = putOnList(response.data, listTable);
-            setDestinyTable(auxSupply);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((response) => {
+                handlerLoadingSpinner();
+                let auxSupply = putOnList(response.data, listTable);
+                setDestinyTable(auxSupply);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, [load]);
 
     const upload = (i) => {

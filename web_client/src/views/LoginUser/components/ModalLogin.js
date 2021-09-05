@@ -6,7 +6,6 @@ import errrorLogin from '../../../utils/ErrorMessages/errorLogin';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import FormLogin from '../components/FormLogin';
 import Buttons from '../../../common/Buttons';
-import Line from '../../../common/Line';
 import { updateNick, updatePassword , updateUser, updatePermissions} from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
 import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
@@ -59,7 +58,6 @@ const ModalLogin = (props) => {
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader className="back-ligthblue">
                     <label className="font-weight-bold text-align-center"><b>Inicio de sesión</b></label>
-                    <Line />
                 </ModalHeader>
                 <ModalBody className="back-ligthblue">
                     <FormGroup>

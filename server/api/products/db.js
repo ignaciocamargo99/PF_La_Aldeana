@@ -22,7 +22,7 @@ const productGetDB = () => {
 
 
 const productTypeGetDB = () => {
-    const sqlSelect = 'SELECT id_product_type, name FROM PRODUCT_TYPES';
+    const sqlSelect = 'SELECT id_product_type, name, id_sector FROM PRODUCT_TYPES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -58,7 +58,7 @@ const productSupplyGetDB = (productID) => {
 
 const productPostDB = (newProduct, imageProduct) => {
 
-    const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
+    const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
     let image = imageProduct;
     const { name, description, price, id_sector, id_product_type } = newProduct;
 
@@ -69,7 +69,7 @@ const productPostDB = (newProduct, imageProduct) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlInsert, [null, name, description, image, price, id_sector, id_product_type, 1], (error) => {
+            db.query(sqlInsert, [null, name, description, image, price, id_sector, id_product_type, 1, null], (error) => {
                 if (error) reject(error);
                 else resolve();
             });
@@ -89,7 +89,7 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
     else image = null;
 
     const selectMaxIdProduct = 'SELECT MAX(id_product) AS last_id_product FROM PRODUCTS';
-    const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
+    const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
     const sqlInsertProductsSupplies = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
 
     return new Promise((resolve, reject) => {
@@ -102,7 +102,7 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
             db.beginTransaction((error) => {
                 if (error) reject(error);
 
-                db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1], (error, result) => {
+                db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1, null], (error, result) => {
                     if (error) {
                         return db.rollback(() => reject(error))
                     }
