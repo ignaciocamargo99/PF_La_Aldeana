@@ -50,8 +50,9 @@ export default function Navbar(props) {
         let permisos = []
         props.options.forEach((option) => { permisos.push(decrypt(option)) })
 
+        const permissionProducts = permisos.find(option => option === "Productos");
         let products;
-        if (true) {
+        if (permissionProducts === "Productos") {
             products =
                 <li>
                     <Dropdown>
@@ -62,18 +63,20 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/products">
                                 <FontAwesomeIcon icon={faList} /> Ver productos
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/registerProducts">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nuevo producto
+                            <Dropdown.Item href="/app/typeProducts">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Tipo de producto
                             </Dropdown.Item>
-                            <Dropdown.Item href="">Tipos de producto</Dropdown.Item>
-                            <Dropdown.Item href="">Insumos</Dropdown.Item>
+                            <Dropdown.Item href="/app/supplies">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Insumo
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
         };
 
+        const permissionProduction = permisos.find(option => option === "Producciones");
         let productions;
-        if (true) {
+        if (permissionProduction === 'Producciones') {
             productions =
                 <li>
                     <Dropdown>
@@ -92,8 +95,9 @@ export default function Navbar(props) {
                 </li>
         };
 
+        const permissionFranchises = permisos.find(option => option === "Franquicias");
         let franchises;
-        if (true) {
+        if (permissionFranchises === "Franquicias") {
             franchises =
                 <li>
                     <Dropdown>
@@ -124,7 +128,7 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/products">Registrar productos</Dropdown.Item>
                             <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
-                            <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
+                            <Dropdown.Item href="/app/supplies">Registrar Insumo</Dropdown.Item>
                             <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
                             <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
                         </Dropdown.Menu>
