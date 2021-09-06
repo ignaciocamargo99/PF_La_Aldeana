@@ -35,6 +35,7 @@ export default function EditProducts(props) {
         setSupplyProductChild(childData.supplies);
         setFlagImageUpdate(childData.flagImageUpdate);
         setFlavorChild(childData.flavor);
+        console.log(data)
     }
 
     const registerProduct = () => {
@@ -63,7 +64,7 @@ export default function EditProducts(props) {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0
+        if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0 && data.id_product_type
             && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
