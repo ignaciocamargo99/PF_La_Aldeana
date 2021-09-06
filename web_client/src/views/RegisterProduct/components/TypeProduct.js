@@ -11,16 +11,30 @@ export default function TypeProduct(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [type, setType] = useState("null");
     const [prevType, setPrevType] = useState("null");
+    const [selectValue, setSelectValue] = useState("-1");
 
     const handleType = (e) => {
         setPrevType(type);
         setType(e.target.value);
+        setSelectValue(e.target.value);
     }
+
+    useEffect(() => {
+        let data = props.data;
+        if(data.id_sector && data.editing === false){
+            setSelectValue("-1");
+            setType("null");
+            data.editing=false;
+            data.id_product_type = null;
+            props.load(data)
+
+        }
+    }, [props.data.id_sector])
 
     useEffect(() => {
         setErrorMessage(validateTypeProduct(type));
         let data = props.data;
-        if (type >= 0) {
+        if (type > 0) {
             data.id_product_type = type;
             props.load(data);
         }
@@ -33,12 +47,12 @@ export default function TypeProduct(props) {
             </div>
             <div className="form-control-input">
                 <select className="form-control" id="selectTypeProduct"
-                    defaultValue='-1'
+                    value={selectValue}
                     onChange={handleType}>
-                    <BeShowed show={props.data.id_product_type}>
+                    <BeShowed show={props.data.id_product_type && props.data.editing === true}>
                         <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
                     </BeShowed>
-                    <BeShowed show={!props.data.id_product_type}>
+                    <BeShowed show={!props.data.id_product_type || props.data.editing === false}>
                         <option disabled value="-1">Seleccione tipo de producto...</option>
                     </BeShowed>
                     {typeProduct && typeProduct.map((product, i) => {
