@@ -11,6 +11,7 @@ const purchaseSuppliesRouter = require('./api/purchase_supplies/router');
 const suppliesRouter = require('./api/supplies/router');
 const middleware = require('./middleware/index');
 const flavorsRouter = require('./api/routes/flavorRoute');
+const clientsRouter = require('./api/routes/clientRoute');
 const franchiseRouter = require('./api/franchise/router');
 const salesRouter = require('./api/sales/router');
 const dispatchFlavorsRouter = require('./api/routes/flavorRoute');
@@ -40,6 +41,7 @@ app.use('/api', purchaseSuppliesRouter);
 app.use('/api', suppliesRouter);
 app.use('/api', flavorsRouter);
 app.use('/api', productionsRouter);
+app.use('/api', clientsRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

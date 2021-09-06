@@ -17,7 +17,7 @@ const PayTypesGetDB = () => {
 };
 
 const salePostDB = (newSale) => {
-    const { date_hour, total_amount, id_pay_type, details } = newSale;
+    const { date_hour, total_amount, id_pay_type, details, cellphone_client } = newSale;
     let id_sale;
     let arrDetails = JSON.parse(details);
 
