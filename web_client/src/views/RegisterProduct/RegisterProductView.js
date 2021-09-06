@@ -9,6 +9,7 @@ import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
+import Breadcrumb from '../../common/Breadcrumb';
 
 const PORT = require('../../config');
 
@@ -71,6 +72,7 @@ export default function RegisterProductView() {
 
     return (
         <>
+            <Breadcrumb parentName="Productos" parentLink="products" currentName="Registrar producto"/>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>
