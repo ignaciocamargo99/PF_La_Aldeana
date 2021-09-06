@@ -8,9 +8,12 @@ const SectorProduct = (props) => {
         if (props.data.id_sector == 1) {
             rb1.current.checked = true;
             rb2.current.checked = false;
-        } else {
+        } else if (props.data.id_sector == 2){
             rb1.current.checked = false;
             rb2.current.checked = true;
+        } else {
+            rb1.current.checked = false;
+            rb2.current.checked = false;
         }
     }, []);
 
@@ -18,6 +21,8 @@ const SectorProduct = (props) => {
         let data = props.data;
         if (e.target.value === "iceCreamShop") data.id_sector = 1;
         else data.id_sector = 2;
+        props.data.editing = false;
+        props.data.id_product_type = null;
         props.load(data);
     }
 

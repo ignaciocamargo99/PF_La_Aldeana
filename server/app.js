@@ -7,10 +7,14 @@ const productsRouter = require('./api/products/router');
 const usersRouter = require('./api/users/router');
 const permissionsRouter = require('./api/permissions/router');
 const sessionsRouter = require('./api/sessions/router');
+const purchaseSuppliesRouter = require('./api/purchase_supplies/router');
+const suppliesRouter = require('./api/supplies/router');
 const middleware = require('./middleware/index');
 const flavorsRouter = require('./api/routes/flavorRoute');
 const franchiseRouter = require('./api/franchise/router');
 const salesRouter = require('./api/sales/router');
+const dispatchFlavorsRouter = require('./api/routes/flavorRoute');
+const productionsRouter = require('./api/productions/router');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -18,7 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
 app.use(express.static(path.join(__dirname, './api/products/dbImages')));
-
 
 app.get("/app/*", function (req, res) {
     res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
@@ -30,9 +33,13 @@ app.use('/api', productsRouter);
 app.use('/api', usersRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
-app.use('/api', flavorsRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesRouter);
+app.use('/api', dispatchFlavorsRouter);
+app.use('/api', purchaseSuppliesRouter);
+app.use('/api', suppliesRouter);
+app.use('/api', flavorsRouter);
+app.use('/api', productionsRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

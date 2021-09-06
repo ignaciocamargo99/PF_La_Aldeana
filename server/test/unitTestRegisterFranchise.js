@@ -2,7 +2,7 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 var should    = require("chai").should();
-var assert = require("chai").assert;
+var assert = require("chai").assert; 
 
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
@@ -29,7 +29,7 @@ describe.skip('Tests unitarios sobre API Franchise',()=>{
     });
 
     describe('Check postFranchise',()=>{
-        it('Se inserta correctamente', (done) => {
+        it.skip('Se inserta correctamente', (done) => {
             chai.request(url)
                 .post('/franchise/new')
                 .send({ name: 'test', start_date: '2021-1-1', address: 'a', address_number: 123, city: 'a', province: 'a',

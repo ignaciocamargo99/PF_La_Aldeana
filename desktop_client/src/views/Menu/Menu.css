@@ -1,0 +1,11 @@
+.menuBar {
+  transform: translate(-20px);
+  position: fixed;
+}
+.menuBarCollapsed {
+  transform: translate(-20px);
+  position: fixed;
+}
+.itemMenu {
+  position: fixed;
+}
