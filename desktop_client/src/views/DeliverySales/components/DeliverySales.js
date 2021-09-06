@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import DateFormat from '../../../utils/DateFormat/dateFormat';
+import dateFormat from '../../../utils/DateFormat/dateFormat';
 import BeShowed from '../../../common/BeShowed';
 import Pay from './Pay';
 import Client from './Client';
@@ -22,7 +22,7 @@ const DeliverySales = (props) => {
     const [date,setDate] = useState('');
 
     useEffect(() => {
-        let date = DateFormat(new Date())
+        let date = dateFormat(new Date())
         setDate(date)   
         axios.get( PORT() + `/api/allProducts`)
         .then((response) => {

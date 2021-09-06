@@ -7,6 +7,7 @@ import logo from '../../images/logo_expandido.png';
 import '../../assets/logo.css';
 import SideMenu from './Menu';
 import Sales from '../Sales/Sales';
+import DeliverySales from '../DeliverySales/components/DeliverySales';
 
 const Main = (props) => {
 
@@ -27,6 +28,9 @@ const Main = (props) => {
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
+            <BeShowed show={props.location === 4}>
+              <DeliverySales></DeliverySales>
+            </BeShowed>
 
           </div>
         </div>
@@ -45,6 +49,9 @@ const Main = (props) => {
             </BeShowed>
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
+            </BeShowed>
+            <BeShowed show={props.location === 4}>
+              <DeliverySales></DeliverySales>
             </BeShowed>
           </div>
         </div>
