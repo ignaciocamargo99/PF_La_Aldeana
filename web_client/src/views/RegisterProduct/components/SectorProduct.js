@@ -21,6 +21,8 @@ const SectorProduct = (props) => {
         let data = props.data;
         if (e.target.value === "iceCreamShop") data.id_sector = 1;
         else data.id_sector = 2;
+        props.data.editing = false;
+        props.data.id_product_type = null;
         props.load(data);
     }
 
