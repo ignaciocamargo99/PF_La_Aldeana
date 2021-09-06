@@ -31,10 +31,10 @@ const salePostDB = (newSale) => {
                 if (error) reject('1:' + error);
 
                 else id_sale = row[0].last_id_sale + 1;
-            })
+            }) 
             db.beginTransaction((error) => {
                 if (error) reject('1,5:' + error);
-                const sqlInsertSale = `INSERT INTO SALES VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type})`;
+                const sqlInsertSale = `INSERT INTO SALES(id_sale, date_hour, total_amount, id_pay_type) VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type})`;
 
                 db.query(sqlInsertSale, (error, result) => {
                     if (error) {

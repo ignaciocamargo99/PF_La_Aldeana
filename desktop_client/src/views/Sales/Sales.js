@@ -8,8 +8,8 @@ import Axios from "axios";
 import { connect } from 'react-redux';
 import Buttons from "../../common/Buttons";
 import warningMessage from "../../utils/warningMessage";
-import dateFormat from "../../utils/DateFormat/dateFormat";
 import dateTimeFormat from "../../utils/DateFormat/dateTimeFormat";
+import '../../assets/Buttons.css'
 
 const PORT = require('../../config');
 
@@ -27,8 +27,14 @@ const Sales = (props) => {
     },[])
 
     useEffect(() => {
-        //faltan validaciones para activar el boton de ventas
-        setReady(true);   
+        if (props.detailProducts.length > 0 && (props.payType == 1 || props.payType == 2))
+        {
+            setReady(true);  
+        }
+        else{
+            setReady(false);
+        }
+         
     })
 
     const cancel = () => {
@@ -37,15 +43,13 @@ const Sales = (props) => {
 
     const registerSale = () => {
         if (ready) {
-
-            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.totalAmount, id_pay_type:props.payType, details:JSON.stringify(props.detailProducts)}; 
-
-            console.log(sale);
-
+            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.totalAmount,
+                 id_pay_type:props.payType, details:JSON.stringify(props.detailProducts)}; 
+                 
             Axios.post(`${PORT()}/api/sales/new`, sale)
             .then((sale) => {
                 if(sale.data.Ok) warningMessage("Exito!","Se registro la venta con exito","success");
-                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta.',"error");
             })
             .catch(error => console.log(error))
         }

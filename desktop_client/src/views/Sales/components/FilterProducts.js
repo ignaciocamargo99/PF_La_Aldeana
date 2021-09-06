@@ -3,6 +3,7 @@ import Axios from "axios";
 import { connect } from 'react-redux';
 import { updateProducts, updateProductsFiltered, updateDetailProducts } from '../../../actions/SalesActions';
 import BeShowed from '../../../common/BeShowed';
+import '../styles/filterProducts.css';
 
 const PORT = require('../../../config');
 
@@ -54,22 +55,23 @@ const FilterProducts = (props) => {
  
     return(
         <>
-            <h4>Filtrar por:</h4>
             <div className="formRow">
+                <h4>Filtrar por:</h4>
                 <button id="btn_heladeria" onClick={onClickHeladeria}>Heladería</button>
                 <button id="btn_cafeteria" onClick={onClickCafeteria}>Cafetería</button>
-                <button id="btn_cafeteria" onClick={onClickCancel}>Cancelar</button>
+                <button id="btn_todos" onClick={onClickCancel}>Todos</button>
+            
+                <BeShowed show={boolTypeProduct}>
+                    <select className="form-combo-btn" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
+                        <option disabled value="-1">Seleccione el Tipo de Producto</option>
+                        {
+                            typesProductSelected?.map((element,i) => (
+                                <option key={i} value={element.id_product_type}>{element.name}</option>
+                            ))
+                        }
+                    </select>
+                </BeShowed>
             </div>
-            <BeShowed show={boolTypeProduct}>
-                <select className="form-combo-btn" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
-                    <option disabled value="-1">Seleccione el Tipo de Producto</option>
-                    {
-                        typesProductSelected?.map((element,i) => (
-                            <option key={i} value={element.id_product_type}>{element.name}</option>
-                        ))
-                    }
-                </select>
-            </BeShowed>
         </>
     ); 
 }
