@@ -11,6 +11,15 @@ export const location = (state = 0 ,action) => {
     if(action.type === 'TO_REGISTER_ATTENDANCE'){
         return action.payload
     }
+
+    if(action.type === 'TO_SALES_LOCAL'){
+        return action.payload
+    }
+
+    if(action.type === 'TO_SALES_DELIVERY'){
+        return action.payload
+    }
+    
     return state
 }
 

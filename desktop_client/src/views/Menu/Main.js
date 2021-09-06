@@ -2,10 +2,11 @@ import ChamberFlavorsDispatch from '../ChamberFlavorsDispatch/components/Chamber
 // import LoginUser from './LoginUser/LoginUser';
 import BeShowed from '../../common/BeShowed';
 import { connect } from 'react-redux';
-import { toRoot, toChamberFlavorsDispatch, toRegisterAttendance, lockMenu, unlockMenu } from '../../actions/MenuActions';
+import { toRoot, toChamberFlavorsDispatch, toRegisterAttendance, lockMenu, unlockMenu, toSalesDelivery, toSalesLocal} from '../../actions/MenuActions';
 import logo from '../../images/logo_expandido.png';
 import '../../assets/logo.css';
 import SideMenu from './Menu';
+import Sales from '../Sales/Sales';
 
 const Main = (props) => {
 
@@ -23,6 +24,9 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
+            <BeShowed show={props.location === 3}>
+              <Sales></Sales>
+            </BeShowed>
 
           </div>
         </div>
@@ -38,6 +42,9 @@ const Main = (props) => {
             </BeShowed>
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
+            </BeShowed>
+            <BeShowed show={props.location === 3}>
+              <Sales></Sales>
             </BeShowed>
           </div>
         </div>
@@ -60,7 +67,9 @@ const mapDispatchToProps = {
   toChamberFlavorsDispatch,
   toRegisterAttendance,
   lockMenu,
-  unlockMenu
+  unlockMenu,
+  toSalesLocal,
+  toSalesDelivery
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
