@@ -42,14 +42,6 @@ export default function Navbar (props){
                             <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
                             <Dropdown.Item href="/app/typeProducts">Registrar tipo de producto</Dropdown.Item>
                             <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
-                            <Dropdown>
-                                <Dropdown.Toggle className="dropdown">
-                                    Reportes
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="/app/salesReport">Ventas de productos</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
                         </Dropdown.Menu>
                     </Dropdown>
                 </>
@@ -69,11 +61,27 @@ export default function Navbar (props){
                     </Dropdown>
                 </>
         }
+        const permissionReportes = permisos.find(option => option === "Reportes")
+        let reportes
+        if(permissionReportes === "Reportes"){
+            reportes =
+                <>
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown">
+                            Reportes
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/salesReport">Ventas de productos</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </>
+        }
 
         return(
             <>
                 {ventas}
                 {compras}
+                {reportes}
             </>
         )
     }

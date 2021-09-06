@@ -1,6 +1,6 @@
 import { updateReportDateTo, updateReportDateFrom, updateProductSales } from '../../../actions/ReportsActions';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import useHTTPGet from '../../../hooks/useHTTPGet';
 import TopTenProductsSales from "./components/TopTenProductsSales";
 import Options from "./components/Options";
 import TypeProductsSales from "./components/TypeProductsSales";
@@ -9,6 +9,9 @@ import ListProductSales from "./components/ListProductSales";
 const PORT = require('../../../config');
 
 const SalesReport = (props) => {
+
+    const sales = useHTTPGet(PORT() + '/api/salesReport');
+
     return (
         <>
             <div className="viewTitle">
