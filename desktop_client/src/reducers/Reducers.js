@@ -3,7 +3,7 @@ import { flavorsDispatchDate } from "./ChamberFlavorsDispatchReducer";
 import { clientsDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
      cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
      streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
-     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsDeliveryReducer} from "./DeliverySalesReducers";
+     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer} from "./DeliverySalesReducers";
 import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, refreshReducer} from "./SalesReducers";
 
 export default combineReducers({
@@ -28,7 +28,7 @@ export default combineReducers({
     errorStreetNumberDelivery: errorStreetNumberDeliveryReducer,
     detailsDelivery: detailsDeliveryReducer,
     flavorsProductDelivery: flavorsProductDeliveryReducer,
-    productsDelivery: productsDeliveryReducer,
+    productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientsDelivery: clientsDeliveryReducer,
     refresh: refreshReducer
 })

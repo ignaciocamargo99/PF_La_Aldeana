@@ -6,7 +6,9 @@ import BeShowed from '../../../common/BeShowed';
 import Pay from './Pay';
 import Client from './Client';
 import Products from './Products';
-import { updateDeliveryClients,updateDeliveryProducts } from '../../../actions/DeliverySalesActions';
+import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
+    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
+    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
@@ -24,7 +26,11 @@ const DeliverySales = (props) => {
         setDate(date)   
         axios.get( PORT() + `/api/allProducts`)
         .then((response) => {
-            props.updateDeliveryProducts(response.data)
+            let aux = []
+            for(let i = 0 ; i < response.data.length ; i++){
+                aux.push({'product':response.data[i],'quantity':0})
+            }
+            props.updateDeliveryProductsQuantities(aux)
         })
         .catch((err) => {
             console.log(err)
@@ -53,15 +59,28 @@ const DeliverySales = (props) => {
         axios.post(`${PORT()}/api/sales/new`, sale)
             .then((sale) => {
                 if(sale.data.Ok) {
-                    succesMessageDeliverySale('Se ha registrado la venta correctamente');       
+                    resetStates()
                 }
                 else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
             })
             .catch(error => console.log(error))
-        /*
-        let client = {cellphone:props.cellphone,names:props.names}
-        let address = {street_name:props.street,street_number:props.streetNumber,cellphone_number:props.cellphone}
-        */
+    }
+
+    const resetStates = () => {
+        setStep(1)
+        props.resetDetailDelivery()
+        props.updateErrorStreetNumberDelivery(true)
+        props.updateStreetNumberDelivery('') 
+        props.updateErrorStreetDelivery(true) 
+        props.updateStreetDelivery('')
+        props.updateErrorNamesDelivery(true)
+        props.updateNamesDelivery('')
+        props.updateErrorCellphoneDelivery(true)
+        props.updateCellphoneDelivery('')
+        props.updateErrorAmountDelivery(true)
+        props.updateAmountDelivery('')
+        props.subtractTotalDelivery(props.total)
+        succesMessageDeliverySale('Se ha registrado la venta correctamente'); 
     }
 
     return(
@@ -98,25 +117,19 @@ const DeliverySales = (props) => {
 
 const mapStateToProps = state => {
     return {
-        products: state.productsDelivery,
-        errorStreetNumber: state.errorStreetNumberDelivery,
-        errorNames: state.errorNamesDelivery,
-        errorStreet: state.errorStreetDelivery,
-        errorCellphone: state.errorCellphoneDelivery,
-        errorAmount: state.errorAmountDelivery,
-        details: state.detailsDelivery,
-        total: state.totalDelivery,
-        clients: state.clientsDelivery,
-        cellphone: state.cellphoneDelivery,
-        names: state.namesDelivery,
-        street: state.streetDelivery,
-        streetNumber: state.streetNumberDelivery
+        errorStreetNumber: state.errorStreetNumberDelivery, errorNames: state.errorNamesDelivery,
+        errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
+        errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
+        total: state.totalDelivery, clients: state.clientsDelivery, cellphone: state.cellphoneDelivery,
+        names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
         }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProducts,
-    updateDeliveryClients
+    updateDeliveryProductsQuantities, updateDeliveryClients, resetDetailDelivery,updateErrorStreetNumberDelivery, 
+    updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
+    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
+    updateAmountDelivery,subtractTotalDelivery
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);

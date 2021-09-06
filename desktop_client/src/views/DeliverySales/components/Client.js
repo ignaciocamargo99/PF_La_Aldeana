@@ -1,12 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import BeShowed from '../../../common/BeShowed';
 import { updateCellphoneDelivery, updateErrorCellphoneDelivery, updateNamesDelivery, updateErrorNamesDelivery,
         updateStreetDelivery, updateErrorStreetDelivery, updateStreetNumberDelivery, updateErrorStreetNumberDelivery} from '../../../actions/DeliverySalesActions';
 import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
-
-const PORT = require('../../../config');
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 
 const Client = (props) => {
 
@@ -49,7 +47,7 @@ const Client = (props) => {
     }
 
     const onBlurCellphone = (e) =>{
-        let x = props.clients.find( client => client.cellphone == e.target.value)
+        let x = props.clients.find( client => client.cellphone === parseInt(e.target.value))
         if(x !== undefined){
             props.updateErrorNamesDelivery(false)
             props.updateNamesDelivery(x.names)
@@ -70,7 +68,7 @@ const Client = (props) => {
                     <label>Numero de celular*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onBlur={(e) => {onBlurCellphone(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
+                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onBlur={(e) => {onBlurCellphone(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
                     <BeShowed show={props.errorCellphone}>
                         <label><b style={{color:'gray'}}>Número de 10 digitos</b></label>
                     </BeShowed>
@@ -101,7 +99,7 @@ const Client = (props) => {
                     <label>Numero*</label>
                 </div>
                 <div className="form-control-input col-sm-3">
-                   <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
+                   <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
                     <BeShowed show={props.errorStreetNumber}>
                         <label><b style={{color:'gray'}}>Número de 1 a 4 digitos</b></label>
                     </BeShowed>

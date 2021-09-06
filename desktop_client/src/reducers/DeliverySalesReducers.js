@@ -99,6 +99,9 @@ export const detailsDeliveryReducer = (state = [], action) => {
         rta[action.payload.i] = action.payload.detail
         return rta
     }
+    if(action.type === 'RESET_DETAIL_DELIVERY'){
+        return []
+    }
     return state
 }
 
@@ -126,13 +129,13 @@ export const flavorsProductDeliveryReducer = (state = [], action) => {
     return state
 }
 
-export const productsDeliveryReducer = (state = [], action) => {
-    if(action.type === 'INSERT_DELIVERY_PRODUCT'){
-        let index = state.findIndex(product => product.name > action.payload.name)
-        let rta = state.slice(0,index).concat([action.payload]).concat(state.slice(index,state.length))
-        return rta
+export const productsQuantitiesDeliveryReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_DELIVERY_PRODUCT_QUANTITY'){
+        let aux = state
+        aux[action.payload.i] = action.payload.productQuantity
+        return aux
     }
-    if(action.type === 'UPDATE_DELIVERY_PRODUCTS'){
+    if(action.type === 'UPDATE_DELIVERY_PRODUCTS_QUANTITIES'){
         return action.payload
     }
     return state

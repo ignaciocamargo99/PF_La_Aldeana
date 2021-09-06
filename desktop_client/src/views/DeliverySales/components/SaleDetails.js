@@ -41,7 +41,7 @@ const SaleDetails = (props) => {
                                             <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
                                         </BeShowed>
                                         <BeShowed show={props.buttons}> 
-                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(detail.product.id_product,i)}}><FontAwesomeIcon icon={faMinus} /></button>
+                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(i)}}><FontAwesomeIcon icon={faMinus} /></button>
                                         </BeShowed>
                                     </td>
                                 </tr>

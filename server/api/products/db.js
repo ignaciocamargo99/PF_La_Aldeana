@@ -26,7 +26,7 @@ const productAllGetDB = () => {
             'FROM PRODUCTS p ' +
             'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
             'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
-            'WHERE active = 1';
+            'WHERE active = 1 ORDER BY p.name';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

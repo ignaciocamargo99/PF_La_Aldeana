@@ -110,6 +110,12 @@ export const updateDetailDelivery = (detail,i) => {
     }
 }
 
+export const resetDetailDelivery = () => {
+    return{
+        type: 'RESET_DETAIL_DELIVERY'
+    }
+}
+
 export const updateFlavorsProduct = (flavorsProduct,i) => {
     return{
         type: 'UPDATE_FLAVORS_PRODUCT',
@@ -138,17 +144,17 @@ export const updateAllFlavorsProduct = (flavorsProduct) => {
     }
 }
 
-export const insertDeliveryProducts = (product) => {
+export const updateDeliveryProductsQuantities = (productsQuantities) => {
     return{
-        type: 'INSERT_DELIVERY_PRODUCT',
-        payload: product
+        type: 'UPDATE_DELIVERY_PRODUCTS_QUANTITIES',
+        payload: productsQuantities
     }
 }
 
-export const updateDeliveryProducts = (products) => {
+export const updateDeliveryProductQuantity = (productQuantity,i) => {
     return{
-        type: 'UPDATE_DELIVERY_PRODUCTS',
-        payload: products
+        type: 'UPDATE_DELIVERY_PRODUCT_QUANTITY',
+        payload: {'productQuantity': productQuantity,'i':i}
     }
 }
 

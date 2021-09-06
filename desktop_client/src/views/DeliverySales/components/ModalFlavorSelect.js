@@ -11,7 +11,7 @@ import BodyTable from '../../../common/Table/BodyTable';
 import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 import UploadByName from '../../../common/UploadByName';
 import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
-import { insertDeliveryProducts, addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
+import { addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
 
 const PORT = require('../../../config');
 
@@ -55,8 +55,8 @@ const ModalFlavorSelect = (props) => {
             errorSelectFlavor(`El máximo de sabores a elegir son ${props.quantityFlavor}`)
         }
         else{
-            let flavorToAdd = flavors.find(flavor => flavor.id_flavor == id)
-            let newFlavors = flavors.filter(flavor => flavor.id_flavor != id)
+            let flavorToAdd = flavors.find(flavor => flavor.id_flavor === parseInt(id))
+            let newFlavors = flavors.filter(flavor => flavor.id_flavor !== parseInt(id))
             setFlavors(newFlavors)
             props.addFlavorsProduct(flavorToAdd,I)
         }
@@ -64,7 +64,7 @@ const ModalFlavorSelect = (props) => {
 
     const downloadFlavor = (id,i) => {
         setRefresh(refresh+1)
-        let flavorToQuit = props.flavorsProduct[I].find(flavor => flavor.id_flavor == id)
+        let flavorToQuit = props.flavorsProduct[I].find(flavor => flavor.id_flavor === parseInt(id))
         let newFlavors = flavors
         newFlavors.push(flavorToQuit)
         setFlavors(newFlavors)
@@ -86,8 +86,6 @@ const ModalFlavorSelect = (props) => {
     }
 
     const cancel = () => {
-        let productToQuit = props.detailsDelivery[props.detailsDelivery.length-1].product
-        props.insertDeliveryProducts(productToQuit)
         props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal)
         props.deleteDetailDelivery(props.detailsDelivery.length-1)
         props.updateFlavorsProduct([])
@@ -98,7 +96,12 @@ const ModalFlavorSelect = (props) => {
     const confirm = () => {
         let i = props.detailsDelivery.length-1
         let detail = props.detailsDelivery[i]
-        detail.flavors = props.flavorsProduct
+        if(detail.flavors === null){
+            detail.flavors = props.flavorsProduct
+        }
+        else{
+            detail.flavors = detail.flavors.concat(props.flavorsProduct)
+        }
         props.updateDetailDelivery(detail,i)
         setFlavors(allFlavors)
         setI(0)
@@ -123,9 +126,9 @@ const ModalFlavorSelect = (props) => {
                         <div className="container">
                             {props.flavorsProduct.map((f,i) => {
                                 return(
-                                    <div className="form-check form-check-inline">
+                                    <div className="form-check form-check-inline" key={i}>
                                         <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={(e) => {onClickRB(e.target.value)}}></input>
-                                        <label className="form-check-label" for={`rb${i+1}`}>{i+1} Recipiente</label>
+                                        <label className="form-check-label" htmlFor={`rb${i+1}`}>{i+1} Recipiente</label>
                                     </div>
                                 )
                             })}
@@ -170,7 +173,7 @@ const mapStateToProps = state => {
     return {
         flavorsProduct: state.flavorsProductDelivery,
         detailsDelivery: state.detailsDelivery,
-        products: state.productsDelivery
+        productsQuantities: state.productsQuantitiesDelivery
     }
 }
 
@@ -180,8 +183,8 @@ const mapDispatchToProps = {
     deleteDetailDelivery,
     subtractTotalDelivery,
     addFlavorsProduct,
-    deleteFlavorsProduct,
-    insertDeliveryProducts
+    deleteFlavorsProduct
+    /*insertDeliveryProducts*/
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFlavorSelect);

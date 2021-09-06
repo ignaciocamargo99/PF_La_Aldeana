@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateAmountDelivery, updatePayTypeDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
 import ModalFlavorShow from './ModalFlavorShow';
 import SaleDetails from './SaleDetails';
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import '../../../assets/Buttons.css'
@@ -36,8 +37,8 @@ const Pay = (props) => {
                     <label>Tipo de pago* </label>
                 </div>
                 <div className="form-control-input">
-                    <select className="form-control" style={{fontFamily:'abel'}} readOnly>
-                        <option selected>{props.payType}</option>
+                    <select className="form-control" style={{fontFamily:'abel'}} defaultValue={1} readOnly>
+                        <option id={1}>{props.payType}</option>
                     </select>
                 </div>
             </div>
@@ -46,7 +47,7 @@ const Pay = (props) => {
                     <label>Monto a abonar por el cliente*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} value={props.amount}></input>
+                    <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} onKeyDown={(e) => {validateFloatNumbers(e)}} value={props.amount}></input>
                     <BeShowed show={props.errorAmount}>
                         <label><b style={{color:'gray'}}>Cantidad entera mayor al total</b></label>
                     </BeShowed>

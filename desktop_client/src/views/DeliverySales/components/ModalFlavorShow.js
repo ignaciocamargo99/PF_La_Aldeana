@@ -33,9 +33,9 @@ const ModalFlavorShow = (props) => {
                         <div className="container">
                             {props.flavorsToView?.map((f,i) => {
                                 return(
-                                    <div className="form-check form-check-inline">
+                                    <div className="form-check form-check-inline" key={i}>
                                         <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={() => {onClickRB(i)}}></input>
-                                        <label className="form-check-label" for={`rb${i+1}`}>{i+1} Recipiente</label>
+                                        <label className="form-check-label" htmlFor={`rb${i+1}`}>{i+1} Recipiente</label>
                                     </div>
                                 )
                             })}
