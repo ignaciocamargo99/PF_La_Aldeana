@@ -6,7 +6,7 @@ import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile } from '@fortawesome/free-solid-svg-icons'
 
 const cookies = new Cookies();
 
@@ -31,7 +31,7 @@ export default function Navbar(props) {
 
         // Burger animation
         burger.classList.toggle('toggle');
-    }
+    };
 
     const signOut = () => {
         cookies.remove('nick_user', { path: '/' })
@@ -39,18 +39,85 @@ export default function Navbar(props) {
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
         window.location.href = '/app/index'
-    }
+    };
 
     const signIn = () => {
         window.location.href = '/app/index'
-    }
+    };
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
         let permissions = []
         props.options.forEach((option) => { permissions.push(decrypt(option)) })
+
+        const permissionProducts = permissions.find(option => option === "Productos");
+        let products;
+        if (permissionProducts === "Productos") {
+            products =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Productos
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/products">
+                                <FontAwesomeIcon icon={faList} /> Ver productos
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/typeProducts">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Tipo de producto
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/supplies">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Insumo
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
+        };
+
+        const permissionProduction = permissions.find(option => option === "Producciones");
+        let productions;
+        if (permissionProduction === 'Producciones') {
+            productions =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Producción
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="">
+                                <FontAwesomeIcon icon={faList} /> Ver producciones
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/production">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva producción
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
+        };
+
+        const permissionFranchises = permissions.find(option => option === "Franquicias");
+        let franchises;
+        if (permissionFranchises === "Franquicias") {
+            franchises =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Franquicias
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="">
+                                <FontAwesomeIcon icon={faList} /> Ver franquicias
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/franchise">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva franquicia
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
+        };
+
         const permissionVentas = permissions.find(option => option === "Ventas")
-        let ventas
+        let ventas;
         if (permissionVentas === "Ventas") {
             ventas =
                 <li>
@@ -59,18 +126,16 @@ export default function Navbar(props) {
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/products">Productos</Dropdown.Item>
-                            <Dropdown.Item href="/app/typeProducts">Tipos de producto</Dropdown.Item>
-                            <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
-                            <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
-                            <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
+                            <Dropdown.Item href="">
+                                <FontAwesomeIcon icon={faFile} /> Ver Informes
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
         };
 
         const permissionCompras = permissions.find(option => option === "Compras")
-        let compras
+        let compras;
         if (permissionCompras === "Compras") {
             compras =
                 <li>
@@ -79,19 +144,24 @@ export default function Navbar(props) {
                             Compras
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/purchaseSupplies">Compra de insumos</Dropdown.Item>
+                            <Dropdown.Item href="/app/purchaseSupplies">
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Compra de insumos
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
-        }
+        };
 
         return (
             <>
+                {products}
+                {productions}
+                {franchises}
                 {ventas}
                 {compras}
             </>
         )
-    }
+    };
 
     return (
         <nav className="navbar-header">
