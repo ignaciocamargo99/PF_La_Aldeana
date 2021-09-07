@@ -7,11 +7,11 @@ label, input, textarea {
     font-family: 'Abel', sans-serif !important;
 }
 
-h2{
+h2 {
     font-family: 'Abel', sans-serif;
 }
 
-h4{
+h4 {
     font-family: 'Abel', sans-serif;
 }
 
@@ -22,4 +22,9 @@ h4{
 .d-flex-col {
     display: flex;
     flex-direction: column;
+}
+
+.d-flex-sp-bt {
+    display: flex;
+    justify-content: space-between;
 }

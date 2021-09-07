@@ -93,7 +93,7 @@ const RegisterPurchaseSupplies = (props) => {
     return(
         <>
             <div className="viewTitle">
-                <h1>Registrar Insumos</h1>
+                <h1>Registrar Insumo</h1>
             </div>
             <div className="viewBody">
                 <NameSupply />
