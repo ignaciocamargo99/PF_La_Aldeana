@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { connect } from 'react-redux';
 import { updateProducts, updateProductsFiltered, updateDetailProducts } from '../../../actions/SalesActions';
@@ -13,14 +13,14 @@ const FilterProducts = (props) => {
     const [typesProduct, setTypesProduct] = useState([]);
     const [typesProductSelected, setTypesProductSelected] = useState([]);
     const [valueSelect, setValueSelect] = useState("-1");
-    
+
     useEffect(() => {
-        Axios.get(`${PORT()}/api/typeProducts`) 
+        Axios.get(`${PORT()}/api/typeProducts`)
             .then(response => {
                 setTypesProduct(response.data);
             })
             .catch(error => console.error(error))
-    },[])
+    }, [])
 
     const onClickHeladeria = () => {
         actionsDefaultButtons();
@@ -52,28 +52,28 @@ const FilterProducts = (props) => {
     useEffect(() => {
         //AL TOCAR HELADERIA O CAFETERIA, reiniciar el select
     })
- 
-    return(
+
+    return (
         <>
             <div className="formRow">
                 <h4>Filtrar por:</h4>
-                <button id="btn_heladeria" onClick={onClickHeladeria}>Heladería</button>
-                <button id="btn_cafeteria" onClick={onClickCafeteria}>Cafetería</button>
-                <button id="btn_todos" onClick={onClickCancel}>Todos</button>
-            
-                <BeShowed show={boolTypeProduct}>
-                    <select className="form-combo-btn" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
-                        <option disabled value="-1">Seleccione el Tipo de Producto</option>
-                        {
-                            typesProductSelected?.map((element,i) => (
-                                <option key={i} value={element.id_product_type}>{element.name}</option>
-                            ))
-                        }
-                    </select>
-                </BeShowed>
+                <button id="btn_iceCream" onClick={onClickHeladeria}>Heladería</button>
+                <button id="btn_coffe" onClick={onClickCafeteria}>Cafetería</button>
+                <button id="btn_all" onClick={onClickCancel}>Todos</button>
             </div>
+            <BeShowed show={boolTypeProduct}>
+                <select className="form-control" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
+                    <option disabled value="-1">Seleccione el tipo de producto</option>
+                    {
+                        typesProductSelected?.map((element, i) => (
+                            <option key={i} value={element.id_product_type}>{element.name}</option>
+                        ))
+                    }
+                </select>
+                <br />
+            </BeShowed>
         </>
-    ); 
+    );
 }
 
 const mapStateToProps = state => {
@@ -86,7 +86,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     updateProducts,
-    updateProductsFiltered, 
+    updateProductsFiltered,
     updateDetailProducts
 }
 

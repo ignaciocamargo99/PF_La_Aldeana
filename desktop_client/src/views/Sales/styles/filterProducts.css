@@ -2,21 +2,39 @@ h4 {
     margin-right: 25px;
 }
 
-button {
-    text-align: center;
-    width: 100px;
-    height: 30px;
-}  
-
-#btn_heladeria {
+#btn_iceCream {
     margin-right: 15px;
+    border-radius: 20px;
 }
 
-#btn_cafeteria {
+#btn_coffe {
     margin-right: 15px;
+    border-radius: 20px;
 }
 
-#btn_todos {
+#btn_all {
     margin-right: 15px;
+    border-radius: 20px;
+}
+
+.btn_modal_ok {
+    margin-right: 15px;
+    border-radius: 20px;
+    background-color: #A5DEF9
+}
+
+.btn_modal_not_ok {
+    margin-right: 15px;
+    border-radius: 20px;
+    background-color: #ff8b8b
+}
+
+.btn_products {
+    width: 150px; 
+    height: 150px;
+    border-radius: 20px;
+    background-color: #F68634;
+    color: #ffffff;
+    font-weight: bold;
 }
 
