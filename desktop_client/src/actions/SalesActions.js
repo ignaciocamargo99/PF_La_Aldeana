@@ -60,3 +60,17 @@ export const updateRefresh = (bool) => {
         payload: bool
     }
 }
+
+export const updateProductsXSupplies = (array) =>{
+    return {
+        type: 'UPDATE_PRODUCTS_X_SUPPLIES',
+        payload: array
+    }
+}
+
+export const updateSupplies = (array) =>{
+    return {
+        type: 'UPDATE_SUPPLIES',
+        payload: array
+    }
+}

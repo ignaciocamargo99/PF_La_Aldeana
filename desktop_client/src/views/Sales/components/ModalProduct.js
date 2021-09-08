@@ -30,7 +30,7 @@ const ModalProduct = (props) => {
     }
 
     useEffect(() => {
-        if (quantity > 0) {
+        if (quantity > 0 && quantity <= props.productSelected.stock) {
             setReady(true);
         }
         else {
@@ -77,7 +77,11 @@ const ModalProduct = (props) => {
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
         } else {
-            warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
+            if (quantity == 0){
+                warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
+            }
+            if (quantity > props.productSelected.stock)
+                warningMessage("¡Error!", "No hay stock suficiente", "error");   
         }
     }
 

@@ -191,9 +191,9 @@ const typeSupplyGetDB = () => {
 
 
 const supplyGetDB = () => {
-    const sqlSelect = "SELECT id_supply, name, description FROM SUPPLIES ORDER BY name"
+    const sqlSelect = "SELECT * FROM SUPPLIES ORDER BY name"
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { 
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
