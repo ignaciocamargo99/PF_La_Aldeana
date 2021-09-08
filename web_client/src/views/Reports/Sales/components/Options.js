@@ -1,9 +1,13 @@
-import React, { useEffect , useRef} from 'react';
-import { updateReportDateTo, updateReportDateFrom } from '../../../../actions/ReportsActions';
+import React, { useEffect , useRef, useState} from 'react';
+import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTopTenProductSales, updateTypeProductSales } from '../../../../actions/ReportsActions';
 import { connect } from 'react-redux';
+import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 
+const PORT = require('../../../../config');
+
 const Options = (props) => {
+    let [data, setData] = useState({})
 
     const inputDateFrom = useRef()
     const inputDateTo = useRef()
@@ -19,6 +23,47 @@ const Options = (props) => {
 
     useEffect(()=>{
         inputDateFrom.current.max = props.dateTo
+
+        if (props.dateFrom < props.dateTo) {
+            let dates = {from: props.dateFrom, to: props.dateTo };
+            let date = JSON.stringify(dates);
+
+            Axios.get(PORT() + `/api/salesReport/${date}`)
+                .then((res) => {
+                    let data = res.data
+                    let sales = []
+                    let topTen = []
+                
+                    data?.map((e, i)=>{
+                        if (i < data.length -1){
+                            sales = [...sales, e]
+                        } else {
+                            props.updateTypeProductSales(e)
+                        }
+                    })
+                
+                    sales = sales.sort((a,b) => a.quantity < b.quantity ? 1 : -1)
+                
+                    props.updateProductSales(sales)
+                
+                    if (sales.length < 10) {
+                        props.updateTopTenProductSales(sales)
+                    } else {
+                        sales?.map((e, i)=>{
+                            if (i < 10){
+                                topTen = [...topTen, e]
+                            }
+                        })
+                        props.updateTopTenProductSales(topTen)
+                    }
+                    })
+                .catch((error) => {
+                    console.log('Oops...','Error en el servidor',error)
+                })
+        } else {
+            props.updateReportDateFrom(props.dateTo)
+        }
+
     },[props.dateFrom, props.dateTo])
 
     const onChangeDateFrom = () => {
@@ -69,13 +114,19 @@ const Options = (props) => {
 const mapStateToProps = state => {
     return {
         dateTo: state.dateTo,
-        dateFrom: state.dateFrom
+        dateFrom: state.dateFrom,
+        productSales: state.productSales,
+        topTenProductSales: state.topTenProductSales,
+        typeProductSales: state.typeProductSales
     }
 }
 
 const mapDispatchToProps = {
     updateReportDateTo,
-    updateReportDateFrom
+    updateReportDateFrom,
+    updateProductSales,
+    updateTopTenProductSales,
+    updateTypeProductSales
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

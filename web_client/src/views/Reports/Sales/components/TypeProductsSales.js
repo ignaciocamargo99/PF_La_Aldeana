@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
+import { connect } from 'react-redux';
 
 const data = {
   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -28,7 +29,7 @@ const data = {
   ],
 };
 
-export default function TypeProductsSales (props) {
+const TypeProductsSales = (props) => {
     return (
         <>
             <h2>Ventas por tipo de producto</h2>
@@ -36,3 +37,12 @@ export default function TypeProductsSales (props) {
         </>
     );
 }
+
+
+const mapStateToProps = state => {
+  return {
+      typeProductSales: state.typeProductSales
+  }
+}
+
+export default connect(mapStateToProps)(TypeProductsSales);

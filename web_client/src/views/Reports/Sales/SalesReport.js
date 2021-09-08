@@ -1,16 +1,19 @@
-import { updateReportDateTo, updateReportDateFrom, updateProductSales } from '../../../actions/ReportsActions';
+import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTopTenProductSales, updateTypeProductSales } from '../../../actions/ReportsActions';
 import { connect } from 'react-redux';
-import useHTTPGet from '../../../hooks/useHTTPGet';
 import TopTenProductsSales from "./components/TopTenProductsSales";
 import Options from "./components/Options";
 import TypeProductsSales from "./components/TypeProductsSales";
 import ListProductSales from "./components/ListProductSales";
-
-const PORT = require('../../../config');
+import BeShowed from "../../../common/BeShowed";
+import React, { useEffect , useRef, useState} from 'react';
 
 const SalesReport = (props) => {
 
-    const sales = useHTTPGet(PORT() + '/api/salesReport');
+    useEffect(()=>{
+        console.log(props.productSales)
+        console.log(props.typeProductSales.total)
+        console.log(props.topTenProductSales)
+    },[props.productSales])
 
     return (
         <>
@@ -22,15 +25,17 @@ const SalesReport = (props) => {
                     <Options />
                 </div>
 
-                <div className="row">
-                    <div className="col-sm-6">
-                        <ListProductSales />
+                <BeShowed show={props.productSales.length > 0}>
+                    <div className="row">
+                        <div className="col-sm-8">
+                            <ListProductSales />
+                        </div>
+                        <div className="col-sm-4">
+                            <TopTenProductsSales />
+                            <TypeProductsSales />
+                        </div>
                     </div>
-                    <div className="col-sm-6">
-                        <TopTenProductsSales />
-                        <TypeProductsSales />
-                    </div>
-                </div>
+                </BeShowed>
             </div>
         </>
     );
@@ -40,14 +45,18 @@ const mapStateToProps = state => {
     return {
         dateTo: state.dateTo,
         dateFrom: state.dateFrom,
-        productSales: state.productSales
+        productSales: state.productSales,
+        topTenProductSales: state.topTenProductSales,
+        typeProductSales: state.typeProductSales
     }
 }
 
 const mapDispatchToProps = {
     updateReportDateTo,
     updateReportDateFrom,
-    updateProductSales
+    updateProductSales,
+    updateTopTenProductSales,
+    updateTypeProductSales
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SalesReport);

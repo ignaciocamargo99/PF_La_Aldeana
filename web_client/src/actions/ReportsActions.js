@@ -19,3 +19,17 @@ export const updateProductSales = (productSales) =>{
         payload: productSales
     }
 }
+
+export const updateTopTenProductSales = (topTenProductSales) =>{
+    return{
+        type: 'UPDATE_TOP_TEN_PRODUCT_SALES',
+        payload: topTenProductSales
+    }
+}
+
+export const updateTypeProductSales = (typeProductSales) =>{
+    return{
+        type: 'UPDATE_TYPE_PRODUCT_SALES',
+        payload: typeProductSales
+    }
+}

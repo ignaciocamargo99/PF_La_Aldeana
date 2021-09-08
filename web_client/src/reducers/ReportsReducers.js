@@ -18,3 +18,17 @@ export const productSales = (state = [], action) => {
     }
     return state
 } 
+
+export const topTenProductSales = (state = [], action) => {
+    if(action.type === 'UPDATE_TOP_TEN_PRODUCT_SALES'){
+        return action.payload
+    }
+    return state
+} 
+
+export const typeProductSales = (state = [], action) => {
+    if(action.type === 'UPDATE_TYPE_PRODUCT_SALES'){
+        return action.payload
+    }
+    return state
+} 

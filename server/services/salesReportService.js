@@ -1,12 +1,12 @@
 const { salesReportGetDB } = require('../models/salesReportDB');
 
-const salesReport = async () => {
+const salesReport = async (dates) => {
     try {
-        let res = await salesReportGetDB();
+        let res = await salesReportGetDB(dates);
         return res;
     }
     catch {
-        let res = await purchasesGetDB();
+        let res = await purchasesGetDB(dates);
         throw new Error(res);
     };
 };
