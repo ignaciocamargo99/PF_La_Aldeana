@@ -5,7 +5,7 @@ const salesReportController = require("./controller");
 
 //#region APIs
 
-router.get("/salesReport/:dates", salesReportController.getSalesReport);
+router.get("/salesReport", salesReportController.getSalesReport);
 
 //#endregion
 

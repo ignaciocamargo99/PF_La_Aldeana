@@ -25,10 +25,10 @@ const Options = (props) => {
         inputDateFrom.current.max = props.dateTo
 
         if (props.dateFrom < props.dateTo) {
-            let dates = {from: props.dateFrom, to: props.dateTo };
-            let date = JSON.stringify(dates);
+            let from = props.dateFrom;
+            let to = props.dateTo;
 
-            Axios.get(PORT() + `/api/salesReport/${date}`)
+            Axios.get(PORT() + `/api/salesReport?from=${from}&to=${to}`)
                 .then((res) => {
                     let data = res.data
                     let sales = []

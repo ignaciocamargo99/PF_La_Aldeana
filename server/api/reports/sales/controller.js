@@ -3,7 +3,10 @@ const { salesReport } = require('../../../services/salesReportService')
 // HTTP: GET
 async function getSalesReport(req, res) {
     try {
-        const result = await salesReport(req.params.dates)
+
+        var from = req.query.from
+        var to = req.query.to
+        const result = await salesReport(from, to)
         
         res.send(result)
     } catch (e) {
