@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DetailSale from './components/DetailSale';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
-import PaymentSale from "./components/PaymentSale";
+import PaymentSale from "./components/PaymentSale"; 
 import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateProductSelected, updateProductsXSupplies, updateSupplies} from '../../actions/SalesActions';
 import Axios from "axios";
 import { connect } from 'react-redux';
@@ -13,29 +13,55 @@ import '../../assets/Buttons.css';
 
 const PORT = require('../../config');
 
-const Sales = (props) => {
+const Sales = (props) => { 
 
     const [ready, setReady] = useState(false);
+    const [readyStock1, setReadyStock1] = useState(false);
+    const [readyStock2, setReadyStock2] = useState(false);
+    const [readyStock3, setReadyStock3] = useState(false);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/allProducts`)
             .then(response => {
                 let aux = response.data;
-
                 aux?.map((element, i) => {
-                    element.disable = false;
-                    element.stock = 0;
+                    element.disable = false; 
+                    element.stock_initial = 0;
+                    element.stock_current = 0;
                 });
-
                 props.updateProducts(aux);
                 props.updateProductsFiltered(aux);
-
-                thereIsStock();
-                
-                console.log(props.products);
+                setReadyStock1(true);
             })
             .catch(error => console.error(error));
     }, []) 
+
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/productxsupply`)
+            .then(response => {
+                props.updateProductsXSupplies(response.data);
+                setReadyStock2(true);
+            })
+            .catch(error => console.error(error));
+    }, [])
+
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/supplies`)
+            .then(response => {
+                props.updateSupplies(response.data);
+                setReadyStock3(true);
+            })
+            .catch(error => console.error(error));
+    }, [])
+
+    useEffect(() => {
+        if (readyStock1 && readyStock2 && readyStock3)
+        {
+            console.log("entra");
+            thereIsStock(); 
+            console.log(props.products);
+        }
+    },[readyStock1, readyStock2, readyStock3])
 
     const thereIsStock = () => {
         console.log("hola");
@@ -54,27 +80,39 @@ const Sales = (props) => {
                     for (l = 0; l < props.supplies.length; l++) {
                         if (auxSuppliesXProduct[k].id_supply == props.supplies[l].id_supply)
                         {
-                            if (auxSuppliesXProduct[k].number_supply >= props.supplies[l].stock_unit)
+                            if (props.supplies[l].id_supply_type == 3)
                             {
-                                aux[i].disable = true;
-                                aux[i].stock = 0;
-                                break;
+                                aux[i].stock_initial = 99999;
+                                aux[i].stock_current = 99999;
                             }
-                            else
+                            else 
                             {
-                                if (aux[i].stock == 0)
+                                if (auxSuppliesXProduct[k].number_supply >= props.supplies[l].stock_unit)
                                 {
-                                    aux[i].stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                    aux[i].disable = true;
+                                    aux[i].stock_initial = 0;
+                                    aux[i].stock_current = 0;
+                                    break;
                                 }
-                                else   
+                                else
                                 {
-                                    next_stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                    if (next_stock < aux[i].stock) 
-                                    {   
-                                        aux[i].stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                    if (aux[i].stock_initial == 0)
+                                    {
+                                        aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                        aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                    }
+                                    else   
+                                    {
+                                        next_stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                        if (next_stock < aux[i].stock_initial) 
+                                        {   
+                                            aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                            aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
+                                        }
                                     }
                                 }
                             }
+                            
                         }
                     }
                 }
@@ -84,22 +122,6 @@ const Sales = (props) => {
         props.updateProducts(aux);
         props.updateProductsFiltered(aux);
     }
-
-    useEffect(() => {
-        Axios.get(`${PORT()}/api/productxsupply`)
-            .then(response => {
-                props.updateProductsXSupplies(response.data);
-            })
-            .catch(error => console.error(error))
-    }, [])
-
-    useEffect(() => {
-        Axios.get(`${PORT()}/api/supplies`)
-            .then(response => {
-                props.updateSupplies(response.data);
-            })
-            .catch(error => console.error(error));
-    }, [])   
 
     useEffect(() => {
         if (props.detailProducts.length > 0 && (props.payType == 1 || props.payType == 2)) {
@@ -158,34 +180,6 @@ const Sales = (props) => {
                         </div>
                     </div>
                 </div>
-
-
-
-                {/* <div className="row">
-                    <div className="col-8">
-                        <ListProducts />
-                    </div>
-                </div> */}
-
-                {/* <div className="row">
-                    <div className="col-8">
-                        <h3>Seleccione los productos...</h3>
-                        <div className="col-4">
-                            <FilterProducts />
-                        </div>
-                        <ListProducts></ListProducts>
-                    </div>
-
-                    <div className="col-4">
-                        <h3>Detalle de la venta</h3>
-                        <DetailSale></DetailSale>
-                        <PaymentSale></PaymentSale>
-                        <div>
-                            <Buttons label="Registrar Venta" ready={ready} actionOK={registerSale}
-                                actionNotOK={registerSale} actionCancel={cancel}></Buttons>
-                        </div>
-                    </div>
-                </div> */}
             </div>
         </>
     );

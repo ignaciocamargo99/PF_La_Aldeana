@@ -30,11 +30,32 @@ const ModalProduct = (props) => {
     }
 
     useEffect(() => {
-        if (quantity > 0 && quantity <= props.productSelected.stock) {
-            setReady(true);
+        if (props.actionModal == "N")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock_initial) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            }
         }
-        else {
-            setReady(false);
+        else if (props.actionModal == "M")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock_initial) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            }
+        }
+        else if (props.actionModal == "A")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock_current) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            } 
         }
     }, [quantity])
 
@@ -57,20 +78,24 @@ const ModalProduct = (props) => {
                 aux?.map((element, i) => {
                     element.quantity = quantity;
                     element.subtotal = subtotal;
-                });
+                    element.stock_current = element.stock_initial - parseFloat(quantity);
+                }); 
+
                 props.updateProductSelected(aux);
                 props.updateDetailProducts(props.productSelected);
             }
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
+                props.productSelected.stock_current = props.productSelected.stock_initial - parseFloat(quantity);
 
                 props.updateDetailsProductsModify(props.productSelected);
             }
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
-
+                props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
+  
                 props.updateDetailsProductsModify(props.productSelected);
             }
             props.updateRefresh(!props.refresh);
@@ -80,7 +105,7 @@ const ModalProduct = (props) => {
             if (quantity == 0){
                 warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
             }
-            if (quantity > props.productSelected.stock)
+            if (quantity > props.productSelected.stock_current)
                 warningMessage("¡Error!", "No hay stock suficiente", "error");   
         }
     }

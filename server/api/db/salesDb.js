@@ -11,7 +11,7 @@ const PayTypesGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
-            db.release();
+            db.release();    
         })
     });
 };
