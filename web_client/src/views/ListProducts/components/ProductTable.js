@@ -42,6 +42,8 @@ export default function ProductTable(props) {
     const editProduct = (product) => {
         let aux = backupProduct(product);
         aux.name = product.name;
+        aux.flavor = product.quantity_flavor;
+        aux.editing = true;
         setBackup(product);
         setEditing(aux);
         setIsEditing(true);

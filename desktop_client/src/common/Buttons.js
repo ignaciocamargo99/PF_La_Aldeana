@@ -1,5 +1,5 @@
 import BeShowed from './BeShowed';
-import '../assets/buttons.css';
+import '../assets/Buttons.css';
 
 const Buttons = (props) => {
     
@@ -16,7 +16,6 @@ const Buttons = (props) => {
             <button className='cancel' onClick={props.actionCancel}>Cancelar</button>
         </div>
     );
-
 }
 
 export default Buttons;

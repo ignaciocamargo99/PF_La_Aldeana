@@ -1,8 +1,9 @@
 const { app, BrowserWindow, Menu } = require('electron');
 
 const path = require('path');
-// const isDev = require('electron-is-dev');
+const isDev = require('electron-is-dev');
 const URL_PORT = 'http://localhost:3000';
+
 
 let mainWindow;
 let menuApplication = [
@@ -34,9 +35,16 @@ let menuApplication = [
 ];
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680, icon: __dirname + '/heladeria.ico' });
-  mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
-  mainWindow.loadURL(`${URL_PORT}/index`);
+  mainWindow = new BrowserWindow({
+    width: 1150,
+    height: 680,
+    icon: __dirname + '/heladeria.ico',
+    center: true,
+    minWidth: 1150,
+    minHeight: 680,
+  });
+  mainWindow.loadURL(isDev ? `${URL_PORT}` : `file://${path.join(__dirname, '../build/index.html')}`);
+
   // Open the DevTools.
   //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
   // if (isDev) mainWindow.webContents.openDevTools();
@@ -49,13 +57,16 @@ function createWindow() {
 // To open option Sales
 function openSales() {
   let saleWindow = new BrowserWindow({
-    // parent: mainWindow,
-    width: 900,
+    icon: __dirname + '/heladeria.ico',
+    width: 1150,
     height: 680,
-    show: false
+    show: false,
+    fullscreen: true,
+    autoHideMenuBar: true,
+    minWidth: 1150,
+    minHeight: 680,
   });
-  saleWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
-  // saleWindow.loadURL(`${URL_PORT}/sales`);
+  saleWindow.loadURL(isDev ? `${URL_PORT}` : `file://${path.join(__dirname, '../build/index.html')}`);
   // saleWindow.setMenu(null);
   saleWindow.once('ready-to-show', () => saleWindow.show());
 }

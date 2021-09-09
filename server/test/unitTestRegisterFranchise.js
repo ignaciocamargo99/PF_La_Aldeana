@@ -2,12 +2,12 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 var should    = require("chai").should();
-var assert = require("chai").assert;
+var assert = require("chai").assert; 
 
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe('Tests unitarios sobre API Franchise',()=>{
+describe.skip('Tests unitarios sobre API Franchise',()=>{
     
     describe('Check getFranchises',()=>{
         it('Recibe correctamente la funcion', (done) => {
