@@ -117,7 +117,7 @@ export default function Navbar(props) {
         };
 
         const permissionVentas = permissions.find(option => option === "Ventas")
-        const permissionReportes = permisos.find(option => option === "Reportes")
+        const permissionReportes = permissions.find(option => option === "Reportes")
         let ventas;
         if (permissionVentas === "Ventas" && permissionReportes === "Reportes") {
             ventas =
@@ -127,8 +127,8 @@ export default function Navbar(props) {
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="">
-                                <FontAwesomeIcon icon={faFile} href="/app/salesReport"/> Ver Informes
+                            <Dropdown.Item href="/app/salesReport">
+                                <FontAwesomeIcon icon={faFile} /> Ver Informes
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -160,7 +160,6 @@ export default function Navbar(props) {
                 {franchises}
                 {ventas}
                 {compras}
-                {reportes}
             </>
         )
     };
