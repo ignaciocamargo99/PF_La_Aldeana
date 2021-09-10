@@ -11,9 +11,11 @@ import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
+import RegisterProductionView from './RegisterProduction/RegisterProduction';
 import '../assets/Views.css';
 import '../assets/Forms.css';
 import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
+import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
 
 const cookies = new Cookies();
 
@@ -29,9 +31,11 @@ export default function App(props) {
           <BeShowed show={cookies.get('nick_user') !== undefined}>
             <Route path='/app/registerProducts' component={RegisterProductView}></Route>
             <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
+            <Route path='/app/production' component={RegisterProductionView}></Route>
             <Route path='/app/supplies' component={RegisterSupplyView}></Route>
             <Route path='/app/products' component={ListProducts}></Route>
             <Route path='/app/franchise' component={RegisterFranchise}></Route>
+            <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>

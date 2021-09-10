@@ -1,3 +1,12 @@
+.App {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.viewContainer {
+    padding: 1em;
+}
 
 @media (min-width: 768px) {
     .viewContainer {
@@ -7,6 +16,6 @@
 
 @media (min-width: 992px) {
     .viewContainer {
-        padding: 4em;
+        padding: 1.5em 5em 5em;
     }
 }
