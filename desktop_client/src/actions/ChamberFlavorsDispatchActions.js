@@ -12,3 +12,10 @@ export const updateFiltersFlavors = (filters) => {
         payload: filters
     };
 };
+
+export const refreshView = (refresh) => {
+    return {
+        type: 'REFRESH_VIEW',
+        payload: refresh
+    };
+};

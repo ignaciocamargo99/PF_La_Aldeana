@@ -9,9 +9,8 @@ import validateWarning from '../../../utils/WarningMessages/validateWarning';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
-import { updateChamberFlavorsDate, updateFiltersFlavors} from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateChamberFlavorsDate, updateFiltersFlavors, refreshView } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp, updateAllElements, updateTableDown } from '../../../actions/TableUpDownActions';
-import { toChamberFlavorsDispatch, lockMenu, unlockMenu } from '../../../actions/MenuActions';
 
 const PORT = require('../../../config');
 
@@ -43,11 +42,14 @@ const ChamberFlavorsDispatch = (props) => {
     };
 
     const resetStates = () => {
-        // props.updateChamberFlavorsDate()
-        // props.updateAllElements([]);
+        let date = new Date();
+        let dateString = dateFormat(date);
+        inputDate.current.value = dateString;
+        props.updateChamberFlavorsDate(inputDate.current.value);
         props.updateTableUp(props.allElements);
         props.updateTableDown([]);
         window.scrollTo(0, 0);
+        props.refreshView(true);
     }
 
     const registerProduct = () => {
@@ -55,11 +57,11 @@ const ChamberFlavorsDispatch = (props) => {
             let flavorsToDispatch = [];
             props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
             flavorsToDispatch = props.elementsTableDown;
-            console.log(flavorsToDispatch)
             Axios.post(`${PORT()}/api/chamberFlavorsDispatch/new`, flavorsToDispatch)
                 .then((flavorsToDispatch) => {
                     if (flavorsToDispatch.data.Ok) {
                         resetStates();
+                        console.log(props.refresh)
                         successMessage('Atención', 'Salida de helados de cámara regitrado exitosamente.');
                     }
                     else errorMessage('Error', 'Ha ocurrido un problema al registrar la salida de helados')
@@ -94,7 +96,8 @@ const mapStateToProps = (state) => {
         flavorsDispatchDate: state.flavorsDispatchDate,
         elementsTableDown: state.elementsTableDown,
         elementsTableUp: state.elementsTableUp,
-        allElements: state.allElements
+        allElements: state.allElements,
+        refresh: state.refresh
     }
 }
 
@@ -104,6 +107,7 @@ const mapDispatchToProps = {
     updateTableUp,
     updateAllElements,
     updateTableDown,
+    refreshView
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChamberFlavorsDispatch);

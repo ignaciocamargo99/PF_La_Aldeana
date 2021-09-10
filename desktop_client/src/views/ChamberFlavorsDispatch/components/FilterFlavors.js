@@ -2,7 +2,7 @@
 import Axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFiltersFlavors, refreshView } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp } from '../../../actions/TableUpDownActions';
 import BeShowed from '../../../common/BeShowed';
 import DynamicSearch from '../../../common/DynamicSearch';
@@ -24,6 +24,16 @@ const ListFlavors = (props) => {
             .then(response => setFamilyFlavor(response.data))
             .catch(error => console.error(error))
     }, []);
+
+    useEffect(() => {
+        if(props.refresh){
+            console.log(props.refresh)
+            setBoolFamilyFlavor(false);
+            setBoolSearchNameFlavor(false);
+            inputSearchNameFlavor.current.checked = false;
+            inputFamilyFlavor.current.checked = false;
+        }
+    }, [props.refresh])
 
     const handlerOnChangeSearchNameFlavor = () => {
         if (inputSearchNameFlavor.current.checked) {
@@ -68,7 +78,7 @@ const ListFlavors = (props) => {
     useEffect(() => {
         let filters = [selectFamilyFlavor];
         props.updateFiltersFlavors(filters)
-    }, [selectFamilyFlavor, props.updateFiltersFlavors]);
+    }, [selectFamilyFlavor]);
 
     return (
         <>
@@ -105,13 +115,15 @@ const ListFlavors = (props) => {
 const mapStateToProps = (state) => {
     return {
         elementsTableUp: state.elementsTableUp,
-        allElements: state.allElements
+        allElements: state.allElements,
+        refresh: state.refresh
     };
 };
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
     updateTableUp,
+    refreshView
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavors);

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateFiltersFlavors, refreshView } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateAllElements, updateTableUp } from '../../../actions/TableUpDownActions';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import FlavorDispatchAmount from "./FlavorDispatchAmount";
@@ -16,21 +16,26 @@ const ListFlavorsUp = (props) => {
     let flavorValues = [];
 
     useEffect(() => {
-        if (props.flavorsDispatchFilters[0]) {
+        if (props.refresh) {
+            props.updateFiltersFlavors([])
+            props.refreshView(false);
+        }
+        else if (props.flavorsDispatchFilters[0] && !props.refresh) {
             let filterFamilyFlavors = [];
             filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor == props.flavorsDispatchFilters[0])));
             props.updateTableUp(filterFamilyFlavors);
         }
-        else {
+        else if ((props.refresh && props.flavorsDispatchFilters[0]) || !props.flavorsDispatchFilters[0]) {
             Axios.get(`${PORT()}/api/allFlavors`)
                 .then(response => {
                     handlerLoadingSpinner();
                     props.updateTableUp(response.data);
                     props.updateAllElements(response.data);
+                    props.refreshView(false);
                 })
                 .catch(error => console.log(error))
         }
-    }, [props.flavorsDispatchFilters]);
+    }, [props.flavorsDispatchFilters, props.refresh]);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -78,14 +83,17 @@ const mapStateToProps = (state) => {
     return {
         flavorsDispatchFilters: state.flavorsDispatchFilters,
         elementsTableUp: state.elementsTableUp,
-        allElements: state.allElements
+        allElements: state.allElements,
+        elementsTableDown: state.elementsTableDown,
+        refresh: state.refresh
     }
 }
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
     updateTableUp,
-    updateAllElements
+    updateAllElements,
+    refreshView
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavorsUp);
