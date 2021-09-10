@@ -1,11 +1,11 @@
-
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
+const supplyController = require("../controllers/supplyController");
 const db = require('../../config/connection');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+
 const diskStorage = multer.diskStorage({
     destination: path.join(__dirname, './images/'),
     filename: (req, file, cb) => {
@@ -17,19 +17,34 @@ const fileUpload = multer({
     storage: diskStorage,
 }).single('image');
 
+
 //#region APIs
 
-router.get("/typeProduct", productController.getTypeProducts);
+router.get("/typeProducts", productController.getTypeProduct);
 
-router.get("/products", productController.getProducts);
+router.get("/products", productController.getProduct);
 
-router.get("/supplies", productController.getSupplies);
+router.get("/productSupply/:id", productController.getProductSupply);
 
-router.post("/typeProduct/new", productController.postTypeProducts);
+router.put("/products/delete/", productController.deleteProducts);
 
-router.get("/typeSupplies", productController.getTypeSupplies);
+router.put("/products/update", fileUpload, productController.updateProducts);
 
-router.post("/product/new", fileUpload, productController.postProduct);
+router.put("/productSupply/update", fileUpload, productController.updateProductsSupplies);
+
+router.get("/supplies", productController.getSupplies); 
+
+router.post("/typeProduct/new", productController.postTypeProduct);  
+
+router.get("/typeSupplies", productController.getTypeSupplies); 
+
+router.post("/productSupply/new", fileUpload, productController.postProductSupply); 
+
+router.post("/product/new", fileUpload, productController.postProduct); 
+
+router.get("/image/:id", productController.getImage); 
+
+router.post("/supply/new", supplyController.postSupply);
 
 //#endregion
 

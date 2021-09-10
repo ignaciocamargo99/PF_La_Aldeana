@@ -34,8 +34,7 @@ describe('Tests unitarios sobre API Users',()=>{
             chai.request(url)
                 .get('/user/filter/Usuario20.')
                 .end( function(err,res){
-                    //console.log(res.body);
-                    expect(res.body[0]).to.have.property('nick_user').to.be.equal('Usuario20.');
+                    expect(res.body).to.have.property('Message').to.be.equal('Validando usuario.');
                     expect(res).to.have.status(200);
                     done();
                 });
@@ -51,5 +50,3 @@ describe('Tests unitarios sobre API Users',()=>{
         
     });
 });
-
-   
