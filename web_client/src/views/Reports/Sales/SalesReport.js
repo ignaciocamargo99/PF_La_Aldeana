@@ -36,6 +36,10 @@ const SalesReport = (props) => {
                         </div>
                     </div>
                 </BeShowed>
+                <BeShowed show={props.productSales.length < 1}>
+                    <br/>
+                    <h2 style={{ textAlign: 'center', verticalAlign: 'middle' }}>No se encontraron ventas para el período ({props.dateFrom} - {props.dateTo})</h2>
+                </BeShowed>
             </div>
         </>
     );

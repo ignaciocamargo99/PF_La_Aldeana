@@ -2,28 +2,15 @@ import Table from '../../../../common/Table/Table';
 import HeaderTable from '../../../../common/Table/HeaderTable';
 import BodyTable from '../../../../common/Table/BodyTable';
 import { connect } from 'react-redux';
+import dateToString from '../../../../utils/ConverterDate/dateToString';
+import BeShowed from '../../../../common/BeShowed';
 
 const ListProductSales = (props) => {
 
-    const dateToString = (date) =>{
-        let d = "";
-        let stringDate = date
-
-        for (let i = 0; i < 19; i++){
-            if(date.charAt(i) !== 'T'){
-                d += date.charAt(i);
-            } else {
-                d += ' ';
-            }
-        }
-
-
-        return d
-
-    }
-
     return (
         <>
+            <BeShowed show={props.productSales.length > 0}>
+                <label>Total de ventas: {props.typeProductSales.total}</label>
             <Table>
                 <HeaderTable
                     th={
@@ -51,6 +38,7 @@ const ListProductSales = (props) => {
                 }
                 />
             </Table>
+            </BeShowed>
         </>
     )
 }
@@ -58,7 +46,8 @@ const ListProductSales = (props) => {
 
 const mapStateToProps = state => {
     return {
-        productSales: state.productSales
+        productSales: state.productSales,
+        typeProductSales: state.typeProductSales
     }
 }
 

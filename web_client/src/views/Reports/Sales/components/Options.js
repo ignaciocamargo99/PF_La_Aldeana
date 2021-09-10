@@ -7,86 +7,94 @@ import dateFormat from '../../../../utils/DateFormat/dateFormat';
 const PORT = require('../../../../config');
 
 const Options = (props) => {
-    let [data, setData] = useState({})
 
-    const inputDateFrom = useRef()
-    const inputDateTo = useRef()
+    const inputDateFrom = useRef();
+    const inputDateTo = useRef();
 
     useEffect(()=>{
-        let date = new Date()
-        let dateString = dateFormat(date)
-        inputDateFrom.current.max = dateString
-        inputDateTo.current.max = dateString
-        props.updateReportDateFrom(dateString)
-        props.updateReportDateTo(dateString)
+        let date = new Date();
+        let dateString = dateFormat(date);
+        inputDateFrom.current.max = dateString;
+        inputDateTo.current.max = dateString;
+        inputDateFrom.current.min = '2021-01-01';
+        inputDateTo.current.min = '2021-01-01';
+        inputDateTo.current.value = dateString;
+        inputDateFrom.current.value = '2021-01-01';
+        props.updateReportDateFrom('2021-01-01');
+        props.updateReportDateTo(dateString);
     },[true])
 
     useEffect(()=>{
-        inputDateFrom.current.max = props.dateTo
+        console.log(inputDateFrom.current.value + ' '+ props.dateFrom);
+        console.log(inputDateTo.current.value + ' '+ props.dateTo);
 
-        if (props.dateFrom < props.dateTo) {
+        if (props.dateFrom <= props.dateTo) {
             let from = props.dateFrom;
             let to = props.dateTo;
 
             Axios.get(PORT() + `/api/salesReport?from=${from}&to=${to}`)
                 .then((res) => {
-                    let data = res.data
-                    let sales = []
-                    let topTen = []
+                    let data = res.data;
+                    let sales = [];
+                    let topTen = [];
                 
                     data?.map((e, i)=>{
                         if (i < data.length -1){
-                            sales = [...sales, e]
+                            sales = [...sales, e];
                         } else {
-                            props.updateTypeProductSales(e)
+                            props.updateTypeProductSales(e);
                         }
-                    })
+                    });
                 
-                    sales = sales.sort((a,b) => a.quantity < b.quantity ? 1 : -1)
+                    sales = sales.sort((a,b) => a.quantity < b.quantity ? 1 : -1);
                 
-                    props.updateProductSales(sales)
+                    props.updateProductSales(sales);
                 
                     if (sales.length < 10) {
-                        props.updateTopTenProductSales(sales)
+                        props.updateTopTenProductSales(sales);
                     } else {
                         sales?.map((e, i)=>{
                             if (i < 10){
-                                topTen = [...topTen, e]
+                                topTen = [...topTen, e];
                             }
-                        })
-                        props.updateTopTenProductSales(topTen)
+                        });
+                        props.updateTopTenProductSales(topTen);
                     }
                     })
                 .catch((error) => {
-                    console.log('Oops...','Error en el servidor',error)
+                    console.log('Oops...','Error en el servidor',error);
                 })
         } else {
-            props.updateReportDateFrom(props.dateTo)
+            inputDateFrom.current.value = inputDateTo.current.value;
+            props.updateReportDateFrom(props.dateTo);
         }
 
-    },[props.dateFrom, props.dateTo])
+    },[props.dateFrom, props.dateTo]);
 
     const onChangeDateFrom = () => {
-        let date = new Date()
-        let dateString = dateFormat(date)
-        if(inputDateFrom.current.value > dateString || inputDateFrom.current.value < "2021-01-01"){
-            props.updateReportDateFrom(dateString)
-            inputDateFrom.current.value = dateString
+        let date = new Date();
+        let dateString = dateFormat(date);
+        if(inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01-01"){
+            inputDateTo.current.min = inputDateFrom.current.value;
+            props.updateReportDateFrom(inputDateFrom.current.value);
         }
         else{
-            props.updateReportDateFrom(inputDateFrom.current.value)
+            props.updateReportDateFrom(inputDateTo.current.value);
+            inputDateFrom.current.value = inputDateTo.current.value;
         }
     }
 
     const onChangeDateTo = () => {
-        let date = new Date()
-        let dateString = dateFormat(date)
-        if(inputDateTo.current.value > dateString || inputDateTo.current.value < "2021-01-01"){
-            props.updateReportDateTo(dateString)
-            inputDateTo.current.value = dateString
+        let date = new Date();
+        let dateString = dateFormat(date);
+        if(inputDateTo.current.value >= "2021-01-01" && inputDateTo.current.value < dateString){
+
+            inputDateFrom.current.max = inputDateTo.current.value;
+            props.updateReportDateTo(inputDateTo.current.value);
         }
         else{
-            props.updateReportDateTo(inputDateTo.current.value)
+            props.updateReportDateTo(dateString);
+            inputDateTo.current.value = dateString;
         }
     }
 
