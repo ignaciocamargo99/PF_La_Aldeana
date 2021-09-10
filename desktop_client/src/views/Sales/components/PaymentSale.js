@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount } from '../../../actions/SalesActions';
-import DivGeneric from "../../../common/DivGeneric";
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updatePaymentAmount } from '../../../actions/SalesActions';
 import BeShowed from "../../../common/BeShowed";
 
 const PORT = require('../../../config');
@@ -44,6 +43,7 @@ const PaymentSale = (props) => {
     },[props.payType])
 
     const onChangeAmount = () => {
+        props.updatePaymentAmount(inputPay.current.value);
         setAmount(inputPay.current.value);
     }
 
@@ -111,7 +111,8 @@ const mapStateToProps = state => {
         detailProducts: state.detailProducts,
         payType: state.payType,
         totalAmount: state.totalAmount,
-        refresh: state.refresh
+        refresh: state.refresh,
+        paymentAmount: state.paymentAmount
     }
 }
 
@@ -120,7 +121,8 @@ const mapDispatchToProps = {
     updateProductsFiltered,
     updateDetailProducts,
     updatePayType,
-    updateTotalAmount
+    updateTotalAmount,
+    updatePaymentAmount
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentSale);

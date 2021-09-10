@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import Axios from "axios";
 import { connect } from 'react-redux';
 import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
-import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/modalProduct.css';

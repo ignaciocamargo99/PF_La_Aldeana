@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Axios from "axios";
 import { connect } from 'react-redux';
 import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected } from '../../../actions/SalesActions';
-import DivGeneric from "../../../common/DivGeneric";
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";

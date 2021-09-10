@@ -74,3 +74,10 @@ export const updateSupplies = (array) =>{
         payload: array
     }
 }
+
+export const updatePaymentAmount = (amount) => {
+    return {
+        type: 'UPDATE_PAYMENT_AMOUNT',
+        payload: amount
+    }
+}

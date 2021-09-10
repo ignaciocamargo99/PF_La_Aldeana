@@ -3,7 +3,7 @@ import DetailSale from './components/DetailSale';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
 import PaymentSale from "./components/PaymentSale"; 
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateProductSelected, updateProductsXSupplies, updateSupplies} from '../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateProductsXSupplies, updateSupplies, updatePaymentAmount } from '../../actions/SalesActions';
 import Axios from "axios";
 import { connect } from 'react-redux';
 import Buttons from "../../common/Buttons";
@@ -25,9 +25,9 @@ const Sales = (props) => {
             .then(response => {
                 let aux = response.data;
                 aux?.map((element, i) => {
-                    element.disable = false; 
                     element.stock_initial = 0;
                     element.stock_current = 0;
+                    element.listSupplies = [];
                 });
                 props.updateProducts(aux);
                 props.updateProductsFiltered(aux);
@@ -80,6 +80,7 @@ const Sales = (props) => {
                     for (l = 0; l < props.supplies.length; l++) {
                         if (auxSuppliesXProduct[k].id_supply == props.supplies[l].id_supply)
                         {
+                            aux[i].listSupplies.push([auxSuppliesXProduct[k].number_supply, props.supplies[l]]);
                             if (props.supplies[l].id_supply_type == 3)
                             {
                                 aux[i].stock_initial = 99999;
@@ -89,7 +90,7 @@ const Sales = (props) => {
                             {
                                 if (auxSuppliesXProduct[k].number_supply >= props.supplies[l].stock_unit)
                                 {
-                                    aux[i].disable = true;
+                                    document.getElementById(`btn_${aux[i].id_product}`).disabled = true;
                                     aux[i].stock_initial = 0;
                                     aux[i].stock_current = 0;
                                     break;
@@ -124,13 +125,12 @@ const Sales = (props) => {
     }
 
     useEffect(() => {
-        if (props.detailProducts.length > 0 && (props.payType == 1 || props.payType == 2)) {
+        if (props.detailProducts.length > 0 && ((props.payType == 1 && props.paymentAmount >= props.totalAmount) || props.payType == 2)) {
             setReady(true);
         }
         else {
             setReady(false);
         }
-
     })
 
     const cancel = () => {
@@ -152,7 +152,16 @@ const Sales = (props) => {
                 .catch(error => console.log(error))
         }
         else {
-            warningMessage("¡Error!", "Faltan cosas de cargar", "error");
+            if (props.detailProducts.length == 0) {
+                warningMessage("¡Error!", "No se cargo ningun producto", "error");
+            }
+            else if (props.payType != 1 && props.payType != 2) {
+                warningMessage("¡Error!", "No selecciono la forma de pago", "error");
+            }
+            else if (props.payType == 1 && props.paymentAmount <= props.totalAmount)
+            {
+                warningMessage("¡Error!", "El monto ingresado es inferior al monto total", "error");
+            }
         }
     }
 
@@ -195,6 +204,7 @@ const mapStateToProps = state => {
         totalAmount: state.totalAmount,
         supplies: state.supplies,
         productsXsupplies: state.productsXsupplies,
+        paymentAmount: state.paymentAmount
     }
 }
 
@@ -204,7 +214,8 @@ const mapDispatchToProps = {
     updateDetailProducts,
     updateProductSelected,
     updateProductsXSupplies, 
-    updateSupplies
+    updateSupplies,
+    updatePaymentAmount
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sales);
