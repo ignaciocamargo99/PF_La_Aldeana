@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateFiltersFlavors, refreshView } from '../../../actions/ChamberFlavorsDispatchActions';
+import {updateRefresh } from '../../../actions/SalesActions';
+import { updateFiltersFlavors} from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateAllElements, updateTableUp } from '../../../actions/TableUpDownActions';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import FlavorDispatchAmount from "./FlavorDispatchAmount";
@@ -18,11 +19,11 @@ const ListFlavorsUp = (props) => {
     useEffect(() => {
         if (props.refresh) {
             props.updateFiltersFlavors([])
-            props.refreshView(false);
+            props.updateRefresh(false);
         }
         else if (props.flavorsDispatchFilters[0] && !props.refresh) {
             let filterFamilyFlavors = [];
-            filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor == props.flavorsDispatchFilters[0])));
+            filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor === parseInt(props.flavorsDispatchFilters[0])  )));
             props.updateTableUp(filterFamilyFlavors);
         }
         else if ((props.refresh && props.flavorsDispatchFilters[0]) || !props.flavorsDispatchFilters[0]) {
@@ -31,7 +32,7 @@ const ListFlavorsUp = (props) => {
                     handlerLoadingSpinner();
                     props.updateTableUp(response.data);
                     props.updateAllElements(response.data);
-                    props.refreshView(false);
+                    props.updateRefresh(false);
                 })
                 .catch(error => console.log(error))
         }
@@ -58,7 +59,19 @@ const ListFlavorsUp = (props) => {
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Añadir</th>
                                     </tr>
                                 </thead>
-                                {props.elementsTableUp.map((element, i) => {
+                                {props.refresh && props.elementsTableUp.map((element, i) => {
+                                    <tbody key={i}>
+                                        <tr>
+                                            <td style={{ textAlign: 'center' }}>{element.name}</td>
+                                            <td style={{ textAlign: 'center' }}>{element.stock}</td>
+                                            <FlavorDispatchAmount keyElement={i} />
+                                            <td style={{ textAlign: 'center' }}>
+                                                <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                })}
+                                {!props.refresh && props.elementsTableUp.map((element, i) => {
                                     return (
                                         <tbody key={i}>
                                             <tr>
@@ -93,7 +106,7 @@ const mapDispatchToProps = {
     updateFiltersFlavors,
     updateTableUp,
     updateAllElements,
-    refreshView
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavorsUp);

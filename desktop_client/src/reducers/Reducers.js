@@ -1,10 +1,12 @@
 import { combineReducers } from "redux"
-import { flavorsDispatchDate, flavorsDispatchFilters, refresh } from "./ChamberFlavorsDispatchReducer";
-import { clientsDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
-     cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
-     streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
-     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer} from "./DeliverySalesReducers";
-import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, refreshReducer} from "./SalesReducers";
+import { flavorsDispatchDate, flavorsDispatchFilters } from "./ChamberFlavorsDispatchReducer";
+import {
+    clientsDeliveryReducer, payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
+    cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
+    streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
+    detailsDeliveryReducer, flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer
+} from "./DeliverySalesReducers";
+import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, refreshReducer } from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
 
@@ -22,7 +24,6 @@ export default combineReducers({
     // Chamber flavors
     flavorsDispatchDate: flavorsDispatchDate,
     flavorsDispatchFilters: flavorsDispatchFilters,
-    refresh: refresh,
     // Table Up-Down
     elementsTableUp: elementsTableUp,
     allElements: allElements,

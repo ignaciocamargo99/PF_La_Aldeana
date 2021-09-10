@@ -9,7 +9,8 @@ import validateWarning from '../../../utils/WarningMessages/validateWarning';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
-import { updateChamberFlavorsDate, updateFiltersFlavors, refreshView } from '../../../actions/ChamberFlavorsDispatchActions';
+import {updateRefresh } from '../../../actions/SalesActions';
+import { updateChamberFlavorsDate, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp, updateAllElements, updateTableDown } from '../../../actions/TableUpDownActions';
 
 const PORT = require('../../../config');
@@ -23,7 +24,7 @@ const ChamberFlavorsDispatch = (props) => {
         let dateString = dateFormat(date)
         inputDate.current.max = dateString
         props.updateChamberFlavorsDate(dateString)
-    }, [true]);
+    }, []);
 
     useEffect(() => {
         const flavors = props.elementsTableDown.filter((flavor) => true && flavor.amount > 0);
@@ -49,7 +50,7 @@ const ChamberFlavorsDispatch = (props) => {
         props.updateTableUp(props.allElements);
         props.updateTableDown([]);
         window.scrollTo(0, 0);
-        props.refreshView(true);
+        props.updateRefresh(true);
     }
 
     const registerProduct = () => {
@@ -61,8 +62,7 @@ const ChamberFlavorsDispatch = (props) => {
                 .then((flavorsToDispatch) => {
                     if (flavorsToDispatch.data.Ok) {
                         resetStates();
-                        console.log(props.refresh)
-                        successMessage('Atención', 'Salida de helados de cámara regitrado exitosamente.');
+                        successMessage('Atención', 'Salida de helados de cámara registrado exitosamente.');
                     }
                     else errorMessage('Error', 'Ha ocurrido un problema al registrar la salida de helados')
                 })
@@ -107,7 +107,7 @@ const mapDispatchToProps = {
     updateTableUp,
     updateAllElements,
     updateTableDown,
-    refreshView
+    updateRefresh
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChamberFlavorsDispatch);
