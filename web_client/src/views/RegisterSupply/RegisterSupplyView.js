@@ -107,7 +107,7 @@ const RegisterPurchaseSupplies = (props) => {
                 <DescriptionSupply />
                 <div className="price-form-body ">
                     <div className="price-title">
-                        <label >Precio*</label>
+                        <label >Precio</label>
                     </div>
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{alignSelf: 'center'}}>
