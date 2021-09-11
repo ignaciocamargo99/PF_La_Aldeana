@@ -1,7 +1,9 @@
 .logo {
-    height: 30em;
+    padding-top: 6%;
+    height: 35em;
+    width: 55em ;
     top: 20em;
-    transform: translate(10em 10em);
+    padding-left: 5em;
 }
 
 .root {
@@ -11,6 +13,5 @@
     background-position: center center;
     background-color:white; 
     font-family: "Abel", sans-serif;
-    height: 100vh;
     width: 100%;
 }

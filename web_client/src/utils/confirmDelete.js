@@ -11,13 +11,8 @@ export default function confirmDelete(actionTrue, actionFalse, e) {
   })
     .then((willDelete) => {
       if (willDelete) {
-        actionTrue(e)
-        swal("Elemento eliminado", {
-          icon: "success",
-        });
-      } else {
-        actionFalse(e)
-        swal("Cambio cancelado");
+        actionTrue(e);
       }
+      else actionFalse(e)
     });
 }

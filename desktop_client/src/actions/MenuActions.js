@@ -33,3 +33,17 @@ export const unlockMenu = () =>{
         payload: false
     }
 }
+
+export const toSalesLocal = () =>{
+    return{
+        type: 'TO_SALES_LOCAL',
+        payload: 3
+    }
+}
+
+export const toSalesDelivery = () =>{
+    return{
+        type: 'TO_SALES_DELIVERY',
+        payload: 4
+    }
+}

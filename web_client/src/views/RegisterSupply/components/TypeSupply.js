@@ -28,7 +28,7 @@ const TypeSupply = (props) => {
                 <label htmlFor="supplyType">Tipo*</label>
             </div>
             <div className="form-control-input">
-                <select className="form-control" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange}>
+                <select className="form-select" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{fontFamily: 'Abel, sans-serif'}}>
                     <option disabled value="-1">Seleccione tipo de insumo...</option>
                     {
                         typeSupplies?.map((ts, i) => (

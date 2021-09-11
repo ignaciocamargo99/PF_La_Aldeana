@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toRoot, toChamberFlavorsDispatch, lockMenu, unlockMenu, toRegisterAttendance } from '../../actions/MenuActions';
+import { toRoot, toChamberFlavorsDispatch, lockMenu, unlockMenu, toRegisterAttendance, toSalesDelivery, toSalesLocal } from '../../actions/MenuActions';
 import { GoTasklist, GoHome, GoBell } from 'react-icons/go';
 import { FaLock, FaLockOpen } from 'react-icons/fa';
 import { IoFingerPrint } from 'react-icons/io5';
@@ -23,8 +23,8 @@ const SideMenu = (props) => {
             <MenuItem onClick={props.toChamberFlavorsDispatch} icon={<GoTasklist/>}>Salida de camara</MenuItem>
             
             <SubMenu title="Ventas" icon={<GoBell />}>
-              <MenuItem >Venta en local</MenuItem>
-              <MenuItem >Venta por delivery</MenuItem>
+              <MenuItem onClick={props.toSalesLocal}>Venta en local</MenuItem>
+              <MenuItem onClick={props.toSalesDelivery}>Venta por delivery</MenuItem>
             </SubMenu>
 
             <MenuItem onClick={props.toRegisterAttendance} icon={<IoFingerPrint/>}>Registrar asistencia</MenuItem>
@@ -57,7 +57,9 @@ const mapDispatchToProps = {
   toChamberFlavorsDispatch,
   toRegisterAttendance,
   lockMenu,
-  unlockMenu
+  unlockMenu,
+  toSalesLocal,
+  toSalesDelivery
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(SideMenu);

@@ -31,12 +31,12 @@
         align-self: center;
     }
     .price-type-container {
-        width: 45%;
+        width: 60%;
     }
     .price-label {
         margin-right: 2em;
     }
     .price-type-container input {
-        max-width: 15em;
+        max-width: 70%;
     }
 }

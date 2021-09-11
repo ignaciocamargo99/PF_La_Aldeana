@@ -41,7 +41,7 @@ export default function TableSuppliesUp(props) {
                 <div className="col-sm-3">
                     <h4 className="text-secondary">Insumos disponibles:</h4>
                 </div>
-                <div className="form-control-input col-sm-5 offset-sm-6">
+                <div className="form-control-input col-sm-5 offset-sm-4">
                     <DynamicSearch placeholder="Buscar insumos..." setSearchState={setNameSearch}></DynamicSearch>
                 </div>
             </div>

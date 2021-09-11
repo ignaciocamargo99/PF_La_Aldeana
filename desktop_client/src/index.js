@@ -1,15 +1,14 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MasterView from './views/MasterView';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import combineReducers from '../src/reducers/Reducers';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import reducers from '../src/reducers/Reducers';
 import './index.css';
+import MasterView from './views/MasterView';
 
 ReactDOM.render(
-
-  <Provider store={createStore(combineReducers)}>
+  <Provider store={createStore(reducers)}>
     <React.StrictMode >
       <div>
         <MasterView />
