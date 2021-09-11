@@ -126,11 +126,6 @@ export default function Navbar(props) {
                             Ventas
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/app/products">Productos</Dropdown.Item>
-                            <Dropdown.Item href="/app/typeProducts">Tipos de producto</Dropdown.Item>
-                            <Dropdown.Item href="/app/franchise">Registrar franquicias</Dropdown.Item>
-                            <Dropdown.Item href="/app/supplies">Registrar Insumos</Dropdown.Item>
-                            <Dropdown.Item href="/app/production">Registrar produccion</Dropdown.Item>
                             <Dropdown.Item href="">
                                 <FontAwesomeIcon icon={faFile} /> Ver Informes
                             </Dropdown.Item>
