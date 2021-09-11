@@ -7,7 +7,7 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe.skip('Tests unitarios sobre API Sessions',()=>{
+describe('Tests unitarios sobre API Sessions',()=>{
     
     describe('Check getSession',()=>{
         it('Recibe correctamente la funcion', (done) => {
