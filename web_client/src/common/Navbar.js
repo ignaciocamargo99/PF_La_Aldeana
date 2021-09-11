@@ -47,10 +47,10 @@ export default function Navbar(props) {
 
     const showOptionsWithPermissions = () => {
         // Show me permissions with state of redux...
-        let permisos = []
-        props.options.forEach((option) => { permisos.push(decrypt(option)) })
+        let permissions = []
+        props.options.forEach((option) => { permissions.push(decrypt(option)) })
 
-        const permissionProducts = permisos.find(option => option === "Productos");
+        const permissionProducts = permissions.find(option => option === "Productos");
         let products;
         if (permissionProducts === "Productos") {
             products =
@@ -74,7 +74,7 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionProduction = permisos.find(option => option === "Producciones");
+        const permissionProduction = permissions.find(option => option === "Producciones");
         let productions;
         if (permissionProduction === 'Producciones') {
             productions =
@@ -95,7 +95,7 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionFranchises = permisos.find(option => option === "Franquicias");
+        const permissionFranchises = permissions.find(option => option === "Franquicias");
         let franchises;
         if (permissionFranchises === "Franquicias") {
             franchises =
@@ -116,7 +116,7 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionVentas = permisos.find(option => option === "Ventas")
+        const permissionVentas = permissions.find(option => option === "Ventas")
         let ventas;
         if (permissionVentas === "Ventas") {
             ventas =
