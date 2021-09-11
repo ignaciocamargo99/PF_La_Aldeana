@@ -18,7 +18,7 @@ const Pay = (props) => {
     const onChangeAmount = (amount) => {
         props.updateErrorAmountDelivery(false)
         props.updateAmountDelivery(amount)
-        if(amount < props.total){
+        if(amount < (props.total + 100)){
             props.updateErrorAmountDelivery(true)
         }
     }
@@ -31,46 +31,52 @@ const Pay = (props) => {
         <>
             <div className="formRow">
                 <h3><b>Pago</b></h3>
-                </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label>Tipo de pago* </label>
-                </div>
-                <div className="form-control-input">
-                    <select className="form-control" style={{fontFamily:'abel'}} defaultValue={1} readOnly>
-                        <option id={1}>{props.payType}</option>
-                    </select>
-                </div>
             </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label>Monto a abonar por el cliente*</label>
-                </div>
-                <div className="form-control-input">
-                    <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..." onChange={(e) => {onChangeAmount(e.target.value)}} onKeyDown={(e) => {validateFloatNumbers(e)}} value={props.amount}></input>
-                    <BeShowed show={props.errorAmount}>
-                        <label><b style={{color:'gray'}}>Cantidad entera mayor al total</b></label>
-                    </BeShowed>
-                </div>
-            </div>
-            <BeShowed show={!props.errorAmount}>
+            
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label>Vuelto para el cliente: <b>${props.amount - props.total}</b></label>
+                        <label>Tipo de pago* </label>
+                    </div>
+                    <div className="form-control-input">
+                        <select className="form-control" style={{fontFamily:'abel'}} defaultValue={1} readOnly>
+                            <option id={1}>{props.payType}</option>
+                        </select>
                     </div>
                 </div>
-            </BeShowed>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label>Total: <b>${props.total}</b></label>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label>Monto a abonar por el cliente*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..."  min="0" onChange={(e) => {onChangeAmount(e.target.value)}} onKeyDown={(e) => {validateFloatNumbers(e)}} value={props.amount}></input>
+                        <BeShowed show={props.errorAmount}>
+                            <label><b style={{color:'gray'}}>Cantidad entera mayor al total</b></label>
+                        </BeShowed>
+                    </div>
                 </div>
-            </div>
-            <div className="formRow">
-                <label>Mostrar detalle de la venta</label>&nbsp;
-                <button style={{width: '7%',height: '5%'}} className="sendNew" onClick={() => {setShowDeatil(!showDetail)}}> 
-                    <FontAwesomeIcon icon={faInfo}/>
-                </button>
-            </div>
+                <BeShowed show={!props.errorAmount}>
+                    <div className="formRow">
+                        <div className="form-control-label">
+                            <label>Vuelto para el cliente: <b>${props.amount - (props.total + 100)}</b></label>
+                        </div>
+                    </div>
+                </BeShowed>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label>Costo del delivery: <b>$100</b></label>
+                    </div>
+                </div>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label>Total: <b>${props.total + 100}</b></label>
+                    </div>
+                </div>
+                <div className="formRow">
+                    <label>Mostrar detalle de la venta</label>&nbsp;
+                    <button style={{width: '7%',height: '5%'}} className="sendNew" onClick={() => {setShowDeatil(!showDetail)}}> 
+                        <FontAwesomeIcon icon={faInfo}/>
+                    </button>
+                </div>
             <BeShowed show={showDetail}>
                 <h3 style={{textAlign: 'center'}}><b>Detalle de venta</b></h3>
                 <SaleDetails buttons={false} setNameShow={setNameShow} setShowModalView={setShowModalView}/>

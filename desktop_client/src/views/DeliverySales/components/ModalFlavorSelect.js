@@ -184,7 +184,6 @@ const mapDispatchToProps = {
     subtractTotalDelivery,
     addFlavorsProduct,
     deleteFlavorsProduct
-    /*insertDeliveryProducts*/
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFlavorSelect);

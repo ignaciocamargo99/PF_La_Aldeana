@@ -73,24 +73,30 @@ const Products = (props) => {
         <hr />
         <ModalFlavorSelect show={showModal} setShowModal={setShowModal} quantityFlavor={quantityFlavor}/>
         <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
-        <BeShowed show={props.productsQuantities.length === 0 }>    
-            <div className="col-md-2 offset-md-6">
-                <Spinner/>
-            </div>
-        </BeShowed>
-        <BeShowed show={props.productsQuantities.length !== 0 }>
-            <ListProducts onClick={upload} filter={filter}/>
-        </BeShowed>
         <div className="formRow">
-            <h3><b>Detalle de venta</b></h3>
-        </div>
-        <SaleDetails buttons={true} onClick={download} setNameShow={setNameShow} setShowModalView={setShowModalView}/>
-        <div className="formRow">
-            <div className="col-sm-3 offset-sm-9">
-                <label>Total: ${props.total}</label>
+            <div className="col-md-6">
+                <BeShowed show={props.productsQuantities.length === 0 }>    
+                    <div className="col-md-2 offset-md-6">
+                        <Spinner/>
+                    </div>
+                </BeShowed>
+                <BeShowed show={props.productsQuantities.length !== 0 }>
+                    <ListProducts onClick={upload} filter={filter}/>
+                </BeShowed>
+            </div>
+            <div className="col-md-6" style={{marginLeft:'2%'}}>
+                <div className="formRow">
+                    <h3><b>Detalle de venta</b></h3>
+                </div>
+                <SaleDetails buttons={true} onClick={download} setNameShow={setNameShow} setShowModalView={setShowModalView}/>
+                <div className="formRow">
+                    <div className="col-sm-3 offset-sm-9">
+                        <label>Total: ${props.total}</label>
+                    </div>
+                </div>
+                <Buttons label='Siguiente' ready={props.detailsDelivery.length>0?true:false} actionCancel={() => {props.setStep(1)}} actionNotOK={() => {errorNextStepOne()}} actionOK={() => {props.setStep(2)}} />
             </div>
         </div>
-        <Buttons label='Siguiente' ready={props.detailsDelivery.length>0?true:false} actionCancel={() => {props.setStep(1)}} actionNotOK={() => {errorNextStepOne()}} actionOK={() => {props.setStep(2)}} />
     </>)
 }
 

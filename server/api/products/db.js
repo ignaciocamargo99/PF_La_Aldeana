@@ -20,22 +20,6 @@ const productGetDB = () => {
     });
 };
 
-const productNotStockGetDB = () => {
-    const sqlSelect = `SELECT pxs.id_product AS id_product FROM PRODUCT_X_SUPPLY pxs INNER JOIN SUPPLIES s ON pxs.id_supply = s.id_supply WHERE s.stock_unit < pxs.number_supply`
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
-
 const productAllGetDB = () => {
     const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
         'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor ' +
