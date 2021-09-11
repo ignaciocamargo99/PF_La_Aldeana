@@ -1,0 +1,35 @@
+.viewContent {
+    padding: 10px 50px 20px;;
+}
+
+.formRow {
+    margin: 1em 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+@media (min-width: 768px) {
+    form {
+        max-width: 100em;
+        padding: 2em 2em
+    }
+    .viewBody {
+        padding: 0 2em;
+    }
+    .formRow, .form-radio-group {
+        flex-direction: row;
+    }
+    .form-control-label {
+        width: 30%;
+        overflow: hidden;
+        padding-right: 1em;
+    }
+    .form-control-input, .form-combo-btn {
+        padding-left: 1em;
+        width: 70%;
+    }
+    .form-control-label, .form-radio-group {
+        padding-top: .375rem;
+    }
+}
