@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import Table from '../../../../common/Table/Table';
-import HeaderTable from '../../../../common/Table/HeaderTable';
-import BodyTable from '../../../../common/Table/BodyTable';
-import BeShowed from "../../../../common/BeShowed";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SuppliesAmount from './SuppliesAmount';
+import BodyTable from '../../../../common/Table/BodyTable';
+import HeaderTable from '../../../../common/Table/HeaderTable';
+import Table from '../../../../common/Table/Table';
+import '../../../../assets/Buttons.css';
 
 export default function TableSuppliesDown(props) {
     return (
         <>
+            <h4 className="text-secondary">Insumos cargados: </h4>
             <Table>
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center' }}>Nombre</th>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center', width: '150px' }}>Cantidad</th>
-                            <th scope="col" className="bg-success" style={{ textAlign: 'center', width: '150px' }}>Eliminar</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Nombre</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Descripción</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>Cantidad ingresada</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acción</th>
                         </>
                     }
                 />
@@ -25,17 +25,17 @@ export default function TableSuppliesDown(props) {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center' }}>{element.amount}</td>
-                                    <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn btn-success btn-sm px-3"
-                                            onClick={(e) => props.download(element.id_supply)}><FontAwesomeIcon icon={faMinus} /></button>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px'}}>{element.amount}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                        <button type="button" className="sendDelete"
+                                            onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>
                         )
-                    })
-                    }
+                    })}
                 />
             </Table>
         </>

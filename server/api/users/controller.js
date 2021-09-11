@@ -1,5 +1,7 @@
 const db = require("../../config/connection");
-const bcryptjs = require('bcryptjs')
+const bcryptjs = require('bcryptjs');
+
+const { logIn, getUser } = require('../../services/sessionsService')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
@@ -16,16 +18,60 @@ async function getUsers(req, res) {
 
 // [HTTP:GET:nick]
 async function getUsersByNick(req, res) {
+    try {
+        let rest = await logIn(req.params.nick);
+        
+        if(rest.length > 0){
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.',
+                token: rest[0].password
+            });
+        } else {
+            let random = Math.round(Math.random()* (1000 - 1) + 1).toString();
+            console.log(random)
+            let notIsAToken = await bcryptjs.hash(random, 8);
 
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol, u.id_rol as rol_ID " + 
-    "FROM USERS u " + 
-    "INNER JOIN ROLES r ON u.id_rol = r.id_rol " + 
-    "WHERE u.nick_user = ?";
+            console.log(notIsAToken)
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.',
+                token: notIsAToken
+            });
+        }
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    };
+};
 
-    await db.query(sqlSelect, [req.params.nick], (err, result) => {
-        if (result != null) res.send(result);
-        else res.send(err);
-    })
+async function getDataUsersByNick(req, res) {
+    try {
+        let rest = await getUser(req.params.nick);
+        
+        if(rest.length > 0){
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.',
+                nick_user: rest[0].nick_user,
+                first_name: rest[0].first_name,
+                last_name: rest[0].last_name,
+                rol_ID: rest[0].rol_ID
+            });
+        } else {
+            res.json({
+                Ok: true,
+                Message: 'Validando usuario.'
+            });
+        }
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    };
 };
 
 async function postUser(req, res) {
@@ -59,7 +105,7 @@ async function getLogin(req, res) {
 
 
 
-module.exports = { getUsers, getUsersByNick, postUser};
+module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick };
 
 
 

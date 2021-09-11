@@ -11,6 +11,7 @@ import { updateNick, updatePassword , updateUser, updatePermissions} from '../..
 import bcryptjs from 'bcryptjs';
 import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
 import Cookies from 'universal-cookie';
+import './ModalLogin.css';
 
 const PORT = require('../../../config');
 const cookies = new Cookies();
@@ -21,20 +22,24 @@ const ModalLogin = (props) => {
         if(isCorrectFormat(props.nick) && isCorrectFormat(props.password)){
             Axios.get(PORT() + `/api/user/filter/${props.nick}`)
             .then((response) => {
-                let compare = bcryptjs.compareSync(props.password,response.data[0].password)
-                if(response.data.length > 0 && compare){
-                    cookies.set('nick_user',response.data[0].nick_user, {path: '/'})
-                    cookies.set('first_name',response.data[0].first_name, {path: '/'})
-                    cookies.set('last_name',response.data[0].last_name, {path: '/'})
-                    Axios.get( PORT() + `/api/permission/filter/${response.data[0].rol_ID}`)
-                    .then((response) => {
-                        let permissions = [encrypt('Inicio')]
-                        for(let i=0; i< response.data.length ; i++){
-                          permissions.push(encrypt(response.data[i].name))
-                        }
-                        cookies.set('permissions',permissions, {path: '/'})
-                        window.location.href = './index'
-                  })
+                let compare = bcryptjs.compareSync(props.password,response.data.token)
+                if(compare){
+                    console.log('hola')
+                    Axios.get(PORT() + `/api/user/search/${props.nick}`)
+                    .then((res) => {
+                        cookies.set('nick_user',res.data.nick_user, {path: '/'})
+                        cookies.set('first_name',res.data.first_name, {path: '/'})
+                        cookies.set('last_name',res.data.last_name, {path: '/'})
+                        Axios.get( PORT() + `/api/permission/filter/${res.data.rol_ID}`)
+                        .then((response) => {
+                            let permissions = [encrypt('Inicio')]
+                            for(let i=0; i< response.data.length ; i++){
+                            permissions.push(encrypt(response.data[i].name))
+                            }
+                            cookies.set('permissions',permissions, {path: '/'})
+                            window.location.href = './index'
+                        })
+                    })
                 }
                 else{
                     errrorLogin('Atención','Usuario o Password incorrectos')
@@ -63,7 +68,8 @@ const ModalLogin = (props) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter className="back-ligthblue">
-                    <Buttons label="Iniciar sesión" ready={true} actionOK={init} actionCancel={props.close}/>
+                    <button className='sendOk' onClick={init}>Iniciar sesión</button>
+                    <button className='cancel' onClick={props.close}>Cancelar</button>
                 </ModalFooter>
             </Modal>
         </>
