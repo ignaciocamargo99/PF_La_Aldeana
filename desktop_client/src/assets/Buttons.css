@@ -1,0 +1,110 @@
+.buttons {
+    margin-top: 5em;
+    margin-left: 70%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 0px 50px 0px;
+}
+
+.btn-Access {
+    background: #A5DEF9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: 'blue';
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.sendOk {
+    background: #64629C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 100px;
+    height: 50px;
+}
+
+.sendNew {
+    background: #64629C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 100px;
+    height: 50px;
+}
+
+.sendEdit {
+    background: #2284B6;
+    box-shadow: 0px 4px 4px rgba(89, 156, 211, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 60px;
+    height: 35px;
+}
+
+.sendDelete {
+    background: #C84646;
+    box-shadow: 0px 4px 4px rgba(218, 38, 38, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 60px;
+    height: 35px;
+}
+
+.sendAdd {
+    background: #2284B6;
+    box-shadow: 0px 4px 4px rgba(67, 187, 243, 0.25);
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 60px;
+    height: 35px;
+}
+
+.sendNotOk {
+    background: #C4C4C4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #000000;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 100px;
+    height: 50px;
+}
+
+.cancel {
+    background: #E5E5E5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    color: #000000;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    margin-left: 1em;
+    width: 100px;
+    height: 50px;
+}

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
 const supplyController = require("../controllers/supplyController");
-const db = require('../../config/connection');
 const multer = require('multer');
 const path = require('path');
 
@@ -23,6 +22,8 @@ const fileUpload = multer({
 router.get("/typeProducts", productController.getTypeProduct);
 
 router.get("/products", productController.getProduct);
+
+router.get("/allProducts", productController.getAllProduct);
 
 router.get("/productSupply/:id", productController.getProductSupply);
 
