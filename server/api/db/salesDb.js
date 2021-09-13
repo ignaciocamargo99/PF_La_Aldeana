@@ -11,7 +11,7 @@ const PayTypesGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
-            db.release();
+            db.release();    
         })
     });
 };
@@ -31,10 +31,10 @@ const salePostDB = (newSale) => {
                 if (error) reject('1:' + error);
 
                 else id_sale = row[0].last_id_sale + 1;
-            })
+            }) 
             db.beginTransaction((error) => {
                 if (error) reject('1,5:' + error);
-                const sqlInsertSale = `INSERT INTO SALES VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type},${cellphone_client})`;
+                const sqlInsertSale = `INSERT INTO SALES(id_sale, date_hour, total_amount, id_pay_type) VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type})`;
 
                 db.query(sqlInsertSale, (error, result) => {
                     if (error) {
@@ -64,4 +64,21 @@ const salePostDB = (newSale) => {
     });
 };
 
-module.exports = { PayTypesGetDB, salePostDB }
+const ProductXSupplyGetDB = () => {
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+
+module.exports = { PayTypesGetDB, salePostDB, ProductXSupplyGetDB }

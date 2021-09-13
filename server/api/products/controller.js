@@ -146,7 +146,7 @@ async function postTypeProduct(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
+            Message: 'No se pudo registrar el tipo de producto.',
         })
     }
 }

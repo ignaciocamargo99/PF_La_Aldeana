@@ -60,3 +60,17 @@ export const refreshReducer = (state = false, action) => {
     }
     return state
 }
+
+export const productsXsuppliesReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_PRODUCTS_X_SUPPLIES'){
+        return action.payload
+    }
+    return state
+}
+
+export const suppliesReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_SUPPLIES'){
+        return action.payload
+    }
+    return state
+}

@@ -65,8 +65,9 @@ const PaymentSale = (props) => {
     return(
         <>
             <div>
+                <hr />
                 <h4>Tipo de Pago</h4>
-                <select className="form-combo" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
+                <select className="form-control" id="id_selectPayTypes" defaultValue='-1' onChange={e => onChangePayType(e)}>
                     <option disabled value="-1">Seleccione el Tipo de Pago</option>
                     {
                         payTypes?.map((element,i) => (

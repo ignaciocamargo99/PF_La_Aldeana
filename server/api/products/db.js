@@ -4,7 +4,7 @@ const fs = require('fs');
 
 
 const productGetDB = () => {
-    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active FROM PRODUCTS ' +
+    const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active, quantity_flavor FROM PRODUCTS ' +
         'WHERE active = 1';
 
     return new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ const productAllGetDB = () => {
 };
 
 const productTypeGetDB = () => {
-    const sqlSelect = 'SELECT * FROM PRODUCT_TYPES';
+    const sqlSelect = 'SELECT id_product_type, name, id_sector FROM PRODUCT_TYPES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -78,9 +78,9 @@ const productSupplyGetDB = (productID) => {
 
 const productPostDB = (newProduct, imageProduct) => {
 
-    const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
+    const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
     let image = imageProduct;
-    const { name, description, price, id_sector, id_product_type } = newProduct;
+    const { name, description, price, id_sector, id_product_type, flavor } = newProduct;
 
     if (image) image = fs.readFileSync(path.join(__dirname, './images/' + image.filename));
     else image = null;
@@ -89,7 +89,7 @@ const productPostDB = (newProduct, imageProduct) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlInsert, [null, name, description, image, price, id_sector, id_product_type, 1], (error) => {
+            db.query(sqlInsert, [null, name, description, image, price, id_sector, id_product_type, 1, JSON.parse(flavor)], (error) => {
                 if (error) reject(error);
                 else resolve();
             });
@@ -100,7 +100,7 @@ const productPostDB = (newProduct, imageProduct) => {
 
 
 const productSupplyPostDB = (newProduct, imageProduct) => {
-    const { name, description, price, id_sector, id_product_type, supplies } = newProduct;
+    const { name, description, price, id_sector, id_product_type, supplies, flavor } = newProduct;
     let id_product;
     let image = imageProduct;
     let arrSupplies = JSON.parse(supplies);
@@ -109,7 +109,7 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
     else image = null;
 
     const selectMaxIdProduct = 'SELECT MAX(id_product) AS last_id_product FROM PRODUCTS';
-    const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)';
+    const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
     const sqlInsertProductsSupplies = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
 
     return new Promise((resolve, reject) => {
@@ -122,7 +122,7 @@ const productSupplyPostDB = (newProduct, imageProduct) => {
             db.beginTransaction((error) => {
                 if (error) reject(error);
 
-                db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1], (error, result) => {
+                db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1, JSON.parse(flavor)], (error, result) => {
                     if (error) {
                         return db.rollback(() => reject(error))
                     }
@@ -191,9 +191,9 @@ const typeSupplyGetDB = () => {
 
 
 const supplyGetDB = () => {
-    const sqlSelect = "SELECT id_supply, name, description FROM SUPPLIES ORDER BY name"
+    const sqlSelect = "SELECT * FROM SUPPLIES ORDER BY name"
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { 
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
@@ -209,14 +209,14 @@ const supplyGetDB = () => {
 
 const typeProductPostDB = (newTypeProduct) => {
 
-    const sqlInsert = "INSERT INTO PRODUCT_TYPES (name, description) VALUES (?, ?)"
-    const { name, description } = newTypeProduct;
+    const sqlInsert = "INSERT INTO PRODUCT_TYPES VALUES(null, ?, ?, ?)"
+    const { name, description, id_sector } = newTypeProduct;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlInsert, [name, description], (error) => {
+            db.query(sqlInsert, [name, description, id_sector], (error) => {
                 if (error) reject(error);
                 else resolve();
             });
@@ -246,7 +246,7 @@ const productDeleteDB = (productDeleteID) => {
 
 const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
-    const { id_product, name, description, price, id_sector, id_product_type } = productUpdate;
+    const { id_product, name, description, price, id_sector, id_product_type, flavor } = productUpdate;
     let image = imageUpdate;
     let valuesToUpdate = [];
     let sqlInsert = "";
@@ -256,12 +256,12 @@ const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
     // Check if the image is modified from the front ...
     if (flagImage == 'true') {
-        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, id_product]
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, JSON.parse(flavor), id_product, ]
     }
     else {
-        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, price, id_sector, id_product_type, id_product]
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, price, id_sector, id_product_type, JSON.parse(flavor), id_product,];
     }
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -278,7 +278,7 @@ const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
 
 const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
-    const { id_product, name, description, price, id_sector, id_product_type, supplies } = productUpdate;
+    const { id_product, name, description, price, id_sector, id_product_type, supplies, flavor } = productUpdate;
     let arrSupplies = JSON.parse(supplies);
     let image = imageUpdate;
     let valuesToUpdate = [];
@@ -289,12 +289,12 @@ const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
     // Check if the image is modified from the front ...
     if (flagImage == 'true') {
-        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, id_product]
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, JSON.parse(flavor), id_product,]
     }
     else {
-        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, price, id_sector, id_product_type, id_product]
+        sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
+        valuesToUpdate = [name, description, price, id_sector, id_product_type, JSON.parse(flavor), id_product,]
     }
 
     const sqlDelete = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';

@@ -1,9 +1,3 @@
-.formRow {
-  margin: 1em 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .form-radio-group {
   flex-direction: column;
 }
@@ -31,16 +25,15 @@
 
 .form-control {
   font-family: 'Abel', sans-serif !important;
-  font-size: 1.2rem !important; 
+  font-size: 1.2rem !important;
 }
 
-.table-control{
+.table-control {
   font-family: 'Abel', sans-serif !important;
   font-size: 1.1rem !important;
 }
 
 @media (min-width: 768px) {
-  .formRow,
   .form-radio-group {
     flex-direction: row;
   }
@@ -49,13 +42,11 @@
     overflow: hidden;
     padding-right: 1em;
   }
-  .form-control-input,
-  .form-combo-btn {
+  .form-control-input, .form-combo-btn {
     padding-left: 1em;
     width: 70%;
   }
-  .form-control-label,
-  .form-radio-group {
+  .form-control-label, .form-radio-group {
     padding-top: 0.375rem;
   }
 }

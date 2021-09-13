@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("./controller");
+const supplyController = require("../controllers/supplyController");
 const multer = require('multer');
 const path = require('path');
 
@@ -43,6 +44,8 @@ router.post("/productSupply/new", fileUpload, productController.postProductSuppl
 router.post("/product/new", fileUpload, productController.postProduct); 
 
 router.get("/image/:id", productController.getImage); 
+
+router.post("/supply/new", supplyController.postSupply);
 
 //#endregion
 
