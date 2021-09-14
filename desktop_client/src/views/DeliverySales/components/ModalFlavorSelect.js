@@ -24,7 +24,7 @@ const ModalFlavorSelect = (props) => {
     const [I,setI] = useState(0);
 
     useEffect(()=> {
-        axios.get( PORT() + `/api/flavors`)
+        axios.get( PORT() + `/api/allFlavors`)
         .then((response) => {
             setAllFlavors(response.data)
             setFlavors(response.data)
@@ -184,7 +184,6 @@ const mapDispatchToProps = {
     subtractTotalDelivery,
     addFlavorsProduct,
     deleteFlavorsProduct
-    /*insertDeliveryProducts*/
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFlavorSelect);

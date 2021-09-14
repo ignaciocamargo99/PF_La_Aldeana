@@ -11,7 +11,7 @@ const PayTypesGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
-            db.release();
+            db.release();    
         })
     });
 };
@@ -64,4 +64,21 @@ const salePostDB = (newSale) => {
     });
 };
 
-module.exports = { PayTypesGetDB, salePostDB }
+const ProductXSupplyGetDB = () => {
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+
+module.exports = { PayTypesGetDB, salePostDB, ProductXSupplyGetDB }
