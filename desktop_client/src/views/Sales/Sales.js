@@ -57,14 +57,14 @@ const Sales = (props) => {
     useEffect(() => {
         if (readyStock1 && readyStock2 && readyStock3)
         {
-            console.log("entra");
             thereIsStock(); 
+            
+            //SACAR EL CONSOLE LOG
             console.log(props.products);
         }
     },[readyStock1, readyStock2, readyStock3])
 
     const thereIsStock = () => {
-        console.log("hola");
         let aux = props.products;
         let i,j,k,l,next_stock;
         let auxSuppliesXProduct = [];
@@ -139,6 +139,7 @@ const Sales = (props) => {
 
     const registerSale = () => {
         if (ready) {
+            console.log(props.detailProducts);
             let sale = {
                 date_hour: dateTimeFormat(new Date()), total_amount: props.totalAmount,
                 id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
@@ -146,7 +147,9 @@ const Sales = (props) => {
 
             Axios.post(`${PORT()}/api/sales/new`, sale)
                 .then((sale) => {
-                    if (sale.data.Ok) warningMessage("Exito!", "Se registró la venta con exito", "success");
+                    if (sale.data.Ok) {
+                        warningMessage("Exito!", "Se registró la venta con exito", "success");
+                    }
                     else warningMessage('¡Error!', 'Ha ocurrido un error al registrar la venta.', "error");
                 })
                 .catch(error => console.log(error))

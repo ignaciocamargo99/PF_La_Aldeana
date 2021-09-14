@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh } from '../../../actions/SalesActions';
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";
@@ -13,17 +13,56 @@ const DetailSale = (props) => {
 
     const [ready, setReady] = useState(false);
     const [printModal, setPrintModal] = useState(false);
+    const [productDetail, setProductDetail] = useState([]);
     
     // "N":new -- "M":modify -- "A":add -- "D":delete
     const [actionModal, setActionModal] = useState();
 
     let aux = 0;
 
+    const recursiveSearch = (id, contador) => {
+        let auxiliar = productDetail.find(n => n.id_product == id);
+        console.log("adentro");
+        console.log(auxiliar);
+        contador = contador + 1;
+        if (auxiliar){
+            return auxiliar
+        }
+        else {
+            if (contador < 5) {
+                props.updateRefresh(!props.refresh);
+                recursiveSearch(id);
+            }
+            
+        }
+    }
+
+    useEffect(() => {
+        setProductDetail(props.detailProducts);
+        console.log("actualizo estado array");
+        console.log(productDetail);
+    },[props.detailProducts])
+
     const changePrintModalModify = (e) => {
         const id = e.target.value;
-        props.updateProductSelected(props.detailProducts.find(n => n.id_product == id));
-        setActionModal("M");
+        //props.updateProductSelected(props.detailProducts.find(n => n.id_product == id));
+
+        let contador = 0;
+        let product = recursiveSearch(id, contador);
+        console.log("afuera");
+        console.log(product);
+        if (product)
+        {
+            console.log("esta bien");
+        }
+        else{
+            console.log("esta mal");
+        }
+        //props.updateProductSelected(product);
+
+        setActionModal("M");      
         setPrintModal(true);
+        props.updateRefresh(!props.refresh);
     }
 
     const changePrintModalDelete = (e) => {
@@ -31,8 +70,9 @@ const DetailSale = (props) => {
         props.updateProductSelected(props.detailProducts.find(n => n.id_product == id));
         setActionModal("D");
         setPrintModal(true);
+        props.updateRefresh(!props.refresh);
     }
-    
+
     useEffect(() => {
         if (props.detailProducts.length > 0) {
             setReady(true);
@@ -110,7 +150,8 @@ const mapDispatchToProps = {
     updatePayType,
     updateTotalAmount,
     updateDetailsProductsModify,
-    updateProductSelected
+    updateProductSelected,
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailSale);

@@ -15,6 +15,7 @@ const ModalProduct = (props) => {
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
 
+
     const cancel = () => {
         props.setShowModal(false);
         setSubtotal(null);
@@ -72,16 +73,14 @@ const ModalProduct = (props) => {
     const registerProduct = () => {
         if (ready) {
             if (props.actionModal == "N") {
-                let aux = [props.productSelected];
+                let aux = props.productSelected;
 
-                aux?.map((element, i) => {
-                    element.quantity = quantity;
-                    element.subtotal = subtotal;
-                    element.stock_current = element.stock_initial - parseFloat(quantity);
-                }); 
+                aux.quantity = quantity;
+                aux.subtotal = subtotal;
+                aux.stock_current = aux.stock_initial - parseFloat(quantity);
 
                 props.updateProductSelected(aux);
-                props.updateDetailProducts(props.productSelected);
+                props.updateDetailProducts(aux);
             }
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
@@ -124,25 +123,25 @@ const ModalProduct = (props) => {
             {(props.actionModal != "D") &&
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >
                     <ModalHeader>
-                        <h2>{props.productSelected.name}</h2>
+                        <h2>{props.productSelected?.name}</h2>
                     </ModalHeader>
                     <ModalBody>
                         <div className='formRow'>
                             <label className='label-modal'>Descripción:&nbsp;</label>
-                            <label>{props.productSelected.description}</label>
+                            <label>{props.productSelected?.description}</label>
                         </div>
                         <div className='formRow'>
                             <label className='label-modal'>Precio:&nbsp;$</label>
-                            <label className='label-modal'>{props.productSelected.price}</label>
+                            <label className='label-modal'>{props.productSelected?.price}</label>
                         </div>
                         <div className='formRow'>
                             <div className='col-6'>
                                 <label className='label-modal'>Sector:&nbsp;</label>
-                                <label>{props.productSelected.name_sector}</label>
+                                <label>{props.productSelected?.name_sector}</label>
                             </div>
                             <div className='col-6'>
                                 <label className='label-modal'>Tipo producto:&nbsp;</label>
-                                <label>{props.productSelected.name_product_type}</label>
+                                <label>{props.productSelected?.name_product_type}</label>
                             </div>
                         </div>
                         <div className='formRow'>
