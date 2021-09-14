@@ -61,20 +61,35 @@ const ListProducts = (props) => {
                         tbody={
                             props.productsQuantities?.map((productQuantity, i) => {
                             if((productQuantity.product.id_sector === parseInt(props.filter) || parseInt(props.filter) === 0) && (productQuantity.product.name.toUpperCase().includes(searchState.toUpperCase()))){
-                                return (
-                                    <tbody key={i}>
+                                if(props.productsNotStock.includes(productQuantity.product.id_product)){
+                                    return(<tbody key={i}>
                                         <tr>
-                                            <td style={{ textAlign: 'center', width: '58%'}}><label>{productQuantity.product.name}</label></td>
-                                            <td style={{ textAlign: 'center', width: '15%'}}><label>{productQuantity.product.price}</label></td>
-                                            <td style={{ textAlign: 'center', width: '15%'}}>
-                                                <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => {validateQuantity(e,i)}} onKeyDown={(e) => {validateFloatNumbers(e)}} defaultValue={productQuantity.quantity===0?'':productQuantity.quantity}></input>
-                                            </td>   
-                                            <td style={{ textAlign: 'center', width: '12%'}}>
-                                                <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClick(productQuantity.product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>
+                                            <td style={{ textAlign: 'center', width: '58%', backgroundColor: '#9E9F9F'}}><strike>{productQuantity.product.name}</strike></td>
+                                            <td style={{ textAlign: 'center', width: '15%', backgroundColor: '#9E9F9F'}}><strike>{productQuantity.product.price}</strike></td>
+                                            <td style={{ textAlign: 'center', width: '15%', backgroundColor: '#9E9F9F'}}>
+                                                <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" disabled={true}></input>
+                                            </td>
+                                            <td style={{ textAlign: 'center', width: '12%', backgroundColor: '#9E9F9F'}}>
+                                                <button type="button" className="btn btn-info btn-sm px-3" disabled={true}><FontAwesomeIcon icon={faPlus} /></button>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                )
+                                    </tbody>)
+                                }else{
+                                    return (
+                                        <tbody key={i}>
+                                            <tr>
+                                                <td style={{ textAlign: 'center', width: '58%'}}><label>{productQuantity.product.name}</label></td>
+                                                <td style={{ textAlign: 'center', width: '15%'}}><label>{productQuantity.product.price}</label></td>
+                                                <td style={{ textAlign: 'center', width: '15%'}}>
+                                                    <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => {validateQuantity(e,i)}} onKeyDown={(e) => {validateFloatNumbers(e)}} defaultValue={productQuantity.quantity===0?'':productQuantity.quantity}></input>
+                                                </td>   
+                                                <td style={{ textAlign: 'center', width: '12%'}}>
+                                                    <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClick(productQuantity.product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    )
+                                }
                             }
                         })
                         }
@@ -92,7 +107,8 @@ const ListProducts = (props) => {
 const mapStateToProps = state => {
     return {
         productsQuantities: state.productsQuantitiesDelivery,
-        details: state.detailsDelivery
+        details: state.detailsDelivery,
+        productsNotStock: state.productsNotStockDelivery
     }
 }
 

@@ -1,11 +1,26 @@
 const { readProduct, readTypeProduct, readProductSupply, createProduct,
     createProductSupply, readImageProduct, readTypeSupply, readSupply,
-    createTypeProduct, deleteProduct, updateProduct, updateProductSupply, readAllProduct } = require('./service');
+    createTypeProduct, deleteProduct, updateProduct, updateProductSupply, readAllProduct,
+    readProductNotStock } = require('./service');
 
 // HTTP: GET
 async function getProduct(req, res) {
     try {
         const result = await readProduct();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: GET
+async function getProductNotStock(req, res) {
+    try {
+        const result = await readProductNotStock();
         res.send(result)
     }
     catch (e) {
@@ -207,5 +222,6 @@ async function updateProductsSupplies(req, res) {
 module.exports = {
     getProduct, getTypeProduct, getProductSupply, postProduct,
     postProductSupply, getImage, getTypeSupplies, getSupplies,
-    postTypeProduct, deleteProducts, updateProducts, updateProductsSupplies, getAllProduct
+    postTypeProduct, deleteProducts, updateProducts, updateProductsSupplies, getAllProduct,
+    getProductNotStock
 }

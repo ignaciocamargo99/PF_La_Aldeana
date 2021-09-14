@@ -20,6 +20,25 @@ const productGetDB = () => {
     });
 };
 
+const productNotStockGetDB = () => {
+
+    const sqlSelect = `SELECT pxs.id_product AS id_product
+    FROM PRODUCT_X_SUPPLY pxs INNER JOIN PRODUCTS p ON pxs.id_product = p.id_product INNER JOIN SUPPLIES s ON s.id_supply = pxs.id_supply
+    WHERE pxs.number_supply > s.stock_unit AND p.active = 1`
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const productAllGetDB = () => {
     const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
         'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor ' +
@@ -341,5 +360,6 @@ const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 module.exports = {
     productGetDB, productTypeGetDB, productSupplyGetDB, productSupplyUpdateDB,
     productPostDB, productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
-    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB, productAllGetDB
+    supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB, productAllGetDB,
+    productNotStockGetDB
 };

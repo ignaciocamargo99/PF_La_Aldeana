@@ -86,19 +86,19 @@ const Client = (props) => {
                 </div>
             </div>
             <div className="formRow">
-                <div className="form-control-label col-sm-2">
+                <div className="form-label-no-margin col-sm-1">
                     <label>Calle*</label>
                 </div>
-                <div className="form-control-input col-sm-5">
+                <div className="form-input col-sm-6">
                     <input type="text" className={props.errorStreet?"form-control":"form-control is-valid"} min="0" maxLength="25" onChange={(e) => {onChangeStreet(e)}} placeholder="Ingrese el la calle..." value={props.street}></input>
                     <BeShowed show={props.errorStreet}>
                         <label><b style={{color:'gray'}}>Texto de 1 a 25 caractéres</b></label>
                     </BeShowed>
                 </div>
-                <div className="form-control-label offset-sm-1 col-sm-1">
+                <div className="form-label-no-margin offset-sm-1 col-sm-1">
                     <label>Numero*</label>
                 </div>
-                <div className="form-control-input col-sm-3">
+                <div className="form-input col-sm-3">
                    <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} min="1" max="9999" maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
                     <BeShowed show={props.errorStreetNumber}>
                         <label><b style={{color:'gray'}}>Número de 1 a 4 digitos</b></label>
