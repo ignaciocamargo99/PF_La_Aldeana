@@ -96,7 +96,7 @@ const PaymentSale = (props) => {
                 <BeShowed show={boolPayCard}>
                     <div className='formRow'>
                         <label>Monto Total:  $  </label>
-                        <label id="id_total">{props.totalAmount}</label>
+                        <label id="id_total" style={{textAlign: 'center', verticalAlign: 'middle'}}>{props.totalAmount}</label>
                     </div>
                 </BeShowed>
             </div>

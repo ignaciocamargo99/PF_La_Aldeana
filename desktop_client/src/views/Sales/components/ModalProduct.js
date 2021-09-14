@@ -60,25 +60,25 @@ const ModalProduct = (props) => {
     }, [quantity])
 
     useEffect(() => {
-        if (props.actionModal == "M") {
-            setQuantity(props.productSelected.quantity);
-            setSubtotal(props.productSelected.subtotal);
+        if (props.show) {
+            if (props.actionModal == "M") {
+                setQuantity(props.productSelected.quantity);
+                setSubtotal(props.productSelected.subtotal);
+            }
+            else {
+                setSubtotal(null);
+                setQuantity(0);
+            }
         }
-        else {
-            setSubtotal(null);
-            setQuantity(0);
-        }
-    }, [props.productSelected, refreshModal])
+    }, [props.productSelected, props.show])
 
     const registerProduct = () => {
         if (ready) {
             if (props.actionModal == "N") {
                 let aux = props.productSelected;
-
                 aux.quantity = quantity;
                 aux.subtotal = subtotal;
                 aux.stock_current = aux.stock_initial - parseFloat(quantity);
-
                 props.updateProductSelected(aux);
                 props.updateDetailProducts(aux);
             }
@@ -86,14 +86,12 @@ const ModalProduct = (props) => {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
                 props.productSelected.stock_current = props.productSelected.stock_initial - parseFloat(quantity);
-
                 props.updateDetailsProductsModify(props.productSelected);
             }
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
                 props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
-  
                 props.updateDetailsProductsModify(props.productSelected);
             }
             props.updateRefresh(!props.refresh);
