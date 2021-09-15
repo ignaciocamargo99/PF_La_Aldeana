@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Axios from "axios";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected } from '../../../actions/SalesActions';
-import DivGeneric from "../../../common/DivGeneric";
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh } from '../../../actions/SalesActions';
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";
@@ -10,6 +8,7 @@ import Table from "../../../common/Table/Table";
 import { faMinus, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ModalProduct from "./ModalProduct";
+import '../styles/detailSale.css';
 
 const DetailSale = (props) => {
 
@@ -21,20 +20,22 @@ const DetailSale = (props) => {
 
     let aux = 0;
 
-    const changePrintModalModify = (e) => {
-        const id = e.target.value;
-        props.updateProductSelected(props.detailProducts.find(n => n.id_product == id));
-        setActionModal("M");
+    const changePrintModalModify = (id) => {
+        let product = props.detailProducts?.find(n => n.id_product == id)
+        props.updateProductSelected(product);
+        setActionModal("M");      
         setPrintModal(true);
+        props.updateRefresh(!props.refresh);
     }
 
-    const changePrintModalDelete = (e) => {
-        const id = e.target.value;
-        props.updateProductSelected(props.detailProducts.find(n => n.id_product == id));
+    const changePrintModalDelete = (id) => {
+        let product = props.detailProducts?.find(n => n.id_product == id)
+        props.updateProductSelected(product);
         setActionModal("D");
         setPrintModal(true);
+        props.updateRefresh(!props.refresh);
     }
-    
+
     useEffect(() => {
         if (props.detailProducts.length > 0) {
             setReady(true);
@@ -57,8 +58,8 @@ const DetailSale = (props) => {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Producto</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '130px', verticalAlign: 'middle' }}>Cantidad</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Producto</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
                             <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
                             <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}></th>
                         </>}/>
@@ -72,10 +73,10 @@ const DetailSale = (props) => {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.subtotal}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" value={element.id_product} onClick={(e) => changePrintModalModify(e)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
                                                 <FontAwesomeIcon icon={faPen} />
                                             </button>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" value={element.id_product} onClick={(e) => changePrintModalDelete(e)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
                                                 <FontAwesomeIcon icon={faMinus} />
                                             </button>
                                         </td>
@@ -112,7 +113,8 @@ const mapDispatchToProps = {
     updatePayType,
     updateTotalAmount,
     updateDetailsProductsModify,
-    updateProductSelected
+    updateProductSelected,
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailSale);

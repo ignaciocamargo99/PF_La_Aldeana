@@ -4,7 +4,7 @@ export default function successMessage(typeMessage, message) {
 
     return swal(typeMessage, message, "success")
         .then(() => {
-            window.location.reload();
+            window.scrollTo(0, 0);
         })
 
 }

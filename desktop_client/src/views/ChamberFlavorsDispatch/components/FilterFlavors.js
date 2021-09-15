@@ -25,6 +25,15 @@ const ListFlavors = (props) => {
             .catch(error => console.error(error))
     }, []);
 
+    useEffect(() => {
+        if (props.refresh) {
+            setBoolFamilyFlavor(false);
+            setBoolSearchNameFlavor(false);
+            inputSearchNameFlavor.current.checked = false;
+            inputFamilyFlavor.current.checked = false;
+        }
+    }, [props.refresh])
+
     const handlerOnChangeSearchNameFlavor = () => {
         if (inputSearchNameFlavor.current.checked) {
             let filterFlavorsWithDownList = [];
@@ -67,8 +76,8 @@ const ListFlavors = (props) => {
 
     useEffect(() => {
         let filters = [selectFamilyFlavor];
-        props.updateFiltersFlavors(filters)
-    }, [selectFamilyFlavor, props.updateFiltersFlavors]);
+        props.updateFiltersFlavors(filters);
+    }, [selectFamilyFlavor]);
 
     return (
         <>
@@ -105,13 +114,14 @@ const ListFlavors = (props) => {
 const mapStateToProps = (state) => {
     return {
         elementsTableUp: state.elementsTableUp,
-        allElements: state.allElements
+        allElements: state.allElements,
+        refresh: state.refresh
     };
 };
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
-    updateTableUp,
+    updateTableUp
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListFlavors);

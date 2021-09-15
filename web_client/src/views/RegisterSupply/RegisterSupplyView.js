@@ -100,14 +100,14 @@ const RegisterPurchaseSupplies = (props) => {
     return(
         <>
             <div className="viewTitle">
-                <h1>Registrar Insumos</h1>
+                <h1>Registrar Insumo</h1>
             </div>
             <div className="viewBody">
                 <NameSupply />
                 <DescriptionSupply />
                 <div className="price-form-body ">
                     <div className="price-title">
-                        <label >Precio*</label>
+                        <label >Precio</label>
                     </div>
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{alignSelf: 'center'}}>

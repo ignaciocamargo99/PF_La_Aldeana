@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    updateTableUp
+    updateTableUp,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlavorDispatchAmount);
