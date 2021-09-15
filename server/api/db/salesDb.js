@@ -11,7 +11,7 @@ const PayTypesGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
-            db.release();
+            db.release();    
         })
     });
 };
@@ -48,14 +48,29 @@ const salePostDB = (newSale) => {
                             if (error) {
                                 return db.rollback(() => reject('3:' + error));
                             }
-                            db.commit((error) => {
-                                if (error) {
-                                    return db.rollback(() => reject('4:' + error));
-                                }
-                                else resolve();
-                            });
+                            for (let j = 0; j < arrDetails[i].listSupplies.length; j++) {
+                                
+                                let menos = parseInt(arrDetails[i].quantity) * arrDetails[i].listSupplies[j][0];
+                                let resultado = arrDetails[i].listSupplies[j][1].stock_unit - parseInt(menos);
+                                console.log(arrDetails[i].listSupplies[j][1].stock_unit); 
+                                console.log(menos);
+                                console.log(resultado); 
+                                const sqlUpdateSupply = `UPDATE SUPPLIES SET stock_unit=${resultado} WHERE id_supply=${arrDetails[i].listSupplies[j][1].id_supply}`;
+   
+                                db.query(sqlUpdateSupply, (error) => {
+                                    if (error) {
+                                        return db.rollback(() => reject('4:' + error));
+                                    }    
+                                    db.commit((error) => {
+                                        if (error) {
+                                            return db.rollback(() => reject('5:' + error));
+                                        }
+                                        else resolve();
+                                    });  
+                                })        
+                            }        
                         });
-                    };
+                    }; 
                 });
                 db.release();
             });
@@ -64,4 +79,21 @@ const salePostDB = (newSale) => {
     });
 };
 
-module.exports = { PayTypesGetDB, salePostDB }
+const ProductXSupplyGetDB = () => {
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+
+module.exports = { PayTypesGetDB, salePostDB, ProductXSupplyGetDB }

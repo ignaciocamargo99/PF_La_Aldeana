@@ -6,7 +6,6 @@ const { readFlavor, readTypeFlavor, readFamilyFlavor, createChamberFlavorsDispat
 async function getFlavor(req, res) {
     try {
         const result = await readFlavor();
-
         res.send(result)
     }
     catch (e) {
