@@ -14,7 +14,6 @@ const flavorsRouter = require('./api/routes/flavorRoute');
 const clientsRouter = require('./api/routes/clientRoute');
 const franchiseRouter = require('./api/franchise/router');
 const salesRouter = require('./api/sales/router');
-const dispatchFlavorsRouter = require('./api/routes/flavorRoute');
 const productionsRouter = require('./api/productions/router');
 
 app.use(cors());
@@ -36,7 +35,6 @@ app.use('/api', permissionsRouter);
 app.use('/api', sessionsRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesRouter);
-app.use('/api', dispatchFlavorsRouter);
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', suppliesRouter);
 app.use('/api', flavorsRouter);

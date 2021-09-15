@@ -31,6 +31,7 @@ export default combineReducers({
     elementsTableUp: elementsTableUp,
     allElements: allElements,
     elementsTableDown: elementsTableDown,
+    // Delivery
     payTypeDelivery: payTypeDeliveryReducer,
     amountDelivery: amountDeliveryReducer,
     totalDelivery: totalDeliveryReducer,

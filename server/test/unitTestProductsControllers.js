@@ -7,7 +7,7 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe.skip('Tests unitarios sobre API Products',()=>{
+describe('Tests unitarios sobre API Products',()=>{
     
     describe('Check getTypeProducts',()=>{
         it('Recibe correctamente la funcion', (done) => {
@@ -86,10 +86,10 @@ describe.skip('Tests unitarios sobre API Products',()=>{
     });
     
     describe('Check postTypeProducts',()=>{
-        it.skip('Se inserta correctamente', (done) => {
+        it('Se inserta correctamente', (done) => {
             chai.request(url)
                 .post('/typeProduct/new')
-                .send({name: 'Gaseosas', description: 'Bebidas con gas'})
+                .send({name: 'Gaseosas', description: 'Bebidas con gas', id_sector: 1})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();

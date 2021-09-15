@@ -2,7 +2,8 @@ const { app, BrowserWindow, Menu } = require('electron');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
-const URL_PORT = 'http://localhost:3000/app';
+const URL_PORT = 'http://localhost:3000';
+
 
 let mainWindow;
 let menuApplication = [
@@ -46,7 +47,7 @@ function createWindow() {
 
   // Open the DevTools.
   //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
-  if (isDev) mainWindow.webContents.openDevTools();
+  // if (isDev) mainWindow.webContents.openDevTools();
 
   let menu = Menu.buildFromTemplate(menuApplication);
   mainWindow.setMenu(menu);
