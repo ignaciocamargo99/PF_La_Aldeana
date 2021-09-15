@@ -5,7 +5,7 @@ import { clientsDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, t
      streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
      detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer} from "./DeliverySalesReducers";
 import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, 
-    refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer} from "./SalesReducers";
+    refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
 
@@ -20,6 +20,7 @@ export default combineReducers({
     productsXsupplies: productsXsuppliesReducer,
     supplies: suppliesReducer,
     paymentAmount: paymentAmountReducer,
+    salesRegister: salesRegisterReducer,
     //Menu
     location: location,
     menu: menu,

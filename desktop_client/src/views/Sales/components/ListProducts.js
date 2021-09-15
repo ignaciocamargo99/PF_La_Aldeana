@@ -15,8 +15,7 @@ const ListProducts = (props) => {
     // "N":new -- "M":modify -- "A":add -- "D":delete
     const [actionModal, setActionModal] = useState();
 
-    const changePrintModal = (e) => {
-        const id = e.target.value;
+    const changePrintModal = (id) => {
         if (props.detailProducts.some(n => n.id_product == id)) {
             props.updateProductSelected(props.detailProducts.find(n => n.id_product == id))
             setActionModal("A");
@@ -34,7 +33,7 @@ const ListProducts = (props) => {
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (
                     <div key={i}>
-                        <button className="btn_products" id={`btn_${product.id_product}`} type='button' value={product.id_product} onClick={(e) => changePrintModal(e)}>{product.name}</button>
+                        <button className="btn_products" id={`btn_${product.id_product}`} type='button' value={product.id_product} onClick={(e) => changePrintModal(product.id_product)}>{product.name}</button>
                     </div>
                 )
             })}></DivGeneric>

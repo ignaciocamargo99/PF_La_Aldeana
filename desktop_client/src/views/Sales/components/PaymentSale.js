@@ -18,6 +18,15 @@ const PaymentSale = (props) => {
     const divPayValidation = useRef(null);
 
     useEffect(() => {
+        setBoolPayCash(false);
+        setBoolPayCard(false);
+        setTurned(null);
+        setclassNamePay("form-control");
+        document.getElementById("id_selectPayTypes").value = "-1";
+        props.updatePayType("0");
+    },[props.salesRegister])
+
+    useEffect(() => {
         Axios.get(`${PORT()}/api/payTypes`) 
             .then(response => {
                 setPayTypes(response.data);
@@ -39,6 +48,8 @@ const PaymentSale = (props) => {
         {
             setBoolPayCash(false);
             setBoolPayCard(true);
+            setTurned(null);
+            setclassNamePay("form-control");
         }
     },[props.payType])
 
@@ -90,7 +101,7 @@ const PaymentSale = (props) => {
                     </div>
                     <div className='formRow'>
                         <label>Vuelto:  $  </label>
-                        <label id="id_turned">{parseFloat(turned,2)}</label>
+                        <label id="id_turned">{turned?parseFloat(turned,2):""}</label>
                     </div>
                 </BeShowed>
                 <BeShowed show={boolPayCard}>
@@ -112,7 +123,8 @@ const mapStateToProps = state => {
         payType: state.payType,
         totalAmount: state.totalAmount,
         refresh: state.refresh,
-        paymentAmount: state.paymentAmount
+        paymentAmount: state.paymentAmount,
+        salesRegister: state.salesRegister
     }
 }
 

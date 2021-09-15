@@ -28,6 +28,8 @@ export const detailProductsReducer = (state = [], action) => {
             aux = state;
             aux.splice(pos, 1);
             return aux
+        case 'UPDATE_DETAIL_PRODUCTS_CLEAR':
+            return action.payload
         default:
             return state
     }
@@ -77,6 +79,13 @@ export const suppliesReducer = (state = [], action) => {
 
 export const paymentAmountReducer = (state = null, action) => {
     if(action.type === 'UPDATE_PAYMENT_AMOUNT'){
+        return action.payload
+    }
+    return state
+}
+
+export const salesRegisterReducer = (state = true, action) => {
+    if(action.type === 'SALES_REGISTER'){
         return action.payload
     }
     return state
