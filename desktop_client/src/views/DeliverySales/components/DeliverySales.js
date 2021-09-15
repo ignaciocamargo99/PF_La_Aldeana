@@ -8,7 +8,7 @@ import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
+    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
@@ -25,16 +25,6 @@ const DeliverySales = (props) => {
     useEffect(() => {
         let date = DateFormat(new Date())
         setDate(date)   
-    },[])
- 
-    useEffect(() => {
-        axios.get( PORT() + `/api/clients`)
-        .then((response) => {
-            props.updateDeliveryClients(response.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
     },[])
 
     useEffect(() => {
@@ -63,25 +53,37 @@ const DeliverySales = (props) => {
     },[])
 
     const confirmSale = () => {
-        let details = []
-        props.details.map((detail,i) => {
-            details.push(
-                {
-                    "id_product": detail.product.id_product,
-                    "quantity": detail.quantity,
-                    "subtotal": detail.subtotal
-                }
-            )
-        })
-        let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
-        axios.post(`${PORT()}/api/sales/new`, sale)
-            .then((sale) => {
-                if(sale.data.Ok) {
-                    resetStates()
-                }
-                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+        let next = true
+        if(props.client === null){
+            axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
+        }
+        else{
+            if(props.client.street_name !== props.street || props.client.street_number !== props.streetNumber){
+                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`,{"street_name":props.street,"street_number":props.streetNumber})
+            }
+        }
+        
+        if(next){
+            let details = []
+            props.details.map((detail,i) => {
+                details.push(
+                    {
+                        "id_product": detail.product.id_product,
+                        "quantity": detail.quantity,
+                        "subtotal": detail.subtotal
+                    }
+                )
             })
-            .catch(error => console.log(error))
+            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
+            axios.post(`${PORT()}/api/sales/new`, sale)
+                .then((sale) => {
+                    if(sale.data.Ok) {
+                        resetStates()
+                    }
+                    else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+                })
+                .catch(error => console.log(error))
+        }
     }
 
     const resetStates = () => {
@@ -138,13 +140,13 @@ const mapStateToProps = state => {
         errorStreetNumber: state.errorStreetNumberDelivery, errorNames: state.errorNamesDelivery,
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
-        total: state.totalDelivery, clients: state.clientsDelivery, cellphone: state.cellphoneDelivery,
+        total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
         names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
     }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProductsQuantities, updateDeliveryClients, resetDetailDelivery,updateErrorStreetNumberDelivery, 
+    updateDeliveryProductsQuantities, resetDetailDelivery,updateErrorStreetNumberDelivery, 
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
     updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsNotStock

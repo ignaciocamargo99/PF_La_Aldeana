@@ -1,8 +1,8 @@
 const { clientGetDB, clientPostDB, clientPutDB } = require('../db/clientDb');
 
-const readClient = async () => {
+const readClient = async (cellphone) => {
     try {
-        let res = await clientGetDB();
+        let res = await clientGetDB(cellphone);
         return res;
     }
     catch {

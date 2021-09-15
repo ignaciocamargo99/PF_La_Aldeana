@@ -1,8 +1,15 @@
 
 const pool = require('../../config/connection');
 
-const clientGetDB = () => {
-    const sqlSelect = `SELECT * FROM CLIENTS`;
+const clientGetDB = (cellphone) => {
+    console.log(cellphone)
+    let sqlSelect;
+    if(cellphone !== undefined){
+        sqlSelect = `SELECT * FROM CLIENTS WHERE cellphone = ${cellphone}`;
+    }
+    else{
+        sqlSelect = `SELECT * FROM CLIENTS`;
+    }
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

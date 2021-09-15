@@ -3,7 +3,7 @@ const {readClient, createClient, modifyClient} = require('../services/clientServ
 // HTTP: GET
 async function getClient(req, res) {
     try {
-        const result = await readClient();
+        const result = await readClient(req.params.cellphone);
         res.send(result)
     }
     catch (e) {

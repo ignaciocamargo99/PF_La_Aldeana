@@ -1,12 +1,16 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import BeShowed from '../../../common/BeShowed';
-import { updateCellphoneDelivery, updateErrorCellphoneDelivery, updateNamesDelivery, updateErrorNamesDelivery,
+import { updateDeliveryClient ,updateCellphoneDelivery, updateErrorCellphoneDelivery, updateNamesDelivery, updateErrorNamesDelivery,
         updateStreetDelivery, updateErrorStreetDelivery, updateStreetNumberDelivery, updateErrorStreetNumberDelivery} from '../../../actions/DeliverySalesActions';
 import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 
+const PORT = require('../../../config');
+
 const Client = (props) => {
+
 
     const onChangeCellphone = (e) => {
         props.updateErrorCellphoneDelivery(false)
@@ -16,7 +20,24 @@ const Client = (props) => {
         props.updateCellphoneDelivery(e.target.value)
         if(!validateInput(e.target.value.trim(),10,10)){
             props.updateErrorCellphoneDelivery(true)
-        } 
+        }
+        if(e.target.value.length === 10){
+            axios.get( `${PORT()}/api/clients/${e.target.value}`)
+            .then((response) => {
+                if(response.data.length !== 0){
+                    props.updateDeliveryClient(response.data[0])
+                    props.updateErrorNamesDelivery(false)
+                    props.updateNamesDelivery(response.data[0].names)
+                    props.updateErrorStreetDelivery(false)
+                    props.updateStreetDelivery(response.data[0].street_name)
+                    props.updateErrorStreetNumberDelivery(false)
+                    props.updateStreetNumberDelivery(response.data[0].street_number)
+                }
+                else{
+                    props.updateDeliveryClient(null)
+                }
+            })
+        }
     }
 
     const onChangeNames = (e) => {
@@ -46,18 +67,6 @@ const Client = (props) => {
         }
     }
 
-    const onBlurCellphone = (e) =>{
-        let x = props.clients.find( client => client.cellphone === parseInt(e.target.value))
-        if(x !== undefined){
-            props.updateErrorNamesDelivery(false)
-            props.updateNamesDelivery(x.names)
-            props.updateErrorStreetDelivery(false)
-            props.updateStreetDelivery(x.street_name)
-            props.updateErrorStreetNumberDelivery(false)
-            props.updateStreetNumberDelivery(x.street_number)
-        }
-    }
-
     return(
         <>
             <div className="formRow">
@@ -68,7 +77,7 @@ const Client = (props) => {
                     <label>Numero de celular*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} min="0" max="9999999999" maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onBlur={(e) => {onBlurCellphone(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
+                    <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} min="0" max="9999999999" maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
                     <BeShowed show={props.errorCellphone}>
                         <label><b style={{color:'gray'}}>Número de 10 digitos</b></label>
                     </BeShowed>
@@ -119,7 +128,6 @@ const mapStateToProps = state => {
         errorStreet: state.errorStreetDelivery,
         streetNumber: state.streetNumberDelivery,
         errorStreetNumber: state.errorStreetNumberDelivery,
-        clients: state.clientsDelivery
     }
 }
 
@@ -132,6 +140,7 @@ const mapDispatchToProps = {
     updateErrorStreetDelivery,
     updateStreetNumberDelivery,
     updateErrorStreetNumberDelivery,
+    updateDeliveryClient
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Client);
