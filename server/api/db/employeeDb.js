@@ -17,17 +17,14 @@ const employeeGetDB = () => {
     });
 };
 
-const employeeDeleteDB = (deleteEmployee) => {
-    const sqlSelect = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
-    let dni;
-    if (deleteEmployee) dni = deleteEmployee.dni
-    else throw Error('El dni es null');
+const chargeGetDB = () => {
+    const sqlSelect = `SELECT id_charge, name from CHARGES`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect, [dni], (error, result) => {
+            db.query(sqlSelect, (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
@@ -36,4 +33,23 @@ const employeeDeleteDB = (deleteEmployee) => {
     });
 };
 
-module.exports = { employeeGetDB, employeeDeleteDB };
+const employeeDeleteDB = (deleteEmployee) => {
+    const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
+    let dni;
+    if (deleteEmployee) dni = deleteEmployee.dni
+    else throw Error('El dni es null');
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlUpdate, [dni], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB };

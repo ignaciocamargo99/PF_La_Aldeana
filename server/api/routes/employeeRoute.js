@@ -9,6 +9,8 @@ router.get('/employees', employeeController.getEmployee);
 
 router.put('/employee/delete', employeeController.deleteEmployee);
 
+router.get('/charges', employeeController.getCharges);
+
 //#endregion
 
 

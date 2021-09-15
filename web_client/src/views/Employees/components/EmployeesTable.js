@@ -26,7 +26,7 @@ export default function EmployeesTable() {
 
     const deleteEmployee = (i) => {
         let aux = [];
-        employees?.map((e, j) => {
+        employees?.forEach((e, j) => {
             if (j !== i) {
                 aux[j] = e;
             }

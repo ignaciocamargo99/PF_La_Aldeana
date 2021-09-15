@@ -1,4 +1,4 @@
-const { employeeGetDB, employeeDeleteDB } = require('../db/employeeDb');
+const { employeeGetDB, employeeDeleteDB, chargeGetDB } = require('../db/employeeDb');
 
 const readEmployee = async () => {
     try {
@@ -7,6 +7,16 @@ const readEmployee = async () => {
     }
     catch {
         throw Error('Error. No se han podido leer los empleados.')
+    };
+};
+
+const readCharges = async () => {
+    try {
+        let res = await chargeGetDB();
+        return res;
+    }
+    catch {
+        throw Error('Error. No se han podido leer los cargos de empleados.')
     };
 };
 
@@ -20,4 +30,4 @@ const deleteEmployees = async (deleteEmployee) => {
     };
 };
 
-module.exports = { readEmployee, deleteEmployees };
+module.exports = { readEmployee, deleteEmployees, readCharges };
