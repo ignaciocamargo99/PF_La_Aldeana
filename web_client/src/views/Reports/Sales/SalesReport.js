@@ -25,8 +25,15 @@ const SalesReport = (props) => {
                     <Options />
                 </div>
 
+                <br/>
+
                 <BeShowed show={props.productSales.length > 0}>
-                    <div className="row">
+
+                    <h5 style={{ textAlign: 'center', verticalAlign: 'middle'}}>Productos vendidos desde {props.dateFrom} hasta {props.dateTo}</h5>
+
+                    <hr />
+
+                    <div className="formRow">
                         <div className="col-sm-8">
                             <ListProductSales />
                         </div>
