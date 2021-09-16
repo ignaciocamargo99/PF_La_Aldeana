@@ -13,6 +13,7 @@ router.get('/charges', employeeController.getCharges);
 
 router.post('/newEmployee', employeeController.newEmployee);
 
+router.put('/updateEmployee', employeeController.updateEmployee);
 //#endregion
 
 

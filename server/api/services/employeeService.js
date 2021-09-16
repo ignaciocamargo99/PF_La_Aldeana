@@ -1,4 +1,4 @@
-const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB } = require('../db/employeeDb');
+const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB } = require('../db/employeeDb');
 
 const readEmployee = async () => {
     try {
@@ -40,4 +40,14 @@ const createEmployee = async (newEmployee) => {
     };
 };
 
-module.exports = { readEmployee, deleteEmployees, readCharges, createEmployee };
+const modifyEmployee = async (updateEmployee) => {
+    try {
+        let res = await employeeUpdateDB(updateEmployee);
+        return res;
+    }
+    catch {
+        throw Error('Error, no se han podido actualizar los datos del empleado.');
+    };
+};
+
+module.exports = { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee };

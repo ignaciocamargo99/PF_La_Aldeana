@@ -1,5 +1,5 @@
 
-const { readEmployee, deleteEmployees, readCharges, createEmployee } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -63,4 +63,21 @@ async function newEmployee(req, res) {
     }
 }
 
-module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee }
+// HTTP: UPDATE
+async function updateEmployee(req, res) {
+    try {
+        await modifyEmployee(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Empleado actualizado exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee }

@@ -1,5 +1,3 @@
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from "react";
@@ -12,19 +10,18 @@ import DeleteEmployeeButton from './DeleteEmployeeButton';
 import backupEmployee from './EditEmployee/backupEmployee';
 import EditEmployee from "./EditEmployee/EditEmployee";
 import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
+import ReadEmployee from './ReadEmployee/ReadEmployee';
+import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
 
 const PORT = require('../../../config');
 
 export default function EmployeesTable() {
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+    const [isReading, setIsReading] = useState(false);
     const [employees, setEmployees] = useState([]);
     const [editing, setEditing] = useState({});
-
-
-    const [backup, setBackup] = useState({});
-
-
+    const [reading, setReading] = useState({});
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
@@ -50,14 +47,31 @@ export default function EmployeesTable() {
         let aux = backupEmployee(employees);
         aux.name = employees.name;
         aux.lastName = employees.last_name;
-        aux.date = moment(employees.date_admission).format('YYYY-MM-DD')
+        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
+        aux.previousDni = employees.dni;
         aux.editing = true;
-        setBackup(employees);
         setEditing(aux);
         setIsEditing(true);
     }
 
-    const cancelEditEmployee = () => setIsEditing(false);
+    const readEmployee = (employees) => {
+        let aux = employees;
+        aux.lastName = employees.last_name;
+        aux.employmentRelationship = employees.employment_relationship;
+        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
+        aux.reading = true;
+        setReading(aux);
+        setIsReading(true);
+    }
+
+    const cancelEditEmployee = () => {
+        setIsEditing(false);
+        window.scrollTo(0, 0);
+    }
+    const returnReadEmployee = () => {
+        setIsReading(false);
+        window.scrollTo(0, 0);
+    }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -67,7 +81,7 @@ export default function EmployeesTable() {
                 <LoaderSpinner color="primary" loading="Cargando..." />
             )}
             {!isLoadingSpinner && (
-                <BeShowed show={!isEditing}>
+                <BeShowed show={!isEditing && !isReading}>
                     <Table>
                         <HeaderTable
                             th={
@@ -75,7 +89,7 @@ export default function EmployeesTable() {
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha ingreso</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
@@ -92,7 +106,7 @@ export default function EmployeesTable() {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <button id='readEmployeeButton' type="button" className="sendEdit"><FontAwesomeIcon icon={faEye} /></button>
+                                                <ReadEmployeeButton employee={element} read={readEmployee} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <EditEmployeeButton employee={element} edit={editEmployee} />
@@ -110,6 +124,9 @@ export default function EmployeesTable() {
             )}
             <BeShowed show={isEditing}>
                 <EditEmployee cancel={cancelEditEmployee} employee={editing} />
+            </BeShowed>
+            <BeShowed show={isReading}>
+                <ReadEmployee return={returnReadEmployee} employee={reading} />
             </BeShowed>
         </>
     );

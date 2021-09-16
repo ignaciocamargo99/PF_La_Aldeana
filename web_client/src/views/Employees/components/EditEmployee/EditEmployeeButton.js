@@ -11,6 +11,6 @@ export default function EditEmployeeButton (props) {
     }
     
     return (
-        <button id='editProductButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+        <button id='editEmployeeButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
     );
 }

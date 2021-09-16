@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 
 export default function RegisterEmployee(props) {
@@ -24,7 +25,7 @@ export default function RegisterEmployee(props) {
             data.dni = dni;
             props.load(data);
         }
-        else{
+        else {
             setIsValidClassDNI("form-control");
             data.dni = dni;
             props.load(data);
@@ -38,7 +39,7 @@ export default function RegisterEmployee(props) {
             data.lastName = lastName;
             props.load(data);
         }
-        else{
+        else {
             setIsValidClassLastName("form-control");
             data.lastName = lastName;
             props.load(data);
@@ -71,8 +72,12 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="employeeName" >Nombre*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} 
-                    onChange={handleName} placeholder="Ingrese nombre..." defaultValue={props.data.name} />
+                    <BeShowed show={props.data.reading}>
+                        <input className={isValidClass} id="employeeName" readOnly type="text" maxLength="80" ref={inputName} defaultValue={props.data.name} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} onChange={handleName} placeholder="Ingrese nombre..." defaultValue={props.data.name} />
+                    </BeShowed>
                 </div>
             </div>
             <div className="formRow">
@@ -80,8 +85,12 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="lastName" >Apellido*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} 
-                    onChange={handleLastName} placeholder="Ingrese apellido..." defaultValue={props.data.lastName}/>
+                    <BeShowed show={props.data.reading}>
+                        <input className={isValidClassLastName} id="lastName" readOnly type="text" maxLength="80" ref={inputLastName} defaultValue={props.data.lastName} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} onChange={handleLastName} placeholder="Ingrese apellido..." defaultValue={props.data.lastName} />
+                    </BeShowed>
                 </div>
             </div>
             <div className="formRow">
@@ -89,8 +98,12 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="dniEmployee" >DNI*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={isValidClassDNI} id="dniEmployee" type="number" ref={inputDni} onChange={handleDni} min="1" placeholder="Ingrese DNI..."
-                    onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.dni}/>
+                    <BeShowed show={props.data.reading}>
+                        <input className={isValidClassDNI} id="dniEmployee" readOnly type="number" ref={inputDni} onChange={handleDni} defaultValue={props.data.dni} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className={isValidClassDNI} id="dniEmployee" type="number" ref={inputDni} onChange={handleDni} min="1" placeholder="Ingrese DNI..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.dni} />
+                    </BeShowed>
                 </div>
             </div>
         </>
