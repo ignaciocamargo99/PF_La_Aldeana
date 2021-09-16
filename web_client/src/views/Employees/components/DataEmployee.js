@@ -71,7 +71,8 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="employeeName" >Nombre*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} onChange={handleName} placeholder="Ingrese nombre..." />
+                    <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} 
+                    onChange={handleName} placeholder="Ingrese nombre..." defaultValue={props.data.name} />
                 </div>
             </div>
             <div className="formRow">
@@ -79,7 +80,8 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="lastName" >Apellido*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} onChange={handleLastName} placeholder="Ingrese apellido..." />
+                    <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} 
+                    onChange={handleLastName} placeholder="Ingrese apellido..." defaultValue={props.data.lastName}/>
                 </div>
             </div>
             <div className="formRow">
@@ -88,7 +90,7 @@ export default function RegisterEmployee(props) {
                 </div>
                 <div className="form-control-input">
                     <input className={isValidClassDNI} id="dniEmployee" type="number" ref={inputDni} onChange={handleDni} min="1" placeholder="Ingrese DNI..."
-                        onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} />
+                    onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.dni}/>
                 </div>
             </div>
         </>

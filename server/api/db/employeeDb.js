@@ -2,7 +2,7 @@
 const pool = require('../../config/connection');
 
 const employeeGetDB = () => {
-    const sqlSelect = `SELECT dni, name, last_name, date_admission ,charge
+    const sqlSelect = `SELECT dni, name, last_name, date_admission ,charge, employment_relationship
                     FROM EMPLOYEES WHERE active = 1 ORDER BY last_name`;
 
     return new Promise((resolve, reject) => {

@@ -39,15 +39,15 @@ export default function RegisterEmployee() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar empleado"}</div>
-            <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Registrar empleado" />
             <div className="viewTitle">
                 <h1>Registrar empleado</h1>
             </div>
             <div className="viewBody">
+                <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Registrar empleado" />
                 <DataEmployee load={load} data={data} />
                 <ExtraDataEmployee load={load} data={data} />
                 <Buttons
-                    label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee} 
+                    label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
                     data={data} actionCancel={cancelRegisterEmployee}
                 />
             </div>
