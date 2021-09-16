@@ -164,3 +164,10 @@ export const updateDeliveryClients = (clients) => {
         payload: clients
     }
 }
+
+export const updateDeliveryProductsNotStock = (productsNotStock) => {
+    return{
+        type: 'UPDATE_DELIVERY_PRODUCTS_NOT_STOCK',
+        payload: productsNotStock
+    }
+}

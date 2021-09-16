@@ -2,7 +2,7 @@
 const pool = require('../../config/connection');
 
 const clientGetDB = () => {
-    const sqlSelect = `SELECT * FROM CLIENTS c INNER JOIN ADDRESS a ON c.cellphone = a.cellphone_number`;
+    const sqlSelect = `SELECT * FROM CLIENTS`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
