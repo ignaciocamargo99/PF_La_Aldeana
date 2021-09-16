@@ -19,15 +19,17 @@ export const detailProductsReducer = (state = [], action) => {
         case 'UPDATE_DETAIL_PRODUCTS': 
             return [...state, action.payload]
         case 'UPDATE_DETAIL_PRODUCTS_MODIFY':
-            pos = state.findIndex(n => n.id_product == action.payload.id_product);
+            pos = state.findIndex(n => n.id_product === action.payload.id_product);
             aux = state;
             aux[pos] = action.payload;
             return aux
         case 'UPDATE_DETAIL_PRODUCTS_DELETE':
-            pos = state.findIndex(n => n.id_product == action.payload.id_product);
+            pos = state.findIndex(n => n.id_product === action.payload.id_product);
             aux = state;
             aux.splice(pos, 1);
             return aux
+        case 'UPDATE_DETAIL_PRODUCTS_CLEAR':
+            return action.payload
         default:
             return state
     }
@@ -47,7 +49,7 @@ export const totalAmountReducer = (state = null, action) => {
     return state
 }
 
-export const productSelectedReducer = (state = [], action) => {
+export const productSelectedReducer = (state = null, action) => {
     if(action.type === 'UPDATE_PRODUCT_SELECTED'){
         return action.payload
     }
@@ -70,6 +72,20 @@ export const productsXsuppliesReducer = (state = [], action) => {
 
 export const suppliesReducer = (state = [], action) => {
     if(action.type === 'UPDATE_SUPPLIES'){
+        return action.payload
+    }
+    return state
+}
+
+export const paymentAmountReducer = (state = null, action) => {
+    if(action.type === 'UPDATE_PAYMENT_AMOUNT'){
+        return action.payload
+    }
+    return state
+}
+
+export const salesRegisterReducer = (state = true, action) => {
+    if(action.type === 'SALES_REGISTER'){
         return action.payload
     }
     return state

@@ -1,4 +1,4 @@
-const { readPayTypes, createSale, readProductXSupply } = require('../services/salesService');
+const { readPayTypes, createSale, createSaleDelivery ,readProductXSupply } = require('../services/salesService');
 
 async function getPayTypes(req, res) {
     try {
@@ -30,6 +30,23 @@ async function postSale(req, res) {
     }
 }
 
+// HTTP: POST
+async function postSaleDelivery(req, res) {
+    try {
+        await createSaleDelivery(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Venta registrada exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
 async function getProductXSupply(req, res) {
     try {
         const result = await readProductXSupply();
@@ -43,4 +60,4 @@ async function getProductXSupply(req, res) {
     }
 }
 
-module.exports = { getPayTypes, postSale, getProductXSupply }
+module.exports = { getPayTypes, postSale, postSaleDelivery , getProductXSupply }

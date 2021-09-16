@@ -13,6 +13,7 @@ const FilterProducts = (props) => {
     const [typesProduct, setTypesProduct] = useState([]);
     const [typesProductSelected, setTypesProductSelected] = useState([]);
     const [valueSelect, setValueSelect] = useState("-1");
+    const [boolBtnAll, setBoolBtnAll] = useState(false);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/typeProducts`)
@@ -23,11 +24,13 @@ const FilterProducts = (props) => {
     }, [])
 
     const onClickHeladeria = () => {
+        setBoolBtnAll(false);
         actionsDefaultButtons();
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 1));
     }
 
     const onClickCafeteria = () => {
+        setBoolBtnAll(false);
         actionsDefaultButtons();
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 2));
     }
@@ -41,17 +44,43 @@ const FilterProducts = (props) => {
     const onClickCancel = () => {
         setBoolTypeProduct(false);
         props.updateProductsFiltered(props.products);
+        setBoolBtnAll(true);
     }
 
-    const onChangeTypeProduct = (e) => {
+    const onChangeTypeProduct = (e) => { 
         const id_type_product_selected = e.target.value;
         setValueSelect(id_type_product_selected);
-        props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected))
+        props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected));
     }
 
     useEffect(() => {
-        //AL TOCAR HELADERIA O CAFETERIA, reiniciar el select
-    })
+        if (boolTypeProduct && !boolBtnAll) {
+            thereIsStock();
+        }
+        else if (boolBtnAll)
+        {
+            thereIsStock();
+        }
+    }, [props.productsFiltered, props.detailProducts])
+
+    const thereIsStock = () => {
+        let i;
+        for (i = 0; i < props.productsFiltered.length; i++) {
+            if (props.productsFiltered[i].stock_current == 0)
+            {
+                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = true;
+            }
+            else
+            {
+                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = false;
+            }
+        }
+    }
+
+    useEffect(() => {
+        setBoolTypeProduct(false);
+        setValueSelect("-1");
+    }, [props.salesRegister])
 
     return (
         <>
@@ -80,7 +109,8 @@ const mapStateToProps = state => {
     return {
         products: state.products,
         productsFiltered: state.productsFiltered,
-        detailProducts: state.detailProducts
+        detailProducts: state.detailProducts,
+        salesRegister: state.salesRegister
     }
 }
 
