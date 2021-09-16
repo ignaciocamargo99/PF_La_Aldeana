@@ -3,6 +3,13 @@ const express = require('express');
 const logger = require('morgan');
 const path = require("path");
 const app = express();
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./api/swagger/swagger.json');
+var swaggerStyles = {
+    customCssUrl: './api/swagger/swagger.css'
+  };
+
 const productsRouter = require('./api/products/router');
 const usersRouter = require('./api/users/router');
 const permissionsRouter = require('./api/permissions/router');
@@ -27,6 +34,8 @@ app.get("/app/*", function (req, res) {
     res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
 });
 
+/** Swagger */
+app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerStyles.customCssUrl));
 
 /** Routes apis and errors */
 app.use('/api', productsRouter);
