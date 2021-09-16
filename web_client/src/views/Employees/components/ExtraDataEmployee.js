@@ -25,17 +25,23 @@ export default function RegisterEmployee(props) {
         }
         data.date = inputDate.current.value;
         props.load(data);
-    }, [selectValue, date, data, props]);
+    }, [selectValue, data, props]);
 
     useEffect(() => {
-        inputDate.current.value = startDate;
-        setDate(inputDate.current.value);
-        data.date = inputDate.current.value;
-        props.load(data);
+        if (!inputDate.current.value) {
+            inputDate.current.value = startDate;
+            setDate(inputDate.current.value);
+            data.date = inputDate.current.value;
+            props.load(data);
+        }
+        else {
+            data.date = inputDate.current.value;
+            props.load(data);
+        }
         Axios.get(`${PORT()}/api/charges`)
             .then((response) => setCharge(response.data))
             .catch((error) => console.log(error));
-    }, [startDate, data, props]);
+    }, [startDate, date, data, props]);
 
     const onChangeDate = () => {
         if (inputDate) setDate(inputDate.current.value);

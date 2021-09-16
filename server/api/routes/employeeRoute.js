@@ -11,6 +11,8 @@ router.put('/employee/delete', employeeController.deleteEmployee);
 
 router.get('/charges', employeeController.getCharges);
 
+router.post('/newEmployee', employeeController.newEmployee);
+
 //#endregion
 
 

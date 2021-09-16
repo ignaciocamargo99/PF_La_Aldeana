@@ -7,6 +7,7 @@ import BodyTable from "../../../common/Table/BodyTable";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from '../../../common/Table/Table';
 import DeleteEmployeeButton from './DeleteEmployeeButton';
+import moment from 'moment';
 
 const PORT = require('../../../config');
 
@@ -64,7 +65,7 @@ export default function EmployeesTable() {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_admission}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button id='readEmployeeButton' type="button" className="sendEdit"><FontAwesomeIcon icon={faEye} /></button>
                                         </td>

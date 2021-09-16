@@ -8,7 +8,7 @@ const Breadcrumb = ({ currentName, parentName, parentLink, icon }) => {
     return (
         <div className="bread">
             <Breadcrumbs aria-label="breadcrumb">
-                <Link color="inherit" href={parentLink} onClick="">{parentName}
+                <Link color="inherit" href={parentLink}>{parentName}
                 </Link>
                 <Typography color="textPrimary">
                     {currentName}
