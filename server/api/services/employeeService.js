@@ -36,8 +36,7 @@ const createEmployee = async (newEmployee) => {
         return res;
     }
     catch {
-        let res = await employeeCreateDB(newEmployee);
-        throw Error(res);
+        throw Error('Error, no se ha podido registrar el empleado.');
     };
 };
 
