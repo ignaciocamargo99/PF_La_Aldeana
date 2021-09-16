@@ -6,7 +6,7 @@ import ModalFlavorShow from './ModalFlavorShow';
 import SaleDetails from './SaleDetails';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import { faInfo, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import '../../../assets/Buttons.css'
 
 const Pay = (props) => {
@@ -63,12 +63,17 @@ const Pay = (props) => {
                 </BeShowed>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label>Costo del delivery: <b>$100</b></label>
+                        <label>Total: <b>${props.total + 100}</b></label>
                     </div>
                 </div>
                 <div className="formRow">
-                    <div className="form-control-label">
-                        <label>Total: <b>${props.total + 100}</b></label>
+                    <div className="form-control-label offset-sm-1">
+                        <label><FontAwesomeIcon icon={faArrowRight}/>Costo del delivery: $100</label>
+                    </div>
+                </div>
+                <div className="formRow">
+                    <div className="form-control-label offset-sm-1">
+                        <label><FontAwesomeIcon icon={faArrowRight}/>Costo de los productos: ${props.total}</label>
                     </div>
                 </div>
                 <div className="formRow">
