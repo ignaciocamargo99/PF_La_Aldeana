@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import { connect } from 'react-redux';
-import { updateAmountDelivery, updatePayTypeDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
+import { updateAmountDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
 import ModalFlavorShow from './ModalFlavorShow';
 import SaleDetails from './SaleDetails';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
@@ -38,7 +38,7 @@ const Pay = (props) => {
                         <label>Tipo de pago* </label>
                     </div>
                     <div className="form-control-input">
-                        <select className="form-control" style={{fontFamily:'abel'}} defaultValue={1} readOnly>
+                        <select className="form-control" style={{fontFamily:'abel'}} value={1} readOnly>
                             <option id={1}>{props.payType}</option>
                         </select>
                     </div>
@@ -99,7 +99,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     updateAmountDelivery,
-    updatePayTypeDelivery,
     updateErrorAmountDelivery
 }
 

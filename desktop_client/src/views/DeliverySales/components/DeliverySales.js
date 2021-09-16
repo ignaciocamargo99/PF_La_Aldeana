@@ -74,7 +74,7 @@ const DeliverySales = (props) => {
             )
         })
         let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
-        axios.post(`${PORT()}/api/sales/new`, sale)
+        axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
                 if(sale.data.Ok) {
                     resetStates()

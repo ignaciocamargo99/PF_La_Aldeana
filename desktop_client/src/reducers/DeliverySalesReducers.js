@@ -1,5 +1,5 @@
 export const payTypeDeliveryReducer = (state = 'Efectivo', action) => {
-    if(action.type === 'UPDATE_PAY_TYPE'){
+    if(action.type === 'UPDATE_PAY_TYPE_DELIVERY'){
         return action.payload
     }
     return state
