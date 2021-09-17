@@ -2,19 +2,36 @@
   "openapi": "3.0.0",
   "info": {
     "version": 1.0,
-    "title": "Swagger Heladeria"
+    "title": "Swagger Heladeria",
+    "description": "Documentación de las API´s del proyecto de Heladería y Cafetería La Aldeana",
+    "contact": {
+      "name": "Joaquín Bassano",
+      "email": "joaquinbas98@gmail.com"
+    }
   },
-  "servers": {
-    "url": "http://localhost:3001/"
-  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Local Server"
+    },
+    {
+      "url": "https://la-aldeana-dev.herokuapp.com/api",
+      "description": "Development Server"
+    },
+    {
+      "url": "https://la-aldeana-staging.herokuapp.com/api",
+      "description": "Pre-Production Server"
+    }
+  ],
   "paths": {
     "/products": {
       "get": {
-        "summary":"List all products",
+        "summary":"Lista todos los productos",
+        "tags": ["Productos"],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "A array of products"
+            "description": "Un array (JSON) de productos."
           }
         }
       }
