@@ -5,6 +5,12 @@ const clientController = require("../controllers/clientController");
 
 //#region APIs
 router.get('/clients', clientController.getClient);
+
+router.get('/clients/:cellphone', clientController.getClient);
+
+router.post('/clients', clientController.postClient);
+
+router.put('/clients/:cellphone', clientController.putClient);
 //#endregion
 
 

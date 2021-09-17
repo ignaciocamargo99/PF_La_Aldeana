@@ -1,5 +1,5 @@
 export const payTypeDeliveryReducer = (state = 'Efectivo', action) => {
-    if(action.type === 'UPDATE_PAY_TYPE'){
+    if(action.type === 'UPDATE_PAY_TYPE_DELIVERY'){
         return action.payload
     }
     return state
@@ -141,8 +141,15 @@ export const productsQuantitiesDeliveryReducer = (state = [], action) => {
     return state
 }
 
-export const clientsDeliveryReducer = (state = [], action) => {
-    if(action.type === 'UPDATE_DELIVERY_CLIENTS'){
+export const clientDeliveryReducer = (state = null, action) => {
+    if(action.type === 'UPDATE_DELIVERY_CLIENT'){
+        return action.payload
+    }
+    return state
+}
+
+export const productsNotStockDeliveryReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_DELIVERY_PRODUCTS_NOT_STOCK'){
         return action.payload
     }
     return state

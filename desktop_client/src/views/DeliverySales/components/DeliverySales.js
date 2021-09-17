@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import dateFormat from '../../../utils/DateFormat/dateFormat';
+import DateFormat from '../../../utils/DateFormat/dateFormat';
 import BeShowed from '../../../common/BeShowed';
 import Pay from './Pay';
 import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery } from '../../../actions/DeliverySalesActions';
+    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
 import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
 import warningMessage from '../../../utils/warningMessage';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import '../styles/DeliverySales.css';
 
 const PORT = require('../../../config');
 
@@ -22,22 +24,29 @@ const DeliverySales = (props) => {
     const [date,setDate] = useState('');
 
     useEffect(() => {
-        let date = dateFormat(new Date())
+        let date = DateFormat(new Date())
         setDate(date)   
-        axios.get( PORT() + `/api/allProducts`)
+    },[])
+
+    useEffect(() => {
+        axios.get( PORT() + `/api/productsNotStock`)
         .then((response) => {
             let aux = []
             for(let i = 0 ; i < response.data.length ; i++){
-                aux.push({'product':response.data[i],'quantity':0})
+                aux.push(response.data[i].id_product)
             }
-            props.updateDeliveryProductsQuantities(aux)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-        axios.get( PORT() + `/api/clients`)
-        .then((response) => {
-            props.updateDeliveryClients(response.data)
+            props.updateDeliveryProductsNotStock(aux)
+            axios.get( PORT() + `/api/allProducts`)
+            .then((response) => {
+                let aux = []
+                for(let i = 0 ; i < response.data.length ; i++){
+                    aux.push({'product':response.data[i],'quantity':0})
+                }
+                props.updateDeliveryProductsQuantities(aux)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         })
         .catch((err) => {
             console.log(err)
@@ -45,6 +54,15 @@ const DeliverySales = (props) => {
     },[])
 
     const confirmSale = () => {
+        loadingMessage('Procesando la venta')
+        if(props.client === null){
+            axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
+        }
+        else{
+            if(props.client.street_name !== props.street || props.client.street_number !== props.streetNumber){
+                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`,{"street_name":props.street,"street_number":props.streetNumber})
+            }
+        }
         let details = []
         props.details.map((detail,i) => {
             details.push(
@@ -56,7 +74,7 @@ const DeliverySales = (props) => {
             )
         })
         let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
-        axios.post(`${PORT()}/api/sales/new`, sale)
+        axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
                 if(sale.data.Ok) {
                     resetStates()
@@ -89,10 +107,10 @@ const DeliverySales = (props) => {
                 <h1 className="display-5">Registrar venta por delivery</h1>
                 <hr />
                 <div className="formRow" style={{justifyContent:'flex-end'}}>
-                    <div className="form-control-label col-sm-1">
+                    <div className="form-label-no-margin" style={{marginRight:'0%'}}>
                         <label>Fecha:</label>
                     </div>
-                    <div className="form-control-input col-sm-2" style={{width:'200px'}}>
+                    <div className="" style={{width:'200px'}}>
                         <input type="date" className="form-control" value={date} readOnly></input>
                     </div>
                 </div>
@@ -110,6 +128,7 @@ const DeliverySales = (props) => {
                 <BeShowed show={step===3}>
                     <Pay setStep={setStep}/>
                 </BeShowed>
+
             </div>
         </>
     )
@@ -120,16 +139,16 @@ const mapStateToProps = state => {
         errorStreetNumber: state.errorStreetNumberDelivery, errorNames: state.errorNamesDelivery,
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
-        total: state.totalDelivery, clients: state.clientsDelivery, cellphone: state.cellphoneDelivery,
+        total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
         names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
-        }
+    }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProductsQuantities, updateDeliveryClients, resetDetailDelivery,updateErrorStreetNumberDelivery, 
+    updateDeliveryProductsQuantities, resetDetailDelivery,updateErrorStreetNumberDelivery, 
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
-    updateAmountDelivery,subtractTotalDelivery
+    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsNotStock
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);
