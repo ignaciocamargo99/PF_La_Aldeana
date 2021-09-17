@@ -29,6 +29,9 @@ const Options = (props) => {
         props.updateReportDateFrom(prevMounth);
         props.updateReportDateTo(dateString);
         console.log(props.dateTo +' '+ props.dateFrom);
+
+
+        console.log(formattedDate(new Date(2021,1,31),1))
     },[true])
 
     useEffect(()=>{
