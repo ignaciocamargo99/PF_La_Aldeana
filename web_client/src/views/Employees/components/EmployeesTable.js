@@ -65,10 +65,12 @@ export default function EmployeesTable() {
     }
 
     const cancelEditEmployee = () => {
+        <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
         setIsEditing(false);
         window.scrollTo(0, 0);
     }
     const returnReadEmployee = () => {
+        <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
         setIsReading(false);
         window.scrollTo(0, 0);
     }
