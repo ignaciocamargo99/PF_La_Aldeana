@@ -3,6 +3,7 @@ import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTop
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
+import formattedDate from '../../../../utils/formattedDate';
 
 const PORT = require('../../../../config');
 
@@ -14,21 +15,28 @@ const Options = (props) => {
     useEffect(()=>{
         let date = new Date();
         let dateString = dateFormat(date);
+        
+        let prevMounth = formattedDate(date, -1);
+
+        console.log(prevMounth)
+
         inputDateFrom.current.max = dateString;
         inputDateTo.current.max = dateString;
         inputDateFrom.current.min = '2021-01-01';
-        inputDateTo.current.min = '2021-01-01';
+        inputDateTo.current.min = prevMounth;
         inputDateTo.current.value = dateString;
-        inputDateFrom.current.value = '2021-01-01';
-        props.updateReportDateFrom('2021-01-01');
+        inputDateFrom.current.value = prevMounth;
+        props.updateReportDateFrom(prevMounth);
         props.updateReportDateTo(dateString);
+        console.log(props.dateTo +' '+ props.dateFrom);
+
+
+        console.log(formattedDate(new Date(2021,1,31),1))
     },[true])
 
     useEffect(()=>{
-        console.log(inputDateFrom.current.value + ' '+ props.dateFrom);
-        console.log(inputDateTo.current.value + ' '+ props.dateTo);
 
-        if (props.dateFrom <= props.dateTo) {
+        if (props.dateFrom <= props.dateTo && props.load > 0) {
             let from = props.dateFrom;
             let to = props.dateTo;
 
@@ -52,6 +60,8 @@ const Options = (props) => {
                 
                     if (sales.length < 10) {
                         props.updateTopTenProductSales(sales);
+
+                        props.setLoaded(true);
                     } else {
                         sales?.map((e, i)=>{
                             if (i < 10){
@@ -59,17 +69,35 @@ const Options = (props) => {
                             }
                         });
                         props.updateTopTenProductSales(topTen);
+
+                        props.setLoaded(true);
                     }
+
                     })
                 .catch((error) => {
                     console.log('Oops...','Error en el servidor',error);
+                    props.setLoaded(false);
                 })
         } else {
-            inputDateFrom.current.value = inputDateTo.current.value;
-            props.updateReportDateFrom(props.dateTo);
+            let date = new Date();
+            let dateString = dateFormat(date);
+            
+            let prevMounth = formattedDate(date, -1);
+    
+            console.log(prevMounth)
+    
+            inputDateFrom.current.max = dateString;
+            inputDateTo.current.max = dateString;
+            inputDateFrom.current.min = '2021-01-01';
+            inputDateTo.current.min = prevMounth;
+            inputDateTo.current.value = dateString;
+            inputDateFrom.current.value = prevMounth;
+            props.updateReportDateFrom(prevMounth);
+            props.updateReportDateTo(dateString);
+            console.log(props.dateTo +' '+ props.dateFrom);
         }
 
-    },[props.dateFrom, props.dateTo]);
+    },[props.load]);
 
     const onChangeDateFrom = () => {
         let date = new Date();
@@ -98,6 +126,8 @@ const Options = (props) => {
         }
     }
 
+    const handlerLoader = () => props.setLoad(props.load + 1);
+
     return (
         <>
 
@@ -115,6 +145,9 @@ const Options = (props) => {
                 <div  className="col-sm-4" style={{textAlign: 'right'}} >
                     <input type="date" style={{maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
                 </div>
+            </div>
+            <div className="text-center">
+                <button className='sendOk' onClick={handlerLoader}>Generar</button>
             </div>
         </>
     );
