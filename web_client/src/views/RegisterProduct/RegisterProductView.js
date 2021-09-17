@@ -10,6 +10,7 @@ import './RegisterProductView.css';
 import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -72,7 +73,7 @@ export default function RegisterProductView() {
 
     return (
         <>
-            <Breadcrumb parentName="Productos" parentLink="products" currentName="Registrar producto"/>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto"/>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>

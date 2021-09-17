@@ -3,21 +3,18 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import '../assets/Breadcrumb.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
-const Breadcrumb = ({ currentName, parentName, parentLink }) => {
+const Breadcrumb = ({ currentName, parentName, parentLink, icon }) => {
     return (
         <div className="bread">
             <Breadcrumbs aria-label="breadcrumb">
-                <Link color="inherit" href={parentLink} onClick="">{parentName}
+                <Link color="inherit" href={parentLink}>{parentName}
                 </Link>
                 <Typography color="textPrimary">
                     {currentName}
                     &nbsp;
-                    <FontAwesomeIcon icon={faIceCream} />
+                    <FontAwesomeIcon icon={icon} />
                 </Typography>
-
-
             </Breadcrumbs>
         </div>
     )
