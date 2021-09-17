@@ -15,7 +15,7 @@ const ListProductSales = (props) => {
                     th={
                         <>
                             <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10em', verticalAlign: 'middle' }}>Fecha primer venta en período</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '20em', verticalAlign: 'middle' }}>Nombre</th>
+                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
                             <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '5em', verticalAlign: 'middle' }}>Tipo</th>
                             <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '5em', verticalAlign: 'middle' }}>Cant. de und. Ventas</th>
                         </>
