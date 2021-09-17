@@ -4,13 +4,13 @@ node_js:
   - "14.17"
 
 cache:
-  directories: 
+  directories:
     - $HOME/.npm
 
-jobs: 
+jobs:
   include:
     - stage: test
-      script: 
+      script:
         - npm install
         - npm test
 
