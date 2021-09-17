@@ -158,10 +158,10 @@ export const updateDeliveryProductQuantity = (productQuantity,i) => {
     }
 }
 
-export const updateDeliveryClients = (clients) => {
+export const updateDeliveryClient = (client) => {
     return{
-        type: 'UPDATE_DELIVERY_CLIENTS',
-        payload: clients
+        type: 'UPDATE_DELIVERY_CLIENT',
+        payload: client
     }
 }
 

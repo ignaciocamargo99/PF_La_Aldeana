@@ -8,12 +8,13 @@ import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
+    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
 import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
 import warningMessage from '../../../utils/warningMessage';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import '../styles/DeliverySales.css';
 
 const PORT = require('../../../config');
@@ -25,16 +26,6 @@ const DeliverySales = (props) => {
     useEffect(() => {
         let date = DateFormat(new Date())
         setDate(date)   
-    },[])
- 
-    useEffect(() => {
-        axios.get( PORT() + `/api/clients`)
-        .then((response) => {
-            props.updateDeliveryClients(response.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
     },[])
 
     useEffect(() => {
@@ -63,6 +54,15 @@ const DeliverySales = (props) => {
     },[])
 
     const confirmSale = () => {
+        loadingMessage('Procesando la venta')
+        if(props.client === null){
+            axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
+        }
+        else{
+            if(props.client.street_name !== props.street || props.client.street_number !== props.streetNumber){
+                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`,{"street_name":props.street,"street_number":props.streetNumber})
+            }
+        }
         let details = []
         props.details.map((detail,i) => {
             details.push(
@@ -128,6 +128,7 @@ const DeliverySales = (props) => {
                 <BeShowed show={step===3}>
                     <Pay setStep={setStep}/>
                 </BeShowed>
+
             </div>
         </>
     )
@@ -138,13 +139,13 @@ const mapStateToProps = state => {
         errorStreetNumber: state.errorStreetNumberDelivery, errorNames: state.errorNamesDelivery,
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
-        total: state.totalDelivery, clients: state.clientsDelivery, cellphone: state.cellphoneDelivery,
+        total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
         names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
     }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProductsQuantities, updateDeliveryClients, resetDetailDelivery,updateErrorStreetNumberDelivery, 
+    updateDeliveryProductsQuantities, resetDetailDelivery,updateErrorStreetNumberDelivery, 
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
     updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsNotStock
