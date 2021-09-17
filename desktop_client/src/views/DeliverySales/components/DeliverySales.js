@@ -14,6 +14,7 @@ import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
 import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
 import warningMessage from '../../../utils/warningMessage';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import '../styles/DeliverySales.css';
 
 const PORT = require('../../../config');
@@ -53,7 +54,7 @@ const DeliverySales = (props) => {
     },[])
 
     const confirmSale = () => {
-        let next = true
+        loadingMessage()
         if(props.client === null){
             axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
         }
@@ -62,28 +63,25 @@ const DeliverySales = (props) => {
                 axios.put(`${PORT()}/api/clients/${props.client.cellphone}`,{"street_name":props.street,"street_number":props.streetNumber})
             }
         }
-        
-        if(next){
-            let details = []
-            props.details.map((detail,i) => {
-                details.push(
-                    {
-                        "id_product": detail.product.id_product,
-                        "quantity": detail.quantity,
-                        "subtotal": detail.subtotal
-                    }
-                )
+        let details = []
+        props.details.map((detail,i) => {
+            details.push(
+                {
+                    "id_product": detail.product.id_product,
+                    "quantity": detail.quantity,
+                    "subtotal": detail.subtotal
+                }
+            )
+        })
+        let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
+        axios.post(`${PORT()}/api/salesDelivery`, sale)
+            .then((sale) => {
+                if(sale.data.Ok) {
+                    resetStates()
+                }
+                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
             })
-            let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
-            axios.post(`${PORT()}/api/salesDelivery`, sale)
-                .then((sale) => {
-                    if(sale.data.Ok) {
-                        resetStates()
-                    }
-                    else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
-                })
-                .catch(error => console.log(error))
-        }
+            .catch(error => console.log(error))
     }
 
     const resetStates = () => {
@@ -130,6 +128,7 @@ const DeliverySales = (props) => {
                 <BeShowed show={step===3}>
                     <Pay setStep={setStep}/>
                 </BeShowed>
+
             </div>
         </>
     )

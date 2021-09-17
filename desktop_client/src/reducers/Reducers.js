@@ -5,11 +5,7 @@ import { clientDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, to
      streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
      detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer, productsNotStockDeliveryReducer} from "./DeliverySalesReducers";
 import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, 
-<<<<<<< HEAD
-    refreshReducer, suppliesReducer, productsXsuppliesReducer} from "./SalesReducers";
-=======
     refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
->>>>>>> US/442-Registrar-venta-por-delivery
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
 
