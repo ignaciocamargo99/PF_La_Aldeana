@@ -54,7 +54,7 @@ const DeliverySales = (props) => {
     },[])
 
     const confirmSale = () => {
-        loadingMessage()
+        loadingMessage('Procesando la venta')
         if(props.client === null){
             axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
         }

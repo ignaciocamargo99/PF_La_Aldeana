@@ -6,38 +6,48 @@ import { updateDeliveryClient ,updateCellphoneDelivery, updateErrorCellphoneDeli
         updateStreetDelivery, updateErrorStreetDelivery, updateStreetNumberDelivery, updateErrorStreetNumberDelivery} from '../../../actions/DeliverySalesActions';
 import { validateInput } from '../../../utils/ValidationsInputs/ValidateInputs';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import swal from 'sweetalert';
 
 const PORT = require('../../../config');
 
 const Client = (props) => {
 
-
     const onChangeCellphone = (e) => {
+        let get = true;
         props.updateErrorCellphoneDelivery(false)
         if(e.target.value.length > e.target.maxLength){
+            get = false
             e.target.value = e.target.value.slice(0,e.target.maxLength)
         }
         props.updateCellphoneDelivery(e.target.value)
         if(!validateInput(e.target.value.trim(),10,10)){
             props.updateErrorCellphoneDelivery(true)
         }
-        if(e.target.value.length === 10){
+        if(e.target.value.length === 10 && get){
+            loadingMessage('Cargando cliente')
             axios.get( `${PORT()}/api/clients/${e.target.value}`)
             .then((response) => {
                 if(response.data.length !== 0){
-                    props.updateDeliveryClient(response.data[0])
-                    props.updateErrorNamesDelivery(false)
-                    props.updateNamesDelivery(response.data[0].names)
-                    props.updateErrorStreetDelivery(false)
-                    props.updateStreetDelivery(response.data[0].street_name)
-                    props.updateErrorStreetNumberDelivery(false)
-                    props.updateStreetNumberDelivery(response.data[0].street_number)
+                    resetStates(response.data[0],false)
+                    swal.close()
                 }
                 else{
-                    props.updateDeliveryClient(null)
+                    resetStates({cellphone: props.cellphone, names: '', street_name: '', street_number: ''}, true)
+                    swal.close()
                 }
             })
         }
+    }
+
+    const resetStates = (client,bool) => {
+        props.updateDeliveryClient(client)
+        props.updateErrorNamesDelivery(bool)
+        props.updateNamesDelivery(client.names)
+        props.updateErrorStreetDelivery(bool)
+        props.updateStreetDelivery(client.street_name)
+        props.updateErrorStreetNumberDelivery(bool)
+        props.updateStreetNumberDelivery(client.street_number)
     }
 
     const onChangeNames = (e) => {
