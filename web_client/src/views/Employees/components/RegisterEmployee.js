@@ -28,7 +28,7 @@ export default function RegisterEmployee() {
             Axios.post(`${PORT()}/api/newEmployee`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
-                    else displayError('Ha ocurrido un error al dar de alta al nuevo empleado');
+                    else displayError('El dni ingresado ya corresponde a otro empleado');
                 })
                 .catch((error) => console.error(error))
         }
