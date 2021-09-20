@@ -1,22 +1,21 @@
-import { useState, useEffect } from 'react';
-import Table from '../../../common/Table/Table';
-import HeaderTable from '../../../common/Table/HeaderTable';
-import BodyTable from '../../../common/Table/BodyTable';
 import Axios from 'axios';
+import { useEffect, useState } from 'react';
+import BeShowed from '../../../common/BeShowed';
+import LoaderSpinner from '../../../common/LoaderSpinner';
+import BodyTable from '../../../common/Table/BodyTable';
+import HeaderTable from '../../../common/Table/HeaderTable';
+import Table from '../../../common/Table/Table';
+import backupProduct from '../../../utils/backupProduct';
 import DeleteProductButton from './DeleteProductButton';
 import EditProductButton from './EditProductButton';
-import LoaderSpinner from '../../../common/LoaderSpinner';
 import EditProducts from './EditProducts/EditProducts';
-import BeShowed from '../../../common/BeShowed';
-import backupProduct from '../../../utils/backupProduct';
 
 const PORT = require('../../../config');
 
-export default function ProductTable(props) {
+const ProductTable = () => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editing, setEditing] = useState({});
-    const [backup, setBackup] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     useEffect(() => {
@@ -44,7 +43,6 @@ export default function ProductTable(props) {
         aux.name = product.name;
         aux.flavor = product.quantity_flavor;
         aux.editing = true;
-        setBackup(product);
         setEditing(aux);
         setIsEditing(true);
     }
@@ -109,4 +107,6 @@ export default function ProductTable(props) {
             </BeShowed>
         </>
     );
-}
+};
+
+export default ProductTable;
