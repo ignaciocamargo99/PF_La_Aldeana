@@ -3,7 +3,8 @@ import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTop
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
-import formattedDate from '../../../../utils/formattedDate';
+import {FaAngleRight} from 'react-icons/fa';
+import {FaFile} from 'react-icons/fa';
 
 const PORT = require('../../../../config');
 
@@ -11,28 +12,6 @@ const Options = (props) => {
 
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
-
-    useEffect(()=>{
-        let date = new Date();
-        let dateString = dateFormat(date);
-        
-        let prevMounth = formattedDate(date, -1);
-
-        console.log(prevMounth)
-
-        inputDateFrom.current.max = dateString;
-        inputDateTo.current.max = dateString;
-        inputDateFrom.current.min = '2021-01-01';
-        inputDateTo.current.min = prevMounth;
-        inputDateTo.current.value = dateString;
-        inputDateFrom.current.value = prevMounth;
-        props.updateReportDateFrom(prevMounth);
-        props.updateReportDateTo(dateString);
-        console.log(props.dateTo +' '+ props.dateFrom);
-
-
-        console.log(formattedDate(new Date(2021,1,31),1))
-    },[true])
 
     useEffect(()=>{
 
@@ -82,9 +61,8 @@ const Options = (props) => {
             let date = new Date();
             let dateString = dateFormat(date);
             
-            let prevMounth = formattedDate(date, -1);
-    
-            console.log(prevMounth)
+            let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            let prevMounth = dateFormat(startDate);
     
             inputDateFrom.current.max = dateString;
             inputDateTo.current.max = dateString;
@@ -137,17 +115,19 @@ const Options = (props) => {
             <div className="formRow d-flex justify-content-between">
                 
                 <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
-                <div  className="col-sm-4" style={{textAlign: 'right'}} >
+                <div  className="col-sm-3" style={{textAlign: 'right'}} >
                     <input type="date" style={{maxWidth: "9em", marginRight: '1em'}} id='dateFrom' defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
                 </div>
 
                 <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
-                <div  className="col-sm-4" style={{textAlign: 'right'}} >
-                    <input type="date" style={{maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                <div  className="col-sm-3" style={{textAlign: 'right'}} >
+                    <input type="date" style={{maxWidth: "9em", marginRight: '1em'}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
                 </div>
-            </div>
-            <div className="text-center">
-                <button className='sendOk' onClick={handlerLoader}>Generar</button>
+
+                <div className="col-sm-1">
+                    <button className="btn" style={{backgroundColor: '#A5DEF9', marginRight: '1em'}} onClick={handlerLoader}><FaAngleRight style={{color: '#383C77'}} /></button>
+                    <button className="btn" style={{backgroundColor: '#A5DEF9'}}><FaFile style={{color: '#383C77'}} /></button>
+                </div>
             </div>
         </>
     );
