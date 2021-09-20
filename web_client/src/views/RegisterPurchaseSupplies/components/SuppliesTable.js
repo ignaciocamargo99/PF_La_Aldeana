@@ -5,7 +5,7 @@ import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 
 
-export default function SuppliesTable (props) {
+const SuppliesTable = ({ supplies, upload }) => {
 
     return (
         <>
@@ -13,19 +13,19 @@ export default function SuppliesTable (props) {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col"  style={{ textAlign: 'center' }}><label><b>Nombre</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '150px' }}><label><b>Agregar</b></label></th>
+                            <th scope="col" style={{ textAlign: 'center' }}><label><b>Nombre</b></label></th>
+                            <th scope="col" style={{ textAlign: 'center', width: '150px' }}><label><b>Agregar</b></label></th>
                         </>
                     }
                 />
                 <BodyTable
-                    tbody={props.supplies?.map((element, i) => {
+                    tbody={supplies?.map((element, i) => {
                         return (
                             <tbody key={i}>
                                 <tr>
                                     <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button id='uploadSupplyButton' type="button" className="btn-sm px-3" style={{backgroundColor: '#A5DEF9' , borderColor: '#A5DEF9'}} onClick={() => {props.upload(element.id_supply)}}><FontAwesomeIcon icon={faPlus} /></button>
+                                        <button id='uploadSupplyButton' type="button" className="btn-sm px-3" style={{ backgroundColor: '#A5DEF9', borderColor: '#A5DEF9' }} onClick={() => { upload(element.id_supply) }}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -36,4 +36,6 @@ export default function SuppliesTable (props) {
             </Table>
         </>
     );
-}
+};
+
+export default SuppliesTable;
