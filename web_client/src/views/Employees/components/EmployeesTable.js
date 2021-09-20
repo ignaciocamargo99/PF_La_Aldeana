@@ -47,7 +47,7 @@ export default function EmployeesTable() {
         let aux = backupEmployee(employees);
         aux.name = employees.name;
         aux.lastName = employees.last_name;
-        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
+        aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
         aux.previousDni = employees.dni;
         aux.editing = true;
         setEditing(aux);
