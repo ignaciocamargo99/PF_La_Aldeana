@@ -2,7 +2,7 @@ const pool = require('../../config/connection');
 const path = require('path');
 const fs = require('fs');
 
-
+//se borra
 const productGetDB = () => {
     const sqlSelect = 'SELECT id_product, name, description, price, id_sector, id_product_type, active, quantity_flavor FROM PRODUCTS ' +
         'WHERE active = 1';
@@ -20,6 +20,7 @@ const productGetDB = () => {
     });
 };
 
+//se paso
 const productAllGetDB = () => {
     const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
         'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor ' +
@@ -41,6 +42,7 @@ const productAllGetDB = () => {
     });
 };
 
+//se paso
 const productTypeGetDB = () => {
     const sqlSelect = 'SELECT id_product_type, name, id_sector FROM PRODUCT_TYPES';
 
@@ -75,7 +77,7 @@ const productSupplyGetDB = (productID) => {
     });
 };
 
-
+//se paso----se sacaa
 const productPostDB = (newProduct, imageProduct) => {
 
     const sqlInsert = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
@@ -98,7 +100,7 @@ const productPostDB = (newProduct, imageProduct) => {
     });
 };
 
-
+//se paso
 const productSupplyPostDB = (newProduct, imageProduct) => {
     const { name, description, price, id_sector, id_product_type, supplies, flavor } = newProduct;
     let id_product;
@@ -161,9 +163,9 @@ const imageProductGetDB = (productID) => {
                 if (error) reject(error);
 
                 result.map(img => {
-                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, './dbImages/' + img.id_product + '-product.png'), img.image);
+                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'), img.image);
                 })
-                const imagedir = fs.readdirSync(path.join(__dirname, `./dbImages/`));
+                const imagedir = fs.readdirSync(path.join(__dirname, `../images/productDBImages/`));
                 const imagedirFilter = imagedir.filter((valor) => valor === `${productID}-product.png`);
                 resolve(imagedirFilter);
             });
@@ -206,7 +208,7 @@ const supplyGetDB = () => {
     });
 };
 
-
+//se paso
 const typeProductPostDB = (newTypeProduct) => {
 
     const sqlInsert = "INSERT INTO PRODUCT_TYPES VALUES(null, ?, ?, ?)"
@@ -225,7 +227,7 @@ const typeProductPostDB = (newTypeProduct) => {
     });
 };
 
-
+// se paso
 const productDeleteDB = (productDeleteID) => {
 
     const sqlUpdate = "UPDATE PRODUCTS SET active = 0 WHERE id_product = ?"
@@ -243,7 +245,7 @@ const productDeleteDB = (productDeleteID) => {
     });
 };
 
-
+// se saca
 const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
 
     const { id_product, name, description, price, id_sector, id_product_type, flavor } = productUpdate;
@@ -276,7 +278,7 @@ const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
     });
 };
 
-
+//se paso
 const productSupplyUpdateDB = (productUpdate, imageUpdate, flagImage) => {
     const { id_product, name, description, price, id_sector, id_product_type, supplies, flavor } = productUpdate;
     let arrSupplies = JSON.parse(supplies);

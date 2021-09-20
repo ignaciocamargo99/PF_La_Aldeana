@@ -19,7 +19,7 @@ const FlavorsTable = (props) => {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/allFlavors')
+        Axios.get(PORT() + '/api/flavors')
             .then((response) => {
                 handlerLoadingSpinner();
                 let auxFlavor = response.data;

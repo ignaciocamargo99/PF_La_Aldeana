@@ -75,7 +75,7 @@ const RegisterPurchaseSupplies = (props) => {
         }
         console.log(aux)
         
-        Axios.post(PORT() + '/api/supply/new', aux)
+        Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {
                     resetStates('Registro completado');

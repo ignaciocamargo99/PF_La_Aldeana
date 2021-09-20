@@ -38,7 +38,7 @@ export default function RegisterTypeProductView() {
     const registerTypeProduct = () => {
         const description = inputDescription.current.value.trim();
         if (ready) {
-            Axios.post(PORT() + '/api/typeProduct/new', {
+            Axios.post(PORT() + '/api/typeProducts', {
                 name: data.name,
                 description: description,
                 id_sector: data.id_sector

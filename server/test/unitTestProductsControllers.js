@@ -88,7 +88,7 @@ describe('Tests unitarios sobre API Products',()=>{
     describe('Check postTypeProducts',()=>{
         it('Se inserta correctamente', (done) => {
             chai.request(url)
-                .post('/typeProduct/new')
+                .post('/typeProducts')
                 .send({name: 'Gaseosas', description: 'Bebidas con gas', id_sector: 1})
                 .end( function(err,res){
                     expect(res).to.have.status(200);

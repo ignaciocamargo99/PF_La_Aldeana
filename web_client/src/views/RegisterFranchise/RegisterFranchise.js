@@ -40,7 +40,7 @@ export default function RegisterFranchise() {
     }
 
     const registerFranchise = () => {
-        let urlApi = '/api/franchise/new';        
+        let urlApi = '/api/franchises';        
 
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {

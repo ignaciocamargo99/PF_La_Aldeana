@@ -10,18 +10,32 @@ var swaggerStyles = {
     customCssUrl: './api/swagger/swagger.css'
   };
 
-const productsRouter = require('./api/products/router');
-const usersRouter = require('./api/users/router');
-const permissionsRouter = require('./api/permissions/router');
-const sessionsRouter = require('./api/sessions/router');
-const purchaseSuppliesRouter = require('./api/purchase_supplies/router');
-const suppliesRouter = require('./api/supplies/router');
 const middleware = require('./middleware/index');
+
+const productsRouter2 = require('./api/routes/productRoute');
+const typeProductsRouter = require('./api/routes/typeProductRoute');
+const suppliesRouter = require('./api/routes/suppliesRoutee');
+const purchaseSuppliesRouter = require('./api/routes/purchaseSuppliesRoute');
+
+const logInRouter = require('./api/routes/logInRoute');
+const permissionsRouter = require('./api/routes/permissionRoute');
+
 const flavorsRouter = require('./api/routes/flavorRoute');
+const familyFlavorsRouter = require('./api/routes/familyFlavorsRoute');
+const chamberFlavorDispatchRouter = require('./api/routes/chamberFlavorDispatchRoute');
+const productionsRouter = require('./api/routes/productionRoute');
+
+const franchiseRouter = require('./api/routes/franchiseRoute');
+
+const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
-const franchiseRouter = require('./api/franchise/router');
-const salesRouter = require('./api/sales/router');
-const productionsRouter = require('./api/productions/router');
+
+
+
+
+const productsRouter = require('./api/products/router');
+
+
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -38,17 +52,30 @@ app.get("/app/*", function (req, res) {
 app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerStyles.customCssUrl));
 
 /** Routes apis and errors */
-app.use('/api', productsRouter);
-app.use('/api', usersRouter);
+
+
+app.use('/api', logInRouter);
 app.use('/api', permissionsRouter);
-app.use('/api', sessionsRouter);
-app.use('/api', franchiseRouter);
-app.use('/api', salesRouter);
-app.use('/api', purchaseSuppliesRouter);
+
+app.use('/api', typeProductsRouter);
 app.use('/api', suppliesRouter);
+app.use('/api', purchaseSuppliesRouter);
+
 app.use('/api', flavorsRouter);
+app.use('/api', familyFlavorsRouter);
+app.use('/api', chamberFlavorDispatchRouter);
 app.use('/api', productionsRouter);
+
+app.use('/api', salesRouter);
+
+app.use('/api', franchiseRouter);
 app.use('/api', clientsRouter);
+
+
+
+app.use('/api', productsRouter);
+
+
 
 app.use(middleware.error404);
 app.use(middleware.error500);

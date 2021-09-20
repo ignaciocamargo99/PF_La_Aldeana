@@ -1,4 +1,3 @@
-
 const {readClient} = require('../services/clientService');
 
 // HTTP: GET
