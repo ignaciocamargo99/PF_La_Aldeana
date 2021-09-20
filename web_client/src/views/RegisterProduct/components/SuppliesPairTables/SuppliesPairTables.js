@@ -123,7 +123,7 @@ export default function SuppliesPairTables({ load, data }) {
                                 <tr>
                                     {columnsHeaders?.map((element, i) => {
                                         return (
-                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width, verticalAlign: 'middle' }}>
+                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
                                                 {element.name}
                                             </th>
                                         )
