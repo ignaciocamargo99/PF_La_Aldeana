@@ -106,7 +106,7 @@ export default function EmployeesTable() {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).add(1, 'days').format('YYYY-MM-DD')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <ReadEmployeeButton employee={element} read={readEmployee} />
                                             </td>
