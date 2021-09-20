@@ -6,7 +6,6 @@ import Pagination from '../../../../common/TablePagination/Pagination';
 import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
 import SpinnerTableSupplies from './SpinnerTableSupplies';
 import SuppliesAmount from "./SuppliesAmount";
-import '../../../../common/TablePagination/TablePagination.css';
 import TableSuppliesDown from "./TableSuppliesDown";
 
 const PORT = require('../../../../config');
