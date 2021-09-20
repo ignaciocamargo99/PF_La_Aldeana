@@ -18,7 +18,7 @@ const Pagination = ({ elementsperpage, totalelements, paginate }) => {
 
         setPageNumbersList(pageNumbers);
 
-    }, [totalelements]);
+    }, [elementsperpage,totalelements]);
 
     const makePagination = (number) => {
         refreshStyles(number);

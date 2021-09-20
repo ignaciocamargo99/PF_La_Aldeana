@@ -19,7 +19,7 @@ const PaginationNumber = ({ paginate, number, isNumberActive }) => {
 
     return (
         <li className={numberStyle}>
-            <a onClick={handleNumberClicked} className='page-link'>
+            <a href='#/' onClick={handleNumberClicked} className='page-link'>
                 {number}
             </a>
         </li>
