@@ -8,11 +8,7 @@ import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-<<<<<<< HEAD
-    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
-=======
-    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks } from '../../../actions/DeliverySalesActions';
->>>>>>> US/442-Registrar-venta-por-delivery
+    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
@@ -68,7 +64,7 @@ const DeliverySales = (props) => {
 
     const confirmSale = () => {
         loadingMessage('Procesando la venta')
-        if(props.client === null){
+        if(props.client.names === ''){
             axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
         }
         else{
