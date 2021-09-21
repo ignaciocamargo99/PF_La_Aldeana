@@ -3,7 +3,7 @@ import React from 'react';
 const RadioButtons = (props) => {
 
     const onClickRB = (value) => {
-        props.setFilter(value)
+        props.setFilter(value);
     }
 
     return(
@@ -24,4 +24,4 @@ const RadioButtons = (props) => {
     )
 }
 
-export default RadioButtons
+export default RadioButtons;

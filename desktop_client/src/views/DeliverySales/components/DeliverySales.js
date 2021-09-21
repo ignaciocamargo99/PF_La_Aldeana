@@ -23,47 +23,47 @@ const DeliverySales = (props) => {
     const [date,setDate] = useState('');
 
     useEffect(() => {
-        let date = DateFormat(new Date())
-        setDate(date)   
-    },[])
+        let date = DateFormat(new Date());
+        setDate(date);
+    },[]);
  
     useEffect(() => {
         axios.get( PORT() + `/api/clients`)
         .then((response) => {
-            props.updateDeliveryClients(response.data)
+            props.updateDeliveryClients(response.data);
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         })
-    },[])
+    },[]);
 
     useEffect(() => {
         axios.get( PORT() + `/api/productsNotStock`)
         .then((response) => {
             let aux = []
             for(let i = 0 ; i < response.data.length ; i++){
-                aux.push(response.data[i].id_product)
+                aux.push(response.data[i].id_product);
             }
-            props.updateDeliveryProductsNotStock(aux)
+            props.updateDeliveryProductsNotStock(aux);
             axios.get( PORT() + `/api/allProducts`)
             .then((response) => {
-                let aux = []
+                let aux = [];
                 for(let i = 0 ; i < response.data.length ; i++){
-                    aux.push({'product':response.data[i],'quantity':0})
+                    aux.push({'product':response.data[i],'quantity':0});
                 }
-                props.updateDeliveryProductsQuantities(aux)
+                props.updateDeliveryProductsQuantities(aux);
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
             })
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         })
-    },[])
+    },[]);
 
     const confirmSale = () => {
-        let details = []
+        let details = [];
         props.details.map((detail,i) => {
             details.push(
                 {
@@ -71,13 +71,13 @@ const DeliverySales = (props) => {
                     "quantity": detail.quantity,
                     "subtotal": detail.subtotal
                 }
-            )
-        })
+            );
+        });
         let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
         axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
                 if(sale.data.Ok) {
-                    resetStates()
+                    resetStates();
                 }
                 else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
             })
@@ -85,19 +85,19 @@ const DeliverySales = (props) => {
     }
 
     const resetStates = () => {
-        setStep(1)
-        props.resetDetailDelivery()
-        props.updateErrorStreetNumberDelivery(true)
-        props.updateStreetNumberDelivery('') 
-        props.updateErrorStreetDelivery(true) 
-        props.updateStreetDelivery('')
-        props.updateErrorNamesDelivery(true)
-        props.updateNamesDelivery('')
-        props.updateErrorCellphoneDelivery(true)
-        props.updateCellphoneDelivery('')
-        props.updateErrorAmountDelivery(true)
-        props.updateAmountDelivery('')
-        props.subtractTotalDelivery(props.total)
+        setStep(1);
+        props.resetDetailDelivery();
+        props.updateErrorStreetNumberDelivery(true);
+        props.updateStreetNumberDelivery('');
+        props.updateErrorStreetDelivery(true);
+        props.updateStreetDelivery('');
+        props.updateErrorNamesDelivery(true);
+        props.updateNamesDelivery('');
+        props.updateErrorCellphoneDelivery(true);
+        props.updateCellphoneDelivery('');
+        props.updateErrorAmountDelivery(true);
+        props.updateAmountDelivery('');
+        props.subtractTotalDelivery(props.total);
         succesMessageDeliverySale('Se ha registrado la venta correctamente'); 
     }
 

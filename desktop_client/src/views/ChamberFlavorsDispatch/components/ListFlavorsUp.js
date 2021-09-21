@@ -18,7 +18,7 @@ const ListFlavorsUp = (props) => {
 
     useEffect(() => {
         if (props.refresh) {
-            props.updateFiltersFlavors([])
+            props.updateFiltersFlavors([]);
             props.updateRefresh(false);
         }
         else if (props.flavorsDispatchFilters[0] && !props.refresh) {

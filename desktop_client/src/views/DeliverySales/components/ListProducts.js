@@ -16,30 +16,30 @@ const ListProducts = (props) => {
     const [noProduct,setNoProduct] = useState(false);
 
     const validateQuantity = (e,i) => {
-        let quantity = parseInt(e.target.value)
+        let quantity = parseInt(e.target.value);
         let productQuantityNew = {'product': props.productsQuantities[i].product,'quantity': quantity}
-        props.updateDeliveryProductQuantity(productQuantityNew,i)
+        props.updateDeliveryProductQuantity(productQuantityNew,i);
     }
 
     const onClick = (id,i) => {
-        props.onClick(id,i)
-        document.getElementById(`quantityInput${i}`).value = ''
+        props.onClick(id,i);
+        document.getElementById(`quantityInput${i}`).value = '';
     }
 
     useEffect(() => {
-        let aux = 0
+        let aux = 0;
         props.productsQuantities?.map((productQuantity, i) => {
             if((productQuantity.product.id_sector === parseInt(props.filter) || parseInt(props.filter) === 0) && (productQuantity.product.name.toUpperCase().includes(searchState.toUpperCase()))){
-                aux += 1
+                aux += 1;
             }
-        })
+        });
         if(aux === 0){
-            setNoProduct(true)
+            setNoProduct(true);
         }
         else{
-            setNoProduct(false)
+            setNoProduct(false);
         }
-    },[searchState,props.filter])
+    },[searchState,props.filter]);
 
     return (
         <>

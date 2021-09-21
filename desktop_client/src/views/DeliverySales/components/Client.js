@@ -9,52 +9,52 @@ import validateFloatNumbers from '../../../utils/Validations/validateFloatNumber
 const Client = (props) => {
 
     const onChangeCellphone = (e) => {
-        props.updateErrorCellphoneDelivery(false)
+        props.updateErrorCellphoneDelivery(false);
         if(e.target.value.length > e.target.maxLength){
-            e.target.value = e.target.value.slice(0,e.target.maxLength)
+            e.target.value = e.target.value.slice(0,e.target.maxLength);
         }
-        props.updateCellphoneDelivery(e.target.value)
+        props.updateCellphoneDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),10,10)){
-            props.updateErrorCellphoneDelivery(true)
+            props.updateErrorCellphoneDelivery(true);
         } 
     }
 
     const onChangeNames = (e) => {
-        props.updateErrorNamesDelivery(false)
-        props.updateNamesDelivery(e.target.value)
+        props.updateErrorNamesDelivery(false);
+        props.updateNamesDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,50)){
-            props.updateErrorNamesDelivery(true)
+            props.updateErrorNamesDelivery(true);
         }
     }
 
     const onChangeStreet = (e) => {
-        props.updateErrorStreetDelivery(false)
-        props.updateStreetDelivery(e.target.value)
+        props.updateErrorStreetDelivery(false);
+        props.updateStreetDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,25)){
-            props.updateErrorStreetDelivery(true)
+            props.updateErrorStreetDelivery(true);
         }
     }
 
     const onChangeStreetNumber = (e) => {
-        props.updateErrorStreetNumberDelivery(false)
+        props.updateErrorStreetNumberDelivery(false);
         if(e.target.value.length > e.target.maxLength){
-            e.target.value = e.target.value.slice(0,e.target.maxLength)
+            e.target.value = e.target.value.slice(0,e.target.maxLength);
         }
-        props.updateStreetNumberDelivery(e.target.value)
+        props.updateStreetNumberDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,4) || e.target.value <= 0){
-            props.updateErrorStreetNumberDelivery(true)
+            props.updateErrorStreetNumberDelivery(true);
         }
     }
 
     const onBlurCellphone = (e) =>{
-        let x = props.clients.find( client => client.cellphone === parseInt(e.target.value))
+        let x = props.clients.find( client => client.cellphone === parseInt(e.target.value));
         if(x !== undefined){
-            props.updateErrorNamesDelivery(false)
-            props.updateNamesDelivery(x.names)
-            props.updateErrorStreetDelivery(false)
-            props.updateStreetDelivery(x.street_name)
-            props.updateErrorStreetNumberDelivery(false)
-            props.updateStreetNumberDelivery(x.street_number)
+            props.updateErrorNamesDelivery(false);
+            props.updateNamesDelivery(x.names);
+            props.updateErrorStreetDelivery(false);
+            props.updateStreetDelivery(x.street_name);
+            props.updateErrorStreetNumberDelivery(false);
+            props.updateStreetNumberDelivery(x.street_number);
         }
     }
 
