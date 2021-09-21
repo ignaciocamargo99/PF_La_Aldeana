@@ -148,8 +148,8 @@ export const clientDeliveryReducer = (state = null, action) => {
     return state
 }
 
-export const productsNotStockDeliveryReducer = (state = [], action) => {
-    if(action.type === 'UPDATE_DELIVERY_PRODUCTS_NOT_STOCK'){
+export const productsStocksDeliveryReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_DELIVERY_PRODUCTS_STOCKS'){
         return action.payload
     }
     return state

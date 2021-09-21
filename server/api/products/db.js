@@ -20,11 +20,10 @@ const productGetDB = () => {
     });
 };
 
-const productNotStockGetDB = () => {
+const productStocksGetDB = () => {
 
-    const sqlSelect = `SELECT pxs.id_product AS id_product
-    FROM PRODUCT_X_SUPPLY pxs INNER JOIN PRODUCTS p ON pxs.id_product = p.id_product INNER JOIN SUPPLIES s ON s.id_supply = pxs.id_supply
-    WHERE pxs.number_supply > s.stock_unit AND p.active = 1`
+    const sqlSelect = `SELECT s.stock_unit AS stock, pxs.id_product AS id_product, pxs.number_supply AS quantity 
+    FROM PRODUCT_X_SUPPLY pxs INNER JOIN PRODUCTS p ON pxs.id_product = p.id_product INNER JOIN SUPPLIES s ON s.id_supply = pxs.id_supply WHERE p.active = 1 ORDER BY p.NAME`
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -39,13 +38,14 @@ const productNotStockGetDB = () => {
     });
 };
 
+
 const productAllGetDB = () => {
     const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
         'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor ' +
             'FROM PRODUCTS p ' +
             'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
             'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
-            'WHERE active = 1 ORDER BY p.name';
+            'WHERE p.active = 1 ORDER BY p.name';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -361,5 +361,5 @@ module.exports = {
     productGetDB, productTypeGetDB, productSupplyGetDB, productSupplyUpdateDB,
     productPostDB, productSupplyPostDB, imageProductGetDB, typeSupplyGetDB,
     supplyGetDB, typeProductPostDB, productDeleteDB, productUpdateDB, productAllGetDB,
-    productNotStockGetDB
+    productStocksGetDB
 };
