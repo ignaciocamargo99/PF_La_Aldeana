@@ -8,7 +8,7 @@ import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsNotStock } from '../../../actions/DeliverySalesActions';
+    updateDeliveryClients, updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
@@ -21,6 +21,7 @@ const PORT = require('../../../config');
 const DeliverySales = (props) => {
     const [step,setStep] = useState(1);
     const [date,setDate] = useState('');
+    const [reset,setReset] = useState(false);
 
     useEffect(() => {
         let date = DateFormat(new Date());
@@ -38,13 +39,21 @@ const DeliverySales = (props) => {
     },[]);
 
     useEffect(() => {
-        axios.get( PORT() + `/api/productsNotStock`)
+        axios.get( PORT() + `/api/productsStocks`)
         .then((response) => {
-            let aux = []
-            for(let i = 0 ; i < response.data.length ; i++){
-                aux.push(response.data[i].id_product);
+            let auxStockProducts = []
+            auxStockProducts.push({'id_product': response.data[0].id_product ,'stock': response.data[0].stock <= 0?0: parseInt(response.data[0].stock / response.data[0].quantity)})
+            for(let i = 1 ; i < response.data.length ; i++){
+                if(response.data[i-1].id_product !== response.data[i].id_product){
+                    auxStockProducts.push({'id_product': response.data[i].id_product ,'stock': response.data[i].stock <= 0?0: parseInt(response.data[i].stock / response.data[i].quantity)})
+                }
+                else{
+                    if(auxStockProducts[auxStockProducts.length-1].stock > parseInt(response.data[i].stock / response.data[i].quantity)){
+                        auxStockProducts[auxStockProducts.length-1].stock = parseInt(response.data[i].stock / response.data[i].quantity)
+                    } 
+                }
             }
-            props.updateDeliveryProductsNotStock(aux);
+            props.updateDeliveryProductsStocks(auxStockProducts);
             axios.get( PORT() + `/api/allProducts`)
             .then((response) => {
                 let aux = [];
@@ -60,7 +69,7 @@ const DeliverySales = (props) => {
         .catch((err) => {
             console.log(err);
         })
-    },[]);
+    },[reset]);
 
     const confirmSale = () => {
         let details = [];
@@ -77,14 +86,14 @@ const DeliverySales = (props) => {
         axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
                 if(sale.data.Ok) {
-                    resetStates();
+                    resetStates(false);
                 }
                 else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
             })
             .catch(error => console.log(error))
     }
 
-    const resetStates = () => {
+    const resetStates = (cancel) => {
         setStep(1);
         props.resetDetailDelivery();
         props.updateErrorStreetNumberDelivery(true);
@@ -98,7 +107,11 @@ const DeliverySales = (props) => {
         props.updateErrorAmountDelivery(true);
         props.updateAmountDelivery('');
         props.subtractTotalDelivery(props.total);
-        succesMessageDeliverySale('Se ha registrado la venta correctamente'); 
+        if(!cancel){
+            succesMessageDeliverySale('Se ha registrado la venta correctamente'); 
+        }
+        props.updateDeliveryProductsQuantities([])
+        setReset(!reset)
     }
 
     return(
@@ -116,7 +129,7 @@ const DeliverySales = (props) => {
                 </div>
 
                 <BeShowed show={step===1}>
-                    <Products setStep={setStep}/>
+                    <Products setStep={setStep} resetStates={resetStates}/>
                 </BeShowed>
                 
                 <BeShowed show={step===2}>
@@ -147,7 +160,7 @@ const mapDispatchToProps = {
     updateDeliveryProductsQuantities, updateDeliveryClients, resetDetailDelivery,updateErrorStreetNumberDelivery, 
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
-    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsNotStock
+    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsStocks
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);

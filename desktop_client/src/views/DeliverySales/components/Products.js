@@ -94,7 +94,7 @@ const Products = (props) => {
                         <label>Total: ${props.total}</label>
                     </div>
                 </div>
-                <Buttons label='Siguiente' ready={props.detailsDelivery.length>0?true:false} actionCancel={() => {props.setStep(1)}} actionNotOK={() => {errorNextStepOne()}} actionOK={() => {props.setStep(2)}} />
+                <Buttons label='Siguiente' ready={props.detailsDelivery.length>0?true:false} actionCancel={() => {props.resetStates(true)}} actionNotOK={() => {errorNextStepOne()}} actionOK={() => {props.setStep(2)}} />
             </div>
         </div>
     </>)

@@ -23,7 +23,7 @@ router.get("/typeProducts", productController.getTypeProduct);
 
 router.get("/products", productController.getProduct);
 
-router.get("/productsNotStock", productController.getProductNotStock);
+router.get("/productsStocks", productController.getProductStocks);
 
 router.get("/allProducts", productController.getAllProduct);
 

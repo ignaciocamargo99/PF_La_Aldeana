@@ -3,7 +3,7 @@ import { flavorsDispatchDate, flavorsDispatchFilters, } from "./ChamberFlavorsDi
 import { clientsDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
      cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
      streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
-     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer, productsNotStockDeliveryReducer} from "./DeliverySalesReducers";
+     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer, productsStocksDeliveryReducer} from "./DeliverySalesReducers";
 import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, 
     refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
@@ -48,5 +48,5 @@ export default combineReducers({
     flavorsProductDelivery: flavorsProductDeliveryReducer,
     productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientsDelivery: clientsDeliveryReducer,
-    productsNotStockDelivery: productsNotStockDeliveryReducer
+    productsStocksDelivery: productsStocksDeliveryReducer
 })
