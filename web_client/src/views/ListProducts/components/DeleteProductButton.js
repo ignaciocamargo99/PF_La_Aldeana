@@ -7,14 +7,14 @@ import '../../../assets/Buttons.css';
 
 const PORT = require('../../../config');
 
-export default function DeleteProductButton (props) {
+export default function DeleteProductButton(props) {
 
-    const handleDelete = (e) => confirmDelete(deleteProduct, dontDeleteProduct, e);
+    const handleDelete = () => confirmDelete(deleteProduct);
 
     const deleteProduct = () => {
-        Axios.put(PORT() + '/api/products/delete', {id_product: props.product.id_product})
-            .then((response) => {
-                props.deleteProduct(props.index);
+        Axios.put(PORT() + '/api/products/delete', { id_product: props.product.id_product })
+            .then(() => {
+                props.deleteProduct();
                 swal("Elemento eliminado", {
                     icon: "success",
                 });
@@ -28,8 +28,6 @@ export default function DeleteProductButton (props) {
                 });
             });
     }
-
-    const dontDeleteProduct = () => console.log('No se elimino el producto ' + props.product.id_product + ' ' + props.product.name);
 
     return (
         <button id='deleteProductButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>

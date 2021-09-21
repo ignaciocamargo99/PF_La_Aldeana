@@ -2,13 +2,9 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import LoaderSpinner from '../../../common/LoaderSpinner';
-import BodyTable from '../../../common/Table/BodyTable';
-import HeaderTable from '../../../common/Table/HeaderTable';
-import Table from '../../../common/Table/Table';
 import backupProduct from '../../../utils/backupProduct';
-import DeleteProductButton from './DeleteProductButton';
-import EditProductButton from './EditProductButton';
 import EditProducts from './EditProducts/EditProducts';
+import TablePagination from './TablePagination/TablePagination'
 
 const PORT = require('../../../config');
 
@@ -18,7 +14,7 @@ const ProductTable = () => {
     const [editing, setEditing] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
-    useEffect(() => {
+    const getProducts = () => {
         Axios.get(PORT() + '/api/products')
             .then((response) => {
                 handlerLoadingSpinner();
@@ -26,17 +22,17 @@ const ProductTable = () => {
                 setProducts(auxSupply);
             })
             .catch((error) => console.log(error));
+    };
+
+    useEffect(() => {
+        getProducts();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const deleteProduct = (i) => {
-        let aux = [];
-        products?.map((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
-        });
-        setProducts(aux);
-    }
+    const productWasSuccessfullyDeleted = () => {
+        getProducts()
+    };
 
     const editProduct = (product) => {
         let aux = backupProduct(product);
@@ -45,13 +41,28 @@ const ProductTable = () => {
         aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
-    }
+    };
 
     const endEditProduct = (id) => {
         setIsEditing(false);
     }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
+
+    const columnsHeaders = [
+        {
+            name: 'Nombre',
+            width: '60%'
+        },
+        {
+            name: 'Editar',
+            width: '20%'
+        },
+        {
+            name: 'Eliminar',
+            width: '20%'
+        }
+    ];
 
     return (
         <>
@@ -71,35 +82,12 @@ const ProductTable = () => {
             )}
             {!isLoadingSpinner && (
                 <BeShowed show={!isEditing}>
-                    <Table>
-                        <HeaderTable
-                            th={
-                                <>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '400px', verticalAlign: 'middle' }}>Nombre</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Editar</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Eliminar</th>
-                                </>
-                            }
-                        />
-                        <BodyTable
-                            tbody={products?.map((elemento, i) => {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{elemento.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditProductButton product={elemento} edit={editProduct} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteProductButton deleteProduct={deleteProduct} product={elemento} index={i} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                )
-                            })
-                            }
-                        />
-                    </Table>
+                    <TablePagination
+                        columnsHeaders={columnsHeaders}
+                        currentElements={products}
+                        handleEdit={editProduct}
+                        handleDelete={productWasSuccessfullyDeleted}
+                    ></TablePagination>
                 </BeShowed>
             )}
             <BeShowed show={isEditing}>
