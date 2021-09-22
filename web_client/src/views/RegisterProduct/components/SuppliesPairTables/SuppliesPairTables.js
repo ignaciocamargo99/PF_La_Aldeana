@@ -37,12 +37,6 @@ export default function SuppliesPairTables({ load, data }) {
     }, []);
 
     useEffect(() => {
-        data.supplies = destinyTable;
-
-        load(data);
-    }, [destinyTable]);
-
-    useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter((elem) => {
                 return elem.name.toUpperCase().includes(nameSearch.toUpperCase());
@@ -53,6 +47,12 @@ export default function SuppliesPairTables({ load, data }) {
             setFilteredElements(listTable);
         }
     }, [nameSearch, listTable]);
+
+    useEffect(() => {
+        data.supplies = destinyTable;
+
+        load(data);
+    }, [destinyTable]);
 
     const upload = (supply, amount) => {
         if (amount > 0) {
