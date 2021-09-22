@@ -10,9 +10,9 @@ import { updateAllFlavorsProduct } from '../../../actions/DeliverySalesActions';
 const SaleDetails = (props) => {
 
     const onClickShow = (i) => {
-        props.updateAllFlavorsProduct(props.detailsDelivery[i].flavors)
-        props.setNameShow(props.detailsDelivery[i].product.name)
-        props.setShowModalView(true)
+        props.updateAllFlavorsProduct(props.detailsDelivery[i].flavors);
+        props.setNameShow(props.detailsDelivery[i].product.name);
+        props.setShowModalView(true);
     }
 
     return (

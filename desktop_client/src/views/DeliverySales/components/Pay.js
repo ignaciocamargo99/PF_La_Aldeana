@@ -16,16 +16,16 @@ const Pay = (props) => {
     const [showModalView,setShowModalView] = useState(false);
 
     const onChangeAmount = (amount) => {
-        props.updateErrorAmountDelivery(false)
-        props.updateAmountDelivery(amount)
+        props.updateErrorAmountDelivery(false);
+        props.updateAmountDelivery(amount);
         if(amount < (props.total + 100)){
-            props.updateErrorAmountDelivery(true)
+            props.updateErrorAmountDelivery(true);
         }
     }
 
     useEffect(() => {
-        onChangeAmount(props.amount)
-    },[props.total])
+        onChangeAmount(props.amount);
+    },[props.total]);
 
     return(
         <>

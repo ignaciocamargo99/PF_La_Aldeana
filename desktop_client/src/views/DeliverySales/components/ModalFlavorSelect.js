@@ -26,88 +26,88 @@ const ModalFlavorSelect = (props) => {
     useEffect(()=> {
         axios.get( PORT() + `/api/allFlavors`)
         .then((response) => {
-            setAllFlavors(response.data)
-            setFlavors(response.data)
+            setAllFlavors(response.data);
+            setFlavors(response.data);
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         })
-    },[])
+    },[]);
 
     useEffect(() => {
         if(refresh > 0){
             let aux = true
             props.flavorsProduct.map((flavorsSelected) => {
                 if(flavorsSelected.length === 0){
-                    aux = false
+                    aux = false;
                 }
             })
-            setReady(aux)
+            setReady(aux);
         }
-    },[refresh])
+    },[refresh]);
 
     const uploadFlavor = (id) => {
-        setRefresh(refresh+1)
+        setRefresh(refresh+1);
         if(id < 0){
-            errorSelectFlavor('Se debe seleccionar un sabor')
+            errorSelectFlavor('Se debe seleccionar un sabor');
         }
         else if(props.flavorsProduct[I].length >= props.quantityFlavor){
-            errorSelectFlavor(`El máximo de sabores a elegir son ${props.quantityFlavor}`)
+            errorSelectFlavor(`El máximo de sabores a elegir son ${props.quantityFlavor}`);
         }
         else{
-            let flavorToAdd = flavors.find(flavor => flavor.id_flavor === parseInt(id))
-            let newFlavors = flavors.filter(flavor => flavor.id_flavor !== parseInt(id))
-            setFlavors(newFlavors)
-            props.addFlavorsProduct(flavorToAdd,I)
+            let flavorToAdd = flavors.find(flavor => flavor.id_flavor === parseInt(id));
+            let newFlavors = flavors.filter(flavor => flavor.id_flavor !== parseInt(id));
+            setFlavors(newFlavors);
+            props.addFlavorsProduct(flavorToAdd,I);
         }
     }
 
     const downloadFlavor = (id,i) => {
-        setRefresh(refresh+1)
-        let flavorToQuit = props.flavorsProduct[I].find(flavor => flavor.id_flavor === parseInt(id))
-        let newFlavors = flavors
-        newFlavors.push(flavorToQuit)
-        setFlavors(newFlavors)
-        props.deleteFlavorsProduct(I,i)
+        setRefresh(refresh+1);
+        let flavorToQuit = props.flavorsProduct[I].find(flavor => flavor.id_flavor === parseInt(id));
+        let newFlavors = flavors;
+        newFlavors.push(flavorToQuit);
+        setFlavors(newFlavors);
+        props.deleteFlavorsProduct(I,i);
     }
 
     const onClickRB = (i) => {
-        let newFlavors
+        let newFlavors;
         if(props.flavorsProduct[i].length === 0){
-            newFlavors = allFlavors
+            newFlavors = allFlavors;
         }else{
-            newFlavors = allFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][0].id_flavor)
+            newFlavors = allFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][0].id_flavor);
             for(let j = 1 ; j < props.flavorsProduct[i].length ; j++){
-                newFlavors = newFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][j].id_flavor)
+                newFlavors = newFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][j].id_flavor);
             }
         }
-        setFlavors(newFlavors)
-        setI(i)
+        setFlavors(newFlavors);
+        setI(i);
     }
 
     const cancel = () => {
-        props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal)
-        props.deleteDetailDelivery(props.detailsDelivery.length-1)
-        props.updateFlavorsProduct([])
-        props.setShowModal(false)
-        setRefresh(0)
+        props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal);
+        props.deleteDetailDelivery(props.detailsDelivery.length-1);
+        props.updateFlavorsProduct([]);
+        props.setShowModal(false);
+        setRefresh(0);
     }
 
     const confirm = () => {
-        let i = props.detailsDelivery.length-1
-        let detail = props.detailsDelivery[i]
+        let i = props.detailsDelivery.length-1;
+        let detail = props.detailsDelivery[i];
         if(detail.flavors === null){
-            detail.flavors = props.flavorsProduct
+            detail.flavors = props.flavorsProduct;
         }
         else{
-            detail.flavors = detail.flavors.concat(props.flavorsProduct)
+            detail.flavors = detail.flavors.concat(props.flavorsProduct);
         }
-        props.updateDetailDelivery(detail,i)
-        setFlavors(allFlavors)
-        setI(0)
-        props.setShowModal(false)
-        setReady(false)
-        setRefresh(0)
+        props.updateDetailDelivery(detail,i);
+        setFlavors(allFlavors);
+        setI(0);
+        props.setShowModal(false);
+        setReady(false);
+        setRefresh(0);
     }
 
     return(

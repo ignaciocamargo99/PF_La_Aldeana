@@ -165,9 +165,9 @@ export const updateDeliveryClient = (client) => {
     }
 }
 
-export const updateDeliveryProductsNotStock = (productsNotStock) => {
+export const updateDeliveryProductsStocks = (productsStocks) => {
     return{
-        type: 'UPDATE_DELIVERY_PRODUCTS_NOT_STOCK',
-        payload: productsNotStock
+        type: 'UPDATE_DELIVERY_PRODUCTS_STOCKS',
+        payload: productsStocks
     }
 }

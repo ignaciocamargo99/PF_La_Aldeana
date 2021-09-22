@@ -9,6 +9,7 @@ import { updateDeliveryProductQuantity } from '../../../actions/DeliverySalesAct
 import DynamicSearch from '../../../common/DynamicSearch';
 import { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
+import warningMessage from '../../../utils/warningMessage';
 
 const ListProducts = (props) => {
 
@@ -16,30 +17,47 @@ const ListProducts = (props) => {
     const [noProduct,setNoProduct] = useState(false);
 
     const validateQuantity = (e,i) => {
-        let quantity = parseInt(e.target.value)
+        if(e.target.value.length > e.target.maxLength){
+            e.target.value = e.target.value.slice(0,e.target.maxLength);
+        }
+        let quantity = parseInt(e.target.value);
         let productQuantityNew = {'product': props.productsQuantities[i].product,'quantity': quantity}
-        props.updateDeliveryProductQuantity(productQuantityNew,i)
+        props.updateDeliveryProductQuantity(productQuantityNew,i);
     }
 
     const onClick = (id,i) => {
-        props.onClick(id,i)
-        document.getElementById(`quantityInput${i}`).value = ''
+        let quantityInput = document.getElementById(`quantityInput${i}`)
+        let detail = props.details.find(detail => detail.product.id_product === id)
+        let quantity
+        if(detail !== undefined){
+            quantity = parseInt(quantityInput.value) + parseInt(detail.quantity)
+        }
+        else{
+            quantity = parseInt(quantityInput.value)
+        }
+        if(quantity <= props.productsStocks[i].stock){
+            props.onClick(id,i);
+            quantityInput.value = '';
+        }
+        else{
+            warningMessage('Atención',`La cantidad ingresada supera el stock disponible.\nStock disponible: ${props.productsStocks[i].stock}.\nCantidad ya cargada: ${detail?detail.quantity:0}.`,'warning')
+        }
     }
 
     useEffect(() => {
-        let aux = 0
+        let aux = 0;
         props.productsQuantities?.map((productQuantity, i) => {
             if((productQuantity.product.id_sector === parseInt(props.filter) || parseInt(props.filter) === 0) && (productQuantity.product.name.toUpperCase().includes(searchState.toUpperCase()))){
-                aux += 1
+                aux += 1;
             }
-        })
+        });
         if(aux === 0){
-            setNoProduct(true)
+            setNoProduct(true);
         }
         else{
-            setNoProduct(false)
+            setNoProduct(false);
         }
-    },[searchState,props.filter])
+    },[searchState,props.filter]);
 
     return (
         <>
@@ -61,7 +79,7 @@ const ListProducts = (props) => {
                         tbody={
                             props.productsQuantities?.map((productQuantity, i) => {
                             if((productQuantity.product.id_sector === parseInt(props.filter) || parseInt(props.filter) === 0) && (productQuantity.product.name.toUpperCase().includes(searchState.toUpperCase()))){
-                                if(props.productsNotStock.includes(productQuantity.product.id_product)){
+                                if(props.productsStocks[i].stock <= 0){
                                     return(<tbody key={i}>
                                         <tr>
                                             <td style={{ textAlign: 'center', width: '58%', backgroundColor: '#9E9F9F'}}><strike>{productQuantity.product.name}</strike></td>
@@ -78,9 +96,9 @@ const ListProducts = (props) => {
                                     return (
                                         <tbody key={i}>
                                             <tr>
-                                                <td style={{ textAlign: 'center', width: '58%'}}><label>{productQuantity.product.name}</label></td>
-                                                <td style={{ textAlign: 'center', width: '15%'}}><label>{productQuantity.product.price}</label></td>
-                                                <td style={{ textAlign: 'center', width: '15%'}}>
+                                                <td style={{ textAlign: 'center', width: '48%'}}><label>{productQuantity.product.name}</label></td>
+                                                <td style={{ textAlign: 'center', width: '20%'}}><label>{productQuantity.product.price}</label></td>
+                                                <td style={{ textAlign: 'center', width: '20%'}}>
                                                     <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => {validateQuantity(e,i)}} onKeyDown={(e) => {validateFloatNumbers(e)}} defaultValue={productQuantity.quantity===0?'':productQuantity.quantity}></input>
                                                 </td>   
                                                 <td style={{ textAlign: 'center', width: '12%'}}>
@@ -108,7 +126,7 @@ const mapStateToProps = state => {
     return {
         productsQuantities: state.productsQuantitiesDelivery,
         details: state.detailsDelivery,
-        productsNotStock: state.productsNotStockDelivery
+        productsStocks: state.productsStocksDelivery
     }
 }
 

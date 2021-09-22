@@ -20,7 +20,7 @@ const Client = (props) => {
             get = false
             e.target.value = e.target.value.slice(0,e.target.maxLength)
         }
-        props.updateCellphoneDelivery(e.target.value)
+        props.updateCellphoneDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),10,10)){
             props.updateErrorCellphoneDelivery(true)
         }
@@ -33,7 +33,7 @@ const Client = (props) => {
                     swal.close()
                 }
                 else{
-                    resetStates({cellphone: props.cellphone, names: '', street_name: '', street_number: ''}, true)
+                    resetStates({cellphone: e.target.value, names: '', street_name: '', street_number: ''}, true)
                     swal.close()
                 }
             })
@@ -51,29 +51,29 @@ const Client = (props) => {
     }
 
     const onChangeNames = (e) => {
-        props.updateErrorNamesDelivery(false)
-        props.updateNamesDelivery(e.target.value)
+        props.updateErrorNamesDelivery(false);
+        props.updateNamesDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,50)){
-            props.updateErrorNamesDelivery(true)
+            props.updateErrorNamesDelivery(true);
         }
     }
 
     const onChangeStreet = (e) => {
-        props.updateErrorStreetDelivery(false)
-        props.updateStreetDelivery(e.target.value)
+        props.updateErrorStreetDelivery(false);
+        props.updateStreetDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,25)){
-            props.updateErrorStreetDelivery(true)
+            props.updateErrorStreetDelivery(true);
         }
     }
 
     const onChangeStreetNumber = (e) => {
-        props.updateErrorStreetNumberDelivery(false)
+        props.updateErrorStreetNumberDelivery(false);
         if(e.target.value.length > e.target.maxLength){
-            e.target.value = e.target.value.slice(0,e.target.maxLength)
+            e.target.value = e.target.value.slice(0,e.target.maxLength);
         }
-        props.updateStreetNumberDelivery(e.target.value)
+        props.updateStreetNumberDelivery(e.target.value);
         if(!validateInput(e.target.value.trim(),1,4) || e.target.value <= 0){
-            props.updateErrorStreetNumberDelivery(true)
+            props.updateErrorStreetNumberDelivery(true);
         }
     }
 
