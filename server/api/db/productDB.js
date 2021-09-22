@@ -196,6 +196,21 @@ const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
     });
 };
 
-module.exports = {
-    productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB
+const productSupplyGetDB = (productID) => {
+
+    const sqlSelect = 'SELECT * FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, [productID], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
 };
+
+module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB };

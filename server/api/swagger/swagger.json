@@ -24,6 +24,8 @@
     }
   ],
   "paths": {
+
+    
     "/products": {
       "get": {
         "summary":"Lista todos los productos",
@@ -36,5 +38,16 @@
         }
       }
     }
+
+
+
+
+
+
+
+
+
+
+
   }
 }

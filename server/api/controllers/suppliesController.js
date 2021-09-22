@@ -1,4 +1,4 @@
-const { createSupply } = require('../services/suppliesService')
+const { createSupply, readTypeSupply } = require('../services/suppliesService')
 const db = require("../../config/connection");
 
 // [HTTP:GET]
@@ -29,4 +29,18 @@ async function postSupply(req, res) {
     };
 };
 
-module.exports = { getSupplies, postSupply };
+// HTTP: GET
+async function getTypeSupplies(req, res) {
+    try {
+        const result = await readTypeSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getSupplies, postSupply, getTypeSupplies };

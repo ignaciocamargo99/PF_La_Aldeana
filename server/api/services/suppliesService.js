@@ -1,4 +1,4 @@
-const { supplyPostDB } = require('../db/suppliesDB');
+const { supplyPostDB, typeSupplyGetDB } = require('../db/suppliesDB');
 
 const createSupply = async (newSupply) => {
     try {
@@ -9,4 +9,14 @@ const createSupply = async (newSupply) => {
     };
 };
 
-module.exports = { createSupply }
+const readTypeSupply = async () => {
+    try {
+        let res = await typeSupplyGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+module.exports = { createSupply, readTypeSupply }
