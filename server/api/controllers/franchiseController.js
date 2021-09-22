@@ -13,7 +13,7 @@ async function postFranchise(req, res) {
         console.log(e)
         res.json({
             Ok: false,
-            Message: 'No se pudo registrar la franquicia.'
+            Message: e.message
         });
     };
 };
@@ -26,7 +26,7 @@ async function getFranchises(req, res) {
     } catch (e) {
         res.json({
             Ok: false,
-            Message: 'No se pudo encontrar franquicias.'
+            Message: e.message
         });
     };
 };

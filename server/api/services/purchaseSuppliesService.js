@@ -29,6 +29,4 @@ const createPurchaseSupplies = async (newPurchase) => {
     };
 };
 
-module.exports = {
-    readPurchases, readLastPurchase, createPurchaseSupplies
-};
+module.exports = { readPurchases, readLastPurchase, createPurchaseSupplies };

@@ -1,5 +1,21 @@
 const pool = require('../../config/connection');
 
+const suppliesGetDB = () => {
+    const sqlSelect = 'SELECT s.id_supply, s.name, s.stock_lot FROM SUPPLIES s';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const supplyPostDB = (newSupply) => {
     const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?,?)';
 
@@ -44,4 +60,4 @@ const typeSupplyGetDB = () => {
     });
 };
 
-module.exports = { supplyPostDB, typeSupplyGetDB }
+module.exports = { supplyPostDB, typeSupplyGetDB, suppliesGetDB }

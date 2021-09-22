@@ -10,7 +10,10 @@ async function postChamberFlavors(req, res) {
         })
     }
     catch (e) {
-        res.sendStatus(500)
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
     }
 }
 

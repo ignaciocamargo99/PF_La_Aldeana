@@ -1,4 +1,4 @@
-const pool = require('../../config/connection');
+const pool = require('../../config/connection'); 
 
 const flavorsGetDB = () => {
     const sqlSelect = 'SELECT f.id_flavor AS id_flavor, f.name AS name, f.family_flavor AS family_flavor, ff.name AS name_family_flavor, '+
@@ -38,4 +38,3 @@ const typeFlavorGetDB = () => {
 };
 
 module.exports = { flavorsGetDB, typeFlavorGetDB };
-

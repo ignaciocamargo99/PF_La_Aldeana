@@ -10,23 +10,23 @@ async function getPurchases(req, res) {
         res.json({
             Ok: false,
             Message: e.message
-            })
-        }
+        })
     }
+}
     
-    // HTTP: GET
-    async function getLastPurchase(req, res) {
-        try {
-            const result = await readLastPurchase();
-            res.send(result)
-        }
-        catch (e) {
-            res.json({
-                Ok: false,
-                Message: e.message
-            })
-        }
+// HTTP: GET
+async function getLastPurchase(req, res) {
+    try {
+        const result = await readLastPurchase();
+        res.send(result)
     }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        })
+    }
+}
 
 // HTTP: POST TRANSACTION
 async function postPurchaseSupplies(req, res) {
@@ -47,6 +47,4 @@ async function postPurchaseSupplies(req, res) {
     }
 }
 
-module.exports = {
-    getPurchases, getLastPurchase, postPurchaseSupplies
-}
+module.exports = { getPurchases, getLastPurchase, postPurchaseSupplies }

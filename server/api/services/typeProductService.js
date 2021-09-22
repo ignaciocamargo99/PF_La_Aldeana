@@ -5,19 +5,18 @@ const readTypeProduct = async () => {
         let res = await productTypeGetDB();
         return res;
     }
-    catch {
-        let res = await productTypeGetDB();
-        throw Error(res);
+    catch (error) {
+        throw Error(error)
     };
 };
 
 const createTypeProduct = async (newTypeProduct) => {
     try {
-        await typeProductPostDB(newTypeProduct);
-    }
-    catch {
         let res = await typeProductPostDB(newTypeProduct);
-        throw Error(res);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
     };
 };
 

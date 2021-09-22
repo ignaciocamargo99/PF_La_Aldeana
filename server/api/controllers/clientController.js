@@ -14,5 +14,4 @@ async function getClient(req, res) {
     }
 }
 
-
 module.exports = { getClient }

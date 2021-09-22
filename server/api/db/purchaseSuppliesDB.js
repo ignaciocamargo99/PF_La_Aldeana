@@ -16,7 +16,6 @@ const purchasesGetDB = () => {
     });
 };
 
-
 const lastPurchaseGetDB = () => {
     const sqlSelect = `SELECT MAX(p.purchase_number) AS last_number FROM PURCHASES_SUPPLIES p`;
 
@@ -32,7 +31,6 @@ const lastPurchaseGetDB = () => {
         })
     });
 };
-
 
 const purchaseSuppliesPostDB = (newPurchase) => {
 
@@ -100,6 +98,4 @@ const purchaseSuppliesPostDB = (newPurchase) => {
     });
 };
 
-module.exports = {
-    purchasesGetDB, lastPurchaseGetDB, purchaseSuppliesPostDB
-};
+module.exports = { purchasesGetDB, lastPurchaseGetDB, purchaseSuppliesPostDB };

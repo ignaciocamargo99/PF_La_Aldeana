@@ -20,6 +20,4 @@ const createFranchise = async (newFranchise) => {
     }
 };
 
-
-
 module.exports = { createFranchise, readFranchises }

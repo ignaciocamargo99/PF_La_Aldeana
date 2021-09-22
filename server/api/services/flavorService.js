@@ -1,6 +1,5 @@
 const { flavorsGetDB, typeFlavorGetDB } = require('../db/flavorDb');
 
-
 const readFlavor = async () => {
     try {
         let res = await flavorsGetDB();

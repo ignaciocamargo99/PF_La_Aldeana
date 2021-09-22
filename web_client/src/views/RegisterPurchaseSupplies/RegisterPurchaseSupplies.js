@@ -98,7 +98,7 @@ const RegisterPurchaseSupplies = (props) => {
             "supplier": props.purchaseSupplier,
             "total": props.purchaseTotal,
             "details": details}
-        axios.post( PORT() + `/api/purchase/new`,purchase)
+        axios.post( PORT() + `/api/purchases`,purchase)
         .then((response) => {
             if(response.data.Ok){
                 resetStates(response.data.Message)

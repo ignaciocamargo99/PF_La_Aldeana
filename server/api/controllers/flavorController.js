@@ -1,4 +1,4 @@
-const { readFlavor, readTypeFlavor } = require('../services/flavorService');
+const { readFlavor, readTypeFlavor } = require('../services/flavorService'); 
 
 // HTTP: GET
 async function getFlavor(req, res) {
