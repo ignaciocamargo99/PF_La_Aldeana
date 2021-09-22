@@ -2,7 +2,8 @@ const { supplyPostDB, typeSupplyGetDB, suppliesGetDB } = require('../db/supplies
 
 const readSupplies = async () => {
     try {
-        await suppliesGetDB();
+        let res = await suppliesGetDB();
+        return res;
     }
     catch (error){
         throw Error(error)

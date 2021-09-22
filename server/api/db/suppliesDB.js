@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const suppliesGetDB = () => {
-    const sqlSelect = 'SELECT s.id_supply, s.name, s.stock_lot FROM SUPPLIES s';
+    const sqlSelect = 'SELECT * FROM SUPPLIES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

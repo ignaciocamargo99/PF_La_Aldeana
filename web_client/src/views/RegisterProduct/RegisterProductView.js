@@ -42,8 +42,7 @@ export default function RegisterProductView() {
         const formData = new FormData();
         const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues && suppliesValues.length > 0) urlApi = '/api/productSupply/new';
-        else urlApi = '/api/product/new'
+        urlApi = '/api/products'
 
         const jsonArrSupplies = JSON.stringify(suppliesValues);
         formData.append('name', data.name);

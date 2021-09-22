@@ -43,8 +43,7 @@ export default function EditProducts(props) {
         const formData = new FormData();
         const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues.length > 0) urlApi = '/api/productSupply/update';
-        else urlApi = '/api/products/update';
+        urlApi = '/api/products';
 
         const jsonArrSupplies = JSON.stringify(suppliesValues);
         formData.append('id_product', data.id_product);

@@ -18,7 +18,7 @@ const Sales = (props) => {
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/allProducts`)
+        Axios.get(`${PORT()}/api/products`)
             .then(response => {
                 props.updateProducts(response.data);
                 props.updateProductsFiltered(response.data);

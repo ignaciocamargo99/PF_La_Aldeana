@@ -5,19 +5,18 @@ const readProduct = async () => {
         let res = await productGetDB();
         return res;
     }
-    catch {
-        let res = await productGetDB();
-        throw Error(res);
+    catch (error) {
+        throw Error(error)
     };
 };
 
 const createProduct = async (newProduct, imageProduct) => {
     try {
-        await productPostDB(newProduct, imageProduct);
-    }
-    catch {
         let res = await productPostDB(newProduct, imageProduct);
-        throw Error(res);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
     };
 };
 
@@ -26,29 +25,28 @@ const readImageProduct = async (productID) => {
         let res = await imageProductGetDB(productID);
         return res;
     }
-    catch {
-        let res = await imageProductGetDB(productID);
-        throw Error(res);
+    catch (error) {
+        throw Error(error)
     };
 };
 
 const deleteProduct = async (productDeleteID) => {
     try {
-        await productDeleteDB(productDeleteID);
-    }
-    catch {
         let res = await productDeleteDB(productDeleteID);
-        throw Error(res);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
     };
 };
 
 const updateProduct = async (productUpdate, imageUpdate, flagImage) => {
     try {
-        await productUpdateDB(productUpdate, imageUpdate, flagImage);
-    }
-    catch {
         let res = await productUpdateDB(productUpdate, imageUpdate, flagImage);
-        throw Error(res);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
     };
 };
 
