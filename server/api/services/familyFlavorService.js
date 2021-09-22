@@ -1,4 +1,4 @@
-const { familyFlavorGetDB } = require('../db/familyFlavorDb');
+const { familyFlavorGetDB } = require('../db/familyFlavorDB');
 
 const readFamilyFlavor = async () => {
     try {
