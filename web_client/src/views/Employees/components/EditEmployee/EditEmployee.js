@@ -27,7 +27,7 @@ export default function EditEmployee(props) {
             Axios.put(`${PORT()}/api/updateEmployee`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('No se han podido modificar los datos del empleado. Revise los datos cargados.', 'Atención')
+                    else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')
                 })
                 .catch(error => console.log(error));
         }
