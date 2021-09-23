@@ -83,9 +83,8 @@ const RegisterPurchaseSupplies = (props) => {
                     setDetails(details)
                 })
             }
-        }
-
-        console.log(props.purchaseSupplier)
+        };
+        
         setReady(isReady)
 
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
