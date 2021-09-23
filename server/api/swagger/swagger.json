@@ -76,7 +76,8 @@
             "name": "id_sector",
             "description": "ID del sector al que pertence el tipo de producto",
             "required": true,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           }
         ],
         "responses": {
@@ -124,7 +125,8 @@
             "name": "id_supply_type",
             "description": "ID del tipo de insumo",
             "required": true,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           },
 
           {
@@ -132,7 +134,8 @@
             "name": "price_wholesale",
             "description": "Precio mayorista del insumo",
             "required": false,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           },
 
           {
@@ -140,7 +143,8 @@
             "name": "price_retail",
             "description": "Precio minorista del insumo",
             "required": false,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           },
 
           {
@@ -148,7 +152,8 @@
             "name": "stock_lot",
             "description": "Lotes en stock del insumo",
             "required": false,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           },
 
           {
@@ -156,7 +161,8 @@
             "name": "stock_unit",
             "description": "Unidades en stock del insumo",
             "required": false,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           },
 
           {
@@ -164,7 +170,8 @@
             "name": "unit_x_lot",
             "description": "Cantidad de unidades en un lote del insumo",
             "required": false,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           }
         ],
         "responses": {
@@ -233,7 +240,8 @@
             "name": "total",
             "description": "Costo total de la compra",
             "required": true,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           }
         ],
         "responses": {
@@ -280,7 +288,8 @@
             "name": "rol",
             "description": "Rol de usuario",
             "required": true,
-            "type": "integer"
+            "type": "integer",
+            "minimum": "1"
           }
         ],
         "responses": {
@@ -333,6 +342,133 @@
         "responses": {
           "201": {
             "description": "Una salida de sabores de camara fue registrada exitosamente."
+          }
+        }
+      }
+    },
+
+    "/productions": {  
+      "post": {
+        "summary":"Registra producción de sabores de helado",
+        "tags": ["Producción"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "dateProduction",
+            "description": "Fecha de prodducción",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "flavors",
+            "description": "Un array (JSON) de sabores de helado producidos con sus respectivos datos correspondientes a dicha transacción",
+            "required": true,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La producción de sabores de helado fue registrada exitosamente."
+          }
+        }
+      }
+    },
+    
+    "/franchises": {
+      "get": {
+        "summary":"Lista todas las franquicias",
+        "tags": ["Franquicias"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) de franquicias."
+          }
+        }
+      },
+
+      "post": {
+        "summary":"Registra una franquicia",
+        "tags": ["Franquicias"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "name",
+            "description": "Nombre de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "start_date",
+            "description": "Fecha de inicio de actividades",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "address",
+            "description": "Dirección de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "address_number",
+            "description": "Número de calle de la franquicia",
+            "required": true,
+            "type": "integer",
+            "minimum": "1"
+          },
+
+          {
+            "in": "body",
+            "name": "city",
+            "description": "Ciudad de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "province",
+            "description": "Provincia de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "name_manager",
+            "description": "Nombre del encargado de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "last_name_manager",
+            "description": "Apellido del encargado de la franquicia",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "body",
+            "name": "dni_manager",
+            "description": "DNI del encargado de la franquicia",
+            "required": true,
+            "type": "integer",
+            "minimum": "11111111"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Una franquicia fue registrada exitosamente."
           }
         }
       }
