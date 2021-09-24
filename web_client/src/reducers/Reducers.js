@@ -3,7 +3,6 @@ import { nickReducer, passwordReducer, userReducer , permissionsReducer } from "
 import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity, purchasePrice, purchaseSubtotal, purchaseTotal } from "./PurchaseSuppliesReducer"
 import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
-import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purchaseQuantity, purchasePrice, purchaseSubtotal, purchaseTotal } from "./PurchaseSuppliesReducer"
 import { dateTo, dateFrom, productSales, topTenProductSales, typeProductSales } from "./ReportsReducers"
 import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply, deliverySupply, franchiseSupply } from "./SupplyReducers"
 

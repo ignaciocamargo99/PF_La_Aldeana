@@ -118,7 +118,7 @@ export default function Navbar(props) {
 
         const permissionVentas = permissions.find(option => option === "Ventas");
         let ventas;
-        const permissionReportes = permisos.find(option => option === "Reportes");
+        const permissionReportes = permissions.find(option => option === "Reportes");
         if (permissionVentas === "Ventas") {
             ventas =
                 <li>
@@ -162,7 +162,6 @@ export default function Navbar(props) {
                 {franchises}
                 {ventas}
                 {compras}
-                {reportes}
             </>
         )
     };

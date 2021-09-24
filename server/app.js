@@ -13,12 +13,9 @@ const middleware = require('./middleware/index');
 const flavorsRouter = require('./api/routes/flavorRoute');
 const clientsRouter = require('./api/routes/clientRoute');
 const franchiseRouter = require('./api/franchise/router');
-<<<<<<< HEAD
-const salesReport = require('./api/reports/sales/router')
-=======
 const salesRouter = require('./api/sales/router');
 const productionsRouter = require('./api/productions/router');
->>>>>>> staging
+const salesReport = require('./api/reports/sales/router');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -41,13 +38,10 @@ app.use('/api', franchiseRouter);
 app.use('/api', salesRouter);
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', suppliesRouter);
-<<<<<<< HEAD
 app.use('/api', salesReport);
-=======
 app.use('/api', flavorsRouter);
 app.use('/api', productionsRouter);
 app.use('/api', clientsRouter);
->>>>>>> staging
 
 app.use(middleware.error404);
 app.use(middleware.error500);
