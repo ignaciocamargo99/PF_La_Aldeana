@@ -54,3 +54,17 @@ export const unitSupply = (state = 0 ,action) => {
     }
     return state
 }
+
+export const deliverySupply = (state = false ,action) => {
+    if(action.type === 'IS_DELIVERY_SUPPLY'){
+        return action.payload
+    }
+    return state
+}
+
+export const franchiseSupply = (state = false ,action) => {
+    if(action.type === 'IS_FRANCHISE_SUPPLY'){
+        return action.payload
+    }
+    return state
+}

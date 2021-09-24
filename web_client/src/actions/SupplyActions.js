@@ -54,3 +54,17 @@ export const updateUnitSupply = (unitSupply) =>{
         payload: unitSupply
     }
 }
+
+export const isDeliverySupply = (delivery) =>{
+    return{
+        type: 'IS_DELIVERY_SUPPLY',
+        payload: delivery
+    }
+}
+
+export const isFranchiseSupply = (franchise) =>{
+    return{
+        type: 'IS_FRANCHISE_SUPPLY',
+        payload: franchise
+    }
+}

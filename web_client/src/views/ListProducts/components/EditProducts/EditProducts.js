@@ -2,8 +2,8 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
 import Buttons from '../../../../common/Buttons';
-import success from '../../../../utils/SuccessMessages/successTypeProduct';
-import ExtraDataProduct from './ExtraDataProduct';
+import successMessage from '../../../../utils/SuccessMessages/successMessage';
+import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import './EditProductView.css';
 import '../../styles/ProductForm.css';
@@ -20,6 +20,7 @@ export default function EditProducts(props) {
     const [typeProductChild, setTypeProductChild] = useState(props.product.id_product_type);
     const [imgProductChild, setImgProductChild] = useState(props.product.image);
     const [supplyProductChild, setSupplyProductChild] = useState(props.product.supplies);
+    const [flavorChild, setFlavorChild] = useState(props.product.flavor);
     const [flagImageUpdate, setFlagImageUpdate] = useState();
     const [ready, setReady] = useState(true);
 
@@ -29,10 +30,12 @@ export default function EditProducts(props) {
         setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
         setSectorProductChild(childData.id_sector);
-        setTypeProductChild(childData.typeProduct);
+        setTypeProductChild(childData.id_product_type);
         setImgProductChild(childData.img);
         setSupplyProductChild(childData.supplies);
         setFlagImageUpdate(childData.flagImageUpdate);
+        setFlavorChild(childData.flavor);
+        console.log(data)
     }
 
     const registerProduct = () => {
@@ -53,14 +56,15 @@ export default function EditProducts(props) {
         formData.append('id_product_type', data.id_product_type);
         formData.append('supplies', jsonArrSupplies);
         formData.append('flagImageUpdate', data.flagImageUpdate);
+        formData.append('flavor', data.flavor);
 
         Axios.put(PORT() + urlApi, formData)
-            .then(success())
+            .then(successMessage('Atención', 'El producto se ha editado correctamente', 'success'))
             .catch(error => console.log(error));
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0
+        if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0 && data.id_product_type
             && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
     }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);

@@ -1,0 +1,11 @@
+.bread {
+    margin-bottom: 1.5em;
+}
+
+.bread a, .bread p {
+    font-size: 1.1rem;
+}
+
+.bread svg {
+    color: #A5DEF9;
+}

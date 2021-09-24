@@ -2,20 +2,22 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
 import Buttons from '../../common/Buttons';
-import success from '../../utils/SuccessMessages/successTypeProduct';
+import successMessage from '../../utils/SuccessMessages/successMessage';
 import validationProductRegister from '../../utils/Validations/validationProductRegister';
 import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
+import Breadcrumb from '../../common/Breadcrumb';
 
 const PORT = require('../../config');
 
 export default function RegisterProductView() {
-    const [data, setData] = useState({ name: null, description: '', price: null, id_sector: 2, id_product_type: null, img: null, supplies: [] });
+    const [data, setData] = useState({ name: null, description: '', price: null, id_sector: null, id_product_type: null, img: null, supplies: [], flavor:null, editing: false });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
+    const [flavorChild, setFlavorChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
     const [sectorProductChild, setSectorProductChild] = useState('');
     const [typeProductChild, setTypeProductChild] = useState(-1);
@@ -31,7 +33,8 @@ export default function RegisterProductView() {
         setSectorProductChild(childData.id_sector);
         setTypeProductChild(childData.id_product_type);
         setImgProductChild(childData.img);
-        setSupplyProductChild(childData.supplies)
+        setSupplyProductChild(childData.supplies);
+        setFlavorChild(childData.flavor);
     }
 
     const registerProduct = () => {
@@ -39,7 +42,7 @@ export default function RegisterProductView() {
         const formData = new FormData();
         const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues.length > 0) urlApi = '/api/productSupply/new';
+        if (suppliesValues && suppliesValues.length > 0) urlApi = '/api/productSupply/new';
         else urlApi = '/api/product/new'
 
         const jsonArrSupplies = JSON.stringify(suppliesValues);
@@ -50,10 +53,11 @@ export default function RegisterProductView() {
         formData.append('id_sector', data.id_sector);
         formData.append('id_product_type', data.id_product_type);
         formData.append('supplies', jsonArrSupplies);
+        formData.append('flavor', data.flavor);
 
         Axios.post(PORT() + urlApi, formData)
             .then((formData) => {
-                if(formData.data.Ok) success();
+                if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
                 else displayError('Ha ocurrido un error al registrar el producto. \n' + data.Message);
             })
             .catch(error => console.log(error))
@@ -68,12 +72,12 @@ export default function RegisterProductView() {
 
     return (
         <>
+            <Breadcrumb parentName="Productos" parentLink="products" currentName="Registrar producto"/>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
                 <GeneralDataProduct load={load} data={data} />
-                <hr />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons
                     label='Registrar' actionOK={registerProduct}
