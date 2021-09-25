@@ -39,6 +39,7 @@ const ListFlavors = (props) => {
             let filterFlavorsWithDownList = [];
             setBoolSearchNameFlavor(true);
             setBoolFamilyFlavor(false);
+            props.updateFiltersFlavors([]);
             // Filter without repeating what was loaded in the ListFlavorsDown
             filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
             props.updateTableUp(filterFlavorsWithDownList);
@@ -67,16 +68,22 @@ const ListFlavors = (props) => {
 
     const onChangeFamilyProduct = (e) => {
         if (e.target.value === "all_flavors") {
+            console.log("entro en all_flavors")
+            setSelectFamilyFlavor(e.target.value);
             let filterFlavorsWithDownList = [];
             filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
             props.updateTableUp(filterFlavorsWithDownList);
         }
-        else setSelectFamilyFlavor(e.target.value);
+        setSelectFamilyFlavor(e.target.value);
+        props.updateFiltersFlavors(e.target.value)
     }
 
     useEffect(() => {
-        let filters = [selectFamilyFlavor];
-        props.updateFiltersFlavors(filters);
+        console.log('useEffect')
+        if (selectFamilyFlavor === 'all_flavors') {
+            let filters = [selectFamilyFlavor];
+            props.updateFiltersFlavors(filters);
+        }
     }, [selectFamilyFlavor]);
 
     return (
@@ -113,6 +120,7 @@ const ListFlavors = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        flavorsDispatchFilters: state.flavorsDispatchFilters,
         elementsTableUp: state.elementsTableUp,
         allElements: state.allElements,
         refresh: state.refresh
