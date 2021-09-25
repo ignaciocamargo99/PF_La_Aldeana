@@ -68,7 +68,6 @@ const ListFlavors = (props) => {
 
     const onChangeFamilyProduct = (e) => {
         if (e.target.value === "all_flavors") {
-            console.log("entro en all_flavors")
             setSelectFamilyFlavor(e.target.value);
             let filterFlavorsWithDownList = [];
             filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0));
@@ -79,7 +78,6 @@ const ListFlavors = (props) => {
     }
 
     useEffect(() => {
-        console.log('useEffect')
         if (selectFamilyFlavor === 'all_flavors') {
             let filters = [selectFamilyFlavor];
             props.updateFiltersFlavors(filters);

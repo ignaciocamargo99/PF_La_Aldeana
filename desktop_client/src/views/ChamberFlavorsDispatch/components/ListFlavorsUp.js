@@ -22,13 +22,11 @@ const ListFlavorsUp = (props) => {
             props.updateRefresh(false);
         }
         else if (props.flavorsDispatchFilters[0] && !props.refresh && props.flavorsDispatchFilters[0] !== 'all_flavors') {
-            console.log('entro 2')
             let filterFamilyFlavors = [];
             filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor === parseInt(props.flavorsDispatchFilters[0]))));
             props.updateTableUp(filterFamilyFlavors);
         }
-        else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0]) || props.flavorsDispatchFilters[0] === 'all_flavors') {
-            console.log('entro 3')
+        else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0] && props.elementsTableDown.length === 0)) {
             Axios.get(`${PORT()}/api/allFlavors`)
                 .then(response => {
                     handlerLoadingSpinner();
