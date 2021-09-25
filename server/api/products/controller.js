@@ -33,6 +33,7 @@ async function getAllProduct(req, res) {
 // HTTP: GET
 async function getTypeProduct(req, res) {
     try {
+        console.log('hola')
         const result = await readTypeProduct();
         res.send(result)
     }
