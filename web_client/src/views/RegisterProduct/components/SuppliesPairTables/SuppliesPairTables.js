@@ -114,7 +114,7 @@ export default function SuppliesPairTables({ load, data }) {
                         <h4 className="text-secondary">Insumos disponibles:</h4>
                         <div className="search-input">
                             <FontAwesomeIcon icon={faSearch} />
-                            <input id="inputSearchName" type="text" placeholder="Buscar insumos..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
                         </div>
                     </div>
                     <div className="table-responsive-md">
