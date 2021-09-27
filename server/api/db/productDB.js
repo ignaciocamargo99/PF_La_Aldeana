@@ -91,7 +91,7 @@ const imageProductGetDB = (productID) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-
+  
             db.query(sqlSelect, [productID], (error, result) => {
                 if (error) reject(error);
 
@@ -124,8 +124,8 @@ const productDeleteDB = (productDeleteID) => {
     });
 };
 
-const productUpdateDB = (productUpdate, imageUpdate, flagImage) => {
-    const { id_product, name, description, price, id_sector, id_product_type, supplies, flavor } = productUpdate;
+const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
+    const { name, description, price, id_sector, id_product_type, supplies, flavor } = productUpdate;
     let arrSupplies = JSON.parse(supplies);
     let image = imageUpdate;
     let valuesToUpdate = [];

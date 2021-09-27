@@ -12,7 +12,7 @@ describe('Tests unitarios sobre API Permissions',()=>{
     describe('Check getPermissions',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
-                .get('/permission')
+                .get('/permissions')
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
@@ -20,7 +20,7 @@ describe('Tests unitarios sobre API Permissions',()=>{
         });
         it('Trae los permisos como json', (done) => {
             chai.request(url)
-                .get('/permission')
+                .get('/permissions')
                 .end( function(err,res){
                     expect(res).to.be.json;
                     done();
@@ -31,7 +31,7 @@ describe('Tests unitarios sobre API Permissions',()=>{
     describe('Check getPermissionsRols',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
-                .get('/permission/filter/1')
+                .get('/permissions/filter/1')
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
@@ -39,7 +39,7 @@ describe('Tests unitarios sobre API Permissions',()=>{
         });
         it('Trae los permisos de un rol como json', (done) => {
             chai.request(url)
-                .get('/permission/filter/1')
+                .get('/permissions/filter/1')
                 .end( function(err,res){
                     expect(res).to.be.json;
                     done();
@@ -47,7 +47,7 @@ describe('Tests unitarios sobre API Permissions',()=>{
         });
         it('Trae los permisos de venta de un rol admin', (done) => {
             chai.request(url)
-                .get('/permission/filter/1')
+                .get('/permissions/filter/1')
                 .end( function(err,res){
                     expect(res.body[0]).to.have.property('name').to.be.equal('Ventas');
                     done();

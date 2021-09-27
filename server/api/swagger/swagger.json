@@ -24,8 +24,6 @@
     }
   ],
   "paths": {
-
-    
     "/products": {
       "get": {
         "summary":"Lista todos los productos",
@@ -36,9 +34,115 @@
             "description": "Un array (JSON) de productos."
           }
         }
+      },
+      "post": {
+        "summary":"Registra un producto",
+        "tags": ["Productos"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "product",
+            "description": "JSON del producto",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Un producto fue registrado correctamente."
+          }
+        }
       }
     },
-    
+    "/products/{idProduct}": {
+      "put": {
+        "summary":"Edita un producto",
+        "tags": ["Productos"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idProduct",
+            "description": "Id del producto",
+            "required": true,
+            "type": "integer",
+            "minimum": "1"
+          },
+          {
+            "in": "body",
+            "name": "product",
+            "description": "JSON del producto",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Un producto fue editado correctamente."
+          }
+        }
+      },
+      "delete": {
+        "summary":"Elimina un producto",
+        "tags": ["Productos"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idProduct",
+            "description": "Id del producto",
+            "required": true,
+            "type": "integer",
+            "minimum": "1"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Un producto fue eliminado correctamente."
+          }
+        }
+      }
+    },
+    "/imageProduct/{idProduct}": {
+      "get": {
+        "summary":"Obtiene la imagen de un producto",
+        "tags": ["Productos"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idProduct",
+            "description": "Id del producto",
+            "required": true,
+            "type": "integer",
+            "minimum": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Un imagen del producto correspondiente."
+          }
+        }
+      }
+    },
+    "/productSupply/{idProduct}": {
+      "get": {
+        "summary":"Obtiene la insumos de un producto",
+        "tags": ["Productos"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idProduct",
+            "description": "Id del producto",
+            "required": true,
+            "type": "integer",
+            "minimum": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Un JSON con los insumos del producto correspondiente."
+          }
+        }
+      }
+    },
     "/typeProducts": {
       "get": {
         "summary":"Lista todos los tipos de productos",
@@ -50,7 +154,6 @@
           }
         }
       },
-
       "post": {
         "summary":"Registra un tipo de producto",
         "tags": ["Tipos de productos"],
@@ -62,7 +165,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "description",
@@ -70,7 +172,6 @@
             "required": false,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "id_sector",
@@ -87,7 +188,6 @@
         }
       }
     },
-    
     "/supplies": {
       "get": {
         "summary":"Lista todos los insumos",
@@ -99,7 +199,6 @@
           }
         }
       },
-
       "post": {
         "summary":"Registra un insumo",
         "tags": ["Insumos"],
@@ -111,7 +210,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "description",
@@ -119,7 +217,6 @@
             "required": false,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "id_supply_type",
@@ -128,7 +225,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "price_wholesale",
@@ -137,7 +233,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "price_retail",
@@ -146,7 +241,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "stock_lot",
@@ -155,7 +249,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "stock_unit",
@@ -164,7 +257,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "unit_x_lot",
@@ -181,7 +273,6 @@
         }
       }
     },
-    
     "/typeSupplies": {
       "get": {
         "summary":"Lista todos los tipos de insumos",
@@ -194,7 +285,6 @@
         }
       }
     },
-    
     "/purchases": {
       "get": {
         "summary":"Lista todas las compras de insumos",
@@ -206,7 +296,6 @@
           }
         }
       },
-
       "post": {
         "summary":"Registra una compra de insumos",
         "tags": ["Compras de insumos"],
@@ -218,7 +307,6 @@
             "required": true,
             "type": "object"
           },
-
           {
             "in": "body",
             "name": "supplier",
@@ -226,7 +314,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "date_purchase",
@@ -234,7 +321,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "total",
@@ -250,8 +336,7 @@
           }
         }
       }
-    },
-    
+    },    
     "/lastPurchase": {
       "get": {
         "summary":"Trae la última compra de insumos",
@@ -260,12 +345,23 @@
         "responses": {
           "200": {
             "description": "ID de la última compra de insumos."
+          } 
+        }      
+      }  
+    },   
+    "/users": {
+      "get": {
+        "summary":"Trae todos los usuarios",
+        "tags": ["Usuarios"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) de usuarios."
           }
         }
       }
     },
-    
-    "/permission": {
+    "/permissions": {
       "get": {
         "summary":"Trae todos los permisos de usuario",
         "tags": ["Permisos de usuario"],
@@ -276,9 +372,8 @@
           }
         }
       }
-    },
-    
-    "/permission/filter/{rol}": {
+    },  
+    "/permissions/filter/{rol}": {
       "get": {
         "summary":"Trae los permisos que posee un rol en particular",
         "tags": ["Permisos de usuario"],
@@ -299,7 +394,6 @@
         }
       }
     },
-
     "/flavors": {
       "get": {
         "summary":"Lista todos los sabores de helado",
@@ -312,7 +406,6 @@
         }
       }
     },
-
     "/typeFlavors": {
       "get": {
         "summary":"Lista todos los tipos de sabores de helado",
@@ -325,7 +418,6 @@
         }
       }
     },
-
     "/chamberFlavorsDispatch": {  
       "post": {
         "summary":"Registra una salida de sabores de camara",
@@ -346,7 +438,6 @@
         }
       }
     },
-
     "/productions": {  
       "post": {
         "summary":"Registra producción de sabores de helado",
@@ -359,7 +450,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "flavors",
@@ -375,7 +465,6 @@
         }
       }
     },
-    
     "/franchises": {
       "get": {
         "summary":"Lista todas las franquicias",
@@ -387,7 +476,6 @@
           }
         }
       },
-
       "post": {
         "summary":"Registra una franquicia",
         "tags": ["Franquicias"],
@@ -399,7 +487,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "start_date",
@@ -407,7 +494,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "address",
@@ -415,7 +501,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "address_number",
@@ -424,7 +509,6 @@
             "type": "integer",
             "minimum": "1"
           },
-
           {
             "in": "body",
             "name": "city",
@@ -432,7 +516,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "province",
@@ -440,7 +523,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "name_manager",
@@ -448,7 +530,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "last_name_manager",
@@ -456,7 +537,6 @@
             "required": true,
             "type": "string"
           },
-
           {
             "in": "body",
             "name": "dni_manager",
@@ -472,17 +552,18 @@
           }
         }
       }
+    },
+    "/payTypes": {
+      "get": {
+        "summary":"Lista todos los tipos de pagos",
+        "tags": ["Ventas"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) con los tipos de pagos."
+          }
+        }
+      }
     }
-
-
-
-
-
-
-
-
-
-
-
   }
 }

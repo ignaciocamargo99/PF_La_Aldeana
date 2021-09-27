@@ -34,7 +34,7 @@ async function postProduct(req, res) {
 // HTTP: POST
 async function deleteProducts(req, res) {
     try {
-        await deleteProduct(req.body.id_product);
+        await deleteProduct(req.params.id);
         res.json({
             Ok: true,
             Message: 'Producto eliminado exitosamente.'
@@ -51,7 +51,7 @@ async function deleteProducts(req, res) {
 // HTTP: PUT
 async function updateProducts(req, res) {
     try {
-        await updateProduct(req.body, req.file, req.body.flagImageUpdate);
+        await updateProduct(req.params.id, req.body, req.file, req.body.flagImageUpdate);
         res.json({
             Ok: true,
             Message: 'Producto actualizado exitosamente.'

@@ -3,8 +3,8 @@ const router = express.Router();
 const permissionsController = require("../controllers/permissionController");
 
 //#region APIs
-router.get("/permission", permissionsController.getPermissions);
-router.get("/permission/filter/:rol", permissionsController.getPermissionsRol);
+router.get("/permissions", permissionsController.getPermissions);
+router.get("/permissions/filter/:rol", permissionsController.getPermissionsRol);
 
 //#endregion
 module.exports = router;

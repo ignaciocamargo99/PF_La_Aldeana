@@ -17,16 +17,11 @@ const fileUpload = multer({
 
 //#region APIs
 router.get("/products", productController.getProduct);
-router.get("/imageProduct/:id", productController.getImage);
 router.post("/products", fileUpload, productController.postProduct); 
-
+router.put("/products/:id", fileUpload, productController.updateProducts);
+router.delete("/products/:id", productController.deleteProducts);
+router.get("/imageProduct/:id", productController.getImage);
 router.get("/productSupply/:id", productController.getProductSupply);
-
-
-
-
-router.put("/products", fileUpload, productController.updateProducts);
-router.put("/products", productController.deleteProducts);
 
 //#endregion
 module.exports = router;

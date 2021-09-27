@@ -40,9 +40,9 @@ const deleteProduct = async (productDeleteID) => {
     };
 };
 
-const updateProduct = async (productUpdate, imageUpdate, flagImage) => {
+const updateProduct = async (idproduct, productUpdate, imageUpdate, flagImage) => {
     try {
-        let res = await productUpdateDB(productUpdate, imageUpdate, flagImage);
+        let res = await productUpdateDB(idproduct, productUpdate, imageUpdate, flagImage);
         return res;
     }
     catch (error) {

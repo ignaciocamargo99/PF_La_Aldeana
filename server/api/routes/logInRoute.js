@@ -4,10 +4,10 @@ const userController = require("../controllers/logInController");
 
 //#region APIs
 
-router.get("/user", userController.getUsers);
-router.get("/user/filter/:nick", userController.getUsersByNick);
-router.get("/user/search/:nick", userController.getDataUsersByNick);
-router.post("/user/new", userController.postUser);
+router.get("/users", userController.getUsers);
+router.get("/users/filter/:nick", userController.getUsersByNick);
+router.get("/users/search/:nick", userController.getDataUsersByNick);
+router.post("/users", userController.postUser);
 
 //#endregion
 
