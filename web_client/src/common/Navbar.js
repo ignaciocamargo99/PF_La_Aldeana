@@ -117,10 +117,10 @@ export default function Navbar(props) {
         };
 
         const permissionVentas = permissions.find(option => option === "Ventas");
-        let ventas;
+        let sales;
         const permissionReportes = permissions.find(option => option === "Reportes");
         if (permissionVentas === "Ventas") {
-            ventas =
+            sales =
                 <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
