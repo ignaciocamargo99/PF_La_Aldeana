@@ -2,7 +2,7 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
 import Buttons from '../../common/Buttons';
-import success from '../../utils/SuccessMessages/successTypeProduct';
+import success from '../../utils/SuccessMessages/successFranchise';
 import validationFranchiseRegister from '../../utils/Validations/validationFranchiseRegister';
 import DataFranchise from './DataFranchise';
 import DataManager from './DataManager';
@@ -48,7 +48,7 @@ export default function RegisterFranchise() {
                     success();
                 }
                 else {
-                    displayError('Ha ocurrido un error al registrar un insumo.');
+                    displayError('Ha ocurrido un error al registrar una franquicia.');
                 }
             })
             .catch(error => console.log(error))
