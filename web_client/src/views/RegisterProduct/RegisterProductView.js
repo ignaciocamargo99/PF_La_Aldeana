@@ -15,7 +15,7 @@ import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 const PORT = require('../../config');
 
 export default function RegisterProductView() {
-    const [data, setData] = useState({ name: null, description: '', price: null, id_sector: null, id_product_type: null, img: null, supplies: [], flavor:null, editing: false });
+    const [data, setData] = useState({ name: null, description: '', price: null, id_sector: null, id_product_type: null, img: null, supplies: [], flavor: null, editing: false });
     const [nameProductChild, setNameProductChild] = useState('');
     const [descriptionProductChild, setDescriptionProductChild] = useState('');
     const [flavorChild, setFlavorChild] = useState('');
@@ -73,11 +73,12 @@ export default function RegisterProductView() {
 
     return (
         <>
-            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto"/>
+            <div style={{ display: 'none' }}>{document.title = "Registrar producto"}</div>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
+                <Breadcrumb parentName="Productos" parentLink="products" icon={faIceCream} currentName="Registrar producto" />
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons
