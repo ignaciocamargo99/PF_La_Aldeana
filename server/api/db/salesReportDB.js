@@ -1,12 +1,6 @@
-const pool = require('../config/connection');
+const pool = require('../../config/connection');
 
 const salesReportGetDB = (from, to) => {
-    /*
-    let date = JSON.parse(dates)
-
-    let from = date.from
-    let to = date.to
-    */
 
     const sqlSelect = `SELECT ds.id_product as id, ds.quantity, pt.name as product_type, s.date_hour as date_sale, p.name as name FROM DETAIL_SALES ds left join PRODUCTS p on ds.id_product = p.id_product left join SALES s on s.id_sale = ds.id_sale left join PRODUCT_TYPES pt on pt.id_product_type = p.id_product_type WHERE s.date_hour > '${from}' and s.date_hour <= '${to} 23:59:59'`
 

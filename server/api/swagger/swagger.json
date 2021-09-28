@@ -564,6 +564,33 @@
           }
         }
       }
+    },
+    "/salesReport?from={dateFrom}&to={dateTo}": {
+      "get": {
+        "summary":"Lista la cantidad de productos vendidos en ventas en el local y por delivery en un período de tiempo determinado.",
+        "tags": ["Reportes Ventas"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dateFrom",
+            "description": "Fecha de inicio del reporte",
+            "required": true,
+            "type": "date"
+          },
+          {
+            "in": "path",
+            "name": "dateTo",
+            "description": "Fecha de fin del reporte",
+            "required": true,
+            "type": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) con los tipos de pagos."
+          }
+        }
+      }
     }
   }
 }

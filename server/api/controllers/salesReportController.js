@@ -1,13 +1,11 @@
-const { salesReport } = require('../../../services/salesReportService')
+const { readSalesReport } = require('../services/salesReportService')
 
 // HTTP: GET
 async function getSalesReport(req, res) {
     try {
-
         var from = req.query.from
         var to = req.query.to
-        const result = await salesReport(from, to)
-        
+        const result = await readSalesReport(from, to)
         res.send(result)
     } catch (e) {
         res.json({
