@@ -58,18 +58,7 @@ export default function ProductTable(props) {
     return (
         <>
             {isLoadingSpinner && (
-                <>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <LoaderSpinner color="primary" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando productos...</label>
-                        </div>
-                    </div>
-                </>
+                <LoaderSpinner color="primary" loading="Cargando productos..." />
             )}
             {!isLoadingSpinner && (
                 <BeShowed show={!isEditing}>
