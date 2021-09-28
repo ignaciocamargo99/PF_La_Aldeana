@@ -44,10 +44,10 @@ function RegisterProductionView(props) {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Registrar producción"}</div>
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
-
             <div className="viewBody">
                 <DateProduction />
                 <br />

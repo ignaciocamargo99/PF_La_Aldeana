@@ -49,8 +49,10 @@ export default function ProductTable(props) {
         setIsEditing(true);
     }
 
-    const endEditProduct = (id) => {
+    const endEditProduct = () => {
+        <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
         setIsEditing(false);
+        window.scrollTo(0, 0);
     }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);

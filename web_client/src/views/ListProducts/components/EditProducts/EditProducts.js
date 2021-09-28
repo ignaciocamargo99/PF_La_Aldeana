@@ -8,6 +8,8 @@ import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import './EditProductView.css';
 import '../../styles/ProductForm.css';
 import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
+import Breadcrumb from '../../../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../../../config');
 
@@ -71,6 +73,8 @@ export default function EditProducts(props) {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
             <h2 style={{ fontWeight: 'bold' }}>Editar {props.product.title}</h2>
             <br />
             <GeneralDataProduct load={load} data={data} />
