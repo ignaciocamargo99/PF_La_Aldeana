@@ -10,4 +10,4 @@ router.delete('/employees/:dni', employeeController.deleteEmployee);
 router.get('/charges', employeeController.getCharges);
 
 //#endregion
-module.exports = router;
+module.exports = router;  
