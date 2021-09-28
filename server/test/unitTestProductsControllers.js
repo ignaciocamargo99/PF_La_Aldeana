@@ -86,7 +86,7 @@ describe('Tests unitarios sobre API Products',()=>{
     });
     
     describe('Check postTypeProducts',()=>{
-        it('Se inserta correctamente', (done) => {
+        it.skip('Se inserta correctamente', (done) => {
             chai.request(url)
                 .post('/typeProducts')
                 .send({name: 'Gaseosas', description: 'Bebidas con gas TEST'})
@@ -94,7 +94,7 @@ describe('Tests unitarios sobre API Products',()=>{
                     expect(res).to.have.status(200);
                     done();
                 });
-        });
+        }); 
     
     });
 

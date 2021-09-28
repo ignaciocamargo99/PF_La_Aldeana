@@ -6,9 +6,6 @@ const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./api/swagger/swagger.json');
-var swaggerStyles = {
-    customCssUrl: './api/swagger/swagger.css'
-  };
 
 const middleware = require('./middleware/index');
 
@@ -31,14 +28,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
-app.use(express.static(path.join(__dirname, './api/products/dbImages')));
+app.use(express.static(path.join(__dirname, './api/images/productDBImages')));
 
 app.get("/app/*", function (req, res) {
     res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
 });
 
 /** Swagger */
-app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerStyles.customCssUrl));
+app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /** Routes apis and errors */
 
