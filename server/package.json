@@ -5,7 +5,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "start": "node ./bin/www",
-    "devStart": "nodemon"
+    "devStart": "nodemon",
+    "test_delay": "timeout 5 && npm run test"
   },
   "author": "",
   "license": "ISC",
