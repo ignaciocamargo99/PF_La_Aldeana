@@ -8,7 +8,6 @@ import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
-import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
