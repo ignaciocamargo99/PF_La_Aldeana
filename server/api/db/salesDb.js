@@ -124,7 +124,7 @@ const saleDeliveryPostDB = (newSale) => {
                             for (let j = 0; j < arrSuppliesToDiscount.length; j++) {
                                 
                                 let discountTotal = parseInt(arrDetails[i].quantity) * parseInt(arrSuppliesToDiscount[j].quantity)
-
+                                
                                 const sqlUpdateSupply = `UPDATE SUPPLIES s SET s.stock_unit=(s.stock_unit - ${discountTotal})  WHERE id_supply=${arrSuppliesToDiscount[j].id_supply}`;
    
                                 db.query(sqlUpdateSupply, (error) => {
@@ -138,7 +138,13 @@ const saleDeliveryPostDB = (newSale) => {
                                         else resolve();
                                     });  
                                 })        
-                            }        
+                            }
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() => reject('6:' + error));
+                                }
+                                else resolve();
+                            });      
                         });
                     }; 
                 });

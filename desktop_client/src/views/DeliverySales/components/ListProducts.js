@@ -35,7 +35,7 @@ const ListProducts = (props) => {
         else{
             quantity = parseInt(quantityInput.value)
         }
-        if(quantity <= props.productsStocks[i].stock){
+        if(quantity <= props.productsStocks[i].stock || props.productsStocks[i].stock === null){
             props.onClick(id,i);
             quantityInput.value = '';
         }
@@ -79,7 +79,7 @@ const ListProducts = (props) => {
                         tbody={
                             props.productsQuantities?.map((productQuantity, i) => {
                             if((productQuantity.product.id_sector === parseInt(props.filter) || parseInt(props.filter) === 0) && (productQuantity.product.name.toUpperCase().includes(searchState.toUpperCase()))){
-                                if(props.productsStocks[i].stock <= 0){
+                                if(props.productsStocks[i].stock !== null && props.productsStocks[i].stock <= 0){
                                     return(<tbody key={i}>
                                         <tr>
                                             <td style={{ textAlign: 'center', width: '58%', backgroundColor: '#9E9F9F'}}><strike>{productQuantity.product.name}</strike></td>
