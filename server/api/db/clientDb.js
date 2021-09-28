@@ -1,4 +1,3 @@
-
 const pool = require('../../config/connection');
 
 const clientGetDB = (cellphone) => {

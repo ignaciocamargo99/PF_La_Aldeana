@@ -1,4 +1,4 @@
-const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB } = require('../db/employeeDb');
+const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB } = require('../db/employeeDB');
 
 const readEmployee = async () => {
     try {
@@ -20,9 +20,9 @@ const readCharges = async () => {
     };
 };
 
-const deleteEmployees = async (deleteEmployee) => {
+const deleteEmployees = async (dniEmployee) => {
     try {
-        let res = await employeeDeleteDB(deleteEmployee);
+        let res = await employeeDeleteDB(dniEmployee);
         return res;
     }
     catch(error){
@@ -40,9 +40,9 @@ const createEmployee = async (newEmployee) => {
     };
 };
 
-const modifyEmployee = async (updateEmployee) => {
+const modifyEmployee = async (dniEmployee, updateEmployee) => {
     try {
-        let res = await employeeUpdateDB(updateEmployee);
+        let res = await employeeUpdateDB(dniEmployee, updateEmployee);
         return res;
     }
     catch(error) {

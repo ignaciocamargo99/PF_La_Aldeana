@@ -36,11 +36,9 @@ const EditProducts = ({ product, end }) => {
         const formData = new FormData();
         const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues.length > 0) urlApi = '/api/productSupply/update';
-        else urlApi = '/api/products/update';
+        urlApi = `/api/products/${data.id_product}`;
 
         const jsonArrSupplies = JSON.stringify(suppliesValues);
-        formData.append('id_product', data.id_product);
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('image', data.img)

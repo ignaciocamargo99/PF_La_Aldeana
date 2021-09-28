@@ -1,4 +1,4 @@
-const { readPayTypes, createSale, createSaleDelivery ,readProductXSupply } = require('../services/salesService');
+const { readPayTypes, createSale, createSaleDelivery } = require('../services/salesService');
 
 async function getPayTypes(req, res) {
     try {
@@ -8,7 +8,7 @@ async function getPayTypes(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: 'No se pudo acceder a los tipos de pago.'
+            Message: e.message
         })
     }
 }
@@ -47,17 +47,4 @@ async function postSaleDelivery(req, res) {
     }
 }
 
-async function getProductXSupply(req, res) {
-    try {
-        const result = await readProductXSupply();
-        res.send(result)
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: 'No se pudo acceder a la tabla.'
-        })
-    }
-}
-
-module.exports = { getPayTypes, postSale, postSaleDelivery , getProductXSupply }
+module.exports = { getPayTypes, postSale, postSaleDelivery }
