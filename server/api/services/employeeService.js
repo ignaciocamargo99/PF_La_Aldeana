@@ -1,4 +1,4 @@
-const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB } = require('../db/employeeDB');
+const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB } = require('../db/employeeDb');
 
 const readEmployee = async () => {
     try {
