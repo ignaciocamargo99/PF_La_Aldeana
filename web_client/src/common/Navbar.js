@@ -125,7 +125,7 @@ export default function Navbar(props) {
                         <Dropdown.Toggle className="nav-dropdown">
                             Ventas
                         </Dropdown.Toggle>
-                        <BeShowed show={permissionReportes === "Reportes"}>
+                        <BeShowed show={props.permissionReportes === "Reportes"}>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/app/salesReport">
                                     <FontAwesomeIcon icon={faFile} /> Ver Informes
@@ -166,6 +166,9 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/employees">
                                 <FontAwesomeIcon icon={faList} /> Ver empleados
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/licenses">
+                                <FontAwesomeIcon icon={faList} /> Ver licencias
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
