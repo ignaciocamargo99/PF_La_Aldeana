@@ -31,7 +31,7 @@ const DeliverySales = (props) => {
 
     useEffect(() => {
         let auxStockProducts = []
-        axios.get( PORT() + `/api/allProducts`)
+        axios.get( PORT() + `/api/products`)
         .then((response) => {
             let aux = [];
             for(let i = 0 ; i < response.data.length ; i++){

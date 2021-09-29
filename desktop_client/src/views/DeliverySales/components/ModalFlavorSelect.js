@@ -24,7 +24,7 @@ const ModalFlavorSelect = (props) => {
     const [I,setI] = useState(0);
 
     useEffect(()=> {
-        axios.get( PORT() + `/api/allFlavors`)
+        axios.get( PORT() + `/api/flavors`)
         .then((response) => {
             setAllFlavors(response.data);
             setFlavors(response.data);
