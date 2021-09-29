@@ -13,22 +13,22 @@ const PORT = require('../../../config');
 
 export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ nameEmployee: null, lastName: null, dni: null, id_charge: null, date: null, employmentRelationship: null, editing: false, reading: false });
-    const cancelRegisterEmployee = () => window.location.reload();
+    const [data, setData] = useState({ id_employee: null, date: null, amount: null, installments: null, installments_amount: null, editing: false, reading: false });
+    const cancelRegisterAdvances = () => window.location.reload();
 
     const load = (childData) => {
         setData(childData);
         console.log(data)
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
+        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount) setReady(true);
         else setReady(false);
     }
 
-    const registerNewEmployee = () => {
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
+    const registerNewAdvances = () => {
+        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount && ready) {
             Axios.post(`${PORT()}/api/newEmployee`, data)
                 .then((data) => {
-                    if (data.data.Ok) successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
-                    else displayError('El dni ingresado ya corresponde a otro empleado');
+                    if (data.data.Ok) successMessage('Atención', 'Nuevo adelanto dado de alta exitosamente', 'success');
+                    else displayError('Ya existe un adelanto registrado para ese empleado en esa fecha.');
                 })
                 .catch((error) => console.error(error))
         }
@@ -46,8 +46,8 @@ export default function RegisterAdvances() {
                 <DataAdvances load={load} data={data} />
                 <ExtraDataAdvances load={load} data={data} />
                 <Buttons
-                    label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
-                    data={data} actionCancel={cancelRegisterEmployee}
+                    label='Registrar' ready={ready} actionOK={registerNewAdvances} actionNotOK={registerNewAdvances}
+                    data={data} actionCancel={cancelRegisterAdvances}
                 />
             </div>
         </>

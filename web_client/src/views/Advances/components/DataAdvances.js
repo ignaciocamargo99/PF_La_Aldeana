@@ -1,64 +1,94 @@
 import React, { useRef, useState, useEffect } from "react";
+import Axios from 'axios';
 import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
+import UploadByName from "./UploadByName";
+import formattedDate from "../../../utils/formattedDate";
+
+const PORT = require('../../../config');
 
 export default function DataAdvances(props) {
-    const inputName = useRef(null);
-    const inputLastName = useRef(null);
-    const inputDni = useRef(null);
-    const [name, setName] = useState("null");
-    const [lastName, setLastName] = useState("null");
-    const [dni, setDni] = useState("null");
+    const maxDate = formattedDate(new Date(), 2);
+    const minDate = formattedDate(new Date(), -1);
+    const startDate = formattedDate(new Date());
+    const inputEmployee = useRef(null);
+    const inputAmount = useRef(null);
+    const inputDate = useRef(null);
+    const [employees, setEmployees] = useState([]);
+    const [employee, setEmployee] = useState(null);
+    const [amount, setAmount] = useState("null");
+    const [date, setDate] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
-    const [isValidClassDNI, setIsValidClassDNI] = useState("form-control");
+    const [isValidClassAmount, setIsValidClassAmount] = useState("form-control");
     let data = props.data;
 
-    const handleName = () => setName(inputName.current.value);
-    const handleLastName = () => setLastName(inputLastName.current.value);
-    const handleDni = () => setDni(inputDni.current.value);
+    const handleEmployee = (id) => setEmployee(id);
+    const handleAmount = () => setAmount(inputAmount.current.value);
+    const onChangeDate = () => {
+        if (inputDate) setDate(inputDate.current.value);
+    }
+
+    useEffect(()=>{
+        console.log(data);
+    }, [data])
+
+    useEffect(()=>{
+        Axios.get(PORT() + `/api/employees`)
+        .then((response) => {
+            response.data.forEach((person)=>{
+                person.name += ' ';
+                person.name += person.last_name;
+            });
+            setEmployees(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }, [true]);
 
     useEffect(() => {
-        const dni = inputDni.current.value.trim();
-        if (dni.length === 8) {
-            setIsValidClassDNI("form-control is-valid");
-            data.dni = dni;
+        const amount = inputAmount.current.value.trim();
+        if (amount) {
+            setIsValidClassAmount("form-control is-valid");
+            data.amount = amount;
             props.load(data);
         }
         else {
-            setIsValidClassDNI("form-control");
-            data.dni = dni;
+            setIsValidClassAmount("form-control");
+            data.amount = amount;
             props.load(data);
         }
-    }, [dni, props, data])
+    }, [amount, props, data]);
 
     useEffect(() => {
-        const lastName = inputLastName.current.value.trim();
-        if (lastName) {
-            setIsValidClassLastName("form-control is-valid");
-            data.lastName = lastName;
-            props.load(data);
-        }
-        else {
-            setIsValidClassLastName("form-control");
-            data.lastName = lastName;
-            props.load(data);
-        }
-    }, [lastName, props, data]);
-
-    useEffect(() => {
-        const name = inputName.current.value.trim();
-        if (name) {
-            setIsValidClass("form-control is-valid");
-            data.nameEmployee = name;
-            props.load(data);
-        }
-        else {
+        if (!employee) {
             setIsValidClass("form-control")
-            data.nameEmployee = name;
+            data.id_employee = employee;
             props.load(data);
         }
-    }, [name, props, data]);
+        else {
+            setIsValidClass("form-control is-valid");
+            data.id_employee = employee;
+            props.load(data);
+        }
+    }, [employee, props, data]);
+
+    useEffect(() => {
+        if (!inputDate.current.value && !props.data.editing) {
+            inputDate.current.value = startDate;
+            setDate(inputDate.current.value);
+            data.date = inputDate.current.value;
+            props.load(data);
+        }
+        else if (!inputDate.current.value && props.data.editing) {
+            inputDate.current.value = props.data.date;
+            setDate(inputDate.current.value);
+        }
+        else {
+            data.date = inputDate.current.value;
+            props.load(data);
+        }
+    }, [startDate, date, data]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -66,43 +96,44 @@ export default function DataAdvances(props) {
 
     return (
         <>
-            <h2>Datos del empleado</h2>
+            <h2>Datos del adelanto</h2>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="employeeName" >Nombre*</label>
+                    <label htmlFor="employee" >Empleado*</label>
+                </div>
+                <BeShowed show={props.data.reading}>
+                    <div className="form-control-input">
+                        <input className={isValidClass} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.employee} />
+                    </div>
+                </BeShowed>
+                <BeShowed show={!props.data.reading}>
+                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" class={isValidClass}
+                                    placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
+                </BeShowed>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="mount" >Monto*</label>
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClass} id="employeeName" readOnly type="text" maxLength="80" ref={inputName} defaultValue={props.data.name} />
+                        <input className={isValidClassAmount} id="amount" readOnly type="number" ref={inputAmount} onChange={handleAmount} defaultValue={props.data.mount} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} onChange={handleName} placeholder="Ingrese nombre..." defaultValue={props.data.name} />
+                        <input className={isValidClassAmount} id="amount" type="number" ref={inputAmount} onChange={handleAmount} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.mount} />
                     </BeShowed>
                 </div>
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="lastName" >Apellido*</label>
+                    <label htmlFor="date" >Fecha de alta*</label>
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClassLastName} id="lastName" readOnly type="text" maxLength="80" ref={inputLastName} defaultValue={props.data.lastName} />
+                        <input className="form-control" id="date" readOnly type="date" ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} onChange={handleLastName} placeholder="Ingrese apellido..." defaultValue={props.data.lastName} />
-                    </BeShowed>
-                </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="dniEmployee" >DNI*</label>
-                </div>
-                <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClassDNI} id="dniEmployee" readOnly type="number" ref={inputDni} onChange={handleDni} defaultValue={props.data.dni} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassDNI} id="dniEmployee" type="number" ref={inputDni} onChange={handleDni} min="1" placeholder="Ingrese DNI..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.dni} />
+                        <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
                     </BeShowed>
                 </div>
             </div>
