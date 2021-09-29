@@ -74,6 +74,7 @@ export default function RegisterProductView() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar producto"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto"/>
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>

@@ -116,17 +116,17 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionVentas = permissions.find(option => option === "Ventas");
-        let ventas;
-        const permissionReportes = permissions.find(option => option === "Reportes");
-        if (permissionVentas === "Ventas") {
-            ventas =
+        const permissionSales = permissions.find(option => option === "Ventas")
+        let sales;
+        const permissionReports = permissions.find(option => option === "Reportes");
+        if (permissionSales === "Ventas") {
+            sales =
                 <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
                             Ventas
                         </Dropdown.Toggle>
-                        <BeShowed show={permissionReportes === "Reportes"}>
+                        <BeShowed show={permissionReports === "Reportes"}>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/app/salesReport">
                                     <FontAwesomeIcon icon={faFile} /> Ver Informes
@@ -137,10 +137,10 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionCompras = permissions.find(option => option === "Compras")
-        let compras
-        if (permissionCompras === "Compras") {
-            compras =
+        const permissionPurchases = permissions.find(option => option === "Compras")
+        let purchases
+        if (permissionPurchases === "Compras") {
+            purchases =
                 <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
@@ -155,13 +155,32 @@ export default function Navbar(props) {
                 </li>
         };
 
+        const permissionEmployees = permissions.find(option => option === "Empleados")
+        let employees;
+        if (permissionEmployees === "Empleados") {
+            employees =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Empleados
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/employees">
+                                <FontAwesomeIcon icon={faList} /> Ver empleados
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
+        }
+
         return (
             <>
                 {products}
                 {productions}
                 {franchises}
-                {ventas}
-                {compras}
+                {sales}
+                {purchases}
+                {employees}
             </>
         )
     };
