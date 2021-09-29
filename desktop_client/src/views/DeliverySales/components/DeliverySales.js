@@ -30,27 +30,24 @@ const DeliverySales = (props) => {
     },[])
 
     useEffect(() => {
-        axios.get( PORT() + `/api/productsStocks`)
+        let auxStockProducts = []
+        axios.get( PORT() + `/api/allProducts`)
         .then((response) => {
-            let auxStockProducts = []
-            auxStockProducts.push({'id_product': response.data[0].id_product ,'stock': response.data[0].stock <= 0?0: parseInt(response.data[0].stock / response.data[0].quantity)})
-            for(let i = 1 ; i < response.data.length ; i++){
-                if(response.data[i-1].id_product !== response.data[i].id_product){
-                    auxStockProducts.push({'id_product': response.data[i].id_product ,'stock': response.data[i].stock <= 0?0: parseInt(response.data[i].stock / response.data[i].quantity)})
-                }
-                else{
-                    if(auxStockProducts[auxStockProducts.length-1].stock > parseInt(response.data[i].stock / response.data[i].quantity)){
-                        auxStockProducts[auxStockProducts.length-1].stock = parseInt(response.data[i].stock / response.data[i].quantity)
-                    } 
-                }
+            let aux = [];
+            for(let i = 0 ; i < response.data.length ; i++){
+                aux.push({'product':response.data[i],'quantity':0});
+                auxStockProducts.push({'id_product': response.data[i].id_product ,'stock': null})
             }
-            props.updateDeliveryProductsStocks(auxStockProducts);
-            axios.get( PORT() + `/api/allProducts`)
+            axios.get( PORT() + `/api/productsStocks`)
             .then((response) => {
-                let aux = [];
+                let index
                 for(let i = 0 ; i < response.data.length ; i++){
-                    aux.push({'product':response.data[i],'quantity':0});
+                    auxStockProducts.map((stockProduct,iteration) => {if(stockProduct.id_product === response.data[i].id_product){index = iteration}})
+                    if(auxStockProducts[index].stock === null || auxStockProducts[index].stock < parseInt(response.data[i].stock / response.data[i].quantity)){
+                        auxStockProducts[index].stock = parseInt(response.data[i].stock / response.data[i].quantity)
+                    }
                 }
+                props.updateDeliveryProductsStocks(auxStockProducts);
                 props.updateDeliveryProductsQuantities(aux);
             })
             .catch((err) => {
@@ -60,6 +57,7 @@ const DeliverySales = (props) => {
         .catch((err) => {
             console.log(err);
         })
+
     },[reset]);
 
     const confirmSale = () => {
