@@ -16,6 +16,7 @@ const franchiseRouter = require('./api/franchise/router');
 const salesRouter = require('./api/sales/router');
 const productionsRouter = require('./api/productions/router');
 const employeeRouter = require('./api/routes/employeeRoute'); 
+const salesReportRouter = require('./api/reports/sales/router');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -38,6 +39,7 @@ app.use('/api', franchiseRouter);
 app.use('/api', salesRouter);
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', suppliesRouter);
+app.use('/api', salesReportRouter);
 app.use('/api', flavorsRouter);
 app.use('/api', productionsRouter);
 app.use('/api', clientsRouter);
