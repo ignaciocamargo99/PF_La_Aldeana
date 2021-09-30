@@ -1,4 +1,3 @@
-
 const {readClient} = require('../services/clientService');
 
 // HTTP: GET
@@ -14,6 +13,5 @@ async function getClient(req, res) {
         })
     }
 }
-
 
 module.exports = { getClient }

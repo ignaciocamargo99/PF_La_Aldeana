@@ -78,8 +78,8 @@ const RegisterPurchaseSupplies = (props) => {
             unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
         }
         console.log(aux)
-
-        Axios.post(PORT() + '/api/supply/new', aux)
+        
+        Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {
                     resetStates('Registro completado');

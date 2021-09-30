@@ -78,14 +78,19 @@ const RegisterPurchaseSupplies = (props) => {
             "date_purchase": props.purchaseDate,
             "supplier": props.purchaseSupplier,
             "total": props.purchaseTotal,
-            "details": details
-        }
-        axios.post(PORT() + `/api/purchase/new`, purchase)
-            .then((response) => {
-                if (response.data.Ok) resetStates(response.data.Message);
-                else errorPurchaseSupplies(response.data.Message)
-            })
-            .catch((err) => { console.log(err) })
+            "details": details}
+        axios.post( PORT() + `/api/purchases`,purchase)
+        .then((response) => {
+            if(response.data.Ok){
+                resetStates(response.data.Message)
+
+            }
+            else{
+                errorPurchaseSupplies(response.data.Message)
+            }
+        })
+        .catch((err) => {console.log(err)})
+                   
     }
 
     return (

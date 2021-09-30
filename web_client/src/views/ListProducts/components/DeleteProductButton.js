@@ -12,7 +12,7 @@ export default function DeleteProductButton (props) {
     const handleDelete = (e) => confirmDelete(deleteProduct, dontDeleteProduct, e);
 
     const deleteProduct = () => {
-        Axios.put(PORT() + '/api/products/delete', {id_product: props.product.id_product})
+        Axios.delete(PORT() + `/api/products/${props.product.id_product}`)
             .then((response) => {
                 props.deleteProduct(props.index);
                 swal("Elemento eliminado", {
