@@ -6,29 +6,29 @@ import BeShowed from '../../../common/BeShowed';
 
 const UploadByName = (props) => {
 
-    const input = useRef(null)
-    const [showOptions, setShowOptions] = useState(false)
-    const [errorMessage,setErrorMessage] = useState(null)    
+    const input = useRef(null);
+    const [showOptions, setShowOptions] = useState(false);
+    const [errorMessage,setErrorMessage] = useState(null);
     
     const upload = () => {
-        let x = -1
+        let x = -1;
         props.list.forEach((item) => {
             if (item.name.toUpperCase() === input.current.value.toUpperCase()) {
-                x = item.dni
+                x = item.dni;
             }
         })
         if (x !== -1) {
-            props.upload(x)
-            updateShowOptions()
+            props.upload(x);
         }
         else {
-            setErrorMessage(`El ${props.itemName} no se encuentra disponible`)
+            setErrorMessage(`El ${props.itemName} no se encuentra disponible`);
         }
     }
 
     const updateShowOptions = () => {
-        setErrorMessage(null)
-        setShowOptions(true)
+        setErrorMessage(null);
+        setShowOptions(true);
+        upload();
     }
 
     return(
@@ -41,16 +41,13 @@ const UploadByName = (props) => {
                 </datalist>
             </BeShowed>
             <div className="form-control-input">
-                <input className={errorMessage?'form-control is-invalid':props.class} style={{marginLeft: '0.6em', maxWidth: '55em'}} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
-            <BeShowed show={errorMessage !== "null"}>
-                <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
-            </BeShowed>
-            </div>
-            <div className="form-control-button">
-                <button className="btn" style={{backgroundColor: '#A5DEF9'}} onClick={upload}><FontAwesomeIcon style={{color: '#383C77'}} icon={faPlus} /></button>
+                <input className={errorMessage?'form-control is-invalid':props.class} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
+                <BeShowed show={errorMessage !== "null"}>
+                    <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
+                </BeShowed>
             </div>
         </>
-    )
+    );
 }
 
-export default UploadByName
+export default UploadByName;

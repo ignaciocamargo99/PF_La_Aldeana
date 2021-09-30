@@ -1,24 +1,49 @@
 import React, { useRef, useEffect, useState } from "react";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
+import setInstallmentsMonths from "./setInstallmentsMonths";
 
 export default function ExtraDataAdvances(props) {
+    let data = props.data;
     const inputMonth = useRef(null);
     const inputAmount = useRef(null);
+    const inputAmountTotal = useRef(null);
     const [month, setMonth] = useState("null");
     const [amount, setAmount] = useState("null");
+    const [amountTotal, setAmountTotal] = useState("null");
     const [isValidClassMonth, setIsValidClassMonth] = useState("form-control");
+    const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
     const [isValidClassAmount, setIsValidClassAmount] = useState("form-control");
-    let data = props.data;
 
     const handleMonth = () => setMonth(inputMonth.current.value);
     const handleAmount = () => setAmount(inputAmount.current.value);
+    const handleAmountTotal = () => setAmountTotal(inputAmountTotal.current.value);
 
+    //Monto total
+    useEffect(() => {
+        const amount = inputAmountTotal.current.value.trim();
+        if (amount) {
+            setIsValidClassAmountTotal("form-control is-valid");
+            data.amount = amount;
+            props.load(data);
+        }
+        else {
+            setIsValidClassAmountTotal("form-control");
+            data.amount = amount;
+            props.load(data);
+        }
+    }, [amountTotal, props, data]);
+
+    //Meses
     useEffect(() => {
         const month = inputMonth.current.value.trim();
         if (month) {
             setIsValidClassMonth("form-control is-valid");
-            data.installments = month;
+            inputAmount.current.value = ~~((amountTotal - data.pay)/month);
+            data.installments_amount = inputAmount.current.value;
+            data.installments = setInstallmentsMonths(data, (amountTotal - data.pay)/month, month);
             props.load(data);
         }
         else {
@@ -26,8 +51,9 @@ export default function ExtraDataAdvances(props) {
             data.installments = month;
             props.load(data);
         }
-    }, [month, props, data]);
+    }, [month, amountTotal, props, data]);
 
+    //Monto
     useEffect(() => {
         const amount = inputAmount.current.value.trim();
         if (amount) {
@@ -51,6 +77,20 @@ export default function ExtraDataAdvances(props) {
             <h2>Plan de devolución</h2>
             <div className="formRow">
                 <div className="form-control-label">
+                    <label htmlFor="amountTotal" >Monto total*</label>
+                </div>
+                <div className="form-control-input">
+                    <BeShowed show={props.data.reading}>
+                        <input className={isValidClassAmountTotal} id="amountTotal" readOnly type="number" ref={inputAmountTotal} onChange={handleAmountTotal} defaultValue={props.data.mount} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className={isValidClassAmountTotal} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.mount} />
+                    </BeShowed>
+                </div>
+            </div>
+            <label>Monto a pagar: {amountTotal - data.pay}</label>
+            <div className="formRow">
+                <div className="form-control-label">
                     <label htmlFor="month" >Cantidad de cutas* 
                         <small className="text-muted">(en meses)</small>
                         </label>
@@ -68,14 +108,24 @@ export default function ExtraDataAdvances(props) {
                 <div className="form-control-label">
                     <label htmlFor="mount" >Monto a pagar en cada cuota*</label>
                 </div>
-                <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClassAmount} id="amount" readOnly type="number" ref={inputAmount} onChange={handleAmount} defaultValue={props.data.mount} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassAmount} id="amount" type="number" ref={inputAmount} onChange={handleAmount} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.mount} />
-                    </BeShowed>
-                </div>
+                <BeShowed show={props.data.reading}>
+                    <div className="form-control-input">
+                            <input className={isValidClassAmount} id="amount" readOnly type="number" ref={inputAmount} onChange={handleAmount} defaultValue={props.data.mount} />
+                    </div>
+                            
+                    <div className="form-control-button">
+                        <button className="btn" style={{backgroundColor: '#A5DEF9'}}><FontAwesomeIcon style={{color: '#383C77'}} icon={faBars} /></button>
+                    </div>
+                </BeShowed>
+                <BeShowed show={!props.data.reading}>
+                    <div className="form-control-input">
+                            <input className={isValidClassAmount} id="amount" type="number" style={{marginLeft: '0.6em', maxWidth: '95%'}} ref={inputAmount} onChange={handleAmount} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.mount} />
+                    </div>
+                            
+                    <div className="form-control-button">
+                        <button className="btn" style={{backgroundColor: '#A5DEF9'}}><FontAwesomeIcon style={{color: '#383C77'}} icon={faBars} /></button>
+                    </div>
+                </BeShowed>
             </div>
         </>
     );

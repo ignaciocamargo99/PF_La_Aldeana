@@ -9,21 +9,17 @@ const PORT = require('../../../config');
 
 export default function DataAdvances(props) {
     const maxDate = formattedDate(new Date(), 2);
-    const minDate = formattedDate(new Date(), -1);
+    const minDate = formattedDate(new Date(), 0, -14);
     const startDate = formattedDate(new Date());
     const inputEmployee = useRef(null);
-    const inputAmount = useRef(null);
     const inputDate = useRef(null);
     const [employees, setEmployees] = useState([]);
     const [employee, setEmployee] = useState(null);
-    const [amount, setAmount] = useState("null");
     const [date, setDate] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassAmount, setIsValidClassAmount] = useState("form-control");
     let data = props.data;
 
     const handleEmployee = (id) => setEmployee(id);
-    const handleAmount = () => setAmount(inputAmount.current.value);
     const onChangeDate = () => {
         if (inputDate) setDate(inputDate.current.value);
     }
@@ -45,20 +41,6 @@ export default function DataAdvances(props) {
             console.log(err)
         })
     }, [true]);
-
-    useEffect(() => {
-        const amount = inputAmount.current.value.trim();
-        if (amount) {
-            setIsValidClassAmount("form-control is-valid");
-            data.amount = amount;
-            props.load(data);
-        }
-        else {
-            setIsValidClassAmount("form-control");
-            data.amount = amount;
-            props.load(data);
-        }
-    }, [amount, props, data]);
 
     useEffect(() => {
         if (!employee) {
@@ -113,20 +95,7 @@ export default function DataAdvances(props) {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="mount" >Monto*</label>
-                </div>
-                <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClassAmount} id="amount" readOnly type="number" ref={inputAmount} onChange={handleAmount} defaultValue={props.data.mount} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassAmount} id="amount" type="number" ref={inputAmount} onChange={handleAmount} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.mount} />
-                    </BeShowed>
-                </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="date" >Fecha de alta*</label>
+                    <label htmlFor="date" >Fecha de adelanto*</label>
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
