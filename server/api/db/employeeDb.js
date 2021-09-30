@@ -108,4 +108,21 @@ const employeeUpdateDB = (updateEmployee) => {
     });
 };
 
-module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB };
+const assistanceEmployeesGetDB = () => {
+    const sqlSelect = `SELECT ae.*, e.name, e.last_name FROM ASSISTANCE_EMPLOYEES ae
+                        JOIN EMPLOYEES e ON ae.employee = e.dni `;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB, assistanceEmployeesGetDB };
