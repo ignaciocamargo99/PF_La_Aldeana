@@ -13,7 +13,7 @@
     "desktop_client": "node start_desktop_client.js",
     "web_client": "node start_web_client.js",
     "server": "cd server && npm install && cd .. && node server/bin/www",
-    "test": "(cd server && npm install && npm-run-all -p -r start test)",
+    "test": "(cd server && npm install && npm-run-all -p -r start testDelay)",
     "heroku-postbuild": "cd web_client && npm install && npm run build"
   },
   "cacheDirectories": [

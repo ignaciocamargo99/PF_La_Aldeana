@@ -24,7 +24,7 @@ export default function EditEmployee(props) {
 
     const updateEmployee = () => {
         if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
-            Axios.put(`${PORT()}/api/updateEmployee`, data)
+            Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
                     else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')

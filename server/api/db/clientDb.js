@@ -1,4 +1,3 @@
-
 const pool = require('../../config/connection');
 
 const clientGetDB = () => {
@@ -16,6 +15,5 @@ const clientGetDB = () => {
         })
     });
 };
-
 
 module.exports = { clientGetDB};
