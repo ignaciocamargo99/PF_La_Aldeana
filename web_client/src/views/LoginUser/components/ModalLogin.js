@@ -23,7 +23,6 @@ const ModalLogin = (props) => {
             .then((response) => {
                 let compare = bcryptjs.compareSync(props.password,response.data.token)
                 if(compare){
-                    console.log('hola')
                     Axios.get(PORT() + `/api/user/search/${props.nick}`)
                     .then((res) => {
                         cookies.set('nick_user',res.data.nick_user, {path: '/'})
