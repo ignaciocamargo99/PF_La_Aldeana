@@ -26,7 +26,7 @@ const productGetDB = () => {
 const productPostDB = (newProduct, imageProduct) => {
     const { name, description, price, id_sector, id_product_type, supplies, flavor } = newProduct;
 
-    const image = imageProduct ? fs.readFileSync(path.join(__dirname, '../images/productImages/' + image.filename)) : null;
+    const image = imageProduct ? fs.readFileSync(path.join(__dirname, '../images/productImages/' + imageProduct.filename)) : null;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
