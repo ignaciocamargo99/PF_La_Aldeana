@@ -5,7 +5,6 @@ import { isCorrectFormat } from '../../../utils/Validations/validateUsers';
 import errrorLogin from '../../../utils/ErrorMessages/errorLogin';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import FormLogin from '../components/FormLogin';
-import Buttons from '../../../common/Buttons';
 import { updateNick, updatePassword, updateUser, updatePermissions } from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
 import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
