@@ -4,7 +4,7 @@ import BodyTable from '../../../common/Table/BodyTable';
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function TableFlavorsDown(props) {
+export default function TableFlavorsDown({ flavors, download }) {
     return (
         <>
             <h4 className="text-secondary">Sabores cargados: </h4>
@@ -19,7 +19,7 @@ export default function TableFlavorsDown(props) {
                     }
                 />
                 <BodyTable
-                    tbody={props.flavors?.map((element, i) => {
+                    tbody={flavors?.map((element, i) => {
                         return (
                             <tbody key={i}>
                                 <tr>
@@ -27,7 +27,7 @@ export default function TableFlavorsDown(props) {
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <button type="button" className="btn btn-danger btn-sm px-3"
-                                            onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
+                                            onClick={() => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

@@ -86,22 +86,22 @@ describe('Tests unitarios sobre API Products',()=>{
     });
     
     describe('Check postTypeProducts',()=>{
-        it('Se inserta correctamente', (done) => {
+        it.skip('Se inserta correctamente', (done) => {
             chai.request(url)
-                .post('/typeProduct/new')
-                .send({name: 'Gaseosas', description: 'Bebidas con gas', id_sector: 1})
+                .post('/typeProducts')
+                .send({name: 'Gaseosas', description: 'Bebidas con gas TEST'})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
                     done();
                 });
-        });
+        }); 
     
     });
 
     describe('Check postProduct',()=>{
         it.skip('Se inserta correctamente', (done) => {
             chai.request(url)
-                .post('/product/new')
+                .post('/products')
                 .send({name: 'Fanta 1 ml', description: 'Bebida con gas grande', price: 500, id_sector: 2, id_product_type: 1})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
@@ -135,7 +135,7 @@ describe('Tests unitarios sobre API Products',()=>{
     describe('Check updateProduct',()=>{
         it('Se actualiza correctamente', (done) => {
             chai.request(url)
-                .put('/products/update')
+                .put('/products/370')
                 .send({name: 'prueba update from test', description: 'test update', price: 500, id_sector: 2, id_product_type: 1, id_product: 56})
                 .end( function(err,res){
                     expect(res).to.have.status(200);
@@ -147,7 +147,7 @@ describe('Tests unitarios sobre API Products',()=>{
 
 
     describe('Check deleteProduct',()=>{
-        it('Se actualiza correctamente', (done) => {
+        it.skip('Se actualiza correctamente', (done) => {
             chai.request(url)
                 .put('/products/delete/')
                 .send({id_product: 56})

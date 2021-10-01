@@ -5,7 +5,7 @@ import HeaderTable from '../../../../common/Table/HeaderTable';
 import Table from '../../../../common/Table/Table';
 import '../../../../assets/Buttons.css';
 
-export default function TableSuppliesDown(props) {
+const TableSuppliesDown = ({ supplies, download }) => {
     return (
         <>
             <h4 className="text-secondary">Insumos cargados: </h4>
@@ -21,16 +21,16 @@ export default function TableSuppliesDown(props) {
                     }
                 />
                 <BodyTable
-                    tbody={props.supplies?.map((element, i) => {
+                    tbody={supplies?.map((element, i) => {
                         return (
                             <tbody key={i}>
                                 <tr>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px'}}>{element.amount}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.number_supply}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <button type="button" className="sendDelete"
-                                            onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
+                                            onClick={(e) => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -40,4 +40,6 @@ export default function TableSuppliesDown(props) {
             </Table>
         </>
     );
-}
+};
+
+export default TableSuppliesDown;

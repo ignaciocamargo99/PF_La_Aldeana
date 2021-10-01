@@ -27,7 +27,7 @@ const ListFlavorsUp = (props) => {
             props.updateTableUp(filterFamilyFlavors);
         }
         else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0] && props.elementsTableDown.length === 0)) {
-            Axios.get(`${PORT()}/api/allFlavors`)
+            Axios.get(`${PORT()}/api/flavors`)
                 .then(response => {
                     handlerLoadingSpinner();
                     props.updateTableUp(response.data);

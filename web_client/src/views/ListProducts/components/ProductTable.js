@@ -1,25 +1,20 @@
-import { useState, useEffect } from 'react';
-import Table from '../../../common/Table/Table';
-import HeaderTable from '../../../common/Table/HeaderTable';
-import BodyTable from '../../../common/Table/BodyTable';
 import Axios from 'axios';
-import DeleteProductButton from './DeleteProductButton';
-import EditProductButton from './EditProductButton';
-import LoaderSpinner from '../../../common/LoaderSpinner';
-import EditProducts from './EditProducts/EditProducts';
+import { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
-import backupProduct from '../../../utils/backupProduct';
+import LoaderSpinner from '../../../common/LoaderSpinner';
+import displayError from '../../../utils/ErrorMessages/errorMesage';
+import EditProducts from './EditProducts/EditProducts';
+import TablePagination from './TablePagination/TablePagination';
 
 const PORT = require('../../../config');
 
-export default function ProductTable(props) {
+const ProductTable = () => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [editing, setEditing] = useState({});
-    const [backup, setBackup] = useState({});
+    const [productToEdit, setProductToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
-    useEffect(() => {
+    const getProducts = () => {
         Axios.get(PORT() + '/api/products')
             .then((response) => {
                 handlerLoadingSpinner();
@@ -27,86 +22,98 @@ export default function ProductTable(props) {
                 setProducts(auxSupply);
             })
             .catch((error) => console.log(error));
+    };
+
+    useEffect(() => {
+        getProducts();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const deleteProduct = (i) => {
-        let aux = [];
-        products?.map((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
-        });
-        setProducts(aux);
-    }
+    const productWasSuccessfullyDeleted = () => {
+        getProducts()
+    };
 
-    const editProduct = (product) => {
-        let aux = backupProduct(product);
-        aux.name = product.name;
-        aux.flavor = product.quantity_flavor;
-        aux.editing = true;
-        setBackup(product);
-        setEditing(aux);
-        setIsEditing(true);
-    }
+    const editProduct = async (product) => {
+        try {
+            const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
 
-    const endEditProduct = (id) => {
+            const aux = {
+                active: product.active,
+                description: product.description,
+                editing: true,
+                flagImageUpdate: product.flagImageUpdate,
+                flavor: product.quantity_flavor,
+                id_product: product.id_product,
+                id_product_type: product.id_product_type,
+                id_sector: product.id_sector,
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                title: product.title,
+                supplies: productSupplies.map(({ id_supply, number_supply }) => {
+                    return {
+                        id_supply: id_supply,
+                        number_supply: number_supply
+                    }
+                })
+            };
+
+            setProductToEdit(aux);
+            setIsEditing(true);
+        }
+        catch {
+            displayError();
+        }
+    };
+
+    const onClickCancelEdit = () => setIsEditing(false);
+
+    const endEditProduct = () => {
+        <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
         setIsEditing(false);
+        window.scrollTo(0, 0);
     }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const columnsHeaders = [
+        {
+            name: 'Nombre',
+            width: '60%'
+        },
+        {
+            name: 'Editar',
+            width: '20%'
+        },
+        {
+            name: 'Eliminar',
+            width: '20%'
+        }
+    ];
+
     return (
         <>
             {isLoadingSpinner && (
-                <>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <LoaderSpinner color="primary" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando productos...</label>
-                        </div>
-                    </div>
-                </>
+                <LoaderSpinner color="primary" loading="Cargando productos..." />
             )}
             {!isLoadingSpinner && (
-                <BeShowed show={!isEditing}>
-                    <Table>
-                        <HeaderTable
-                            th={
-                                <>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '400px', verticalAlign: 'middle' }}>Nombre</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Editar</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10px', verticalAlign: 'middle' }}>Eliminar</th>
-                                </>
-                            }
-                        />
-                        <BodyTable
-                            tbody={products?.map((elemento, i) => {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{elemento.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditProductButton product={elemento} edit={editProduct} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteProductButton deleteProduct={deleteProduct} product={elemento} index={i} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                )
-                            })
-                            }
-                        />
-                    </Table>
-                </BeShowed>
+                <>
+                    <BeShowed show={!isEditing}>
+                        <TablePagination
+                            columnsHeaders={columnsHeaders}
+                            currentElements={products}
+                            handleEdit={editProduct}
+                            handleDelete={productWasSuccessfullyDeleted}
+                        ></TablePagination>
+                    </BeShowed>
+                    <BeShowed show={isEditing}>
+                        <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
+                    </BeShowed>
+                </>
             )}
-            <BeShowed show={isEditing}>
-                <EditProducts end={endEditProduct} product={editing} />
-            </BeShowed>
         </>
     );
-}
+};
+
+export default ProductTable;

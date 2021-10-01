@@ -1,9 +1,8 @@
 export default function formattedDate (dateState, quantityMonth) {
     var year = dateState.getFullYear();
     var month;
-    if (quantityMonth) {
-        month = dateState.getMonth() + quantityMonth;
-    } else month = dateState.getMonth() + 1;
+    if (quantityMonth) month = dateState.getMonth() + quantityMonth;
+    else month = dateState.getMonth() + 1;
     
     var day = dateState.getDate();
     var dateFormatted = year + "-" + month + "-" + day;

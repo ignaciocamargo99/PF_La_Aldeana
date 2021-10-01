@@ -1,7 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply,
-    isDeliverySupply, isFranchiseSupply } from '../../actions/SupplyActions';
+import {
+    updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply,
+    isDeliverySupply, isFranchiseSupply
+} from '../../actions/SupplyActions';
 import NameSupply from './components/NameSupply';
 import DescriptionSupply from './components/DescriptionSupply';
 import SinglePrice from './components/SinglePrice';
@@ -37,11 +39,13 @@ const RegisterPurchaseSupplies = (props) => {
         props.updateUnitSupply(0)
     }
 
-    const [data, setData] = useState({name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
-        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false});
+    const [data, setData] = useState({
+        name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
+        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false
+    });
     const [ready, setReady] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         let aux = {
             name: props.nameSupply,
@@ -57,25 +61,24 @@ const RegisterPurchaseSupplies = (props) => {
         }
 
         setData(aux);
-        
+
         setReady(checkData(aux));
-        
+
     }, [props.franchiseSupply, props.deliverySupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
-    
+
     const registerPurchaseSupplies = () => {
         let aux = {
             name: data.name,
-            description: data.description === 'null' ? null: data.description,
+            description: data.description === 'null' ? null : data.description,
             id_supply_type: data.id_supply_type,
-            price_wholesale: data.price_wholesale <= 0 ? null: data.price_wholesale,
-            price_retail: data.price_retail <= 0 ? null: data.price_retail,
-            stock_lot: data.id_supply_type !== 2 ? null: data.stock_lot,
-            stock_unit: data.id_supply_type === 3 ? null: data.stock_unit,
-            unit_x_lot: data.id_supply_type !== 2 ? null: data.unit_x_lot
+            price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
+            price_retail: data.price_retail <= 0 ? null : data.price_retail,
+            stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
+            stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
+            unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
         }
-        console.log(aux)
         
-        Axios.post(PORT() + '/api/supply/new', aux)
+        Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {
                     resetStates('Registro completado');
@@ -91,14 +94,15 @@ const RegisterPurchaseSupplies = (props) => {
 
     const inputIsDeliverySupply = useRef(null);
     const inputIsFranchiseSupply = useRef(null);
-    
+
     const handlerOnChange = (e) => {
         if (e.target.value === "isDeliverySupply") props.isDeliverySupply(!props.deliverySupply);
         if (e.target.value === "isFranchiseSupply") props.isFranchiseSupply(!props.franchiseSupply);
     }
 
-    return(
+    return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Registrar insumo"}</div>
             <div className="viewTitle">
                 <h1>Registrar Insumo</h1>
             </div>
@@ -110,7 +114,7 @@ const RegisterPurchaseSupplies = (props) => {
                         <label >Precio</label>
                     </div>
                     <div className="price-container">
-                        <div className="form-check form-check-inline col-sm-3" style={{alignSelf: 'center'}}>
+                        <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isDeliverySupply" value="isDeliverySupply" ref={inputIsDeliverySupply} onChange={(e) => handlerOnChange(e)} />
                             <label className="price-type-label price-label" htmlFor="isDeliverySupply">Se envía por delivery?</label>
                         </div>
@@ -120,7 +124,7 @@ const RegisterPurchaseSupplies = (props) => {
 
                     </div>
                     <div className="price-container">
-                        <div className="form-check form-check-inline col-sm-3" style={{alignSelf: 'center'}}>
+                        <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isFranchiseSupply" value="isFranchiseSupply" ref={inputIsFranchiseSupply} onChange={(e) => handlerOnChange(e)} />
                             <label className="price-type-label price-label" htmlFor="isFranchiseSupply">Se envía a franquicias?</label>
                         </div>
@@ -136,7 +140,7 @@ const RegisterPurchaseSupplies = (props) => {
                 <BeShowed show={props.typeSupply < 3 && props.typeSupply > 0}>
                     <Stock />
                 </BeShowed>
-                <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data}/>            
+                <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data} />
             </div>
         </>
     )
@@ -170,4 +174,4 @@ const mapDispatchToProps = {
     isFranchiseSupply
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(RegisterPurchaseSupplies);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterPurchaseSupplies);
