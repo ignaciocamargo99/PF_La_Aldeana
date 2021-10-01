@@ -25,7 +25,7 @@ export default function RegisterEmployee() {
 
     const registerNewEmployee = () => {
         if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
-            Axios.post(`${PORT()}/api/newEmployee`, data)
+            Axios.post(`${PORT()}/api/employees`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
                     else displayError('El dni ingresado ya corresponde a otro empleado');

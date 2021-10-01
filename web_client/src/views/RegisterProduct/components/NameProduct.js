@@ -3,11 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 const NameProduct = (props) => {
     const inputName = useRef(null);
     const [name, setName] = useState("null");
-    const [prevName, setPrevName] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const handleName = () => {
-        setPrevName(name);
         setName(inputName.current.value);
     }
 

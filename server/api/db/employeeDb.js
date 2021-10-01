@@ -1,4 +1,3 @@
-
 const pool = require('../../config/connection');
 
 const employeeGetDB = () => {
@@ -34,10 +33,10 @@ const chargeGetDB = () => {
     });
 };
 
-const employeeDeleteDB = (deleteEmployee) => {
+const employeeDeleteDB = (dniEmployee) => {
     const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
     let dni;
-    if (deleteEmployee) dni = deleteEmployee.dni
+    if (dniEmployee) dni = dniEmployee
     else throw Error('El dni es null');
 
     return new Promise((resolve, reject) => {
@@ -80,7 +79,7 @@ const employeeCreateDB = (newEmployee) => {
 };
 
 
-const employeeUpdateDB = (updateEmployee) => {
+const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     const sqlUpdate = `UPDATE EMPLOYEES SET dni = ?, name = ?, last_name = ?, date_admission = ?, 
                         employment_relationship = ?, charge = ?
                         WHERE dni = ?`;
@@ -99,7 +98,7 @@ const employeeUpdateDB = (updateEmployee) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-            db.query(sqlUpdate, [dni, nameEmployee, lastName, date, employmentRelationship, id_charge, previousDni], (error, result) => {
+            db.query(sqlUpdate, [dni, nameEmployee, lastName, date, employmentRelationship, id_charge, dniEmployee], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });

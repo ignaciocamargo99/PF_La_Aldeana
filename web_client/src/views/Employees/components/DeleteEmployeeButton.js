@@ -13,7 +13,7 @@ export default function DeleteEmployeetButton (props) {
 
     const deleteEmployee = () => {
         console.log(props.employee.dni)
-        Axios.put(PORT() + '/api/employee/delete', {dni: props.employee.dni})
+        Axios.delete(PORT() + `/api/employees/${props.employee.dni}`)
             .then((response) => {
                 props.deleteEmployee(props.index);
                 swal("Empleado dado de baja", {
