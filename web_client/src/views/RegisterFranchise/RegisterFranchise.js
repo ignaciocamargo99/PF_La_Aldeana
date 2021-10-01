@@ -13,8 +13,10 @@ import displayError from '../../utils/ErrorMessages/errorMesage';
 const PORT = require('../../config');
 
 export default function RegisterFranchise() {
-    const [data, setData] = useState({ name: '', start_date: '', address: '', address_number: -1, city: '', province: '',
-    name_manager: '', last_name_manager: '', dni_manager: 0 });
+    const [data, setData] = useState({
+        name: '', start_date: '', address: '', address_number: -1, city: '', province: '',
+        name_manager: '', last_name_manager: '', dni_manager: 0
+    });
     const [nameChild, setNameChild] = useState('');
     const [startDateChild, setStartDateChild] = useState('');
     const [addressChild, setAddressChild] = useState('');
@@ -40,7 +42,7 @@ export default function RegisterFranchise() {
     }
 
     const registerFranchise = () => {
-        let urlApi = '/api/franchise/new';        
+        let urlApi = '/api/franchises';        
 
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {
@@ -56,14 +58,14 @@ export default function RegisterFranchise() {
 
     useEffect(() => {
         if (data.name !== '' && data.name !== 'null' &&
-        data.start_date !== '' && data.start_date !== 'null' &&
-        data.address !== '' && data.address !== 'null'  &&
-        data.address_number >= 0 && data.address_number <= 99999  &&
-        data.city !== '' && data.city !== 'null'  &&
-        data.province !== '' && data.province !== 'null'  &&
-        data.name_manager !== '' && data.name_manager !== 'null'  &&
-        data.last_name_manager !== '' && data.last_name_manager !== 'null'  &&
-        data.dni_manager > 0) setReady(true);
+            data.start_date !== '' && data.start_date !== 'null' &&
+            data.address !== '' && data.address !== 'null' &&
+            data.address_number >= 0 && data.address_number <= 99999 &&
+            data.city !== '' && data.city !== 'null' &&
+            data.province !== '' && data.province !== 'null' &&
+            data.name_manager !== '' && data.name_manager !== 'null' &&
+            data.last_name_manager !== '' && data.last_name_manager !== 'null' &&
+            data.dni_manager > 0) setReady(true);
         else setReady(false);
     }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
 
@@ -71,6 +73,7 @@ export default function RegisterFranchise() {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Registrar franquicia"}</div>
             <div className="viewTitle">
                 <h1>Registrar Franquicia</h1>
             </div>

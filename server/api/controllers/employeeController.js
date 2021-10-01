@@ -1,4 +1,3 @@
-
 const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee } = require('../services/employeeService');
 
 // HTTP: GET
@@ -30,9 +29,9 @@ async function getCharges(req, res) {
 }
 
 // HTTP: PUT
-async function deleteEmployee(req, res) {
+async function deleteEmployee(req, res) { 
     try {
-        await deleteEmployees(req.body);
+        await deleteEmployees(req.params.dni);
         res.json({
             Ok: true,
             Message: 'Empleado eliminado exitosamente.'
@@ -66,7 +65,7 @@ async function newEmployee(req, res) {
 // HTTP: UPDATE
 async function updateEmployee(req, res) {
     try {
-        await modifyEmployee(req.body);
+        await modifyEmployee(req.params.dni, req.body);
         res.json({
             Ok: true,
             Message: 'Empleado actualizado exitosamente.'

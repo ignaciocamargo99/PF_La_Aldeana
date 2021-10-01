@@ -18,7 +18,7 @@ const Sales = (props) => {
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/allProducts`)
+        Axios.get(`${PORT()}/api/products`)
             .then(response => {
                 props.updateProducts(response.data);
                 props.updateProductsFiltered(response.data);
@@ -47,7 +47,7 @@ const Sales = (props) => {
                 id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
             };
 
-            Axios.post(`${PORT()}/api/sales/new`, sale)
+            Axios.post(`${PORT()}/api/sales`, sale)
                 .then((sale) => {
                     if (sale.data.Ok) warningMessage("Exito!", "Se registró la venta con exito", "success");
                     else warningMessage('¡Error!', 'Ha ocurrido un error al registrar la venta.', "error");

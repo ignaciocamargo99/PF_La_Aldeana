@@ -1,0 +1,17 @@
+.page-item {
+    cursor: pointer;
+}
+
+.search-input {
+    align-self: flex-end;
+}
+
+.search-input input {
+    margin-left: 5px;
+}
+
+@media (min-width: 768px) {
+    .title-searcher {
+        justify-content: space-between;
+    }
+}
