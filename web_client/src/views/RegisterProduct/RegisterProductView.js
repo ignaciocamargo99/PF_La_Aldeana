@@ -62,7 +62,18 @@ export default function RegisterProductView() {
     useEffect(() => {
         if (data.name !== '' && data.price && data.price > 0 && data.name && data.id_sector > 0 && data.id_product_type) setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild, supplyProductChild]);
+    }, [
+        nameProductChild,
+        priceProductChild,
+        sectorProductChild,
+        typeProductChild,
+        imgProductChild,
+        supplyProductChild,
+        data.id_sector,
+        data.id_product_type,
+        data.name,
+        data.price
+    ]);
 
     const cancelTypeProduct = () => window.location.replace('/app/products');
 
@@ -74,7 +85,6 @@ export default function RegisterProductView() {
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
-                <Breadcrumb parentName="Productos" parentLink="products" icon={faIceCream} currentName="Registrar producto" />
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons
