@@ -69,6 +69,12 @@ const ProductTable = () => {
 
     const onClickCancelEdit = () => setIsEditing(false);
 
+    const endEditProduct = () => {
+        <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
+        setIsEditing(false);
+        window.scrollTo(0, 0);
+    }
+
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     const columnsHeaders = [
@@ -89,18 +95,7 @@ const ProductTable = () => {
     return (
         <>
             {isLoadingSpinner && (
-                <>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <LoaderSpinner color="primary" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando productos...</label>
-                        </div>
-                    </div>
-                </>
+                <LoaderSpinner color="primary" loading="Cargando productos..." />
             )}
             {!isLoadingSpinner && (
                 <>

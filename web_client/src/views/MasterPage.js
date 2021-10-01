@@ -17,6 +17,8 @@ import '../assets/Forms.css';
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
 import SalesReport from './Reports/Sales/SalesReport';
 import RegisterProductionView from './RegisterProduction/RegisterProduction';
+import ListEmployees from './Employees/ListEmployees';
+import RegisterEmployee from './Employees/components/RegisterEmployee';
 
 const cookies = new Cookies();
 
@@ -33,11 +35,13 @@ export default function App() {
             <Route path='/app/products' component={ListProducts}></Route>
             <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
             <Route path='/app/franchise' component={RegisterFranchise}></Route>
-            <Route path='/app/registerProducts' component = {RegisterProductView}></Route>
+            <Route path='/app/registerProducts' component={RegisterProductView}></Route>
             <Route path='/app/supplies' component={RegisterSupplyView}></Route>
             <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
             <Route path='/app/salesReport' component={SalesReport}></Route>
             <Route path='/app/production' component={RegisterProductionView}></Route>
+            <Route path='/app/employees' component={ListEmployees}></Route>
+            <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>

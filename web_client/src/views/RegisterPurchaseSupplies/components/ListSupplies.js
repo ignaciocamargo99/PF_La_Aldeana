@@ -16,7 +16,7 @@ const ListSupplies = (props) => {
     const [typeOfUpload, setTypeOfUpload] = useState('text')
 
     useEffect(() => {
-        axios.get(PORT() + `/api/supplies/all`)
+        axios.get(PORT() + `/api/supplies`)
             .then((response) => {
                 setSupplies(response.data)
             })

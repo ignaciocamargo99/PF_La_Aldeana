@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import React, { useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Buttons from '../../common/Buttons';
 import success from '../../utils/SuccessMessages/successTypeProduct';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
@@ -11,7 +11,7 @@ import SectorProduct from '../RegisterProduct/components/SectorProduct';
 const PORT = require('../../config');
 
 export default function RegisterTypeProductView() {
-    const [data, setData] = useState({name: 'null', description: 'null', id_sector: -1});
+    const [data, setData] = useState({ name: 'null', description: 'null', id_sector: -1 });
     const [ready, setReady] = useState(false);
     const inputName = useRef(null);
     const inputDescription = useRef(null);
@@ -26,25 +26,25 @@ export default function RegisterTypeProductView() {
         setSectorTypeProductChild(childData.id_sector);
     }
 
-    useEffect(()=>{
-        if (data.id_sector > -1 && sectorTypeProductChild > -1 && 
-            data.name.length > 0 && data.name.length < 50 && data.name !== 'null'){
-                setReady(true);
-            } else {
-                setReady(false);
-            }
+    useEffect(() => {
+        if (data.id_sector > -1 && sectorTypeProductChild > -1 &&
+            data.name.length > 0 && data.name.length < 50 && data.name !== 'null') {
+            setReady(true);
+        } else {
+            setReady(false);
+        }
     }, [sectorTypeProductChild, nameTypeProductChild]);
 
     const registerTypeProduct = () => {
         const description = inputDescription.current.value.trim();
         if (ready) {
-            Axios.post(PORT() + '/api/typeProduct/new', {
+            Axios.post(PORT() + '/api/typeProducts', {
                 name: data.name,
                 description: description,
                 id_sector: data.id_sector
             })
-                .then(({data}) =>{
-                    if(data.Ok) success();
+                .then(({ data }) => {
+                    if (data.Ok) success();
                     else displayError(data.Message);
                 })
                 .catch(err => console.error(err))
@@ -54,8 +54,9 @@ export default function RegisterTypeProductView() {
     const validate = () => {
         if (nameTypeProductChild === 'null') {
             warningMessage('Atención', 'Ingrese un nombre valido para el tipo de producto', 'warning')
-        } else if (sectorTypeProductChild < 0){
-            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')}
+        } else if (sectorTypeProductChild < 0) {
+            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')
+        }
     }
 
     const onChangeName = () => {
@@ -68,7 +69,7 @@ export default function RegisterTypeProductView() {
             dat.name = name;
             setData(dat);
         }
-        else if(name.length > 0 && name.length < 50){
+        else if (name.length > 0 && name.length < 50) {
             setIsValidName("form-control is-valid");
             divNameValidation.current.innerHTML = "";
             setNameTypeProductChild(name)
@@ -90,6 +91,7 @@ export default function RegisterTypeProductView() {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Registrar tipo de producto"}</div>
             <div className="viewTitle">
                 <h1>Registrar tipo de producto</h1>
             </div>
@@ -100,7 +102,7 @@ export default function RegisterTypeProductView() {
                     </div>
                     <div className="form-control-input">
                         <input type='text' className={isValidName} ref={inputName} autoFocus onChange={onChangeName} placeholder='Ingrese nombre del producto...'></input>
-                        <div style={{ color: 'red', fontFamily:'Abel', fontWeight: 'bold' }} ref={divNameValidation} />
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} ref={divNameValidation} />
                     </div>
                 </div>
                 <div className="formRow">
@@ -111,7 +113,7 @@ export default function RegisterTypeProductView() {
                         <textarea type='text' className="form-control" ref={inputDescription} placeholder='Ingrese descripción del producto...' maxLength="150"></textarea>
                     </div>
                 </div>
-                <SectorProduct load={load} data={data}/>
+                <SectorProduct load={load} data={data} />
                 <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={validate} actionCancel={cancelTypeProduct} />
             </div>
         </>

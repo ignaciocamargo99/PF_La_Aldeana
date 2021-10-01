@@ -9,7 +9,7 @@ const url= 'http://localhost:3001';
 describe('Obtener todas las compras de insumos: ',()=>{
     it('Deberia obtener todas las compras de insumos', (done) => {
     chai.request(url)
-    .get('/api/purchase')
+    .get('/api/purchases')
     .end( function(err,res){
             expect(res).to.have.status(200);
             done();

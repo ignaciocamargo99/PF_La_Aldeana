@@ -41,7 +41,7 @@ export default function SuppliesPairTables({ load, data }) {
     }, []);
 
     const fillSuppliesTable = (supplies) => {
-        supplies?.map((e, i) => e.amount = 0);
+        supplies?.map((e, i) => e.number_supply = 0);
         setListTable(supplies);
     }
 
@@ -57,7 +57,7 @@ export default function SuppliesPairTables({ load, data }) {
                 id_supply: id_supply,
                 name: name,
                 description: description,
-                amount: data.supplies.find(s => s.id_supply == id_supply).number_supply
+                number_supply: data.supplies.find(s => s.id_supply == id_supply).number_supply
             }
         });
 
@@ -88,14 +88,14 @@ export default function SuppliesPairTables({ load, data }) {
 
                 auxDestiny.forEach(s => {
                     if (s.id_supply === supply.id_supply) {
-                        s.amount = amount;
+                        s.number_supply = amount;
                     }
                 })
 
                 data.supplies = auxDestiny;
                 setDestinyTable(auxDestiny);
             } else {
-                supply.amount = amount;
+                supply.number_supply = amount;
                 let selectedSupplies = [...destinyTable, supply].sort();
 
                 data.supplies = selectedSupplies;
@@ -112,13 +112,9 @@ export default function SuppliesPairTables({ load, data }) {
     const download = (supplySelected) => {
         let newDestinyTable = destinyTable.filter((supply) => supply.id_supply != supplySelected.id_supply);
 
-        console.log(newDestinyTable)
         data.supplies = newDestinyTable;
         setDestinyTable(newDestinyTable);
         load(data);
-
-
-        console.log(data.supplies)
     };
 
     const columnsHeaders = [

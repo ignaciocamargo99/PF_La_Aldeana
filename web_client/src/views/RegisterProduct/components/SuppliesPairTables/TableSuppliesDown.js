@@ -27,7 +27,7 @@ const TableSuppliesDown = ({ supplies, download }) => {
                                 <tr>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.amount}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.number_supply}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <button type="button" className="sendDelete"
                                             onClick={(e) => download(element)}><FontAwesomeIcon icon={faMinus} /></button>

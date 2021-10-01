@@ -10,6 +10,7 @@ import './RegisterProductView.css';
 import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -36,12 +37,11 @@ export default function RegisterProductView() {
     const registerProduct = () => {
         let urlApi = '';
         const formData = new FormData();
-        const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues && suppliesValues.length > 0) urlApi = '/api/productSupply/new';
-        else urlApi = '/api/product/new'
+        urlApi = '/api/products';
 
-        const jsonArrSupplies = JSON.stringify(suppliesValues);
+        const jsonArrSupplies = JSON.stringify(data.supplies);
+
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('image', data.img)
@@ -54,7 +54,7 @@ export default function RegisterProductView() {
         Axios.post(PORT() + urlApi, formData)
             .then((formData) => {
                 if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
-                else displayError('Ha ocurrido un error al registrar el producto. \n' + data.Message);
+                else displayError('Ha ocurrido un error al registrar el producto.');
             })
             .catch(error => console.log(error))
     };
@@ -68,11 +68,13 @@ export default function RegisterProductView() {
 
     return (
         <>
-            <Breadcrumb parentName="Productos" parentLink="products" currentName="Registrar producto" />
+            <div style={{ display: 'none' }}>{document.title = "Registrar producto"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto" />
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>
             <div className="viewBody">
+                <Breadcrumb parentName="Productos" parentLink="products" icon={faIceCream} currentName="Registrar producto" />
                 <GeneralDataProduct load={load} data={data} />
                 <ExtraDataProduct load={load} data={data} />
                 <Buttons

@@ -1,6 +1,8 @@
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
+import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
@@ -24,11 +26,9 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
         const formData = new FormData();
         const suppliesValues = data.supplies.filter(() => true);
 
-        if (suppliesValues.length > 0) urlApi = '/api/productSupply/update';
-        else urlApi = '/api/products/update';
+        urlApi = `/api/products/${data.id_product}`;
 
         const jsonArrSupplies = JSON.stringify(suppliesValues);
-        formData.append('id_product', data.id_product);
         formData.append('name', data.name);
         formData.append('description', data.description);
         formData.append('image', data.img)
@@ -52,6 +52,8 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
             <h2 style={{ fontWeight: 'bold' }}>Editar {productToEdit.title}</h2>
             <br />
             <GeneralDataProduct load={load} data={productToEdit} />
