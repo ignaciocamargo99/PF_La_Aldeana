@@ -1,6 +1,7 @@
 import '../../../assets/Buttons.css';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LicensesTable from './LicensesTable';
 
 const ListLicenses = (props) => {
     
@@ -15,6 +16,7 @@ const ListLicenses = (props) => {
                 <button id='editLicenseButton' onClick={onCLickNewLicense} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
             </div>
             <div className="viewBody">
+                <LicensesTable />
             </div>
         </>)        
 }

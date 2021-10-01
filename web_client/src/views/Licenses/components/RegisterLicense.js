@@ -9,11 +9,13 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
 
 const PORT = require('../../../config');
 
 const RegisterLicense = (props) => {
 
+    const [showSpinner,setShowSpinner] = useState(true);
     const [employees,setEmployees] = useState([]);
     const [employee,setEmployee] = useState(null);
     const [employeesView,setEmployeesView] = useState([]);
@@ -34,6 +36,7 @@ const RegisterLicense = (props) => {
                 setEmployees(response.data);
                 setEmployeesView(response.data.slice(0,6));
                 setEmployeesStart(0);
+                setShowSpinner(false)
             })
             .catch((error) => console.log(error));
     }, []);
@@ -88,7 +91,10 @@ const RegisterLicense = (props) => {
         setDays(aux);
     }
 
-    const resetStates = () => {
+    const resetStates = (showMsg) => {
+        if(showMsg){
+            warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
+        }
         setEmployee(null);
         setDays(0);
         setErrorDateInit(true);
@@ -116,8 +122,15 @@ const RegisterLicense = (props) => {
     }
     
     const registerLicense = () => {
-        warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
-        resetStates();
+        loadingMessage("Registrando la licencia")
+        Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
+                                            "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
+        .then((respone) => {
+            if (respone.data.Ok) {resetStates(true)}
+            else warningMessage("Error", `${respone.data.Message}`, "error")
+        })
+        .catch((error) => console.error(error))
+        
     }
 
     return(
@@ -151,10 +164,10 @@ const RegisterLicense = (props) => {
                     <label>Empleado*</label>
                 </div>
             </div>
-            <BeShowed show={employees.length === 0}>
+            <BeShowed show={showSpinner}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
-            <BeShowed show={employees.length !== 0}>
+            <BeShowed show={!showSpinner}>
                 <div className="formRow justify-content-center">
                     <CardEmployees employeesView={employeesView} employee={employee} 
                                     onChangeEmployee={onChangeEmployee} setEmployeesStart={setEmployeesStart}
@@ -164,11 +177,11 @@ const RegisterLicense = (props) => {
                     <div className="col-sm-2">
                         <label>Motivo de licencia*</label>
                     </div>
-                    <textarea className="form-control" rows="2" ref={reason} onChange={onChangeReason}></textarea>    
+                    <textarea className="form-control" rows="2" ref={reason} maxLength="200" onChange={onChangeReason}></textarea>    
                 </div>
             </BeShowed>
             <Buttons ready={(!errorDateInit && !errorDateFinish && !errorEmployee && !errorReason)}
-                label='Registrar' actionNotOK={actionNotOK} actionOK={registerLicense} actionCancel={() => {resetStates()}}/>
+                label='Registrar' actionNotOK={actionNotOK} actionOK={registerLicense} actionCancel={() => {resetStates(false)}}/>
         </div>        
     </>
     )
