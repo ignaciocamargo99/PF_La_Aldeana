@@ -1,43 +1,24 @@
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
+import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
+import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
 import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
-import './EditProductView.css';
 import '../../styles/ProductForm.css';
-import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
-import Breadcrumb from '../../../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import './EditProductView.css';
 
 const PORT = require('../../../../config');
 
-export default function EditProducts(props) {
-    const [data, setData] = useState(props.product);
-    const [nameProductChild, setNameProductChild] = useState(props.product.name);
-    const [descriptionProductChild, setDescriptionProductChild] = useState(props.product.description);
-    const [priceProductChild, setPriceProductChild] = useState(props.product.price);
-    const [sectorProductChild, setSectorProductChild] = useState(props.product.id_sector);
-    const [typeProductChild, setTypeProductChild] = useState(props.product.id_product_type);
-    const [imgProductChild, setImgProductChild] = useState(props.product.image);
-    const [supplyProductChild, setSupplyProductChild] = useState(props.product.supplies);
-    const [flavorChild, setFlavorChild] = useState(props.product.flavor);
-    const [flagImageUpdate, setFlagImageUpdate] = useState();
+const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
+    const [data, setData] = useState(productToEdit);
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
-        setNameProductChild(childData.name);
-        setDescriptionProductChild(childData.description);
-        setPriceProductChild(childData.price);
-        setSectorProductChild(childData.id_sector);
-        setTypeProductChild(childData.id_product_type);
-        setImgProductChild(childData.img);
-        setSupplyProductChild(childData.supplies);
-        setFlagImageUpdate(childData.flagImageUpdate);
-        setFlavorChild(childData.flavor);
-        console.log(data)
+        setData(childData);
     }
 
     const registerProduct = () => {
@@ -67,22 +48,24 @@ export default function EditProducts(props) {
         if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0 && data.id_product_type
             && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
-    }, [nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
+    }, [data]);
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
             <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar {props.product.title}</h2>
+            <h2 style={{ fontWeight: 'bold' }}>Editar {productToEdit.title}</h2>
             <br />
-            <GeneralDataProduct load={load} data={data} />
-            <ExtraDataProduct load={load} data={data} />
+            <GeneralDataProduct load={load} data={productToEdit} />
+            <ExtraDataProduct load={load} data={productToEdit} />
             <Buttons
                 label='Registrar' actionOK={registerProduct}
                 actionNotOK={validationProductRegister}
-                actionCancel={props.end}
+                actionCancel={onClickCancelEdit}
                 ready={ready}
                 data={data} />
         </>
     );
-}
+};
+
+export default EditProducts;

@@ -18,6 +18,7 @@ async function getProduct(req, res) {
 async function postProduct(req, res) {
     try {
         await createProduct(req.body, req.file);
+
         res.json({
             Ok: true,
             Message: 'Producto e insumos registrados exitosamente.'

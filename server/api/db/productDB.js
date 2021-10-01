@@ -5,10 +5,10 @@ const fs = require('fs');
 const productGetDB = () => {
     const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
         'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor ' +
-            'FROM PRODUCTS p ' +
-            'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
-            'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
-            'WHERE active = 1 ORDER BY p.name';
+        'FROM PRODUCTS p ' +
+        'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
+        'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
+        'WHERE active = 1 ORDER BY p.name';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -25,60 +25,62 @@ const productGetDB = () => {
 
 const productPostDB = (newProduct, imageProduct) => {
     const { name, description, price, id_sector, id_product_type, supplies, flavor } = newProduct;
-    let id_product;
-    let image = imageProduct;
-    let arrSupplies = JSON.parse(supplies);
 
-    if (image) image = fs.readFileSync(path.join(__dirname, '../images/productImages/' + image.filename));
-    else image = null;
-
-    const selectMaxIdProduct = 'SELECT MAX(id_product) AS last_id_product FROM PRODUCTS';
-    const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
-    const sqlInsertProductsSupplies = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
+    const image = imageProduct ? fs.readFileSync(path.join(__dirname, '../images/productImages/' + image.filename)) : null;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
+
+            const selectMaxIdProduct = 'SELECT MAX(id_product) AS last_id_product FROM PRODUCTS';
+
+            let id_product;
+
             db.query(selectMaxIdProduct, (error, row) => {
-                if (error) reject(error);
+                if (error) reject(error)
                 else id_product = row[0].last_id_product + 1;
-            })
+            });
+
             db.beginTransaction((error) => {
                 if (error) reject(error);
+
+                const sqlInsertProducts = 'INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?,?)';
 
                 db.query(sqlInsertProducts, [null, name, description, image, price, id_sector, id_product_type, 1, JSON.parse(flavor)], (error, result) => {
                     if (error) {
                         return db.rollback(() => reject(error))
-                    }
-                    if (image != null)
-                    {
-                        for (let i = 0; i < arrSupplies.length; i++) {
-                            db.query(sqlInsertProductsSupplies, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error) => {
-                                if (error) {
-                                    return db.rollback(() => reject(error));
-                                }
-                                db.commit((error) => {
-                                    if (error) {
-                                        return db.rollback(() => reject(error));
-                                    }
-                                    else resolve();
-                                });
-                            });
-                        };
-                    }
-                    else
-                    {
-                        db.commit((error) => {
+                    };
+
+                    const sqlInsertProductsSupplies = 'INSERT INTO PRODUCT_X_SUPPLY VALUES(?,?,?)';
+
+                    const productSupplies = JSON.parse(supplies)
+
+                    for (let i = 0; i < productSupplies.length; i++) {
+                        db.query(sqlInsertProductsSupplies, [id_product, productSupplies[i].id_supply, productSupplies[i].number_supply], (error) => {
                             if (error) {
                                 return db.rollback(() => reject(error));
                             }
-                            else resolve();
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() => reject(error));
+                                }
+                                else resolve();
+                            });
                         });
-                    }
+                    };
+
+                    db.commit((error) => {
+                        if (error) {
+                            return db.rollback(() => reject(error));
+                        }
+                        else resolve();
+                    });
+
                 });
+
                 db.release();
             });
-            
+
         });
     });
 };
@@ -91,7 +93,7 @@ const imageProductGetDB = (productID) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-  
+
             db.query(sqlSelect, [productID], (error, result) => {
                 if (error) reject(error);
 
@@ -163,10 +165,9 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
                         if (error) {
                             return db.rollback(() => reject(error));
                         };
-                        if (arrSupplies.length > 0)
-                        {
+                        if (arrSupplies.length > 0) {
                             for (let i = 0; i < arrSupplies.length; i++) {
-                                db.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].amount], (error) => {
+                                db.query(sqlInsertProductSupply, [id_product, arrSupplies[i].id_supply, arrSupplies[i].number_supply], (error) => {
                                     if (error) {
                                         db.rollback(() => { throw error; })
                                     }
@@ -179,8 +180,7 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
                                 })
                             }
                         }
-                        else
-                        {
+                        else {
                             db.commit((error) => {
                                 if (error) {
                                     return db.rollback(() => { throw error; })
