@@ -26,7 +26,7 @@ const ListFlavorsUp = (props) => {
             filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor === parseInt(props.flavorsDispatchFilters[0]))));
             props.updateTableUp(filterFamilyFlavors);
         }
-        else if ((props.refresh && props.flavorsDispatchFilters[0]) || !props.flavorsDispatchFilters[0]) {
+        else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0] && props.elementsTableDown.length === 0)) {
             Axios.get(`${PORT()}/api/flavors`)
                 .then(response => {
                     handlerLoadingSpinner();
