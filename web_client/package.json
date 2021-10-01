@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@digitalpersona/devices": "^0.2.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -15,8 +16,8 @@
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.0.2",
-    "moment": "^2.29.1",
     "chart.js": "^3.5.1",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-chartjs-2": "^3.0.4",
@@ -29,6 +30,7 @@
     "redux": "^4.1.0",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.0.18",
+    "uareu-node": "^1.0.5",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^1.0.1"
   },

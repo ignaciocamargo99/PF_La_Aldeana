@@ -77,8 +77,8 @@ const employeeCreateDB = (newEmployee) => {
         })
     });
 };
-
-
+ 
+   
 const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     const sqlUpdate = `UPDATE EMPLOYEES SET dni = ?, name = ?, last_name = ?, date_admission = ?, 
                         employment_relationship = ?, charge = ?

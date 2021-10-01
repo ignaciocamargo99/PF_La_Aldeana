@@ -8,6 +8,7 @@ import successMessage from '../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import ExtraDataEmployee from './ExtraDataEmployee';
+import FingerPrint from './FingerPrint';
 
 const PORT = require('../../../config');
 
@@ -45,6 +46,7 @@ export default function RegisterEmployee() {
                 <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Registrar empleado" />
                 <DataEmployee load={load} data={data} />
                 <ExtraDataEmployee load={load} data={data} />
+                <FingerPrint />   
                 <Buttons
                     label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
                     data={data} actionCancel={cancelRegisterEmployee}
