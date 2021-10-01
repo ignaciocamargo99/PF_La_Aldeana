@@ -36,7 +36,7 @@ const RegisterPurchaseSupplies = (props) => {
     const validate = () => {
         if (props.purchaseSupplier === 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null) {
             errorNameSupplier()
-        } 
+        }
         else {
             props.purchaseSupplies.map((supply, i) => {
                 if (props.purchaseSubtotal[i] <= 0) errorPricesQuantities()
@@ -70,6 +70,7 @@ const RegisterPurchaseSupplies = (props) => {
                 })
             }
         };
+
         setReady(isReady)
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 

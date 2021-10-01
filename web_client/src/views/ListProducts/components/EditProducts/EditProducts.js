@@ -1,6 +1,8 @@
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
+import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
@@ -8,27 +10,15 @@ import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../../../config');
 
-const EditProducts = ({ product, end }) => {
-    const [data, setData] = useState(product);
-    const [nameProductChild, setNameProductChild] = useState(product.name);
-    const [priceProductChild, setPriceProductChild] = useState(product.price);
-    const [sectorProductChild, setSectorProductChild] = useState(product.id_sector);
-    const [typeProductChild, setTypeProductChild] = useState(product.id_product_type);
-    const [imgProductChild, setImgProductChild] = useState(product.image);
+const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
+    const [data, setData] = useState(productToEdit);
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
-        setNameProductChild(childData.name);
-        setPriceProductChild(childData.price);
-        setSectorProductChild(childData.id_sector);
-        setTypeProductChild(childData.id_product_type);
-        setImgProductChild(childData.img);
+        setData(childData);
     }
 
     const registerProduct = () => {
@@ -58,20 +48,20 @@ const EditProducts = ({ product, end }) => {
         if (data.name !== '' && data.price > 0 && data.id_sector > 0 && data.id_product_type >= 0 && data.id_product_type
             && data.name !== 'error' && data.price !== 'error' && data.description !== 'error') setReady(true);
         else setReady(false);
-    }, [data, nameProductChild, priceProductChild, sectorProductChild, typeProductChild, imgProductChild]);
+    }, [data]);
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
             <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar {product.title}</h2>
+            <h2 style={{ fontWeight: 'bold' }}>Editar {productToEdit.title}</h2>
             <br />
-            <GeneralDataProduct load={load} data={data} />
-            <ExtraDataProduct load={load} data={data} />
+            <GeneralDataProduct load={load} data={productToEdit} />
+            <ExtraDataProduct load={load} data={productToEdit} />
             <Buttons
                 label='Registrar' actionOK={registerProduct}
                 actionNotOK={validationProductRegister}
-                actionCancel={end}
+                actionCancel={onClickCancelEdit}
                 ready={ready}
                 data={data} />
         </>

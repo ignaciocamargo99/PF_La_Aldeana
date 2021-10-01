@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Pagination from '../../../../common/TablePagination/Pagination';
+import displayError from '../../../../utils/ErrorMessages/displayError';
 import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
 import SpinnerTableSupplies from './SpinnerTableSupplies';
 import SuppliesAmount from "./SuppliesAmount";
@@ -21,20 +22,51 @@ export default function SuppliesPairTables({ load, data }) {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
-    useEffect(() => {
-        Axios.get(PORT() + '/api/supplies')
-            .then((response) => {
-                handlerLoadingSpinner();
+    useEffect(async () => {
+        try {
+            const { data: allSupplies } = await getAllSupplies();
 
-                let auxSupply = response.data;
-                auxSupply?.map((e, i) => e.amount = 0);
+            if (data.editing) {
+                fillSuppliesOfProduct(allSupplies)
+            };
 
-                setListTable(auxSupply);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            fillSuppliesTable(allSupplies);
+
+            handlerLoadingSpinner();
+        }
+        catch (error) {
+            console.log(error);
+            displayError();
+        }
     }, []);
+
+    const fillSuppliesTable = (supplies) => {
+        supplies?.map((e, i) => e.number_supply = 0);
+        setListTable(supplies);
+    }
+
+    const fillSuppliesOfProduct = (allSupplies) => {
+        const suppliesIdsOfProduct = data.supplies.map(s => s.id_supply);
+
+        const suppliesOfProductWithoutAmount = allSupplies.filter(s => {
+            return suppliesIdsOfProduct.includes(s.id_supply)
+        });
+
+        const suppliesOfProduct = [...suppliesOfProductWithoutAmount].map(({ id_supply, name, description }) => {
+            return {
+                id_supply: id_supply,
+                name: name,
+                description: description,
+                number_supply: data.supplies.find(s => s.id_supply == id_supply).number_supply
+            }
+        });
+
+        setDestinyTable(suppliesOfProduct);
+    }
+
+    const getAllSupplies = () => {
+        return Axios.get(PORT() + '/api/supplies');
+    }
 
     useEffect(() => {
         if (nameSearch !== "") {
@@ -48,23 +80,29 @@ export default function SuppliesPairTables({ load, data }) {
         }
     }, [nameSearch, listTable]);
 
-    useEffect(() => {
-        data.supplies = destinyTable;
-
-        load(data);
-    }, [destinyTable]);
-
     const upload = (supply, amount) => {
         if (amount > 0) {
-            supply.amount = amount;
 
             if (destinyTable.some(s => s.id_supply == supply.id_supply)) {
                 let auxDestiny = [...destinyTable];
+
+                auxDestiny.forEach(s => {
+                    if (s.id_supply === supply.id_supply) {
+                        s.number_supply = amount;
+                    }
+                })
+
+                data.supplies = auxDestiny;
                 setDestinyTable(auxDestiny);
             } else {
+                supply.number_supply = amount;
                 let selectedSupplies = [...destinyTable, supply].sort();
+
+                data.supplies = selectedSupplies;
                 setDestinyTable(selectedSupplies);
             };
+
+            load(data);
         }
         else {
             return warningCountProduct();
@@ -74,7 +112,9 @@ export default function SuppliesPairTables({ load, data }) {
     const download = (supplySelected) => {
         let newDestinyTable = destinyTable.filter((supply) => supply.id_supply != supplySelected.id_supply);
 
+        data.supplies = newDestinyTable;
         setDestinyTable(newDestinyTable);
+        load(data);
     };
 
     const columnsHeaders = [
@@ -114,7 +154,7 @@ export default function SuppliesPairTables({ load, data }) {
                         <h4 className="text-secondary">Insumos disponibles:</h4>
                         <div className="search-input">
                             <FontAwesomeIcon icon={faSearch} />
-                            <input id="inputSearchName" type="text" placeholder="Buscar insumos..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
                         </div>
                     </div>
                     <div className="table-responsive-md">

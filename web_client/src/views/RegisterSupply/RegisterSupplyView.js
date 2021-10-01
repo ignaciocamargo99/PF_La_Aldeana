@@ -77,8 +77,7 @@ const RegisterPurchaseSupplies = (props) => {
             stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
             unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
         }
-        console.log(aux)
-        
+
         Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {

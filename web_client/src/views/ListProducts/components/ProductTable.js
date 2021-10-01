@@ -2,16 +2,16 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import BeShowed from '../../../common/BeShowed';
 import LoaderSpinner from '../../../common/LoaderSpinner';
-import backupProduct from '../../../utils/backupProduct';
+import displayError from '../../../utils/ErrorMessages/errorMesage';
 import EditProducts from './EditProducts/EditProducts';
-import TablePagination from './TablePagination/TablePagination'
+import TablePagination from './TablePagination/TablePagination';
 
 const PORT = require('../../../config');
 
 const ProductTable = () => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [editing, setEditing] = useState({});
+    const [productToEdit, setProductToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     const getProducts = () => {
@@ -34,20 +34,40 @@ const ProductTable = () => {
         getProducts()
     };
 
-    const editProduct = (product) => {
-        let aux = backupProduct(product);
-        aux.name = product.name;
-        aux.flavor = product.quantity_flavor;
-        aux.editing = true;
-        setEditing(aux);
-        setIsEditing(true);
+    const editProduct = async (product) => {
+        try {
+            const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
+
+            const aux = {
+                active: product.active,
+                description: product.description,
+                editing: true,
+                flagImageUpdate: product.flagImageUpdate,
+                flavor: product.quantity_flavor,
+                id_product: product.id_product,
+                id_product_type: product.id_product_type,
+                id_sector: product.id_sector,
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                title: product.title,
+                supplies: productSupplies.map(({ id_supply, number_supply }) => {
+                    return {
+                        id_supply: id_supply,
+                        number_supply: number_supply
+                    }
+                })
+            };
+
+            setProductToEdit(aux);
+            setIsEditing(true);
+        }
+        catch {
+            displayError();
+        }
     };
 
-    const endEditProduct = () => {
-        <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
-        setIsEditing(false);
-        window.scrollTo(0, 0);
-    }
+    const onClickCancelEdit = () => setIsEditing(false);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -72,18 +92,20 @@ const ProductTable = () => {
                 <LoaderSpinner color="primary" loading="Cargando productos..." />
             )}
             {!isLoadingSpinner && (
-                <BeShowed show={!isEditing}>
-                    <TablePagination
-                        columnsHeaders={columnsHeaders}
-                        currentElements={products}
-                        handleEdit={editProduct}
-                        handleDelete={productWasSuccessfullyDeleted}
-                    ></TablePagination>
-                </BeShowed>
+                <>
+                    <BeShowed show={!isEditing}>
+                        <TablePagination
+                            columnsHeaders={columnsHeaders}
+                            currentElements={products}
+                            handleEdit={editProduct}
+                            handleDelete={productWasSuccessfullyDeleted}
+                        ></TablePagination>
+                    </BeShowed>
+                    <BeShowed show={isEditing}>
+                        <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
+                    </BeShowed>
+                </>
             )}
-            <BeShowed show={isEditing}>
-                <EditProducts end={endEditProduct} product={editing} />
-            </BeShowed>
         </>
     );
 };
