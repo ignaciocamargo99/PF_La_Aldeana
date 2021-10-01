@@ -16,28 +16,19 @@ const PORT = require('../../../../config');
 export default function EditProducts(props) {
     const [data, setData] = useState(props.product);
     const [nameProductChild, setNameProductChild] = useState(props.product.name);
-    const [descriptionProductChild, setDescriptionProductChild] = useState(props.product.description);
     const [priceProductChild, setPriceProductChild] = useState(props.product.price);
     const [sectorProductChild, setSectorProductChild] = useState(props.product.id_sector);
     const [typeProductChild, setTypeProductChild] = useState(props.product.id_product_type);
     const [imgProductChild, setImgProductChild] = useState(props.product.image);
-    const [supplyProductChild, setSupplyProductChild] = useState(props.product.supplies);
-    const [flavorChild, setFlavorChild] = useState(props.product.flavor);
-    const [flagImageUpdate, setFlagImageUpdate] = useState();
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
+        setData(childData);
         setNameProductChild(childData.name);
-        setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
         setSectorProductChild(childData.id_sector);
         setTypeProductChild(childData.id_product_type);
         setImgProductChild(childData.img);
-        setSupplyProductChild(childData.supplies);
-        setFlagImageUpdate(childData.flagImageUpdate);
-        setFlavorChild(childData.flavor);
-        console.log(data)
     }
 
     const registerProduct = () => {

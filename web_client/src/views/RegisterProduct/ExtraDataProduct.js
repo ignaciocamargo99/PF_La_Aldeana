@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import BeShowed from '../../common/BeShowed';
 import FlavorsAmount from './components/FlavorsAmount';
 import ImageProduct from './components/ImageProduct';
@@ -6,12 +5,6 @@ import SuppliesPairTables from './components/SuppliesPairTables/SuppliesPairTabl
 import TypeProduct from './components/TypeProduct';
 
 const ExtraDataProduct = (props) => {
-    const [data, setData] = useState({});
-
-    const load = (childData) => {
-        setData(childData);
-        props.load(childData);
-    }
 
     return (
         <>

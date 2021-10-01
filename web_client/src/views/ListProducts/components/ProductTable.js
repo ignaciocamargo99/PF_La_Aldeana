@@ -12,11 +12,10 @@ import backupProduct from '../../../utils/backupProduct';
 
 const PORT = require('../../../config');
 
-export default function ProductTable(props) {
+export default function ProductTable() {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editing, setEditing] = useState({});
-    const [backup, setBackup] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     useEffect(() => {
@@ -44,7 +43,6 @@ export default function ProductTable(props) {
         aux.name = product.name;
         aux.flavor = product.quantity_flavor;
         aux.editing = true;
-        setBackup(product);
         setEditing(aux);
         setIsEditing(true);
     }

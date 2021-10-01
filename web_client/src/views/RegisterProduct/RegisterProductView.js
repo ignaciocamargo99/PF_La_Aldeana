@@ -17,8 +17,6 @@ const PORT = require('../../config');
 export default function RegisterProductView() {
     const [data, setData] = useState({ name: null, description: '', price: null, id_sector: null, id_product_type: null, img: null, supplies: [], flavor: null, editing: false });
     const [nameProductChild, setNameProductChild] = useState('');
-    const [descriptionProductChild, setDescriptionProductChild] = useState('');
-    const [flavorChild, setFlavorChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');
     const [sectorProductChild, setSectorProductChild] = useState('');
     const [typeProductChild, setTypeProductChild] = useState(-1);
@@ -29,13 +27,11 @@ export default function RegisterProductView() {
     const load = (childData) => {
         setData(childData)
         setNameProductChild(childData.name);
-        setDescriptionProductChild(childData.description);
         setPriceProductChild(childData.price);
         setSectorProductChild(childData.id_sector);
         setTypeProductChild(childData.id_product_type);
         setImgProductChild(childData.img);
         setSupplyProductChild(childData.supplies);
-        setFlavorChild(childData.flavor);
     }
 
     const registerProduct = () => {
@@ -73,7 +69,7 @@ export default function RegisterProductView() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar producto"}</div>
-            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto"/>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar producto" />
             <div className="viewTitle">
                 <h1>Registrar Producto</h1>
             </div>

@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import DescriptionProduct from "../RegisterProduct/components/DescriptionProduct";
 import NameProduct from '../RegisterProduct/components/NameProduct';
 import PriceProduct from '../RegisterProduct/components/PriceProduct';
 import SectorProduct from '../RegisterProduct/components/SectorProduct';
 
 const GeneralDataProduct = (props) => {
-    const [data, setData] = useState({});
 
     const load = (childData) => {
-        setData(childData);
         props.load(childData);
     }
     return (
