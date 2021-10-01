@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
 
 const DescriptionProduct = (props) => {
     const inputDescription = useRef(null);
     const [description, setDescription] = useState("null");
-    const [prevDescription, setPrevDescription] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     const handleDescription = () => {
-        setPrevDescription(description);
         setDescription(inputDescription.current.value);
     }
 

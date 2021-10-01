@@ -1,6 +1,6 @@
 import swal from 'sweetalert';
 
-export default function confirmDelete(actionTrue, actionFalse, e) {
+export default function confirmDelete(actionTrue) {
 
   return swal({
     title: "¿Seguro que desea eliminarlo?",
@@ -11,8 +11,7 @@ export default function confirmDelete(actionTrue, actionFalse, e) {
   })
     .then((willDelete) => {
       if (willDelete) {
-        actionTrue(e);
+        actionTrue();
       }
-      else actionFalse(e)
     });
 }

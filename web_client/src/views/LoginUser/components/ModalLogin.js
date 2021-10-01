@@ -1,12 +1,11 @@
 import React from 'react';
 import Axios from 'axios';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { isCorrectFormat } from '../../../utils/Validations/validateUsers';
 import errrorLogin from '../../../utils/ErrorMessages/errorLogin';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 import FormLogin from '../components/FormLogin';
-import Buttons from '../../../common/Buttons';
-import { updateNick, updatePassword , updateUser, updatePermissions} from '../../../actions/LoginActions';
+import { updateNick, updatePassword, updateUser, updatePermissions } from '../../../actions/LoginActions';
 import bcryptjs from 'bcryptjs';
 import { encrypt } from '../../../utils/EncryptDecryptCookies/EncryptDecrypt';
 import Cookies from 'universal-cookie';
@@ -18,43 +17,42 @@ const cookies = new Cookies();
 const ModalLogin = (props) => {
 
     const init = () => {
-        if(isCorrectFormat(props.nick) && isCorrectFormat(props.password)){
+        if (isCorrectFormat(props.nick) && isCorrectFormat(props.password)) {
             Axios.get(PORT() + `/api/users/filter/${props.nick}`)
-            .then((response) => {
-                let compare = bcryptjs.compareSync(props.password,response.data.token)
-                if(compare){
-                    console.log('hola')
-                    Axios.get(PORT() + `/api/users/search/${props.nick}`)
-                    .then((res) => {
-                        cookies.set('nick_user',res.data.nick_user, {path: '/'})
-                        cookies.set('first_name',res.data.first_name, {path: '/'})
-                        cookies.set('last_name',res.data.last_name, {path: '/'})
-                        Axios.get( PORT() + `/api/permissions/filter/${res.data.rol_ID}`)
-                        .then((response) => {
-                            let permissions = [encrypt('Inicio')]
-                            for(let i=0; i< response.data.length ; i++){
-                            permissions.push(encrypt(response.data[i].name))
-                            }
-                            cookies.set('permissions',permissions, {path: '/'})
-                            window.location.href = './index'
-                        })
-                    })
-                }
-                else{
-                    errrorLogin('Atención','Usuario o Password incorrectos')
-                }
-            })
-            .catch((error) => {
-                errrorLogin('Oops...','Error en el servidor')
-            })
+                .then((response) => {
+                    let compare = bcryptjs.compareSync(props.password, response.data.token)
+                    if (compare) {
+                        Axios.get(PORT() + `/api/users/search/${props.nick}`)
+                            .then((res) => {
+                                cookies.set('nick_user', res.data.nick_user, { path: '/' })
+                                cookies.set('first_name', res.data.first_name, { path: '/' })
+                                cookies.set('last_name', res.data.last_name, { path: '/' })
+                                Axios.get(PORT() + `/api/permissions/filter/${res.data.rol_ID}`)
+                                    .then((response) => {
+                                        let permissions = [encrypt('Inicio')]
+                                        for (let i = 0; i < response.data.length; i++) {
+                                            permissions.push(encrypt(response.data[i].name))
+                                        }
+                                        cookies.set('permissions', permissions, { path: '/' })
+                                        window.location.href = './index'
+                                    })
+                            })
+                    }
+                    else {
+                        errrorLogin('Atención', 'Usuario o Password incorrectos')
+                    }
+                })
+                .catch((error) => {
+                    errrorLogin('Oops...', 'Error en el servidor')
+                })
         }
-        else{
-            errrorLogin('Atención','Usuario o Password incorrectos')
+        else {
+            errrorLogin('Atención', 'Usuario o Password incorrectos')
         }
-        
+
     }
 
-    return(
+    return (
         <>
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader className="back-ligthblue">
@@ -76,9 +74,10 @@ const ModalLogin = (props) => {
 
 
 const mapStateToProps = state => {
-    return { nick: state.nick,
-            password: state.password,
-            user: state.user        
+    return {
+        nick: state.nick,
+        password: state.password,
+        user: state.user
     }
 }
 
@@ -89,4 +88,4 @@ const mapDispatchToProps = {
     updatePermissions
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ModalLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
