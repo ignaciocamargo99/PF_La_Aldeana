@@ -13,7 +13,7 @@ import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
 
 const PORT = require('../../../config');
 
-const RegisterLicense = (props) => {
+const FormLicense = (props) => {
 
     const [showSpinner,setShowSpinner] = useState(true);
     const [employees,setEmployees] = useState([]);
@@ -31,6 +31,37 @@ const RegisterLicense = (props) => {
     const reason = useRef();
 
     useEffect(() => {
+        if(props.action !== "Registrar"){
+            dateInit.current.value = props.license.date_init.slice(0,10);
+            dateFinish.current.value = props.license.date_finish.slice(0,10);
+            setEmployee({dni:props.license.dni,name:props.license.name,last_name:props.license.last_name});
+            reason.current.value = props.license.reason;
+            onChangeDates()
+            if(props.action === 'Ver'){
+                dateInit.current.disabled = true;
+                dateFinish.current.disabled = true;
+                reason.current.disabled = true;
+            }
+            else{
+                employeesUpload();
+                setErrorDateInit(false);
+                setErrorDateFinish(false);
+                setErrorEmployee(false);
+                setErrorReason(false);
+            }
+        }
+        else{
+            employeesUpload();
+            dateMinsUpload();
+            employeesViewUpload();
+        }
+    },[props.action])
+
+    useEffect(() => {
+        employeesViewUpload();
+    },[employeesStart])
+
+    const employeesUpload = () => {
         Axios.get(PORT() + '/api/employees')
             .then((response) => {
                 setEmployees(response.data);
@@ -39,18 +70,18 @@ const RegisterLicense = (props) => {
                 setShowSpinner(false)
             })
             .catch((error) => console.log(error));
-    }, []);
+    };
 
-    useEffect(() => {
+    const dateMinsUpload = () => {
         let date = formatedDate(new Date());
         dateInit.current.min = date;
         dateFinish.current.min = date;
-    },[])
+    }
 
-    useEffect(() => {
+    const employeesViewUpload = () => {
         let aux = employees.slice(employeesStart,employeesStart+6);
         setEmployeesView(aux);
-    }, [employeesStart])
+    }
 
     const onChangeReason = () => {
         if(reason.current.value.trim() !== ""){
@@ -94,6 +125,7 @@ const RegisterLicense = (props) => {
     const resetStates = (showMsg) => {
         if(showMsg){
             warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
+            props.setReloadList(!props.reloadList)
         }
         setEmployee(null);
         setDays(0);
@@ -125,23 +157,41 @@ const RegisterLicense = (props) => {
         loadingMessage("Registrando la licencia")
         Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
                                             "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
-        .then((respone) => {
-            if (respone.data.Ok) {resetStates(true)}
-            else warningMessage("Error", `${respone.data.Message}`, "error")
+        .then((response) => {
+            if (response.data.Ok) {resetStates(true)}
+            else warningMessage("Error", `${response.data.Message}`, "error")
+        })
+        .catch((error) => console.error(error))   
+    }
+
+    const editLicense = () => {
+        loadingMessage("Editando licencia")
+        Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {"date_init": dateInit.current.value,
+            "date_finish": dateFinish.current.value,"dni_employee": employee.dni,"reason": reason.current.value})
+        .then((response) => {
+            if (response.data.Ok) {comeBack(true)}
+            else warningMessage("Error", `${response.data.Message}`, "error")
         })
         .catch((error) => console.error(error))
-        
+    }
+
+    const comeBack = (msg) => {
+        if(msg){
+            warningMessage('Correcto','Se ha editado la licencia correctamente','success');
+            props.setReloadList(!props.reloadList)
+        }
+        props.setActionLicense('Listar',null)
     }
 
     return(
     <>
-        <div style={{display: 'none'}}>{document.title = "Registrar Licencia"}</div>
+        <div style={{display: 'none'}}>{document.title = `${props.action} Licencia` }</div>
             <div className="viewTitleBtn">
-            <h1>Registrar licencia</h1>
+            <h1>{props.action} licencia {props.action!=="Registrar"?props.license?.id_license:''}</h1>
         </div>
         <div className="container">
             <br/>
-            <Breadcrumb parentName="Licencias" icon={faUserFriends} parentLink="licenses" currentName="Registrar licencia" />
+            <Breadcrumb parentName="Licencias" icon={faUserFriends} parentLink="licenses" currentName={`${props.action} licencia`}/>
             <div className="formRow">
                 <div className="col-sm-2" style={{paddingTop: "0.375rem"}}>
                     <label >Fecha de inicio* </label>
@@ -164,27 +214,51 @@ const RegisterLicense = (props) => {
                     <label>Empleado*</label>
                 </div>
             </div>
-            <BeShowed show={showSpinner}>
+            <BeShowed show={showSpinner && props.action !== 'Ver'}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
-            <BeShowed show={!showSpinner}>
+            <BeShowed show={!showSpinner && props.action !== 'Ver'}>
                 <div className="formRow justify-content-center">
                     <CardEmployees employeesView={employeesView} employee={employee} 
                                     onChangeEmployee={onChangeEmployee} setEmployeesStart={setEmployeesStart}
                                     employees={employees} employeesStart={employeesStart}/>
                 </div>
-                <div className="formRow">
-                    <div className="col-sm-2">
-                        <label>Motivo de licencia*</label>
-                    </div>
-                    <textarea className="form-control" rows="2" ref={reason} maxLength="200" onChange={onChangeReason}></textarea>    
+            </BeShowed>
+            <BeShowed show={props.action === "Ver"}>
+                <div className="formRow offset-sm-1">
+                    <button style={{width:"200px", height:"200px", margin:"5px",backgroundColor:'gray'}}>
+                        <div className="formRow justify-content-center">
+                            <label><b>DNI: {props.license?.dni}</b></label>
+                        </div>
+                        <div className="formRow justify-content-center">
+                            <label><b>Apellido: {props.license?.last_name}</b></label>
+                        </div>
+                        <div className="formRow justify-content-center">
+                            <label><b>Nombre: {props.license?.name}</b></label>
+                        </div>
+                    </button>
                 </div>
             </BeShowed>
-            <Buttons ready={(!errorDateInit && !errorDateFinish && !errorEmployee && !errorReason)}
-                label='Registrar' actionNotOK={actionNotOK} actionOK={registerLicense} actionCancel={() => {resetStates(false)}}/>
+            <div className="formRow">
+                <div className="col-sm-2">
+                    <label>Motivo de licencia*</label>
+                </div>
+                <textarea className="form-control" rows="2" ref={reason} maxLength="200" onChange={onChangeReason}></textarea>    
+            </div>
+            <BeShowed show={props.action === 'Registrar'}>   
+                <Buttons ready={(!errorDateInit && !errorDateFinish && !errorEmployee && !errorReason)}
+                    label='Registrar' actionNotOK={actionNotOK} actionOK={registerLicense} actionCancel={() => {resetStates(false)}}/>
+            </BeShowed>
+            <BeShowed show={props.action === 'Editar'}>   
+                <Buttons ready={(!errorDateInit && !errorDateFinish && !errorEmployee && !errorReason)}
+                    label='Confirmar' actionNotOK={actionNotOK} actionOK={editLicense} actionCancel={() => {comeBack(false)}}/>
+            </BeShowed>
+            <BeShowed show={props.action === 'Ver'}> 
+                <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>
+            </BeShowed>
         </div>        
     </>
     )
 }
 
-export default RegisterLicense
+export default FormLicense

@@ -1,4 +1,4 @@
-const { licenseGetDB, licenseCreateDB } = require('../db/licenseDb');
+const { licenseGetDB, licenseCreateDB, licenseUpdateDB, licenseDeleteDB } = require('../db/licenseDb');
 
 const readLicense = async () => {
     try {
@@ -20,4 +20,24 @@ const createLicense = async (newLicense) => {
     };
 };
 
-module.exports = { readLicense, createLicense};
+const modifyLicense = async (idLicense, updateLicense) => {
+    try {
+        let res = await licenseUpdateDB(idLicense, updateLicense);
+        return res;
+    }
+    catch(error) {
+        throw Error(error);
+    };
+};
+
+const deleteLicenses = async (idLicense) => {
+    try {
+        let res = await licenseDeleteDB(idLicense);
+        return res;
+    }
+    catch(error){
+        throw Error(error)
+    };
+};
+
+module.exports = { readLicense, createLicense, modifyLicense, deleteLicenses};

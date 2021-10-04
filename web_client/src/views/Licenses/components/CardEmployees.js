@@ -12,7 +12,7 @@ const CardEmployees = (props) => {
             if(props.employee?.dni === employee.dni){
                 return(
                     <div key={i}>
-                        <button style={{width:"px", height:"200px", margin:"5px",backgroundColor:'gray'}}>
+                        <button style={{width:"200px", height:"200px", margin:"5px",backgroundColor:'gray'}}>
                             <label><b>DNI: {employee.dni}</b></label>
                             <label><b>Apellido: {employee.last_name}</b></label>
                             <label><b>Nombre: {employee.name}</b></label>
