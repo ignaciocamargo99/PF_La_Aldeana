@@ -19,12 +19,12 @@ export default function RegisterAdvances() {
     const load = (childData) => {
         setData(childData);
         console.log(data)
-        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount && data.pay) setReady(true);
+        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount) setReady(true);
         else setReady(false);
     }
 
     const registerNewAdvances = () => {
-        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount && data.pay && ready) {
+        if (data.id_employee && data.date && data.amount && data.installments && data.installments_amount && ready) {
             Axios.post(`${PORT()}/api/newEmployee`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Nuevo adelanto dado de alta exitosamente', 'success');
