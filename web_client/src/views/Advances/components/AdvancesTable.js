@@ -24,16 +24,16 @@ export default function AdvancesTable() {
     const [reading, setReading] = useState({});
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/employees')
+        Axios.get(PORT() + '/api/advances')
             .then((response) => {
                 handlerLoadingSpinner();
-                let auxSupply = response.data;
-                setAdvances(auxSupply);
+                let auxAdvances = response.data;
+                setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
     }, []);
 
-    const deleteEmployee = (i) => {
+    const deleteAdvances = (i) => {
         let aux = [];
         advances?.forEach((e, j) => {
             if (j !== i) {
@@ -43,33 +43,38 @@ export default function AdvancesTable() {
         setAdvances(aux);
     }
 
-    const editEmployee = (employees) => {
-        let aux = backupAdvances(employees);
-        aux.name = employees.name;
-        aux.lastName = employees.last_name;
-        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
-        aux.previousDni = employees.dni;
+    const editAdvances = (advances) => {
+        let aux = backupAdvances(advances);
+        aux.dniEmployee = advances.dniEmployee;
+        aux.date = moment(advances.date).format('YYYY-MM-DD');
+        aux.amount = advances.amount;
+        aux.installments = advances.installments;
+        aux.installments_amount = advances.installments[0].amount;
+        aux.pay = advances.pay;
         aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
     }
 
-    const readEmployee = (advances) => {
+    const readAdvances = (advances) => {
         let aux = advances;
-        aux.lastName = advances.last_name;
-        aux.employmentRelationship = advances.employment_relationship;
-        aux.date = moment(advances.date_admission).format('YYYY-MM-DD');
+        aux.dniEmployee = advances.dniEmployee;
+        aux.date = moment(advances.date).format('YYYY-MM-DD');
+        aux.amount = advances.amount;
+        aux.installments = advances.installments;
+        aux.installments_amount = advances.installments[0].amount;
+        aux.pay = advances.pay;
         aux.reading = true;
         setReading(aux);
         setIsReading(true);
     }
 
-    const cancelEditEmployee = () => {
+    const cancelEditAdvances = () => {
         <div style={{ display: 'none' }}>{document.title = "Adelantos"}</div>
         setIsEditing(false);
         window.scrollTo(0, 0);
     }
-    const returnReadEmployee = () => {
+    const returnReadAdvances = () => {
         <div style={{ display: 'none' }}>{document.title = "Adelantos"}</div>
         setIsReading(false);
         window.scrollTo(0, 0);
@@ -89,9 +94,10 @@ export default function AdvancesTable() {
                             th={
                                 <>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Empleado</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de adelanto</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Monto total</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Pagado hasta la fecha</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
@@ -103,18 +109,19 @@ export default function AdvancesTable() {
                                 return (
                                     <tbody key={i}>
                                         <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dniEmployee}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}, {element.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <ReadAdvancesButton advances={element} read={readEmployee} />
+                                                <ReadAdvancesButton advances={element} read={readAdvances} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditAdvancesButton advances={element} edit={editEmployee} />
+                                                <EditAdvancesButton advances={element} edit={editAdvances} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteEmployee} />
+                                                <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -125,10 +132,10 @@ export default function AdvancesTable() {
                 </BeShowed>
             )}
             <BeShowed show={isEditing}>
-                <EditAdvances cancel={cancelEditEmployee} advances={editing} />
+                <EditAdvances cancel={cancelEditAdvances} advances={editing} />
             </BeShowed>
             <BeShowed show={isReading}>
-                <ReadAdvances return={returnReadEmployee} advances={reading} />
+                <ReadAdvances return={returnReadAdvances} advances={reading} />
             </BeShowed>
         </>
     );

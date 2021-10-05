@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Axios from 'axios';
 import BeShowed from "../../../common/BeShowed";
-import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import UploadByName from "./UploadByName";
 import formattedDate from "../../../utils/formattedDate";
 
@@ -45,12 +44,12 @@ export default function DataAdvances(props) {
     useEffect(() => {
         if (!employee) {
             setIsValidClass("form-control")
-            data.id_employee = employee;
+            data.dniEmployee = employee;
             props.load(data);
         }
         else {
             setIsValidClass("form-control is-valid");
-            data.id_employee = employee;
+            data.dniEmployee = employee;
             props.load(data);
         }
     }, [employee, props, data]);
