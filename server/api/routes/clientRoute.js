@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const clientController = require("../controllers/clientController");
@@ -11,7 +10,6 @@ router.get('/clients/:cellphone', clientController.getClient);
 router.post('/clients', clientController.postClient);
 
 router.put('/clients/:cellphone', clientController.putClient);
+
 //#endregion
-
-
 module.exports = router;

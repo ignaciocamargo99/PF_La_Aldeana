@@ -5,9 +5,8 @@ const readPayTypes = async () => {
         let res = await PayTypesGetDB();
         return res;
     }
-    catch {
-        let res = await PayTypesGetDB();
-        throw Error(res);
+    catch (error) {
+        throw Error(error);
     };
 };
 
@@ -15,9 +14,8 @@ const createSale = async (newSale) => {
     try {
         await salePostDB(newSale);
     }
-    catch {
-        let res = await salePostDB(newSale);
-        throw Error(res);
+    catch (error) {
+        throw Error(error);
     };
 };
 

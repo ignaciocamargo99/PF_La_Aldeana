@@ -21,7 +21,7 @@ function RegisterProductionView(props) {
         if (ready) {
             const flavorsValues = props.productionFlavors.filter(() => true);
             let production = { "dateProduction": props.date, "flavors": flavorsValues }
-            Axios.post(PORT() + '/api/productions/new', production)
+            Axios.post(PORT() + '/api/productions', production)
                 .then((production) => {
                     if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
                     else displayError('Ha ocurrido un error al registrar la producción.');
@@ -44,10 +44,10 @@ function RegisterProductionView(props) {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Registrar producción"}</div>
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
-
             <div className="viewBody">
                 <DateProduction />
                 <br />

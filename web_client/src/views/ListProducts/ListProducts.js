@@ -8,6 +8,7 @@ export default function ListProducts() {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
             <div className="viewTitleBtn">
                 <h1>Productos</h1>
                 <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>

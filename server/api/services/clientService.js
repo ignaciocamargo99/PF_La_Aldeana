@@ -5,8 +5,8 @@ const readClient = async (cellphone) => {
         let res = await clientGetDB(cellphone);
         return res;
     }
-    catch {
-        throw Error('Error. No se han podido leer los sabores de helado.')
+    catch (error) {
+        throw Error(error)
     };
 };
 

@@ -27,7 +27,7 @@ const Sales = (props) => {
     },[])
 
     const initialCalls = () => {
-        Axios.get(`${PORT()}/api/allProducts`)
+        Axios.get(`${PORT()}/api/products`)
             .then(response => {
                 let aux = response.data;
                 aux?.map((element, i) => {
@@ -153,7 +153,7 @@ const Sales = (props) => {
                 id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
             };
 
-            Axios.post(`${PORT()}/api/sales/new`, sale)
+            Axios.post(`${PORT()}/api/sales`, sale)
                 .then((sale) => {
                     if (sale.data.Ok) {
                         resetStates();

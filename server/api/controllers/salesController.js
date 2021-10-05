@@ -8,7 +8,7 @@ async function getPayTypes(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: 'No se pudo acceder a los tipos de pago.'
+            Message: e.message
         })
     }
 }
