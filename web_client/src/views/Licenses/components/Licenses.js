@@ -15,7 +15,7 @@ const Licenses = (props) => {
     const[license,setLicense] = useState(null);
     const[showSpinner,setShowSpinner] = useState(true);
     const[action,setAction] = useState('Listar');
-    const[reloadList,setReloadList] = useState(false)
+    const[reloadList,setReloadList] = useState(false);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)

@@ -9,25 +9,17 @@ import '../../../assets/Buttons.css';
 import Axios from "axios";
 import swal from 'sweetalert';
 import warningMessage from '../../../utils/WarningMessages/warningMessage';
+import { dateBDToSpanish } from '../../../utils/ConverterDate/dateBDToSpanish';
 
 const PORT = require('../../../config');
 
 export default function LicensesTable(props) {
-    
-    const dateBDToSpanish = (dateDB) => {
-        let year = dateDB.slice(0,4)
-        let month = dateDB.slice(5,7)
-        let day = dateDB.slice(8,10)
-        return(`${day}/${month}/${year}`)
-    }
 
     const deleteLicense = (idLicense) => {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)
         .then((response) => {
-            if(response.data.Ok){
-                warningMessage('Correcto','Se ha eliminado la licencia correctamente.','success');
-            }
-            else {warningMessage("Error", `${response.data.Message}`, "error")}
+            if(response.data.Ok) warningMessage('Correcto','Se ha eliminado la licencia correctamente.','success')
+            else warningMessage("Error", `${response.data.Message}`, "error")
         })
         .catch((error) => console.error(error))
     }
@@ -43,7 +35,7 @@ export default function LicensesTable(props) {
             .then((willDelete) => {
               if (willDelete) {
                 deleteLicense(idLicense);
-                props.setReloadList(!props.reloadList)
+                props.setReloadList(!props.reloadList);
               }
             });
     }

@@ -36,7 +36,7 @@ const FormLicense = (props) => {
             dateFinish.current.value = props.license.date_finish.slice(0,10);
             setEmployee({dni:props.license.dni,name:props.license.name,last_name:props.license.last_name});
             reason.current.value = props.license.reason;
-            onChangeDates()
+            onChangeDates();
             if(props.action === 'Ver'){
                 dateInit.current.disabled = true;
                 dateFinish.current.disabled = true;
@@ -67,9 +67,9 @@ const FormLicense = (props) => {
                 setEmployees(response.data);
                 setEmployeesView(response.data.slice(0,6));
                 setEmployeesStart(0);
-                setShowSpinner(false)
+                setShowSpinner(false);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {console.log(error);});
     };
 
     const dateMinsUpload = () => {
@@ -85,20 +85,20 @@ const FormLicense = (props) => {
 
     const onChangeReason = () => {
         if(reason.current.value.trim() !== ""){
-            setErrorReason(false)
+            setErrorReason(false);
         }
         else{
-            setErrorReason(true)
+            setErrorReason(true);
         }
     }
 
     const onChangeEmployee = (employee) => {
-        setErrorEmployee(false)
-        setEmployee(employee)
+        setErrorEmployee(false);
+        setEmployee(employee);
     }
 
     const onChangeDateInit = (e) => {
-        setErrorDateInit(false)
+        setErrorDateInit(false);
         dateFinish.current.min = e.target.value;
         if(dateFinish.current.value !== ""){
             onChangeDates();
@@ -106,7 +106,7 @@ const FormLicense = (props) => {
     }
 
     const onChangeDateFinish = () => {
-        setErrorDateFinish(false)
+        setErrorDateFinish(false);
         if(dateInit.current.value !== ""){
             onChangeDates();
         }
@@ -121,11 +121,33 @@ const FormLicense = (props) => {
         }
         setDays(aux);
     }
+    
+    const registerLicense = () => {
+        loadingMessage("Registrando la licencia")
+        Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
+                                            "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
+        .then((response) => {
+            if (response.data.Ok) resetStates(true)
+            else warningMessage("Error", `${response.data.Message}`, "error")
+        })
+        .catch((error) => console.error(error))   
+    }
 
+    const editLicense = () => {
+        loadingMessage("Editando licencia")
+        Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {"date_init": dateInit.current.value,
+            "date_finish": dateFinish.current.value,"dni_employee": employee.dni,"reason": reason.current.value})
+        .then((response) => {
+            if (response.data.Ok) comeBack(true)
+            else warningMessage("Error", `${response.data.Message}`, "error")
+        })
+        .catch((error) => console.error(error))
+    }
+    
     const resetStates = (showMsg) => {
         if(showMsg){
             warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
-            props.setReloadList(!props.reloadList)
+            props.setReloadList(!props.reloadList);
         }
         setEmployee(null);
         setDays(0);
@@ -136,6 +158,14 @@ const FormLicense = (props) => {
         dateInit.current.value = "";
         dateFinish.current.value = "";
         reason.current.value = "";
+    }
+
+    const comeBack = (msg) => {
+        if(msg){
+            warningMessage('Correcto','Se ha editado la licencia correctamente','success');
+            props.setReloadList(!props.reloadList);
+        }
+        props.setActionLicense('Listar',null);
     }
 
     const actionNotOK = () =>{
@@ -151,36 +181,6 @@ const FormLicense = (props) => {
         else if(errorReason){
             warningMessage('Atención','Se debe cargar un motivo de la licencia','warning');
         }
-    }
-    
-    const registerLicense = () => {
-        loadingMessage("Registrando la licencia")
-        Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
-                                            "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
-        .then((response) => {
-            if (response.data.Ok) {resetStates(true)}
-            else warningMessage("Error", `${response.data.Message}`, "error")
-        })
-        .catch((error) => console.error(error))   
-    }
-
-    const editLicense = () => {
-        loadingMessage("Editando licencia")
-        Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {"date_init": dateInit.current.value,
-            "date_finish": dateFinish.current.value,"dni_employee": employee.dni,"reason": reason.current.value})
-        .then((response) => {
-            if (response.data.Ok) {comeBack(true)}
-            else warningMessage("Error", `${response.data.Message}`, "error")
-        })
-        .catch((error) => console.error(error))
-    }
-
-    const comeBack = (msg) => {
-        if(msg){
-            warningMessage('Correcto','Se ha editado la licencia correctamente','success');
-            props.setReloadList(!props.reloadList)
-        }
-        props.setActionLicense('Listar',null)
     }
 
     return(
