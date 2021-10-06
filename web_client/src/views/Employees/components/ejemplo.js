@@ -19,7 +19,7 @@ uareu.dpfpddCaptureAsync(reader, CONSTANTS.DPFPDD_IMAGE_FMT.DPFPDD_IMG_FMT_ANSI3
     uareu.dpfjCreateFmdFromFid(data, CONSTANTS.DPFJ_FMD_FORMAT.DPFJ_FMD_ANSI_378_2004)
     .then((res) => {
         // Here you receive the FMD and then you can compare it, save it to compare with the next fingerprint, identify it with a database, etc...
-        return uareu.dpfjIdentify(res, [FMD LIST]);
+        //return uareu.dpfjIdentify(res, [FMD LIST]);
     })
     .then((res) => {
         // Finger was identified or not? The answer you get here.
