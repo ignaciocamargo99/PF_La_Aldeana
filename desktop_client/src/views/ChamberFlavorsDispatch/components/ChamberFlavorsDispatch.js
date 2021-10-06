@@ -58,7 +58,7 @@ const ChamberFlavorsDispatch = (props) => {
             let flavorsToDispatch = [];
             props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
             flavorsToDispatch = props.elementsTableDown;
-            Axios.post(`${PORT()}/api/chamberFlavorsDispatch/new`, flavorsToDispatch)
+            Axios.post(`${PORT()}/api/chamberFlavorsDispatch`, flavorsToDispatch)
                 .then((flavorsToDispatch) => {
                     if (flavorsToDispatch.data.Ok) {
                         resetStates();

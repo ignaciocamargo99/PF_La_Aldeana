@@ -1,31 +1,66 @@
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from "react";
 import validateFloatNumbers from "../../../../utils/validateFloatNumbers";
+import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
 
-export default function SuppliesAmount(props) {
+const SuppliesAmount = ({ supply, addAmountOfSupply }) => {
 
     const inputAmountSupplies = useRef(null);
     const divAmountSuppliesValidation = useRef(null);
 
-    const onChangeAmount = () => {
-        if (inputAmountSupplies.current.value < 0 && inputAmountSupplies.current.value.length <= 2) {
-            divAmountSuppliesValidation.current.innerHTML = "Ingrese un número mayor a 0";
-            props.load("error", props.supply);
+    let validAmount = false;
+
+    const onChangeAmount = () => checkValue();
+
+    const checkValue = () => {
+        const amount = inputAmountSupplies.current.value;
+
+        if (amount < 0 && amount.length <= 2) {
+            setInvalidStatus("Ingrese un número mayor a 0");
         }
-        else if(inputAmountSupplies.current.value.length > 2){
-            divAmountSuppliesValidation.current.innerHTML = "Hasta 2 cifras como máximo"
-            props.load("error", props.supply);
+        else if (amount.length > 2) {
+            setInvalidStatus("Hasta 2 cifras como máximo");
         }
         else {
-            divAmountSuppliesValidation.current.innerHTML = "";
-            props.load(inputAmountSupplies.current.value, props.supply);
+            setValidStatus();
         }
     };
 
+    const setInvalidStatus = (message) => {
+        divAmountSuppliesValidation.current.innerHTML = message;
+        validAmount = false;
+    };
+
+    const setValidStatus = () => {
+        divAmountSuppliesValidation.current.innerHTML = '';
+        validAmount = true;
+    };
+
+    const addButtonClicked = () => {
+        checkValue();
+
+        if (validAmount) {
+            addAmountOfSupply(supply, inputAmountSupplies.current.value);
+            inputAmountSupplies.current.value = '';
+        }
+        else {
+            return warningCountProduct();
+        };
+    };
+
     return (
-        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-            <input style={{ width: '120px' }} className="form-control-md" id="suppliesAmount" type="number" min="1" ref={inputAmountSupplies} 
-            onChange={onChangeAmount} placeholder="0" onKeyDown={(e) => validateFloatNumbers(e)}/>
-            <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountSuppliesValidation} />
-        </td>
+        <>
+            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                <input style={{ width: '120px' }} className="form-control-md" id="suppliesAmount" type="number" min="1" ref={inputAmountSupplies}
+                    onChange={onChangeAmount} placeholder="0" onKeyDown={(e) => validateFloatNumbers(e)} />
+                <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountSuppliesValidation} />
+            </td>
+            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                <button className="sendAdd" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} /></button>
+            </td>
+        </>
     );
-}
+};
+
+export default SuppliesAmount;

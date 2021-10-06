@@ -27,7 +27,7 @@ export default function ImageProduct(props) {
     }
 
     useEffect(() => {
-        Axios.get(PORT() + `/api/image/${props.data.id_product}`)
+        Axios.get(PORT() + `/api/imageProduct/${props.data.id_product}`)
             .then((response) => {
                 handlerLoadingSpinner();
                 setImage(response.data);
