@@ -62,7 +62,6 @@ const DeliverySales = (props) => {
 
     const confirmSale = () => {
         loadingMessage('Procesando la venta')
-        console.log(props.client)
         if(props.client.names === ''){
             axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
         }

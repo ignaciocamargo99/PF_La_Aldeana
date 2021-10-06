@@ -5,12 +5,12 @@ import Buttons from '../../../common/Buttons';
 import ListProducts from './ListProducts';
 import ModalFlavorSelect from './ModalFlavorSelect';
 import ModalFlavorShow from './ModalFlavorShow';
-import { Spinner } from 'reactstrap';
 import {connect} from 'react-redux';
 import { updateDeliveryProductQuantity,updateDeliveryProductsQuantities, updateAllFlavorsProduct, addDetailDelivery, sumTotalDelivery, deleteDetailDelivery, subtractTotalDelivery} from '../../../actions/DeliverySalesActions';
 import errorInputQuantities from '../../../utils/ErrorMessages/errorInputQuantities';
 import SaleDetails from './SaleDetails';
 import errorNextStepOne from '../../../utils/ErrorMessages/errorNextStepOne';
+import LoaderSpinner from '../../../common/LoaderSpinner';
 
 const Products = (props) => {
 
@@ -76,9 +76,7 @@ const Products = (props) => {
         <div className="formRow">
             <div className="col-md-6">
                 <BeShowed show={props.productsQuantities.length === 0 }>    
-                    <div className="col-md-2 offset-md-6">
-                        <Spinner/>
-                    </div>
+                    <LoaderSpinner color='primary' description="Cargando productos..."/>
                 </BeShowed>
                 <BeShowed show={props.productsQuantities.length !== 0 }>
                     <ListProducts onClick={upload} filter={filter}/>
