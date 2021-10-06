@@ -13,18 +13,18 @@ const PORT = require('../../../config');
 
 export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ dniEmployee: null, date: null, amount: null, installments: null, installments_amount: null, pay: null, editing: false, reading: false });
+    const [data, setData] = useState({ dniEmployee: null, date: null, amount: null, installments: [{amount: 0, label: ""}], pay: null, editing: false, reading: false });
     const cancelRegisterAdvances = () => window.location.reload();
 
     const load = (childData) => {
         setData(childData);
         console.log(data)
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.installments_amount) setReady(true);
+        if (data.dniEmployee && data.date && data.amount && data.installments) setReady(true);
         else setReady(false);
     }
 
     const registerNewAdvances = () => {
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.installments_amount && ready) {
+        if (data.dniEmployee && data.date && data.amount && data.installments && ready) {
             Axios.post(`${PORT()}/api/newEmployee`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Nuevo adelanto dado de alta exitosamente', 'success');
