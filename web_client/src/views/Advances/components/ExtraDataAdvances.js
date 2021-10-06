@@ -14,7 +14,6 @@ export default function ExtraDataAdvances(props) {
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
     const [installments, setInstallments] = useState(false);
-    const [change, setChange] = useState(false);
 
     const [value, setValue] = useState(0);
     const [valid, setValid] = useState(false);
@@ -26,7 +25,6 @@ export default function ExtraDataAdvances(props) {
 
     const handleAmountInstallments = () => {
         setAmountInstallments(inputAmountInstallments.current.value);
-        setChange(!change);
     }
     const handlerTabSelection = () => {
         let aux = parseInt(inputMonth.current.value);
@@ -34,18 +32,15 @@ export default function ExtraDataAdvances(props) {
             setValue(aux);
             setValid(true);
         } else setValid(false);
-        setChange(!change);
     }
 
     const handleMonths = () => {
         setMonths(inputMonths.current.value);
         setInstallments(false);
         inputMonth.current.value = -1;
-        setChange(!change);
     }
     const handleAmountTotal = () => {
         setAmountTotal(inputAmountTotal.current.value);
-        setChange(!change);
     }
     const handleInstallments = () => {
         if (data.installments.length > 0) {
@@ -53,7 +48,6 @@ export default function ExtraDataAdvances(props) {
         } else {
             setInstallments(false);
         }
-        setChange(!change);
     }
 
     //Monto total
@@ -72,7 +66,7 @@ export default function ExtraDataAdvances(props) {
             props.load(data);
         }
         setInstallments(false);
-    }, [months, amountTotal, props, data, data.installments, change]);
+    }, [months, amountTotal, props, data, data.installments]);
 
     //Meses
     useEffect(() => {
@@ -88,7 +82,7 @@ export default function ExtraDataAdvances(props) {
             props.load(data);
         }
         setInstallments(false);
-    }, [months, amountTotal, props, data, data.installments, change]);
+    }, [months, amountTotal, props, data, data.installments]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -109,7 +103,7 @@ export default function ExtraDataAdvances(props) {
                 data.installments[value].amount = amount;
             }
         }
-    }, [amountInstallments, data.installments, valid, months, amountTotal, installments, change]);
+    }, [amountInstallments, data.installments, valid, months, amountTotal, installments]);
 
     return (
         <>

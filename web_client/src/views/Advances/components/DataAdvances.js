@@ -71,10 +71,6 @@ export default function DataAdvances(props) {
         }
     }, [startDate, date, data]);
 
-    const validate = (e) => {
-        if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
-    }
-
     return (
         <>
             <h2>Datos del adelanto</h2>
