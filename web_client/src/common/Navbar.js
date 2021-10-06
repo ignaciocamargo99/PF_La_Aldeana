@@ -168,6 +168,9 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/employees">
                                 <FontAwesomeIcon icon={faList} /> Ver empleados
                             </Dropdown.Item>
+                            <Dropdown.Item href="/app/assistanceEmployees">
+                                <FontAwesomeIcon icon={faList} /> Asistencia de empleados
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>

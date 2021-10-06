@@ -1,5 +1,6 @@
 const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB } = require('../db/employeeDb');
+    employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB,
+    employeeAssistanceGetDB } = require('../db/employeeDb');
 
 const readEmployee = async () => {
     try {
@@ -51,6 +52,7 @@ const modifyEmployee = async (dniEmployee, updateEmployee) => {
     };
 };
 
+//#region APIs desktop NO BORRAR
 const readAssistanceEmployee = async (dniEmployee) => {
     try {
         let res = await assistanceEmployeesGetDB(dniEmployee);
@@ -70,6 +72,22 @@ const createAssistanceEmployee = async (newAssistance) => {
         throw Error(error);
     };
 };
+//#endregion
 
-module.exports = { readEmployee, deleteEmployees, readCharges, createEmployee, 
-    modifyEmployee, readAssistanceEmployee, createAssistanceEmployee };
+
+const readEmployeeAssistance = async () => {
+    try {
+        let res = await employeeAssistanceGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    };
+};
+
+
+module.exports = {
+    readEmployee, deleteEmployees, readCharges, createEmployee,
+    modifyEmployee, readAssistanceEmployee, createAssistanceEmployee,
+    readEmployeeAssistance
+};

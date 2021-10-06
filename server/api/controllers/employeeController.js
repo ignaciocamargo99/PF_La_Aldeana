@@ -1,6 +1,7 @@
 
-const { readEmployee, deleteEmployees, readCharges, createEmployee, 
-    modifyEmployee, readAssistanceEmployee, createAssistanceEmployee } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee,
+    modifyEmployee, readAssistanceEmployee, createAssistanceEmployee,
+    readEmployeeAssistance } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -113,7 +114,23 @@ async function newAssistanceEmployee(req, res) {
     }
 }
 
+
+// HTTP: GET
+async function getEmployeeAssistance(req, res) {
+    try {
+        const result = await readEmployeeAssistance(req.params.dni);
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
 module.exports = {
     getEmployee, deleteEmployee, getCharges, newEmployee,
-    updateEmployee, getAssistanceEmployee, newAssistanceEmployee
+    updateEmployee, getAssistanceEmployee, newAssistanceEmployee, 
+    getEmployeeAssistance
 }
