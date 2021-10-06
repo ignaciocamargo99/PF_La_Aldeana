@@ -42,9 +42,5 @@ async function putClient(req, res) {
     }
 }
 
-<<<<<<< HEAD
 
 module.exports = { getClient, postClient, putClient }
-=======
-module.exports = { getClient }
->>>>>>> origin/staging

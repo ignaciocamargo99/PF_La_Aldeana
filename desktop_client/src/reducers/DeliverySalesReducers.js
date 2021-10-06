@@ -122,7 +122,7 @@ export const flavorsProductDeliveryReducer = (state = [], action) => {
     }
     if(action.type === 'DELETE_FLAVORS_PRODUCT'){
         let rta = state
-        let flavorsProduct = rta[action.payload.i].slice(0,action.payload.j).concat(rta[action.payload.i].slice(action.payload.j+1,rta[action.payload.i]))
+        let flavorsProduct = rta[action.payload.i].slice(0,action.payload.j).concat(rta[action.payload.i].slice(action.payload.j+1,rta[action.payload.i].length))
         rta[action.payload.i] = flavorsProduct
         return rta
     }
