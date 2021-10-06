@@ -14,7 +14,9 @@ router.delete('/employees/:dni', employeeController.deleteEmployee);
 
 router.get('/charges', employeeController.getCharges);
 
-router.get('/assistanceEmployees', employeeController.getAssistanceEmployee);
+router.get('/assistanceEmployee/:dni', employeeController.getAssistanceEmployee);
+
+router.post('/assistanceEmployee', employeeController.newAssistanceEmployee);
 
 //#endregion
 module.exports = router;

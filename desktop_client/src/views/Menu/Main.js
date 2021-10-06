@@ -8,7 +8,7 @@ import '../../assets/logo.css';
 import SideMenu from './Menu';
 import Sales from '../Sales/Sales';
 import DeliverySales from '../DeliverySales/components/DeliverySales';
-import EmployeeAssistance from '../EmployeeAssistance/components/EmployeeAssistance';
+// import EmployeeAssistance from '../EmployeeAssistance/components/EmployeeAssistance';
 
 const Main = (props) => {
 
@@ -26,9 +26,9 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            <BeShowed show={props.location === 2}>
+            {/* <BeShowed show={props.location === 2}>
               <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed>
+            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
@@ -51,9 +51,9 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            <BeShowed show={props.location === 2}>
+            {/* <BeShowed show={props.location === 2}>
               <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed>
+            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>

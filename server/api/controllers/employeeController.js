@@ -1,5 +1,6 @@
 
-const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee, readAssistanceEmployee } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee, 
+    modifyEmployee, readAssistanceEmployee, createAssistanceEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -30,7 +31,7 @@ async function getCharges(req, res) {
 }
 
 // HTTP: PUT
-async function deleteEmployee(req, res) { 
+async function deleteEmployee(req, res) {
     try {
         await deleteEmployees(req.params.dni);
         res.json({
@@ -83,7 +84,7 @@ async function updateEmployee(req, res) {
 // HTTP: GET
 async function getAssistanceEmployee(req, res) {
     try {
-        const result = await readAssistanceEmployee();
+        const result = await readAssistanceEmployee(req.params.dni);
         res.send(result)
     }
     catch (e) {
@@ -93,4 +94,26 @@ async function getAssistanceEmployee(req, res) {
         })
     }
 }
-module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee, getAssistanceEmployee }
+
+
+// HTTP: POST
+async function newAssistanceEmployee(req, res) {
+    try {
+        await createAssistanceEmployee(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Asistencia registrada exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = {
+    getEmployee, deleteEmployee, getCharges, newEmployee,
+    updateEmployee, getAssistanceEmployee, newAssistanceEmployee
+}

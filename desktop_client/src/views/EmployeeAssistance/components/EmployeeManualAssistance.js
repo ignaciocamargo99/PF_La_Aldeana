@@ -2,20 +2,30 @@ import React, { useEffect, useState, useRef } from "react";
 import '../styles/ManualAssistance.css';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumber';
 import Axios from 'axios';
+import { updateAssistanceEmployee } from '../../../actions/EmployeeAssistanceActions';
+import { connect } from 'react-redux';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import errorMessage from '../../../utils/ErrorMessages/errorMessage';
+import swal from '@sweetalert/with-react'
+import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat';
+import egressEmployee from "./egressEmployee";
 
 const PORT = require('../../../config')
 
-export default function EmployeeManualAssistance() {
+function EmployeeManualAssistance(props) {
     const [isValidClass, setIsValidClass] = useState('form-control');
     const [employee, setEmployee] = useState();
-    const [validEmployee, setValidEmployee] = useState(false);
+    const [assistanceEmployee, setAssistanceEmployee] = useState({ date_entry: null, dniEmployee: null });
     const inputDNI = useRef(null);
+    const dateTimeAssistance = dateTimeFormat(new Date());
+    const [assistance, setAssistance] = useState();
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/employees`)
             .then(response => setEmployee(response.data))
-            .catch(error => console.error(error))
-    }, [])
+            .catch(error => console.error(error));
+    }, []);
+
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -27,19 +37,54 @@ export default function EmployeeManualAssistance() {
     }
 
     const onClickValidation = () => {
-        let searchDNI;
-        searchDNI = employee.find((employee) => employee.dni === parseInt(inputDNI.current.value, 10));
-        console.log(searchDNI);
-        if (searchDNI) setValidEmployee((validEmployee) => {
-            return validEmployee = true
-        });
-        else setValidEmployee(false);
-        console.log(validEmployee)
+        try {
+            let searchEmployee;
+            searchEmployee = employee.find((employee) => employee.dni === parseInt(inputDNI.current.value, 10));
+
+
+
+            // Axios.get(`${PORT()}/api/assistanceEmployee/${searchEmployee.dni}`)
+            //     .then(response => setAssistance(response.data))
+
+            // if (assistance) {
+            //     console.log(assistance)
+            //     egressEmployee(searchEmployee.name);
+            // }
+            // else {
+            if (searchEmployee) {
+                loadingMessage('Validando...')
+                props.updateAssistanceEmployee(true);
+                assistanceEmployee.date_entry = dateTimeAssistance;
+                assistanceEmployee.dniEmployee = searchEmployee.dni;
+                Axios.post(`${PORT()}/api/assistanceEmployee`, assistanceEmployee)
+                    .then((assistanceEmployee) => {
+                        if (assistanceEmployee.data.Ok) {
+                            assistanceEmployee.date_entry = null;
+                            swal(
+                                <div>
+                                    <h1 style={{ fontWeight: 'bold' }}>Bienvenido {searchEmployee.name}</h1>
+                                    <hr />
+                                    <h2>¡Que tenga una excelente jornada!</h2>
+                                </div>
+                            );
+                            inputDNI.current.value = "";
+                            setIsValidClass('form-control');
+                        }
+                        else errorMessage('Atención', 'Ha ocurrido un error al marcar su asistencia')
+                    })
+            }
+            else errorMessage('Atención', 'Verifique su DNI ingresado e intente nuevamente')
+        }
+        // }
+        catch (error) {
+            console.error(error)
+            errorMessage('Atención', 'Ha ocurrido un inconveniente, disculpe las molestias...')
+        }
     }
 
     return (
         <>
-            <h2>Registro manual de asistencia</h2>
+            <h2>Marcar asistencia</h2>
             <div className="formRowCenter">
                 <div className="form-control-label">
                     <label htmlFor="dni">DNI</label>
@@ -55,3 +100,15 @@ export default function EmployeeManualAssistance() {
         </>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        employeeAssistance: state.employeeAssistance
+    };
+};
+
+const mapDispatchToProps = {
+    updateAssistanceEmployee
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeManualAssistance);
