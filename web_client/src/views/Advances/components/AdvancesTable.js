@@ -45,11 +45,10 @@ export default function AdvancesTable() {
 
     const editAdvances = (advances) => {
         let aux = backupAdvances(advances);
-        aux.dniEmployee = advances.dniEmployee;
+        aux.dniEmployee = advances.nroDNI;
         aux.date = moment(advances.date).format('YYYY-MM-DD');
         aux.amount = advances.amount;
-        aux.installments = advances.installments;
-        aux.installments_amount = advances.installments[0].amount;
+        aux.installments = [{amount: 0, label: ""}];
         aux.pay = advances.pay;
         aux.editing = true;
         setEditing(aux);
@@ -58,11 +57,10 @@ export default function AdvancesTable() {
 
     const readAdvances = (advances) => {
         let aux = advances;
-        aux.dniEmployee = advances.dniEmployee;
+        aux.dniEmployee = advances.nroDNI;
         aux.date = moment(advances.date).format('YYYY-MM-DD');
         aux.amount = advances.amount;
-        aux.installments = advances.installments;
-        aux.installments_amount = advances.installments[0].amount;
+        aux.installments = [{amount: 0, label: ""}];
         aux.pay = advances.pay;
         aux.reading = true;
         setReading(aux);
@@ -109,7 +107,7 @@ export default function AdvancesTable() {
                                 return (
                                     <tbody key={i}>
                                         <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dniEmployee}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}, {element.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>

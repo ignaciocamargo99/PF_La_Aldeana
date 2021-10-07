@@ -1,4 +1,4 @@
-const { readAdvances, deleteAdvance, createAdvances, modifyAdvances } = require('../services/advancesService');
+const { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances } = require('../services/advancesService');
 
 // HTTP: GET
 async function getAdvances(req, res) {
@@ -14,10 +14,27 @@ async function getAdvances(req, res) {
     }
 }
 
+// HTTP: GET
+async function getInstallments(req, res) {
+    try {
+        var dniEmployee = req.query.dniEmployee
+        var date = req.query.date
+        const result = await readInstallments(dniEmployee, date)
+        res.send(result)
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo encontrar datos de cuotas guardadas en el plan de pago del adelanto solicitado.'
+        });
+    };
+};
+
 // HTTP: PUT
 async function deleteAdvances(req, res) { 
     try {
-        await deleteAdvance(req.params.dni);
+        var dniEmployee = req.query.dniEmployee
+        var date = req.query.date
+        await deleteAdvance(dniEmployee, date);
         res.json({
             Ok: true,
             Message: 'Adelanto eliminado exitosamente.'
@@ -51,7 +68,9 @@ async function newAdvances(req, res) {
 // HTTP: UPDATE
 async function updateAdvances(req, res) {
     try {
-        await modifyAdvances(req.params.dni, req.body);
+        var dniEmployee = req.query.dniEmployee
+        var date = req.query.date
+        await modifyAdvances(dniEmployee, date, req.body);
         res.json({
             Ok: true,
             Message: 'Adelanto actualizado exitosamente.'
@@ -65,4 +84,4 @@ async function updateAdvances(req, res) {
     }
 }
 
-module.exports = { getAdvances, deleteAdvances, newAdvances, updateAdvances }
+module.exports = { getAdvances, getInstallments, deleteAdvances, newAdvances, updateAdvances }

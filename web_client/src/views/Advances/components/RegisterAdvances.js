@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Breadcrumb from '../../../common/Breadcrumb';
 import Buttons from "../../../common/Buttons";
 import displayError from "../../../utils/ErrorMessages/displayError";
+import formattedDate from '../../../utils/formattedDate';
 import successMessage from '../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataAdvances from './DataAdvances';
@@ -13,19 +14,18 @@ const PORT = require('../../../config');
 
 export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ dniEmployee: null, date: null, amount: null, installments: [{amount: 0, label: ""}], pay: null, editing: false, reading: false });
+    const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{amount: 0, label: ""}], months: null, pay: null, editing: false, reading: false });
     const cancelRegisterAdvances = () => window.location.reload();
 
     const load = (childData) => {
         setData(childData);
-        console.log(data)
-        if (data.dniEmployee && data.date && data.amount && data.installments) setReady(true);
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months) setReady(true);
         else setReady(false);
     }
 
     const registerNewAdvances = () => {
-        if (data.dniEmployee && data.date && data.amount && data.installments && ready) {
-            Axios.post(`${PORT()}/api/newEmployee`, data)
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && ready) {
+            Axios.post(`${PORT()}/api/advances`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Nuevo adelanto dado de alta exitosamente', 'success');
                     else displayError('Ya existe un adelanto registrado para ese empleado en esa fecha.');

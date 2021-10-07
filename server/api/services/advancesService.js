@@ -1,4 +1,4 @@
-const { advancesGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB } = require('../db/advancesDB');
+const { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB } = require('../db/advancesDB');
 
 const readAdvances = async () => {
     try {
@@ -10,9 +10,19 @@ const readAdvances = async () => {
     };
 };
 
-const deleteAdvance = async (dniEmployee) => {
+const readInstallments = async (dniEmployee, date) => {
     try {
-        let res = await advancesDeleteDB(dniEmployee);
+        let res = await installmentsGetDB(dniEmployee, date);
+        return res;
+    }
+    catch (error){
+        throw new Error(error);
+    };
+};
+
+const deleteAdvance = async (dniEmployee, date) => {
+    try {
+        let res = await advancesDeleteDB(dniEmployee, date);
         return res;
     }
     catch(error){
@@ -20,9 +30,21 @@ const deleteAdvance = async (dniEmployee) => {
     };
 };
 
-const createAdvances = async (newEmployee) => {
+const createAdvances = async (newAdvance) => {
     try {
-        let res = await advancesCreateDB(newEmployee);
+        let res = await advancesCreateDB(newAdvance);
+        return res;
+    }
+    catch(error) {
+        console.log(newAdvance)
+        console.log(error);
+        throw Error(error);
+    };
+};
+
+const modifyAdvances = async (dniEmployee, date, updateAdvance) => {
+    try {
+        let res = await advancesUpdateDB(dniEmployee, date, updateAdvance);
         return res;
     }
     catch(error) {
@@ -30,14 +52,4 @@ const createAdvances = async (newEmployee) => {
     };
 };
 
-const modifyAdvances = async (dniEmployee, updateEmployee) => {
-    try {
-        let res = await advancesUpdateDB(dniEmployee, updateEmployee);
-        return res;
-    }
-    catch(error) {
-        throw Error(error);
-    };
-};
-
-module.exports = { readAdvances, deleteAdvance, createAdvances, modifyAdvances };
+module.exports = { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances };

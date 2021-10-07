@@ -1,8 +1,11 @@
 
-export default function dateToString (date){
+export default function dateToString (date, notHour){
+    let to = 19;
     let d = "";
 
-    for (let i = 0; i < 19; i++){
+    if (notHour) to = 11;
+
+    for (let i = 0; i < to; i++){
         if(date.charAt(i) !== 'T'){
             d += date.charAt(i);
         } else {

@@ -22,6 +22,11 @@ export default function ExtraDataAdvances(props) {
     const inputAmountInstallments = useRef(null);
     const [amountInstallments, setAmountInstallments] = useState("null");
     const [isValidClassAmountInstallments, setIsValidClassAmountInstallments] = useState("form-control");
+    const [option, setOption] = useState([{amount: 0, label: ""}]);
+
+    useEffect(()=>{
+        setOption(data.installments);
+    }, [true]);
 
     const handleAmountInstallments = () => {
         setAmountInstallments(inputAmountInstallments.current.value);
@@ -35,15 +40,20 @@ export default function ExtraDataAdvances(props) {
     }
 
     const handleMonths = () => {
+        setValue(0);
+        setValid(false);
+        inputMonth.current.value = -1;
         setMonths(inputMonths.current.value);
         setInstallments(false);
-        inputMonth.current.value = -1;
     }
     const handleAmountTotal = () => {
+        setValue(0);
+        setValid(false);
+        inputMonth.current.value = -1;
         setAmountTotal(inputAmountTotal.current.value);
     }
     const handleInstallments = () => {
-        if (data.installments.length > 0) {
+        if (option.length > 0) {
             setInstallments(!installments);
         } else {
             setInstallments(false);
@@ -52,37 +62,46 @@ export default function ExtraDataAdvances(props) {
 
     //Monto total
     useEffect(() => {
-        const amount = inputAmountTotal.current.value.trim();
-        const month = inputMonths.current.value.trim();
+        const amount = parseInt(inputAmountTotal.current.value.trim());
+        const month = parseInt(inputMonths.current.value.trim());
         if (amount >= month && month > 0 && month < 19) {
             setIsValidClassAmountTotal("form-control is-valid");
             data.amount = amount;
-            data.installments = setInstallmentsMonths(data, (amountTotal % month), month, amountTotal);
+            let aux = setInstallmentsMonths(data, (amountTotal % month), month, amountTotal);
+            setOption(aux);
+            data.installments = aux;
             props.load(data);
         }
         else {
             setIsValidClassAmountTotal("form-control");
-            data.amount = amount;
+            data.amount = null;
+            setOption([{amount: 0, label: ""}]);
+            data.installments = {amount: 0, label: ""};
             props.load(data);
         }
         setInstallments(false);
-    }, [months, amountTotal, props, data, data.installments]);
+    }, [months, amountTotal, props, data]);
 
     //Meses
     useEffect(() => {
-        const month = inputMonths.current.value.trim();
+        const month = parseInt(inputMonths.current.value.trim());
         if (month > 0 && month < 19 && amountTotal >= month) {
             setIsValidClassMonths("form-control is-valid");
-            data.installments = setInstallmentsMonths(data, (amountTotal % month), month, amountTotal);
+            let aux = setInstallmentsMonths(data, (amountTotal % month), month, amountTotal);
+            setOption(aux);
+            data.installments = aux;
+            data.months = month;
             props.load(data);
         }
         else {
             setIsValidClassMonths("form-control");
-            data.installments = [{amount: 0, label: ""}];
+            setOption([{amount: 0, label: ""}]);
+            data.installments = {amount: 0, label: ""};
+            data.months = null;
             props.load(data);
         }
         setInstallments(false);
-    }, [months, amountTotal, props, data, data.installments]);
+    }, [months, amountTotal, props, data]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -96,14 +115,14 @@ export default function ExtraDataAdvances(props) {
             const amount = inputAmountInstallments.current.value.trim();
             if (amount > 0) {
                 setIsValidClassAmountInstallments("form-control is-valid");
-                data.installments[value].amount = amount;
+                option[value].amount = amount;
             }
             else {
                 setIsValidClassAmountInstallments("form-control");
-                data.installments[value].amount = amount;
+                option[value].amount = amount;
             }
         }
-    }, [amountInstallments, data.installments, valid, months, amountTotal, installments]);
+    }, [amountInstallments, option, valid, months, amountTotal, installments]);
 
     return (
         <>
@@ -138,6 +157,9 @@ export default function ExtraDataAdvances(props) {
                 </div>
             </div>
             <div className="formRow">
+                <small className="text-muted">Por defecto el monto de cada cuota sera ${parseInt((amountTotal - data.pay)/months) > 0?parseInt((amountTotal - data.pay)/months): 0}, a excepción de la última que tendra el sobrante (en caso de existir).</small>
+            </div>
+            <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="amountTotal" >Cuota</label>
                 </div>
@@ -145,7 +167,7 @@ export default function ExtraDataAdvances(props) {
                     <select className="form-select" id="InstallmentMonth" defaultValue="-1" ref={inputMonth} onChange={handlerTabSelection} style={{fontFamily: 'Abel, sans-serif'}}>
                         <option disabled value="-1">Seleccione cuota a consultar...</option>
                         {
-                            data.installments?.map((month, i) => (
+                            option?.map((month, i) => (
                                 <option key={i} value={i}>{month.label}</option>
                             ))
                         }
@@ -160,7 +182,7 @@ export default function ExtraDataAdvances(props) {
             <BeShowed show={valid && value >= 0 && installments}>
                 <div className="formRow">
                     <h2>Cuota N° {parseInt(value) + 1}: 
-                        <small className="text-muted"> {data.installments[value].label}</small>
+                        <small className="text-muted"> {option[value].label}</small>
                     </h2>
                 </div>
                 <BeShowed show={props.data.reading}>
@@ -169,7 +191,7 @@ export default function ExtraDataAdvances(props) {
                             <label htmlFor="amountInstallments">Monto a pagar*</label>
                         </div>
                         <div className="form-control-input">
-                            <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" ref={inputAmountInstallments} onChange={handleAmountInstallments} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={data.installments[value].amount} />
+                            <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" ref={inputAmountInstallments} onChange={handleAmountInstallments} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={option[value].amount} />
                         </div>
                     </div>
                 </BeShowed>
@@ -179,7 +201,7 @@ export default function ExtraDataAdvances(props) {
                             <label htmlFor="amountInstallments">Monto a pagar*</label>
                         </div>
                         <div className="form-control-input">
-                            <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" ref={inputAmountInstallments} onChange={handleAmountInstallments} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={data.installments[value].amount} />
+                            <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" ref={inputAmountInstallments} onChange={handleAmountInstallments} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={option[value].amount} />
                         </div>
                     </div>
                 </BeShowed>
