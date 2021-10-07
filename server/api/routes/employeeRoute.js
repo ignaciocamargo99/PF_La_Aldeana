@@ -20,5 +20,7 @@ router.get('/charges', employeeController.getCharges);
 
 router.get('/employeeAssistance', employeeController.getEmployeeAssistance);
 
+router.delete('/employeeAssistance/:dni', employeeController.deleteAssistance);
+
 //#endregion
 module.exports = router;

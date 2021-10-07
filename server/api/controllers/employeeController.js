@@ -1,7 +1,7 @@
 
 const { readEmployee, deleteEmployees, readCharges, createEmployee,
     modifyEmployee, readAssistanceEmployee, createAssistanceEmployee,
-    readEmployeeAssistance } = require('../services/employeeService');
+    readEmployeeAssistance, deleteAssistanceEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -129,8 +129,25 @@ async function getEmployeeAssistance(req, res) {
     }
 }
 
+// HTTP: DELETE
+async function deleteAssistance(req, res) {
+    try {
+        await deleteAssistanceEmployee(req.params.dni);
+        res.json({
+            Ok: true,
+            Message: 'Asistencia eliminada exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
 module.exports = {
     getEmployee, deleteEmployee, getCharges, newEmployee,
     updateEmployee, getAssistanceEmployee, newAssistanceEmployee, 
-    getEmployeeAssistance
+    getEmployeeAssistance, deleteAssistance
 }

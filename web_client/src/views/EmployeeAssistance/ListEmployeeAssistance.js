@@ -5,16 +5,16 @@ import '../../assets/Buttons.css';
 import AssistanceTable from "./components/AssistanceTable";
 
 export default function ListEmployeesAssistance() {
-    // const onClickNewEmployee = () => {
-    //     window.location.replace('/app/registerEmployees');
-    // }
+    const onClickNewAssistance = () => {
+        window.location.replace('/app/registerAssistance');
+    }
 
     return (
         <>
             <div style={{display: 'none'}}>{document.title = "Asistencias"}</div>
             <div className="viewTitleBtn">
-                <h1>Empleados</h1>
-                <button id='editAssistanceButton' type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                <h1>Asistencias</h1>
+                <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
             </div>
             <div className="viewBody">
                 <AssistanceTable />

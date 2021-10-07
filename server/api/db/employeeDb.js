@@ -169,8 +169,27 @@ const employeeAssistanceGetDB = () => {
 };
 
 
+const assistanceDeleteDB = (dniEmployee) => {
+    const sqlDelete = 'DELETE FROM ASSISTANCE_EMPLOYEES WHERE employee = ? AND DATE(date_entry) = CURRENT_DATE()';
+    let dni;
+    if (dniEmployee) dni = dniEmployee
+    else throw Error('El dni es null');
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlDelete, [dni], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
     employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB,
-    employeeAssistanceGetDB
+    employeeAssistanceGetDB, assistanceDeleteDB
 };

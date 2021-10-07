@@ -6,6 +6,8 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 import BodyTable from "../../../common/Table/BodyTable";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from '../../../common/Table/Table';
+import EditAssistanceButton from './EditAssistanceEmployee/EditAssistanceButton';
+import DeleteAssistanceButton from './DeleteAssistanceButton'
 // import DeleteEmployeeButton from './DeleteEmployeeButton';
 // import backupEmployee from './EditEmployee/backupEmployee';
 // import EditEmployee from "./EditEmployee/EditEmployee";
@@ -33,15 +35,15 @@ export default function EmployeesTable() {
             .catch((error) => console.log(error));
     }, []);
 
-    // const deleteEmployee = (i) => {
-    //     let aux = [];
-    //     employees?.forEach((e, j) => {
-    //         if (j !== i) {
-    //             aux[j] = e;
-    //         }
-    //     });
-    //     setEmployees(aux);
-    // }
+    const deleteAssistance = (i) => {
+        let aux = [];
+        assistance?.forEach((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
+            }
+        });
+        setAssistance(aux);
+    }
 
     // const editEmployee = (employees) => {
     //     let aux = backupEmployee(employees);
@@ -79,6 +81,7 @@ export default function EmployeesTable() {
 
     return (
         <>
+            <h3>Registros del día {new Date().toLocaleDateString('en-EN')}</h3>
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" loading="Cargando..." />
             )}
@@ -113,10 +116,10 @@ export default function EmployeesTable() {
                                                 {/* <ReadEmployeeButton employee={element} read={readEmployee} /> */}
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {/* <EditEmployeeButton employee={element} edit={editEmployee} /> */}
+                                                <EditAssistanceButton employee={element} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {/* <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} /> */}
+                                                <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance}/>
                                             </td>
                                         </tr>
                                     </tbody>
