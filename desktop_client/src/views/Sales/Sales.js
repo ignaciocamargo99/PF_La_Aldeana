@@ -60,6 +60,7 @@ const Sales = (props) => {
         if (readyStock1 && readyStock2 && readyStock3)
         {
             thereIsStock(); 
+            console.log(props.products);
         }
     },[readyStock1, readyStock2, readyStock3])
 

@@ -26,18 +26,20 @@ const FilterProducts = (props) => {
     const onClickHeladeria = () => {
         setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 1));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 1));
     }
 
     const onClickCafeteria = () => {
         setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 2));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 2));
     }
 
     const actionsDefaultButtons = () => {
         setBoolTypeProduct(true);
-        props.updateProductsFiltered(props.products);
+        //props.updateProductsFiltered(props.products);
         setValueSelect("-1");
     }
 

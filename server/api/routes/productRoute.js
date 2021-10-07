@@ -22,6 +22,7 @@ router.put("/products/:id", fileUpload, productController.updateProducts);
 router.delete("/products/:id", productController.deleteProducts);
 router.get("/imageProduct/:id", productController.getImage);
 router.get("/productSupply/:id", productController.getProductSupply);
+router.get("/productsStocks", productController.getProductStocks);
 
 //#endregion
 module.exports = router;

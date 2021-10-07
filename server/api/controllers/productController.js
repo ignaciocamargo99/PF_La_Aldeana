@@ -1,4 +1,4 @@
-const { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply } = require('../services/productService');
+const { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks } = require('../services/productService');
 
 // HTTP: GET
 async function getProduct(req, res) {
@@ -94,4 +94,17 @@ async function getProductSupply(req, res) {
     }
 }
 
-module.exports = { getProduct, postProduct, deleteProducts, updateProducts, getImage, getProductSupply }
+async function getProductStocks(req, res) {
+    try {
+        const result = await readProductStocks();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getProduct, postProduct, deleteProducts, updateProducts, getImage, getProductSupply, getProductStocks }
