@@ -30,7 +30,6 @@ const DeliverySales = (props) => {
     },[])
 
     useEffect(() => {
-        let auxStockProducts = []
         axios.get( PORT() + `/api/products`)
         .then((response) => {
             let aux = [];
