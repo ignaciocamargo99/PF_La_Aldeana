@@ -36,18 +36,10 @@ const DeliverySales = (props) => {
             let aux = [];
             for(let i = 0 ; i < response.data.length ; i++){
                 aux.push({'product':response.data[i],'quantity':0});
-                auxStockProducts.push({'id_product': response.data[i].id_product ,'stock': null})
             }
             axios.get( PORT() + `/api/productsStocks`)
             .then((response) => {
-                let index
-                for(let i = 0 ; i < response.data.length ; i++){
-                    auxStockProducts.map((stockProduct,iteration) => {if(stockProduct.id_product === response.data[i].id_product){index = iteration}})
-                    if(auxStockProducts[index].stock === null || auxStockProducts[index].stock < parseInt(response.data[i].stock / response.data[i].quantity)){
-                        auxStockProducts[index].stock = parseInt(response.data[i].stock / response.data[i].quantity)
-                    }
-                }
-                props.updateDeliveryProductsStocks(auxStockProducts);
+                props.updateDeliveryProductsStocks(response.data);
                 props.updateDeliveryProductsQuantities(aux);
             })
             .catch((err) => {
