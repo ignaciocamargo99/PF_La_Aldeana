@@ -42,9 +42,9 @@ const createAdvances = async (newAdvance) => {
     };
 };
 
-const modifyAdvances = async (dniEmployee, date, updateAdvance) => {
+const modifyAdvances = async (nroDNI, dateOld, updateAdvance) => {
     try {
-        let res = await advancesUpdateDB(dniEmployee, date, updateAdvance);
+        let res = await advancesUpdateDB(nroDNI, dateOld, updateAdvance);
         return res;
     }
     catch(error) {

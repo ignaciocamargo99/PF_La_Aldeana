@@ -24,10 +24,6 @@ export default function DataAdvances(props) {
     }
 
     useEffect(()=>{
-        console.log(data);
-    }, [data])
-
-    useEffect(()=>{
         Axios.get(PORT() + `/api/employees`)
         .then((response) => {
             response.data.forEach((person)=>{
@@ -39,12 +35,15 @@ export default function DataAdvances(props) {
         .catch((err) => {
             console.log(err)
         })
-    }, [true]);
+    }, []);
 
     useEffect(() => {
         if (!employee) {
-            setIsValidClass("form-control")
+            setIsValidClass("form-control");
             data.dniEmployee = employee;
+            if (data.nroDNI > 0) {
+                data.dniEmployee = data.nroDNI;
+            }
             props.load(data);
         }
         else {
@@ -55,13 +54,13 @@ export default function DataAdvances(props) {
     }, [employee, props, data]);
 
     useEffect(() => {
-        if (!inputDate.current.value && !props.data.editing) {
+        if (!props.data.editing && !inputDate.current.value) {
             inputDate.current.value = startDate;
             setDate(inputDate.current.value);
             data.date = inputDate.current.value;
             props.load(data);
         }
-        else if (!inputDate.current.value && props.data.editing) {
+        else if (!inputDate.current.value) {
             inputDate.current.value = props.data.date;
             setDate(inputDate.current.value);
         }
@@ -78,13 +77,13 @@ export default function DataAdvances(props) {
                 <div className="form-control-label">
                     <label htmlFor="employee" >Empleado*</label>
                 </div>
-                <BeShowed show={props.data.reading}>
+                <BeShowed show={props.data.reading || props.data.editing}>
                     <div className="form-control-input">
-                        <input className={isValidClass} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.employee} />
+                        <input className={isValidClass} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.name ? props.data.name + " " + props.data.last_name : null} />
                     </div>
                 </BeShowed>
-                <BeShowed show={!props.data.reading}>
-                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" class={isValidClass}
+                <BeShowed show={!props.data.reading && !props.data.editing}>
+                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" class={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
                                     placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
                 </BeShowed>
             </div>
@@ -93,10 +92,10 @@ export default function DataAdvances(props) {
                     <label htmlFor="date" >Fecha de adelanto*</label>
                 </div>
                 <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
+                    <BeShowed show={props.data.reading  || props.data.editing}>
                         <input className="form-control" id="date" readOnly type="date" ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
-                    <BeShowed show={!props.data.reading}>
+                    <BeShowed show={!props.data.reading  && !props.data.editing}>
                         <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
                     </BeShowed>
                 </div>

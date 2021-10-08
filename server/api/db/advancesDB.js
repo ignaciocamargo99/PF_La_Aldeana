@@ -101,31 +101,55 @@ const advancesCreateDB = (newAdvance) => {
 };
 
 
-const advancesUpdateDB = (dniEmployee, date, updateEmployee) => {
-    const sqlUpdate = `UPDATE EMPLOYEES SET dni = ?, name = ?, last_name = ?, date_admission = ?, 
-                        employment_relationship = ?, charge = ?
-                        WHERE dni = ?`;
+const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
+    const sqlUpdate = "UPDATE ADVANCES a SET a.amount = ? WHERE a.nroDNI = ? and a.`date` = ?";
+    const sqlDelete = "DELETE FROM INSTALLMENTS WHERE nroDNI = ? and `date` = ?";
+    const sqlUpdateInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?)";
 
-    let { dni, nameEmployee, lastName, id_charge, dateN, employmentRelationship, previousDni } = updateEmployee;
-    if (dni && nameEmployee && lastName && id_charge && date && employmentRelationship && dni.length === 8) {
-        dni = updateEmployee.dni;
-        nameEmployee = updateEmployee.nameEmployee;
-        lastName = updateEmployee.lastName;
-        id_charge = updateEmployee.id_charge;
-        date = updateEmployee.date;
-        employmentRelationship = updateEmployee.employmentRelationship;
+    let { dniEmployeeOld, date, amount, pay, name, last_name, title, dniEmployee, installments } = updateAdvances;
+    if (dniEmployee && amount && installments && date &&  dniEmployee <= 99999999 && dniEmployee >= 10000000) {
+        dniEmployee = updateAdvances.dniEmployee;
+        amount = updateAdvances.amount;
+        installments = updateAdvances.installments;
+        date = updateAdvances.date;
     }
     else throw Error('Faltan datos obligatorios');
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-            db.query(sqlUpdate, [dni, nameEmployee, lastName, date, employmentRelationship, id_charge, dniEmployee], (error, result) => {
+
+            db.beginTransaction((error) => {
                 if (error) reject(error);
-                else resolve(result);
+                db.query(sqlUpdate, [amount, parseInt(nroDNI), date], (error, result) => {
+                    if (error) reject(error);
+                    else {
+                        resolve(result);
+                    }
+                });
+                db.query(sqlDelete, [parseInt(nroDNI), date], (error, result) => {
+                    if (error) reject(error);
+                    else {
+                        resolve(result);
+                    }
+                });
+
+                for (var i = 0; i < installments.length; i++) {
+                    db.query(sqlUpdateInstallments, [parseInt(nroDNI), date, installments[i].month, installments[i].amount,  installments[i].label], (error) => {
+                        if (error) {
+                            db.rollback(()=> reject(error));
+                        }
+                        db.commit((error) => {
+                            if (error) {
+                                return db.rollback(() => reject(error));
+                            }
+                            else resolve();
+                        });
+                    })
+                };
+                db.release();
             });
-            db.release();
-        })
+        });
     });
 };
 

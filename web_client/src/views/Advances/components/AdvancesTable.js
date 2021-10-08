@@ -45,24 +45,12 @@ export default function AdvancesTable() {
 
     const editAdvances = (advances) => {
         let aux = backupAdvances(advances);
-        aux.dniEmployee = advances.nroDNI;
-        aux.date = moment(advances.date).format('YYYY-MM-DD');
-        aux.amount = advances.amount;
-        aux.installments = [{amount: 0, label: ""}];
-        aux.pay = advances.pay;
-        aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
     }
 
     const readAdvances = (advances) => {
         let aux = advances;
-        aux.dniEmployee = advances.nroDNI;
-        aux.date = moment(advances.date).format('YYYY-MM-DD');
-        aux.amount = advances.amount;
-        aux.installments = [{amount: 0, label: ""}];
-        aux.pay = advances.pay;
-        aux.reading = true;
         setReading(aux);
         setIsReading(true);
     }
@@ -109,7 +97,7 @@ export default function AdvancesTable() {
                                         <tr>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}, {element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date).format('DD/MM/YYYY')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>

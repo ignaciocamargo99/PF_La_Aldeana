@@ -3,31 +3,36 @@ import Axios from 'axios';
 import { useState } from 'react';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
+import dateText from '../../../../utils/DateFormat/dateText';
 import displayError from '../../../../utils/ErrorMessages/displayError';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
-import DataEmployee from '../DataAdvances';
-import ExtraDataEmployee from '../ExtraDataAdvances';
+import DataAdvances from '../DataAdvances';
+import ExtraDataAdvances from '../ExtraDataAdvances';
 
 
 const PORT = require('../../../../config');
 
 export default function EditAdvances(props) {
     const [data, setData] = useState(props.advances);
+    const [dataBack, setDataBack] = useState(props.advances);
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
+        setData(childData);
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months)) setReady(true);
         else setReady(false);
     }
+    const loadBack = (childData) => {
+        setDataBack(childData);
+    }
 
-    const updateEmployee = () => {
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
-            Axios.put(`${PORT()}/api/updateEmployee`, data)
+    const updateAdvances = () => {
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && ready && dataBack !== data) {
+            Axios.put(`${PORT()}/api/advances?dniEmployee=${data.nroDNI}&date=${data.dateOld}`, data)
                 .then((data) => {
-                    if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')
+                    if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del adelanto', 'success')
+                    else displayError('Ah ocurrido un error al modificar el adelanto, por favor intente de nuevo más tarde', 'Atención')
                 })
                 .catch(error => console.log(error));
         }
@@ -38,13 +43,13 @@ export default function EditAdvances(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar adelanto"}</div>
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Editar adelanto" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar adelanto {props.advances.name}</h2>
+            <h2 style={{ fontWeight: 'bold' }}>Editar adelanto {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
             <br />
-            <DataEmployee load={load} data={data} />
-            <ExtraDataEmployee load={load} data={data} />
+            <DataAdvances load={load} data={data} />
+            <ExtraDataAdvances load={load} data={data} loadBack={loadBack}/>
             <Buttons
-                label='Registrar' actionOK={updateEmployee}
-                actionNotOK={updateEmployee}
+                label='Registrar' actionOK={updateAdvances}
+                actionNotOK={updateAdvances}
                 actionCancel={props.cancel}
                 ready={ready}
                 data={data} />
