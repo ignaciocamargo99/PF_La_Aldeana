@@ -33,7 +33,7 @@ const Client = (props) => {
                     swal.close()
                 }
                 else{
-                    resetStates({cellphone: e.target.value, names: '', street_name: '', street_number: ''}, true)
+                    props.updateDeliveryClient({cellphone: e.target.value, names: '', street_name: '', street_number: ''})
                     swal.close()
                 }
             })

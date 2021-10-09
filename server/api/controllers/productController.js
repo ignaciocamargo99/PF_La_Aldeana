@@ -32,7 +32,7 @@ async function postProduct(req, res) {
     }
 }
 
-// HTTP: POST
+// HTTP: DELETE
 async function deleteProducts(req, res) {
     try {
         await deleteProduct(req.params.id);
