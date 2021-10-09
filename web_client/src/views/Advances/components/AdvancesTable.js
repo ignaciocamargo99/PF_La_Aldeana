@@ -111,10 +111,10 @@ export default function AdvancesTable() {
                                                 <ReadAdvancesButton advances={element} read={readAdvances} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDay() > new Date().getDay() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
                                                     <EditAdvancesButton advances={element} edit={editAdvances} />
                                                 </BeShowed>
-                                                <BeShowed show={new Date(element.date).getMonth() + 1 <= new Date().getMonth() || (new Date(element.date).getDay() <= new Date().getDay() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                <BeShowed show={new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
                                                     <button id='editAdvancesButton' type="button" className="sendDelete" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
                                                 </BeShowed>
                                             </td>
