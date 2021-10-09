@@ -12,6 +12,9 @@ import EditAdvances from "./EditAdvances/EditAdvances";
 import EditAdvancesButton from "./EditAdvances/EditAdvancesButton";
 import ReadAdvances from './ReadAdvances/ReadAdvances';
 import ReadAdvancesButton from "./ReadAdvances/ReadAdvancesButton";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import warningMessage from "../../../utils/WarningMessages/warningMessage";
 
 const PORT = require('../../../config');
 
@@ -68,6 +71,10 @@ export default function AdvancesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const handleEdit = () => {
+        warningMessage('Atención','Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
+    }
+
     return (
         <>
             {isLoadingSpinner && (
@@ -104,7 +111,12 @@ export default function AdvancesTable() {
                                                 <ReadAdvancesButton advances={element} read={readAdvances} />
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditAdvancesButton advances={element} edit={editAdvances} />
+                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDay() > new Date().getDay() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                    <EditAdvancesButton advances={element} edit={editAdvances} />
+                                                </BeShowed>
+                                                <BeShowed show={new Date(element.date).getMonth() + 1 <= new Date().getMonth() || (new Date(element.date).getDay() <= new Date().getDay() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                    <button id='editAdvancesButton' type="button" className="sendDelete" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                                                </BeShowed>
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
