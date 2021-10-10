@@ -10,6 +10,7 @@ import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDi
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
+import DynamicSearch from '../../../common/DynamicSearch';
 
 const PORT = require('../../../config');
 
@@ -25,6 +26,7 @@ const FormLicense = (props) => {
     const [errorDateFinish,setErrorDateFinish] = useState(true);
     const [errorEmployee,setErrorEmployee] = useState(true);
     const [errorReason,setErrorReason] = useState(true);
+    const [searchState,setSearchState] = useState('');
 
     const dateInit = useRef();
     const dateFinish = useRef();
@@ -214,6 +216,9 @@ const FormLicense = (props) => {
                     <label>Empleado*</label>
                 </div>
             </div>
+            <div className="formRow">
+                <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState}/>
+            </div>
             <BeShowed show={showSpinner && props.action !== 'Ver'}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
@@ -221,7 +226,7 @@ const FormLicense = (props) => {
                 <div className="formRow justify-content-center">
                     <CardEmployees employeesView={employeesView} employee={employee} 
                                     onChangeEmployee={onChangeEmployee} setEmployeesStart={setEmployeesStart}
-                                    employees={employees} employeesStart={employeesStart}/>
+                                    employees={employees} employeesStart={employeesStart} searchState={searchState}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.action === "Ver"}>

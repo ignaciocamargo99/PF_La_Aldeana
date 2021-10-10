@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import BeShowed from '../../../common/BeShowed';
 import FormLicense from './FormLicense';
+import ListLicensesFilter from './ListLicensesFilter';
 
 const PORT = require('../../../config');
 
@@ -16,12 +17,14 @@ const Licenses = (props) => {
     const[showSpinner,setShowSpinner] = useState(true);
     const[action,setAction] = useState('Listar');
     const[reloadList,setReloadList] = useState(false);
+    const[filter,setFilter] = useState('All');
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)
         .then((response) => {
             setLicenses(response.data);
             setShowSpinner(false);
+            setFilter('All');
         })
     },[reloadList])
 
@@ -42,11 +45,14 @@ const Licenses = (props) => {
                     <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
                 </div>
                 <div className="viewBody">
-                    <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} reloadList={reloadList} setReloadList={setReloadList}/>
+                    <ListLicensesFilter onClickRB={setFilter}/>
+                    <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} 
+                                reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>
                 </div>
             </BeShowed>
             <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
-                <FormLicense setActionLicense={setActionLicense} action={action} license={license} reloadList={reloadList} setReloadList={setReloadList}/>
+                <FormLicense setActionLicense={setActionLicense} action={action} license={license} 
+                            reloadList={reloadList} setReloadList={setReloadList}/>
             </BeShowed>
         </>)        
 }
