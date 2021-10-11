@@ -38,9 +38,7 @@ export default function EmployeesTable() {
     const deleteAssistance = (i) => {
         let aux = [];
         assistance?.forEach((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
+            if (j !== i) aux[j] = e;
         });
         setAssistance(aux);
     }
@@ -85,50 +83,52 @@ export default function EmployeesTable() {
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" loading="Cargando..." />
             )}
-            {!isLoadingSpinner && (
-                <BeShowed show={!isEditing && !isReading}>
-                    <Table>
-                        <HeaderTable
-                            th={
-                                <>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de ingreso</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de egreso</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                </>
-                            }
-                        />
-                        <BodyTable
-                            tbody={assistance?.map((element, i) => {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('LT')}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('LT') : '-'}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {/* <ReadEmployeeButton employee={element} read={readEmployee} /> */}
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditAssistanceButton employee={element} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance}/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                )
-                            })}
-                        />
-                    </Table>
-                </BeShowed>
-            )}
+            {!isLoadingSpinner && assistance && assistance.length === 0
+                ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
+                : (
+                    <BeShowed show={!isEditing && !isReading}>
+                        <Table>
+                            <HeaderTable
+                                th={
+                                    <>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de ingreso</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de egreso</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
+                                    </>
+                                }
+                            />
+                            <BodyTable
+                                tbody={assistance?.map((element, i) => {
+                                    return (
+                                        <tbody key={i}>
+                                            <tr>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('LT')}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('LT') : '-'}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    {/* <ReadEmployeeButton employee={element} read={readEmployee} /> */}
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <EditAssistanceButton employee={element} />
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    )
+                                })}
+                            />
+                        </Table>
+                    </BeShowed>
+                )}
             {/* <BeShowed show={isEditing}>
                 <EditEmployee cancel={cancelEditEmployee} employee={editing} />
             </BeShowed>

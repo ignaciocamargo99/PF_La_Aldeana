@@ -132,12 +132,12 @@ const assistanceEmployeesGetDB = (dniEmployee) => {
 const assistanceEmployeeCreateDB = (newAssistance) => {
     const sqlInsert = 'INSERT INTO ASSISTANCE_EMPLOYEES VALUES(?,?,?,?)';
 
-    if (!newAssistance.date_entry || !newAssistance.dniEmployee) throw Error('Faltan datos obligatorios');
+    if (!newAssistance.date_entry || !newAssistance.employee) throw Error('Faltan datos obligatorios');
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-            db.query(sqlInsert, [null, newAssistance.date_entry, null, newAssistance.dniEmployee], (error, result) => {
+            db.query(sqlInsert, [null, newAssistance.date_entry, newAssistance.date_egress, newAssistance.employee], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
@@ -187,6 +187,7 @@ const assistanceDeleteDB = (dniEmployee) => {
         })
     });
 };
+
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
