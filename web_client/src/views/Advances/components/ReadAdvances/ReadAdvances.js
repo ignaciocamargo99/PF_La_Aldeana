@@ -6,9 +6,15 @@ import ExtraDataAdvances from '../ExtraDataAdvances';
 import dateText from "../../../../utils/DateFormat/dateText";
 
 export default function ReadAdvances(props) {
+    
     const [data, setData] = useState(props.advances);
+    const [dataBack, setDataBack] = useState(props.advances);
 
     const load = (childData) => setData(childData);
+
+    const loadBack = (childData) => {
+        setDataBack(childData);
+    }
 
     return (
         <>
@@ -17,7 +23,7 @@ export default function ReadAdvances(props) {
             <h2 style={{ fontWeight: 'bold' }}>Empleado {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
             <br />
             <DataAdvances load={load} data={data} />
-            <ExtraDataAdvances load={load} data={data} />
+            <ExtraDataAdvances load={load} data={data}  loadBack={loadBack}/>
             <div className='buttons'>
                 <button className='sendOk' onClick={props.return}>Volver</button>
             </div>
