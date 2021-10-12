@@ -8,7 +8,7 @@ const PORT = require('../../../config');
 
 export default function DataAdvances(props) {
     const maxDate = formattedDate(new Date(), 2);
-    const minDate = formattedDate(new Date(), 0, -14);
+    const minDate = formattedDate(new Date(), 0,-14);
     const startDate = formattedDate(new Date());
     const inputEmployee = useRef(null);
     const inputDate = useRef(null);
@@ -93,7 +93,7 @@ export default function DataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading  || props.data.editing}>
-                        <input className="form-control" id="date" readOnly type="date" ref={inputDate} defaultValue={props.data.date} />
+                        <input className="form-control" id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading  && !props.data.editing}>
                         <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
