@@ -26,6 +26,7 @@ const ProductTable = () => {
 
     useEffect(() => {
         getProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const productWasSuccessfullyDeleted = () => {

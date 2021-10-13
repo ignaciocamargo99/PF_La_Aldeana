@@ -26,18 +26,20 @@ const FilterProducts = (props) => {
     const onClickHeladeria = () => {
         setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 1));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 1));
     }
 
     const onClickCafeteria = () => {
         setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 2));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 2));
     }
 
     const actionsDefaultButtons = () => {
         setBoolTypeProduct(true);
-        props.updateProductsFiltered(props.products);
+        //props.updateProductsFiltered(props.products);
         setValueSelect("-1");
     }
 
@@ -51,30 +53,6 @@ const FilterProducts = (props) => {
         const id_type_product_selected = e.target.value;
         setValueSelect(id_type_product_selected);
         props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected));
-    }
-
-    useEffect(() => {
-        if (boolTypeProduct && !boolBtnAll) {
-            thereIsStock();
-        }
-        else if (boolBtnAll)
-        {
-            thereIsStock();
-        }
-    }, [props.productsFiltered, props.detailProducts])
-
-    const thereIsStock = () => {
-        let i;
-        for (i = 0; i < props.productsFiltered.length; i++) {
-            if (props.productsFiltered[i].stock_current == 0)
-            {
-                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = true;
-            }
-            else
-            {
-                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = false;
-            }
-        }
     }
 
     useEffect(() => {
