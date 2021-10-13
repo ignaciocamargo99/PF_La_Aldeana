@@ -56,30 +56,6 @@ const FilterProducts = (props) => {
     }
 
     useEffect(() => {
-        if (boolTypeProduct && !boolBtnAll) {
-            thereIsStock();
-        }
-        else if (boolBtnAll)
-        {
-            thereIsStock();
-        }
-    }, [props.productsFiltered, props.detailProducts])
-
-    const thereIsStock = () => {
-        let i;
-        for (i = 0; i < props.productsFiltered.length; i++) {
-            if (props.productsFiltered[i].stock_current == 0)
-            {
-                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = true;
-            }
-            else
-            {
-                document.getElementById(`btn_${props.productsFiltered[i].id_product}`).disabled = false;
-            }
-        }
-    }
-
-    useEffect(() => {
         setBoolTypeProduct(false);
         setValueSelect("-1");
     }, [props.salesRegister])
