@@ -14,7 +14,7 @@ const PORT = require('../../../config');
 
 export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{amount: 0, label: ""}], months: null, pay: null, editing: false, reading: false });
+    const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{month: formattedDate(new Date()),amount: 0, label: ""}], months: null, pay: null, editing: false, reading: false });
     const cancelRegisterAdvances = () => window.location.reload();
 
     const load = (childData) => {

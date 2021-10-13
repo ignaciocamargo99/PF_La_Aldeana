@@ -5,7 +5,7 @@ import Options from "./components/Options";
 import TypeProductsSales from "./components/TypeProductsSales";
 import ListProductSales from "./components/ListProductSales";
 import BeShowed from "../../../common/BeShowed";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
 
 const SalesReport = (props) => {
@@ -19,7 +19,7 @@ const SalesReport = (props) => {
     useEffect(() => {
         setFrom(props.dateFrom);
         setTo(props.dateTo);
-    }, [props.productSales]);
+    }, [props.productSales, props.dateFrom, props.dateTo]);
 
     return (
         <>

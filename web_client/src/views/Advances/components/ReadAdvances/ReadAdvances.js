@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import DataAdvances from '../DataAdvances';
@@ -13,7 +13,7 @@ export default function ReadAdvances(props) {
     const load = (childData) => setData(childData);
 
     const loadBack = (childData) => {
-        setDataBack(childData);
+        if (dataBack)setDataBack(childData);
     }
 
     return (

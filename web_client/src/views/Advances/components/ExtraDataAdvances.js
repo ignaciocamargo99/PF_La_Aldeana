@@ -17,6 +17,7 @@ export default function ExtraDataAdvances(props) {
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
     const [installments, setInstallments] = useState(false);
+    const [load, setLoad] = useState(false);
 
     const [value, setValue] = useState(0);
     const [valid, setValid] = useState(false);
@@ -30,19 +31,22 @@ export default function ExtraDataAdvances(props) {
 
 
     useEffect(()=>{
-        if(props.data.reading || props.data.editing){
-            Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
-                .then((response) => {
-                    data.installments = response.data;
-                    data.months = response.data.length;
-                    setOption(response.data);
-                    setAmountTotal(data.amount);
-                })
-                .catch((error) => console.log(error));
-            }
+        if (!load) {
+            if(props.data.reading || props.data.editing){
+                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
+                    .then((response) => {
+                        data.installments = response.data;
+                        data.months = response.data.length;
+                        setOption(response.data);
+                        setAmountTotal(data.amount);
+                    })
+                    .catch((error) => console.log(error));
+                }
 
-        setOption(data.installments);
-    }, []);
+            setOption(data.installments);
+            setLoad(true);
+        }
+    }, [data, load, props.data.editing, props.data.reading]);
 
     useEffect(()=>{
         if (option[0].nroDNI){
@@ -51,7 +55,7 @@ export default function ExtraDataAdvances(props) {
             data.installments = option;
             data.months = option.length;
         }
-    }, [option]);
+    }, [option, data, props]);
 
     const handleAmountInstallments = () => {
         setAmountInstallments(inputAmountInstallments.current.value);
@@ -151,7 +155,7 @@ export default function ExtraDataAdvances(props) {
                 option[value].amount = amount;
             }
         }
-    }, [amountInstallments, option, valid, months, amountTotal, installments]);
+    }, [amountInstallments, option, valid, months, amountTotal, installments, value]);
 
     return (
         <>

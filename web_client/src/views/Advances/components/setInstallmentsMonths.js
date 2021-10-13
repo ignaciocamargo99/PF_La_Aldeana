@@ -11,7 +11,7 @@ export default function setInstallmentsMonths(data, toPay, month, amountTotal) {
 
         let date = new Date(year, monthD+i+1)
 
-        if (i + 1 == month && toPay !== 0){
+        if (i + 1 === month && toPay !== 0){
             installmentsMonths[i] = { month: formattedDate(date), amount: (amountTotal - data.pay)-aux, label: dateText(date) }
         } else {
             installmentsMonths[i] = { month: formattedDate(date), amount: parseInt((amountTotal - data.pay)/month), label: dateText(date) };

@@ -10,17 +10,30 @@ export default function DataAdvances(props) {
     const maxDate = formattedDate(new Date(), 2);
     const minDate = formattedDate(new Date(), 0,-14);
     const startDate = formattedDate(new Date());
+    const startFirstMonth = formattedDate(new Date(),2);
+    const [maxFirstMonth, setMaxFirstMonth] = useState(formattedDate(new Date(), 6));
     const inputEmployee = useRef(null);
     const inputDate = useRef(null);
+    const inputFirstMonth = useRef(null);
     const [employees, setEmployees] = useState([]);
     const [employee, setEmployee] = useState(null);
     const [date, setDate] = useState("null");
+    const [firstMonth, setFirstMonth] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
+    const [isValidClassDate, setIsValidClassDate] = useState("form-control");
+    const [isValidClassFirstMonth, setIsValidClassFirstMonth] = useState("form-control");
     let data = props.data;
 
     const handleEmployee = (id) => setEmployee(id);
     const onChangeDate = () => {
-        if (inputDate) setDate(inputDate.current.value);
+        if (inputDate) {
+            setDate(inputDate.current.value);
+            setMaxFirstMonth(formattedDate(new Date(inputDate.current.value), 6));
+        }
+    }
+
+    const onChangeFirstMonth = () => {
+        if (inputFirstMonth) setFirstMonth(inputFirstMonth.current.value);
     }
 
     useEffect(()=>{
@@ -35,7 +48,8 @@ export default function DataAdvances(props) {
         .catch((err) => {
             console.log(err)
         })
-    }, []);
+        inputFirstMonth.current.value = startFirstMonth;
+    }, [startFirstMonth, data, props]);
 
     useEffect(() => {
         if (!employee) {
@@ -51,24 +65,55 @@ export default function DataAdvances(props) {
             data.dniEmployee = employee;
             props.load(data);
         }
-    }, [employee, props, data]);
+    }, [employee, data, props]);
 
+    //DateAdvances
     useEffect(() => {
         if (!props.data.editing && !inputDate.current.value) {
             inputDate.current.value = startDate;
             setDate(inputDate.current.value);
             data.date = inputDate.current.value;
+            setIsValidClassDate("form-control");
             props.load(data);
         }
         else if (!inputDate.current.value) {
             inputDate.current.value = props.data.date;
             setDate(inputDate.current.value);
+            setIsValidClassDate("form-control");
         }
         else {
             data.date = inputDate.current.value;
             props.load(data);
+            setIsValidClassDate("form-control is-valid");
         }
-    }, [startDate, date, data]);
+    }, [startDate, date, data, props]);
+
+    //FirstMonth
+    useEffect(() => {
+        if (!props.data.editing && !inputFirstMonth.current.value) {
+            inputFirstMonth.current.value = startFirstMonth;
+            setFirstMonth(inputFirstMonth.current.value);
+            data.installments[0].month = inputFirstMonth.current.value;
+            props.load(data);
+            setIsValidClassDate("form-control");
+        }
+        else if (!inputFirstMonth.current.value) {
+            inputFirstMonth.current.value = data.installments[0].month;
+            setFirstMonth(inputFirstMonth.current.value);
+            setIsValidClassDate("form-control");
+        }
+        else {
+            if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
+                data.installments = [{month: formattedDate(new Date()),amount: 0, label: ""}];
+                props.load(data);
+                setIsValidClassDate("form-control");
+            } else {
+                setIsValidClassFirstMonth("form-control is-valid");
+                data.installments[0].month = inputFirstMonth.current.value;
+                props.load(data);
+            }
+        }
+    }, [startFirstMonth, firstMonth, data, props]);
 
     return (
         <>
@@ -93,10 +138,23 @@ export default function DataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading  || props.data.editing}>
-                        <input className="form-control" id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
+                        <input className={isValidClassDate} id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading  && !props.data.editing}>
-                        <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
+                        <input className={isValidClassDate} id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
+                    </BeShowed>
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="firstMonth" >Fecha primer pago*</label>
+                </div>
+                <div className="form-control-input">
+                    <BeShowed show={props.data.reading}>
+                        <input className={isValidClassFirstMonth} id="date" readOnly type="date" min={date !== "null" ? date : startDate} max={maxFirstMonth} ref={inputFirstMonth} defaultValue={props.data.installments[0].month} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className={isValidClassFirstMonth} id="firstMonth" type="date" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date : startDate} max={maxFirstMonth} defaultValue={props.data.installments[0].month} />
                     </BeShowed>
                 </div>
             </div>
