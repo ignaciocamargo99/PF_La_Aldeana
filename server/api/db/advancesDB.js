@@ -17,7 +17,7 @@ const advancesGetDB = () => {
 };
 
 const installmentsGetDB = (dniEmployee, date) => {
-    const sqlSelect = "SELECT a.nroDNI, a.`date`, i.`month`, i.amount, i.label FROM INSTALLMENTS i LEFT JOIN ADVANCES a ON i.nroDNI = a.nroDNI AND i.`date` = a.`date` WHERE a.nroDNI = " + dniEmployee + " and a.`date` = '" + date + "'";
+    const sqlSelect = "SELECT a.nroDNI, a.`date`, i.`month`, i.amount, i.label, i.pay FROM INSTALLMENTS i LEFT JOIN ADVANCES a ON i.nroDNI = a.nroDNI AND i.`date` = a.`date` WHERE a.nroDNI = " + dniEmployee + " and a.`date` = '" + date + "'";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

@@ -104,7 +104,7 @@ export default function DataAdvances(props) {
         }
         else {
             if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: ""}];
+                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
                 props.load(data);
                 setIsValidClassDate("form-control");
             } else {
