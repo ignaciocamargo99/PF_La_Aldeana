@@ -8,9 +8,9 @@ import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from './DataAssistance';
 import formattedDate from '../../../../utils/formattedDate';
+import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../../config');
-const actualDate = formattedDate(new Date());
 
 export default function RegisterAssistance() {
     const [ready, setReady] = useState(false);
@@ -21,7 +21,14 @@ export default function RegisterAssistance() {
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.employee && data.employee.length === 8) setReady(true);
+        console.log(data);
+        if (data.date_entry && data.employee) {
+            if (data.date_egress) {
+                if (data.date_entry < data.date_egress) setReady(true);
+                else setReady(false);
+            }
+            else setReady(true);
+        }
         else setReady(false);
     }
 
@@ -30,27 +37,35 @@ export default function RegisterAssistance() {
             .then((response) => setEmployeeAux(response.data))
     }, [ready]);
 
-    const registerNewEmployee = () => {
-        let dateEntry, dateEgress;
-        dateEntry = actualDate + " " + data.date_entry;
-
-        if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
-        else dateEgress = null;
-        console.log(employeeAux)
-        data.date_entry = dateEntry;
-        data.date_egress = dateEgress;
-
-        let findEmployee = employeeAux.find((employees) => employees.dni === parseInt(data.employee, 10));
-
-        if (data.date_entry && findEmployee && ready) {
-            Axios.post(`${PORT()}/api/assistanceEmployee`, data)
-                .then((data) => {
-                    if (data.data.Ok) successMessage('Registro de asistencia para' + ' ' + findEmployee.name + ' ' + findEmployee.last_name, '', 'success');
-                    else displayError('No se ha podido realizar el registro.');
-                })
-                .catch((error) => console.error(error))
+    const registerNewAssistanceEmployee = () => {
+        let actualDate
+        if (data.date_entry >= data.date_egress) {
+            warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
         }
-        else warningMessage('Atención', 'Complete los campos obligatorios o ingrese un dni que corresponda a un empleado activo.', 'warning');
+        else {
+            console.log(data)
+            actualDate = formattedDate(new Date());
+            let dateEntry, dateEgress;
+            dateEntry = actualDate + " " + data.date_entry;
+
+            if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
+            else dateEgress = null;
+            data.date_entry = dateEntry;
+            data.date_egress = dateEgress;
+
+            let findEmployee = employeeAux.find((employees) => employees.dni === parseInt(data.employee, 10));
+
+            if (data.date_entry && findEmployee && ready) {
+                loadingMessage('Registrando nueva asistencia...');
+                Axios.post(`${PORT()}/api/assistanceEmployee`, data)
+                    .then((data) => {
+                        if (data.data.Ok) successMessage(`Registro de asistencia para ${findEmployee.name} ${findEmployee.last_name}`, '', 'success');
+                        else displayError('No se ha podido realizar el registro.');
+                    })
+                    .catch((error) => console.error(error))
+            }
+            else warningMessage('Atención', 'Complete los campos obligatorios o ingrese un dni que corresponda a un empleado activo.', 'warning');
+        }
     }
 
     return (
@@ -63,7 +78,7 @@ export default function RegisterAssistance() {
             <div className="viewBody">
                 <DataAssistance load={load} data={data} />
                 <Buttons
-                    label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
+                    label='Registrar' ready={ready} actionOK={registerNewAssistanceEmployee} actionNotOK={registerNewAssistanceEmployee}
                     data={data} actionCancel={cancelRegisterEmployee}
                 />
             </div>

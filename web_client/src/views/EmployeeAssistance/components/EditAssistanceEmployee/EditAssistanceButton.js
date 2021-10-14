@@ -5,8 +5,8 @@ import '../../../../assets/Buttons.css';
 export default function EditAssistanceButton (props) {
 
     const handleEdit = () => {
-        let aux = props.employee;
-        aux.title = aux.name;
+        let aux = props.assistance;
+        aux.title = aux.employee;
         props.edit(aux);
     }
     

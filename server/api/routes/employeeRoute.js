@@ -22,5 +22,7 @@ router.get('/employeeAssistance', employeeController.getEmployeeAssistance);
 
 router.delete('/employeeAssistance/:dni', employeeController.deleteAssistance);
 
+router.put('/employeeAssistance/:dni', employeeController.updateAssistanceEmployee)
+
 //#endregion
 module.exports = router;

@@ -169,17 +169,20 @@ const employeeAssistanceGetDB = () => {
 };
 
 
-const assistanceDeleteDB = (dniEmployee) => {
-    const sqlDelete = 'DELETE FROM ASSISTANCE_EMPLOYEES WHERE employee = ? AND DATE(date_entry) = CURRENT_DATE()';
-    let dni;
-    if (dniEmployee) dni = dniEmployee
-    else throw Error('El dni es null');
+const assistanceDeleteDB = (dniEmployee, date_entry) => {
+    const sqlDelete = 'DELETE FROM ASSISTANCE_EMPLOYEES WHERE employee = ? AND date_entry = ?';
+    let dni, date;
+    if (dniEmployee && date_entry) {
+        dni = dniEmployee
+        date = date_entry
+    }
+    else throw Error('El dni o la fecha es null');
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlDelete, [dni], (error, result) => {
+            db.query(sqlDelete, [dni, date], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
@@ -189,8 +192,30 @@ const assistanceDeleteDB = (dniEmployee) => {
 };
 
 
+const employeeAssitanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
+    const sqlUpdate = `UPDATE ASSISTANCE_EMPLOYEES SET date_entry = ?, date_egress = ?
+                        WHERE employee = ?`;
+
+    let { date_entry, date_egress, dni } = updateAssistanceEmployee;
+
+    if (!date_entry && !dniEmployee) {
+        throw Error('Faltan datos obligatorios');
+    }
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            db.query(sqlUpdate, [date_entry, date_egress, dni], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
     employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB,
-    employeeAssistanceGetDB, assistanceDeleteDB
+    employeeAssistanceGetDB, assistanceDeleteDB, employeeAssitanceUpdateDB
 };

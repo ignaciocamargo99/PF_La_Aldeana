@@ -7,13 +7,11 @@ import BodyTable from "../../../common/Table/BodyTable";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from '../../../common/Table/Table';
 import EditAssistanceButton from './EditAssistanceEmployee/EditAssistanceButton';
-import DeleteAssistanceButton from './DeleteAssistanceButton'
-// import DeleteEmployeeButton from './DeleteEmployeeButton';
-// import backupEmployee from './EditEmployee/backupEmployee';
-// import EditEmployee from "./EditEmployee/EditEmployee";
-// import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
-// import ReadEmployee from './ReadEmployee/ReadEmployee';
-// import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
+import DeleteAssistanceButton from './DeleteAssistanceButton';
+import EditAssistance from "./EditAssistanceEmployee/EditAssistance";
+import backupAssistance from './EditAssistanceEmployee/backupAssistance';
+import ReadAssistanceEmployee from './ReadAssistanceEmployee/ReadAssistanceEmployee';
+import ReadAssistanceButton from "./ReadAssistanceButton";
 
 const PORT = require('../../../config');
 
@@ -22,8 +20,8 @@ export default function EmployeesTable() {
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [assistance, setAssistance] = useState();
-    // const [editing, setEditing] = useState({});
-    // const [reading, setReading] = useState({});
+    const [editing, setEditing] = useState({});
+    const [reading, setReading] = useState({});
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employeeAssistance')
@@ -33,6 +31,7 @@ export default function EmployeesTable() {
                 setAssistance(auxSupply);
             })
             .catch((error) => console.log(error));
+        console.log(assistance)
     }, []);
 
     const deleteAssistance = (i) => {
@@ -43,50 +42,54 @@ export default function EmployeesTable() {
         setAssistance(aux);
     }
 
-    // const editEmployee = (employees) => {
-    //     let aux = backupEmployee(employees);
-    //     aux.name = employees.name;
-    //     aux.lastName = employees.last_name;
-    //     aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
-    //     aux.previousDni = employees.dni;
-    //     aux.editing = true;
-    //     setEditing(aux);
-    //     setIsEditing(true);
-    // }
+    const editAssistance = (assistance) => {
+        let aux = backupAssistance(assistance);
+        aux.name = assistance.name;
+        aux.dni = assistance.employee;
+        aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+        aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+        aux.editing = true;
+        setEditing(aux);
+        setIsEditing(true);
+    }
 
-    // const readEmployee = (employees) => {
-    //     let aux = employees;
-    //     aux.lastName = employees.last_name;
-    //     aux.employmentRelationship = employees.employment_relationship;
-    //     aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
-    //     aux.reading = true;
-    //     setReading(aux);
-    //     setIsReading(true);
-    // }
+    const readAssistance = (assistance) => {
+        let aux = backupAssistance(assistance);
+        aux.name = assistance.name;
+        aux.dni = assistance.employee;
+        aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+        aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+        aux.reading = true;
+        setReading(aux);
+        setIsReading(true);
+        console.log(reading)
+    }
 
-    // const cancelEditEmployee = () => {
-    //     <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
-    //     setIsEditing(false);
-    //     window.scrollTo(0, 0);
-    // }
-    // const returnReadEmployee = () => {
-    //     <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
-    //     setIsReading(false);
-    //     window.scrollTo(0, 0);
-    // }
+    const cancelEditAssistance = () => {
+        <div style={{ display: 'none' }}>{document.title = "Asistencias"}</div>
+        setIsEditing(false);
+        window.scrollTo(0, 0);
+    }
+
+    const returnReadAssistance = () => {
+        <div style={{ display: 'none' }}>{document.title = "Asistencias"}</div>
+        setIsReading(false);
+        window.scrollTo(0, 0);
+    }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
         <>
-            <h3>Registros del día {new Date().toLocaleDateString('en-EN')}</h3>
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" loading="Cargando..." />
             )}
             {!isLoadingSpinner && assistance && assistance.length === 0
                 ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
                 : (
+                   
                     <BeShowed show={!isEditing && !isReading}>
+                        <h3>Registros del día {new Date().toLocaleDateString('en-EN')}</h3>
                         <Table>
                             <HeaderTable
                                 th={
@@ -110,13 +113,15 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('LT')}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('LT') : '-'}</td>
+                                                {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_entry}</td> */}
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('HH:mm')}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('HH:mm') : '-'}</td>
+                                                {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress}</td> */}
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    {/* <ReadEmployeeButton employee={element} read={readEmployee} /> */}
+                                                    <ReadAssistanceButton assistance={element} read={readAssistance} />
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <EditAssistanceButton employee={element} />
+                                                    <EditAssistanceButton assistance={element} edit={editAssistance} />
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} />
@@ -129,12 +134,12 @@ export default function EmployeesTable() {
                         </Table>
                     </BeShowed>
                 )}
-            {/* <BeShowed show={isEditing}>
-                <EditEmployee cancel={cancelEditEmployee} employee={editing} />
+            <BeShowed show={isEditing}>
+                <EditAssistance cancel={cancelEditAssistance} assistance={editing} />
             </BeShowed>
             <BeShowed show={isReading}>
-                <ReadEmployee return={returnReadEmployee} employee={reading} />
-            </BeShowed> */}
+                <ReadAssistanceEmployee return={returnReadAssistance} assistance={reading}/>
+            </BeShowed>
         </>
     );
 }

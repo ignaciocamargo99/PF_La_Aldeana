@@ -1,7 +1,7 @@
 
 const { readEmployee, deleteEmployees, readCharges, createEmployee,
     modifyEmployee, readAssistanceEmployee, createAssistanceEmployee,
-    readEmployeeAssistance, deleteAssistanceEmployee } = require('../services/employeeService');
+    readEmployeeAssistance, deleteAssistanceEmployee, modifyAssistanceEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -132,7 +132,7 @@ async function getEmployeeAssistance(req, res) {
 // HTTP: DELETE
 async function deleteAssistance(req, res) {
     try {
-        await deleteAssistanceEmployee(req.params.dni);
+        await deleteAssistanceEmployee(req.params.dni, req.body.date_entry);
         res.json({
             Ok: true,
             Message: 'Asistencia eliminada exitosamente.'
@@ -146,8 +146,25 @@ async function deleteAssistance(req, res) {
     }
 }
 
+// HTTP: UPDATE
+async function updateAssistanceEmployee(req, res) {
+    try {
+        await modifyAssistanceEmployee(req.params.dni, req.body);
+        res.json({
+            Ok: true,
+            Message: 'Asistencia actualizada exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
 module.exports = {
     getEmployee, deleteEmployee, getCharges, newEmployee,
     updateEmployee, getAssistanceEmployee, newAssistanceEmployee, 
-    getEmployeeAssistance, deleteAssistance
+    getEmployeeAssistance, deleteAssistance, updateAssistanceEmployee
 }
