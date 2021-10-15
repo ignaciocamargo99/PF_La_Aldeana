@@ -174,9 +174,9 @@ const assistanceDeleteDB = (dniEmployee, date_entry) => {
 
 const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
     const sqlUpdate = `UPDATE ASSISTANCE_EMPLOYEES SET date_entry = ?, date_egress = ?
-                        WHERE employee = ?`;
+                        WHERE employee = ? AND date_entry = ?`;
 
-    let { date_entry, date_egress, dni } = updateAssistanceEmployee;
+    let { date_entry, date_egress, dni , lastDateEntry} = updateAssistanceEmployee;
 
     if (!date_entry && !dniEmployee) {
         throw Error('Faltan datos obligatorios');
@@ -185,7 +185,7 @@ const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-            db.query(sqlUpdate, [date_entry, date_egress, dni], (error, result) => {
+            db.query(sqlUpdate, [date_entry, date_egress, dni, lastDateEntry], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
