@@ -93,27 +93,28 @@ export default function DataAdvances(props) {
         if (!props.data.editing && !inputFirstMonth.current.value) {
             inputFirstMonth.current.value = startFirstMonth;
             setFirstMonth(inputFirstMonth.current.value);
-            data.installments[0].month = inputFirstMonth.current.value;
+            data.firstMonth = inputFirstMonth.current.value;
             props.load(data);
             setIsValidClassDate("form-control");
         }
         else if (!inputFirstMonth.current.value) {
-            inputFirstMonth.current.value = data.installments[0].month;
+            inputFirstMonth.current.value = data.firstMonth;
             setFirstMonth(inputFirstMonth.current.value);
             setIsValidClassDate("form-control");
         }
         else {
             if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+                data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
                 props.load(data);
                 setIsValidClassDate("form-control");
             } else {
                 setIsValidClassFirstMonth("form-control is-valid");
-                data.installments[0].month = inputFirstMonth.current.value;
+                data.installments[0].month = data.firstMonth;
+                data.firstMonth = inputFirstMonth.current.value;
                 props.load(data);
             }
         }
-    }, [startFirstMonth, firstMonth, data, props]);
+    }, [startFirstMonth, firstMonth, data, props, props.data.installments[0].month]);
 
     return (
         <>
@@ -151,7 +152,7 @@ export default function DataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClassFirstMonth} id="date" readOnly type="date" min={date !== "null" ? date : startDate} max={maxFirstMonth} ref={inputFirstMonth} defaultValue={props.data.installments[0].month} />
+                        <input className={isValidClassFirstMonth} id="firstMonth" readOnly type="date" min={date !== "null" ? date : startDate} max={maxFirstMonth} ref={inputFirstMonth} defaultValue={props.data.installments[0].month} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
                         <input className={isValidClassFirstMonth} id="firstMonth" type="date" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date : startDate} max={maxFirstMonth} defaultValue={props.data.installments[0].month} />

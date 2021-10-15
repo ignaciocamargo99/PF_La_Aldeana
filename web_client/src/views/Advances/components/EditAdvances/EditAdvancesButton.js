@@ -12,8 +12,9 @@ export default function EditAdvancesButton (props) {
         aux.dniEmployee = props.advances.nroDNI;
         aux.date = moment(props.advances.date).format('YYYY-MM-DD');
         aux.amount = props.advances.amount;
-        aux.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+        aux.installments = [{month: moment(props.advances.date).format('YYYY-MM-DD'), amount: 0, label: "", pay: 0}];
         aux.pay = props.advances.pay;
+        aux.firstMonth = moment(props.advances.date).format('YYYY-MM-DD');
         aux.editing = true;
         props.edit(aux);
     }

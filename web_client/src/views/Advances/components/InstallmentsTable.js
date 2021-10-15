@@ -113,12 +113,12 @@ export default function InstallmentTable ({ installments, reading }) {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={reading}>
                                                     <div className="form-control-input">
-                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={element.amount} />
+                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>
                                                 <BeShowed show={!reading}>
                                                     <div className="form-control-input">
-                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={element.amount} />
+                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>
                                             </td>

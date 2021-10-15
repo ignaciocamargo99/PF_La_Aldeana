@@ -17,8 +17,9 @@ export default function ExtraDataAdvances(props) {
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
     const [load, setLoad] = useState(false);
+    const [firstMonth, setFirstMonth] = useState(props.firstMonth);
 
-    const [option, setOption] = useState([{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}]);
+    const [option, setOption] = useState([{month: firstMonth,amount: 0, label: "", pay: 0}]);
 
     useEffect(()=>{
         if (!load) {
@@ -27,6 +28,8 @@ export default function ExtraDataAdvances(props) {
                     .then((response) => {
                         data.installments = response.data;
                         data.months = response.data.length;
+                        data.firstMonth = response.data[0].month;
+                        setFirstMonth(response.data[0].month);
                         setOption(response.data);
                         setAmountTotal(data.amount);
                     })
@@ -40,7 +43,7 @@ export default function ExtraDataAdvances(props) {
 
     useEffect(()=>{
         if (option[0].nroDNI){
-            props.loadBack({amount: data.amount, installments: option, months: option.length});
+            props.loadBack({amount: data.amount, installments: option, months: option.length, firstMonth: option[0].month});
             inputMonths.current.value = option.length;
             data.installments = option;
             data.months = option.length;
@@ -59,10 +62,12 @@ export default function ExtraDataAdvances(props) {
     useEffect(() => {
         const amount = parseInt(inputAmountTotal.current.value.trim());
         const month = parseInt(inputMonths.current.value.trim());
+
+        console.log(props.data.firstMonth, data.firstMonth, firstMonth)
         if (amount >= month && month > 0 && month < 19) {
             setIsValidClassAmountTotal("form-control is-valid");
             data.amount = amount;
-            let aux = setInstallmentsMonths(option[0].month, months, amountTotal - data.pay, option);
+            let aux = setInstallmentsMonths(data.firstMonth, months, amountTotal - data.pay, data.installments);
             setOption(aux);
             data.installments = aux;
             props.load(data);
@@ -71,24 +76,25 @@ export default function ExtraDataAdvances(props) {
             setIsValidClassAmountTotal("form-control");
             if (!data.nroDNI && amount && (props.data.editing || props.data.reading)) {
                 data.amount = null;
-                setOption([{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}]);
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+                data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
+                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
             } else {
                 data.amount = amount;
-                setOption([{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}]);
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+                data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
+                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data]);
+    }, [months, amountTotal, props, data, props.data.firstMonth, firstMonth]);
 
     //Meses
     useEffect(() => {
         const month = parseInt(inputMonths.current.value.trim());
-        console.log(data, option)
+
+        console.log(props.data.firstMonth, data.firstMonth, firstMonth)
         if (month > 0 && month < 19 && amountTotal >= month) {
             setIsValidClassMonths("form-control is-valid");
-            let aux = setInstallmentsMonths(option[0].month, months, amountTotal - data.pay, option);
+            let aux = setInstallmentsMonths(data.firstMonth, months, amountTotal - data.pay, data.installments);
             setOption(aux);
             data.installments = aux;
             data.months = month;
@@ -97,17 +103,17 @@ export default function ExtraDataAdvances(props) {
         else {
             setIsValidClassMonths("form-control");
             if (!data.nroDNI && month > 0 && (props.data.editing || props.data.reading)) {
-                setOption([{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}]);
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+                data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
+                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
                 data.months = null;
             } else {
-                setOption([{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}]);
-                data.installments = [{month: formattedDate(new Date()),amount: 0, label: "", pay: 0}];
+                data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
+                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
                 data.months = month;
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data]);
+    }, [months, amountTotal, props, data, props.data.firstMonth, firstMonth]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);

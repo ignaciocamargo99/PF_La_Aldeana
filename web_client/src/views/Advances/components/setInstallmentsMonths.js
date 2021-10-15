@@ -9,26 +9,25 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
 
     for (let i = 0; i < months; i ++){
 
-        let date = new Date(year, monthD+i+1)
+        let date = new Date(year, monthD+i-1);
 
-        if (i + 1 === months && (amountTotal/months)%1 !== 0){
+        if (parseInt(i + 1) === parseInt(months) && (amountTotal/months)%1 !== 0){
             if (installments.length > i) {
                 if (!installments[i].pay) {
-                    installmentsMonths[i] = { month: formattedDate(date), amount: amountTotal-aux, label: dateText(date), pay: 0 }
-                    console.log(installmentsMonths[i])
+                    installmentsMonths[i] = { month: formattedDate(date), amount: amountTotal-aux, label: dateText(date), pay: 0 };
+                    if (i === 0) installmentsMonths[i] = { month: month, amount:  amountTotal-aux, label: dateText(date), pay: 0 };
                 } else {
                     installmentsMonths[i] = installments[i];
-                    console.log(installmentsMonths[i])
                 }
             } else {
-                installmentsMonths[i] = { month: formattedDate(date), amount: amountTotal-aux, label: dateText(date), pay: 0 }
-                console.log(installmentsMonths[i])
+                installmentsMonths[i] = { month: formattedDate(date), amount: amountTotal-aux, label: dateText(date), pay: 0 };
+                if (i === 0) installmentsMonths[i] = { month: month, amount:  amountTotal-aux, label: dateText(date), pay: 0 };
             }
         } else {
             if (installments.length > i) {
                 if (!installments[i].pay){
                     installmentsMonths[i] = { month: formattedDate(date), amount: parseInt(amountTotal/months), label: dateText(date), pay: 0 };
-                    console.log(installmentsMonths[i])
+                    if (i === 0) installmentsMonths[i] = { month: month, amount: parseInt(amountTotal/months), label: dateText(date), pay: 0 };
                     aux += parseInt(amountTotal/months);
                 } else {
                     installmentsMonths[i] = installments[i];
@@ -37,7 +36,7 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
                 }
             } else {
                 installmentsMonths[i] = { month: formattedDate(date), amount: parseInt(amountTotal/months), label: dateText(date), pay: 0 };
-                console.log(installmentsMonths[i])
+                if (i === 0) installmentsMonths[i] = { month: month, amount: parseInt(amountTotal/months), label: dateText(date), pay: 0 };
             }
         }
     }
