@@ -26,7 +26,6 @@ const ProductTable = () => {
 
     useEffect(() => {
         getProducts();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -67,9 +66,7 @@ const ProductTable = () => {
         }
     };
 
-    const onClickCancelEdit = () => setIsEditing(false);
-
-    const endEditProduct = () => {
+    const onClickCancelEdit = () => {
         <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
         setIsEditing(false);
         window.scrollTo(0, 0);

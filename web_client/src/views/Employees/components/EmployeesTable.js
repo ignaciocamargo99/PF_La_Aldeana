@@ -47,7 +47,7 @@ export default function EmployeesTable() {
         let aux = backupEmployee(employees);
         aux.name = employees.name;
         aux.lastName = employees.last_name;
-        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
+        aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
         aux.previousDni = employees.dni;
         aux.editing = true;
         setEditing(aux);
@@ -58,7 +58,7 @@ export default function EmployeesTable() {
         let aux = employees;
         aux.lastName = employees.last_name;
         aux.employmentRelationship = employees.employment_relationship;
-        aux.date = moment(employees.date_admission).format('YYYY-MM-DD');
+        aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
         aux.reading = true;
         setReading(aux);
         setIsReading(true);
@@ -106,7 +106,7 @@ export default function EmployeesTable() {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).format('YYYY-MM-DD')}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).add(1, 'days').format('YYYY-MM-DD')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <ReadEmployeeButton employee={element} read={readEmployee} />
                                             </td>
