@@ -47,6 +47,7 @@ export default function EmployeesTable() {
         aux.dni = assistance.employee;
         aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
         aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        aux.lastDateEntry = moment(assistance.date_entry).add(3,'hours').format('YYYY-MM-DD HH:mm:ss')
         aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
