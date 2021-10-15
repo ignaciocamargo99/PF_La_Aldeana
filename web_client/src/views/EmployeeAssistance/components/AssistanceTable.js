@@ -45,8 +45,8 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-        aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+        aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
+        aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
         aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
@@ -56,8 +56,8 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-        aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+        aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
+        aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
         aux.reading = true;
         setReading(aux);
         setIsReading(true);
@@ -111,8 +111,8 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('HH:mm')}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('HH:mm') : '-'}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).add(3, 'hours').format('HH:mm')}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).add(3, 'hours').format('HH:mm') : '-'}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     <ReadAssistanceButton assistance={element} read={readAssistance} />
                                                 </td>
