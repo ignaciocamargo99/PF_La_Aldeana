@@ -11,6 +11,8 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
 import DynamicSearch from '../../../common/DynamicSearch';
+import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
+import ShowSelectedEmployee from "./ShowSelectedEmployee";
 
 const PORT = require('../../../config');
 
@@ -21,6 +23,7 @@ const FormLicense = (props) => {
     const [employee,setEmployee] = useState(null);
     const [employeesView,setEmployeesView] = useState([]);
     const [employeesStart,setEmployeesStart] = useState(null);
+    const [licensedEmployees,setLicensedEmployees] = useState([]);
     const [days,setDays] = useState(0);
     const [errorDateInit,setErrorDateInit] = useState(true);
     const [errorDateFinish,setErrorDateFinish] = useState(true);
@@ -36,7 +39,11 @@ const FormLicense = (props) => {
         if(props.action !== "Registrar"){
             dateInit.current.value = props.license.date_init.slice(0,10);
             dateFinish.current.value = props.license.date_finish.slice(0,10);
-            setEmployee({dni:props.license.dni,name:props.license.name,last_name:props.license.last_name});
+            Axios.get(`${PORT()}/api/employees/${props.license.dni}`)
+            .then((response) => {
+                setEmployee(response.data[0]);
+                setShowSpinner(false);
+            })
             reason.current.value = props.license.reason;
             onChangeDates();
             if(props.action === 'Ver'){
@@ -100,17 +107,52 @@ const FormLicense = (props) => {
     }
 
     const onChangeDateInit = (e) => {
-        setErrorDateInit(false);
-        dateFinish.current.min = e.target.value;
-        if(dateFinish.current.value !== ""){
-            onChangeDates();
+        if(dateInit.current.value !== ""){
+            setErrorDateInit(false);
+            dateFinish.current.min = e.target.value;
+            if(dateFinish.current.value !== ""){
+                onChangeDates();
+            }
+        }else{
+            setLicensedEmployees([])
+            setErrorDateInit(true);
+            setDays(0);
         }
     }
 
     const onChangeDateFinish = () => {
-        setErrorDateFinish(false);
-        if(dateInit.current.value !== ""){
-            onChangeDates();
+        if(dateFinish.current.value !== ""){
+            setErrorDateFinish(false);
+            if(dateInit.current.value !== ""){
+                onChangeDates();
+            }
+        }else{
+            setLicensedEmployees([])
+            setErrorDateFinish(true);
+            setDays(0);
+        }
+    }
+
+    const findLicensedEmployees = (licenses, dateInit,dateFinish) => {
+        let employees = []
+        let dateInitNumber = new Date(dateBDToString(dateInit,'En')).getTime();
+        let dateFinishNumber = new Date(dateBDToString(dateFinish,'En')).getTime();
+        licenses.forEach((license) => {
+            let licenseDateInitNumber = new Date(dateBDToString(license.date_init,'En')).getTime();
+            let licenseDateFinishNumber = new Date(dateBDToString(license.date_finish,'En')).getTime();
+            if((dateInitNumber <= licenseDateInitNumber && licenseDateInitNumber <= dateFinishNumber) || 
+                (dateInitNumber <= licenseDateFinishNumber &&  licenseDateFinishNumber <= dateFinishNumber) ||
+                (licenseDateInitNumber < dateInitNumber && licenseDateFinishNumber > dateFinishNumber)){
+                    employees.push(license.dni)
+            }
+        })
+        return employees
+    }
+
+    const validateSelectedEmployee = (licensedEmployees) =>{
+        if(licensedEmployees.includes(employee?.dni)){
+            setErrorEmployee(true)
+            setEmployee(null)
         }
     }
 
@@ -122,6 +164,11 @@ const FormLicense = (props) => {
             aux = 1;
         }
         setDays(aux);
+        if(props.action === "Registrar"){
+            let employeesAux = findLicensedEmployees(props.licenses,dateInit.current.value,dateFinish.current.value)
+            setLicensedEmployees(employeesAux)
+            validateSelectedEmployee(employeesAux)
+        }
     }
     
     const registerLicense = () => {
@@ -153,6 +200,7 @@ const FormLicense = (props) => {
         }
         setEmployee(null);
         setDays(0);
+        setLicensedEmployees([]);
         setErrorDateInit(true);
         setErrorDateFinish(true);
         setErrorEmployee(true);
@@ -211,39 +259,27 @@ const FormLicense = (props) => {
             <div className="formRow">
                 <label>Cantidad de días de licencia: {days}</label>
             </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label>Empleado*</label>
+            <BeShowed show={props.action === 'Registrar'}>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label>Empleado*</label>
+                    </div>
                 </div>
-            </div>
-            <div className="formRow">
-                <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState}/>
-            </div>
-            <BeShowed show={showSpinner && props.action !== 'Ver'}>
+                <div className="formRow">
+                    <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState}/>
+                </div>
+            </BeShowed>  
+            <BeShowed show={showSpinner}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
-            <BeShowed show={!showSpinner && props.action !== 'Ver'}>
+            <BeShowed show={!showSpinner && props.action === 'Registrar'}>
                 <div className="formRow justify-content-center">
-                    <CardEmployees employeesView={employeesView} employee={employee} 
-                                    onChangeEmployee={onChangeEmployee} setEmployeesStart={setEmployeesStart}
-                                    employees={employees} employeesStart={employeesStart} searchState={searchState}/>
+                    <CardEmployees employeesView={employeesView} employee={employee} onChangeEmployee={onChangeEmployee} 
+                                setEmployeesStart={setEmployeesStart} employees={employees} employeesStart={employeesStart}
+                                searchState={searchState} licensedEmployees={licensedEmployees}/>
                 </div>
             </BeShowed>
-            <BeShowed show={props.action === "Ver"}>
-                <div className="formRow offset-sm-1">
-                    <button style={{width:"200px", height:"200px", margin:"5px",backgroundColor:'gray'}}>
-                        <div className="formRow justify-content-center">
-                            <label><b>DNI: {props.license?.dni}</b></label>
-                        </div>
-                        <div className="formRow justify-content-center">
-                            <label><b>Apellido: {props.license?.last_name}</b></label>
-                        </div>
-                        <div className="formRow justify-content-center">
-                            <label><b>Nombre: {props.license?.name}</b></label>
-                        </div>
-                    </button>
-                </div>
-            </BeShowed>
+            <ShowSelectedEmployee selectedEmployee={employee}/>
             <div className="formRow">
                 <div className="col-sm-2">
                     <label>Motivo de licencia*</label>

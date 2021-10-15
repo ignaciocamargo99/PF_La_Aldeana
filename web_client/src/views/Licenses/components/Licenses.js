@@ -51,7 +51,7 @@ const Licenses = (props) => {
                 </div>
             </BeShowed>
             <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
-                <FormLicense setActionLicense={setActionLicense} action={action} license={license} 
+                <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses} 
                             reloadList={reloadList} setReloadList={setReloadList}/>
             </BeShowed>
         </>)        

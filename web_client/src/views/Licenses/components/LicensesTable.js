@@ -29,8 +29,7 @@ export default function LicensesTable(props) {
 
     const confirmDeleteLicense = (idLicense) => {
         return swal({
-            title: "¿Seguro que desea eliminarlo?",
-            text: "El elemento seleccionado ya no será visible para el personal de la empresa.",
+            title: "¿Seguro que desea cancelar la licencia?",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -58,7 +57,7 @@ export default function LicensesTable(props) {
                                 <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Empleado</th>
                                 <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
                                 <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
+                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Cancelar</th>
                             </>
                         }
                     />
@@ -83,12 +82,14 @@ export default function LicensesTable(props) {
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendEdit" onClick={() => {props.setActionLicense('Editar',license)}}>
+                                            <button className="sendEdit" onClick={() => {props.setActionLicense('Editar',license)}}
+                                                    disabled={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date)}>
                                                 <FontAwesomeIcon icon={faEdit}/>
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendDelete" onClick={() => {confirmDeleteLicense(license.id_license)}}>
+                                            <button className="sendDelete" onClick={() => {confirmDeleteLicense(license.id_license)}}
+                                                    disabled={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date)}>
                                                 <FontAwesomeIcon icon={faMinus}/>
                                             </button>
                                         </td>
