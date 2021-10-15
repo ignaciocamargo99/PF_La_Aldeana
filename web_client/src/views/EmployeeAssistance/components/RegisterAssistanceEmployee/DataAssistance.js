@@ -1,14 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import BeShowed from "../../../../common/BeShowed";
-import validateFloatNumbers from "../../../../utils/validateFloatNumbers";
 import Axios from 'axios';
 import getEmployees from '../getEmployees';
 
 const PORT = require('../../../../config');
 
 export default function DataAssistance(props) {
-    const [dateEntry, setDateEntry] = useState("null");
-    const [dateEgress, setDateEgress] = useState("null");
 
     const inputDateEntry = useRef(null);
     const inputDateEgress = useRef(null);
@@ -24,12 +21,10 @@ export default function DataAssistance(props) {
     const handleEmployee = (e) => setSelectValue(e.target.value);
 
     const handleDateEntry = () => {
-        setDateEntry(inputDateEntry.current.value);
         data.date_entry = inputDateEntry.current.value;
         props.load(data);
     }
     const handleDateEgress = () => {
-        setDateEgress(inputDateEgress.current.value);
         data.date_egress = inputDateEgress.current.value;
         props.load(data);
 
@@ -42,7 +37,7 @@ export default function DataAssistance(props) {
             data.employee = employee;
             props.load(data);
         }
-    }, [selectValue])
+    }, [selectValue, data])
 
 
     return (

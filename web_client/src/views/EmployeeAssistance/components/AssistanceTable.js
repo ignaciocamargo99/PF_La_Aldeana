@@ -31,7 +31,6 @@ export default function EmployeesTable() {
                 setAssistance(auxSupply);
             })
             .catch((error) => console.log(error));
-        console.log(assistance)
     }, []);
 
     const deleteAssistance = (i) => {
@@ -62,7 +61,6 @@ export default function EmployeesTable() {
         aux.reading = true;
         setReading(aux);
         setIsReading(true);
-        console.log(reading)
     }
 
     const cancelEditAssistance = () => {
@@ -87,9 +85,9 @@ export default function EmployeesTable() {
             {!isLoadingSpinner && assistance && assistance.length === 0
                 ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
                 : (
-                   
+
                     <BeShowed show={!isEditing && !isReading}>
-                        <h3>Registros del día {new Date().toLocaleDateString('en-EN')}</h3>
+                        <h3>Registros del día {new Date().toLocaleDateString()}</h3>
                         <Table>
                             <HeaderTable
                                 th={
@@ -113,10 +111,8 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_entry}</td> */}
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('HH:mm')}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).format('HH:mm') : '-'}</td>
-                                                {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress}</td> */}
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     <ReadAssistanceButton assistance={element} read={readAssistance} />
                                                 </td>
@@ -138,7 +134,7 @@ export default function EmployeesTable() {
                 <EditAssistance cancel={cancelEditAssistance} assistance={editing} />
             </BeShowed>
             <BeShowed show={isReading}>
-                <ReadAssistanceEmployee return={returnReadAssistance} assistance={reading}/>
+                <ReadAssistanceEmployee return={returnReadAssistance} assistance={reading} />
             </BeShowed>
         </>
     );

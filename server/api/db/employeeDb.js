@@ -192,7 +192,7 @@ const assistanceDeleteDB = (dniEmployee, date_entry) => {
 };
 
 
-const employeeAssitanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
+const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
     const sqlUpdate = `UPDATE ASSISTANCE_EMPLOYEES SET date_entry = ?, date_egress = ?
                         WHERE employee = ?`;
 
@@ -217,5 +217,5 @@ const employeeAssitanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
     employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB,
-    employeeAssistanceGetDB, assistanceDeleteDB, employeeAssitanceUpdateDB
+    employeeAssistanceGetDB, assistanceDeleteDB, employeeAssistanceUpdateDB
 };

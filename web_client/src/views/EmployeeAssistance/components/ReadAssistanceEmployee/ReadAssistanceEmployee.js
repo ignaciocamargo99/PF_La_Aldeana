@@ -1,25 +1,12 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import Axios from 'axios';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 
-const PORT = require('../../../../config');
-
 export default function RegisterAssistance(props) {
-    // const [ready, setReady] = useState(true);
     const [data, setData] = useState(props.assistance);
-    // const [employeeAux, setEmployeeAux] = useState([]);
 
-    const load = (childData) => {
-        setData(childData);
-        console.log(data)
-    }
-
-    // useEffect(() => {
-    //     Axios.get(`${PORT()}/api/employees`)
-    //         .then((response) => setEmployeeAux(response.data));
-    // }, [ready]);
+    const load = (childData) => setData(childData);
 
     return (
         <>
