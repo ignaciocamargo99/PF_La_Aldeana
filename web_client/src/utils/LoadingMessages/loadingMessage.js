@@ -19,7 +19,7 @@ export default function loadingMessage(msg) {
     divSpinner.appendChild(spinner3)
     loading.appendChild(divSpinner)
     loading.appendChild(divText)
-
-    return swal({ content: loading, buttons: false });
+    
+    return swal( {content: loading, buttons: false});
 
 }
