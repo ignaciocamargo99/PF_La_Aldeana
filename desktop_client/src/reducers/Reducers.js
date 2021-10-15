@@ -8,8 +8,10 @@ import { productsReducer, productsFilteredReducer, detailProductsReducer, payTyp
     refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
+import { employeeAssistance } from "./EmployeeAssistanceReducer";
 
 export default combineReducers({
+    // Products
     products: productsReducer,
     productsFiltered: productsFilteredReducer,
     detailProducts: detailProductsReducer,
@@ -21,16 +23,20 @@ export default combineReducers({
     supplies: suppliesReducer,
     paymentAmount: paymentAmountReducer,
     salesRegister: salesRegisterReducer,
-    //Menu
+
+    // Menu
     location: location,
     menu: menu,
+
     // Chamber flavors
     flavorsDispatchDate: flavorsDispatchDate,
     flavorsDispatchFilters: flavorsDispatchFilters,
+
     // Table Up-Down
     elementsTableUp: elementsTableUp,
     allElements: allElements,
     elementsTableDown: elementsTableDown,
+
     // Delivery
     payTypeDelivery: payTypeDeliveryReducer,
     amountDelivery: amountDeliveryReducer,
@@ -48,5 +54,8 @@ export default combineReducers({
     flavorsProductDelivery: flavorsProductDeliveryReducer,
     productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientDelivery: clientDeliveryReducer,
-    productsStocksDelivery: productsStocksDeliveryReducer
+    productsStocksDelivery: productsStocksDeliveryReducer,
+
+    // Employee Assistance
+    employeeAssistance: employeeAssistance,
 })

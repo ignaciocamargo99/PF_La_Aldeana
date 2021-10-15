@@ -9,7 +9,7 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../config');
 
