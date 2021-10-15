@@ -17,6 +17,7 @@ const employeeGetDB = () => {
     });
 };
 
+
 const chargeGetDB = () => {
     const sqlSelect = `SELECT id_charge, name from CHARGES`;
 
@@ -32,6 +33,7 @@ const chargeGetDB = () => {
         })
     });
 };
+
 
 const employeeDeleteDB = (dniEmployee) => {
     const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
@@ -51,6 +53,7 @@ const employeeDeleteDB = (dniEmployee) => {
         })
     });
 };
+
 
 const employeeCreateDB = (newEmployee) => {
     const sqlInsert = 'INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?,?)';
@@ -107,27 +110,6 @@ const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     });
 };
 
-//#region APIs asistencia de empleados desktops 
-
-/** APIs ver luego si quedan NO BORRAR!! */
-const assistanceEmployeesGetDB = (dniEmployee) => {
-    const sqlSelect = `SELECT ae.*, e.name, e.last_name 
-                        FROM ASSISTANCE_EMPLOYEES ae
-                        JOIN EMPLOYEES e ON ae.employee = e.dni
-                        WHERE ae.date_egress IS NULL AND dni = ? `;
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, [dniEmployee], (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
 
 const assistanceEmployeeCreateDB = (newAssistance) => {
     const sqlInsert = 'INSERT INTO ASSISTANCE_EMPLOYEES VALUES(?,?,?,?)';
@@ -145,8 +127,6 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
         })
     });
 };
-
-//#endregion
 
 
 const employeeAssistanceGetDB = () => {
@@ -216,6 +196,6 @@ const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, assistanceEmployeesGetDB, assistanceEmployeeCreateDB,
+    employeeUpdateDB, assistanceEmployeeCreateDB,
     employeeAssistanceGetDB, assistanceDeleteDB, employeeAssistanceUpdateDB
 };
