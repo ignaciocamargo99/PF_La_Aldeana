@@ -2,9 +2,9 @@ const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
     employeeUpdateDB, assistanceEmployeeCreateDB, employeeAssistanceGetDB,
     assistanceDeleteDB, employeeAssistanceUpdateDB } = require('../db/employeeDb');
 
-const readEmployee = async () => {
+const readEmployee = async (dni) => {
     try {
-        let res = await employeeGetDB();
+        let res = await employeeGetDB(dni);
         return res;
     }
     catch (error) {
