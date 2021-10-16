@@ -3,8 +3,8 @@ const router = express.Router();
 const employeeController = require("../controllers/employeeController");
 
 //#region APIs
-
 router.get('/employees', employeeController.getEmployee);
+router.get('/employees/:dni', employeeController.getEmployeeByDni);
 router.post('/employees', employeeController.newEmployee);
 router.put('/employees/:dni', employeeController.updateEmployee);
 router.delete('/employees/:dni', employeeController.deleteEmployee);

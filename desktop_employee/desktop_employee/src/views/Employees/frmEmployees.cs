@@ -8,28 +8,87 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using desktop_employee.src.entities;
+using desktop_employee.src.views.Employees;
 
 namespace desktop_employee.src.views.Employees
 {
     public partial class frmEmployees : Form
     {
+        DataTable employeesTable = new DataTable();
+        DataTable employeeSelectedTable = new DataTable();
         public frmEmployees()
         {
             InitializeComponent();
         }
 
-        private async void btnGETEmpleados_Click(object sender, EventArgs e)
+        private async void frmEmployees_LoadAsync(object sender, EventArgs e)
         {
-            //Creamos el listado de Posts a llenar
             List<Employee> listado = new List<Employee>();
-            //Instanciamos un objeto Reply
             Reply oReply = new Reply();
-            //poblamos el objeto con el método generic Execute
             oReply = await Consumer.Execute<List<Employee>>("http://localhost:3001/api/employees", methodHttp.GET, listado);
-            //Poblamos el datagridview
             this.dgvEmployees.DataSource = oReply.Data;
-            //Mostramos el statuscode devuelto, podemos añadirle lógica de validación
-            MessageBox.Show(oReply.StatusCode);
+            employeesTable = ConvertDgvToTable(dgvEmployees);
         }
+
+        private void btnEditEmployee_Click(object sender, EventArgs e)
+        {
+            int employee_dni = Convert.ToInt32(dgvEmployees.CurrentRow.Cells[0].Value);
+            employeeSelectedTable = filterEmployee(employeesTable, employee_dni);
+
+            frmEditEmployee frmEditEmployee = new();
+            frmEditEmployee.EmployeeSelected = employeeSelectedTable;
+            frmEditEmployee.ShowDialog();
+
+        }
+        
+        private DataTable createTableEmployee()
+        {
+            DataTable table = new DataTable();
+            DataColumn cDni = new DataColumn("dni");
+            DataColumn cName = new DataColumn("name");
+            DataColumn cLastName = new DataColumn("last_name");
+            table.Columns.Add(cDni);
+            table.Columns.Add(cName);
+            table.Columns.Add(cLastName);
+
+            return table;
+        }
+
+        private DataTable ConvertDgvToTable(DataGridView dgv)
+        {
+            DataTable table = createTableEmployee();
+
+            for (int i = 0; i < dgv.RowCount; i++)
+            {
+                DataRow row = table.NewRow();
+                row["dni"] = dgv.Rows[i].Cells[0].Value;
+                row["name"] = dgv.Rows[i].Cells[1].Value;
+                row["last_name"] = dgv.Rows[i].Cells[2].Value;
+                table.Rows.Add(row);
+            }
+            return table;
+        }
+
+        private DataTable filterEmployee(DataTable table, int dni)
+        {
+            DataTable newTable = createTableEmployee();
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(table.Rows[i][0]) == dni)
+                {
+                    DataRow row = newTable.NewRow();
+                    row["dni"] = table.Rows[i][0];
+                    row["name"] = table.Rows[i][1];
+                    row["last_name"] = table.Rows[i][2];
+                    newTable.Rows.Add(row);
+                }
+            }
+            return newTable;
+        }
+
+
+
+
     }
 }

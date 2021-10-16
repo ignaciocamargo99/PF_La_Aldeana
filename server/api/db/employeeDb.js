@@ -17,6 +17,23 @@ const employeeGetDB = () => {
     });
 };
 
+const dniEmployeeGetDB = (dniEmployee) => {
+    const sqlSelect = `SELECT dni, name, last_name, date_admission ,charge, employment_relationship
+                    FROM EMPLOYEES WHERE dni = ${dniEmployee}`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const chargeGetDB = () => {
     const sqlSelect = `SELECT id_charge, name from CHARGES`;
 
@@ -107,4 +124,4 @@ const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     });
 };
 
-module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB };
+module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB, dniEmployeeGetDB };
