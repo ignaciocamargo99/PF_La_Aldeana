@@ -13,7 +13,7 @@ import validateHoursEgressEntry from '../validateHoursEgressEntry';
 
 const PORT = require('../../../../config');
 
-export default function RegisterAssistance(props) {
+export default function EditAssistance(props) {
     const [ready, setReady] = useState(true);
     const [data, setData] = useState(props.assistance);
     const [assistance, setAssistance] = useState([]);
@@ -33,7 +33,7 @@ export default function RegisterAssistance(props) {
         let validateMessage;
         if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
         else {
-            validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing);
+            validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
             if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
             
             let actualDate;

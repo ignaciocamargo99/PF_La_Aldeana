@@ -1,29 +1,28 @@
 import moment from "moment";
 
-const validateAssistances = (dateEntry, dni, dateEgress, assistance, id_assistance, editing) => {
+const validateAssistances = (dateEntry, dni, dateEgress, assistance, id_assistance, editing, PORT) => {
     let assistancesWithDateEntryDateEgress1 = [];
     let assistancesWithDateEntryDateEgress2 = [];
     let assistancesWithDateEntryDateEgress3 = [];
     let assistancesWithoutDateEgress = [];
+    let hours;
 
+    if(PORT === '') hours = 0
+    else hours = 3
+
+    // Validate if exists employees with date entry that the administrator is registering to this employee...
+    assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEntry && moment(employee.date_egress).add(hours, 'hours').format('HH:mm') > dateEntry) && (employee.employee === parseInt(dni, 10)));
+    // Validate if exists registers with the time range that the administrator is registering to this employee...
+    assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && ((moment(employee.date_entry).add(hours, 'hours').format('HH:mm') < dateEntry)) && (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') > dateEgress) && (employee.employee === parseInt(dni, 10)));
+    assistancesWithDateEntryDateEgress3 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).add(hours, 'hours').format('HH:mm') > dateEntry) && (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') < dateEgress) && (employee.employee === parseInt(dni, 10)));
+    
     if (!editing) {
-        // Validate if exists employees with date entry that the administrator is registering to this employee...
-        assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).format('HH:mm') <= dateEntry && moment(employee.date_egress).format('HH:mm') > dateEntry) && (employee.employee === parseInt(dni, 10)));
-        // Validate if exists registers with the time range that the administrator is registering to this employee...
-        assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && ((moment(employee.date_entry).format('HH:mm') < dateEntry)) && (moment(employee.date_egress).format('HH:mm') > dateEgress) && (employee.employee === parseInt(dni, 10)));
-        assistancesWithDateEntryDateEgress3 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).format('HH:mm') > dateEntry) && (moment(employee.date_egress).format('HH:mm') < dateEgress) && (employee.employee === parseInt(dni, 10)));
         // Validate if this employee has date egress before register another assistance to the same employee...
         assistancesWithoutDateEgress = assistance.find((employee) => !employee.date_egress && (employee.employee === parseInt(dni, 10)));
     }
     else {
-        // Validate if exists employees with date entry that the administrator is registering to this employee...
-        assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).format('HH:mm') <= dateEntry && moment(employee.date_egress).format('HH:mm') > dateEntry) && (employee.employee === parseInt(dni, 10)));
-        // Validate if exists registers with the time range that the administrator is registering to this employee...
-        assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && ((moment(employee.date_entry).format('HH:mm') < dateEntry)) && (moment(employee.date_egress).format('HH:mm') > dateEgress) && (employee.employee === parseInt(dni, 10)));
-        assistancesWithDateEntryDateEgress3 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).format('HH:mm') > dateEntry) && (moment(employee.date_egress).format('HH:mm') < dateEgress) && (employee.employee === parseInt(dni, 10)));
         // Validate if this employee has date egress before register another assistance to the same employee...
         assistancesWithoutDateEgress = assistance.find((employee) => !employee.date_egress && (employee.employee === parseInt(dni, 10)) && employee.id_assistance !== id_assistance);
-
     }
     // Warnings
     if (assistancesWithDateEntryDateEgress1) return 'Existen registros de que este empleado ya marcó el ingreso a la hora seleccionada o ya estuvo presente en este rango horario';
