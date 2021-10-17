@@ -31,6 +31,7 @@ export default function EditAssistance(props) {
 
     const updateAssistanceEmployee = () => {
         let validateMessage;
+        if (data.date_egress === 'Invalid date') data.date_egress = null;
         if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
         else {
             validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
