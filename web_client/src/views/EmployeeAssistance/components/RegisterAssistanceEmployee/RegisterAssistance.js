@@ -47,7 +47,7 @@ export default function RegisterAssistance() {
         let validateMessage;
         if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de egreso debe ser posterior a la hora de ingreso', 'warning');
         else {
-            validateMessage = validateHoursEgressEntry(data.date_entry, data.employee, data.date_egress, assistance, null, null);
+            validateMessage = validateHoursEgressEntry(data.date_entry, data.employee, data.date_egress, assistance, null, null, PORT());
             if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
             
             let actualDate;
