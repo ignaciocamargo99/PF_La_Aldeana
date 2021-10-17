@@ -1,6 +1,6 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
@@ -9,12 +9,14 @@ import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
+import validateHoursEgressEntry from '../validateHoursEgressEntry';
 
 const PORT = require('../../../../config');
 
 export default function RegisterAssistance(props) {
     const [ready, setReady] = useState(true);
     const [data, setData] = useState(props.assistance);
+    const [assistance, setAssistance] = useState([]);
 
     const load = (childData) => {
         setData(childData);
@@ -22,12 +24,19 @@ export default function RegisterAssistance(props) {
         else setReady(false);
     }
 
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/employeeAssistance`)
+            .then((response) => setAssistance(response.data))
+    }, []);
+
     const updateAssistanceEmployee = () => {
-        let actualDate;
-        if (data.date_entry >= data.date_egress) {
-            warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
-        }
+        let validateMessage;
+        if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
         else {
+            validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing);
+            if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
+            
+            let actualDate;
             actualDate = formattedDate(new Date());
             let dateEntry, dateEgress;
             dateEntry = actualDate + " " + data.date_entry;
@@ -36,7 +45,7 @@ export default function RegisterAssistance(props) {
 
             data.date_entry = dateEntry;
             data.date_egress = dateEgress;
-            
+
             if (data.date_entry && ready) {
                 loadingMessage('Modificando datos...');
                 Axios.put(`${PORT()}/api/employeeAssistance/${data.dni}`, data)
