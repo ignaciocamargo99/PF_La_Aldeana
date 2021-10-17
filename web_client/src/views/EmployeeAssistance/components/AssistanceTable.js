@@ -45,9 +45,17 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
-        aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
-        aux.lastDateEntry = moment(assistance.date_entry).add(3,'hours').format('YYYY-MM-DD HH:mm:ss')
+        if (PORT() === '') {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+            aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+            aux.lastDateEntry = moment(assistance.date_entry).add(3, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        }
+        aux.id_assistance = assistance.id_assistance;
         aux.editing = true;
         setEditing(aux);
         setIsEditing(true);
@@ -57,8 +65,14 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
-        aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        if (PORT() === '') {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        }
         aux.reading = true;
         setReading(aux);
         setIsReading(true);
@@ -112,8 +126,19 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).add(3, 'hours').format('HH:mm')}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date_egress ? moment(element.date_egress).add(3, 'hours').format('HH:mm') : '-'}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    {PORT() !== ''
+                                                        ? moment(element.date_entry).add(3, 'hours').format('HH:mm')
+                                                        : moment(element.date_entry).format('HH:mm')
+                                                    }
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    {(element.date_egress)
+                                                        ? (PORT() !== ''
+                                                            ? moment(element.date_egress).add(3, 'hours').format('HH:mm')
+                                                            : moment(element.date_egress).format('HH:mm'))
+                                                        : '-'}
+                                                </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     <ReadAssistanceButton assistance={element} read={readAssistance} />
                                                 </td>

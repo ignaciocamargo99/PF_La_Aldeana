@@ -1,19 +1,21 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
-import successMessage from '../../../../utils/SuccessMessages/successMessage';
-import warningMessage from "../../../../utils/WarningMessages/warningMessage";
-import DataAssistance from './DataAssistance';
 import formattedDate from '../../../../utils/formattedDate';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
+import successMessage from '../../../../utils/SuccessMessages/successMessage';
+import warningMessage from "../../../../utils/WarningMessages/warningMessage";
+import validateHoursEgressEntry from '../validateHoursEgressEntry';
+import DataAssistance from './DataAssistance';
 
 const PORT = require('../../../../config');
 
 export default function RegisterAssistance() {
     const [ready, setReady] = useState(false);
+    const [assistance, setAssistance] = useState([]);
     const [employeeAux, setEmployeeAux] = useState([]);
     const [data, setData] = useState({ date_entry: null, date_egress: null, employee: null, editing: false, reading: false });
 
@@ -21,7 +23,6 @@ export default function RegisterAssistance() {
 
     const load = (childData) => {
         setData(childData);
-        console.log(data);
         if (data.date_entry && data.employee) {
             if (data.date_egress) {
                 if (data.date_entry < data.date_egress) setReady(true);
@@ -35,15 +36,21 @@ export default function RegisterAssistance() {
     useEffect(() => {
         Axios.get(`${PORT()}/api/employees`)
             .then((response) => setEmployeeAux(response.data))
-    }, [ready]);
+    }, [ready === true]);
+
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/employeeAssistance`)
+            .then((response) => setAssistance(response.data))
+    }, []);
 
     const registerNewAssistanceEmployee = () => {
-        let actualDate
-        if (data.date_entry >= data.date_egress) {
-            warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
-        }
+        let validateMessage;
+        if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de egreso debe ser posterior a la hora de ingreso', 'warning');
         else {
-            console.log(data)
+            validateMessage = validateHoursEgressEntry(data.date_entry, data.employee, data.date_egress, assistance, null, null);
+            if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
+            
+            let actualDate;
             actualDate = formattedDate(new Date());
             let dateEntry, dateEgress;
             dateEntry = actualDate + " " + data.date_entry;

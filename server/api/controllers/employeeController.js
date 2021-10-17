@@ -104,7 +104,7 @@ async function newAssistanceEmployee(req, res) {
 // HTTP: GET
 async function getEmployeeAssistance(req, res) {
     try {
-        const result = await readEmployeeAssistance(req.params.dni);
+        const result = await readEmployeeAssistance();
         res.send(result)
     }
     catch (e) {
