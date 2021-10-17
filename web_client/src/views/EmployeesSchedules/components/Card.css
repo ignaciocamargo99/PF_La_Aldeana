@@ -1,0 +1,19 @@
+.card {
+    margin: 0em;
+    cursor: pointer;
+    height: 8em;
+}
+
+.card:hover {
+    -webkit-filter: brightness(90%);
+    transition: all .5s ease;
+}
+
+.bg-light-blue {
+    background-color: #A5DEF9 !important;
+}
+
+.cards-container {
+    height: 20em;
+    justify-content: space-evenly;
+}

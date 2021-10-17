@@ -6,7 +6,7 @@ import logo from '../images/logo.png';
 import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile, faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 const cookies = new Cookies();
 
@@ -167,6 +167,9 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/employees">
                                 <FontAwesomeIcon icon={faList} /> Ver empleados
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/employeesSchedules">
+                                <FontAwesomeIcon icon={faCalendarAlt} /> Grilla de horarios
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
