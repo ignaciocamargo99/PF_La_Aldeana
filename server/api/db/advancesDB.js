@@ -57,7 +57,7 @@ const advancesDeleteDB = (dniEmployee, date) => {
 
 const advancesCreateDB = (newAdvance) => {
     const sqlInsert = 'INSERT INTO ADVANCES  VALUES (?, ?, ?, ?, ?)';
-    const sqlInsertInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?)";
+    const sqlInsertInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
     let { dniEmployee, date, amount, installments, months } = newAdvance;
     if (dniEmployee && date && amount && installments && months && dniEmployee <= 99999999 && dniEmployee >= 10000000) {
         dniEmployee = newAdvance.dniEmployee;
@@ -82,7 +82,7 @@ const advancesCreateDB = (newAdvance) => {
                 });
 
                 for (var i = 0; i < installments.length; i++) {
-                    db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount,  installments[i].label], (error) => {
+                    db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount,  installments[i].label, 0], (error) => {
                         if (error) {
                             db.rollback(()=> reject(error));
                         }
@@ -153,4 +153,37 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
     });
 };
 
-module.exports = { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB };
+const employeeGetDB = () => {
+    const sqlSelect = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES LEFT JOIN ADVANCES a ON a.nroDNI = dni WHERE EMPLOYEES.active = 1 and a.active = 1 ORDER BY last_name";
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else {
+
+                    let aux = [];
+                    
+                    result?.forEach((employee, i)=>{
+                        if (!aux.some(item => item.dni === employee.dni)){
+                            aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 1})
+                        } else {
+                            aux?.forEach(element => {
+                                if (element.dni === employee.dni){
+                                    element.advance += 1;
+                                }
+                            });
+                        }
+                    });
+
+                    resolve(aux);
+                }
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB, employeeGetDB };

@@ -3,6 +3,7 @@ import Axios from 'axios';
 import BeShowed from "../../../common/BeShowed";
 import UploadByName from "./UploadByName";
 import formattedDate from "../../../utils/formattedDate";
+import warningMessage from "../../../utils/WarningMessages/warningMessage";
 
 const PORT = require('../../../config');
 
@@ -37,7 +38,7 @@ export default function DataAdvances(props) {
     }
 
     useEffect(()=>{
-        Axios.get(PORT() + `/api/employees`)
+        Axios.get(PORT() + `/api/employeesadvances`)
         .then((response) => {
             response.data.forEach((person)=>{
                 person.name += ' ';
@@ -62,6 +63,9 @@ export default function DataAdvances(props) {
         }
         else {
             setIsValidClass("form-control is-valid");
+            employees?.forEach((e)=>{
+                if (e.dni = employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
+            });
             data.dniEmployee = employee;
             props.load(data);
         }

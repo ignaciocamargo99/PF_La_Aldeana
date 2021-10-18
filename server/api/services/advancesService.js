@@ -1,4 +1,4 @@
-const { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB } = require('../db/advancesDB');
+const { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB, employeeGetDB } = require('../db/advancesDB');
 
 const readAdvances = async () => {
     try {
@@ -52,4 +52,14 @@ const modifyAdvances = async (nroDNI, dateOld, updateAdvance) => {
     };
 };
 
-module.exports = { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances };
+const readEmployee = async () => {
+    try {
+        let res = await employeeGetDB();
+        return res;
+    }
+    catch(error) {
+        throw Error(error)
+    };
+};
+
+module.exports = { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances, readEmployee };

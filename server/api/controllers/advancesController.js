@@ -1,4 +1,4 @@
-const { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances } = require('../services/advancesService');
+const { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances, readEmployee } = require('../services/advancesService');
 
 // HTTP: GET
 async function getAdvances(req, res) {
@@ -84,4 +84,18 @@ async function updateAdvances(req, res) {
     }
 }
 
-module.exports = { getAdvances, getInstallments, deleteAdvances, newAdvances, updateAdvances }
+// HTTP: GET
+async function getEmployee(req, res) {
+    try {
+        const result = await readEmployee();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getAdvances, getInstallments, deleteAdvances, newAdvances, updateAdvances, getEmployee }
