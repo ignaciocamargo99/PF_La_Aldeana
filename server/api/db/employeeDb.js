@@ -138,16 +138,22 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
 
 
 const employeeAssistanceGetDB = () => {
-    const sqlSelect = `SELECT ae.*, e.name, e.last_name
-                        FROM ASSISTANCE_EMPLOYEES ae
-                        JOIN EMPLOYEES e ON ae.employee = e.dni
-                        WHERE DAY(ae.date_entry) = DAY(CURRENT_DATE())`;
+    const hourNow = new Date().getHours();
+    const dayNow = new Date().getDate();
+    const currentDay = dayNow;
+    if(hourNow >= 21 && hourNow <= 23) currentDay = dayNow - 1;
+
+    const sqlSelect = `
+            SELECT ae.*, e.name, e.last_name
+            FROM ASSISTANCE_EMPLOYEES ae
+            JOIN EMPLOYEES e ON ae.employee = e.dni
+            WHERE DAY(ae.date_entry) = ?`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect, (error, result) => {
+            db.query(sqlSelect,[currentDay], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
