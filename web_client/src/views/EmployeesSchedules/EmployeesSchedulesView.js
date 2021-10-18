@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Card from './components/Card';
 import NewScheduleModal from './components/NewScheduleModal';
 import './EmployeesSchedulesView.css';
+import ScheduleDays from './components/ScheduleDays';
 
 const EmployeesSchedulesView = () => {
     const [showNewScheduleModal, setShowNewScheduleModal] = useState(false);
@@ -33,6 +34,7 @@ const EmployeesSchedulesView = () => {
                     </div>
                 </div>
                 <NewScheduleModal showModal={showNewScheduleModal} setShowModal={setShowNewScheduleModal} />
+                <ScheduleDays days={[1,2,3,4,5,6,7,1,2,3]}/>
             </div>
         </>
     )
