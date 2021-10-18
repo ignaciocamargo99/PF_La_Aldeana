@@ -4,6 +4,9 @@
     <Compile Update="src\utils\CaptureForm\CaptureForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="src\views\Employees\frmCaptureFingerprint.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="src\views\Employees\frmEditEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
