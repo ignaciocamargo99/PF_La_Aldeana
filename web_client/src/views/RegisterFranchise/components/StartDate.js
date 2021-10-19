@@ -24,7 +24,7 @@ export default function StartDate (props) {
             data.start_date = "";
             props.load(data);
         }
-    }, [date]);
+    }, [date, props]);
 
     return (
         <div className="formRow">
