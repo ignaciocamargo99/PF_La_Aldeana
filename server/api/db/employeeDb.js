@@ -130,22 +130,32 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
 
 
 const employeeAssistanceGetDB = () => {
-    const hourNow = new Date().getHours();
-    const dayNow = new Date().getDate();
-    const currentDay = dayNow;
-    if(hourNow >= 21 && hourNow <= 23) currentDay = dayNow - 1;
+    let yearNow = new Date().getFullYear();
+    let monthNow = new Date().getMonth() + 1;
+    let hourNow = new Date().getHours();
+    let dayNow = new Date().getDate();
+    let currentDay = dayNow;
+
+    if (hourNow >= 21 && hourNow <= 23) currentDay = dayNow - 1;
+
+    let dateFormattedNow = yearNow + '-' + monthNow + '-' + currentDay;
 
     const sqlSelect = `
             SELECT ae.*, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
             JOIN EMPLOYEES e ON ae.employee = e.dni
-            WHERE DAY(ae.date_entry) = ?`;
+            WHERE (CAST(ae.date_entry as DATE) = ?)
+            UNION
+            SELECT ae.*, e.name, e.last_name
+            FROM ASSISTANCE_EMPLOYEES ae
+            JOIN EMPLOYEES e ON ae.employee = e.dni
+            WHERE (CAST(ae.date_entry AS DATE) = CURDATE())`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect,[currentDay], (error, result) => {
+            db.query(sqlSelect, [dateFormattedNow], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
@@ -182,7 +192,7 @@ const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
     const sqlUpdate = `UPDATE ASSISTANCE_EMPLOYEES SET date_entry = ?, date_egress = ?
                         WHERE employee = ? AND date_entry = ?`;
 
-    let { date_entry, date_egress, dni , lastDateEntry} = updateAssistanceEmployee;
+    let { date_entry, date_egress, dni, lastDateEntry } = updateAssistanceEmployee;
 
     if (!date_entry && !dniEmployee) {
         throw Error('Faltan datos obligatorios');
