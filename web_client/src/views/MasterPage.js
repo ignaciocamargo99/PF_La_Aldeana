@@ -22,6 +22,7 @@ import RegisterEmployee from './Employees/components/RegisterEmployee';
 import Licenses from './Licenses/components/Licenses';
 import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
 import RegisterAssistance from './EmployeeAssistance/components/RegisterAssistanceEmployee/RegisterAssistance';
+import EmployeesSchedulesView from './EmployeesSchedules/EmployeesSchedulesView';
 
 const cookies = new Cookies();
 
@@ -44,6 +45,7 @@ export default function App() {
             <Route path='/app/production' component={RegisterProductionView}></Route>
             <Route path='/app/salesReport' component={SalesReport}></Route>
             <Route path='/app/employees' component={ListEmployees}></Route>
+            <Route path='/app/employeesSchedules' component={EmployeesSchedulesView}></Route>
             <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
             <Route path='/app/licenses' component={Licenses}></Route>
             <Route path='/app/assistanceEmployees' component={ListEmployeesAssistance}></Route>

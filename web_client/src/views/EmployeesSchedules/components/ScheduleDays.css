@@ -1,0 +1,22 @@
+.item{
+    color: #F68634;
+    box-shadow: 0px, 2px, 4px #4a4c4e;
+    border-radius: 5px;
+    padding: 0.3em 0.5em;
+    background-color: #A5DEF9;
+    text-align: center;
+    margin: 5px;
+    border: 2px solid transparent;
+}
+
+.container-Items{
+    border: 1px dotted gray;
+    margin: 0;
+    list-style: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 3rem;
+
+    display: inline-flex;
+    flex-direction: row;
+}
