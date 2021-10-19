@@ -1,4 +1,52 @@
 const pool = require('../../config/connection');
+function formattedDate (dateState, quantityMonth, quantityDay) {
+    var year = dateState.getFullYear();
+    var month;
+    if (quantityMonth) {
+        month = dateState.getMonth() + quantityMonth;
+    } else month = dateState.getMonth() + 1;
+
+
+    var day = dateState.getDate();
+    if (quantityDay) {
+        day = dateState.getDate() + quantityDay;
+        if (day < 1){
+            day = dateState.getDate();
+            month --;
+        }
+    } else day = dateState.getDate();
+
+    
+
+    if (month > 12){
+        month = month - 12;
+        year ++;
+    }
+    if (month < 1){
+        month = month + 12;
+        year --;
+    }
+    var dateFormatted = year + "-" + month + "-" + day;
+
+    if (dateFormatted.toString().length === 9) {
+        if(month.toString().length === 1)
+        {
+            var monthFormatted = "0" + month;
+            return dateFormatted = year + "-" + monthFormatted + "-" + day;
+        }
+        else if(day.toString().length === 1){
+            var dayFormatted = "0" + day;
+            return dateFormatted = year + "-" + month + "-" + dayFormatted;    
+        }
+    }
+    else if(dateFormatted.toString().length === 8) {
+        monthFormatted = "0" + month;
+        dayFormatted = "0" + day;
+        return dateFormatted = year + "-" + monthFormatted + "-" + dayFormatted;
+    }
+
+    return dateFormatted;
+}
 
 const advancesGetDB = () => {
     const sqlSelect = "SELECT a.nroDNI, a.`date`, a.amount, a.pay, e.name, e.last_name  FROM ADVANCES a  LEFT JOIN EMPLOYEES e ON a.nroDNI = e.dni WHERE  a.active = 1 ORDER BY  a.`date` DESC";
@@ -104,7 +152,7 @@ const advancesCreateDB = (newAdvance) => {
 const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
     const sqlUpdate = "UPDATE ADVANCES a SET a.amount = ? WHERE a.nroDNI = ? and a.`date` = ?";
     const sqlDelete = "DELETE FROM INSTALLMENTS WHERE nroDNI = ? and `date` = ?";
-    const sqlUpdateInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?)";
+    const sqlUpdateInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
 
     let { dniEmployeeOld, date, amount, pay, name, last_name, title, dniEmployee, installments } = updateAdvances;
     if (dniEmployee && amount && installments && date &&  dniEmployee <= 99999999 && dniEmployee >= 10000000) {
@@ -135,12 +183,14 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
                 });
 
                 for (var i = 0; i < installments.length; i++) {
-                    db.query(sqlUpdateInstallments, [parseInt(nroDNI), date, installments[i].month, installments[i].amount,  installments[i].label], (error) => {
+                    db.query(sqlUpdateInstallments, [parseInt(nroDNI), date, formattedDate(new Date(installments[i].month)), installments[i].amount,  installments[i].label, installments[i].pay], (error) => {
                         if (error) {
+                            console.log(error)
                             db.rollback(()=> reject(error));
                         }
                         db.commit((error) => {
                             if (error) {
+                                console.log(error)
                                 return db.rollback(() => reject(error));
                             }
                             else resolve();
@@ -154,32 +204,41 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
 };
 
 const employeeGetDB = () => {
-    const sqlSelect = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES LEFT JOIN ADVANCES a ON a.nroDNI = dni WHERE EMPLOYEES.active = 1 and a.active = 1 ORDER BY last_name";
+
+    const sqlSelect = `SELECT dni, name, last_name
+                    FROM EMPLOYEES WHERE active = 1 ORDER BY last_name`;
+    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES LEFT JOIN ADVANCES a ON a.nroDNI = dni WHERE EMPLOYEES.active = 1 and a.active = 1 ORDER BY last_name";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect, (error, result) => {
+            db.query(sqlSelect, (error, res) => {
                 if (error) reject(error);
                 else {
 
-                    let aux = [];
-                    
-                    result?.forEach((employee, i)=>{
-                        if (!aux.some(item => item.dni === employee.dni)){
-                            aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 1})
-                        } else {
-                            aux?.forEach(element => {
-                                if (element.dni === employee.dni){
-                                    element.advance += 1;
-                                }
-                            });
-                        }
-                    });
+                    db.query(sqlSelect2, (error, result) => {
+                        if (error) reject(error);
+                            else {
+                                let aux = [];
+                                res?.forEach((employee, i)=>{aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 0})});
+                                
+                                result?.forEach((employee, i)=>{
+                                    if (!aux.some(item => item.dni === employee.dni)){
+                                        aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 1})
+                                    } else {
+                                        aux?.forEach(element => {
+                                            if (element.dni === employee.dni){
+                                                element.advance += 1;
+                                            }
+                                        });
+                                    }
+                                });
 
-                    resolve(aux);
-                }
+                                resolve(aux);
+                            }
+                        });
+                    }
             });
             db.release();
         })

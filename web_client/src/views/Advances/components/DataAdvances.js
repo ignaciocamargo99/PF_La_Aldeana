@@ -11,7 +11,7 @@ export default function DataAdvances(props) {
     const maxDate = formattedDate(new Date(), 2);
     const minDate = formattedDate(new Date(), 0,-14);
     const startDate = formattedDate(new Date());
-    const startFirstMonth = formattedDate(new Date(),2);
+    let startFirstMonth = formattedDate(new Date(),2);
     const [maxFirstMonth, setMaxFirstMonth] = useState(formattedDate(new Date(), 6));
     const inputEmployee = useRef(null);
     const inputDate = useRef(null);
@@ -34,6 +34,7 @@ export default function DataAdvances(props) {
     }
 
     const onChangeFirstMonth = () => {
+        console.log(inputFirstMonth.current.value);
         if (inputFirstMonth) setFirstMonth(inputFirstMonth.current.value);
     }
 
@@ -50,8 +51,9 @@ export default function DataAdvances(props) {
         .catch((err) => {
             console.log(err)
         })
+
         inputFirstMonth.current.value = startFirstMonth;
-    }, [startFirstMonth, data, props]);
+    }, [true]);
 
     //employee
     useEffect(() => {
@@ -67,7 +69,7 @@ export default function DataAdvances(props) {
             setIsValidClass("form-control is-valid");
             if (data.dniEmployee !== employee){
                 employees?.forEach((e)=>{
-                    if (e.dni = employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
+                    if (e.dni === employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
                 });
             }
             data.dniEmployee = employee;
@@ -97,32 +99,54 @@ export default function DataAdvances(props) {
     }, [startDate, date, data, props]);
 
     //FirstMonth
+    const [load, setLoad] = useState(false);
+
+    useEffect(()=>{
+        if (!load) {
+            if(props.data.reading || props.data.editing){
+                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
+                    .then((response) => {
+                        props.data.installments[0].month = formattedDate(new Date(response.data[0].month));
+                        inputFirstMonth.current.value = formattedDate(new Date(response.data[0].month));
+                        data.firstMonth = formattedDate(new Date(response.data[0].month));
+                        props.load(data);
+                        setFirstMonth(formattedDate(new Date(response.data[0].month)))
+                    })
+                    .catch((error) => console.log(error));
+                }
+            setLoad(true);
+        }
+    }, [load, props.data.editing, props.data.reading]);
+
     useEffect(() => {
-        if (!props.data.editing && !inputFirstMonth.current.value) {
-            inputFirstMonth.current.value = startFirstMonth;
-            setFirstMonth(inputFirstMonth.current.value);
-            data.firstMonth = inputFirstMonth.current.value;
-            props.load(data);
-            setIsValidClassDate("form-control");
-        }
-        else if (!inputFirstMonth.current.value) {
-            inputFirstMonth.current.value = data.firstMonth;
-            setFirstMonth(inputFirstMonth.current.value);
-            setIsValidClassDate("form-control");
-        }
-        else {
-            if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
-                data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
-                props.load(data);
-                setIsValidClassDate("form-control");
-            } else {
-                setIsValidClassFirstMonth("form-control is-valid");
-                data.installments[0].month = data.firstMonth;
+        if (load){
+            if (!props.data.editing && !inputFirstMonth.current.value) {
+                inputFirstMonth.current.value = startFirstMonth;
+                setFirstMonth(inputFirstMonth.current.value);
                 data.firstMonth = inputFirstMonth.current.value;
                 props.load(data);
+                setIsValidClassDate("form-control");
+            }
+            else if (!inputFirstMonth.current.value) {
+                inputFirstMonth.current.value = data.firstMonth;
+                setFirstMonth(inputFirstMonth.current.value);
+                setIsValidClassDate("form-control");
+            }
+            else {
+                if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
+                    data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
+                    props.load(data);
+                    setIsValidClassDate("form-control");
+                } else {
+                    setIsValidClassFirstMonth("form-control is-valid");
+                    if (data.firstMonth !== inputFirstMonth.current.value && firstMonth){
+                        data.installments[0].month = data.firstMonth;
+                        props.load(data);
+                    }
+                }
             }
         }
-    }, [startFirstMonth, firstMonth, data, props, props.data.installments[0].month]);
+    }, [startFirstMonth, firstMonth, data, props, props.data.installments[0].month, load]);
 
     return (
         <>

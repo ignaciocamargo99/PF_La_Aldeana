@@ -15,10 +15,13 @@ import ReadAdvancesButton from "./ReadAdvances/ReadAdvancesButton";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
+import Pagination from '../../../common/TablePagination/Pagination';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../../config');
 
 export default function AdvancesTable() {
+
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
@@ -31,6 +34,11 @@ export default function AdvancesTable() {
             .then((response) => {
                 handlerLoadingSpinner();
                 let auxAdvances = response.data;
+                auxAdvances.forEach((person)=>{
+                    person.fullName = person.last_name;
+                    person.fullName += ', ';
+                    person.fullName += person.name;
+                });
                 setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
@@ -75,35 +83,110 @@ export default function AdvancesTable() {
         warningMessage('Atención','Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
     }
 
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [elementsPerPage] = useState(10);
+    const [filteredElements, setFilteredElements] = useState([]);
+    const [listTable, setListTable] = useState([]);
+    const [nameSearch, setNameSearch] = useState('');
+
+    useEffect(() => {
+        if (advances){
+            handlerLoadingSpinner();
+
+            setListTable(advances);
+        }
+    }, [advances]);
+
+    useEffect(() => {
+        if (nameSearch !== "") {
+            const filteredElementsList = listTable.filter((elem) => {
+                return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
+            });
+
+            setFilteredElements(filteredElementsList);
+        } else {
+            setFilteredElements(listTable);
+        }
+    }, [nameSearch, listTable]);
+
+    const columnsHeaders = [
+        {
+            name: 'DNI',
+            width: '10%'
+        },
+        {
+            name: 'Empleado',
+            width: '20%'
+        },
+        {
+            name: 'Fecha de adelanto',
+            width: '10%'
+        },
+        {
+            name: 'Monto total',
+            width: '15%'
+        },
+        {
+            name: 'Pagado hasta la fecha',
+            width: '15%'
+        },
+        {
+            name: 'Ver',
+            width: '10%'
+        },
+        {
+            name: 'Editar',
+            width: '10%'
+        },
+        {
+            name: 'Eliminar',
+            width: '10%'
+        }
+    ];
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    // Get page elements
+    const indexOfLastElement = currentPage * elementsPerPage;
+    const indexOfFirstElement = indexOfLastElement - elementsPerPage;
+    const currentElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
+
     return (
         <>
             {isLoadingSpinner && (
-                <LoaderSpinner color="primary" loading="Cargando..." />
+                <LoaderSpinner color="primary" loading="Cargando adelantos" />
             )}
+
             {!isLoadingSpinner && (
+                <>
                 <BeShowed show={!isEditing && !isReading}>
-                    <Table>
-                        <HeaderTable
-                            th={
-                                <>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Empleado</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de adelanto</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Monto total</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Pagado hasta la fecha</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                </>
-                            }
-                        />
-                        <BodyTable
-                            tbody={advances?.map((element, i) => {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
+                    <div className="formRow title-searcher">
+                        <h4 className="text-secondary">Adelantos</h4>
+                        <div className="search-input">
+                            <FontAwesomeIcon icon={faSearch} />
+                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className="table-responsive-md">
+                        <table className="table table-control table-hover" >
+                            <thead>
+                                <tr>
+                                    {columnsHeaders?.map((element, i) => {
+                                        return (
+                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                {element.name}
+                                            </th>
+                                        )
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentElements?.map((element, i) => {
+                                    return (
+                                        <tr key={i}>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}, {element.name}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date).format('DD/MM/YYYY')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
@@ -122,12 +205,14 @@ export default function AdvancesTable() {
                                                 <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
                                             </td>
                                         </tr>
-                                    </tbody>
-                                )
-                            })}
-                        />
-                    </Table>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                 </BeShowed>
+                </>
             )}
             <BeShowed show={isEditing}>
                 <EditAdvances cancel={cancelEditAdvances} advances={editing} />

@@ -20,7 +20,8 @@ export default function EditAdvances(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months)) setReady(true);
+        //console.log(data.dniEmployee , data.date , data.amount , data.installments , data.months , dataBack.amount , data.amount , dataBack.months , data.months , dataBack.firstMonth , data.firstMonth)
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth)) setReady(true);
         else setReady(false);
     }
     const loadBack = (childData) => {
@@ -28,7 +29,7 @@ export default function EditAdvances(props) {
     }
 
     const updateAdvances = () => {
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && ready && dataBack !== data) {
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && ready) {
             Axios.put(`${PORT()}/api/advances?dniEmployee=${data.nroDNI}&date=${data.dateOld}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del adelanto', 'success')

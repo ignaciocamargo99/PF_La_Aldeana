@@ -20,7 +20,7 @@ export default function RegisterAdvances() {
 
     const load = (childData) => {
         //if (new Date(data.firstMonth).getMonth() != new Date(data.installments[0].month).getMonth()) setFirst(new Date(data.installments[0].month).getMonth());
-        console.log(new Date(data.firstMonth).getMonth())
+        //console.log(new Date(data.firstMonth).getMonth())
         childData.installments[0].month = childData.firstMonth;
         setData(childData);
         

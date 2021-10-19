@@ -5,6 +5,7 @@ import setInstallmentsMonths from "./setInstallmentsMonths";
 import Axios from "axios";
 import InstallmentTable from "./InstallmentsTable";
 import formattedDate from "../../../utils/formattedDate";
+import dateText from "../../../utils/DateFormat/dateText";
 
 const PORT = require('../../../config');
 
@@ -34,7 +35,8 @@ export default function ExtraDataAdvances(props) {
                         setAmountTotal(data.amount);
                         setMonths(response.data.length)
                         inputMonths.current.value = response.data.length;
-                        console.log(response.data, data.firstMonth, data.months, response.data.length)
+                        props.loadBack({amount: data.amount, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
+                        //console.log(response.data, data.firstMonth, data.months, response.data.length)
                     })
                     .catch((error) => console.log(error));
                 }
@@ -43,7 +45,7 @@ export default function ExtraDataAdvances(props) {
             setLoad(true);
         }
     }, [data, load, props.data.editing, props.data.reading]);
-
+/*
     useEffect(()=>{
         if (option[0].nroDNI){
             props.loadBack({amount: data.amount, installments: option, months: option.length, firstMonth: option[0].month});
@@ -53,7 +55,7 @@ export default function ExtraDataAdvances(props) {
         }
         //console.log(option, data)
     }, [option, data, props]);
-
+*/
     const handleMonths = () => {
         setMonths(inputMonths.current.value);
     }
@@ -162,9 +164,6 @@ export default function ExtraDataAdvances(props) {
                         <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min="1" max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months} />
                     </BeShowed>
                 </div>
-            </div>
-            <div className="formRow">
-                <small className="text-muted">Por defecto el monto de cada cuota sera ${parseInt((amountTotal - data.pay)/months) > 0?parseInt((amountTotal - data.pay)/months): 0}, a excepción de la última que tendra el sobrante (en caso de existir).</small>
             </div>
             <hr></hr>
             <BeShowed show={option[0].amount > 0}>
