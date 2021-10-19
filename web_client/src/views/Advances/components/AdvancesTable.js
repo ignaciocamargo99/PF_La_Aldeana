@@ -140,7 +140,7 @@ export default function AdvancesTable() {
             width: '10%'
         },
         {
-            name: 'Eliminar',
+            name: 'Cancelar',
             width: '10%'
         }
     ];
