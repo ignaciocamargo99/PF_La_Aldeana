@@ -37,6 +37,7 @@ export default function DataAdvances(props) {
         if (inputFirstMonth) setFirstMonth(inputFirstMonth.current.value);
     }
 
+    //find employees with amount of advances
     useEffect(()=>{
         Axios.get(PORT() + `/api/employeesadvances`)
         .then((response) => {
@@ -52,6 +53,7 @@ export default function DataAdvances(props) {
         inputFirstMonth.current.value = startFirstMonth;
     }, [startFirstMonth, data, props]);
 
+    //employee
     useEffect(() => {
         if (!employee) {
             setIsValidClass("form-control");

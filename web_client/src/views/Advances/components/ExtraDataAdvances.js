@@ -33,6 +33,7 @@ export default function ExtraDataAdvances(props) {
                         setOption(response.data);
                         setAmountTotal(data.amount);
                         setMonths(response.data.length)
+                        inputMonths.current.value = response.data.length;
                         console.log(response.data, data.firstMonth, data.months, response.data.length)
                     })
                     .catch((error) => console.log(error));
