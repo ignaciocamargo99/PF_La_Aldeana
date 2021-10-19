@@ -35,6 +35,11 @@ namespace desktop_employee.src.views.Employees
             this.lblApellido = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
+            this.btnCapturarPD = new System.Windows.Forms.Button();
+            this.btnAceptar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.txtDedoPD = new System.Windows.Forms.TextBox();
+            this.lblDedoPD = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtDni
@@ -85,11 +90,62 @@ namespace desktop_employee.src.views.Employees
             this.txtApellido.Size = new System.Drawing.Size(100, 23);
             this.txtApellido.TabIndex = 5;
             // 
+            // btnCapturarPD
+            // 
+            this.btnCapturarPD.Location = new System.Drawing.Point(376, 292);
+            this.btnCapturarPD.Name = "btnCapturarPD";
+            this.btnCapturarPD.Size = new System.Drawing.Size(154, 23);
+            this.btnCapturarPD.TabIndex = 6;
+            this.btnCapturarPD.Text = "Capturar Huella";
+            this.btnCapturarPD.UseVisualStyleBackColor = true;
+            this.btnCapturarPD.Click += new System.EventHandler(this.btnCapturarPD_Click);
+            // 
+            // btnAceptar
+            // 
+            this.btnAceptar.Enabled = false;
+            this.btnAceptar.Location = new System.Drawing.Point(540, 408);
+            this.btnAceptar.Name = "btnAceptar";
+            this.btnAceptar.Size = new System.Drawing.Size(75, 23);
+            this.btnAceptar.TabIndex = 7;
+            this.btnAceptar.Text = "Aceptar";
+            this.btnAceptar.UseVisualStyleBackColor = true;
+            this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_ClickAsync);
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Location = new System.Drawing.Point(636, 408);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.TabIndex = 8;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // txtDedoPD
+            // 
+            this.txtDedoPD.Location = new System.Drawing.Point(243, 292);
+            this.txtDedoPD.Name = "txtDedoPD";
+            this.txtDedoPD.Size = new System.Drawing.Size(116, 23);
+            this.txtDedoPD.TabIndex = 9;
+            // 
+            // lblDedoPD
+            // 
+            this.lblDedoPD.AutoSize = true;
+            this.lblDedoPD.Location = new System.Drawing.Point(114, 300);
+            this.lblDedoPD.Name = "lblDedoPD";
+            this.lblDedoPD.Size = new System.Drawing.Size(119, 15);
+            this.lblDedoPD.TabIndex = 10;
+            this.lblDedoPD.Text = "Dedo Pulgar Derecho";
+            // 
             // frmEditEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(811, 460);
+            this.Controls.Add(this.lblDedoPD);
+            this.Controls.Add(this.txtDedoPD);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.btnAceptar);
+            this.Controls.Add(this.btnCapturarPD);
             this.Controls.Add(this.txtApellido);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.lblApellido);
@@ -97,7 +153,7 @@ namespace desktop_employee.src.views.Employees
             this.Controls.Add(this.lblDni);
             this.Controls.Add(this.txtDni);
             this.Name = "frmEditEmployee";
-            this.Text = "frmEditEmployee";
+            this.Text = "Dedo Pulgar Derecho";
             this.Load += new System.EventHandler(this.frmEditEmployee_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -112,5 +168,10 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.Label lblApellido;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtApellido;
+        private System.Windows.Forms.Button btnCapturarPD;
+        private System.Windows.Forms.Button btnAceptar;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.TextBox txtDedoPD;
+        private System.Windows.Forms.Label lblDedoPD;
     }
 }

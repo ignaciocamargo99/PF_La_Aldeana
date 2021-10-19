@@ -26,4 +26,4 @@ C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\bin\Debug
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\bin\Debug\net5.0-windows\DPFPShrNET.dll
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\bin\Debug\net5.0-windows\DPFPVerNET.dll
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.CaptureForm.resources
-C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmCapturarHuella.resources
+C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmCaptureFingerPrint.resources
