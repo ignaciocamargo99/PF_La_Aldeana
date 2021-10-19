@@ -63,9 +63,11 @@ export default function DataAdvances(props) {
         }
         else {
             setIsValidClass("form-control is-valid");
-            employees?.forEach((e)=>{
-                if (e.dni = employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
-            });
+            if (data.dniEmployee !== employee){
+                employees?.forEach((e)=>{
+                    if (e.dni = employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
+                });
+            }
             data.dniEmployee = employee;
             props.load(data);
         }
