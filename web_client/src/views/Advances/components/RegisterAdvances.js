@@ -1,6 +1,6 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Breadcrumb from '../../../common/Breadcrumb';
 import Buttons from "../../../common/Buttons";
 import displayError from "../../../utils/ErrorMessages/displayError";
@@ -16,15 +16,15 @@ export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
     const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{month: formattedDate(new Date()), amount: 0, label: "", pay: 0}], months: null, pay: null, firstMonth: formattedDate(new Date()), editing: false, reading: false });
     const cancelRegisterAdvances = () => window.location.reload();
-    const [first, setFirst] = useState(data.firstMonth);
+    const [first/*, setFirst*/] = useState(data.firstMonth);
 
     const load = (childData) => {
         //if (new Date(data.firstMonth).getMonth() != new Date(data.installments[0].month).getMonth()) setFirst(new Date(data.installments[0].month).getMonth());
         //console.log(new Date(data.firstMonth).getMonth())
-        childData.installments[0].month = childData.firstMonth;
+        //childData.installments[0].month = childData.firstMonth;
         setData(childData);
-        
-        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months) setReady(true);
+        console.log(childData)
+        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && data.date < data.firstMonth) setReady(true);
         else setReady(false);
     }
 

@@ -1,11 +1,7 @@
 import Axios from 'axios';
-import moment from 'moment';
 import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
-import BodyTable from "../../../common/Table/BodyTable";
-import HeaderTable from "../../../common/Table/HeaderTable";
-import Table from '../../../common/Table/Table';
 import DeleteAdvancesButton from './DeleteAdvancesButton';
 import backupAdvances from './EditAdvances/backupAdvances';
 import EditAdvances from "./EditAdvances/EditAdvances";
@@ -17,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import Pagination from '../../../common/TablePagination/Pagination';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import formattedDateArg from '../../../utils/DateFormat/formattedDateArg';
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
 const PORT = require('../../../config');
 
@@ -79,10 +77,8 @@ export default function AdvancesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
-    const handleEdit = () => {
-        warningMessage('Atención','Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
-    }
-
+    const handleEdit = () => warningMessage('Atención','Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
+    const handleDelete = () => warningMessage('Atención','Plazo de cancelación vencido. Solo podrá cancelar el adelanto antes del pago de la primer cuota.', 'warning');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
@@ -187,7 +183,7 @@ export default function AdvancesTable() {
                                         <tr key={i}>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date).format('DD/MM/YYYY')}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{formattedDateArg(new Date(element.date))}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
@@ -197,12 +193,18 @@ export default function AdvancesTable() {
                                                 <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
                                                     <EditAdvancesButton advances={element} edit={editAdvances} />
                                                 </BeShowed>
-                                                <BeShowed show={new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                    <button id='editAdvancesButton' type="button" className="sendDelete" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                                                <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                    <button id='editAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
                                                 </BeShowed>
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+
+                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                    <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+                                                </BeShowed>
+                                                <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                    <button id='deleteAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                                                </BeShowed>
                                             </td>
                                         </tr>
                                     )

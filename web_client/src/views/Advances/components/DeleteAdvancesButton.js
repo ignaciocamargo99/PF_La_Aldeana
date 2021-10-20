@@ -18,10 +18,17 @@ export default function DeleteAdvancesButton (props) {
         console.log(date)
         Axios.delete(PORT() + `/api/advances?dniEmployee=${props.advances.nroDNI}&date=${date}`)
             .then((response) => {
-                props.deleteEmployee(props.index);
-                swal("Adelanto dado de baja", {
-                    icon: "success",
-                });
+                if (response.data.Ok){
+                    props.deleteEmployee(props.index);
+                    swal("Adelanto dado de baja", {
+                        icon: "success",
+                    });
+                } else {
+                    swal({
+                        title: "Falló al dar de baja",
+                        icon: "warning",
+                    });
+                }
             })
             .catch((error) => {
                 console.log(error);

@@ -1,7 +1,6 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../../../../assets/Buttons.css';
-import moment from 'moment';
 import formattedDate from "../../../../utils/formattedDate";
 
 export default function EditAdvancesButton (props) {
@@ -10,11 +9,11 @@ export default function EditAdvancesButton (props) {
         let aux = props.advances;
         aux.title = aux.name;
         aux.dniEmployee = props.advances.nroDNI;
-        aux.date = moment(props.advances.date).format('YYYY-MM-DD');
+        aux.date = formattedDate(new Date(props.advances.date));
         aux.amount = props.advances.amount;
-        aux.installments = [{month: moment(props.advances.date).format('YYYY-MM-DD'), amount: 0, label: "", pay: 0}];
+        aux.installments = [{month: formattedDate(new Date(props.advances.date)), amount: 0, label: "", pay: 0}];
         aux.pay = props.advances.pay;
-        aux.firstMonth = moment(props.advances.date).format('YYYY-MM-DD');
+        aux.firstMonth = formattedDate(new Date(props.advances.date));
         aux.editing = true;
         props.edit(aux);
     }
