@@ -11,7 +11,7 @@ const TypeProductsSales = (props) => {
     useEffect(()=>{
       let l = []
       let d = []
-      props.typeProductSales.types?.map((e)=>{
+      props.typeProductSales.types?.forEach((e)=>{
         l = [...l, e.id]
         d = [...d, e.quantity]
       })

@@ -25,7 +25,7 @@ export default function NameManager (props) {
             data.name_manager = "";
             props.load(data);
         }
-    }, [name]);
+    }, [name, props]);
 
     return (
         <div className="formRow">
