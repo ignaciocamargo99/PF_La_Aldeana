@@ -151,13 +151,7 @@ const employeeAssistanceGetDB = () => {
     const sqlSelect = `
             SELECT ae.*, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
-            JOIN EMPLOYEES e ON ae.employee = e.dni
-            WHERE (CAST(ae.date_entry as DATE) = ?)
-            UNION
-            SELECT ae.*, e.name, e.last_name
-            FROM ASSISTANCE_EMPLOYEES ae
-            JOIN EMPLOYEES e ON ae.employee = e.dni
-            WHERE (CAST(ae.date_entry AS DATE) = CURDATE())`;
+            JOIN EMPLOYEES e ON ae.employee = e.dni`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
