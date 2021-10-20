@@ -1,6 +1,6 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
 import dateText from '../../../../utils/DateFormat/dateText';
@@ -9,7 +9,7 @@ import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import DataAdvances from '../DataAdvances';
 import ExtraDataAdvances from '../ExtraDataAdvances';
-
+import formattedDate from '../../../../utils/formattedDate';
 
 const PORT = require('../../../../config');
 
@@ -17,11 +17,32 @@ export default function EditAdvances(props) {
     const [data, setData] = useState(props.advances);
     const [dataBack, setDataBack] = useState(props.advances);
     const [ready, setReady] = useState(true);
+    const [isLoad, setIsLoad] = useState(false);
+
+    useEffect(()=>{
+        if (!isLoad) {
+            if(data.reading || data.editing){
+                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${formattedDate(new  Date(data.date), 0, 1)}`)
+                    .then((response) => {
+                        let aux = data;
+                        aux.installments[0].month = formattedDate(new Date(response.data[0].month));
+                        aux.firstMonth = formattedDate(new Date(response.data[0].month));
+                        data.installments = response.data;
+                        data.months = response.data.length;
+                        data.firstMonth = response.data[0].month;
+                        loadBack({amount: data.amount, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
+                        setData(aux);
+                        setIsLoad(true);
+                    })
+                    .catch((error) => console.log(error));
+                }
+        }
+    }, [isLoad, data.editing, data.reading, data]);
 
     const load = (childData) => {
         setData(childData);
         //console.log(data.dniEmployee , data.date , data.amount , data.installments , data.months , dataBack.amount , data.amount , dataBack.months , data.months , dataBack.firstMonth , data.firstMonth)
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth)) setReady(true);
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth) && data.date < data.firstMonth) setReady(true);
         else setReady(false);
     }
     const loadBack = (childData) => {

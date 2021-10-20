@@ -5,7 +5,6 @@ import setInstallmentsMonths from "./setInstallmentsMonths";
 import Axios from "axios";
 import InstallmentTable from "./InstallmentsTable";
 import formattedDate from "../../../utils/formattedDate";
-import dateText from "../../../utils/DateFormat/dateText";
 
 const PORT = require('../../../config');
 
@@ -17,34 +16,8 @@ export default function ExtraDataAdvances(props) {
     const [amountTotal, setAmountTotal] = useState("null");
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
-    const [load, setLoad] = useState(false);
-    const [firstMonth, setFirstMonth] = useState(props.firstMonth);
 
-    const [option, setOption] = useState([{month: firstMonth,amount: 0, label: "", pay: 0}]);
-
-    useEffect(()=>{
-        if (!load) {
-            if(props.data.reading || props.data.editing){
-                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
-                    .then((response) => {
-                        data.installments = response.data;
-                        data.months = response.data.length;
-                        data.firstMonth = response.data[0].month;
-                        setFirstMonth(response.data[0].month);
-                        setOption(response.data);
-                        setAmountTotal(data.amount);
-                        setMonths(response.data.length)
-                        inputMonths.current.value = response.data.length;
-                        props.loadBack({amount: data.amount, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
-                        //console.log(response.data, data.firstMonth, data.months, response.data.length)
-                    })
-                    .catch((error) => console.log(error));
-                }
-
-            setOption(data.installments);
-            setLoad(true);
-        }
-    }, [data, load, props.data.editing, props.data.reading]);
+    const [option, setOption] = useState(data.installments);
 /*
     useEffect(()=>{
         if (option[0].nroDNI){
@@ -72,7 +45,7 @@ export default function ExtraDataAdvances(props) {
         if (amount >= month && month > 0 && month < 19) {
             setIsValidClassAmountTotal("form-control is-valid");
             data.amount = amount;
-            let aux = setInstallmentsMonths(data.firstMonth, months, amountTotal - data.pay, data.installments);
+            let aux = setInstallmentsMonths(data.firstMonth, month, amount - data.pay, data.installments);
             setOption(aux);
             data.installments = aux;
             props.load(data);
@@ -82,25 +55,25 @@ export default function ExtraDataAdvances(props) {
             if (!data.nroDNI && amount && (props.data.editing || props.data.reading)) {
                 data.amount = null;
                 data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
-                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
+                //setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
             } else {
                 data.amount = amount;
                 data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
-                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
+                //setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data, props.data.firstMonth, firstMonth]);
+    }, [months, amountTotal, props, data]);
 
     //Meses
     useEffect(() => {
         const month = parseInt(inputMonths.current.value.trim());
+        const amount = parseInt(inputAmountTotal.current.value.trim());
 
-        //console.log(props.data.firstMonth, data.firstMonth, firstMonth)
-        if (month > 0 && month < 19 && amountTotal >= month) {
+        if (month > 0 && month < 19 && amount >= month) {
             setIsValidClassMonths("form-control is-valid");
-            let aux = setInstallmentsMonths(data.firstMonth, months, amountTotal - data.pay, data.installments);
-            setOption(aux);
+            let aux = setInstallmentsMonths(data.firstMonth, month, amount - data.pay, data.installments);
+            //setOption(aux);
             data.installments = aux;
             data.months = month;
             props.load(data);
@@ -109,16 +82,16 @@ export default function ExtraDataAdvances(props) {
             setIsValidClassMonths("form-control");
             if (!data.nroDNI && month > 0 && (props.data.editing || props.data.reading)) {
                 data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
-                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
+                //setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
                 data.months = null;
             } else {
                 data.installments = [{month: data.firstMonth, amount: 0, label: "", pay: 0}];
-                setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
+                //setOption([{month: data.firstMonth, amount: 0, label: "", pay: 0}]);
                 data.months = month;
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data, props.data.firstMonth, firstMonth]);
+    }, [months, amountTotal, props, data]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -137,10 +110,10 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClassAmountTotal} id="amountTotal" readOnly type="number" ref={inputAmountTotal} onChange={handleAmountTotal} defaultValue={props.data.amount} />
+                        <input className={isValidClassAmountTotal} id="amountTotal" readOnly type="number" ref={inputAmountTotal} onChange={handleAmountTotal} defaultValue={props.data.amount ? props.data.amount : null} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassAmountTotal} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min={months} placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.amount} />
+                        <input className={isValidClassAmountTotal} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min={months} placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.amount ? props.data.amount : null} />
                     </BeShowed>
                 </div>
             </div>
@@ -158,10 +131,10 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClassMonths} id="months" readOnly type="number" ref={inputMonths} onChange={handleMonths} defaultValue={data.months} />
+                        <input className={isValidClassMonths} id="months" readOnly type="number" ref={inputMonths} onChange={handleMonths} defaultValue={data.months ? data.months : null} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min="1" max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months} />
+                        <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min="1" max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months ? data.months : null} />
                     </BeShowed>
                 </div>
             </div>
