@@ -3,7 +3,7 @@ export default function dateToString (date, notHour){
     let to = 19;
     let d = "";
 
-    if (notHour) to = 11;
+    if (notHour) to = 10;
 
     for (let i = 0; i < to; i++){
         if(date.charAt(i) !== 'T'){

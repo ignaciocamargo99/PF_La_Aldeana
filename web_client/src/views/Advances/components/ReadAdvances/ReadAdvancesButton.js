@@ -1,7 +1,7 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../../../../assets/Buttons.css';
-import formattedDate from "../../../../utils/formattedDate";
+import dateToString from "../../../../utils/ConverterDate/dateToString";
 
 export default function ReadAdvancesButton (props) {
 
@@ -9,11 +9,11 @@ export default function ReadAdvancesButton (props) {
         let aux = props.advances;
         aux.title = aux.name;
         aux.dniEmployee = aux.nroDNI;
-        aux.date = formattedDate(new Date(aux.date));
-        aux.installments = [{month: formattedDate(new Date(aux.date)), amount: 0, label: "", pay: 0}];
+        aux.date = dateToString(aux.date, true);
+        aux.installments = [{month: dateToString(aux.date, true), amount: 0, label: "", pay: 0}];
         aux.reading = true;
         aux.months = 0;
-        aux.firstMonth = formattedDate(new Date(aux.date));
+        aux.firstMonth = dateToString(aux.date, true);
         aux.editing = false;
         props.read(aux);
     }

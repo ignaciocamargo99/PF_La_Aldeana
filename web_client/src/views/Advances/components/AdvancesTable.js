@@ -13,8 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import Pagination from '../../../common/TablePagination/Pagination';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import formattedDateArg from '../../../utils/DateFormat/formattedDateArg';
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
+import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 
 const PORT = require('../../../config');
 
@@ -185,7 +185,7 @@ export default function AdvancesTable() {
                                         <tr key={i}>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{formattedDateArg(new Date(element.date))},{element.date}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
