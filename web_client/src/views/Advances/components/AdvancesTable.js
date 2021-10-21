@@ -185,7 +185,7 @@ export default function AdvancesTable() {
                                         <tr key={i}>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{formattedDateArg(new Date(element.date))}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{formattedDateArg(new Date(element.date))},{element.date}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
