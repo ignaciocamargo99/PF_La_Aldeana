@@ -1,4 +1,18 @@
-const { createFingerPrint } = require('../services/fingerPrintsService');
+const { createFingerPrint, readFingerPrints } = require('../services/fingerPrintsService');
+
+// HTTP: GET
+async function getFingerPrints(req, res) {
+    try {
+        const result = await readFingerPrints();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
 // HTTP: POST
 async function newFingerPrint(req, res) {
@@ -17,4 +31,4 @@ async function newFingerPrint(req, res) {
     }
 }
 
-module.exports = { newFingerPrint };
+module.exports = { newFingerPrint, getFingerPrints };
