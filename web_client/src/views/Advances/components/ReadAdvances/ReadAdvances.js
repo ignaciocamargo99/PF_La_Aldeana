@@ -39,9 +39,7 @@ export default function ReadAdvances(props) {
     const load = (childData) => setData(childData);
 
     const back = () => {
-        console.log(dataBack)
         setData(dataBack);
-        console.log(data)
         props.return();
     }
 

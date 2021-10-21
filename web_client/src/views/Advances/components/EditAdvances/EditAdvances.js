@@ -57,6 +57,10 @@ export default function EditAdvances(props) {
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios', 'error');
     };
+    const back = () => {
+        setData(dataBack);
+        props.cancel();
+    }
 
     return (
         <>
@@ -69,7 +73,7 @@ export default function EditAdvances(props) {
             <Buttons
                 label='Registrar' actionOK={updateAdvances}
                 actionNotOK={updateAdvances}
-                actionCancel={props.cancel}
+                actionCancel={back}
                 ready={ready}
                 data={data} />
         </>
