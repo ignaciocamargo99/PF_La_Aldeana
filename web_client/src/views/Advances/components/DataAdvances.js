@@ -92,9 +92,11 @@ export default function DataAdvances(props) {
             setIsValidClassDate("form-control");
         }
         else {
-            data.date = inputDate.current.value;
-            props.load(data);
-            setIsValidClassDate("form-control is-valid");
+            if (data.date !== inputDate.current.value){
+                data.date = inputDate.current.value;
+                props.load(data);
+                setIsValidClassDate("form-control is-valid");
+            }
         }
     }, [startDate, date, data, props]);
 

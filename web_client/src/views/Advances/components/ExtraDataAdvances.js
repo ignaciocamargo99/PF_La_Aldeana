@@ -2,11 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import setInstallmentsMonths from "./setInstallmentsMonths";
-import Axios from "axios";
 import InstallmentTable from "./InstallmentsTable";
-import formattedDate from "../../../utils/formattedDate";
-
-const PORT = require('../../../config');
 
 export default function ExtraDataAdvances(props) {
     let data = props.data;
@@ -18,17 +14,7 @@ export default function ExtraDataAdvances(props) {
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
 
     const [option, setOption] = useState(data.installments);
-/*
-    useEffect(()=>{
-        if (option[0].nroDNI){
-            props.loadBack({amount: data.amount, installments: option, months: option.length, firstMonth: option[0].month});
-            inputMonths.current.value = option.length;
-            data.installments = option;
-            data.months = option.length;
-        }
-        //console.log(option, data)
-    }, [option, data, props]);
-*/
+
     const handleMonths = () => {
         setMonths(inputMonths.current.value);
     }

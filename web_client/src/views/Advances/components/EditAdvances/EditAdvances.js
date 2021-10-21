@@ -22,7 +22,7 @@ export default function EditAdvances(props) {
     useEffect(()=>{
         if (!isLoad) {
             if(data.reading || data.editing){
-                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${formattedDate(new  Date(data.date), 0, 1)}`)
+                Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
                     .then((response) => {
                         let aux = data;
                         aux.installments[0].month = formattedDate(new Date(response.data[0].month));
@@ -30,7 +30,7 @@ export default function EditAdvances(props) {
                         data.installments = response.data;
                         data.months = response.data.length;
                         data.firstMonth = response.data[0].month;
-                        loadBack({amount: data.amount, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
+                        setDataBack({amount: data.amount, date: data.date, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
                         setData(aux);
                         setIsLoad(true);
                     })
@@ -44,9 +44,6 @@ export default function EditAdvances(props) {
         //console.log(data.dniEmployee , data.date , data.amount , data.installments , data.months , dataBack.amount , data.amount , dataBack.months , data.months , dataBack.firstMonth , data.firstMonth)
         if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth) && data.date < data.firstMonth) setReady(true);
         else setReady(false);
-    }
-    const loadBack = (childData) => {
-        setDataBack(childData);
     }
 
     const updateAdvances = () => {
@@ -68,7 +65,7 @@ export default function EditAdvances(props) {
             <h2 style={{ fontWeight: 'bold' }}>Editar adelanto {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
             <br />
             <DataAdvances load={load} data={data} />
-            <ExtraDataAdvances load={load} data={data} loadBack={loadBack}/>
+            <ExtraDataAdvances load={load} data={data} />
             <Buttons
                 label='Registrar' actionOK={updateAdvances}
                 actionNotOK={updateAdvances}

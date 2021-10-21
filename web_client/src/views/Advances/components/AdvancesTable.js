@@ -67,12 +67,14 @@ export default function AdvancesTable() {
     const cancelEditAdvances = () => {
         <div style={{ display: 'none' }}>{document.title = "Adelantos"}</div>
         setIsEditing(false);
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
+        window.location.replace('/app/advances');
     }
     const returnReadAdvances = () => {
         <div style={{ display: 'none' }}>{document.title = "Adelantos"}</div>
         setIsReading(false);
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
+        window.location.replace('/app/advances');
     }
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
