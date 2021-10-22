@@ -129,7 +129,7 @@ export default function Navbar(props) {
                         <BeShowed show={permissionReports === "Reportes"}>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/app/salesReport">
-                                    <FontAwesomeIcon icon={faFile} /> Ver Informes
+                                    <FontAwesomeIcon icon={faFile} /> Ver informe de productos vendidos
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </BeShowed>
