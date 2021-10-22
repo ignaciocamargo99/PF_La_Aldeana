@@ -8,9 +8,9 @@ const EmployeesSelection = (props) => {
         <div className="container">
             <label>Empleados seleccionables: </label>
             <div className="formRow">
-                <Droppable droppableId='employeeList' direction='horizontal'>
+                <Droppable droppableId='employeeList' >
                     {(droppableProvided) => 
-                    (<ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef} className="container-Items">
+                    (<ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef} >
                         {props.employees.map((employee,i) => (
                             <Draggable key={employee.dni} draggableId={employee.dni.toString()} index={i}>
                                 {(draggableProvided) => 

@@ -3,15 +3,31 @@ import HeaderTable from '../../../common/Table/HeaderTable';
 import Table from '../../../common/Table/Table';
 import { dateToNameDay } from '../../../utils/DateToNameDay/dateToNameDay';
 import EmployeesSelection from './EmployeesSelection';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useState } from 'react';
-import employeeImg from '../../../common/CommonImages/Empleado_Generico.png';
-import './ScheduleDays.css';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { useEffect, useState } from 'react';
+import { getEmployeesDestination } from '../../../utils/getEmployeesDestination/getEmployeesDestination';
+import ContainerEmployees from './ContainersEmployees';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const ScheduleDays = (props) => {
+const PORT = require('../../../config');
+
+const ScheduleDays = ({ schedule }) => {
 
     const [employeesMorning, setEmployeesMorning] = useState([])
-    const [employees, setEmployees] = useState([{dni:41769668},{dni:41769669}])
+    const [employeesAfternoon, setEmployeesAfternoon] = useState([])
+    const [employeesNigth, setEmployeesNigth] = useState([])
+    const [employeesUltraNigth, setEmployeesUltraNigth] = useState([])
+    const [employees, setEmployees] = useState([])
+
+    useEffect(() => {
+        axios.get(`${PORT()}/api/employees`)
+        .then((response) => {
+            setEmployees(response.data)
+        })
+    },[])
 
     return(
     <div className="container">
@@ -20,131 +36,124 @@ const ScheduleDays = (props) => {
             if(!destination || destination.droppableId === source.droppableId){
                 return;
             }
-            else if(destination.droppableId !== 'employeeList'){
-                let employeeSelected = employees[source.index];
-                let auxEmpMorning = [...employeesMorning,employeeSelected]
-                let auxEmp = employees.filter((employee) => employee.dni !== employeeSelected.dni)
-                setEmployeesMorning(auxEmpMorning)
-                setEmployees(auxEmp)
+            else if(destination.droppableId === 'Morning'){
+                if(source.droppableId === 'employeeList'){
+                    let newEmployeesMorning = getEmployeesDestination(employees,employeesMorning,source.index)
+                    setEmployeesMorning(newEmployeesMorning)
+                }
             }
-            else if(destination.droppableId === 'employeeList'){
-                let employeeSelected = employeesMorning[source.index];
-                let auxEmp = [...employees,employeeSelected]
-                let auxEmpMorning = employeesMorning.filter((employee) => employee.dni !== employeeSelected.dni)
-                setEmployeesMorning(auxEmpMorning)
-                setEmployees(auxEmp)
+            else if(destination.droppableId === 'Afternoon'){
+                if(source.droppableId === 'employeeList'){
+                    let newEmployeesAfternoon = getEmployeesDestination(employees,employeesAfternoon,source.index)
+                    setEmployeesAfternoon(newEmployeesAfternoon)
+                }
+            }
+            else if(destination.droppableId === 'Nigth'){
+                if(source.droppableId === 'employeeList'){
+                    let newEmployeesNigth = getEmployeesDestination(employees,employeesNigth,source.index)
+                    setEmployeesNigth(newEmployeesNigth)
+                }
+            }            
+            else if(destination.droppableId === 'UltraNigth'){
+                if(source.droppableId === 'employeeList'){
+                    let newEmployeesUltraNigth  = getEmployeesDestination(employees,employeesUltraNigth,source.index)
+                    setEmployeesUltraNigth(newEmployeesUltraNigth)
+                }
             }
         }}>
-            <Table>
-                <HeaderTable th={
-                    <>
-                    <th>Horas</th>
-                    {props.days.map((day) => {
-                        return(
-                            <th>{dateToNameDay(day)}</th>
-                        )
-                    })}
-                    </>
-                }/>
-                <BodyTable tbody={
-                    <tbody>
-                        <tr>
-                            <td>8:00</td>
-                            <td>
-                                <Droppable droppableId='8:00'>
-                                    {(droppableProvided) => (
-                                    <ul {...droppableProvided.droppableProps}
-                                        ref={droppableProvided.innerRef}
-                                        className="container-Items"
-                                    >
-                                        {employeesMorning.map((employee,i) => (
-                                            <Draggable key={employee.dni} draggableId={employee.dni.toString()} index={i}>
-                                                {(draggableProvided) => 
-                                                (<li {...draggableProvided.draggableProps} 
-                                                    ref={draggableProvided.innerRef}
-                                                    {...draggableProvided.dragHandleProps}
-                                                    className="item">
-                                                    <div>
-                                                        <img src={employeeImg} style={{height:'30px'}}/>
-                                                        <label>{employee.dni}</label>
-                                                    </div>
-                                                </li>)}
-                                            </Draggable>)
-                                        )}
-                                    {droppableProvided.placeholder}
-                                    </ul>)}
-                                </Droppable>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>                        
-                        </tr>
-                        <tr>
-                            <td>9:00</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>10:00</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>11:00</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>12:00</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                }/>
-            </Table>
-
-            <EmployeesSelection employees={employees} />
+            <div className="row">
+                <div className="col-sm-8">
+                    <Table>
+                        <HeaderTable th={
+                            <>
+                                <th style={{textAlign:'center', width:'5%'}}>Horas</th>
+                                <th style={{textAlign:'center', width:'5%'}}>
+                                    <button className='sendOk' style={{width:'100%'}}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                                </th>
+                                <th style={{textAlign:'center'}}>{dateToNameDay(schedule[0]?.date.getDay())}</th>
+                                <th style={{textAlign:'center', width:'5%'}}>
+                                    <button className='sendOk' style={{width:'100%'}}><FontAwesomeIcon icon={faArrowRight}/></button>
+                                </th>
+                            </>
+                        }/>
+                        <BodyTable tbody={
+                            <tbody>
+                                <tr style={{height:'210px'}}>
+                                    <td style={{textAlign:'center',width:'5%'}}>
+                                        <div className="container">
+                                            <div className="row align-items-start"><label style={{height:'80px'}}>8:00</label></div>
+                                            <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
+                                            <div className="row align-items-end"><label style={{height:'30px'}}>12:00</label></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td style={{textAlign:'center'}}>
+                                        <ContainerEmployees turn='Morning' employeesTurn={employeesMorning}/>
+                                    </td>    
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign:'center',width:'5%'}}>
+                                        <div className="container">
+                                            <div className="row align-items-start"><label style={{height:'80px'}}>12:00</label></div>
+                                            <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
+                                            <div className="row align-items-end"><label style={{height:'30px'}}>18:00</label></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td style={{textAlign:'center'}}>
+                                        <ContainerEmployees turn='Afternoon' employeesTurn={employeesAfternoon}/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign:'center',width:'5%'}}>
+                                        <div className="container">
+                                            <div className="row align-items-start"><label style={{height:'80px'}}>18:00</label></div>
+                                            <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
+                                            <div className="row align-items-end"><label style={{height:'30px'}}>22:00</label></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td style={{textAlign:'center'}}>
+                                        <ContainerEmployees turn='Nigth' employeesTurn={employeesNigth}/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style={{textAlign:'center',width:'5%'}}>
+                                        <div className="container">
+                                            <div className="row align-items-start"><label style={{height:'80px'}}>22:00</label></div>
+                                            <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
+                                            <div className="row align-items-end"><label style={{height:'30px'}}>02:00</label></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td style={{textAlign:'center'}}>
+                                        <ContainerEmployees turn='UltraNigth' employeesTurn={employeesUltraNigth}/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        }/>
+                    </Table>
+                </div>
+                <div className="col-sm-4">
+                    <EmployeesSelection employees={employees} />
+                </div>
+            </div>
         </DragDropContext>
     </div>
     )
 }
 
-export default ScheduleDays
+const mapStateToProps = state => {
+    return {
+        schedule: state.schedule,
+    }
+}
+
+const mapDispatchToProps = {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleDays);
