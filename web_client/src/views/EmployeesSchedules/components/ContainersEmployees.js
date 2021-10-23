@@ -19,7 +19,7 @@ const ContainerEmployees = (props) => {
                                 className="item">
                                 <div>
                                     <img src={employeeImg} style={{height:'30px'}}/>
-                                    <label>{employee.dni}</label>
+                                    <label>{employee.last_name}</label>
                                 </div>
                             </li>)}
                         </Draggable>)

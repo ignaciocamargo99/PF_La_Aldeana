@@ -57,7 +57,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                 <NewScheduleModal showModal={showNewScheduleModal} setShowModal={setShowNewScheduleModal} 
                                     setDaysNewSchedule={setDaysNewSchedule} setShowNewSchedule={setShowNewSchedule}/>
                 <BeShowed show={showNewSchedule}>
-                    <ScheduleDays days={[1]}/>
+                    <ScheduleDays/>
                 </BeShowed>
             </div>
         </>

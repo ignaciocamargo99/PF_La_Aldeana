@@ -19,7 +19,7 @@ const EmployeesSelection = (props) => {
                                     {...draggableProvided.dragHandleProps}
                                     className="item">
                                     <img src={employeeImg} style={{height:'30px'}}/>
-                                    <label>{employee.dni}</label>
+                                    <label>{employee.last_name}</label>
                                 </li>)}
                             </Draggable>)
                         )}
