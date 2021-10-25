@@ -17,7 +17,7 @@ namespace desktop_employee
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new main());
+            Application.Run(new frmMain());
         }
     }
 }

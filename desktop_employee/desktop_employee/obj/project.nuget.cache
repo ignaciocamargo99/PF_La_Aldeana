@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QfdLWzse+IUIXmml+IDgMhquk+W8gX9O0itjZwXLsXcx10AaJ7It3zeh7GFn3vZ5862WOi3vOzpCFf2xnyPC7Q==",
+  "dgSpecHash": "5n5vivxfKHQFPVEizkFq9pS/FaFgQjKIagWV+kyIgK/zGvmNyikgV5KSUfb4AZJBeBZrpDiX71ijJRZ4Cl3aaQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\joaqu\\Desktop\\PF_La_Aldeana\\desktop_employee\\desktop_employee\\desktop_employee.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\joaqu\\.nuget\\packages\\fontawesome.sharp\\5.15.3\\fontawesome.sharp.5.15.3.nupkg.sha512",
     "C:\\Users\\joaqu\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []

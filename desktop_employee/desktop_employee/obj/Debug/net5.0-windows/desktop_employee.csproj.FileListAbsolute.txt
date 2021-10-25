@@ -15,7 +15,6 @@ C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.pdb
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.genruntimeconfig.cache
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmEmployees.resources
-C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.main.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmRegisterAssistence.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.csproj.GenerateResource.cache
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
@@ -29,3 +28,6 @@ C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmCaptureFingerPrint.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceDNI.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceFinger.resources
+C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\bin\Debug\net5.0-windows\FontAwesome.Sharp.dll
+C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.Properties.Resources.resources
+C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.frmMain.resources
