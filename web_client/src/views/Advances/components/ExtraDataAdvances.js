@@ -108,7 +108,7 @@ export default function ExtraDataAdvances(props) {
                     <label>Monto pagado hasta la fecha ${props.data.pay}</label>
                 </div>
             </BeShowed>
-            <label>Monto restante a pagar: {amountTotal - data.pay > 0 ? amountTotal - data.pay : 0}</label>
+            <label>Monto restante a pagar: {amountTotal - data.pay > 0 ? amountTotal - data.pay : data.amount - data.pay > 0 ? data.amount - data.pay : 0}</label>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="months" >Cantidad de cutas* 
