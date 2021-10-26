@@ -100,8 +100,8 @@ export default function EmployeesTable() {
             {!isLoadingSpinner && assistance && assistance.length === 0
                 ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
                 : (
+                    <BeShowed show={!isEditing && !isReading && !isLoadingSpinner}>
 
-                    <BeShowed show={!isEditing && !isReading}>
                         <h3>Registros del día {new Date().toLocaleDateString()}</h3>
                         <Table>
                             <HeaderTable

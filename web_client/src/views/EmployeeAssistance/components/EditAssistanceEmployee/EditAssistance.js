@@ -20,7 +20,13 @@ export default function EditAssistance(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.employee && (data.date_entry < data.date_egress)) setReady(true);
+        if (data.date_entry && data.dni) {
+            if (data.date_egress) {
+                if (data.date_entry < data.date_egress) setReady(true);
+                else setReady(false);
+            }
+            else setReady(true);
+        }
         else setReady(false);
     }
 
@@ -36,7 +42,7 @@ export default function EditAssistance(props) {
         else {
             validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
             if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
-            
+
             let actualDate;
             actualDate = formattedDate(new Date());
             let dateEntry, dateEgress;

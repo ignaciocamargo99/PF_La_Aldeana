@@ -23,7 +23,7 @@ export default function RegisterAssistance() {
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.employee) {
+        if (data.date_entry && data.employee !== '-1') {
             if (data.date_egress) {
                 if (data.date_entry < data.date_egress) setReady(true);
                 else setReady(false);
@@ -52,7 +52,8 @@ export default function RegisterAssistance() {
             
             let actualDate;
             actualDate = formattedDate(new Date());
-            let dateEntry, dateEgress;
+            let dateEntry = ''; 
+            let dateEgress =  '';
             dateEntry = actualDate + " " + data.date_entry;
 
             if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
