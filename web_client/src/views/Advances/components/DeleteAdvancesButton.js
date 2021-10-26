@@ -1,12 +1,27 @@
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import confirmDelete from '../../../utils/confirmDelete';
 import Axios from "axios";
 import swal from "sweetalert";
 import '../../../assets/Buttons.css';
 import dateToString from "../../../utils/ConverterDate/dateToString";
 
 const PORT = require('../../../config');
+
+function confirmDelete(actionTrue) {
+
+    return swal({
+      title: "¿Seguro que desea cancelarlo?",
+      text: "El elemento seleccionado ya no será visible para el personal de la empresa.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          actionTrue();
+        }
+      });
+  }
 
 export default function DeleteAdvancesButton (props) {
 
@@ -20,12 +35,12 @@ export default function DeleteAdvancesButton (props) {
             .then((response) => {
                 if (response.data.Ok){
                     props.deleteEmployee(props.index);
-                    swal("Adelanto dado de baja", {
+                    swal("Adelanto cancelado correctamente", {
                         icon: "success",
                     });
                 } else {
                     swal({
-                        title: "Falló al dar de baja",
+                        title: "Falló al cancelar",
                         icon: "warning",
                     });
                 }
@@ -33,14 +48,14 @@ export default function DeleteAdvancesButton (props) {
             .catch((error) => {
                 console.log(error);
                 swal({
-                    title: "Falló al dar de baja",
+                    title: "Falló al cancelar",
                     text: error,
                     icon: "warning",
                 });
             });
     }
 
-    const dontDeleteProduct = () => console.log('No se dio de baja al adelanto para ' + props.advances.nroDNI + ' ' + props.advances.last_name + ', ' + props.advances.name + ' en la fecha ' + date);
+    const dontDeleteProduct = () => console.log('No se pudo cancelar el adelanto para ' + props.advances.nroDNI + ' ' + props.advances.last_name + ', ' + props.advances.name + ' en la fecha ' + date);
 
     return (
         <button id='deleteAdvancesButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
