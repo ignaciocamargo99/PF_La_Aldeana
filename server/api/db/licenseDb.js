@@ -6,6 +6,7 @@ const licenseGetDB = () => {
                     e.dni AS dni, e.name AS name, e.last_name AS last_name
                     FROM LICENSES l INNER JOIN EMPLOYEES e ON l.dni_employee = e.dni
                     WHERE l.active = 1
+                    ORDER BY l.date_finish DESC
                     `;
 
     return new Promise((resolve, reject) => {

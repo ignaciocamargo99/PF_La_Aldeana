@@ -1,5 +1,11 @@
+import { useEffect } from "react"
 
 const ListLicensesFilter = (props) => {
+
+    useEffect(() => {
+        document.getElementById(`rb${props.filter}`).checked = true
+    },[props.filter])
+
     return(
     <div className="formRow">
         <div className="form-check form-check-inline">

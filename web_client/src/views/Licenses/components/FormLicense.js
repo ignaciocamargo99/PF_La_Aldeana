@@ -13,6 +13,7 @@ import loadingMessage from '../../../utils/LoadingMessages/LoadingMessage';
 import DynamicSearch from '../../../common/DynamicSearch';
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
+import formattedDate from "../../../utils/ConverterDate/formattedDate";
 
 const PORT = require('../../../config');
 
@@ -57,6 +58,26 @@ const FormLicense = (props) => {
                 setErrorDateFinish(false);
                 setErrorEmployee(false);
                 setErrorReason(false);
+                let licenseDateInit = new Date(props.license.date_init);
+                let licenseDateFinish = new Date(props.license.date_init);
+                let dateFinishLastLicense = ''
+                let dateInitFutureLicense = ''
+                props.licenses.forEach((license) => {
+                    let dateFinish = new Date(dateBDToString(license.date_finish,'En'))
+                    let dateInit = new Date(dateBDToString(license.date_init,'En'))
+                    if(license.dni === props.license.dni && dateFinish.getTime() < licenseDateInit.getTime()){
+                        dateFinish.setDate(dateFinish.getDate() + 1)
+                        dateFinishLastLicense = formattedDate(dateFinish)
+                    }
+                    if(license.dni === props.license.dni && dateInit.getTime() > licenseDateFinish.getTime() && dateInitFutureLicense === ''){
+                        dateInit.setDate(dateInit.getDate() - 1)
+                        dateInitFutureLicense = formattedDate(dateInit)
+                    }
+                })
+                dateInit.current.min = dateFinishLastLicense
+                dateInit.current.max = dateInitFutureLicense
+                dateFinish.current.min = dateFinishLastLicense
+                dateFinish.current.max = dateInitFutureLicense
             }
         }
         else{
