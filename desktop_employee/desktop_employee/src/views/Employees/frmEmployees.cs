@@ -25,22 +25,19 @@ namespace desktop_employee.src.views.Employees
         {
             List<Employee> listado = new List<Employee>();
             Reply oReply = new Reply();
-            oReply = await Consumer.Execute<List<Employee>>("http://localhost:3001/api/employees", methodHttp.GET, listado);
+            oReply = await Consumer.Execute<List<Employee>>("http://localhost:3001/api/employeesDesktop", methodHttp.GET, listado);
             this.dgvEmployees.DataSource = oReply.Data;
             employeesTable = ConvertDgvToTable(dgvEmployees);
+            //dgvEmployees.AutoResizeColumns(DataGridViewAutoSizeColumnsMo‌​de.Fill);
+            //dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            
+            foreach (DataGridViewTextBoxColumn column in dgvEmployees.Columns)
+            {
+                column.Width = 250;
+            }
+            
         }
 
-        private void btnEditEmployee_Click(object sender, EventArgs e)
-        {
-            int employee_dni = Convert.ToInt32(dgvEmployees.CurrentRow.Cells[0].Value);
-            employeeSelectedTable = filterEmployee(employeesTable, employee_dni);
-
-            frmEditEmployee frmEditEmployee = new();
-            frmEditEmployee.EmployeeSelected = employeeSelectedTable;
-            frmEditEmployee.ShowDialog();
-
-        }
-        
         private DataTable createTableEmployee()
         {
             DataTable table = new DataTable();
@@ -87,8 +84,14 @@ namespace desktop_employee.src.views.Employees
             return newTable;
         }
 
+        private void btnEditEmployee_Click(object sender, EventArgs e)
+        {
+            int employee_dni = Convert.ToInt32(dgvEmployees.CurrentRow.Cells[0].Value);
+            employeeSelectedTable = filterEmployee(employeesTable, employee_dni);
 
-
-
+            frmEditEmployee frmEditEmployee = new();
+            frmEditEmployee.EmployeeSelected = employeeSelectedTable;
+            frmEditEmployee.ShowDialog();
+        }
     }
 }

@@ -37,7 +37,6 @@ namespace desktop_employee
             this.pbxLogo = new System.Windows.Forms.PictureBox();
             this.pnlTitle = new System.Windows.Forms.Panel();
             this.ibtnMinimizar = new FontAwesome.Sharp.IconButton();
-            this.ibtnMaximizar = new FontAwesome.Sharp.IconButton();
             this.ibtnClose = new FontAwesome.Sharp.IconButton();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.pnlDesktop = new System.Windows.Forms.Panel();
@@ -56,11 +55,12 @@ namespace desktop_employee
             this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlMenu.Location = new System.Drawing.Point(0, 0);
             this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(216, 481);
+            this.pnlMenu.Size = new System.Drawing.Size(216, 514);
             this.pnlMenu.TabIndex = 2;
             // 
             // ibtnEmpleados
             // 
+            this.ibtnEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnEmpleados.FlatAppearance.BorderSize = 0;
             this.ibtnEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ibtnEmpleados.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -69,19 +69,21 @@ namespace desktop_employee
             this.ibtnEmpleados.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnEmpleados.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ibtnEmpleados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ibtnEmpleados.Location = new System.Drawing.Point(6, 114);
+            this.ibtnEmpleados.Location = new System.Drawing.Point(0, 86);
             this.ibtnEmpleados.Name = "ibtnEmpleados";
-            this.ibtnEmpleados.Size = new System.Drawing.Size(210, 59);
+            this.ibtnEmpleados.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.ibtnEmpleados.Size = new System.Drawing.Size(216, 59);
             this.ibtnEmpleados.TabIndex = 5;
             this.ibtnEmpleados.Tag = "EMPLEADOS";
             this.ibtnEmpleados.Text = "EMPLEADOS";
-            this.ibtnEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ibtnEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ibtnEmpleados.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ibtnEmpleados.UseVisualStyleBackColor = true;
             this.ibtnEmpleados.Click += new System.EventHandler(this.ibtnEmpleados_Click);
             // 
             // ibtnAsistencia
             // 
+            this.ibtnAsistencia.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ibtnAsistencia.FlatAppearance.BorderSize = 0;
             this.ibtnAsistencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ibtnAsistencia.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -90,13 +92,14 @@ namespace desktop_employee
             this.ibtnAsistencia.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnAsistencia.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ibtnAsistencia.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ibtnAsistencia.Location = new System.Drawing.Point(10, 184);
+            this.ibtnAsistencia.Location = new System.Drawing.Point(0, 86);
             this.ibtnAsistencia.Name = "ibtnAsistencia";
-            this.ibtnAsistencia.Size = new System.Drawing.Size(206, 59);
+            this.ibtnAsistencia.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.ibtnAsistencia.Size = new System.Drawing.Size(216, 428);
             this.ibtnAsistencia.TabIndex = 4;
             this.ibtnAsistencia.Tag = "ASISTENCIA";
             this.ibtnAsistencia.Text = "ASISTENCIA";
-            this.ibtnAsistencia.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ibtnAsistencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ibtnAsistencia.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ibtnAsistencia.UseVisualStyleBackColor = true;
             this.ibtnAsistencia.Click += new System.EventHandler(this.ibtnAsistencia_Click);
@@ -140,15 +143,13 @@ namespace desktop_employee
             // 
             this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(134)))), ((int)(((byte)(62)))));
             this.pnlTitle.Controls.Add(this.ibtnMinimizar);
-            this.pnlTitle.Controls.Add(this.ibtnMaximizar);
             this.pnlTitle.Controls.Add(this.ibtnClose);
             this.pnlTitle.Controls.Add(this.lblTitulo);
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitle.Location = new System.Drawing.Point(216, 0);
             this.pnlTitle.Name = "pnlTitle";
-            this.pnlTitle.Size = new System.Drawing.Size(620, 86);
+            this.pnlTitle.Size = new System.Drawing.Size(779, 86);
             this.pnlTitle.TabIndex = 3;
-            this.pnlTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTitle_MouseDown);
             // 
             // ibtnMinimizar
             // 
@@ -158,27 +159,12 @@ namespace desktop_employee
             this.ibtnMinimizar.IconChar = FontAwesome.Sharp.IconChar.WindowMinimize;
             this.ibtnMinimizar.IconColor = System.Drawing.Color.White;
             this.ibtnMinimizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.ibtnMinimizar.Location = new System.Drawing.Point(521, 0);
+            this.ibtnMinimizar.Location = new System.Drawing.Point(680, 0);
             this.ibtnMinimizar.Name = "ibtnMinimizar";
             this.ibtnMinimizar.Size = new System.Drawing.Size(29, 34);
             this.ibtnMinimizar.TabIndex = 3;
             this.ibtnMinimizar.UseVisualStyleBackColor = true;
             this.ibtnMinimizar.Click += new System.EventHandler(this.ibtnMinimizar_Click);
-            // 
-            // ibtnMaximizar
-            // 
-            this.ibtnMaximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ibtnMaximizar.FlatAppearance.BorderSize = 0;
-            this.ibtnMaximizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ibtnMaximizar.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
-            this.ibtnMaximizar.IconColor = System.Drawing.Color.White;
-            this.ibtnMaximizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.ibtnMaximizar.Location = new System.Drawing.Point(556, 0);
-            this.ibtnMaximizar.Name = "ibtnMaximizar";
-            this.ibtnMaximizar.Size = new System.Drawing.Size(29, 34);
-            this.ibtnMaximizar.TabIndex = 3;
-            this.ibtnMaximizar.UseVisualStyleBackColor = true;
-            this.ibtnMaximizar.Click += new System.EventHandler(this.ibtnMaximizar_Click);
             // 
             // ibtnClose
             // 
@@ -188,7 +174,7 @@ namespace desktop_employee
             this.ibtnClose.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.ibtnClose.IconColor = System.Drawing.Color.White;
             this.ibtnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.ibtnClose.Location = new System.Drawing.Point(591, 0);
+            this.ibtnClose.Location = new System.Drawing.Point(750, 0);
             this.ibtnClose.Name = "ibtnClose";
             this.ibtnClose.Size = new System.Drawing.Size(29, 34);
             this.ibtnClose.TabIndex = 2;
@@ -198,10 +184,10 @@ namespace desktop_employee
             // lblTitulo
             // 
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTitulo.Location = new System.Drawing.Point(37, 35);
+            this.lblTitulo.Font = new System.Drawing.Font("Verdana", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTitulo.Location = new System.Drawing.Point(21, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(89, 23);
+            this.lblTitulo.Size = new System.Drawing.Size(180, 46);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "TITULO";
             // 
@@ -211,20 +197,20 @@ namespace desktop_employee
             this.pnlDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlDesktop.Location = new System.Drawing.Point(216, 86);
             this.pnlDesktop.Name = "pnlDesktop";
-            this.pnlDesktop.Size = new System.Drawing.Size(620, 395);
+            this.pnlDesktop.Size = new System.Drawing.Size(779, 428);
             this.pnlDesktop.TabIndex = 4;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 481);
+            this.ClientSize = new System.Drawing.Size(995, 514);
             this.Controls.Add(this.pnlDesktop);
             this.Controls.Add(this.pnlTitle);
             this.Controls.Add(this.pnlMenu);
             this.Name = "frmMain";
             this.Text = "Form1";
-            this.Resize += new System.EventHandler(this.frmMain_Resize);
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.pnlMenu.ResumeLayout(false);
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).EndInit();
@@ -245,7 +231,6 @@ namespace desktop_employee
         private FontAwesome.Sharp.IconButton ibtnEmpleados;
         private System.Windows.Forms.Label lblTitulo;
         private FontAwesome.Sharp.IconButton ibtnMinimizar;
-        private FontAwesome.Sharp.IconButton ibtnMaximizar;
         private FontAwesome.Sharp.IconButton ibtnClose;
     }
 }

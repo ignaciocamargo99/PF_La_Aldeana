@@ -68,10 +68,12 @@ namespace desktop_employee.src.views.RegisterAssistance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1300, 800);
             this.Controls.Add(this.dgvConvert);
             this.Controls.Add(this.btnAssistanceDni);
             this.Controls.Add(this.btnAssistanceFinger);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmRegisterAssistence";
             this.Text = "frmRegisterAssistence";
             this.Load += new System.EventHandler(this.frmRegisterAssistence_Load);

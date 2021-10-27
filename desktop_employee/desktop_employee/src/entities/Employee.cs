@@ -8,9 +8,9 @@ namespace desktop_employee.src.entities
 {
     public class Employee
     {
-        public int dni { get; set; }
-        public string name { get; set; }
-        public string last_name { get; set; }
+        public int DNI { get; set; }
+        public string NOMBRE { get; set; }
+        public string APELLIDO { get; set; }
 
     }
 }
