@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Breadcrumb from '../../../../common/Breadcrumb';
-import DataAdvances from '../DataAdvances';
 import ExtraDataAdvances from '../ExtraDataAdvances';
 import dateText from "../../../../utils/DateFormat/dateText";
 import Axios from "axios";
 import formattedDate from '../../../../utils/formattedDate';
+import formatInstallments from "../formatInstallments";
 
 const PORT = require('../../../../config');
 
@@ -22,12 +22,11 @@ export default function ReadAdvances(props) {
                 Axios.get(PORT() + `/api/installments?dniEmployee=${data.dniEmployee}&date=${data.date}`)
                     .then((response) => {
                         let aux = data;
-                        aux.installments[0].month = formattedDate(new Date(response.data[0].month));
-                        aux.firstMonth = formattedDate(new Date(response.data[0].month));
-                        data.installments = response.data;
-                        data.months = response.data.length;
-                        data.firstMonth = response.data[0].month;
-                        setDataBack({amount: data.amount, date: data.date, installments: response.data, months: response.data.length, firstMonth: formattedDate(new Date(response.data[0].month))});
+                        let res = formatInstallments(response.data);
+                        aux.firstMonth = res[0].month.slice(0, -3);
+                        aux.installments = res;
+                        aux.months = res.length;
+                        setDataBack({amount: data.amount, date: data.date, installments: res, months: res.length, firstMonth: res[0].month.slice(0, -3)});
                         setData(aux);
                         setIsLoad(true);
                     })
@@ -49,7 +48,6 @@ export default function ReadAdvances(props) {
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Consultar adelanto" />
             <h2 style={{ fontWeight: 'bold' }}>Empleado {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
             <br />
-            <DataAdvances load={load} data={data} />
             <ExtraDataAdvances load={load} data={data}/>
             <div className='buttons'>
                 <button className='sendOk' onClick={back}>Volver</button>

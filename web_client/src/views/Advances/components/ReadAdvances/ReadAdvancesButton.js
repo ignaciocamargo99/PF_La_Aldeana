@@ -13,6 +13,7 @@ export default function ReadAdvancesButton (props) {
         aux.installments = [{month: dateToString(aux.date, true), amount: 0, label: "", pay: 0}];
         aux.reading = true;
         aux.months = 0;
+        console.log(dateToString(aux.date, true))
         aux.firstMonth = dateToString(aux.date, true);
         aux.editing = false;
         props.read(aux);
