@@ -109,7 +109,8 @@ export default function InstallmentTable ({ installments, reading }) {
                                 {currentElements?.map((element, i) => {
                                     return (
                                         <tr key={i}>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.label}</td>
+                                            {console.log(currentElements)}
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.label} {element.month}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={reading}>
                                                     <div className="form-control-input">
