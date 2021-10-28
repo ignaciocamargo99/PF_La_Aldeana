@@ -16,6 +16,9 @@ namespace desktop_employee.src.views.Employees
         private DPFP.Template Template;
         private DataTable employeeSelected;
 
+        private Panel pnlPadre;
+
+        public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
         public DataTable EmployeeSelected { get => employeeSelected; set => employeeSelected = value; }
 
         public frmEditEmployee()
@@ -77,6 +80,20 @@ namespace desktop_employee.src.views.Employees
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            frmEmployees employees = new();
+            
+            //OpenForm(employees);
+            if (pnlPadre.Controls.Count > 0)
+                pnlPadre.Controls.RemoveAt(0);
+            employees.TopLevel = false;
+            employees.Dock = DockStyle.Fill;
+            pnlPadre.Controls.Add(employees);
+            employees.PnlPadre = pnlPadre;
+            employees.Show();
         }
     }
 }

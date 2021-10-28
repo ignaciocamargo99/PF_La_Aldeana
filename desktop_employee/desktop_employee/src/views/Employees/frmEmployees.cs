@@ -16,6 +16,10 @@ namespace desktop_employee.src.views.Employees
     {
         DataTable employeesTable = new DataTable();
         DataTable employeeSelectedTable = new DataTable();
+        private Panel pnlPadre;
+
+        public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
+
         public frmEmployees()
         {
             InitializeComponent();
@@ -35,7 +39,7 @@ namespace desktop_employee.src.views.Employees
             {
                 column.Width = 250;
             }
-            
+           
         }
 
         private DataTable createTableEmployee()
@@ -90,8 +94,26 @@ namespace desktop_employee.src.views.Employees
             employeeSelectedTable = filterEmployee(employeesTable, employee_dni);
 
             frmEditEmployee frmEditEmployee = new();
+
+            if (pnlPadre.Controls.Count > 0)
+                pnlPadre.Controls.RemoveAt(0);
+            frmEditEmployee.TopLevel = false;
+            frmEditEmployee.Dock = DockStyle.Fill;
+            pnlPadre.Controls.Add(frmEditEmployee);
             frmEditEmployee.EmployeeSelected = employeeSelectedTable;
-            frmEditEmployee.ShowDialog();
+            frmEditEmployee.PnlPadre = pnlPadre;
+            frmEditEmployee.Show();
+
+
+
+            
+            
+            //frmEditEmployee.ShowDialog();
+        }
+
+        private void btnAplicarFiltros_Click(object sender, EventArgs e)
+        {
+            lblFiltros.Text = "Hola soy nuevo";
         }
     }
 }

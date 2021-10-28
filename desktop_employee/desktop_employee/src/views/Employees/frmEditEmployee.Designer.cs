@@ -119,6 +119,7 @@ namespace desktop_employee.src.views.Employees
             this.btnCancelar.TabIndex = 8;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // txtDedoPD
             // 
@@ -140,6 +141,7 @@ namespace desktop_employee.src.views.Employees
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(811, 460);
             this.Controls.Add(this.lblDedoPD);
             this.Controls.Add(this.txtDedoPD);
@@ -152,6 +154,7 @@ namespace desktop_employee.src.views.Employees
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.lblDni);
             this.Controls.Add(this.txtDni);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmEditEmployee";
             this.Text = "Dedo Pulgar Derecho";
             this.Load += new System.EventHandler(this.frmEditEmployee_Load);

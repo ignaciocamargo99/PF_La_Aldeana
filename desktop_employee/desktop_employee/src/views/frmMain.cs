@@ -83,7 +83,14 @@ namespace desktop_employee
         {
             frmEmployees employees = new();
             lblTitulo.Text = "EMPLEADOS";
-            OpenForm(employees);
+            //OpenForm(employees);
+            if (this.pnlDesktop.Controls.Count > 0)
+                this.pnlDesktop.Controls.RemoveAt(0);
+            employees.TopLevel = false;
+            employees.Dock = DockStyle.Fill;
+            pnlDesktop.Controls.Add(employees);
+            employees.PnlPadre = pnlDesktop;
+            employees.Show();
         }
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
@@ -111,7 +118,9 @@ namespace desktop_employee
             //Inicia el menú contraido
             ContraerMenu();
             //Inicia el formulario de asistencia
-            ibtnAsistencia_Click(null, e);
+            //ibtnAsistencia_Click(null, e);
+
+            ibtnEmpleados_Click(null, e);
         }
     }
 }
