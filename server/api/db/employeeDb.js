@@ -132,10 +132,11 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
 const employeeAssistanceGetDB = () => {
     let hourNow = new Date().getHours();
     let yearNow, monthNow, dayNow, currentDay;
+
     if (hourNow >= 21 && hourNow <= 23) {
         yearNow = new Date().getFullYear();
         monthNow = new Date().getMonth() + 1;
-        dayNow = new Date().getDate() - 1;
+        dayNow = new Date().getDate() + 1;
         currentDay = dayNow;
     }
     else {
@@ -148,8 +149,6 @@ const employeeAssistanceGetDB = () => {
     if (hourNow >= 21 && hourNow <= 23) currentDay = dayNow - 1;
 
     let dateFormattedNow = yearNow + '-' + monthNow + '-' + currentDay;
-
-    console.log(dateFormattedNow)
 
     const sqlSelect = `
             SELECT ae.*, e.name, e.last_name
