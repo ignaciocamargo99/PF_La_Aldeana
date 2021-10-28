@@ -41,7 +41,7 @@ VALUES
     NULL
   ),
   (
-    'Individual de Oreo',
+    'Individual de Óreo',
     'Bandeja de 1 porción con base de galleta oreo, dulce de leche y crema',
     150,
     (SELECT id_sector FROM SECTORS WHERE NAME = 'Cafetería'),
