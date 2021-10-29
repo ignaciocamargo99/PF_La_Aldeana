@@ -22,7 +22,7 @@ export default function LicensesTable(props) {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)
         .then((response) => {
             if(response.data.Ok) {
-                warningMessage('Correcto','Se ha eliminado la licencia correctamente.','success');
+                warningMessage('Correcto','Se ha cancelado la licencia correctamente.','success');
                 props.setReloadList(!props.reloadList);
             }
             else warningMessage("Error", `${response.data.Message}`, "error")

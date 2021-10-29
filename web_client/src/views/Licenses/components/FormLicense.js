@@ -64,20 +64,20 @@ const FormLicense = (props) => {
                 let dateInitFutureLicense = ''
                 props.licenses.forEach((license) => {
                     let dateFinish = new Date(dateBDToString(license.date_finish,'En'))
+                    dateFinish.setDate(dateFinish.getDate() + 1)
                     let dateInit = new Date(dateBDToString(license.date_init,'En'))
-                    if(license.dni === props.license.dni && dateFinish.getTime() < licenseDateInit.getTime()){
-                        dateFinish.setDate(dateFinish.getDate() + 1)
-                        dateFinishLastLicense = formattedDate(dateFinish)
+                    dateInit.setDate(dateInit.getDate() - 1)
+                    if(license.dni === props.license.dni && dateFinish.getTime() <= licenseDateInit.getTime() && (dateFinishLastLicense === '' || dateFinish.getTime() > dateFinishLastLicense.getTime())){
+                        dateFinishLastLicense = dateFinish
                     }
-                    if(license.dni === props.license.dni && dateInit.getTime() > licenseDateFinish.getTime() && dateInitFutureLicense === ''){
-                        dateInit.setDate(dateInit.getDate() - 1)
-                        dateInitFutureLicense = formattedDate(dateInit)
+                    if(license.dni === props.license.dni && dateInit.getTime() >= licenseDateFinish.getTime() && (dateInitFutureLicense === '' || dateInit.getTime() < dateInitFutureLicense.getTime())){
+                        dateInitFutureLicense = dateInit
                     }
                 })
-                dateInit.current.min = dateFinishLastLicense
-                dateInit.current.max = dateInitFutureLicense
-                dateFinish.current.min = dateFinishLastLicense
-                dateFinish.current.max = dateInitFutureLicense
+                dateInit.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):dateFinishLastLicense
+                dateInit.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense
+                dateFinish.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):dateFinishLastLicense
+                dateFinish.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense
             }
         }
         else{
@@ -226,6 +226,7 @@ const FormLicense = (props) => {
         setErrorDateFinish(true);
         setErrorEmployee(true);
         setErrorReason(true);
+        setSearchState('');
         dateInit.current.value = "";
         dateFinish.current.value = "";
         reason.current.value = "";
@@ -287,7 +288,7 @@ const FormLicense = (props) => {
                     </div>
                 </div>
                 <div className="formRow">
-                    <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState}/>
+                    <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState} searchState={searchState}/>
                 </div>
             </BeShowed>  
             <BeShowed show={showSpinner}>
