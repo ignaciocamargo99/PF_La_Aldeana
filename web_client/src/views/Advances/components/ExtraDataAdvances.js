@@ -168,7 +168,7 @@ export default function ExtraDataAdvances(props) {
         const month = parseInt(inputMonths.current.value.trim());
         const first = inputFirstMonth.current.value + '-01';
         
-        if (amount >= month && month > 0 && month < 19 && first.length === 10 && data.nroDNI > 10000000) {
+        if (amount >= month && month > 0 && month < 19 && first.length === 10) {
             setIsValidClassAmountTotal("form-control is-valid");
             data.amount = amount;
             let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments);
@@ -187,7 +187,7 @@ export default function ExtraDataAdvances(props) {
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data, firstMonth, employee, data.nroDNI]);
+    }, [months, amountTotal, props, data, firstMonth, employee]);
 
     //Meses
     useEffect(() => {
@@ -195,7 +195,7 @@ export default function ExtraDataAdvances(props) {
         const amount = parseInt(inputAmountTotal.current.value.trim());
         const first = inputFirstMonth.current.value + '-01';
 
-        if (month > 0 && month < 19 && amount >= month && first.length === 10 &&  data.nroDNI > 10000000) {
+        if (month > 0 && month < 19 && amount >= month && first.length === 10) {
             setIsValidClassMonths("form-control is-valid");
             let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments);
             data.installments = aux;
@@ -213,7 +213,7 @@ export default function ExtraDataAdvances(props) {
             }
             props.load(data);
         }
-    }, [months, amountTotal, props, data, firstMonth, employee, data.nroDNI]);
+    }, [months, amountTotal, props, data, firstMonth, employee]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
