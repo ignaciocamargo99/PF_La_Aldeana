@@ -45,7 +45,7 @@ const Licenses = (props) => {
                     <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
                 </div>
                 <div className="viewBody">
-                    <ListLicensesFilter onClickRB={setFilter}/>
+                    <ListLicensesFilter onClickRB={setFilter} filter={filter}/>
                     <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} 
                                 reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>
                 </div>

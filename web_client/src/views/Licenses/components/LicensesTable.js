@@ -16,13 +16,18 @@ const PORT = require('../../../config');
 
 export default function LicensesTable(props) {
 
-    const[date,setDate] = useState(new Date().getTime())
+    const[date,setDate] = useState(new Date().setHours(0,0,0,0))
 
     const deleteLicense = (idLicense) => {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)
         .then((response) => {
-            if(response.data.Ok) warningMessage('Correcto','Se ha eliminado la licencia correctamente.','success')
+            if(response.data.Ok) {
+                warningMessage('Correcto','Se ha cancelado la licencia correctamente.','success');
+                props.setReloadList(!props.reloadList);
+            }
             else warningMessage("Error", `${response.data.Message}`, "error")
+        })
+        .then(() => {
         })
         .catch((error) => console.error(error))
     }
@@ -37,7 +42,6 @@ export default function LicensesTable(props) {
             .then((willDelete) => {
               if (willDelete) {
                 deleteLicense(idLicense);
-                props.setReloadList(!props.reloadList);
               }
             });
     }
