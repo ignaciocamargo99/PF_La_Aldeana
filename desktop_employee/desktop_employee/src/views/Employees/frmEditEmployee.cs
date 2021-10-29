@@ -15,6 +15,8 @@ namespace desktop_employee.src.views.Employees
     {
         private DPFP.Template Template;
         private DataTable employeeSelected;
+        private DataTable tableFingers;
+        Reply oReply = new Reply();
 
         private Panel pnlPadre;
 
@@ -26,20 +28,62 @@ namespace desktop_employee.src.views.Employees
             InitializeComponent();
         }
 
-        
 
-        private void frmEditEmployee_Load(object sender, EventArgs e)
+        private async void frmEditEmployee_LoadAsync(object sender, EventArgs e)
         {
             txtDni.Text = Convert.ToString(EmployeeSelected.Rows[0][0]);
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
             txtApellido.Text = Convert.ToString(EmployeeSelected.Rows[0][2]);
+
+            tableFingers = loadTableFingers();
+
+            string url = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
+            List<FingerXEmployee> listado = new List<FingerXEmployee>();
+            oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
+            this.dgvFingerEmployee.DataSource = oReply.Data;
+
+            
+            cboDedo.DataSource = tableFingers;
+            cboDedo.DisplayMember = "name_finger";
+            cboDedo.ValueMember = "id_finger";
+            cboDedo.SelectedIndex = -1;
+
+        }
+
+        private DataTable loadTableFingers()
+        {
+            DataTable table = new DataTable();
+            DataColumn cId = new DataColumn("id_finger");
+            cId.DataType = System.Type.GetType("System.Int32");
+            DataColumn cNameFinger = new DataColumn("name_finger");
+            table.Columns.Add(cId);
+            table.Columns.Add(cNameFinger);
+            
+            DataRow row1 = table.NewRow();
+            row1["id_finger"] = 1;
+            row1["name_finger"] = "Dedo Pulgar Derecho";
+            table.Rows.Add(row1);
+            DataRow row2 = table.NewRow();
+            row2["id_finger"] = 2;
+            row2["name_finger"] = "Dedo Pulgar Izquierdo";
+            table.Rows.Add(row2);
+            DataRow row3 = table.NewRow();
+            row3["id_finger"] = 3;
+            row3["name_finger"] = "Dedo Índice Derecho";
+            table.Rows.Add(row3);
+            DataRow row4 = table.NewRow();
+            row4["id_finger"] = 4;
+            row4["name_finger"] = "Dedo Índice Izquierdo";
+            table.Rows.Add(row4);
+
+            return table;
         }
 
         private void btnCapturarPD_Click(object sender, EventArgs e)
         {
             frmCaptureFingerPrint captureFingerPrint = new();
             captureFingerPrint.OnTemplate += this.OnTemplate;
-            captureFingerPrint.ShowDialog();
+            captureFingerPrint.Show();
         }
 
         private void OnTemplate(DPFP.Template template)
@@ -51,7 +95,7 @@ namespace desktop_employee.src.views.Employees
                 if (Template != null)
                 {
                     MessageBox.Show("The fingerprint template is ready for fingerprint verification.", "Fingerprint Enrollment");
-                    txtDedoPD.Text = "Huella capturada correctamente";
+                    txtInfo.Text = "Huella capturada correctamente";
                 }
                 else
                 {
@@ -71,7 +115,7 @@ namespace desktop_employee.src.views.Employees
                     finger = "dedo pulgar derecho",
                     fingerPrint = streamFingerPrint
                 };
-                Reply oReply = new Reply();
+                
                 oReply = await Consumer.Execute<FingerPrint>("http://localhost:3001/api/fingerPrints", methodHttp.POST, fingerPrint);
                 MessageBox.Show(oReply.StatusCode);
 
@@ -85,15 +129,18 @@ namespace desktop_employee.src.views.Employees
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             frmEmployees employees = new();
-            
-            //OpenForm(employees);
+            employees.PnlPadre = pnlPadre;
+            OpenForm(employees);
+        }
+
+        private void OpenForm(Form form)
+        {
             if (pnlPadre.Controls.Count > 0)
                 pnlPadre.Controls.RemoveAt(0);
-            employees.TopLevel = false;
-            employees.Dock = DockStyle.Fill;
-            pnlPadre.Controls.Add(employees);
-            employees.PnlPadre = pnlPadre;
-            employees.Show();
+            form.TopLevel = false;
+            form.Dock = DockStyle.Fill;
+            pnlPadre.Controls.Add(form);
+            form.Show();
         }
     }
 }

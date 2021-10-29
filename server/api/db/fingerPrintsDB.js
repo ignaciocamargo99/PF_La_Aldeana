@@ -18,6 +18,23 @@ const fingerPrintsGetDB = () => {
     });
 };
 
+const fingerPrintsByDniGetDB = (dniEmployee) => {
+    const sqlSelect = `SELECT dniEmployee AS DNI, finger AS DEDO
+                    FROM FINGER_PRINTS WHERE dniEmployee = ${dniEmployee}`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const fingerPrintCreateDB = (newFingerPrint) => {
     let {dni, finger, fingerPrint} = newFingerPrint;
 
@@ -37,4 +54,4 @@ const fingerPrintCreateDB = (newFingerPrint) => {
     
 };
 
-module.exports = { fingerPrintCreateDB, fingerPrintsGetDB };
+module.exports = { fingerPrintCreateDB, fingerPrintsGetDB, fingerPrintsByDniGetDB };

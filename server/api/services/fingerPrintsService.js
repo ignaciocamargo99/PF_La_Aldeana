@@ -1,8 +1,18 @@
-const { fingerPrintCreateDB, fingerPrintsGetDB } = require('../db/fingerPrintsDB');
+const { fingerPrintCreateDB, fingerPrintsGetDB, fingerPrintsByDniGetDB } = require('../db/fingerPrintsDB');
 
 const readFingerPrints = async () => {
     try {
         let res = await fingerPrintsGetDB();
+        return res;
+    }
+    catch(error) {
+        throw Error(error)
+    };
+};
+
+const readFingerByDni = async (dniEmployee) => {
+    try {
+        let res = await fingerPrintsByDniGetDB(dniEmployee);
         return res;
     }
     catch(error) {
@@ -20,4 +30,4 @@ const createFingerPrint = async (newFingerPrint) => {
     };
 };
 
-module.exports = { createFingerPrint, readFingerPrints };
+module.exports = { createFingerPrint, readFingerPrints, readFingerByDni };

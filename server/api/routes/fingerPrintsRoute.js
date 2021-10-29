@@ -4,6 +4,7 @@ const fingerPrintController = require("../controllers/fingerPrintsController");
 
 //#region APIs
 router.get('/fingerPrints', fingerPrintController.getFingerPrints);
+router.get('/fingerPrints/:dni', fingerPrintController.getFingersByDni);
 router.post('/fingerPrints', fingerPrintController.newFingerPrint);
      
 //#endregion

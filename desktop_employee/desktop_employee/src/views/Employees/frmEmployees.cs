@@ -32,14 +32,11 @@ namespace desktop_employee.src.views.Employees
             oReply = await Consumer.Execute<List<Employee>>("http://localhost:3001/api/employeesDesktop", methodHttp.GET, listado);
             this.dgvEmployees.DataSource = oReply.Data;
             employeesTable = ConvertDgvToTable(dgvEmployees);
-            //dgvEmployees.AutoResizeColumns(DataGridViewAutoSizeColumnsMo‌​de.Fill);
-            //dgvEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             
             foreach (DataGridViewTextBoxColumn column in dgvEmployees.Columns)
             {
                 column.Width = 250;
-            }
-           
+            }           
         }
 
         private DataTable createTableEmployee()
@@ -94,26 +91,24 @@ namespace desktop_employee.src.views.Employees
             employeeSelectedTable = filterEmployee(employeesTable, employee_dni);
 
             frmEditEmployee frmEditEmployee = new();
-
-            if (pnlPadre.Controls.Count > 0)
-                pnlPadre.Controls.RemoveAt(0);
-            frmEditEmployee.TopLevel = false;
-            frmEditEmployee.Dock = DockStyle.Fill;
-            pnlPadre.Controls.Add(frmEditEmployee);
             frmEditEmployee.EmployeeSelected = employeeSelectedTable;
             frmEditEmployee.PnlPadre = pnlPadre;
-            frmEditEmployee.Show();
-
-
-
-            
-            
-            //frmEditEmployee.ShowDialog();
+            OpenForm(frmEditEmployee);
         }
 
         private void btnAplicarFiltros_Click(object sender, EventArgs e)
         {
-            lblFiltros.Text = "Hola soy nuevo";
+            MessageBox.Show("Falta desarrollar los filtros");
+        }
+
+        private void OpenForm(Form form)
+        {
+            if (pnlPadre.Controls.Count > 0)
+                pnlPadre.Controls.RemoveAt(0);
+            form.TopLevel = false;
+            form.Dock = DockStyle.Fill;
+            pnlPadre.Controls.Add(form);
+            form.Show();
         }
     }
 }

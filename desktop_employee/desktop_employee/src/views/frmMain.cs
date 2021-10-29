@@ -83,14 +83,8 @@ namespace desktop_employee
         {
             frmEmployees employees = new();
             lblTitulo.Text = "EMPLEADOS";
-            //OpenForm(employees);
-            if (this.pnlDesktop.Controls.Count > 0)
-                this.pnlDesktop.Controls.RemoveAt(0);
-            employees.TopLevel = false;
-            employees.Dock = DockStyle.Fill;
-            pnlDesktop.Controls.Add(employees);
             employees.PnlPadre = pnlDesktop;
-            employees.Show();
+            OpenForm(employees);
         }
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
