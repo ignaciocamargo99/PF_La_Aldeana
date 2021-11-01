@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addEmplInTurnSchedule } from '../../../actions/ScheduleActions';
+import DateSchedule from './DateSchedule';
 
 const PORT = require('../../../config');
 
@@ -67,7 +68,7 @@ const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
             }
         }}>
             <div className="row">
-                <div className="col-sm-8">
+                <div className="col-sm-9">
                     <Table>
                         <HeaderTable th={
                             <>
@@ -143,7 +144,8 @@ const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
                         }/>
                     </Table>
                 </div>
-                <div className="col-sm-4">
+                <div className="col-sm-3">
+                    <DateSchedule day={daySchedule} setDay={setDaySchedule} employees={employees}/>
                     <EmployeesSelection employees={employees} />
                 </div>
             </div>
