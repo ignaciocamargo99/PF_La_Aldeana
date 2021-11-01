@@ -36,7 +36,10 @@ namespace desktop_employee.src.views.Employees
             foreach (DataGridViewTextBoxColumn column in dgvEmployees.Columns)
             {
                 column.Width = 250;
-            }           
+            }
+
+            //validar boton
+            btnEditEmployee.Enabled = true;
         }
 
         private DataTable createTableEmployee()

@@ -9,16 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using desktop_employee.src.entities;
+using desktop_employee.src.views.Employees;
 
 namespace desktop_employee.src.views.RegisterAssistance
 {
-    public partial class frmAssistanceFinger : CaptureForm
+    public partial class frmAssistanceFinger : VerificationForm
     {
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
-        private DataTable fingerPrintXEmployees;
 
-        public DataTable FingerPrintXEmployees { get => fingerPrintXEmployees; set => fingerPrintXEmployees = value; }
+        private DataTable fingerXEmployees;
+        public DataTable FingerXEmployees { get => fingerXEmployees; set => fingerXEmployees = value; }
 
         public frmAssistanceFinger()
         {
@@ -34,17 +35,10 @@ namespace desktop_employee.src.views.RegisterAssistance
         protected override void Init()
         {
             base.Init();
-            base.Text = "Verificación de Huella Digital";
             Verificator = new DPFP.Verification.Verification();     // Create a fingerprint template verificator
-            UpdateStatus(0);
 
         }
 
-        private void UpdateStatus(int FAR)
-        {
-            // Show "False accept rate" value
-            SetStatus(String.Format("False Accept Rate (FAR) = {0}", FAR));
-        }
 
         protected override void Process(DPFP.Sample Sample)
         {
@@ -63,18 +57,19 @@ namespace desktop_employee.src.views.RegisterAssistance
 
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
-                for (int i = 0; i < fingerPrintXEmployees.Rows.Count; i++)
+                for (int i = 0; i < FingerXEmployees.Rows.Count; i++)
                 {
-                    if (fingerPrintXEmployees.Rows[i][3] != null)
+                    if (FingerXEmployees.Rows[i][3] != null)
                     {
-                        stream = new MemoryStream((byte[])fingerPrintXEmployees.Rows[i][3]);
+                        stream = new MemoryStream((byte[])FingerXEmployees.Rows[i][3]);
                         template = new DPFP.Template(stream);
 
                         Verificator.Verify(features, template, ref result);
-                        UpdateStatus(result.FARAchieved);
                         if (result.Verified)
                         {
-                            MakeReport("The fingerprint was VERIFIED. " + fingerPrintXEmployees.Rows[i][1] + " " + fingerPrintXEmployees.Rows[i][2]);
+                            string nameEmployee = FingerXEmployees.Rows[i][1] + " " + FingerXEmployees.Rows[i][2];
+                            MakeReport("The fingerprint was VERIFIED. " + nameEmployee);
+                            SetEmployee(nameEmployee);
                             break;
                         }
                         else
@@ -85,6 +80,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                 }
             }
         }
+
 
     }
 }

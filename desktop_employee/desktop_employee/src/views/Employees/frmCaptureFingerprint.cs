@@ -32,7 +32,7 @@ namespace desktop_employee.src.views.Employees
         private void UpdateStatus()
         {
             // Show number of samples needed.
-            SetStatus(String.Format("Fingerprint samples needed: {0}", Enroller.FeaturesNeeded));
+            SetStatus(String.Format("Se necesitan {0} muestras de huellas dactilares", Enroller.FeaturesNeeded));
         }
 
         protected override void Process(DPFP.Sample Sample)

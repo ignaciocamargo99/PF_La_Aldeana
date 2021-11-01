@@ -42,6 +42,10 @@ namespace desktop_employee.src.views.Employees
             oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
             this.dgvFingerEmployee.DataSource = oReply.Data;
 
+            if (this.dgvFingerEmployee != null && this.dgvFingerEmployee.Rows.Count > 0)
+            {
+                btnAceptar.Enabled = true;
+            }
             
             cboDedo.DataSource = tableFingers;
             cboDedo.DisplayMember = "name_finger";
@@ -112,18 +116,20 @@ namespace desktop_employee.src.views.Employees
                 FingerPrint fingerPrint = new()
                 {
                     dni = Convert.ToInt32(txtDni.Text),
-                    finger = "dedo pulgar derecho",
+                    finger = Convert.ToString(cboDedo.GetItemText(cboDedo.SelectedItem)),
                     fingerPrint = streamFingerPrint
                 };
                 
                 oReply = await Consumer.Execute<FingerPrint>("http://localhost:3001/api/fingerPrints", methodHttp.POST, fingerPrint);
-                MessageBox.Show(oReply.StatusCode);
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            frmEmployees employees = new();
+            employees.PnlPadre = pnlPadre;
+            OpenForm(employees);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -141,6 +147,11 @@ namespace desktop_employee.src.views.Employees
             form.Dock = DockStyle.Fill;
             pnlPadre.Controls.Add(form);
             form.Show();
+        }
+
+        private void cboDedo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnCapturarPD.Enabled = true;
         }
     }
 }

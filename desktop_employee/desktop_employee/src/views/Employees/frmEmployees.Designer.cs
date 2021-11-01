@@ -79,6 +79,7 @@ namespace desktop_employee.src.views.Employees
             // btnEditEmployee
             // 
             this.btnEditEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditEmployee.Enabled = false;
             this.btnEditEmployee.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnEditEmployee.Location = new System.Drawing.Point(770, 334);
             this.btnEditEmployee.Name = "btnEditEmployee";

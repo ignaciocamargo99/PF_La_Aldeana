@@ -12,9 +12,12 @@ namespace desktop_employee.src.views.RegisterAssistance
 {
     public partial class frmAssistanceDNI : Form
     {
+
+
         public frmAssistanceDNI()
         {
             InitializeComponent();
         }
+
     }
 }

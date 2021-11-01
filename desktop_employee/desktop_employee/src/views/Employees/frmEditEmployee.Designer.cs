@@ -123,6 +123,7 @@ namespace desktop_employee.src.views.Employees
             // btnCapturarPD
             // 
             this.btnCapturarPD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCapturarPD.Enabled = false;
             this.btnCapturarPD.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnCapturarPD.Location = new System.Drawing.Point(558, 256);
             this.btnCapturarPD.Name = "btnCapturarPD";
@@ -230,6 +231,7 @@ namespace desktop_employee.src.views.Employees
             this.cboDedo.Name = "cboDedo";
             this.cboDedo.Size = new System.Drawing.Size(215, 33);
             this.cboDedo.TabIndex = 14;
+            this.cboDedo.SelectedIndexChanged += new System.EventHandler(this.cboDedo_SelectedIndexChanged);
             // 
             // label3
             // 
