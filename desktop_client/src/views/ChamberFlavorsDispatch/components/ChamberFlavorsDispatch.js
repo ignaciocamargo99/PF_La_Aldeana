@@ -108,6 +108,6 @@ const mapDispatchToProps = {
     updateAllElements,
     updateTableDown,
     updateRefresh
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChamberFlavorsDispatch);
