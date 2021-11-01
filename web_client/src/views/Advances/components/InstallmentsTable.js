@@ -22,6 +22,7 @@ export default function InstallmentTable ({ installments, reading }) {
             handlerLoadingSpinner();
 
             setListTable(installments);
+            setCurrentPage(1);
         }
     }, [installments]);
 

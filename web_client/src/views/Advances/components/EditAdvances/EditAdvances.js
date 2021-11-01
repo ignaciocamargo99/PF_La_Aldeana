@@ -3,8 +3,10 @@ import Axios from 'axios';
 import { useState, useEffect } from 'react';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
+import dateToString from '../../../../utils/ConverterDate/dateToString';
 import dateText from '../../../../utils/DateFormat/dateText';
 import displayError from '../../../../utils/ErrorMessages/displayError';
+import formattedDate from '../../../../utils/formattedDate';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import ExtraDataAdvances from '../ExtraDataAdvances';
@@ -39,7 +41,8 @@ export default function EditAdvances(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth) && data.date < data.firstMonth) setReady(true);
+        console.log(dataBack.firstMonth + '-01' , data.installments[0].month , dateToString(data.date, false, true) + '-01', data.installments[0].month)
+        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth  + '-01'  !== data.installments[0].month) && dateToString(data.date, false, true) + '-01' <= data.installments[0].month) setReady(true);
         else setReady(false);
     }
 

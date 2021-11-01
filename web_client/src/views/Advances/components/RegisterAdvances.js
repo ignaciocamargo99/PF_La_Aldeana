@@ -3,6 +3,7 @@ import Axios from 'axios';
 import React, { useState } from "react";
 import Breadcrumb from '../../../common/Breadcrumb';
 import Buttons from "../../../common/Buttons";
+import dateToString from '../../../utils/ConverterDate/dateToString';
 import displayError from "../../../utils/ErrorMessages/displayError";
 import formattedDate from '../../../utils/formattedDate';
 import successMessage from '../../../utils/SuccessMessages/successMessage';
@@ -18,7 +19,7 @@ export default function RegisterAdvances() {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && data.date < data.firstMonth) setReady(true);
+        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && dateToString(data.date, false, true) <= dateToString(data.firstMonth, false, true)) setReady(true);
         else setReady(false);
     }
 
