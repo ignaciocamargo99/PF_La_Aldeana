@@ -1,11 +1,12 @@
 import employeeImg from '../../../common/CommonImages/Empleado_Generico.png';
 import { Droppable , Draggable } from 'react-beautiful-dnd';
-import './EmployeesSelection.css';
+import './Employees.css';
+import showMeCharge from '../../../utils/ShowMeCharge/showMeCharge';
 
 const EmployeesSelection = (props) => {
     
     return(
-        <div className="container">
+        <div>
             <label>Empleados seleccionables: </label>
             <div className="formRow">
                 <Droppable droppableId='employeeList' >
@@ -17,9 +18,9 @@ const EmployeesSelection = (props) => {
                                 (<li {...draggableProvided.draggableProps} 
                                     ref={draggableProvided.innerRef}
                                     {...draggableProvided.dragHandleProps}
-                                    className="item">
-                                    <img src={employeeImg} style={{height:'30px'}}/>
-                                    <label>{employee.last_name}</label>
+                                    className={`cardEmployee ${showMeCharge(employee.charge)}`}>
+                                    <img src={employeeImg} className="imageEmployee"/>
+                                    <label className="textEmployeeCard">{employee.last_name}</label>
                                 </li>)}
                             </Draggable>)
                         )}

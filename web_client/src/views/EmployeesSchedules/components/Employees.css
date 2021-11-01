@@ -1,0 +1,32 @@
+.imageEmployee{
+    width: 3rem;
+    height: 3rem;
+}
+
+.textEmployeeCard{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.cardEmployee{
+    text-align: center;
+    list-style: none;
+    width: 15rem;
+    height: 8rem;
+    border: 0.2rem solid black;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.delivery{
+    background-color: #F68634;
+}
+
+.cashier{
+    background-color: #A5DEF9;
+}
+
+.publicAttention{
+    background-color: #FEF211;
+}
