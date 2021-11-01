@@ -101,7 +101,7 @@ const PaymentSale = (props) => {
                     </div>
                     <div className='formRow'>
                         <label>Vuelto:  $  </label>
-                        <label id="id_turned">{turned?parseFloat(turned,2):""}</label>
+                        <label id="id_turned">{turned?parseFloat(turned,2):"0"}</label>
                     </div>
                 </BeShowed>
                 <BeShowed show={boolPayCard}>
