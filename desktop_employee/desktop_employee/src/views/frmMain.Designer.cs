@@ -37,11 +37,11 @@ namespace desktop_employee
             this.ibtnMenu = new FontAwesome.Sharp.IconButton();
             this.pbxLogo = new System.Windows.Forms.PictureBox();
             this.pnlTitle = new System.Windows.Forms.Panel();
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.ibtnMinimizar = new FontAwesome.Sharp.IconButton();
             this.ibtnClose = new FontAwesome.Sharp.IconButton();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.pnlDesktop = new System.Windows.Forms.Panel();
             this.dgvConvert = new System.Windows.Forms.DataGridView();
+            this.pnlDesktop = new System.Windows.Forms.Panel();
             this.pnlMenu.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).BeginInit();
@@ -67,7 +67,7 @@ namespace desktop_employee
             this.ibtnAsistenciaDNI.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnAsistenciaDNI.FlatAppearance.BorderSize = 0;
             this.ibtnAsistenciaDNI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ibtnAsistenciaDNI.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ibtnAsistenciaDNI.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ibtnAsistenciaDNI.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnAsistenciaDNI.IconChar = FontAwesome.Sharp.IconChar.IdCard;
             this.ibtnAsistenciaDNI.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
@@ -90,7 +90,7 @@ namespace desktop_employee
             this.ibtnEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnEmpleados.FlatAppearance.BorderSize = 0;
             this.ibtnEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ibtnEmpleados.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ibtnEmpleados.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ibtnEmpleados.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnEmpleados.IconChar = FontAwesome.Sharp.IconChar.User;
             this.ibtnEmpleados.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
@@ -113,7 +113,7 @@ namespace desktop_employee
             this.ibtnAsistencia.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnAsistencia.FlatAppearance.BorderSize = 0;
             this.ibtnAsistencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ibtnAsistencia.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ibtnAsistencia.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ibtnAsistencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnAsistencia.IconChar = FontAwesome.Sharp.IconChar.Fingerprint;
             this.ibtnAsistencia.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
@@ -124,8 +124,8 @@ namespace desktop_employee
             this.ibtnAsistencia.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.ibtnAsistencia.Size = new System.Drawing.Size(216, 127);
             this.ibtnAsistencia.TabIndex = 4;
-            this.ibtnAsistencia.Tag = "ASISTENCIA";
-            this.ibtnAsistencia.Text = "ASISTENCIA";
+            this.ibtnAsistencia.Tag = "ASISTENCIA HUELLA";
+            this.ibtnAsistencia.Text = "ASISTENCIA HUELLA";
             this.ibtnAsistencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ibtnAsistencia.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ibtnAsistencia.UseVisualStyleBackColor = true;
@@ -179,6 +179,16 @@ namespace desktop_employee
             this.pnlTitle.Size = new System.Drawing.Size(779, 86);
             this.pnlTitle.TabIndex = 3;
             // 
+            // lblTitulo
+            // 
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Verdana", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTitulo.Location = new System.Drawing.Point(36, 20);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(180, 46);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "TITULO";
+            // 
             // ibtnMinimizar
             // 
             this.ibtnMinimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -209,25 +219,6 @@ namespace desktop_employee
             this.ibtnClose.UseVisualStyleBackColor = true;
             this.ibtnClose.Click += new System.EventHandler(this.ibtnClose_Click);
             // 
-            // lblTitulo
-            // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Verdana", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTitulo.Location = new System.Drawing.Point(36, 20);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(180, 46);
-            this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "TITULO";
-            // 
-            // pnlDesktop
-            // 
-            this.pnlDesktop.BackColor = System.Drawing.Color.White;
-            this.pnlDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDesktop.Location = new System.Drawing.Point(216, 86);
-            this.pnlDesktop.Name = "pnlDesktop";
-            this.pnlDesktop.Size = new System.Drawing.Size(779, 428);
-            this.pnlDesktop.TabIndex = 4;
-            // 
             // dgvConvert
             // 
             this.dgvConvert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -237,6 +228,15 @@ namespace desktop_employee
             this.dgvConvert.Size = new System.Drawing.Size(31, 30);
             this.dgvConvert.TabIndex = 0;
             this.dgvConvert.Visible = false;
+            // 
+            // pnlDesktop
+            // 
+            this.pnlDesktop.BackColor = System.Drawing.Color.White;
+            this.pnlDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDesktop.Location = new System.Drawing.Point(216, 86);
+            this.pnlDesktop.Name = "pnlDesktop";
+            this.pnlDesktop.Size = new System.Drawing.Size(779, 428);
+            this.pnlDesktop.TabIndex = 4;
             // 
             // frmMain
             // 

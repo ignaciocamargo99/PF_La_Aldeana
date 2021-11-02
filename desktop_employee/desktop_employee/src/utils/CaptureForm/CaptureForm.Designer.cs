@@ -41,64 +41,70 @@ namespace desktop_employee
             // PromptLabel
             // 
             this.PromptLabel.AutoSize = true;
-            this.PromptLabel.Location = new System.Drawing.Point(266, 12);
+            this.PromptLabel.Location = new System.Drawing.Point(310, 14);
+            this.PromptLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.PromptLabel.Name = "PromptLabel";
-            this.PromptLabel.Size = new System.Drawing.Size(43, 13);
+            this.PromptLabel.Size = new System.Drawing.Size(50, 15);
             this.PromptLabel.TabIndex = 1;
             this.PromptLabel.Text = "Prompt:";
             // 
             // StatusLabel
             // 
             this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(266, 65);
+            this.StatusLabel.Location = new System.Drawing.Point(311, 194);
+            this.StatusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(40, 13);
+            this.StatusLabel.Size = new System.Drawing.Size(42, 15);
             this.StatusLabel.TabIndex = 3;
             this.StatusLabel.Text = "Status:";
             // 
             // Picture
             // 
-            this.Picture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.Picture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Picture.BackColor = System.Drawing.SystemColors.Window;
             this.Picture.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Picture.Location = new System.Drawing.Point(12, 12);
+            this.Picture.Location = new System.Drawing.Point(14, 14);
+            this.Picture.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Picture.Name = "Picture";
-            this.Picture.Size = new System.Drawing.Size(248, 288);
+            this.Picture.Size = new System.Drawing.Size(289, 332);
             this.Picture.TabIndex = 0;
             this.Picture.TabStop = false;
             // 
             // Prompt
             // 
-            this.Prompt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.Prompt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Prompt.Location = new System.Drawing.Point(269, 28);
+            this.Prompt.Location = new System.Drawing.Point(314, 32);
+            this.Prompt.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Prompt.Name = "Prompt";
             this.Prompt.ReadOnly = true;
-            this.Prompt.Size = new System.Drawing.Size(300, 20);
+            this.Prompt.Size = new System.Drawing.Size(349, 23);
             this.Prompt.TabIndex = 2;
             // 
             // StatusText
             // 
-            this.StatusText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.StatusText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StatusText.BackColor = System.Drawing.SystemColors.Window;
-            this.StatusText.Location = new System.Drawing.Point(269, 81);
+            this.StatusText.Location = new System.Drawing.Point(315, 212);
+            this.StatusText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.StatusText.Multiline = true;
             this.StatusText.Name = "StatusText";
             this.StatusText.ReadOnly = true;
             this.StatusText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.StatusText.Size = new System.Drawing.Size(300, 219);
+            this.StatusText.Size = new System.Drawing.Size(349, 88);
             this.StatusText.TabIndex = 4;
             // 
             // StatusLine
             // 
-            this.StatusLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.StatusLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.StatusLine.Location = new System.Drawing.Point(9, 303);
+            this.StatusLine.Location = new System.Drawing.Point(365, 117);
+            this.StatusLine.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.StatusLine.Name = "StatusLine";
-            this.StatusLine.Size = new System.Drawing.Size(479, 39);
+            this.StatusLine.Size = new System.Drawing.Size(233, 21);
             this.StatusLine.TabIndex = 5;
             this.StatusLine.Text = "[Status line]";
             // 
@@ -106,20 +112,22 @@ namespace desktop_employee
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(494, 319);
+            this.CloseButton.Location = new System.Drawing.Point(576, 368);
+            this.CloseButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseButton.Size = new System.Drawing.Size(88, 27);
             this.CloseButton.TabIndex = 6;
             this.CloseButton.Text = "Cerrar";
             this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // CaptureForm
             // 
             this.AcceptButton = this.CloseButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(581, 354);
+            this.ClientSize = new System.Drawing.Size(678, 408);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.StatusLine);
             this.Controls.Add(this.StatusText);
@@ -128,9 +136,10 @@ namespace desktop_employee
             this.Controls.Add(this.PromptLabel);
             this.Controls.Add(this.Picture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(464, 340);
             this.Name = "CaptureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Capture Enrollment";

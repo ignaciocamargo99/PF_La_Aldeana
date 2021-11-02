@@ -17,7 +17,6 @@ namespace desktop_employee.src.views.Employees
         DataTable employeesTable = new DataTable();
         DataTable employeeSelectedTable = new DataTable();
         private Panel pnlPadre;
-
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
 
         public frmEmployees()

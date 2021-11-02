@@ -32,7 +32,15 @@ namespace desktop_employee.src.views.Employees
         private void UpdateStatus()
         {
             // Show number of samples needed.
-            SetStatus(String.Format("Se necesitan {0} muestras de huellas dactilares", Enroller.FeaturesNeeded));
+            if (Enroller.FeaturesNeeded > 0)
+            {
+                SetStatus(String.Format("Se necesitan {0} muestras de huellas dactilares", Enroller.FeaturesNeeded));
+            }
+            else
+            {
+                SetStatus(String.Format("Huella Capturada correctamente"));
+            }
+            
         }
 
         protected override void Process(DPFP.Sample Sample)
@@ -57,7 +65,6 @@ namespace desktop_employee.src.views.Employees
                     {
                         case DPFP.Processing.Enrollment.Status.Ready:   // report success and stop capturing
                             OnTemplate(Enroller.Template);
-                            SetPrompt("Click Close, and then click Fingerprint Verification.");
                             Stop();
                             break;
 
