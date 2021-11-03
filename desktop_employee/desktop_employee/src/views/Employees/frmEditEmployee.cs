@@ -34,19 +34,76 @@ namespace desktop_employee.src.views.Employees
             txtDni.Text = Convert.ToString(EmployeeSelected.Rows[0][0]);
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
             txtApellido.Text = Convert.ToString(EmployeeSelected.Rows[0][2]);
+            getFingers();
 
-            string url = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
-            List<FingerXEmployee> listado = new List<FingerXEmployee>();
-            oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
-            this.dgvFingerEmployee.DataSource = oReply.Data;
-            fingersTable = ConvertDgvToTable(dgvFingerEmployee);
-            // CONVERTIR DGV A TABLE
+
             /*
             if (this.dgvFingerEmployee != null && this.dgvFingerEmployee.Rows.Count > 0)
             {
                 btnAceptar.Enabled = true;
             }
             */
+        }
+
+
+        private async void getFingers()
+        {
+            string url = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
+            List<FingerXEmployee> listado = new List<FingerXEmployee>();
+            oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
+            this.dgvFingerEmployee.DataSource = oReply.Data;
+            fingersTable = ConvertDgvToTable(dgvFingerEmployee);
+
+            onOffButtons();
+        }
+
+        private async void deleteFingers()
+        {
+            try
+            {
+                FingerXEmployee fingerPrint = new()
+                {
+                    DNI = Convert.ToInt32(txtDni.Text),
+                    DEDO = txtLblCurrent
+                };
+                oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.DELETE, fingerPrint);
+                if (oReply.StatusCode == Convert.ToString(200))
+                {
+                    MessageBox.Show("Huella eliminada correctamente.");
+                }       
+                onOffButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void onOffButtons()
+        {
+            for (int i = 0; i < fingersTable.Rows.Count; i++)
+            {
+                if (Convert.ToString(fingersTable.Rows[i][1]) == lblPD.Text)
+                {
+                    btnCapturarPD.Enabled = false;
+                    btnEliminarPD.Enabled = true;
+                }
+                if (Convert.ToString(fingersTable.Rows[i][1]) == lblID.Text)
+                {
+                    btnCapturarID.Enabled = false;
+                    btnEliminarID.Enabled = true;
+                }
+                if (Convert.ToString(fingersTable.Rows[i][1]) == lblPI.Text)
+                {
+                    btnCapturarPI.Enabled = false;
+                    btnEliminarPI.Enabled = true;
+                }
+                if (Convert.ToString(fingersTable.Rows[i][1]) == lblII.Text)
+                {
+                    btnCapturarII.Enabled = false;
+                    btnEliminarII.Enabled = true;
+                }
+            }
         }
 
         private DataTable ConvertDgvToTable(DataGridView dgv)
@@ -76,6 +133,7 @@ namespace desktop_employee.src.views.Employees
                 if (Template != null)
                 {
                     RegisterFingerAsync();
+                    getFingers();
                 }
                 else
                 {
@@ -157,22 +215,28 @@ namespace desktop_employee.src.views.Employees
 
         private void btnEliminarPD_Click(object sender, EventArgs e)
         {
-
+            txtLblCurrent = lblPD.Text;
+            deleteFingers();
         }
 
         private void btnEliminarID_Click(object sender, EventArgs e)
         {
-
+            txtLblCurrent = lblID.Text;
+            deleteFingers();
         }
 
         private void btnEliminarPI_Click(object sender, EventArgs e)
         {
-
+            txtLblCurrent = lblPI.Text;
+            deleteFingers();
         }
 
         private void btnEliminarII_Click(object sender, EventArgs e)
         {
-
+            txtLblCurrent = lblII.Text;
+            deleteFingers();
         }
+
+
     }
 }

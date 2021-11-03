@@ -1,4 +1,4 @@
-const { createFingerPrint, readFingerPrints, readFingerByDni } = require('../services/fingerPrintsService');
+const { createFingerPrint, readFingerPrints, readFingerByDni, deleteFingerPrint } = require('../services/fingerPrintsService');
 
 // HTTP: GET
 async function getFingerPrints(req, res) {
@@ -45,4 +45,21 @@ async function newFingerPrint(req, res) {
     }
 }
 
-module.exports = { newFingerPrint, getFingerPrints, getFingersByDni };
+// HTTP: DELETE
+async function deleteFinger(req, res) {
+    try {
+        await deleteFingerPrint(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Empleado eliminado exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { newFingerPrint, getFingerPrints, getFingersByDni, deleteFinger };

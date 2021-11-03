@@ -51,7 +51,23 @@ const fingerPrintCreateDB = (newFingerPrint) => {
             db.release();
         })
     });
-    
 };
 
-module.exports = { fingerPrintCreateDB, fingerPrintsGetDB, fingerPrintsByDniGetDB };
+const fingerPrintDeleteDB = (fingerPrint) => {
+    let {dni, finger} = fingerPrint
+    const sqlUpdate = 'DELETE FROM FINGER_PRINTS WHERE finger = ? AND dniEmployee = ?';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlUpdate, [finger, dni], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { fingerPrintCreateDB, fingerPrintsGetDB, fingerPrintsByDniGetDB, fingerPrintDeleteDB };

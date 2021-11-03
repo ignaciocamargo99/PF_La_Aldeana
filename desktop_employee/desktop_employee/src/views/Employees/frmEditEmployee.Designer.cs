@@ -41,6 +41,7 @@ namespace desktop_employee.src.views.Employees
             this.btnCancelar = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.dgvFingerEmployee = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnEliminarII = new FontAwesome.Sharp.IconButton();
             this.btnEliminarPI = new FontAwesome.Sharp.IconButton();
@@ -54,11 +55,10 @@ namespace desktop_employee.src.views.Employees
             this.lblID = new System.Windows.Forms.Label();
             this.lblPI = new System.Windows.Forms.Label();
             this.lblPD = new System.Windows.Forms.Label();
-            this.dgvFingerEmployee = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtDni
@@ -155,7 +155,6 @@ namespace desktop_employee.src.views.Employees
             // panel1
             // 
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.dgvFingerEmployee);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -172,9 +171,37 @@ namespace desktop_employee.src.views.Employees
             this.label1.TabIndex = 12;
             this.label1.Text = "DATOS DEL EMPLEADO";
             // 
+            // dgvFingerEmployee
+            // 
+            this.dgvFingerEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvFingerEmployee.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvFingerEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvFingerEmployee.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvFingerEmployee.Location = new System.Drawing.Point(593, 161);
+            this.dgvFingerEmployee.Name = "dgvFingerEmployee";
+            this.dgvFingerEmployee.RowTemplate.Height = 25;
+            this.dgvFingerEmployee.Size = new System.Drawing.Size(243, 185);
+            this.dgvFingerEmployee.TabIndex = 12;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnEliminarII);
+            this.panel2.Controls.Add(this.dgvFingerEmployee);
             this.panel2.Controls.Add(this.btnEliminarPI);
             this.panel2.Controls.Add(this.btnEliminarID);
             this.panel2.Controls.Add(this.btnEliminarPD);
@@ -365,34 +392,6 @@ namespace desktop_employee.src.views.Employees
             this.lblPD.TabIndex = 13;
             this.lblPD.Text = "Dedo Pulgar Derecho";
             // 
-            // dgvFingerEmployee
-            // 
-            this.dgvFingerEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvFingerEmployee.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvFingerEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvFingerEmployee.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvFingerEmployee.Location = new System.Drawing.Point(593, 12);
-            this.dgvFingerEmployee.Name = "dgvFingerEmployee";
-            this.dgvFingerEmployee.RowTemplate.Height = 25;
-            this.dgvFingerEmployee.Size = new System.Drawing.Size(57, 43);
-            this.dgvFingerEmployee.TabIndex = 12;
-            // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -418,9 +417,9 @@ namespace desktop_employee.src.views.Employees
             this.Load += new System.EventHandler(this.frmEditEmployee_LoadAsync);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).EndInit();
             this.ResumeLayout(false);
 
         }
