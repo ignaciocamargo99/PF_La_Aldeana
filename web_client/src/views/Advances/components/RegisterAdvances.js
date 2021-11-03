@@ -3,6 +3,7 @@ import Axios from 'axios';
 import React, { useState } from "react";
 import Breadcrumb from '../../../common/Breadcrumb';
 import Buttons from "../../../common/Buttons";
+import dateToString from '../../../utils/ConverterDate/dateToString';
 import displayError from "../../../utils/ErrorMessages/displayError";
 import formattedDate from '../../../utils/formattedDate';
 import successMessage from '../../../utils/SuccessMessages/successMessage';
@@ -18,7 +19,16 @@ export default function RegisterAdvances() {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && data.date < data.firstMonth) setReady(true);
+        if (parseInt(data.firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+            if (parseInt(data.firstMonth.slice(5, -3)) >= parseInt(data.date.slice(5, -3))) {
+                if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months) setReady(true);
+                else setReady(false);
+            }
+            else setReady(false);
+        } else if (parseInt(data.firstMonth.slice(0, -5)) > parseInt(data.date.slice(0, -5))) {
+            if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months) setReady(true);
+            else setReady(false);
+        }
         else setReady(false);
     }
 

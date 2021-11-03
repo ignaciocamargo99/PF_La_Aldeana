@@ -3,8 +3,10 @@ import Axios from 'axios';
 import { useState, useEffect } from 'react';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from '../../../../common/Buttons';
+import dateToString from '../../../../utils/ConverterDate/dateToString';
 import dateText from '../../../../utils/DateFormat/dateText';
 import displayError from '../../../../utils/ErrorMessages/displayError';
+import formattedDate from '../../../../utils/formattedDate';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import ExtraDataAdvances from '../ExtraDataAdvances';
@@ -39,8 +41,26 @@ export default function EditAdvances(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth !== data.firstMonth) && data.date < data.firstMonth) setReady(true);
+        
+        let aux = false;
+        if (data.firstMonth.length === 10) aux = parseInt(dataBack.firstMonth.slice(0,-3)) !== parseInt(dateToString(data.firstMonth).slice(0, -5)) || parseInt(dataBack.firstMonth.slice(5)) !== parseInt(dateToString(data.firstMonth).slice(5, -3));
+        else aux = parseInt(dataBack.firstMonth.slice(0,-3)) !== parseInt(data.installments[0].month.slice(0, -5)) || parseInt(dataBack.firstMonth.slice(5)) !== parseInt(data.installments[0].month.slice(5, -3));
+            
+        if (data.installments[0].month){
+            if (parseInt(data.installments[0].month.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+                if (parseInt(data.installments[0].month.slice(5, -3)) > parseInt(data.date.slice(5, -3))) {
+                    if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
+                    else setReady(false);
+                }
+                else setReady(false);
+            } else if (parseInt(data.installments[0].month.slice(0, -5)) > parseInt(data.date.slice(0, -5))) {
+                if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
+                else setReady(false);
+            }
+            else setReady(false);
+        }
         else setReady(false);
+        
     }
 
     const updateAdvances = () => {

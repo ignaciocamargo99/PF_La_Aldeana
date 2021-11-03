@@ -22,6 +22,7 @@ export default function InstallmentTable ({ installments, reading }) {
             handlerLoadingSpinner();
 
             setListTable(installments);
+            setCurrentPage(1);
         }
     }, [installments]);
 
@@ -109,7 +110,6 @@ export default function InstallmentTable ({ installments, reading }) {
                                 {currentElements?.map((element, i) => {
                                     return (
                                         <tr key={i}>
-                                            {console.log(currentElements)}
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.label} {element.month}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={reading}>
