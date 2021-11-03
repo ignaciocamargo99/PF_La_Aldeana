@@ -9,17 +9,18 @@ const ContainerEmployees = (props) => {
             <Droppable droppableId={`${props.turn}`}>
                 {(droppableProvided) => (
                 <ul {...droppableProvided.droppableProps}
-                    ref={droppableProvided.innerRef}>
+                    ref={droppableProvided.innerRef}
+                    className="contentCards">
                     {props.employeesTurn.map((employee,i) => (
                         <Draggable key={employee.dni} draggableId={`${props.turn}-${employee.dni.toString()}`} index={i}>
                             {(draggableProvided) => 
                             (<li {...draggableProvided.draggableProps} 
                                 ref={draggableProvided.innerRef}
                                 {...draggableProvided.dragHandleProps}
-                                className={`cardEmployee ${showMeCharge(employee.charge)}`}>
+                                className={`cardEmployee-small ${showMeCharge(employee.charge)}`}>
                                 <div>
-                                    <img src={employeeImg} className="imageEmployee"/>
-                                    <label className="textEmployeeCard">{employee.last_name}</label>
+                                    <img src={employeeImg} className="imageEmployee-small"/>
+                                    <label>{employee.last_name}</label>
                                 </div>
                             </li>)}
                         </Draggable>)

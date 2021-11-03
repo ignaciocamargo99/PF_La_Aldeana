@@ -30,3 +30,24 @@
 .publicAttention{
     background-color: #FEF211;
 }
+
+.imageEmployee-small{
+    width: 2rem;
+    height: 2rem;
+}
+
+.cardEmployee-small{
+    text-align: center;
+    list-style: none;
+    width: 10rem;
+    height: 4rem;
+    border: 0.15rem solid black;
+    padding: 0.75rem;
+    margin: 0.25rem;
+}
+
+.contentCards{
+    list-style: none;
+    border: 0.25rem solid black;
+    border-radius: 2rem;
+}
