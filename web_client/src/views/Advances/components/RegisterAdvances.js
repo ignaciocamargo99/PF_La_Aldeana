@@ -19,7 +19,16 @@ export default function RegisterAdvances() {
 
     const load = (childData) => {
         setData(childData);
-        if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && dateToString(data.date, false, true) <= dateToString(data.firstMonth, false, true)) setReady(true);
+        if (parseInt(data.firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+            if (parseInt(data.firstMonth.slice(5, -3)) >= parseInt(data.date.slice(5, -3))) {
+                if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months) setReady(true);
+                else setReady(false);
+            }
+            else setReady(false);
+        } else if (parseInt(data.firstMonth.slice(0, -5)) > parseInt(data.date.slice(0, -5))) {
+            if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months) setReady(true);
+            else setReady(false);
+        }
         else setReady(false);
     }
 

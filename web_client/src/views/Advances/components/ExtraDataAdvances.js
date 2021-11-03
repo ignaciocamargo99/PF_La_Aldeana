@@ -18,6 +18,7 @@ export default function ExtraDataAdvances(props) {
     const [amountTotal, setAmountTotal] = useState("null");
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
+    const [load, isLoad] = useState(false);
 
     const [option, setOption] = useState(data.installments);
 
@@ -50,6 +51,7 @@ export default function ExtraDataAdvances(props) {
     const onChangeFirstMonth = () => {
         console.log(inputFirstMonth.current.value);
         if (inputFirstMonth) setFirstMonth(inputFirstMonth.current.value);
+        console.log(firstMonth)
     }
 
     //find employees with amount of advances
@@ -106,14 +108,21 @@ export default function ExtraDataAdvances(props) {
             setIsValidClassDate("form-control");
         }
         else {
+
             if (data.date !== inputDate.current.value){
                 data.date = inputDate.current.value;
                 props.load(data);
-                setIsValidClassDate("form-control is-valid");
+                if (parseInt(firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+                    if (parseInt(firstMonth.slice(5, -3)) >= parseInt(data.date.slice(5, -3))) setIsValidClassDate("form-control is-valid");
+                    else setIsValidClassDate("form-control");
+                }
+                else if (parseInt(firstMonth.slice(0, -5)) >= parseInt(data.date.slice(0, -5))) setIsValidClassDate("form-control is-valid");
+                else setIsValidClassDate("form-control");
             }
         }
     }, [startDate, date, data, props]);
 
+    //first month
     useEffect(() => {
         if (!props.data.editing && !props.data.reading && !inputFirstMonth.current.value) {
             inputFirstMonth.current.value = startFirstMonth.slice(0,-3);
@@ -128,26 +137,44 @@ export default function ExtraDataAdvances(props) {
             setIsValidClassDate("form-control");
         }
         else {
-            if (new Date(inputFirstMonth.current.min).getMonth() > new Date(firstMonth).getMonth() && new Date(inputFirstMonth.current.max) <= new Date(firstMonth)){
-                data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
-                props.load(data);
-                setIsValidClassDate("form-control");
-            } else {
-                console.log(data)
-                if ((props.data.reading && inputFirstMonth.current.value.length !== 10) || (props.data.editing && inputFirstMonth.current.value.length !== 10)) {
-                    inputFirstMonth.current.value = data.firstMonth;
-                    setFirstMonth(inputFirstMonth.current.value + '-01');
-                    data.installments[0].month =  inputFirstMonth.current.value + '-01';
-                    props.load(data);
-                    setIsValidClassFirstMonth("form-control is-valid");
-                } else {
-                    if (data.firstMonth !== inputFirstMonth.current.value && firstMonth){
+
+            let aux = data.firstMonth;
+            if (aux.length !== 10) aux = data.firstMonth;
+            if (!inputFirstMonth.current.value) inputFirstMonth.current.value = aux.slice(0,-3);
+            let min = inputFirstMonth.current.min + '-10';
+            let max = inputFirstMonth.current.max + '-10';
+
+            if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
+                if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
+                    if (data.firstMonth !== inputFirstMonth.current.value){
                         setIsValidClassFirstMonth("form-control is-valid");
                         data.firstMonth = inputFirstMonth.current.value + '-01';
                         setFirstMonth(inputFirstMonth.current.value + '-01');
                         data.installments[0].month =  inputFirstMonth.current.value + '-01';
                         props.load(data);
                     }
+                }
+                else {
+                    data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
+                    props.load(data);
+                    setIsValidClassDate("form-control");
+                }
+            } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5)) && parseInt(aux.slice(5, -3)) <= parseInt(max.slice(5, -3))) {
+                if (data.firstMonth !== inputFirstMonth.current.value && firstMonth){
+                    setIsValidClassFirstMonth("form-control is-valid");
+                    data.firstMonth = inputFirstMonth.current.value + '-01';
+                    setFirstMonth(inputFirstMonth.current.value + '-01');
+                    data.installments[0].month =  inputFirstMonth.current.value + '-01';
+                    props.load(data);
+                }
+            }
+            else {
+                if (!load) {
+                    data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
+                    inputFirstMonth.current.value = aux;
+                    props.load(data);
+                    setIsValidClassDate("form-control");
+                    isLoad(true);
                 }
             }
         }

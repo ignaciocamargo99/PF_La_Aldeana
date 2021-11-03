@@ -41,9 +41,26 @@ export default function EditAdvances(props) {
 
     const load = (childData) => {
         setData(childData);
-        console.log(dataBack.firstMonth + '-01' , data.installments[0].month , dateToString(data.date, false, true) + '-01', data.installments[0].month)
-        if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || dataBack.firstMonth  + '-01'  !== data.installments[0].month) && dateToString(data.date, false, true) + '-01' <= data.installments[0].month) setReady(true);
+        
+        let aux = false;
+        if (data.firstMonth.length === 10) aux = parseInt(dataBack.firstMonth.slice(0,-3)) !== parseInt(dateToString(data.firstMonth).slice(0, -5)) || parseInt(dataBack.firstMonth.slice(5)) !== parseInt(dateToString(data.firstMonth).slice(5, -3));
+        else aux = parseInt(dataBack.firstMonth.slice(0,-3)) !== parseInt(data.installments[0].month.slice(0, -5)) || parseInt(dataBack.firstMonth.slice(5)) !== parseInt(data.installments[0].month.slice(5, -3));
+            
+        if (data.installments[0].month){
+            if (parseInt(data.installments[0].month.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+                if (parseInt(data.installments[0].month.slice(5, -3)) > parseInt(data.date.slice(5, -3))) {
+                    if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
+                    else setReady(false);
+                }
+                else setReady(false);
+            } else if (parseInt(data.installments[0].month.slice(0, -5)) > parseInt(data.date.slice(0, -5))) {
+                if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
+                else setReady(false);
+            }
+            else setReady(false);
+        }
         else setReady(false);
+        
     }
 
     const updateAdvances = () => {
