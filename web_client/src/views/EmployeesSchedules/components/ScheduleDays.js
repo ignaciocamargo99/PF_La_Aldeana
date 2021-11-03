@@ -74,7 +74,7 @@ const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
         }}>
             <div className="row">
                 <div className="col-sm-9">
-                    <Table>
+                    <Table style={{display: 'block', height: '35rem',overflow: 'auto'}}>
                         <HeaderTable th={
                             <>
                                 <th style={{textAlign:'center', width:'5%'}}>Horas</th>
@@ -90,7 +90,7 @@ const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
                             </>
                         }/>
                         <BodyTable tbody={
-                            <tbody>
+                            <tbody style={{display: 'block', overflow: 'auto' , height: '30rem'}}>
                                 <tr style={{height:'210px'}}>
                                     <td style={{textAlign:'center',width:'5%'}}>
                                         <div className="container">

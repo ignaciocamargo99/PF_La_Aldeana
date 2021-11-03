@@ -8,7 +8,7 @@ const EmployeesSelection = (props) => {
     return(
         <div>
             <label className="col-sm-9 offset-sm-3"><b>Empleados seleccionables</b></label>
-            <div className="formRow col-sm-10 offset-sm-1">
+            <div className="formRow col-sm-10 offset-sm-1" style={{display: 'block', height: '25rem',overflow: 'auto', width: '20rem'}}>
                 <Droppable droppableId='employeeList' >
                     {(droppableProvided) => 
                     (<ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef} >
