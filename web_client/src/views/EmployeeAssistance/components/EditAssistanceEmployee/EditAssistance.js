@@ -1,14 +1,14 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
-import formattedDate from '../../../../utils/formattedDate';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
+import validateDateEntryEgress from '../validateDateEntryEgress';
 import validateHoursEgressEntry from '../validateHoursEgressEntry';
 
 const PORT = require('../../../../config');
@@ -20,11 +20,10 @@ export default function EditAssistance(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.dni) {
-            if (data.date_egress) {
-                if (data.date_entry < data.date_egress) setReady(true);
-                else setReady(false);
-            }
+        if (data.date_entry && data.dni && data.inputDateEntry && !data.validationEntry && !data.validationEgress) {
+            if (data.inputDateEgress && data.inputDateEgress !== '' && (!data.date_egress || data.date_egress === '')) setReady(false);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry === data.inputDateEgress) && (data.date_entry <= data.date_egress)) setReady(true);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry !== data.inputDateEgress)) setReady(true);
             else setReady(true);
         }
         else setReady(false);
@@ -36,18 +35,24 @@ export default function EditAssistance(props) {
     }, []);
 
     const updateAssistanceEmployee = () => {
-        let validateMessage;
+        let validateHourEntryEgress;
         if (data.date_egress === 'Invalid date') data.date_egress = null;
-        if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
-        else {
-            validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
-            if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
+        let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);
 
-            let actualDate;
-            actualDate = formattedDate(new Date());
+        if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
+        else {
+            validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
+            if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
+
             let dateEntry, dateEgress;
-            dateEntry = actualDate + " " + data.date_entry;
-            if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
+
+            if (data.date_entry.length > 5) dateEntry = data.date_entry
+            else dateEntry = data.inputDateEntry + " " + data.date_entry;
+
+            if (data.date_egress) {
+                if (data.date_egress.length > 5) dateEgress = data.date_egress;
+                else dateEgress = data.inputDateEgress + " " + data.date_egress;
+            }
             else dateEgress = null;
 
             data.date_entry = dateEntry;

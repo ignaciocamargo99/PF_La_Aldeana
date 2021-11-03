@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
-import formattedDate from '../../../../utils/formattedDate';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
+import validateDateEntryEgress from '../validateDateEntryEgress';
 import validateHoursEgressEntry from '../validateHoursEgressEntry';
 import DataAssistance from './DataAssistance';
 
@@ -17,17 +17,16 @@ export default function RegisterAssistance() {
     const [ready, setReady] = useState(false);
     const [assistance, setAssistance] = useState([]);
     const [employeeAux, setEmployeeAux] = useState([]);
-    const [data, setData] = useState({ date_entry: null, date_egress: null, employee: null, editing: false, reading: false });
+    const [data, setData] = useState({ inputDateEntry: null, date_entry: null, inputDateEgress: null, date_egress: null, employee: null, editing: false, reading: false, validationEntry: null, validationEgress: null });
 
     const cancelRegisterEmployee = () => window.location.replace('/app/assistanceEmployees');
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.employee !== '-1') {
-            if (data.date_egress) {
-                if (data.date_entry < data.date_egress) setReady(true);
-                else setReady(false);
-            }
+        if (data.date_entry && data.employee !== '-1' && data.inputDateEntry && !data.validationEntry && !data.validationEgress) {
+            if (data.inputDateEgress && data.inputDateEgress !== '' && (!data.date_egress || data.date_egress === '')) setReady(false);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry === data.inputDateEgress) && (data.date_entry <= data.date_egress)) setReady(true);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry !== data.inputDateEgress)) setReady(true);
             else setReady(true);
         }
         else setReady(false);
@@ -44,23 +43,27 @@ export default function RegisterAssistance() {
     }, []);
 
     const registerNewAssistanceEmployee = () => {
-        let validateMessage;
-        if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de egreso debe ser posterior a la hora de ingreso', 'warning');
-        else {
-            validateMessage = validateHoursEgressEntry(data.date_entry, data.employee, data.date_egress, assistance, null, null, PORT());
-            if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
-            
-            let actualDate;
-            actualDate = formattedDate(new Date());
-            let dateEntry = ''; 
-            let dateEgress =  '';
-            dateEntry = actualDate + " " + data.date_entry;
+        let validateHourEntryEgress;
+        let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);
 
-            if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
+        if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
+        else {
+            validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.employee, data.date_egress, assistance, null, null, PORT());
+            if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
+
+            let dateEntry, dateEgress;
+
+            if (data.date_entry.length > 5) dateEntry = data.date_entry
+            else dateEntry = data.inputDateEntry + " " + data.date_entry;
+
+            if (data.date_egress) {
+                if (data.date_egress.length > 5) dateEgress = data.date_egress;
+                else dateEgress = data.inputDateEgress + " " + data.date_egress;
+            }
             else dateEgress = null;
+
             data.date_entry = dateEntry;
             data.date_egress = dateEgress;
-
             let findEmployee = employeeAux.find((employees) => employees.dni === parseInt(data.employee, 10));
 
             if (data.date_entry && findEmployee && ready) {

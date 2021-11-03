@@ -32,23 +32,38 @@ export default function DataAssistance(props) {
     const handleEmployee = (e) => setSelectValue(e.target.value);
 
     const handleTimeEntry = () => {
-        if (inputDateEntry.current.value && (inputTimeEntry.current.value < '07:00' || inputTimeEntry.current.value > '23:59')) divTimeEntryValidation.current.innerHTML = 'El ingreso puede ser registrado de 7 A.M. a 23:59 P.M. dentro del mismo día';
+        if (inputDateEntry.current.value && (inputTimeEntry.current.value < '07:00' || inputTimeEntry.current.value > '23:59')) {
+            divTimeEntryValidation.current.innerHTML = 'El ingreso puede ser registrado de 7 A.M. a 23:59 P.M. dentro del mismo día';
+            data.validationEntry = true;
+            props.load(data);
+        }
         else {
             divTimeEntryValidation.current.innerHTML = '';
             data.date_entry = inputTimeEntry.current.value;
+            data.validationEntry = false;
             props.load(data);
         }
     }
 
     const handleTimeEgress = () => {
-        if (inputDateEgress.current.value && (inputDateEntry.current.value === inputDateEgress.current.value)) {
+        if (inputDateEgress.current.value && (inputDateEntry.current.value !== inputDateEgress.current.value)) {
+            if (inputTimeEgress.current.value > '03:00') {
+                divTimeEgressValidation.current.innerHTML = 'La hora de egreso debe encontrarse entre las 00 A.M. y 3 A.M.';
+                data.validationEgress = true;
+                props.load(data);
+            }
+            else {
+                divTimeEgressValidation.current.innerHTML = '';
+                data.date_egress = inputTimeEgress.current.value;
+                data.validationEgress = false;
+                props.load(data);
+            }
+        }
+        else if (inputDateEgress.current.value && (inputDateEntry.current.value === inputDateEgress.current.value)) {
             divTimeEgressValidation.current.innerHTML = '';
             data.date_egress = inputTimeEgress.current.value;
+            data.validationEgress = false;
             props.load(data);
-        }
-        else if (inputDateEgress.current.value) {
-            if (inputTimeEgress.current.value > '03:00') divTimeEgressValidation.current.innerHTML = 'La hora de egreso debe encontrarse entre las 00 A.M. y 3 A.M.';
-            else divTimeEgressValidation.current.innerHTML = '';
         }
     }
 
@@ -56,6 +71,11 @@ export default function DataAssistance(props) {
         setDateEntry(e.target.value)
         inputDateEntry.current.value = e.target.value;
         inputDateEgress.current.value = '';
+        inputTimeEgress.current.value = ''
+        data.inputDateEntry = inputDateEntry.current.value;
+        data.inputDateEgress = inputDateEgress.current.value;
+        data.date_egress = inputTimeEgress.current.value;
+        props.load(data);
     }
 
     const handleDateEgress = () => {
@@ -70,6 +90,10 @@ export default function DataAssistance(props) {
         }
         setMinTimeEntry('07:00');
         setMaxTimeEntry('23:59');
+        data.inputDateEgress = inputDateEgress.current.value;
+        data.date_egress = inputTimeEgress.current.value;
+        if (inputDateEgress.current.value === '') data.date_egress = null;
+        props.load(data);
     };
 
     useEffect(() => {
@@ -87,13 +111,6 @@ export default function DataAssistance(props) {
         setMaxDateEgress(maxDateEgressCondition);
         setMinDateEgress(inputDateEntry.current.value);
     }, [dateEntry]);
-
-    useEffect(() => {
-
-
-    }, [])
-
-
 
 
     return (
@@ -118,26 +135,19 @@ export default function DataAssistance(props) {
                     </BeShowed>
                 </div>
             </div>
-
-
-
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="dateEmployee" >Fecha de ingreso*</label>
                 </div>
                 <div className="form-control-input">
-                    {/* <BeShowed show={props.data.reading}> */}
-                    <input className="form-control" id="dateEmployee" type="date" ref={inputDateEntry} onChange={handleDateEntry} />
-                    {/* </BeShowed> */}
-                    {/* <BeShowed show={!props.data.reading}>
-                        <input className="form-control" id="dateEmployee" type="date" ref={inputDate} onChange={onChangeDate} min={"2001-01-01"} max={maxDate} defaultValue={props.data.date} />
-                    </BeShowed> */}
+                    <BeShowed show={props.data.reading}>
+                        <input className="form-control" id="dateEmployee" type="date" readOnly ref={inputDateEntry} defaultValue={props.data.inputDateEntry} onChange={handleDateEntry} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className="form-control" id="dateEmployee" type="date" ref={inputDateEntry} onChange={handleDateEntry} defaultValue={props.data.inputDateEntry} />
+                    </BeShowed>
                 </div>
             </div>
-
-
-
-
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="dateEmployee" >Hora de ingreso*</label>
@@ -152,24 +162,19 @@ export default function DataAssistance(props) {
                     </BeShowed>
                 </div>
             </div>
-
-
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="dateEmployee" >Fecha de egreso</label>
                 </div>
                 <div className="form-control-input">
-                    {/* <BeShowed show={props.data.reading}> */}
-                    <input className="form-control" id="dateEmployee" type="date" ref={inputDateEgress} max={maxDateEgress} min={minDateEgress} onChange={handleDateEgress} />
-                    {/* </BeShowed> */}
-                    {/* <BeShowed show={!props.data.reading}>
-                        <input className="form-control" id="dateEmployee" type="date" ref={inputDate} onChange={onChangeDate} min={"2001-01-01"} max={maxDate} defaultValue={props.data.date} />
-                    </BeShowed> */}
+                    <BeShowed show={props.data.reading}>
+                        <input className="form-control" id="dateEmployee" type="date" readOnly ref={inputDateEgress} max={maxDateEgress} min={minDateEgress} onChange={handleDateEgress} defaultValue={props.data.inputDateEgress} />
+                    </BeShowed>
+                    <BeShowed show={!props.data.reading}>
+                        <input className="form-control" id="dateEmployee" type="date" ref={inputDateEgress} max={maxDateEgress} min={minDateEgress} onChange={handleDateEgress} defaultValue={props.data.inputDateEgress} />
+                    </BeShowed>
                 </div>
             </div>
-
-
-
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="dateEmployee" >Hora de egreso</label>
