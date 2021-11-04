@@ -14,6 +14,7 @@ import DynamicSearch from '../../../common/DynamicSearch';
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import formattedDate from "../../../utils/ConverterDate/formattedDate";
+import formattedDateWithDay from "../../../utils/formattedDate";
 
 const PORT = require('../../../config');
 
@@ -60,24 +61,24 @@ const FormLicense = (props) => {
                 setErrorReason(false);
                 let licenseDateInit = new Date(props.license.date_init);
                 let licenseDateFinish = new Date(props.license.date_init);
-                let dateFinishLastLicense = ''
-                let dateInitFutureLicense = ''
+                let dateFinishLastLicense = '';
+                let dateInitFutureLicense = '';
                 props.licenses.forEach((license) => {
                     let dateFinish = new Date(dateBDToString(license.date_finish,'En'))
                     dateFinish.setDate(dateFinish.getDate() + 1)
                     let dateInit = new Date(dateBDToString(license.date_init,'En'))
                     dateInit.setDate(dateInit.getDate() - 1)
                     if(license.dni === props.license.dni && dateFinish.getTime() <= licenseDateInit.getTime() && (dateFinishLastLicense === '' || dateFinish.getTime() > dateFinishLastLicense.getTime())){
-                        dateFinishLastLicense = dateFinish
+                        dateFinishLastLicense = dateFinish;
                     }
                     if(license.dni === props.license.dni && dateInit.getTime() >= licenseDateFinish.getTime() && (dateInitFutureLicense === '' || dateInit.getTime() < dateInitFutureLicense.getTime())){
-                        dateInitFutureLicense = dateInit
+                        dateInitFutureLicense = dateInit;
                     }
-                })
-                dateInit.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):dateFinishLastLicense
-                dateInit.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense
-                dateFinish.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):dateFinishLastLicense
-                dateFinish.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense
+                });
+                dateInit.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):formattedDateWithDay(new Date(dateInit.current.value),0,-15);
+                dateInit.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense;
+                dateFinish.current.min = dateFinishLastLicense !== ''?formattedDate(dateFinishLastLicense):formattedDateWithDay(new Date(dateInit.current.value),0,-15);
+                dateFinish.current.max = dateInitFutureLicense !== ''?formattedDate(dateInitFutureLicense):dateInitFutureLicense;
             }
         }
         else{
@@ -104,7 +105,7 @@ const FormLicense = (props) => {
 
     const dateMinsUpload = () => {
         let date = formatedDate(new Date());
-        dateInit.current.min = date;
+        dateInit.current.min = formattedDateWithDay(new Date(),0,-5);
         dateFinish.current.min = date;
     }
 
@@ -141,9 +142,10 @@ const FormLicense = (props) => {
         }
     }
 
-    const onChangeDateFinish = () => {
+    const onChangeDateFinish = (e) => {
         if(dateFinish.current.value !== ""){
             setErrorDateFinish(false);
+            dateFinish.current.max = e.target.value;
             if(dateInit.current.value !== ""){
                 onChangeDates();
             }
@@ -275,7 +277,7 @@ const FormLicense = (props) => {
                     <label>Fecha de fin* </label>
                 </div>
                 <div style={{width: "175px"}}>
-                    <input type="date" className="form-control" ref={dateFinish} onChange={onChangeDateFinish}></input>
+                    <input type="date" className="form-control" ref={dateFinish} onChange={(e) => {onChangeDateFinish(e)}}></input>
                 </div>
             </div>
             <div className="formRow">
