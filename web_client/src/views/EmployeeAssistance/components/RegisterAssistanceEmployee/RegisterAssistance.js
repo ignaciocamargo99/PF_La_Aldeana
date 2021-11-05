@@ -75,7 +75,7 @@ export default function RegisterAssistance() {
                     })
                     .catch((error) => console.error(error))
             }
-            else warningMessage('Atención', 'Complete los campos obligatorios o ingrese un dni que corresponda a un empleado activo.', 'warning');
+            else warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
         }
     }
 

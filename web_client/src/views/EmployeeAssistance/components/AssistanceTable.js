@@ -48,14 +48,14 @@ export default function EmployeesTable() {
         aux.inputDateEntry = assistance.date_entry.slice(0, 10);
         if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
         if (PORT() === '') {
-            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
-            aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
-        }
-        else {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
             aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
             aux.lastDateEntry = moment(assistance.date_entry).add(3, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+            aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
         }
         aux.id_assistance = assistance.id_assistance;
         aux.editing = true;
@@ -70,12 +70,12 @@ export default function EmployeesTable() {
         aux.inputDateEntry = assistance.date_entry.slice(0, 10);
         if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
         if (PORT() === '') {
-            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
-        }
-        else {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
             aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
         }
         aux.reading = true;
         setReading(aux);
@@ -130,15 +130,15 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     {PORT() !== ''
-                                                        ? moment(element.date_entry).add(3, 'hours').format('HH:mm')
-                                                        : moment(element.date_entry).format('HH:mm')
+                                                        ? moment(element.date_entry).format('HH:mm')
+                                                        : moment(element.date_entry).add(3, 'hours').format('HH:mm')
                                                     }
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     {(element.date_egress)
                                                         ? (PORT() !== ''
-                                                            ? moment(element.date_egress).add(3, 'hours').format('HH:mm')
-                                                            : moment(element.date_egress).format('HH:mm'))
+                                                            ? moment(element.date_egress).format('HH:mm')
+                                                            : moment(element.date_egress).add(3, 'hours').format('HH:mm'))
                                                         : '-'}
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
