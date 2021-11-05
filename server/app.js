@@ -25,6 +25,7 @@ const clientsRouter = require('./api/routes/clientRoute');
 const employeeRouter = require('./api/routes/employeeRoute'); 
 const fingerPrintRouter = require('./api/routes/fingerPrintsRoute'); 
 const salesReportRouter = require('./api/routes/salesReportRoute'); 
+const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute'); 
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -58,6 +59,7 @@ app.use('/api', fingerPrintRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', assistanceFingerRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
