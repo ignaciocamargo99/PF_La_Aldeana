@@ -48,6 +48,7 @@
 
 .contentCards{
     list-style: none;
-    border: 0.25rem solid black;
+    border: 0.25rem solid #000000;
     border-radius: 2rem;
+    width: 15rem;
 }

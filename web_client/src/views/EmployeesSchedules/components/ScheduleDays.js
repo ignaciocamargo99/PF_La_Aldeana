@@ -74,99 +74,102 @@ const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
         }}>
             <div className="row">
                 <div className="col-sm-9">
-                    <Table style={{display: 'block', height: '35rem',overflow: 'auto'}}>
+                    <Table style={{display: 'block', height: '35rem', overflow: 'auto',width: '62rem'}}>
                         <HeaderTable th={
                             <>
-                                <th style={{textAlign:'center', width:'5%'}}>Horas</th>
-                                <th style={{textAlign:'center', width:'5%'}}>
+                                <th style={{textAlign:'center', width:'8rem'}}>Horas</th>
+                                <th style={{textAlign:'center', width:'2rem'}}>
                                     <button className='sendOk' style={{width:'100%'}} onClick={() => {setDaySchedule(daySchedule-1)}} disabled={daySchedule===0}><FontAwesomeIcon icon={faArrowLeft}/></button>
                                 </th>
-                                <th style={{textAlign:'center'}}>{dateToNameDay(schedule[daySchedule]?.date.getDay())}</th>
-                                <th style={{textAlign:'center'}}>{dateToNameDay(schedule[daySchedule+1]?.date.getDay())}</th>
-                                <th style={{textAlign:'center'}}>{dateToNameDay(schedule[daySchedule+2]?.date.getDay())}</th>
-                                <th style={{textAlign:'center', width:'5%'}}>
-                                    <button className='sendOk' style={{width:'100%'}} onClick={() => {setDaySchedule(daySchedule+1)}} disabled={daySchedule===(schedule.length-3)}><FontAwesomeIcon icon={faArrowRight}/></button>
+                                <th style={{textAlign:'center', width: '15rem', backgroundColor:'#aaaaaa', color: 'black'}}>{dateToNameDay(schedule[daySchedule]?.date.getDay())}</th>
+                                <th style={{textAlign:'center', width: '15rem'}}>{dateToNameDay(schedule[daySchedule+1] !== undefined ? schedule[daySchedule+1].date.getDay(): new Date(schedule[daySchedule]?.date.getTime() + (24 * 60 * 60 * 1000)).getDay())}</th>
+                                <th style={{textAlign:'center', width: '15rem'}}>{dateToNameDay(schedule[daySchedule+2] !== undefined ? schedule[daySchedule+2].date.getDay(): new Date(schedule[daySchedule]?.date.getTime() + (2 * 24 * 60 * 60 * 1000)).getDay())}</th>
+                                <th style={{textAlign:'center', width:'2rem'}}>
+                                    <button className='sendOk' style={{width:'100%'}} onClick={() => {setDaySchedule(daySchedule+1)}} disabled={daySchedule===(schedule.length-1)}><FontAwesomeIcon icon={faArrowRight}/></button>
                                 </th>
                             </>
                         }/>
                         <BodyTable tbody={
-                            <tbody style={{display: 'block', overflow: 'auto' , height: '30rem'}}>
+                            <tbody style={{overflow: 'auto' , height: '30rem', width: '57rem'}}>
                                 <tr style={{height:'210px'}}>
-                                    <td style={{textAlign:'center',width:'5%'}}>
-                                        <div className="container">
+                                    <td style={{textAlign:'center',width:'8rem'}}>
+                                        <div>
                                             <div className="row align-items-start"><label style={{height:'80px'}}>8:00</label></div>
                                             <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
                                             <div className="row align-items-end"><label style={{height:'30px'}}>12:00</label></div>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td style={{textAlign:'center'}}>
-                                        <ContainerEmployees turn='Morning0' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule].turns[0]}/>
+                                    <td style={{width: '2rem'}}></td>
+                                    <td style={{width: '15rem', backgroundColor:'#aaaaaa'}}>
+                                        <ContainerEmployees turn='Morning0' employeesTurn={(schedule.length===0 || schedule[daySchedule] === undefined)?[]:schedule[daySchedule].turns[0]}/>
                                     </td>    
-                                    <td>
-                                        <ContainerEmployees turn='Morning1' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+1].turns[0]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Morning1' employeesTurn={(schedule.length===0 || schedule[daySchedule + 1] === undefined)?[]:schedule[daySchedule+1].turns[0]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='Morning2' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+2].turns[0]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Morning2' employeesTurn={(schedule.length===0 || schedule[daySchedule + 2] === undefined)?[]:schedule[daySchedule+2].turns[0]}/>
                                     </td>
+                                    <td style={{width: '2rem'}}></td>
                                 </tr>
                                 <tr>
-                                    <td style={{textAlign:'center',width:'5%'}}>
+                                    <td style={{textAlign:'center',width:'8rem'}}>
                                         <div className="container">
                                             <div className="row align-items-start"><label style={{height:'80px'}}>12:00</label></div>
                                             <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
                                             <div className="row align-items-end"><label style={{height:'30px'}}>18:00</label></div>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td style={{textAlign:'center'}}>
-                                        <ContainerEmployees turn='Afternoon0' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule].turns[1]}/>
+                                    <td style={{width: '2rem'}}></td>
+                                    <td style={{width: '15rem', backgroundColor:'#aaaaaa'}}>
+                                        <ContainerEmployees turn='Afternoon0' employeesTurn={(schedule.length===0 || schedule[daySchedule] === undefined)?[]:schedule[daySchedule].turns[1]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='Afternoon1' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+1].turns[1]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Afternoon1' employeesTurn={(schedule.length===0 || schedule[daySchedule + 1] === undefined)?[]:schedule[daySchedule+1].turns[1]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='Afternoon2' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+2].turns[1]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Afternoon2' employeesTurn={(schedule.length===0 || schedule[daySchedule + 2] === undefined)?[]:schedule[daySchedule+2].turns[1]}/>
                                     </td>
+                                    <td style={{width: '2rem'}}></td>
                                 </tr>
                                 <tr>
-                                    <td style={{textAlign:'center',width:'5%'}}>
+                                    <td style={{textAlign:'center',width:'8rem'}}>
                                         <div className="container">
                                             <div className="row align-items-start"><label style={{height:'80px'}}>18:00</label></div>
                                             <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
                                             <div className="row align-items-end"><label style={{height:'30px'}}>22:00</label></div>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td style={{textAlign:'center'}}>
-                                        <ContainerEmployees turn='Nigth0' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule].turns[2]}/>
+                                    <td style={{width: '2rem'}}></td>
+                                    <td style={{width: '15rem', backgroundColor:'#aaaaaa'}}>
+                                        <ContainerEmployees turn='Nigth0' employeesTurn={(schedule.length===0 || schedule[daySchedule] === undefined)?[]:schedule[daySchedule].turns[2]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='Nigth1' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+1].turns[2]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Nigth1' employeesTurn={(schedule.length===0 || schedule[daySchedule + 1] === undefined)?[]:schedule[daySchedule+1].turns[2]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='Nigth2' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+2].turns[2]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='Nigth2' employeesTurn={(schedule.length===0 || schedule[daySchedule + 2] === undefined)?[]:schedule[daySchedule+2].turns[2]}/>
                                     </td>
+                                    <td style={{width: '2rem'}}></td>
                                 </tr>
                                 <tr>
-                                    <td style={{textAlign:'center',width:'5%'}}>
+                                    <td style={{textAlign:'center',width:'8rem'}}>
                                         <div className="container">
                                             <div className="row align-items-start"><label style={{height:'80px'}}>22:00</label></div>
                                             <div className="row align-items-center"><label style={{height:'80px'}}>a</label></div>
                                             <div className="row align-items-end"><label style={{height:'30px'}}>02:00</label></div>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td style={{textAlign:'center'}}>
-                                        <ContainerEmployees turn='UltraNigth0' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule].turns[3]}/>
+                                    <td style={{width:'2rem'}}></td>
+                                    <td style={{width: '15rem', backgroundColor:'#aaaaaa'}}>
+                                        <ContainerEmployees turn='UltraNigth0' employeesTurn={(schedule.length===0 || schedule[daySchedule] === undefined)?[]:schedule[daySchedule].turns[3]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='UltraNigth1' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+1].turns[3]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='UltraNigth1' employeesTurn={(schedule.length===0 || schedule[daySchedule + 1] === undefined)?[]:schedule[daySchedule+1].turns[3]}/>
                                     </td>
-                                    <td>
-                                        <ContainerEmployees turn='UltraNigth2' employeesTurn={(schedule.length===0)?[]:schedule[daySchedule+2].turns[3]}/>
+                                    <td style={{width: '15rem'}}>
+                                        <ContainerEmployees turn='UltraNigth2' employeesTurn={(schedule.length===0 || schedule[daySchedule + 2] === undefined)?[]:schedule[daySchedule+2].turns[3]}/>
                                     </td>
-                                    <td></td>
+                                    <td style={{width:'2rem'}}></td>
                                 </tr>
                             </tbody>
                         }/>

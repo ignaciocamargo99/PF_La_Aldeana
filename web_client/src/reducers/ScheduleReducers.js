@@ -5,9 +5,6 @@ export const schedule = (state = [] ,action) => {
         return state
     }
     if(action.type === 'ADD_EMP_IN_TURN_SCHEDULE'){
-        console.log(state)
-        console.log(state[action.payload.day])
-        console.log(state[action.payload.day].turns)
         state[action.payload.day].turns[action.payload.turn].push(action.payload.employee)
         return state
     }
