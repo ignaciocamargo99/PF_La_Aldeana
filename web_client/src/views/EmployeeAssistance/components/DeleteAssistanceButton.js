@@ -15,8 +15,8 @@ export default function DeleteAssistancetButton(props) {
     const deleteEmployeeAssistance = () => {
         let date_entry;
         
-        if (PORT() === '') date_entry = moment(props.assistance.date_entry).format('YYYY/MM/DD HH:mm:ss')
-        else date_entry = moment(props.assistance.date_entry).add(3, 'hours').format('YYYY/MM/DD HH:mm:ss')
+        if (PORT() === '') date_entry = moment(props.assistance.date_entry).add(3, 'hours').format('YYYY/MM/DD HH:mm:ss')
+        else date_entry = moment(props.assistance.date_entry).format('YYYY/MM/DD HH:mm:ss')
 
         Axios.delete(`${PORT()}/api/employeeAssistance/${props.assistance.employee}`, { data: { date_entry: date_entry } })
             .then(() => {
@@ -26,7 +26,6 @@ export default function DeleteAssistancetButton(props) {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 swal({
                     title: "Falló al dar de baja",
                     text: error,

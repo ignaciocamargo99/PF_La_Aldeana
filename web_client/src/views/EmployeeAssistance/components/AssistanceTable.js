@@ -45,15 +45,17 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
+        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
+        if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
         if (PORT() === '') {
-            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
-            aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
-        }
-        else {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
             aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
             aux.lastDateEntry = moment(assistance.date_entry).add(3, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
+            aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
         }
         aux.id_assistance = assistance.id_assistance;
         aux.editing = true;
@@ -65,13 +67,15 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
+        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
+        if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
         if (PORT() === '') {
-            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
-            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
-        }
-        else {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
             aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        }
+        else {
+            aux.date_entry = moment(assistance.date_entry).format('HH:mm');
+            aux.date_egress = moment(assistance.date_egress).format('HH:mm');
         }
         aux.reading = true;
         setReading(aux);
@@ -100,8 +104,7 @@ export default function EmployeesTable() {
             {!isLoadingSpinner && assistance && assistance.length === 0
                 ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
                 : (
-
-                    <BeShowed show={!isEditing && !isReading}>
+                    <BeShowed show={!isEditing && !isReading && !isLoadingSpinner}>
                         <h3>Registros del día {new Date().toLocaleDateString()}</h3>
                         <Table>
                             <HeaderTable
@@ -116,8 +119,7 @@ export default function EmployeesTable() {
                                         <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
                                         <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
                                     </>
-                                }
-                            />
+                                } />
                             <BodyTable
                                 tbody={assistance?.map((element, i) => {
                                     return (
@@ -128,15 +130,15 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     {PORT() !== ''
-                                                        ? moment(element.date_entry).add(3, 'hours').format('HH:mm')
-                                                        : moment(element.date_entry).format('HH:mm')
+                                                        ? moment(element.date_entry).format('HH:mm')
+                                                        : moment(element.date_entry).add(3, 'hours').format('HH:mm')
                                                     }
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     {(element.date_egress)
                                                         ? (PORT() !== ''
-                                                            ? moment(element.date_egress).add(3, 'hours').format('HH:mm')
-                                                            : moment(element.date_egress).format('HH:mm'))
+                                                            ? moment(element.date_egress).format('HH:mm')
+                                                            : moment(element.date_egress).add(3, 'hours').format('HH:mm'))
                                                         : '-'}
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
@@ -151,8 +153,7 @@ export default function EmployeesTable() {
                                             </tr>
                                         </tbody>
                                     )
-                                })}
-                            />
+                                })} />
                         </Table>
                     </BeShowed>
                 )}
