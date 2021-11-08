@@ -30,7 +30,7 @@ export default function EditAssistance(props) {
     }
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/employeeAssistance`)
+        Axios.get(`${PORT()}/api/allEmployeeAssistance`)
             .then((response) => setAssistance(response.data))
     }, []);
 

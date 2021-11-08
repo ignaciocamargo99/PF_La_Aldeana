@@ -26,7 +26,6 @@ export default function DeleteAssistancetButton(props) {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 swal({
                     title: "Falló al dar de baja",
                     text: error,

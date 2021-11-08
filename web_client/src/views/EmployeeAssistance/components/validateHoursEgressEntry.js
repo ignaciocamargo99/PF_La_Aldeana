@@ -1,10 +1,11 @@
 import moment from "moment";
 
 const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dni, dateEgress, assistance, id_assistance, editing, PORT) => {
-    let assistancesWithDateEntryDateEgress1 = [];
-    let assistancesWithDateEntryDateEgress2 = [];
-    let assistancesWithDateEntryDateEgress3 = [];
-    let assistancesWithoutDateEgress = [];
+    let assistancesWithDateEntryDateEgress1 = null;
+    let assistancesWithDateEntryDateEgress2 = null;
+    let assistancesWithDateEntryDateEgress3 = null;
+    let assistancesWithDateEntryDateEgress4 = null
+    let assistancesWithoutDateEgress = null;
     let hours;
 
     if (PORT === '') hours = 3;
@@ -12,87 +13,174 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
 
     if (!editing) {
         // Validate if exists registers with the time range that the administrator is registering to this employee...
+        // Distinct dates
+        if (inputDateEgress !== '' && (inputDateEntry !== inputDateEgress)) {
+            assistancesWithDateEntryDateEgress3 = assistance.find((employee) => ((dateEgress) &&
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry <= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
-        if (inputDateEntry !== inputDateEgress) {
-            // FECHAS DISTINTAS!!! 
-            assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') >= dateEgress)) && (employee.employee === parseInt(dni, 10)));
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress >= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
+
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry <= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress >= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
+
+                )));
+
+            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => (
+                (dateEntry < moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+            ))
         }
 
         else {
-            // FECHAS IGUALES !!!
-            // VALIDACIÓN LISTA PARA RANGOS EN LOS QUE ESE EMPLEADO YA ESTUVO PRESENTE DENTRO DEL MISMO DÍA
-            assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && ((moment(employee.date_egress).add(hours, 'hours').format('HH:mm') <= dateEgress) || (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') >= dateEgress))) && (employee.employee === parseInt(dni, 10)));
+            // Validate if exists registers with the time range that the administrator is registering to this employee...
+            // Same dates
+            assistancesWithDateEntryDateEgress1 = assistance.find((employee) => (dateEgress)
+                && ((employee.date_entry.slice(0, 10) === inputDateEntry) && (employee.date_egress.slice(0, 10) === inputDateEgress))
+                &&
+                (
+                    (
+                        ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
+                        &&
+                        (
+                            (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) || (dateEgress > moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                        )
+                    )
+                    ||
+                    (
+                        (dateEntry < moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                        &&
+                        (
+                            (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) || (dateEgress > moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                        )
+                        &&
+                        (dateEgress >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                    )
+                )
+                && (employee.employee === parseInt(dni, 10)));
 
+            assistancesWithDateEntryDateEgress2 = assistance.find((employee) => (!dateEgress)
+                && ((employee.date_entry.slice(0, 10) === inputDateEntry))
+                && (employee.date_entry.slice(0, 10) === inputDateEntry)
+                &&
+                (
+                    (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                    &&
+                    (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                )
+
+                && (employee.employee === parseInt(dni, 10))
+            )
+
+            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => (
+                ((employee.date_entry.slice(0, 10) === inputDateEntry) && (employee.date_egress.slice(0, 10) === inputDateEgress)) &&
+                (dateEntry < moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+            ))
         }
 
         // Validate if this employee has date egress before register another assistance to the same employee...
-        // VALIDACIÓN DE QUE EL EMPLEADO QUE CUYA ASISTENCIA NUEVA SE VA A REGISTRAR NO PUEDE SER REGISTRADA YA QUE NO SE REGISTRÓ LA FECHA DE EGRESO
         assistancesWithoutDateEgress = assistance.find((employee) => !employee.date_egress && (employee.employee === parseInt(dni, 10)));
-
-
-
-
-
-
-
-
-
-
-
-        // assistancesWithDateEntryDateEgress3 = assistance.find((employee) => !dateEgress && ((moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEntry) && (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))) && (employee.employee === parseInt(dni, 10)));
-
-
-
-
-
-
-
-
     }
     else {
+        // Validate if exists registers with the time range that the administrator is registering to this employee...
+        // Distinct dates
+        if (inputDateEgress !== '' && (inputDateEntry !== inputDateEgress)) {
+            assistancesWithDateEntryDateEgress3 = assistance.find((employee) => ((dateEgress) && (employee.id_assistance !== id_assistance) &&
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
-        if (inputDateEntry !== inputDateEgress) {
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry <= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
-            // FECHAS DISTINTAS!!! 
-            if(!inputDateEgress){
-                assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && (moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEntry) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress >= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
-            }
-            else{
-                assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') >= dateEgress)) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
+                )
+                ||
+                (
+                    ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry <= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')))
+                    && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress >= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
 
-            }
+                )
+            ));
 
+            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => ((employee.id_assistance !== id_assistance) &&
+                (dateEntry < moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+            ));
         }
 
         else {
-            // FECHAS IGUALES !!!
-            // VALIDACIÓN LISTA PARA RANGOS EN LOS QUE ESE EMPLEADO YA ESTUVO PRESENTE DENTRO DEL MISMO DÍA
-            assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && ((moment(employee.date_egress).add(hours, 'hours').format('HH:mm') <= dateEgress) || (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') >= dateEgress))) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
+            // Validate if exists registers with the time range that the administrator is registering to this employee...
+            // Same dates
+            assistancesWithDateEntryDateEgress1 = assistance.find((employee) => (dateEgress) && (employee.id_assistance !== id_assistance)
+                && ((employee.date_entry.slice(0, 10) === inputDateEntry) && (employee.date_egress.slice(0, 10) === inputDateEgress))
+                &&
+                (
+                    (
+                        ((dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))
+                        &&
+                        (
+                            (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) || (dateEgress > moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                        )
+                    )
+                    ||
+                    (
+                        (dateEntry < moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                        &&
+                        (
+                            (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) || (dateEgress > moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                        )
+                        &&
+                        (dateEgress >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                    )
+                )
+                && (employee.employee === parseInt(dni, 10)));
 
+            assistancesWithDateEntryDateEgress2 = assistance.find((employee) => (!dateEgress) && (employee.id_assistance !== id_assistance)
+                && ((employee.date_entry.slice(0, 10) === inputDateEntry))
+                && (employee.date_entry.slice(0, 10) === inputDateEntry)
+                &&
+                (
+                    (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+                    &&
+                    (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))
+                )
+
+                && (employee.employee === parseInt(dni, 10)));
+
+            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => ((employee.id_assistance !== id_assistance) &&
+                ((employee.date_entry.slice(0, 10) === inputDateEntry) && (employee.date_egress.slice(0, 10) === inputDateEgress)) &&
+                (dateEntry < moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
+            ));
         }
-
         // Validate if this employee has date egress before register another assistance to the same employee...
-        // VALIDACIÓN DE QUE EL EMPLEADO QUE CUYA ASISTENCIA NUEVA SE VA A REGISTRAR NO PUEDE SER REGISTRADA YA QUE NO SE REGISTRÓ LA FECHA DE EGRESO
         assistancesWithoutDateEgress = assistance.find((employee) => !employee.date_egress && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
-
-        // Validate if exists registers with the time range that the administrator is registering to this employee...
-        // assistancesWithDateEntryDateEgress1 = assistance.find((employee) => employee.date_egress && (((moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEntry) && (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))) || ((moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEgress) && (dateEgress <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')))) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
-        // assistancesWithDateEntryDateEgress2 = assistance.find((employee) => employee.date_egress && (((dateEntry <= moment(employee.date_entry).add(hours, 'hours').format('HH:mm')) && (moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEgress)) && ((dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (moment(employee.date_egress).add(hours, 'hours').format('HH:mm') <= dateEgress))) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
-        // Validate if this employee has date egress before register another assistance to the same employee...
-        // assistancesWithoutDateEgress = assistance.find((employee) => !employee.date_egress && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
-
-        // assistancesWithDateEntryDateEgress3 = assistance.find((employee) => !dateEgress && ((moment(employee.date_entry).add(hours, 'hours').format('HH:mm') <= dateEntry) && (dateEntry <= moment(employee.date_egress).add(hours, 'hours').format('HH:mm'))) && (employee.employee === parseInt(dni, 10)) && (employee.id_assistance !== id_assistance));
     }
-
-
 
     // Warnings
     if (assistancesWithoutDateEgress) return 'Hay un registro de este empleado que aún no tiene marcada la hora de egreso. Establezca la hora de egreso para registrar una nueva asistencia del mismo e intente nuevamente...';
-    if (assistancesWithDateEntryDateEgress1) return 'Existen registros de que este empleado ya marcó el ingreso a la hora seleccionada o ya estuvo presente dentro de este rango horario. Modifique las horas de ingreso/egreso e intente nuevamente...';
+    if (assistancesWithDateEntryDateEgress1 || assistancesWithDateEntryDateEgress2 || assistancesWithDateEntryDateEgress3 || assistancesWithDateEntryDateEgress4) return 'Existen registros de que este empleado ya marcó el ingreso a la hora seleccionada o ya estuvo presente dentro de este rango horario. Modifique las horas de ingreso/egreso e intente nuevamente...';
     else return null
-    // else if (assistancesWithDateEntryDateEgress1 || assistancesWithDateEntryDateEgress2) return 'Existen registros de que este empleado trabajó en el rango horario ingresado o parte de este. Modifique las horas de ingreso/egreso e intente nuevamente...';
 }
 
 export default validateHoursEgressEntry;
