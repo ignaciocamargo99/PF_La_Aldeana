@@ -11,15 +11,15 @@ const ModalFlavorShow = (props) => {
     const [selectedFalvors,setSelectedFlavors] = useState([]);
     
     useEffect(()=> {
-        setSelectedFlavors(props.flavorsToView[0])
-    },[props.show])
+        setSelectedFlavors(props.flavorsToView[0]);
+    },[props.show]);
 
     const onClickRB = (i) => {
-        setSelectedFlavors(props.flavorsToView[i])
+        setSelectedFlavors(props.flavorsToView[i]);
     }
 
     const cancel = () => {
-        props.setShowModalShow(false)
+        props.setShowModalShow(false);
     }
 
     return(
@@ -75,4 +75,4 @@ const ModalFlavorShow = (props) => {
     )
 }
 
-export default ModalFlavorShow
+export default ModalFlavorShow;

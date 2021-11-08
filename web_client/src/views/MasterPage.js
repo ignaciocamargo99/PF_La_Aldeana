@@ -21,6 +21,7 @@ import ListEmployees from './Employees/ListEmployees';
 import RegisterEmployee from './Employees/components/RegisterEmployee';
 import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
 import RegisterAssistance from './EmployeeAssistance/components/RegisterAssistanceEmployee/RegisterAssistance';
+import Licenses from './Licenses/components/Licenses';
 
 const cookies = new Cookies();
 
@@ -46,6 +47,7 @@ export default function App() {
             <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
             <Route path='/app/assistanceEmployees' component={ListEmployeesAssistance}></Route>
             <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
+            <Route path='/app/licenses' component={Licenses}></Route>
           </BeShowed>
           <Route path='/app/index' component={Login}></Route>
         </div>

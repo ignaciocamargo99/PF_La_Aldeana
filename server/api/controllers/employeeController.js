@@ -5,7 +5,7 @@ const { readEmployee, deleteEmployees, readCharges, createEmployee,
 // HTTP: GET
 async function getEmployee(req, res) {
     try {
-        const result = await readEmployee();
+        const result = await readEmployee(req.params.dni);
         res.send(result)
     }
     catch (e) {

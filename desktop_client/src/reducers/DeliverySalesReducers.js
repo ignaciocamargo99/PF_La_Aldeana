@@ -1,5 +1,5 @@
 export const payTypeDeliveryReducer = (state = 'Efectivo', action) => {
-    if(action.type === 'UPDATE_PAY_TYPE'){
+    if(action.type === 'UPDATE_PAY_TYPE_DELIVERY'){
         return action.payload
     }
     return state
@@ -122,7 +122,7 @@ export const flavorsProductDeliveryReducer = (state = [], action) => {
     }
     if(action.type === 'DELETE_FLAVORS_PRODUCT'){
         let rta = state
-        let flavorsProduct = rta[action.payload.i].slice(0,action.payload.j).concat(rta[action.payload.i].slice(action.payload.j+1,rta[action.payload.i]))
+        let flavorsProduct = rta[action.payload.i].slice(0,action.payload.j).concat(rta[action.payload.i].slice(action.payload.j+1,rta[action.payload.i].length))
         rta[action.payload.i] = flavorsProduct
         return rta
     }
@@ -141,8 +141,15 @@ export const productsQuantitiesDeliveryReducer = (state = [], action) => {
     return state
 }
 
-export const clientsDeliveryReducer = (state = [], action) => {
-    if(action.type === 'UPDATE_DELIVERY_CLIENTS'){
+export const clientDeliveryReducer = (state = null, action) => {
+    if(action.type === 'UPDATE_DELIVERY_CLIENT'){
+        return action.payload
+    }
+    return state
+}
+
+export const productsStocksDeliveryReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_DELIVERY_PRODUCTS_STOCKS'){
         return action.payload
     }
     return state

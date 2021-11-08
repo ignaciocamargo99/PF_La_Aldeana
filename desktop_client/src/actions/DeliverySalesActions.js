@@ -158,9 +158,16 @@ export const updateDeliveryProductQuantity = (productQuantity,i) => {
     }
 }
 
-export const updateDeliveryClients = (clients) => {
+export const updateDeliveryClient = (client) => {
     return{
-        type: 'UPDATE_DELIVERY_CLIENTS',
-        payload: clients
+        type: 'UPDATE_DELIVERY_CLIENT',
+        payload: client
+    }
+}
+
+export const updateDeliveryProductsStocks = (productsStocks) => {
+    return{
+        type: 'UPDATE_DELIVERY_PRODUCTS_STOCKS',
+        payload: productsStocks
     }
 }
