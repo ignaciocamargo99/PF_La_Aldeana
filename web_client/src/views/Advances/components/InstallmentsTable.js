@@ -21,8 +21,8 @@ export default function InstallmentTable ({ installments, reading }) {
         if (installments[0].amount > 0){
             handlerLoadingSpinner();
 
+            if (installments.length !== listTable.length) setCurrentPage(1);
             setListTable(installments);
-            setCurrentPage(1);
         }
     }, [installments]);
 

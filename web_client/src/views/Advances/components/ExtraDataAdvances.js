@@ -315,7 +315,7 @@ export default function ExtraDataAdvances(props) {
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="months" >Cantidad de cutas* 
-                        <small className="text-muted">(en meses)</small>
+                        <small className="text-muted">(entre 1 y 18 meses)</small>
                         </label>
                 </div>
                 <div className="form-control-input">
