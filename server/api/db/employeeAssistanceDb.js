@@ -41,7 +41,7 @@ const employeeAssistanceGetDB = () => {
             SELECT ae.id_assistance, CONVERT_TZ(ae.date_entry,'-00:00','-03:00') AS date_entry, CONVERT_TZ(ae.date_egress,'-00:00','-03:00') AS date_egress, ae.employee, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
             JOIN EMPLOYEES e ON ae.employee = e.dni
-            WHERE (CAST(ae.date_entry AS DATE) = CURDATE() - 1) `
+            WHERE (CAST(ae.date_entry AS DATE) = CURDATE()) `
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
