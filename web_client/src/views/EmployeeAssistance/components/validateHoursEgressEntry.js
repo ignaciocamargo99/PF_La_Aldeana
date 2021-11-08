@@ -85,7 +85,7 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                 && (employee.employee === parseInt(dni, 10))
             )
 
-            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => (
+            assistancesWithDateEntryDateEgress4 = assistance.find((employee) => ((employee.dateEgress) &&
                 ((employee.date_entry.slice(0, 10) === inputDateEntry) && (employee.date_egress.slice(0, 10) === inputDateEgress)) &&
                 (dateEntry < moment(employee.date_egress).add(hours, 'hours').format('HH:mm')) && (dateEntry >= moment(employee.date_entry).add(hours, 'hours').format('HH:mm'))
             ))
