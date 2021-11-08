@@ -39,7 +39,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
     const total = newPurchase.total;
     const arrDetails = newPurchase.details;
 
-    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total})`
+    const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total})`;
 
     console.log(sqlInsertPurchase)
     return new Promise((resolve, reject) => {
@@ -50,7 +50,8 @@ const purchaseSuppliesPostDB = (newPurchase) => {
 
                 db.query(sqlInsertPurchase,[supplier], (error, result) => {
                     if (error) {
-                        return db.rollback(() => reject(error))
+                        console.log('1: ', error);
+                        return db.rollback(() => reject(error));
                     }
                     
                     let sqlUpdateDetailsPurchase;
@@ -63,6 +64,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
                             }
                             db.commit((error) => {
                                 if (error) {
+                                    console.log('2-',i,': ', error);
                                     return db.rollback(() => reject(error));
                                 }
                                 else resolve();
@@ -78,10 +80,12 @@ const purchaseSuppliesPostDB = (newPurchase) => {
     
                             db.query(sqlUpdate, (error) => {
                                 if (error) {
+                                    console.log('3-',i,': ', error);
                                     db.rollback(() => reject(error));
                                 }
                                 db.commit((error) => {
                                     if (error) {
+                                        console.log('4-',i,': ', error);
                                         return db.rollback(() => reject(error));
                                     }
                                     else resolve();
