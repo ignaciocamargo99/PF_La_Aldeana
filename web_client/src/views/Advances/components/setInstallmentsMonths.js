@@ -11,8 +11,9 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
 
     for (let i = 0; i < months; i ++){
 
-        let m = monthD+i
-        let date = year + '-' + m + '-' + '01';
+        let m = monthD+i > 12 ? monthD+i - 12 : monthD+i;
+        let yearD = year + parseInt((monthD+i)/12-1) + (((monthD+i)/12-1)%1 !== 0 ? 1 : 0);
+        let date = yearD + '-' + m + '-' + '01';
 
         if (parseInt(i + 1) === parseInt(months) && (amountTotal/months)%1 !== 0){
             if (installments.length > i) {
