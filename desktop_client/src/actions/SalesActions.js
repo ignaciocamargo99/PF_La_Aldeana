@@ -33,6 +33,13 @@ export const updateDetailsProductsDelete = (array) =>{
     }
 }
 
+export const updateDetailsProductsClear = (array) =>{
+    return {
+        type: 'UPDATE_DETAIL_PRODUCTS_CLEAR',
+        payload: array
+    }
+}
+
 export const updatePayType = (id) => {
     return {
         type: 'UPDATE_PAY_TYPE',
@@ -58,5 +65,33 @@ export const updateRefresh = (bool) => {
     return {
         type: 'UPDATE_REFRESH',
         payload: bool
+    }
+}
+
+export const updateProductsXSupplies = (array) =>{
+    return {
+        type: 'UPDATE_PRODUCTS_X_SUPPLIES',
+        payload: array
+    }
+}
+
+export const updateSupplies = (array) =>{
+    return {
+        type: 'UPDATE_SUPPLIES',
+        payload: array
+    }
+}
+
+export const updatePaymentAmount = (amount) => {
+    return {
+        type: 'UPDATE_PAYMENT_AMOUNT',
+        payload: amount
+    }
+}
+
+export const updateSalesRegister = (state) => {
+    return {
+        type: 'SALES_REGISTER',
+        payload: state
     }
 }

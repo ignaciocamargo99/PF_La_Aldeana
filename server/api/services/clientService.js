@@ -1,8 +1,8 @@
-const { clientGetDB } = require('../db/clientDb');
+const { clientGetDB, clientPostDB, clientPutDB } = require('../db/clientDb');
 
-const readClient = async () => {
+const readClient = async (cellphone) => {
     try {
-        let res = await clientGetDB();
+        let res = await clientGetDB(cellphone);
         return res;
     }
     catch (error) {
@@ -10,4 +10,24 @@ const readClient = async () => {
     };
 };
 
-module.exports = { readClient };
+const createClient = async (newClient) => {
+    try {
+        await clientPostDB(newClient);
+    }
+    catch {
+        let res = await clientPostDB(newClient);
+        throw Error(res);
+    };
+};
+
+const modifyClient = async (cellphone,address) => {
+    try {
+        await clientPutDB(cellphone,address);
+    }
+    catch {
+        let res = await clientPutDB(cellphone,address);
+        throw Error(res);
+    };
+};
+
+module.exports = { readClient, createClient, modifyClient };

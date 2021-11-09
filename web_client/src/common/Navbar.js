@@ -129,7 +129,7 @@ export default function Navbar(props) {
                         <BeShowed show={permissionReports === "Reportes"}>
                             <Dropdown.Menu>
                                 <Dropdown.Item href="/app/salesReport">
-                                    <FontAwesomeIcon icon={faFile} /> Ver Informes
+                                    <FontAwesomeIcon icon={faFile} /> Ver informe de productos vendidos
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </BeShowed>
@@ -167,6 +167,9 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/employees">
                                 <FontAwesomeIcon icon={faList} /> Ver empleados
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/licenses">
+                                <FontAwesomeIcon icon={faList} /> Ver licencias
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

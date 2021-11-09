@@ -1,4 +1,4 @@
-import React, { useEffect , useRef, useState} from 'react';
+import React, { useEffect , useRef } from 'react';
 import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTopTenProductSales, updateTypeProductSales } from '../../../../actions/ReportsActions';
 import { connect } from 'react-redux';
 import Axios from 'axios';
@@ -25,7 +25,7 @@ const Options = (props) => {
                     let sales = [];
                     let topTen = [];
                 
-                    data?.map((e, i)=>{
+                    data?.forEach((e, i)=>{
                         if (i < data.length -1){
                             sales = [...sales, e];
                         } else {
@@ -42,7 +42,7 @@ const Options = (props) => {
 
                         props.setLoaded(true);
                     } else {
-                        sales?.map((e, i)=>{
+                        sales?.forEach((e, i)=>{
                             if (i < 10){
                                 topTen = [...topTen, e];
                             }
@@ -78,8 +78,6 @@ const Options = (props) => {
     },[props.load]);
 
     const onChangeDateFrom = () => {
-        let date = new Date();
-        let dateString = dateFormat(date);
         if(inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01-01"){
             inputDateTo.current.min = inputDateFrom.current.value;
             props.updateReportDateFrom(inputDateFrom.current.value);
