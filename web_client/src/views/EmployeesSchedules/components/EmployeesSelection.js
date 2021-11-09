@@ -1,25 +1,26 @@
 import employeeImg from '../../../common/CommonImages/Empleado_Generico.png';
 import { Droppable , Draggable } from 'react-beautiful-dnd';
-import './EmployeesSelection.css';
+import './Employees.css';
+import showMeCharge from '../../../utils/ShowMeCharge/showMeCharge';
 
 const EmployeesSelection = (props) => {
     
     return(
-        <div className="container">
-            <label>Empleados seleccionables: </label>
-            <div className="formRow">
-                <Droppable droppableId='employeeList' direction='horizontal'>
+        <div>
+            <label className="col-sm-9 offset-sm-3"><b>Empleados seleccionables</b></label>
+            <div className="formRow col-sm-10 offset-sm-1" style={{display: 'block', height: '25rem',overflow: 'auto', width: '20rem'}}>
+                <Droppable droppableId='employeeList' >
                     {(droppableProvided) => 
-                    (<ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef} className="container-Items">
+                    (<ul {...droppableProvided.droppableProps} ref={droppableProvided.innerRef} >
                         {props.employees.map((employee,i) => (
                             <Draggable key={employee.dni} draggableId={employee.dni.toString()} index={i}>
                                 {(draggableProvided) => 
                                 (<li {...draggableProvided.draggableProps} 
                                     ref={draggableProvided.innerRef}
                                     {...draggableProvided.dragHandleProps}
-                                    className="item">
-                                    <img src={employeeImg} style={{height:'30px'}}/>
-                                    <label>{employee.dni}</label>
+                                    className={`cardEmployee ${showMeCharge(employee.charge)}`}>
+                                    <img src={employeeImg} className="imageEmployee"/>
+                                    <label className="textEmployeeCard">{employee.last_name}</label>
                                 </li>)}
                             </Draggable>)
                         )}

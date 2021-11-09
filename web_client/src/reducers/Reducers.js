@@ -5,6 +5,7 @@ import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
 import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply, deliverySupply, franchiseSupply } from "./SupplyReducers"
 import { dateTo, dateFrom, productSales, topTenProductSales, typeProductSales } from "./ReportsReducers"
+import { schedule } from './ScheduleReducers';
 
 export default combineReducers({
     nick: nickReducer,
@@ -35,5 +36,8 @@ export default combineReducers({
     dateFrom: dateFrom,
     productSales: productSales,
     topTenProductSales: topTenProductSales,
-    typeProductSales: typeProductSales
+    typeProductSales: typeProductSales,
+    deliverySupply: deliverySupply,
+    franchiseSupply: franchiseSupply,
+    schedule: schedule
 })
