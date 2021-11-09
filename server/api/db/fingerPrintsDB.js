@@ -12,11 +12,11 @@ const fingerPrintsGetDB = () => {
             db.query(sqlSelect, (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
-            });
-            db.release();
+            }); 
+            db.release(); 
         })
     });
-};
+}; 
 
 const fingerPrintsByDniGetDB = (dniEmployee) => {
     const sqlSelect = `SELECT dniEmployee AS DNI, finger AS DEDO

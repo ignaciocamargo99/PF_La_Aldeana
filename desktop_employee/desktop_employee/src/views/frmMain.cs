@@ -40,8 +40,8 @@ namespace desktop_employee
             //ibtnAsistencia_Click(null, e);
             //ibtnEmpleados_Click(null, e);
 
-
             GetFingerPrintsXEmployeesAsync();
+
         }
         protected override void WndProc(ref Message m)
         {
@@ -109,6 +109,7 @@ namespace desktop_employee
         {
             frmAssistanceFinger assistanceFinger = new();
             assistanceFinger.FingerXEmployees = fingerPrintXEmployeesTable;
+            
 
             lblTitulo.Text = "ASISTENCIA con HUELLA";
             OpenForm(assistanceFinger);

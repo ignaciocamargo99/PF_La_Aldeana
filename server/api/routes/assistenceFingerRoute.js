@@ -6,4 +6,4 @@ const assistanceFingerController = require("../controllers/assistenceFingerContr
 router.get('/assistenceFinger', assistanceFingerController.newAssistance);
      
 //#endregion
-module.exports = router;    
+module.exports = router;

@@ -5,15 +5,16 @@ const checkInOutDB = (check) => {
     let last_date;
     let last_id;
     let { dniEmployee, dayHour } = check;
+
     // averiguar sobre ultima asistencia del empleado pasado
     
     sqlSelectLastDate = `SELECT date_egress AS last_date_egress, id_assistance AS last_id_assistance 
         FROM ASSISTANCE_EMPLOYEES 
-        WHERE id_assistance = (SELECT MAX(id_assistance) FROM ASSISTANCE_EMPLOYEES WHERE employee = ${dniEmployee}`
+        WHERE id_assistance = (SELECT MAX(id_assistance) FROM ASSISTANCE_EMPLOYEES WHERE employee = ${dniEmployee})`
 
 
     // declarar sentencias insert y update
-
+ 
     // definir si es una entrada o salida
 
     // devolver la info del registro creado
@@ -30,6 +31,7 @@ const checkInOutDB = (check) => {
     
                     else 
                     {
+                        console.log(result);
                         last_date = result[0].last_date_egress;
                         last_id = result[0].last_id_assistence;
 
