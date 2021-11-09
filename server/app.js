@@ -27,7 +27,6 @@ const employeeAssistanceRouter = require('./api/routes/employeeAssistanceRoute')
 const employeeRouter = require('./api/routes/employeeRoute'); 
 const fingerPrintRouter = require('./api/routes/fingerPrintsRoute'); 
 const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute'); 
-const salesReportRouter = require('./api/routes/salesReportRoute'); 
 const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
 
