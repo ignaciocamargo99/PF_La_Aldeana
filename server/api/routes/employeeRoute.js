@@ -4,7 +4,7 @@ const employeeController = require("../controllers/employeeController");
 
 //#region APIs
 
-router.get('/employees', employeeController.getEmployee);
+router.get('/employees/:dni?', employeeController.getEmployee);
 
 router.post('/employees', employeeController.newEmployee);
 
