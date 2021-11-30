@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const advancesGetDB = () => {
-    const sqlSelect = "SELECT a.nroDNI, a.`date`, a.amount, a.pay, e.name, e.last_name  FROM ADVANCES a  LEFT JOIN EMPLOYEES e ON a.nroDNI = e.dni ORDER BY  a.`date` DESC";
+    const sqlSelect = "SELECT a.nroDNI, a.`date`, a.amount, a.pay, e.name, e.last_name  FROM ADVANCES a  LEFT JOIN EMPLOYEES e ON a.nroDNI = e.dni WHERE e.active = 1 ORDER BY  a.`date` DESC";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -65,6 +65,7 @@ const advancesCreateDB = (newAdvance) => {
     const sqlInsert = 'INSERT INTO ADVANCES  VALUES (?, ?, ?, ?)';
     const sqlInsertInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
     let { dniEmployee, date, amount, installments, months } = newAdvance;
+    console.log(installments, installments.length)
     if (dniEmployee && date && amount && installments && months && dniEmployee <= 99999999 && dniEmployee >= 10000000) {
         dniEmployee = newAdvance.dniEmployee;
         date = newAdvance.date;
@@ -164,8 +165,8 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
 const employeeGetDB = () => {
 
     const sqlSelect = `SELECT dni, name, last_name
-                    FROM EMPLOYEES ORDER BY last_name`;
-    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES LEFT JOIN ADVANCES a ON a.nroDNI = dni ORDER BY last_name";
+                    FROM EMPLOYEES e WHERE e.active = 1 ORDER BY last_name`;
+    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 ORDER BY last_name";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
