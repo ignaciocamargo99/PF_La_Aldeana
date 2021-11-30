@@ -26,8 +26,7 @@
     "mysql": "^2.18.1",
     "path": "^0.12.7",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6",
-    "uareu-node": "^1.0.5"
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.10"
