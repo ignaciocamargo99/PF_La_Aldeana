@@ -12,6 +12,8 @@ import errorPurchaseSupplies from '../../utils/ErrorMessages/errorPurchaseSuppli
 import successPurchaseSupplies from '../../utils/SuccessMessages/successPurchaseSupplies';
 import swal from 'sweetalert';
 import axios from 'axios';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -97,6 +99,7 @@ const RegisterPurchaseSupplies = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar compra de insumos"}</div>
+            <Breadcrumb parentName="Compras" icon={faShoppingCart} parentLink="purchaseSupplies" currentName="Registrar compra de insumo" />
             <div className="viewTitle">
                 <h1>Registrar Compra de Insumos</h1>
             </div>

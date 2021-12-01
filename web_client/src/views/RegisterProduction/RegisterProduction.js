@@ -8,6 +8,8 @@ import Axios from 'axios';
 import successMessage from '../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../utils/WarningMessages/warningMessage';
 import displayError from '../../utils/ErrorMessages/displayError';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 function RegisterProductionView(props) {
 
@@ -29,7 +31,7 @@ function RegisterProductionView(props) {
                 .catch(error => console.log(error))
         }
         else {
-            warningMessage("Error", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "error");
+            warningMessage("Atención", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "warning");
         }
     }
 
@@ -45,6 +47,7 @@ function RegisterProductionView(props) {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar producción"}</div>
+            <Breadcrumb parentName="Producción" icon={faIceCream} parentLink="production" currentName="Registrar producción" />
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>

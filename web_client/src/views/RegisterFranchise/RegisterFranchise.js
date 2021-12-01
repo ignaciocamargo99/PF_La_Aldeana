@@ -9,6 +9,8 @@ import DataManager from './DataManager';
 import './RegisterFranchise.css';
 import './styles/FranchiseForm.css';
 import displayError from '../../utils/ErrorMessages/errorMesage';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faStore } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -74,6 +76,7 @@ export default function RegisterFranchise() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar franquicia"}</div>
+            <Breadcrumb parentName="Franquicias" icon={faStore} parentLink="franchise" currentName="Registrar franquicia" />
             <div className="viewTitle">
                 <h1>Registrar Franquicia</h1>
             </div>

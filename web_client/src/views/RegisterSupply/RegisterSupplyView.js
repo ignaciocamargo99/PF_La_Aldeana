@@ -17,6 +17,8 @@ import displayError from '../../utils/ErrorMessages/errorMessage';
 import Axios from 'axios';
 import BeShowed from '../../common/BeShowed';
 import checkData from './checkData';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -103,6 +105,7 @@ const RegisterPurchaseSupplies = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar insumo"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar insumo" />
             <div className="viewTitle">
                 <h1>Registrar Insumo</h1>
             </div>
