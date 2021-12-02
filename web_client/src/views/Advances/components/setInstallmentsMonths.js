@@ -1,4 +1,3 @@
-import formattedDate from "../../../utils/formattedDate";
 import dateText from "../../../utils/DateFormat/dateText";
 
 export default function setInstallmentsMonths(month, months, amountTotal, installments) {
@@ -11,8 +10,8 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
 
     for (let i = 0; i < months; i ++){
 
-        let m = monthD+i > 12 ? monthD+i - 12 * (parseInt((monthD+i)/12-1) + (((monthD+i)/12-1)%1 !== 0 ? 1 : 0)) : monthD+i;
-        let yearD = year + parseInt((monthD+i)/12-1) + (((monthD+i)/12-1)%1 !== 0 ? 1 : 0);
+        let m = monthD+i > 12 ? monthD+i - 12 * (parseInt((monthD+i)/12-1) + (((monthD+i)/12-1)%1 > 0 ? 1 : 0)) : monthD+i;
+        let yearD = year + parseInt((monthD+i)/12-1) + (((monthD+i)/12-1)%1 > 0 ? 1 : 0);
         let date = yearD + '-' + m + '-' + '01';
 
         if (parseInt(i + 1) === parseInt(months) && (amountTotal/months)%1 !== 0){
