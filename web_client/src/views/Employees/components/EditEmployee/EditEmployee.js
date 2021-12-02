@@ -27,11 +27,11 @@ export default function EditEmployee(props) {
             Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')
+                    else displayError('El nuevo dni ya corresponde a otro empleado')
                 })
                 .catch(error => console.log(error));
         }
-        else warningMessage('Atención', 'Todos los campos son obligatorios', 'error');
+        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
     };
 
     return (

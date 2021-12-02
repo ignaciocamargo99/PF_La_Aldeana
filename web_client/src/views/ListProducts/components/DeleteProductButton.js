@@ -24,7 +24,7 @@ export default function DeleteProductButton(props) {
                 swal({
                     title: "Falla al eliminar elemento",
                     text: error,
-                    icon: "warning",
+                    icon: "error",
                 });
             });
     }

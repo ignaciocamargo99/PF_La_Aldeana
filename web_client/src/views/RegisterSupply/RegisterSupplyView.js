@@ -83,14 +83,14 @@ const RegisterPurchaseSupplies = (props) => {
         Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {
-                    resetStates('Registro completado');
+                    resetStates('El insumo se registro correctamente');
                     success();
                 }
                 else {
                     displayError('Ha ocurrido un error al registrar un insumo.');
                 }
             })
-            .catch(() => displayError('Ha ocurrido un error en el servidor.', 'Error'));
+            .catch(() => displayError('Ha ocurrido un error en el servidor.'));
     }
 
 

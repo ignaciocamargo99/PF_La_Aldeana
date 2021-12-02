@@ -218,7 +218,7 @@ const FormLicense = (props) => {
     
     const resetStates = (showMsg) => {
         if(showMsg){
-            warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
+            warningMessage('Atención','Se ha registrado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
         }
         setEmployee(null);
@@ -236,7 +236,7 @@ const FormLicense = (props) => {
 
     const comeBack = (msg) => {
         if(msg){
-            warningMessage('Correcto','Se ha editado la licencia correctamente','success');
+            warningMessage('Atención','Se ha editado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
         }
         props.setActionLicense('Listar',null);
