@@ -70,8 +70,8 @@ namespace desktop_employee.src.views.Employees
                 if (oReply.StatusCode == Convert.ToString(200))
                 {
                     MessageBox.Show("Huella eliminada correctamente.");
-                }       
-                onOffButtons();
+                }
+                getFingers();
             }
             catch (Exception ex)
             {
@@ -81,29 +81,66 @@ namespace desktop_employee.src.views.Employees
 
         private void onOffButtons()
         {
-            for (int i = 0; i < fingersTable.Rows.Count; i++)
+            int cantidad = fingersTable.Rows.Count;
+            MessageBox.Show("Cantidad: ", Convert.ToString(cantidad));
+            if (cantidad > 0)
             {
-                if (Convert.ToString(fingersTable.Rows[i][1]) == lblPD.Text)
+                for (int i = 0; i < cantidad; i++)
                 {
-                    btnCapturarPD.Enabled = false;
-                    btnEliminarPD.Enabled = true;
-                }
-                if (Convert.ToString(fingersTable.Rows[i][1]) == lblID.Text)
-                {
-                    btnCapturarID.Enabled = false;
-                    btnEliminarID.Enabled = true;
-                }
-                if (Convert.ToString(fingersTable.Rows[i][1]) == lblPI.Text)
-                {
-                    btnCapturarPI.Enabled = false;
-                    btnEliminarPI.Enabled = true;
-                }
-                if (Convert.ToString(fingersTable.Rows[i][1]) == lblII.Text)
-                {
-                    btnCapturarII.Enabled = false;
-                    btnEliminarII.Enabled = true;
+                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblPD.Text)
+                    {
+                        btnCapturarPD.Enabled = false;
+                        btnEliminarPD.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCapturarPD.Enabled = true;
+                        btnEliminarPD.Enabled = false;
+                    }
+
+                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblID.Text)
+                    {
+                        btnCapturarID.Enabled = false;
+                        btnEliminarID.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCapturarID.Enabled = true;
+                        btnEliminarID.Enabled = false;
+                    }
+
+
+                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblPI.Text)
+                    {
+                        btnCapturarPI.Enabled = false;
+                        btnEliminarPI.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCapturarPI.Enabled = true;
+                        btnEliminarPI.Enabled = false;
+                    }
+
+                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblII.Text)
+                    {
+                        btnCapturarII.Enabled = false;
+                        btnEliminarII.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCapturarII.Enabled = true;
+                        btnEliminarII.Enabled = false;
+                    }
                 }
             }
+            else
+            {
+                btnEliminarPD.Enabled = false;
+                btnEliminarID.Enabled = false;
+                btnEliminarPI.Enabled = false;
+                btnEliminarII.Enabled = false;
+            }
+
         }
 
         private DataTable ConvertDgvToTable(DataGridView dgv)
@@ -133,7 +170,6 @@ namespace desktop_employee.src.views.Employees
                 if (Template != null)
                 {
                     RegisterFingerAsync();
-                    getFingers();
                 }
                 else
                 {
@@ -206,6 +242,7 @@ namespace desktop_employee.src.views.Employees
                     fingerPrint = streamFingerPrint
                 };
                 oReply = await Consumer.Execute<FingerPrint>("http://localhost:3001/api/fingerPrints", methodHttp.POST, fingerPrint);
+                getFingers();
             }
             catch (Exception ex)
             {
