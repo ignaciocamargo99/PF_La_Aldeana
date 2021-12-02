@@ -65,7 +65,7 @@ const advancesCreateDB = (newAdvance) => {
     const sqlInsert = 'INSERT INTO ADVANCES  VALUES (?, ?, ?, ?)';
     const sqlInsertInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
     let { dniEmployee, date, amount, installments, months } = newAdvance;
-    console.log(installments, installments.length)
+    
     if (dniEmployee && date && amount && installments && months && dniEmployee <= 99999999 && dniEmployee >= 10000000) {
         dniEmployee = newAdvance.dniEmployee;
         date = newAdvance.date;
@@ -82,25 +82,27 @@ const advancesCreateDB = (newAdvance) => {
             db.beginTransaction((error) => {
                 if (error) reject(error);
                 db.query(sqlInsert, [dniEmployee, date, amount, 0], (error, result) => {
-                    if (error) reject(error);
+                    if (error) {
+                        db.rollback(()=> reject(error));
+                    }
                     else {
+                        for (var i = 0; i < installments.length; i++) {
+                            db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount,  installments[i].label, 0], (error) => {
+                                if (error) {
+                                    db.rollback(()=> reject(error));
+                                }
+                                db.commit((error) => {
+                                    if (error) {
+                                        return db.rollback(() => reject(error));
+                                    }
+                                    else resolve();
+                                });
+                            })
+                        };
                         resolve(result);
                     }
                 });
 
-                for (var i = 0; i < installments.length; i++) {
-                    db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount,  installments[i].label, 0], (error) => {
-                        if (error) {
-                            db.rollback(()=> reject(error));
-                        }
-                        db.commit((error) => {
-                            if (error) {
-                                return db.rollback(() => reject(error));
-                            }
-                            else resolve();
-                        });
-                    })
-                };
                 db.release();
             });
         });
