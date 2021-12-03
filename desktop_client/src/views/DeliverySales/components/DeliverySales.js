@@ -77,7 +77,7 @@ const DeliverySales = (props) => {
                 if(sale.data.Ok) {
                     resetStates(false);
                 }
-                else warningMessage('Error!!','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+                else warningMessage('Error','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
             })
             .catch(error => console.log(error))
     }
@@ -124,7 +124,7 @@ const DeliverySales = (props) => {
                 <BeShowed show={step===2}>
                     <Client setStep={setStep}/>
                     <Pay />
-                    <Buttons label='Confirmar' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => {setStep(1)}} actionNotOK={() => {errorNextStepTwo()}} actionOK={confirmSale}/>
+                    <Buttons label='Registrar' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => {setStep(1)}} actionNotOK={() => {errorNextStepTwo()}} actionOK={confirmSale}/>
                 </BeShowed>
                 
                 <BeShowed show={step===3}>

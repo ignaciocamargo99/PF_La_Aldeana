@@ -26,7 +26,7 @@ const ListFlavorsDown = (props) => {
                                     <td style={{ textAlign: 'center' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center' }}>{element.amount}</td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button type="button" className="sendDelete" onClick={(e) => props.download(i)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

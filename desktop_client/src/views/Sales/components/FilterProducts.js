@@ -86,9 +86,9 @@ const FilterProducts = (props) => {
         <>
             <div className="formRow">
                 <h4>Filtrar por:</h4>
-                <button id="btn_iceCream" onClick={onClickHeladeria}>Heladería</button>
-                <button id="btn_coffe" onClick={onClickCafeteria}>Cafetería</button>
-                <button id="btn_all" onClick={onClickCancel}>Todos</button>
+                <button id="btn_iceCream" className='sendNew' onClick={onClickHeladeria}>Heladería</button>
+                <button id="btn_coffe" className='sendNew' onClick={onClickCafeteria}>Cafetería</button>
+                <button id="btn_all" className='sendNew' onClick={onClickCancel}>Todos</button>
             </div>
             <BeShowed show={boolTypeProduct}>
                 <select className="form-control" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>

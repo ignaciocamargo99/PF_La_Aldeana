@@ -125,8 +125,8 @@ const Options = (props) => {
 
             <div className="formRow d-flex justify-content-between">
                 <div className="mx-auto">
-                    <button className="sendAdd" style={{ marginRight: '1em', minWidth: '15em'}} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                    <button className="sendAdd" style={{ minWidth: '15em'}}><FaFile /> Imprimir informe</button>
+                    <button className="newBtn" style={{ marginRight: '1em', minWidth: '15em'}} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
+                    <button className="newBtn" style={{ minWidth: '15em'}}><FaFile /> Imprimir informe</button>
                 </div>
             </div>
         </>

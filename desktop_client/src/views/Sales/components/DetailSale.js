@@ -73,10 +73,10 @@ const DetailSale = (props) => {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.subtotal}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
                                                 <FontAwesomeIcon icon={faPen} />
                                             </button>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="sendDelete" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} >
                                                 <FontAwesomeIcon icon={faMinus} />
                                             </button>
                                         </td>
