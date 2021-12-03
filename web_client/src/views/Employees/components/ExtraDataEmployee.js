@@ -127,7 +127,7 @@ export default function RegisterEmployee(props) {
                         <BeShowed show={!props.data.reading}>
                             <input className="form-check-input" type="radio" name="flexRadioDefault" id="black" value="black" ref={rb1} onChange={handlerOnChange}></input>
                         </BeShowed>
-                        <label className="form-check-label" htmlFor="black"> Sin recibo de sueldo </label>
+                        <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
                     <div className="form-check">
                         <BeShowed show={props.data.reading}>
@@ -136,7 +136,7 @@ export default function RegisterEmployee(props) {
                         <BeShowed show={!props.data.reading}>
                             <input className="form-check-input" type="radio" name="flexRadioDefault" id="white" value="white" ref={rb2} onChange={handlerOnChange}></input>
                         </BeShowed>
-                        <label className="form-check-label" htmlFor="white">Con recibo de sueldo </label>
+                        <label className="form-check-label" htmlFor="white"> Independiente </label>
                     </div>
                 </div>
             </div>

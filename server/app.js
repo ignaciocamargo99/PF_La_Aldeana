@@ -25,6 +25,7 @@ const clientsRouter = require('./api/routes/clientRoute');
 const salesReportRouter = require('./api/routes/salesReportRoute'); 
 const employeeRouter = require('./api/routes/employeeRoute'); 
 const licensesRouter = require('./api/routes/licenseRoute'); 
+const advancesRouter = require('./api/routes/advancesRoute');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -58,6 +59,7 @@ app.use('/api', licensesRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', advancesRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

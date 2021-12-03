@@ -18,7 +18,6 @@ export default function RegisterEmployee() {
 
     const load = (childData) => {
         setData(childData);
-        console.log(data)
         if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
         else setReady(false);
     }

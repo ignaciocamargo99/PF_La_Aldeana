@@ -25,7 +25,7 @@ export default function LastNameManager (props) {
             data.last_name_manager = "";
             props.load(data);
         }
-    }, [name]);
+    }, [name, props]);
 
     return (
         <div className="formRow">
