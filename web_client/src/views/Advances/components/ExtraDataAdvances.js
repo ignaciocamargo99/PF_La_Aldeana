@@ -314,9 +314,7 @@ export default function ExtraDataAdvances(props) {
             <label>Monto restante a pagar: {amountTotal - data.pay > 0 ? amountTotal - data.pay : data.amount - data.pay > 0 ? data.amount - data.pay : 0}</label>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="months" >Cantidad de cutas* 
-                        <small className="text-muted">(entre 1 y 18 meses)</small>
-                        </label>
+                    <label htmlFor="months" >Cantidad de cutas* </label>
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
@@ -325,6 +323,7 @@ export default function ExtraDataAdvances(props) {
                     <BeShowed show={!props.data.reading}>
                         <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min="1" max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months ? data.months : null} />
                     </BeShowed>
+                    <small className="text-muted">(entre 1 y 18 meses)</small>
                 </div>
             </div>
             <hr></hr>
