@@ -11,7 +11,9 @@ import BodyTable from '../../../common/Table/BodyTable';
 import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 import UploadByName from '../../../common/UploadByName';
 import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
-import { addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
+import { addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,
+        updateFlavorsProduct, updateDetailDelivery, updateDeliveryProductsStocks, updateDeliverySuppliesStocks } from '../../../actions/DeliverySalesActions';
+import updateProductStock from '../../../utils/CalculateProductStock/updateProductStock';
 
 const PORT = require('../../../config');
 
@@ -86,6 +88,9 @@ const ModalFlavorSelect = (props) => {
     }
 
     const cancel = () => {
+        let [newProductsStocks, newSuppliesStocks] = updateProductStock(props.detailsDelivery[props.detailsDelivery.length-1].product.id_product,props.detailsDelivery[props.detailsDelivery.length-1].quantity * -1,props.productsStocks,props.suppliesStocks);
+        props.updateDeliveryProductsStocks(newProductsStocks);
+        props.updateDeliverySuppliesStocks(newSuppliesStocks);
         props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal);
         props.deleteDetailDelivery(props.detailsDelivery.length-1);
         props.updateFlavorsProduct([]);
@@ -173,7 +178,9 @@ const mapStateToProps = state => {
     return {
         flavorsProduct: state.flavorsProductDelivery,
         detailsDelivery: state.detailsDelivery,
-        productsQuantities: state.productsQuantitiesDelivery
+        productsQuantities: state.productsQuantitiesDelivery,
+        productsStocks: state.productsStocksDelivery,
+        suppliesStocks: state.suppliesStocksDelivery
     }
 }
 
@@ -183,7 +190,9 @@ const mapDispatchToProps = {
     deleteDetailDelivery,
     subtractTotalDelivery,
     addFlavorsProduct,
-    deleteFlavorsProduct
+    deleteFlavorsProduct,
+    updateDeliveryProductsStocks,
+    updateDeliverySuppliesStocks
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalFlavorSelect);

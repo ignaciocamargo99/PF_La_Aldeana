@@ -6,6 +6,7 @@ const suppliesController = require("../controllers/suppliesController");
 router.get("/supplies", suppliesController.getSupplies);
 router.post("/supplies", suppliesController.postSupply);
 router.get("/typeSupplies", suppliesController.getTypeSupplies); 
+router.get("/suppliesStocks", suppliesController.getSuppliesStocks);
 
 //#endregion
 module.exports = router;

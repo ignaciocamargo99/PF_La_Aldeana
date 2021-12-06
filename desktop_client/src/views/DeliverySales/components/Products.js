@@ -6,11 +6,14 @@ import ListProducts from './ListProducts';
 import ModalFlavorSelect from './ModalFlavorSelect';
 import ModalFlavorShow from './ModalFlavorShow';
 import {connect} from 'react-redux';
-import { updateDeliveryProductQuantity,updateDeliveryProductsQuantities, updateAllFlavorsProduct, addDetailDelivery, sumTotalDelivery, deleteDetailDelivery, subtractTotalDelivery} from '../../../actions/DeliverySalesActions';
+import { updateDeliveryProductQuantity,updateDeliveryProductsQuantities, updateAllFlavorsProduct, 
+        addDetailDelivery, sumTotalDelivery, deleteDetailDelivery, subtractTotalDelivery,
+        updateDeliveryProductsStocks, updateDeliverySuppliesStocks} from '../../../actions/DeliverySalesActions';
 import errorInputQuantities from '../../../utils/ErrorMessages/errorInputQuantities';
 import SaleDetails from './SaleDetails';
 import errorNextStepOne from '../../../utils/ErrorMessages/errorNextStepOne';
 import LoaderSpinner from '../../../common/LoaderSpinner';
+import updateProductStock from '../../../utils/CalculateProductStock/updateProductStock';
 
 const Products = (props) => {
 
@@ -25,6 +28,9 @@ const Products = (props) => {
         let productQuantityToAdd = props.productsQuantities.find(productQuantity => productQuantity.product.id_product === id);
         let prevDetail = props.detailsDelivery.find(detail => detail.product.id_product === id);
         if(productQuantityToAdd.quantity > 0){
+            let [newProductsStocks, newSuppliesStocks] = updateProductStock(productQuantityToAdd.product.id_product,productQuantityToAdd.quantity,props.productsStocks,props.suppliesStocks);
+            props.updateDeliveryProductsStocks(newProductsStocks);
+            props.updateDeliverySuppliesStocks(newSuppliesStocks);
             if(productQuantityToAdd.product.quantity_flavor > 0){
                 let aux = [];
                 for(let i = 0 ; i < productQuantityToAdd.quantity ; i++){
@@ -59,6 +65,9 @@ const Products = (props) => {
     }
 
     const download = (i) => {
+        let [newProductsStocks, newSuppliesStocks] = updateProductStock(props.detailsDelivery[i].product.id_product,props.detailsDelivery[i].quantity * -1,props.productsStocks,props.suppliesStocks);
+        props.updateDeliveryProductsStocks(newProductsStocks);
+        props.updateDeliverySuppliesStocks(newSuppliesStocks);        
         let restar = props.detailsDelivery[i].subtotal;
         props.subtractTotalDelivery(restar);
         props.deleteDetailDelivery(i);
@@ -104,7 +113,9 @@ const mapStateToProps = state => {
         total: state.totalDelivery,
         flavorsProduct: state.flavorsProductDelivery,
         productsQuantities: state.productsQuantitiesDelivery,
-        quantities: state.quantitiesDelivery
+        quantities: state.quantitiesDelivery,
+        productsStocks: state.productsStocksDelivery,
+        suppliesStocks: state.suppliesStocksDelivery
     }
 }
 
@@ -115,7 +126,9 @@ const mapDispatchToProps = {
     deleteDetailDelivery,
     subtractTotalDelivery,
     updateDeliveryProductsQuantities,
-    updateDeliveryProductQuantity
+    updateDeliveryProductQuantity,
+    updateDeliveryProductsStocks, 
+    updateDeliverySuppliesStocks
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
