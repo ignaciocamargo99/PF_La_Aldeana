@@ -31,7 +31,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, addBtnClicked }) =
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button type="button" className="btn-sm px-3" style={{ backgroundColor: '#A5DEF9', borderColor: '#A5DEF9' }} onClick={() => addBtnClicked(element.id_supply)}><FontAwesomeIcon icon={faPlus} /></button>
+                                        <button type="button" className="sendAdd" onClick={() => addBtnClicked(element.id_supply)}><FontAwesomeIcon icon={faPlus} /></button>
                                     </td>
                                 </tr>
                             )

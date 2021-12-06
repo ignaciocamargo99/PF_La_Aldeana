@@ -88,7 +88,7 @@ const ListProducts = (props) => {
                                                 <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" disabled={true}></input>
                                             </td>
                                             <td style={{ textAlign: 'center', width: '12%', backgroundColor: '#9E9F9F'}}>
-                                                <button type="button" className="btn btn-info btn-sm px-3" disabled={true}><FontAwesomeIcon icon={faPlus} /></button>
+                                                <button type="button" className="sendAdd" style={{backgroundColor: 'grey'}} disabled={true}><FontAwesomeIcon icon={faPlus} /></button>
                                             </td>
                                         </tr>
                                     </tbody>)
@@ -102,7 +102,7 @@ const ListProducts = (props) => {
                                                     <input id={`quantityInput${i}`} className="form-control" style={{textAlign: 'center'}} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => {validateQuantity(e,i)}} onKeyDown={(e) => {validateFloatNumbers(e)}} defaultValue={productQuantity.quantity===0?'':productQuantity.quantity}></input>
                                                 </td>   
                                                 <td style={{ textAlign: 'center', width: '12%'}}>
-                                                    <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClick(productQuantity.product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>
+                                                    <button type="button" className="sendAdd" onClick={() => {onClick(productQuantity.product.id_product,i)}}><FontAwesomeIcon icon={faPlus} /></button>
                                                 </td>
                                             </tr>
                                         </tbody>

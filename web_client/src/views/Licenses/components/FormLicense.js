@@ -218,7 +218,7 @@ const FormLicense = (props) => {
     
     const resetStates = (showMsg) => {
         if(showMsg){
-            warningMessage('Correcto','Se ha registrado la licencia correctamente','success');
+            warningMessage('Atención','Se ha registrado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
         }
         setEmployee(null);
@@ -236,7 +236,7 @@ const FormLicense = (props) => {
 
     const comeBack = (msg) => {
         if(msg){
-            warningMessage('Correcto','Se ha editado la licencia correctamente','success');
+            warningMessage('Atención','Se ha editado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
         }
         props.setActionLicense('Listar',null);
@@ -259,24 +259,24 @@ const FormLicense = (props) => {
 
     return(
     <>
+        <Breadcrumb parentName="Licencias" icon={faUserFriends} parentLink="licenses" currentName={`${props.action} licencia`}/>
         <div style={{display: 'none'}}>{document.title = `${props.action} Licencia` }</div>
             <div className="viewTitleBtn">
             <h1>{props.action} licencia {props.action!=="Registrar"?props.license?.id_license:''}</h1>
         </div>
-        <div className="container">
+        <div className="container" >
             <br/>
-            <Breadcrumb parentName="Licencias" icon={faUserFriends} parentLink="licenses" currentName={`${props.action} licencia`}/>
             <div className="formRow">
                 <div className="col-sm-2" style={{paddingTop: "0.375rem"}}>
                     <label >Fecha de inicio* </label>
                 </div>
-                <div style={{width: "175px"}}>
+                <div style={{minWidth: "175px"}}>
                     <input type="date" className="form-control" ref={dateInit} onChange={(e) => {onChangeDateInit(e)}}></input>
                 </div>
                 <div className="col-sm-2 offset-1" style={{paddingTop: "0.375rem"}}>
                     <label>Fecha de fin* </label>
                 </div>
-                <div style={{width: "175px"}}>
+                <div style={{minWidth: "175px"}}>
                     <input type="date" className="form-control" ref={dateFinish} onChange={(e) => {onChangeDateFinish(e)}}></input>
                 </div>
             </div>

@@ -8,6 +8,8 @@ import BeShowed from "../../../common/BeShowed";
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
+import Breadcrumb from '../../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const SalesReport = (props) => {
 
@@ -24,7 +26,8 @@ const SalesReport = (props) => {
 
     return (
         <>
-            <div style={{ display: 'none' }}>{document.title = "Reportes y estadísticas"}</div>
+            <div style={{ display: 'none' }}>{document.title = "Reporte de productos vendidos"}</div>
+            <Breadcrumb parentName="Ventas" icon={faIceCream} parentLink="salesReport" currentName="Reporte de productos vendidos" />
             <div className="viewTitle">
                 <h1>Reporte de productos vendidos</h1>
             </div>

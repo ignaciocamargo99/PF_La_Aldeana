@@ -66,7 +66,7 @@ const ListFlavorsUp = (props) => {
                                             <td style={{ textAlign: 'center' }}>{element.stock}</td>
                                             <FlavorDispatchAmount keyElement={i} />
                                             <td style={{ textAlign: 'center' }}>
-                                                <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
+                                                <button type="button" className="sendAdd" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -79,7 +79,7 @@ const ListFlavorsUp = (props) => {
                                                 <td style={{ textAlign: 'center' }}>{element.stock}</td>
                                                 <FlavorDispatchAmount keyElement={i} />
                                                 <td style={{ textAlign: 'center' }}>
-                                                    <button type="button" className="btn btn-info btn-sm px-3" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
+                                                    <button type="button" className="sendAdd" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
                                                 </td>
                                             </tr>
                                         </tbody>

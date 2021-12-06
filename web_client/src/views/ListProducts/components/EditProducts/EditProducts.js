@@ -10,6 +10,7 @@ import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
+import displayError from "../../../../utils/ErrorMessages/displayError";
 
 const PORT = require('../../../../config');
 
@@ -40,8 +41,13 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
         formData.append('flavor', data.flavor);
 
         Axios.put(PORT() + urlApi, formData)
-            .then(successMessage('Atención', 'El producto se ha editado correctamente', 'success'))
-            .catch(error => console.log(error));
+            .then((data) => {
+                if (data.data.Ok) successMessage('Atención', 'El producto se ha editado correctamente', 'success');
+            })
+            .catch(error => {
+                console.log(error)
+                displayError('Error al registrar edición del producto por parte del servidor');
+            });
     };
 
     useEffect(() => {

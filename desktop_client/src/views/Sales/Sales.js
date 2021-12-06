@@ -205,7 +205,7 @@ const Sales = (props) => {
                         <DetailSale />
                         <PaymentSale />
                         <div>
-                            <Buttons label="Registrar Venta" ready={ready} actionOK={registerSale}
+                            <Buttons label="Registrar" ready={ready} actionOK={registerSale}
                                 actionNotOK={registerSale} actionCancel={cancel}></Buttons>
                         </div>
                     </div>
