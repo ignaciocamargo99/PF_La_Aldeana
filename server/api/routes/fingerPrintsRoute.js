@@ -6,7 +6,7 @@ const fingerPrintController = require("../controllers/fingerPrintsController");
 router.get('/fingerPrints', fingerPrintController.getFingerPrints);
 router.get('/fingerPrints/:dni', fingerPrintController.getFingersByDni);
 router.post('/fingerPrints', fingerPrintController.newFingerPrint);
-router.delete('/fingerPrints', fingerPrintController.deleteFinger);
+router.put('/fingerPrints', fingerPrintController.deleteFinger);
      
 //#endregion
 module.exports = router;    

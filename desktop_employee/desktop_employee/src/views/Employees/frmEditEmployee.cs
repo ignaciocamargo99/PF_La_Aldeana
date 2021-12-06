@@ -57,27 +57,6 @@ namespace desktop_employee.src.views.Employees
             onOffButtons();
         }
 
-        private async void deleteFingers()
-        {
-            try
-            {
-                FingerXEmployee fingerPrint = new()
-                {
-                    DNI = Convert.ToInt32(txtDni.Text),
-                    DEDO = txtLblCurrent
-                };
-                oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.DELETE, fingerPrint);
-                if (oReply.StatusCode == Convert.ToString(200))
-                {
-                    MessageBox.Show("Huella eliminada correctamente.");
-                }
-                getFingers();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
 
         private void onOffButtons()
         {
@@ -91,40 +70,49 @@ namespace desktop_employee.src.views.Employees
                     {
                         btnCapturarPD.Enabled = false;
                         btnEliminarPD.Enabled = true;
+                        break;
                     }
                     else
                     {
                         btnCapturarPD.Enabled = true;
                         btnEliminarPD.Enabled = false;
                     }
-
+                }
+                for (int i = 0; i < cantidad; i++)
+                {
                     if (Convert.ToString(fingersTable.Rows[i][1]) == lblID.Text)
                     {
                         btnCapturarID.Enabled = false;
                         btnEliminarID.Enabled = true;
+                        break;
                     }
                     else
                     {
                         btnCapturarID.Enabled = true;
                         btnEliminarID.Enabled = false;
                     }
-
-
+                }
+                for (int i = 0; i < cantidad; i++)
+                {
                     if (Convert.ToString(fingersTable.Rows[i][1]) == lblPI.Text)
                     {
                         btnCapturarPI.Enabled = false;
                         btnEliminarPI.Enabled = true;
+                        break;
                     }
                     else
                     {
                         btnCapturarPI.Enabled = true;
                         btnEliminarPI.Enabled = false;
                     }
-
+                }
+                for (int i = 0; i < cantidad; i++)
+                {
                     if (Convert.ToString(fingersTable.Rows[i][1]) == lblII.Text)
                     {
                         btnCapturarII.Enabled = false;
                         btnEliminarII.Enabled = true;
+                        break;
                     }
                     else
                     {
@@ -242,6 +230,28 @@ namespace desktop_employee.src.views.Employees
                     fingerPrint = streamFingerPrint
                 };
                 oReply = await Consumer.Execute<FingerPrint>("http://localhost:3001/api/fingerPrints", methodHttp.POST, fingerPrint);
+                getFingers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async void deleteFingers()
+        {
+            try
+            {
+                FingerXEmployee fingerPrint = new()
+                {
+                    dniEmployee = Convert.ToInt32(txtDni.Text),
+                    finger = txtLblCurrent
+                };
+                oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
+                if (oReply.StatusCode == "OK")
+                {
+                    MessageBox.Show("Huella eliminada correctamente.");
+                }
                 getFingers();
             }
             catch (Exception ex)

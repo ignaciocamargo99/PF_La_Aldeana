@@ -8,7 +8,7 @@ namespace desktop_employee.src.entities
 {
     class FingerXEmployee
     {
-        public int DNI { get; set; }
-        public string DEDO { get; set; }
+        public int dniEmployee { get; set; }
+        public string finger { get; set; }
     }
 }
