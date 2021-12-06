@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh } from '../../../actions/SalesActions';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/modalProduct.css';
@@ -106,19 +106,8 @@ const ModalProduct = (props) => {
         }
     }
 
-    const onClickYES = () => {
-        props.updateDetailsProductsDelete(props.productSelected);
-        props.updateRefresh(!props.refresh);
-        props.setShowModal(false);
-    }
-
-    const onClickNO = () => {
-        props.setShowModal(false);
-    }
-
     return (
         <>
-            {(props.actionModal != "D") &&
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >
                     <ModalHeader>
                         <h2>{props.productSelected?.name}</h2>
@@ -154,33 +143,7 @@ const ModalProduct = (props) => {
                         </div>
                         <Buttons label="Confirmar" ready={ready} actionOK={registerProduct} actionNotOK={registerProduct} actionCancel={cancel}></Buttons>
                     </ModalBody>
-                </Modal>
-            }
-
-            {(props.actionModal == "D") &&
-                <Modal isOpen={props.show} className="modal-sale modal-lg" >
-                    <ModalHeader>
-                        <label>CONFIRMACIÓN</label>
-                    </ModalHeader>
-                    <ModalBody>
-                        <label>¿Esta seguro de que desea eliminar el producto {props.productSelected.name} ?</label>
-                        <div className='formRow'>
-                            <div className='col-6'>
-                                <label>Cantidad:&nbsp;</label>
-                                <label>{props.productSelected.quantity}</label>
-                            </div>
-                            <div className='col-6'>
-                                <label>Subtotal:&nbsp;$</label>
-                                <label>{props.productSelected.subtotal}</label>
-                            </div>
-                        </div>
-                    </ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" type="button" onClick={onClickYES}>SI</button>
-                        <button className="btn btn-primary" type="button" onClick={onClickNO}>NO</button>
-                    </ModalFooter>
-                </Modal>
-            }
+                </Modal>updateDetailsProductsDelete
         </>
     )
 
@@ -203,8 +166,7 @@ const mapDispatchToProps = {
     updateDetailProducts,
     updateProductSelected,
     updateDetailsProductsModify,
-    updateRefresh,
-    updateDetailsProductsDelete
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalProduct);

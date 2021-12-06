@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";
@@ -31,8 +31,10 @@ const DetailSale = (props) => {
     const changePrintModalDelete = (id) => {
         let product = props.detailProducts?.find(n => n.id_product == id)
         props.updateProductSelected(product);
-        setActionModal("D");
-        setPrintModal(true);
+        props.updateDetailsProductsDelete(props.productSelected);
+        props.updateRefresh(!props.refresh);
+        //setActionModal("D");
+        //setPrintModal(true);
         props.updateRefresh(!props.refresh);
     }
 
@@ -114,7 +116,8 @@ const mapDispatchToProps = {
     updateTotalAmount,
     updateDetailsProductsModify,
     updateProductSelected,
-    updateRefresh
+    updateRefresh,
+    updateDetailsProductsDelete
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailSale);
