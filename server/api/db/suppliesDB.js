@@ -60,4 +60,25 @@ const typeSupplyGetDB = () => {
     });
 };
 
-module.exports = { supplyPostDB, typeSupplyGetDB, suppliesGetDB }
+const suppliesStocksGetDB = () => {
+
+    const sqlSelect = `SELECT pxs.id_product,pxs.number_supply AS quantity, s.id_supply, s.stock_unit AS stock FROM SUPPLIES s 
+                        INNER JOIN PRODUCT_X_SUPPLY pxs ON s.id_supply = pxs.id_supply
+                        INNER JOIN PRODUCTS p ON p.id_product = pxs.id_product 
+                        WHERE s.active = 1 AND p.active = 1
+                        ORDER BY p.name`
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { supplyPostDB, typeSupplyGetDB, suppliesGetDB, suppliesStocksGetDB }

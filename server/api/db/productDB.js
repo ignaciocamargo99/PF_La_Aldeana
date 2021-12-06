@@ -213,25 +213,4 @@ const productSupplyGetDB = (productID) => {
     });
 };
 
-const productStocksGetDB = () => {
-
-    const sqlSelect = `SELECT p.id_product AS id_product, (SELECT truncate(MIN(s.stock_unit / pxs.number_supply),0)
-                            FROM PRODUCT_X_SUPPLY pxs INNER JOIN SUPPLIES s ON pxs.id_supply = s.id_supply
-                            WHERE pxs.id_product = p.id_product) AS stock
-                        FROM PRODUCTS p
-                        WHERE p.active = 1 ORDER BY p.NAME`
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
-
-module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB };
+module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB };

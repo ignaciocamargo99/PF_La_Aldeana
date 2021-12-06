@@ -154,3 +154,10 @@ export const productsStocksDeliveryReducer = (state = [], action) => {
     }
     return state
 }
+
+export const suppliesStocksDeliveryReducer = (state = [], action) => {
+    if(action.type === 'UPDATE_DELIVERY_SUPPLIES_STOCKS'){
+        return action.payload
+    }
+    return state
+}

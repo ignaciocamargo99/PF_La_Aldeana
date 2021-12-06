@@ -8,7 +8,7 @@ import Client from './Client';
 import Products from './Products';
 import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks } from '../../../actions/DeliverySalesActions';
+    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks, updateDeliverySuppliesStocks } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
 import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
@@ -16,6 +16,7 @@ import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
 import warningMessage from '../../../utils/warningMessage';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import '../styles/DeliverySales.css';
+import calculateProductStock from '../../../utils/CalculateProductStock/calculateProductStock';
 
 const PORT = require('../../../config');
 
@@ -33,12 +34,16 @@ const DeliverySales = (props) => {
         axios.get( PORT() + `/api/products`)
         .then((response) => {
             let aux = [];
+            let idsProducts = [];
             for(let i = 0 ; i < response.data.length ; i++){
                 aux.push({'product':response.data[i],'quantity':0});
+                idsProducts.push(response.data[i].id_product)
             }
-            axios.get( PORT() + `/api/productsStocks`)
+            axios.get( PORT() + `/api/suppliesStocks`)
             .then((response) => {
-                props.updateDeliveryProductsStocks(response.data);
+                props.updateDeliverySuppliesStocks(response.data);
+                let stocks = calculateProductStock(idsProducts,response.data);
+                props.updateDeliveryProductsStocks(stocks)
                 props.updateDeliveryProductsQuantities(aux);
             })
             .catch((err) => {
@@ -150,7 +155,7 @@ const mapDispatchToProps = {
     updateDeliveryProductsQuantities, resetDetailDelivery,updateErrorStreetNumberDelivery, 
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
-    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsStocks
+    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsStocks, updateDeliverySuppliesStocks
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);

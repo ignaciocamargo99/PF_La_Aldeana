@@ -171,3 +171,10 @@ export const updateDeliveryProductsStocks = (productsStocks) => {
         payload: productsStocks
     }
 }
+
+export const updateDeliverySuppliesStocks = (suppliesStocks) => {
+    return{
+        type: 'UPDATE_DELIVERY_SUPPLIES_STOCKS',
+        payload: suppliesStocks
+    }
+}

@@ -1,4 +1,4 @@
-const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB } = require('../db/productDB');
+const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB } = require('../db/productDB');
 
 const readProduct = async () => {
     try {
@@ -60,14 +60,4 @@ const readProductSupply = async (productID) => {
     };
 };
 
-const readProductStocks = async () => {
-    try {
-        let res = await productStocksGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    };
-};
-
-module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks };
+module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply };
