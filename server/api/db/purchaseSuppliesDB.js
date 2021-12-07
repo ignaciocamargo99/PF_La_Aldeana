@@ -76,7 +76,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
 
                     for (var i = 0; i < arrDetails.length; i++) {
                         if(arrDetails[i].stock){
-                            sqlUpdate = `UPDATE SUPPLIES SET stock_lot = stock_lot + ${arrDetails[i].quantity}, stock_unit = stock_unit + (${arrDetails[i].quantity} * unit_x_lot) WHERE id_supply = ${arrDetails[i].id_supply}`
+                            sqlUpdate = `UPDATE SUPPLIES SET stock_lot = IF (stock_lot IS NOT NULL, stock_lot + ${arrDetails[i].quantity}, NULL), stock_unit = IF (stock_lot IS NOT NULL, stock_unit + (${arrDetails[i].quantity} * unit_x_lot), stock_unit + ${arrDetails[i].quantity}) WHERE id_supply = ${arrDetails[i].id_supply}`;
     
                             db.query(sqlUpdate, (error) => {
                                 if (error) {
