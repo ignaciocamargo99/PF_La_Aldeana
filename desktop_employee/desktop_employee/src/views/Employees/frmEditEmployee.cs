@@ -35,14 +35,6 @@ namespace desktop_employee.src.views.Employees
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
             txtApellido.Text = Convert.ToString(EmployeeSelected.Rows[0][2]);
             getFingers();
-
-
-            /*
-            if (this.dgvFingerEmployee != null && this.dgvFingerEmployee.Rows.Count > 0)
-            {
-                btnAceptar.Enabled = true;
-            }
-            */
         }
 
 
@@ -53,7 +45,6 @@ namespace desktop_employee.src.views.Employees
             oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
             this.dgvFingerEmployee.DataSource = oReply.Data;
             fingersTable = ConvertDgvToTable(dgvFingerEmployee);
-
             onOffButtons();
         }
 
@@ -61,7 +52,6 @@ namespace desktop_employee.src.views.Employees
         private void onOffButtons()
         {
             int cantidad = fingersTable.Rows.Count;
-            MessageBox.Show("Cantidad: ", Convert.ToString(cantidad));
             if (cantidad > 0)
             {
                 for (int i = 0; i < cantidad; i++)
@@ -123,12 +113,15 @@ namespace desktop_employee.src.views.Employees
             }
             else
             {
+                btnCapturarPD.Enabled = true;
+                btnCapturarID.Enabled = true;
+                btnCapturarPI.Enabled = true;
+                btnCapturarII.Enabled = true;
                 btnEliminarPD.Enabled = false;
                 btnEliminarID.Enabled = false;
                 btnEliminarPI.Enabled = false;
                 btnEliminarII.Enabled = false;
             }
-
         }
 
         private DataTable ConvertDgvToTable(DataGridView dgv)
@@ -154,7 +147,6 @@ namespace desktop_employee.src.views.Employees
             this.Invoke(new Function(delegate ()
             {
                 Template = template;
-                btnAceptar.Enabled = (Template != null);
                 if (Template != null)
                 {
                     RegisterFingerAsync();
@@ -167,13 +159,6 @@ namespace desktop_employee.src.views.Employees
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
-        {
-            frmEmployees employees = new();
-            employees.PnlPadre = pnlPadre;
-            OpenForm(employees);
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
         {
             frmEmployees employees = new();
             employees.PnlPadre = pnlPadre;
@@ -240,24 +225,29 @@ namespace desktop_employee.src.views.Employees
 
         private async void deleteFingers()
         {
-            try
+            string message = "Esta seguro que desea eliminar la huella del "+ txtLblCurrent + "?";
+            DialogResult result = MessageBox.Show(message, "Confirmación", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                FingerXEmployee fingerPrint = new()
+                try
                 {
-                    dniEmployee = Convert.ToInt32(txtDni.Text),
-                    finger = txtLblCurrent
-                };
-                oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
-                if (oReply.StatusCode == "OK")
-                {
-                    MessageBox.Show("Huella eliminada correctamente.");
+                    FingerXEmployee fingerPrint = new()
+                    {
+                        dniEmployee = Convert.ToInt32(txtDni.Text),
+                        finger = txtLblCurrent
+                    };
+                    oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
+                    if (oReply.StatusCode == "OK")
+                    {
+                        MessageBox.Show("Huella eliminada correctamente.");
+                        getFingers();
+                    }                    
                 }
-                getFingers();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }            
         }
 
         private void btnEliminarPD_Click(object sender, EventArgs e)
@@ -283,7 +273,5 @@ namespace desktop_employee.src.views.Employees
             txtLblCurrent = lblII.Text;
             deleteFingers();
         }
-
-
     }
 }
