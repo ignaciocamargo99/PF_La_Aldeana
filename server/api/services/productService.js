@@ -1,4 +1,4 @@
-const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB } = require('../db/productDB');
+const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB } = require('../db/productDB');
 
 const readProduct = async () => {
     try {
@@ -50,6 +50,17 @@ const updateProduct = async (idproduct, productUpdate, imageUpdate, flagImage) =
     };
 };
 
+const readProductXSupply = async () => {
+    try {
+        let res = await ProductXSupplyGetDB();
+        return res;
+    }
+    catch (error){
+        throw Error(error);
+    };
+};
+
+
 const readProductSupply = async (productID) => {
     try {
         let res = await productSupplyGetDB(productID);
@@ -60,4 +71,14 @@ const readProductSupply = async (productID) => {
     };
 };
 
-module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply };
+const readProductStocks = async () => {
+    try {
+        let res = await productStocksGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks, readProductXSupply };

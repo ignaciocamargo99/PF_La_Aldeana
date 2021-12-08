@@ -10,9 +10,9 @@ import { updateAllFlavorsProduct } from '../../../actions/DeliverySalesActions';
 const SaleDetails = (props) => {
 
     const onClickShow = (i) => {
-        props.updateAllFlavorsProduct(props.detailsDelivery[i].flavors)
-        props.setNameShow(props.detailsDelivery[i].product.name)
-        props.setShowModalView(true)
+        props.updateAllFlavorsProduct(props.detailsDelivery[i].flavors);
+        props.setNameShow(props.detailsDelivery[i].product.name);
+        props.setShowModalView(true);
     }
 
     return (
@@ -33,10 +33,10 @@ const SaleDetails = (props) => {
                         return (
                             <tbody key={i}>
                                 <tr>
-                                    <td style={{ textAlign: 'center', width: '55%'}}><label>{detail.product.name}</label></td>
-                                    <td style={{ textAlign: 'center', width: '15%'}}><label>{detail.quantity}</label></td>
-                                    <td style={{ textAlign: 'center', width: '15%'}}><label>${detail.subtotal}</label></td>
-                                    <td style={{ textAlign: 'center', width: '15%'}}>
+                                    <td style={{ textAlign: 'center', width: '50%'}}><label>{detail.product.name}</label></td>
+                                    <td style={{ textAlign: 'center', width: '13%'}}><label>{detail.quantity}</label></td>
+                                    <td style={{ textAlign: 'center', width: '13%'}}><label>${detail.subtotal}</label></td>
+                                    <td style={{ textAlign: 'center', width: '24%'}}>
                                         <BeShowed show={detail.product.quantity_flavor > 0}>
                                             <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
                                         </BeShowed>

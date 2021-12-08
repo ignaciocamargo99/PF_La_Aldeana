@@ -1,4 +1,4 @@
-const { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply } = require('../services/productService');
+const { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks, readProductXSupply } = require('../services/productService');
 
 // HTTP: GET
 async function getProduct(req, res) {
@@ -32,7 +32,7 @@ async function postProduct(req, res) {
     }
 }
 
-// HTTP: POST
+// HTTP: DELETE
 async function deleteProducts(req, res) {
     try {
         await deleteProduct(req.params.id);
@@ -80,6 +80,19 @@ async function getImage(req, res) {
     }
 }
 
+async function getProductXSupply(req, res) {
+    try {
+        const result = await readProductXSupply();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo acceder a la tabla.'
+        })
+    }
+}
+
 // HTTP: GET :id
 async function getProductSupply(req, res) {
     try {
@@ -94,4 +107,18 @@ async function getProductSupply(req, res) {
     }
 }
 
-module.exports = { getProduct, postProduct, deleteProducts, updateProducts, getImage, getProductSupply }
+// HTTP: GET
+async function getProductStocks(req, res) {
+    try {
+        const result = await readProductStocks();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getProduct, postProduct, deleteProducts, updateProducts, getImage, getProductSupply, getProductStocks, getProductXSupply }

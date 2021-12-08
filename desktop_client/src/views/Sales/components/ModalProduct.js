@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import Axios from "axios";
 import { connect } from 'react-redux';
 import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
-import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/modalProduct.css';
@@ -15,6 +14,7 @@ const ModalProduct = (props) => {
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
+
 
     const cancel = () => {
         props.setShowModal(false);
@@ -30,58 +30,92 @@ const ModalProduct = (props) => {
     }
 
     useEffect(() => {
-        if (quantity > 0) {
-            setReady(true);
+        if (props.actionModal == "N")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock_current || !props.productSelected.stock_current) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            }
         }
-        else {
-            setReady(false);
+        else if (props.actionModal == "M")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock || !props.productSelected.stock_current) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            }
+        }
+        else if (props.actionModal == "A")
+        {
+            if (quantity > 0 && quantity <= props.productSelected.stock_current || !props.productSelected.stock_current) {
+                setReady(true);
+            }
+            else {
+                setReady(false);
+            } 
         }
     }, [quantity])
 
     useEffect(() => {
-        if (props.actionModal == "M") {
-            setQuantity(props.productSelected.quantity);
-            setSubtotal(props.productSelected.subtotal);
+        if (props.show) {
+            if (props.actionModal == "M") {
+                setQuantity(props.productSelected.quantity);
+                setSubtotal(props.productSelected.subtotal);
+            }
+            else {
+                setSubtotal(null);
+                setQuantity(0);
+            }
         }
-        else {
-            setSubtotal(null);
-            setQuantity(0);
-        }
-    }, [props.productSelected, refreshModal])
+    }, [props.productSelected, props.show])
 
     const registerProduct = () => {
         if (ready) {
             if (props.actionModal == "N") {
-                let aux = [props.productSelected];
-
-                aux?.map((element, i) => {
-                    element.quantity = quantity;
-                    element.subtotal = subtotal;
-                });
+                let aux = props.productSelected;
+                aux.quantity = quantity;
+                aux.subtotal = subtotal;
+                if (aux.stock){
+                    aux.stock_current = aux.stock - parseFloat(quantity);
+                }
                 props.updateProductSelected(aux);
-                props.updateDetailProducts(props.productSelected);
+                props.updateDetailProducts(aux);
             }
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
-
+                if (props.productSelected.stock){
+                    props.productSelected.stock_current = props.productSelected.stock - parseFloat(quantity);
+                }
                 props.updateDetailsProductsModify(props.productSelected);
             }
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
-
+                if (props.productSelected.stock){
+                    props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
+                }
                 props.updateDetailsProductsModify(props.productSelected);
             }
             props.updateRefresh(!props.refresh);
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
         } else {
-            warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
+            if (quantity == 0){
+                warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
+            }
+            if (quantity > props.productSelected.stock)
+                warningMessage("¡Error!", "No hay stock suficiente", "error");   
         }
     }
 
     const onClickYES = () => {
+        if (props.productSelected.stock){
+            props.productSelected.stock_current = props.productSelected.stock;
+        }
         props.updateDetailsProductsDelete(props.productSelected);
         props.updateRefresh(!props.refresh);
         props.setShowModal(false);
@@ -96,25 +130,25 @@ const ModalProduct = (props) => {
             {(props.actionModal != "D") &&
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >
                     <ModalHeader>
-                        <h2>{props.productSelected.name}</h2>
+                        <h2>{props.productSelected?.name}</h2>
                     </ModalHeader>
                     <ModalBody>
                         <div className='formRow'>
                             <label className='label-modal'>Descripción:&nbsp;</label>
-                            <label>{props.productSelected.description}</label>
+                            <label>{props.productSelected?.description}</label>
                         </div>
                         <div className='formRow'>
                             <label className='label-modal'>Precio:&nbsp;$</label>
-                            <label className='label-modal'>{props.productSelected.price}</label>
+                            <label className='label-modal'>{props.productSelected?.price}</label>
                         </div>
                         <div className='formRow'>
                             <div className='col-6'>
                                 <label className='label-modal'>Sector:&nbsp;</label>
-                                <label>{props.productSelected.name_sector}</label>
+                                <label>{props.productSelected?.name_sector}</label>
                             </div>
                             <div className='col-6'>
                                 <label className='label-modal'>Tipo producto:&nbsp;</label>
-                                <label>{props.productSelected.name_product_type}</label>
+                                <label>{props.productSelected?.name_product_type}</label>
                             </div>
                         </div>
                         <div className='formRow'>

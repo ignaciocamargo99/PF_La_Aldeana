@@ -1,4 +1,4 @@
-const { readPayTypes, createSale } = require('../services/salesService');
+const { readPayTypes, createSale, createSaleDelivery } = require('../services/salesService');
 
 async function getPayTypes(req, res) {
     try {
@@ -30,4 +30,21 @@ async function postSale(req, res) {
     }
 }
 
-module.exports = { getPayTypes, postSale }
+// HTTP: POST
+async function postSaleDelivery(req, res) {
+    try {
+        await createSaleDelivery(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Venta registrada exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getPayTypes, postSale, postSaleDelivery }

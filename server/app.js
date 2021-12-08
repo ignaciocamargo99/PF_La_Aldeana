@@ -22,8 +22,10 @@ const productionsRouter = require('./api/routes/productionRoute');
 const franchiseRouter = require('./api/routes/franchiseRoute');
 const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
-const employeeRouter = require('./api/routes/employeeRoute'); 
 const salesReportRouter = require('./api/routes/salesReportRoute'); 
+const employeeRouter = require('./api/routes/employeeRoute'); 
+const licensesRouter = require('./api/routes/licenseRoute'); 
+const advancesRouter = require('./api/routes/advancesRoute');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -53,9 +55,11 @@ app.use('/api', chamberFlavorDispatchRouter);
 app.use('/api', productionsRouter);
 app.use('/api', clientsRouter);
 app.use('/api', employeeRouter);
+app.use('/api', licensesRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', advancesRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
