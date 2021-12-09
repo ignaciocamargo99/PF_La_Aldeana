@@ -110,12 +110,14 @@ const ProductTable = () => {
                             <h1>Productos</h1>
                             <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                         </div>
-                        <TablePagination
-                            columnsHeaders={columnsHeaders}
-                            currentElements={products}
-                            handleEdit={editProduct}
-                            handleDelete={productWasSuccessfullyDeleted}
-                        ></TablePagination>
+                        <div className="viewBody">
+                            <TablePagination
+                                columnsHeaders={columnsHeaders}
+                                currentElements={products}
+                                handleEdit={editProduct}
+                                handleDelete={productWasSuccessfullyDeleted}
+                            ></TablePagination>
+                        </div>
                     </BeShowed>
                     <BeShowed show={isEditing}>
                         <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />

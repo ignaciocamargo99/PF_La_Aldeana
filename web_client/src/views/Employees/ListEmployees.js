@@ -7,9 +7,7 @@ export default function ListEmployees() {
     return (
         <>
             <div style={{display: 'none'}}>{document.title = "Empleados"}</div>
-            <div className="viewBody">
-                <EmployeesTable />
-            </div>
+            <EmployeesTable />
         </>
     );
 }

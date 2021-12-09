@@ -6,9 +6,7 @@ export default function ListProducts() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
-            <div className="viewBody">
-                <ProductTable />
-            </div>
+            <ProductTable />
         </>
     );
 }
