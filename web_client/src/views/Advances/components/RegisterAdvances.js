@@ -47,11 +47,11 @@ export default function RegisterAdvances() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar adelanto"}</div>
+            <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Registrar adelantos" />
             <div className="viewTitle">
                 <h1>Registrar adelanto</h1>
             </div>
             <div className="viewBody">
-                <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Registrar adelantos" />
                 <ExtraDataAdvances load={load} data={data}/>
                 <Buttons
                     label='Registrar' ready={ready} actionOK={registerNewAdvances} actionNotOK={registerNewAdvances}
