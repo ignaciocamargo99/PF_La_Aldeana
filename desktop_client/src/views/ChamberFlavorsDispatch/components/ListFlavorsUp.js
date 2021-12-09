@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import {updateRefresh } from '../../../actions/SalesActions';
-import { updateFiltersFlavors} from '../../../actions/ChamberFlavorsDispatchActions';
+import { updateRefresh } from '../../../actions/SalesActions';
+import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateAllElements, updateTableUp } from '../../../actions/TableUpDownActions';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import FlavorDispatchAmount from "./FlavorDispatchAmount";
@@ -21,12 +21,12 @@ const ListFlavorsUp = (props) => {
             props.updateFiltersFlavors([]);
             props.updateRefresh(false);
         }
-        else if (props.flavorsDispatchFilters[0] && !props.refresh) {
+        else if (props.flavorsDispatchFilters[0] && !props.refresh && props.flavorsDispatchFilters[0] !== 'all_flavors') {
             let filterFamilyFlavors = [];
-            filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor === parseInt(props.flavorsDispatchFilters[0])  )));
+            filterFamilyFlavors = props.allElements.filter((flavor) => ((!flavor.amount || flavor.amount === 0) && (flavor.family_flavor === parseInt(props.flavorsDispatchFilters[0]))));
             props.updateTableUp(filterFamilyFlavors);
         }
-        else if ((props.refresh && props.flavorsDispatchFilters[0]) || !props.flavorsDispatchFilters[0]) {
+        else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0] && props.elementsTableDown.length === 0)) {
             Axios.get(`${PORT()}/api/flavors`)
                 .then(response => {
                     handlerLoadingSpinner();

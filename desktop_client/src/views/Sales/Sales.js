@@ -17,9 +17,6 @@ const PORT = require('../../config');
 const Sales = (props) => { 
 
     const [ready, setReady] = useState(false);
-    const [readyStock1, setReadyStock1] = useState(false);
-    const [readyStock2, setReadyStock2] = useState(false);
-    const [readyStock3, setReadyStock3] = useState(false);
     const [saleCompleted, setSaleCompleted] = useState(false);
 
     useEffect(() => {
@@ -31,38 +28,28 @@ const Sales = (props) => {
             .then(response => {
                 let aux = response.data;
                 aux?.map((element, i) => {
-                    element.stock_initial = 0;
-                    element.stock_current = 0;
                     element.listSupplies = [];
+                    element.disabled = false;
+                    element.stock_current = element.stock;
                 });
                 props.updateProducts(aux);
                 props.updateProductsFiltered(aux);
-                setReadyStock1(true);
             })
             .catch(error => console.error(error));
 
         Axios.get(`${PORT()}/api/productxsupply`)
             .then(response => {
                 props.updateProductsXSupplies(response.data);
-                setReadyStock2(true);
             })
             .catch(error => console.error(error));
 
         Axios.get(`${PORT()}/api/supplies`)
             .then(response => {
                 props.updateSupplies(response.data);
-                setReadyStock3(true);
             })
             .catch(error => console.error(error));
     }
-
-    useEffect(() => {
-        if (readyStock1 && readyStock2 && readyStock3)
-        {
-            thereIsStock(); 
-        }
-    },[readyStock1, readyStock2, readyStock3])
-
+/*
     const thereIsStock = () => {
         let aux = props.products;
         let i,j,k,l,next_stock;
@@ -122,7 +109,7 @@ const Sales = (props) => {
         props.updateProducts(aux);
         props.updateProductsFiltered(aux);
     }
-
+*/
     useEffect(() => {
         if (props.detailProducts.length > 0 && ((props.payType == 1 && props.paymentAmount >= props.totalAmount) || props.payType == 2)) {
             setReady(true);
@@ -132,22 +119,44 @@ const Sales = (props) => {
         }
     })
 
+    useEffect(() => {
+        let aux = props.productsFiltered;
+        for (let i = 0; i < aux.length; i++) {
+            if (aux[i].stock_current == 0) {
+                aux[i].disabled = true;
+            }
+            else {
+                aux[i].disabled = false;
+            }
+        }
+        props.updateProductsFiltered(aux);
+        console.log(props.productsFiltered);
+    },[props.productsFiltered, props.detailProducts, props.refresh])
+
     const cancel = () => {
         resetStates();
     }
 
     const resetStates = () => {
         props.updateDetailsProductsClear([]);
-        setReadyStock1(false);
-        setReadyStock2(false);
-        setReadyStock3(false);
         initialCalls();
         setSaleCompleted(!saleCompleted);
         props.updateSalesRegister(!props.salesRegister);
     }
 
+    const agg_suplies = () => {
+        let suppliesXproduct;
+        for (let i = 0; i < props.detailProducts.length; i++) {
+            suppliesXproduct = props.productsXsupplies.filter(item => item.id_product == props.detailProducts[i].id_product)
+            for (let j = 0; j < suppliesXproduct.length; j++) {
+                props.detailProducts[i].listSupplies.push([suppliesXproduct[j].number_supply, props.supplies.find(supply => supply.id_supply == suppliesXproduct[j].id_supply)])
+            }
+        }
+    }
+
     const registerSale = () => {
         if (ready) {
+            agg_suplies();
             let sale = {
                 date_hour: dateTimeFormat(new Date()), total_amount: props.totalAmount,
                 id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
@@ -217,7 +226,8 @@ const mapStateToProps = state => {
         supplies: state.supplies,
         productsXsupplies: state.productsXsupplies,
         paymentAmount: state.paymentAmount,
-        salesRegister: state.salesRegister
+        salesRegister: state.salesRegister,
+        refresh: state.refresh
     }
 }
 

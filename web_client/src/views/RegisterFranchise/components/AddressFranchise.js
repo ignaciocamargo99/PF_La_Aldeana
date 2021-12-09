@@ -25,7 +25,7 @@ export default function AddressFranchise (props) {
             data.address = "";
             props.load(data);
         }
-    }, [address]);
+    }, [address, props]);
 
     return (
         <div className="formRow">

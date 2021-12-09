@@ -38,7 +38,7 @@ const RegisterPurchaseSupplies = (props) => {
     const validate = () => {
         if (props.purchaseSupplier === 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null) {
             errorNameSupplier()
-        } 
+        }
         else {
             props.purchaseSupplies.map((supply, i) => {
                 if (props.purchaseSubtotal[i] <= 0) errorPricesQuantities()
@@ -72,7 +72,7 @@ const RegisterPurchaseSupplies = (props) => {
                 })
             }
         };
-        
+
         setReady(isReady)
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 
@@ -81,19 +81,14 @@ const RegisterPurchaseSupplies = (props) => {
             "date_purchase": props.purchaseDate,
             "supplier": props.purchaseSupplier,
             "total": props.purchaseTotal,
-            "details": details}
-        axios.post( PORT() + `/api/purchases`,purchase)
-        .then((response) => {
-            if(response.data.Ok){
-                resetStates(response.data.Message)
-
-            }
-            else{
-                errorPurchaseSupplies(response.data.Message)
-            }
-        })
-        .catch((err) => {console.log(err)})
-                   
+            "details": details
+        }
+        axios.post(PORT() + `/api/purchases`, purchase)
+            .then((response) => {
+                if (response.data.Ok) resetStates(response.data.Message);
+                else errorPurchaseSupplies(response.data.Message)
+            })
+            .catch((err) => { console.log(err) })
     }
 
     return (
