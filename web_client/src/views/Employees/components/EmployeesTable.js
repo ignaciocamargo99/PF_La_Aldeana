@@ -12,6 +12,8 @@ import EditEmployee from "./EditEmployee/EditEmployee";
 import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
 import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -77,6 +79,10 @@ export default function EmployeesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const onClickNewEmployee = () => {
+        window.location.replace('/app/registerEmployees');
+    }
+
     return (
         <>
             {isLoadingSpinner && (
@@ -84,6 +90,10 @@ export default function EmployeesTable() {
             )}
             {!isLoadingSpinner && (
                 <BeShowed show={!isEditing && !isReading}>
+                    <div className="viewTitleBtn">
+                        <h1>Empleados</h1>
+                        <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
                     <Table>
                         <HeaderTable
                             th={

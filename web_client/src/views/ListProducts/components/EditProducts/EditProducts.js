@@ -60,16 +60,20 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
             <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar {productToEdit.title}</h2>
+            <div className="viewTitle">
+                <h1>Editar {productToEdit.title}</h1>
+            </div>
             <br />
-            <GeneralDataProduct load={load} data={productToEdit} />
-            <ExtraDataProduct load={load} data={productToEdit} />
-            <Buttons
-                label='Registrar' actionOK={registerProduct}
-                actionNotOK={validationProductRegister}
-                actionCancel={onClickCancelEdit}
-                ready={ready}
-                data={data} />
+            <div className="viewBody">
+                <GeneralDataProduct load={load} data={productToEdit} />
+                <ExtraDataProduct load={load} data={productToEdit} />
+                <Buttons
+                    label='Registrar' actionOK={registerProduct}
+                    actionNotOK={validationProductRegister}
+                    actionCancel={onClickCancelEdit}
+                    ready={ready}
+                    data={data} />
+            </div>
         </>
     );
 };
