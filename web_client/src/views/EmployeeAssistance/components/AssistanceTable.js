@@ -12,8 +12,6 @@ import EditAssistance from "./EditAssistanceEmployee/EditAssistance";
 import backupAssistance from './EditAssistanceEmployee/backupAssistance';
 import ReadAssistanceEmployee from './ReadAssistanceEmployee/ReadAssistanceEmployee';
 import ReadAssistanceButton from "./ReadAssistanceButton";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -98,10 +96,6 @@ export default function EmployeesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
-    const onClickNewAssistance = () => {
-        window.location.replace('/app/registerAssistance');
-    }
-
     return (
         <>
             {isLoadingSpinner && (
@@ -112,12 +106,6 @@ export default function EmployeesTable() {
                 : (
 
                     <BeShowed show={!isEditing && !isReading}>
-                        <div className="viewTitleBtn">
-                            <h1>Asistencias</h1>
-                            <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                        </div>
-
-                        <div className="viewBody">
                             <h3>Registros del día {new Date().toLocaleDateString()}</h3>
                             <Table>
                                 <HeaderTable
@@ -170,7 +158,6 @@ export default function EmployeesTable() {
                                     })}
                                 />
                             </Table>
-                        </div>
                     </BeShowed>
                 )}
             <BeShowed show={isEditing}>
