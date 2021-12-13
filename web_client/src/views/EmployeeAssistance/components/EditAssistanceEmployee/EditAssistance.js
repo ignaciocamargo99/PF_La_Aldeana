@@ -64,7 +64,9 @@ export default function EditAssistance(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar asistencia"}</div>
             <Breadcrumb parentName="Asistencias" icon={faUserFriends} parentLink="assistanceEmployees" currentName="Editar asistencia" />
-                <h2>Editar asistencia de {data.name} / DNI: {data.dni}</h2>
+            <div className="viewTitleBtn">
+                <h1>Editar asistencia de {data.name} / DNI: {data.dni}</h1>
+            </div>
             <br />
             <div className="viewBody">
                 <DataAssistance load={load} data={data} />

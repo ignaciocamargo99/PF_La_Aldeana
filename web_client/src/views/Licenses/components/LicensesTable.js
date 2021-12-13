@@ -51,7 +51,7 @@ export default function LicensesTable(props) {
             <BeShowed show={props.showSpinner}>
                 <LoaderSpinner color="secondary" loading="Cargando licencias"/>
             </BeShowed>
-            <BeShowed show={!props.showSpinner}>
+            <BeShowed show={!props.showSpinner && props.licenses.length !== 0}>
                 <Table>
                     <HeaderTable
                         th={
@@ -104,6 +104,10 @@ export default function LicensesTable(props) {
                         })}
                     />
                 </Table>
+            </BeShowed>
+            <BeShowed show={!props.showSpinner && props.licenses.length === 0}>
+                <br/>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron licencias registradas hasta el momento.</h4>
             </BeShowed>
         </>
     );

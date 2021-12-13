@@ -102,7 +102,17 @@ const ProductTable = () => {
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" loading="Cargando productos..." />
             )}
-            {!isLoadingSpinner && (
+            {!isLoadingSpinner && products && products.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                            <h1>Productos</h1>
+                            <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                        </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron productos registrados hasta el momento.</h4>
+                </div>
+                : (
                 <>
                     <BeShowed show={!isEditing}>
 

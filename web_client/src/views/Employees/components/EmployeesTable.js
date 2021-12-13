@@ -88,7 +88,17 @@ export default function EmployeesTable() {
             {isLoadingSpinner && (
                 <LoaderSpinner color="primary" loading="Cargando..." />
             )}
-            {!isLoadingSpinner && (
+            {!isLoadingSpinner && employees && employees.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                        <h1>Empleados</h1>
+                        <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
+                </div>
+                : (
                 <BeShowed show={!isEditing && !isReading}>
                     <div className="viewTitleBtn">
                         <h1>Empleados</h1>
