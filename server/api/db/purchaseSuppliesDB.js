@@ -41,12 +41,18 @@ const purchaseSuppliesPostDB = (newPurchase) => {
 
     const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total})`;
 
-    console.log(sqlInsertPurchase)
+    //console.log(sqlInsertPurchase)
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
-            if (error) reject(error);
+            if (error) {
+                console.log('error en conexión')
+                reject(error);
+            }
             db.beginTransaction((error) => {
-                if (error) reject(error);
+                if (error) {
+                    console.log('error en inicio de transacción')
+                    reject(error);
+                }
 
                 db.query(sqlInsertPurchase,[supplier], (error, result) => {
                     if (error) {
@@ -60,6 +66,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
                         sqlUpdateDetailsPurchase = `INSERT INTO DETAIL_PURCHASE_SUPPLIES(detail_number,purchase_number,id_supply,quantity,subtotal) VALUES (${i+1},${arrDetails[i].purchase_number},${arrDetails[i].id_supply},${arrDetails[i].quantity},${arrDetails[i].subtotal})`
                         db.query(sqlUpdateDetailsPurchase, (error) => {
                             if (error) {
+                                console.log('1.5: ', error)
                                 db.rollback(()=> reject(error));
                             }
                             db.commit((error) => {
@@ -75,9 +82,10 @@ const purchaseSuppliesPostDB = (newPurchase) => {
                     let sqlUpdate;
 
                     for (var i = 0; i < arrDetails.length; i++) {
-                        if(arrDetails[i].stock){
-                            sqlUpdate = `UPDATE SUPPLIES SET stock_lot = stock_lot + ${arrDetails[i].quantity}, stock_unit = stock_unit + (${arrDetails[i].quantity} * unit_x_lot) WHERE id_supply = ${arrDetails[i].id_supply}`
+                        //if(arrDetails[i].stock){ //acá esta el tema
+                            sqlUpdate = `UPDATE SUPPLIES SET stock_lot = IF (stock_lot IS NOT NULL, stock_lot + ${arrDetails[i].quantity}, NULL), stock_unit = IF (stock_lot IS NOT NULL, stock_unit + (${arrDetails[i].quantity} * unit_x_lot), stock_unit + ${arrDetails[i].quantity}) WHERE id_supply = ${arrDetails[i].id_supply}`;
     
+                            //console.log(sqlUpdate)
                             db.query(sqlUpdate, (error) => {
                                 if (error) {
                                     console.log('3-',i,': ', error);
@@ -91,8 +99,8 @@ const purchaseSuppliesPostDB = (newPurchase) => {
                                     else resolve();
                                 })
                             })
-                        }
-                        else resolve();
+                        //}
+                        //else resolve();
                     }
                 });
                 db.release();

@@ -15,6 +15,7 @@ import Pagination from '../../../common/TablePagination/Pagination';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const PORT = require('../../../config');
 
@@ -150,6 +151,11 @@ export default function AdvancesTable() {
     const indexOfFirstElement = indexOfLastElement - elementsPerPage;
     const currentElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
+
+    const onClickNewAdvances = () => {
+        window.location.replace('/app/registerAdvances');
+    }
+
     return (
         <>
             {isLoadingSpinner && (
@@ -159,62 +165,68 @@ export default function AdvancesTable() {
             {!isLoadingSpinner && (
                 <>
                 <BeShowed show={!isEditing && !isReading}>
-                    <div className="formRow title-searcher">
-                        <h4 className="text-secondary">Adelantos</h4>
-                        <div className="search-input">
-                            <FontAwesomeIcon icon={faSearch} />
-                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
-                        </div>
+                    <div className="viewTitleBtn">
+                        <h1>Adelantos</h1>
+                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                     </div>
-                    <div className="table-responsive-md">
-                        <table className="table table-control table-hover" >
-                            <thead>
-                                <tr>
-                                    {columnsHeaders?.map((element, i) => {
+                    <div className="viewBody">
+                        <div className="formRow title-searcher">
+                            <h4 className="text-secondary">Adelantos</h4>
+                            <div className="search-input">
+                                <FontAwesomeIcon icon={faSearch} />
+                                <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                            </div>
+                        </div>
+                        <div className="table-responsive-md">
+                            <table className="table table-control table-hover" >
+                                <thead>
+                                    <tr>
+                                        {columnsHeaders?.map((element, i) => {
+                                            return (
+                                                <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                    {element.name}
+                                                </th>
+                                            )
+                                        })}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {currentElements?.map((element, i) => {
                                         return (
-                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                {element.name}
-                                            </th>
+                                            <tr key={i}>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <ReadAdvancesButton advances={element} read={readAdvances} />
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                        <EditAdvancesButton advances={element} edit={editAdvances} />
+                                                    </BeShowed>
+                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                        <button id='editAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                                                    </BeShowed>
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+
+                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                        <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+                                                    </BeShowed>
+                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                        <button id='deleteAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                                                    </BeShowed>
+                                                </td>
+                                            </tr>
                                         )
                                     })}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {currentElements?.map((element, i) => {
-                                    return (
-                                        <tr key={i}>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <ReadAdvancesButton advances={element} read={readAdvances} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                    <EditAdvancesButton advances={element} edit={editAdvances} />
-                                                </BeShowed>
-                                                <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                    <button id='editAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
-                                                </BeShowed>
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-
-                                                <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                    <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
-                                                </BeShowed>
-                                                <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                    <button id='deleteAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
-                                                </BeShowed>
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                     </div>
-                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                 </BeShowed>
                 </>
             )}

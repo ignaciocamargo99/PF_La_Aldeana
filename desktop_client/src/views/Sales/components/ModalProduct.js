@@ -113,6 +113,10 @@ const ModalProduct = (props) => {
         }
     }
 
+    const validate = (e) => {
+        if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
+    }
+
     return (
         <>
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >

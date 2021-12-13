@@ -12,6 +12,8 @@ import EditEmployee from "./EditEmployee/EditEmployee";
 import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
 import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -77,6 +79,10 @@ export default function EmployeesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const onClickNewEmployee = () => {
+        window.location.replace('/app/registerEmployees');
+    }
+
     return (
         <>
             {isLoadingSpinner && (
@@ -84,44 +90,51 @@ export default function EmployeesTable() {
             )}
             {!isLoadingSpinner && (
                 <BeShowed show={!isEditing && !isReading}>
-                    <Table>
-                        <HeaderTable
-                            th={
-                                <>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                </>
-                            }
-                        />
-                        <BodyTable
-                            tbody={employees?.map((element, i) => {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).add(1, 'days').format('YYYY-MM-DD')}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <ReadEmployeeButton employee={element} read={readEmployee} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <EditEmployeeButton employee={element} edit={editEmployee} />
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                )
-                            })}
-                        />
-                    </Table>
+                    <div className="viewTitleBtn">
+                        <h1>Empleados</h1>
+                        <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
+
+                    <div className="viewBody">
+                        <Table>
+                            <HeaderTable
+                                th={
+                                    <>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
+                                    </>
+                                }
+                            />
+                            <BodyTable
+                                tbody={employees?.map((element, i) => {
+                                    return (
+                                        <tbody key={i}>
+                                            <tr>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).add(1, 'days').format('YYYY-MM-DD')}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <ReadEmployeeButton employee={element} read={readEmployee} />
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <EditEmployeeButton employee={element} edit={editEmployee} />
+                                                </td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    )
+                                })}
+                            />
+                        </Table>
+                    </div>
                 </BeShowed>
             )}
             <BeShowed show={isEditing}>

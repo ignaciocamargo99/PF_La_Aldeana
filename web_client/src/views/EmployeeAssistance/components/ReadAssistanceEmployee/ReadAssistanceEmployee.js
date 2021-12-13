@@ -12,7 +12,8 @@ export default function RegisterAssistance(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Consultar asistencia"}</div>
             <Breadcrumb parentName="Asistencias" icon={faUserFriends} parentLink="assistanceEmployees" currentName="Consultar asistencia" />
-            <h2 style={{ fontWeight: 'bold' }}>Asistencia de {data.name} / DNI: {data.dni}</h2>
+            <h2>Asistencia de {data.name} / DNI: {data.dni}</h2>
+            <br />
             <div className="viewBody">
                 <DataAssistance load={load} data={data} />
                 <div className='buttons'>

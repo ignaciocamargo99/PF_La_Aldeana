@@ -38,16 +38,21 @@ export default function EditEmployee(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar empleado {props.employee.name}</h2>
+            
+            <div className="viewTitle">
+                <h1>Editar empleado {props.employee.name + " " + props.employee.lastName}</h1>
+            </div>
             <br />
-            <DataEmployee load={load} data={data} />
-            <ExtraDataEmployee load={load} data={data} />
-            <Buttons
-                label='Registrar' actionOK={updateEmployee}
-                actionNotOK={updateEmployee}
-                actionCancel={props.cancel}
-                ready={ready}
-                data={data} />
+            <div className="viewBody">
+                <DataEmployee load={load} data={data} />
+                <ExtraDataEmployee load={load} data={data} />
+                <Buttons
+                    label='Registrar' actionOK={updateEmployee}
+                    actionNotOK={updateEmployee}
+                    actionCancel={props.cancel}
+                    ready={ready}
+                    data={data} />
+            </div>
         </>
     );
 }
