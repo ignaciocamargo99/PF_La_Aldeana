@@ -8,7 +8,6 @@ import successMessage from '../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import ExtraDataEmployee from './ExtraDataEmployee';
-import FingerPrint from './FingerPrint';
 
 const PORT = require('../../../config');
 
@@ -44,8 +43,7 @@ export default function RegisterEmployee() {
             </div>
             <div className="viewBody">
                 <DataEmployee load={load} data={data} />
-                <ExtraDataEmployee load={load} data={data} />
-                <FingerPrint />   
+                <ExtraDataEmployee load={load} data={data} />  
                 <Buttons
                     label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
                     data={data} actionCancel={cancelRegisterEmployee}
