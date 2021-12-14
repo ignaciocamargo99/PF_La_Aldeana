@@ -99,10 +99,9 @@ const ProductTable = () => {
 
     return (
         <>
-            {isLoadingSpinner && (
-                <LoaderSpinner color="primary" loading="Cargando productos..." />
-            )}
-            {!isLoadingSpinner && products && products.length === 0
+            {isLoadingSpinner ?
+                <LoaderSpinner color="primary" loading="Cargando..." />
+            : products && products.length === 0
                 ? 
                 <div>
                     <div className="viewTitleBtn">

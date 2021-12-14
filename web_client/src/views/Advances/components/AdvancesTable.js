@@ -158,11 +158,9 @@ export default function AdvancesTable() {
 
     return (
         <>
-            {isLoadingSpinner && (
-                <LoaderSpinner color="primary" loading="Cargando adelantos" />
-            )}
-
-            {!isLoadingSpinner && advances && advances.length === 0
+            {isLoadingSpinner ?
+                <LoaderSpinner color="primary" loading="Cargando..." />
+            : advances && advances.length === 0
                 ? 
                 <div>
                     <div className="viewTitleBtn">

@@ -100,10 +100,9 @@ export default function EmployeesTable() {
 
     return (
         <>
-            {isLoadingSpinner && (
+            {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            )}
-            {!isLoadingSpinner && assistance && assistance.length === 0
+            : assistance && assistance.length === 0
                 ? 
                 <div>
                     <div className="viewTitleBtn">
