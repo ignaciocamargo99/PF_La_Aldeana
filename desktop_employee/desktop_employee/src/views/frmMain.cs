@@ -27,7 +27,7 @@ namespace desktop_employee
             this.BackColor = Color.FromArgb(166, 222, 249);
         }
 
-        private async void frmMain_Load(object sender, EventArgs e)
+        private void frmMain_Load(object sender, EventArgs e)
         {
             //inicia la aplicación maximizada según el tamaño del monitor
             this.Location = Screen.PrimaryScreen.WorkingArea.Location;
@@ -36,12 +36,7 @@ namespace desktop_employee
             ContraerMenu();
 
             //Inicia el formulario de asistencia
-
             //ibtnAsistencia_Click(null, e);
-            //ibtnEmpleados_Click(null, e);
-
-            GetFingerPrintsXEmployeesAsync();
-
         }
         protected override void WndProc(ref Message m)
         {
@@ -107,16 +102,18 @@ namespace desktop_employee
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
         {
-            frmAssistanceFinger assistanceFinger = new();
-            assistanceFinger.FingerXEmployees = fingerPrintXEmployeesTable;
-            
+            GetFingerPrintsXEmployeesAsync();
 
-            lblTitulo.Text = "ASISTENCIA con HUELLA";
-            OpenForm(assistanceFinger);
+            
         }
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
+            for (int i = 1; i <= Application.OpenForms.Count; i++) {
+                //string nombreForm = Application.OpenForms[i].ToString();
+                Application.OpenForms[i].Close();
+            }
+            MessageBox.Show("form abiertos" + Convert.ToString(Application.OpenForms.Count));
             frmAssistanceDNI assitenceDNI = new();
             lblTitulo.Text = "ASISTENCIA con DNI";
             //pasar tabla
@@ -142,6 +139,14 @@ namespace desktop_employee
             this.dgvConvert.Visible = false;
             this.dgvConvert.DataSource = oReply.Data;
             fingerPrintXEmployeesTable = ConvertDgvToTable(dgvConvert);
+
+            frmAssistanceFinger assistanceFinger = new();
+            assistanceFinger.FingerXEmployees = fingerPrintXEmployeesTable;
+
+
+            lblTitulo.Text = "ASISTENCIA con HUELLA";
+            OpenForm(assistanceFinger);
+
         }
 
         private DataTable ConvertDgvToTable(DataGridView dgv)
