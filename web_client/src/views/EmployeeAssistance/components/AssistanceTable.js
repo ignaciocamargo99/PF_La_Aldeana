@@ -12,6 +12,8 @@ import EditAssistance from "./EditAssistanceEmployee/EditAssistance";
 import backupAssistance from './EditAssistanceEmployee/backupAssistance';
 import ReadAssistanceEmployee from './ReadAssistanceEmployee/ReadAssistanceEmployee';
 import ReadAssistanceButton from "./ReadAssistanceButton";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -96,68 +98,86 @@ export default function EmployeesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const onClickNewAssistance = () => {
+        window.location.replace('/app/registerAssistance');
+    }
+
     return (
         <>
-            {isLoadingSpinner && (
+            {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            )}
-            {!isLoadingSpinner && assistance && assistance.length === 0
-                ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
+            : assistance && assistance.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                        <h1>Asistencias</h1>
+                        <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
+                </div>
                 : (
 
                     <BeShowed show={!isEditing && !isReading}>
-                            <h3>Registros del día {new Date().toLocaleDateString()}</h3>
-                            <Table>
-                                <HeaderTable
-                                    th={
-                                        <>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de ingreso</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de egreso</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                        </>
-                                    }
-                                />
-                                <BodyTable
-                                    tbody={assistance?.map((element, i) => {
-                                        return (
-                                            <tbody key={i}>
-                                                <tr>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        {PORT() !== ''
-                                                            ? moment(element.date_entry).add(3, 'hours').format('HH:mm')
-                                                            : moment(element.date_entry).format('HH:mm')
-                                                        }
-                                                    </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        {(element.date_egress)
-                                                            ? (PORT() !== ''
-                                                                ? moment(element.date_egress).add(3, 'hours').format('HH:mm')
-                                                                : moment(element.date_egress).format('HH:mm'))
-                                                            : '-'}
-                                                    </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        <ReadAssistanceButton assistance={element} read={readAssistance} />
-                                                    </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        <EditAssistanceButton assistance={element} edit={editAssistance} />
-                                                    </td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        )
-                                    })}
-                                />
-                            </Table>
+                            <div className="viewTitleBtn">
+                                <h1>Asistencias</h1>
+                                <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </div>
+
+                            <div className="viewBody">
+                                <h3>Registros del día {new Date().toLocaleDateString()}</h3>
+                                <Table>
+                                    <HeaderTable
+                                        th={
+                                            <>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de ingreso</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Hora de egreso</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
+                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
+                                            </>
+                                        }
+                                    />
+                                    <BodyTable
+                                        tbody={assistance?.map((element, i) => {
+                                            return (
+                                                <tbody key={i}>
+                                                    <tr>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            {PORT() !== ''
+                                                                ? moment(element.date_entry).add(3, 'hours').format('HH:mm')
+                                                                : moment(element.date_entry).format('HH:mm')
+                                                            }
+                                                        </td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            {(element.date_egress)
+                                                                ? (PORT() !== ''
+                                                                    ? moment(element.date_egress).add(3, 'hours').format('HH:mm')
+                                                                    : moment(element.date_egress).format('HH:mm'))
+                                                                : '-'}
+                                                        </td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            <ReadAssistanceButton assistance={element} read={readAssistance} />
+                                                        </td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            <EditAssistanceButton assistance={element} edit={editAssistance} />
+                                                        </td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            )
+                                        })}
+                                    />
+                                </Table>
+                            </div>
                     </BeShowed>
                 )}
             <BeShowed show={isEditing}>

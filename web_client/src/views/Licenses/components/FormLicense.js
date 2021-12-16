@@ -262,7 +262,7 @@ const FormLicense = (props) => {
         <Breadcrumb parentName="Licencias" icon={faUserFriends} parentLink="licenses" currentName={`${props.action} licencia`}/>
         <div style={{display: 'none'}}>{document.title = `${props.action} Licencia` }</div>
             <div className="viewTitleBtn">
-            <h1>{props.action} licencia {props.action!=="Registrar"?props.license?.id_license:''}</h1>
+            <h1>{props.action} licencia: {props.action!=="Registrar"?props.license?.id_license + ' - ' + props.license?.name + ' ' + props.license?.last_name:''}</h1>
         </div>
         <div className="container" >
             <br/>

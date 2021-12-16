@@ -43,7 +43,7 @@ const ListFlavorsUp = (props) => {
     return (
         <>
             {isLoadingSpinner && (
-                <LoaderSpinner color="primary" description="Cargando sabores. Aguarde..." />
+                <LoaderSpinner color="primary" description="Cargando..." />
             )}
             {(flavorValues = props.elementsTableUp.filter(() => true),
                 flavorValues.length === 0 && !isLoadingSpinner

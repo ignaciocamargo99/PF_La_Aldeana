@@ -158,11 +158,19 @@ export default function AdvancesTable() {
 
     return (
         <>
-            {isLoadingSpinner && (
-                <LoaderSpinner color="primary" loading="Cargando adelantos" />
-            )}
-
-            {!isLoadingSpinner && (
+            {isLoadingSpinner ?
+                <LoaderSpinner color="primary" loading="Cargando..." />
+            : advances && advances.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                        <h1>Adelantos</h1>
+                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
+                </div>
+                : (
                 <>
                 <BeShowed show={!isEditing && !isReading}>
                     <div className="viewTitleBtn">
