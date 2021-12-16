@@ -73,7 +73,6 @@ export default function EditAssistance(props) {
             <div style={{ display: 'none' }}>{document.title = "Editar asistencia"}</div>
             <Breadcrumb parentName="Asistencias" icon={faUserFriends} parentLink="assistanceEmployees" currentName="Editar asistencia" />
             <div className="viewTitleBtn">
-                {console.log(data)}
                 <h1>Editar asistencia de {getEmployees(employees, data.dni)} / DNI: {data.dni}</h1>
             </div>
             <br />
