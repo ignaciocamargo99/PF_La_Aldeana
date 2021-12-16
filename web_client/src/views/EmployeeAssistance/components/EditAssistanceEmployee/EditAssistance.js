@@ -10,6 +10,7 @@ import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 import validateHoursEgressEntry from '../validateHoursEgressEntry';
+import getEmployees from '../getEmployees';
 
 const PORT = require('../../../../config');
 
@@ -27,6 +28,13 @@ export default function EditAssistance(props) {
     useEffect(() => {
         Axios.get(`${PORT()}/api/employeeAssistance`)
             .then((response) => setAssistance(response.data))
+    }, []);
+
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/employees`)
+            .then((response) => setEmployees(response.data))
     }, []);
 
     const updateAssistanceEmployee = () => {
@@ -65,7 +73,8 @@ export default function EditAssistance(props) {
             <div style={{ display: 'none' }}>{document.title = "Editar asistencia"}</div>
             <Breadcrumb parentName="Asistencias" icon={faUserFriends} parentLink="assistanceEmployees" currentName="Editar asistencia" />
             <div className="viewTitleBtn">
-                <h1>Editar asistencia de {data.name} / DNI: {data.dni}</h1>
+                {console.log(data)}
+                <h1>Editar asistencia de {getEmployees(employees, data.dni)} / DNI: {data.dni}</h1>
             </div>
             <br />
             <div className="viewBody">
