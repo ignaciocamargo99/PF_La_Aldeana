@@ -5,13 +5,24 @@ import './EmployeesSchedulesView.css';
 import ScheduleDays from './components/ScheduleDays';
 import BeShowed from '../../common/BeShowed';
 import { addDaySchedule } from '../../actions/ScheduleActions';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import axios from 'axios';
+import TableScheduleEmployees from './components/TableScheduleEmployees';
+
+const PORT = require('../../config');
 
 const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
 
     const [showNewScheduleModal, setShowNewScheduleModal] = useState(false);
     const [showNewSchedule, setShowNewSchedule] = useState(false);
-    const [daysNewSchedule,setDaysNewSchedule] = useState(null)
+    const [showMonthView, setShowMonthView] = useState(false);
+    const [month, setMonth] = useState(null);
+    const [year, setYear] = useState(null);
+    const [daysNewSchedule,setDaysNewSchedule] = useState(null);
+    const [employees, setEmployees] = useState(null);
+    const [licenses, setLicenses] = useState(null);
+    const [licensesMonth,setLicensesMonth] = useState(null);
+    const [nonworkingDays,setNonworkingDays] = useState(null);
 
     const today = new Date()
     const tomorrow = new Date(today)
@@ -19,12 +30,47 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
 
     useEffect(() => {
         const today = new Date();
+        setMonth(today.getMonth());
+        setYear(today.getFullYear());
         for(let i = 1; i < (daysNewSchedule+1); i++){
             const nexDay = new Date(today);
             nexDay.setDate(nexDay.getDate() + i)
             addDaySchedule(nexDay)
         }
     },[daysNewSchedule])
+
+    useEffect(() => {
+        axios.get(`${PORT()}/api/employees`)
+        .then((response) => {
+            setEmployees(response.data);
+            axios.get(`${PORT()}/api/licenses`)
+            .then((response) => {
+                setLicenses(response.data);
+            })
+        })
+    },[])
+
+    useEffect(() => {
+        axios.get(`http://nolaborables.com.ar/api/v2/feriados/${today.getFullYear()}`)
+        .then((response) => {
+            let filterPerMonth = []; 
+            response.data.forEach((nWDay) => {
+                if(nWDay.mes == (month+1)){
+                    filterPerMonth.push(nWDay.dia)
+                }
+            });
+            setNonworkingDays(filterPerMonth);
+        })
+        .catch((err) => {console.log(err)});
+    },[year,month])
+
+    useEffect(() => {
+        let newLicensesMonth
+        if(licenses){
+            newLicensesMonth = licenses.filter(license => (parseInt(license.date_init.slice(0,4)) === year && parseInt(license.date_init.slice(5,7)) === month+1) || (parseInt(license.date_finish.slice(0,4)) === year && parseInt(license.date_finish.slice(5,7)) === month+1));
+            setLicensesMonth(newLicensesMonth);
+        }
+    },[licenses,month,year])
 
     const viewTitle = 'Grilla de Horarios';
 
@@ -39,7 +85,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                 <h1>{viewTitle}</h1>
             </div>
             <div className="viewBody">
-                <BeShowed show={!showNewSchedule}>
+                <BeShowed show={!showNewSchedule && !showMonthView}>
                     <div className="schedules-cards-container">
                         <div className="cards-container d-flex-col">
                             <Card
@@ -51,13 +97,23 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                                 title='Ver Últimas Grillas'
                                 text='Mira las últimas grillas que has creado.'
                             />
+                            <Card
+                                title='Visualizar cronograma por mes'
+                                text='Visualiza los turnos asignados de tus empleados con estadisticas incluidas.'
+                                handleCardClicked={() => {setShowMonthView(true)}}
+                            />
                         </div>
                     </div>
                 </BeShowed>
                 <NewScheduleModal showModal={showNewScheduleModal} setShowModal={setShowNewScheduleModal} 
                                     setDaysNewSchedule={setDaysNewSchedule} setShowNewSchedule={setShowNewSchedule}/>
                 <BeShowed show={showNewSchedule}>
-                    <ScheduleDays/>
+                    <ScheduleDays employees={employees}/>
+                </BeShowed>
+                <BeShowed show={showMonthView}>
+                    <div className="container-fluid">
+                        <TableScheduleEmployees month={month} setMonth={setMonth} year={year} setYear={setYear} employees={employees} licensesMonth={licensesMonth} nonworkingDays={nonworkingDays}/>
+                    </div>
                 </BeShowed>
             </div>
         </>
