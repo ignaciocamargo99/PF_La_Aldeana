@@ -14,11 +14,10 @@ const PORT = require('../../../config');
 export default function RegisterEmployee() {
     const [ready, setReady] = useState(false);
     const [data, setData] = useState({ nameEmployee: null, lastName: null, dni: null, id_charge: null, date: null, employmentRelationship: null, editing: false, reading: false });
-    const cancelRegisterEmployee = () => window.location.reload();
+    const cancelRegisterEmployee = () => window.location.replace('/app/employees');
 
     const load = (childData) => {
         setData(childData);
-        console.log(data)
         if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
         else setReady(false);
     }

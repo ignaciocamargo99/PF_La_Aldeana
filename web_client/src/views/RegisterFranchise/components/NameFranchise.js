@@ -25,7 +25,7 @@ export default function NameFranchise (props) {
             data.name = "";
             props.load(data);
         }
-    }, [name]);
+    }, [name, props]);
 
     return (
         <div className="formRow">

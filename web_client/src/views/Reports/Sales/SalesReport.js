@@ -5,8 +5,9 @@ import Options from "./components/Options";
 import TypeProductsSales from "./components/TypeProductsSales";
 import ListProductSales from "./components/ListProductSales";
 import BeShowed from "../../../common/BeShowed";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
+import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 
 const SalesReport = (props) => {
 
@@ -19,13 +20,13 @@ const SalesReport = (props) => {
     useEffect(() => {
         setFrom(props.dateFrom);
         setTo(props.dateTo);
-    }, [props.productSales]);
+    }, [props.productSales, props.dateFrom, props.dateTo]);
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Reportes y estadísticas"}</div>
             <div className="viewTitle">
-                <h1>Reporte de ventas de productos</h1>
+                <h1>Reporte de productos vendidos</h1>
             </div>
             <div className="viewBody">
                 <div className="row">
@@ -40,7 +41,7 @@ const SalesReport = (props) => {
                 <BeShowed show={loaded === true && load > 0}>
                     <BeShowed show={props.productSales.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Productos vendidos desde {from} hasta {to}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Productos vendidos desde {dateBDToString(from, 'Es')} hasta {dateBDToString(to, 'Es')}</h5>
                         </div>
                         <hr />
                         <div className="formRow">

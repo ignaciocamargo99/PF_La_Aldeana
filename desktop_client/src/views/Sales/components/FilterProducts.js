@@ -13,6 +13,7 @@ const FilterProducts = (props) => {
     const [typesProduct, setTypesProduct] = useState([]);
     const [typesProductSelected, setTypesProductSelected] = useState([]);
     const [valueSelect, setValueSelect] = useState("-1");
+    const [boolBtnAll, setBoolBtnAll] = useState(false);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/typeProducts`)
@@ -23,35 +24,41 @@ const FilterProducts = (props) => {
     }, [])
 
     const onClickHeladeria = () => {
+        setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 1));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 1));
     }
 
     const onClickCafeteria = () => {
+        setBoolBtnAll(false);
         actionsDefaultButtons();
+        props.updateProductsFiltered(props.products.filter(n => n.id_sector == 2));
         setTypesProductSelected(typesProduct.filter(n => n.id_sector == 2));
     }
 
     const actionsDefaultButtons = () => {
         setBoolTypeProduct(true);
-        props.updateProductsFiltered(props.products);
+        //props.updateProductsFiltered(props.products);
         setValueSelect("-1");
     }
 
     const onClickCancel = () => {
         setBoolTypeProduct(false);
         props.updateProductsFiltered(props.products);
+        setBoolBtnAll(true);
     }
 
-    const onChangeTypeProduct = (e) => {
+    const onChangeTypeProduct = (e) => { 
         const id_type_product_selected = e.target.value;
         setValueSelect(id_type_product_selected);
-        props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected))
+        props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected));
     }
 
     useEffect(() => {
-        //AL TOCAR HELADERIA O CAFETERIA, reiniciar el select
-    })
+        setBoolTypeProduct(false);
+        setValueSelect("-1");
+    }, [props.salesRegister])
 
     return (
         <>
@@ -80,7 +87,8 @@ const mapStateToProps = state => {
     return {
         products: state.products,
         productsFiltered: state.productsFiltered,
-        detailProducts: state.detailProducts
+        detailProducts: state.detailProducts,
+        salesRegister: state.salesRegister
     }
 }
 

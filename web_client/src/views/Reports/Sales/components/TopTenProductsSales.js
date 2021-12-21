@@ -9,7 +9,7 @@ const TopTenProductsSales = (props) => {
     useEffect(()=>{
       let l = []
       let d = []
-      props.topTenProductSales?.map((e)=>{
+      props.topTenProductSales?.forEach((e)=>{
         l = [...l, e.name]
         d = [...d, e.quantity]
       })

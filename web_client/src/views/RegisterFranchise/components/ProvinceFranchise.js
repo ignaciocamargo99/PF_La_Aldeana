@@ -25,7 +25,7 @@ export default function ProvinceFranchise (props) {
             data.province = "";
             props.load(data);
         }
-    }, [province]);
+    }, [province, props]);
 
     return (
         <div className="formRow">

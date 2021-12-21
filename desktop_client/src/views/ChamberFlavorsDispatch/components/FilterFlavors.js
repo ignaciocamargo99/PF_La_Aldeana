@@ -32,19 +32,20 @@ const ListFlavors = (props) => {
             inputSearchNameFlavor.current.checked = false;
             inputFamilyFlavor.current.checked = false;
         }
-    }, [props.refresh])
+    }, [props.refresh]);
 
     const handlerOnChangeSearchNameFlavor = () => {
         if (inputSearchNameFlavor.current.checked) {
             let filterFlavorsWithDownList = [];
             setBoolSearchNameFlavor(true);
             setBoolFamilyFlavor(false);
+            props.updateFiltersFlavors([]);
             // Filter without repeating what was loaded in the ListFlavorsDown
-            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0));
             props.updateTableUp(filterFlavorsWithDownList);
         }
         else setBoolFamilyFlavor(false);
-    };
+    }
 
     const handlerOnChangeFamilyFlavor = () => {
         if (inputFamilyFlavor.current.checked === true) {
@@ -52,31 +53,35 @@ const ListFlavors = (props) => {
             setBoolFamilyFlavor(true);
             setBoolSearchNameFlavor(false);
             // Filter without repeating what was loaded in the ListFlavorsDown
-            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0));
             props.updateTableUp(filterFlavorsWithDownList);
         }
         else setBoolFamilyFlavor(false);
-    };
+    }
 
     useEffect(() => {
         // Filter without repeating what was loaded in the ListFlavorsDown
         let filterFlavorsWithDownList = [];
-        filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+        filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0));
         toFilterFlavors(nameSearch, props.elementsTableUp, filterFlavorsWithDownList, props.updateTableUp);
     }, [nameSearch]);
 
     const onChangeFamilyProduct = (e) => {
         if (e.target.value === "all_flavors") {
+            setSelectFamilyFlavor(e.target.value);
             let filterFlavorsWithDownList = [];
-            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0))
+            filterFlavorsWithDownList = props.allElements.filter((flavor) => (!flavor.amount || flavor.amount === 0));
             props.updateTableUp(filterFlavorsWithDownList);
         }
-        else setSelectFamilyFlavor(e.target.value);
+        setSelectFamilyFlavor(e.target.value);
+        props.updateFiltersFlavors(e.target.value)
     }
 
     useEffect(() => {
-        let filters = [selectFamilyFlavor];
-        props.updateFiltersFlavors(filters);
+        if (selectFamilyFlavor === 'all_flavors') {
+            let filters = [selectFamilyFlavor];
+            props.updateFiltersFlavors(filters);
+        }
     }, [selectFamilyFlavor]);
 
     return (
@@ -113,11 +118,12 @@ const ListFlavors = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        flavorsDispatchFilters: state.flavorsDispatchFilters,
         elementsTableUp: state.elementsTableUp,
         allElements: state.allElements,
         refresh: state.refresh
-    };
-};
+    }
+}
 
 const mapDispatchToProps = {
     updateFiltersFlavors,
