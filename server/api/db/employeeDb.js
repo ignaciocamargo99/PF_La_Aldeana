@@ -29,7 +29,7 @@ const employeeGetDB = (dni) => {
 
 const employeeForDesktopGetDB = () => {
     const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
-                    FROM EMPLOYEES WHERE active = 1`; 
+                    FROM EMPLOYEES WHERE active = 1`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -123,8 +123,8 @@ const employeeCreateDB = (newEmployee) => {
         })
     });
 };
- 
-   
+
+
 const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     const sqlUpdate = `UPDATE EMPLOYEES SET dni = ?, name = ?, last_name = ?, date_admission = ?, 
                         employment_relationship = ?, charge = ?
@@ -153,4 +153,5 @@ const employeeUpdateDB = (dniEmployee, updateEmployee) => {
     });
 };
 
-module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, employeeUpdateDB, dniEmployeeGetDB, employeeForDesktopGetDB };
+module.exports = { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB, 
+    employeeUpdateDB, dniEmployeeGetDB, employeeForDesktopGetDB };

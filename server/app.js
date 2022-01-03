@@ -64,6 +64,7 @@ app.use('/api', licensesRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', employeeAssistanceRouter)
 app.use('/api', advancesRouter);
 app.use('/api', employeeAssistanceRouter);
 app.use('/api', assistanceFingerRouter);
