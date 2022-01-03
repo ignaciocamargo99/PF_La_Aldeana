@@ -67,7 +67,8 @@ export default function RegisterFranchise() {
             data.last_name_manager !== '' && data.last_name_manager !== 'null' &&
             data.dni_manager > 0) setReady(true);
         else setReady(false);
-    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
+    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild,
+    data.address, data.address_number, data.city, data.province, data.name_manager, data.name, data.dni_manager, data.last_name_manager, data.start_date]);
 
     const cancelRegisterFranchise = () => window.location.reload();
 

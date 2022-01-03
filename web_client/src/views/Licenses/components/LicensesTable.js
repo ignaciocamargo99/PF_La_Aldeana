@@ -86,13 +86,13 @@ export default function LicensesTable(props) {
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendEdit" onClick={() => {props.setActionLicense('Editar',license)}}
+                                            <button className="sendEdit" onClick={() => {props.setActionLicense('Editar',license)}} style={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date) ? {backgroundColor: 'grey'}:null}
                                                     disabled={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date)}>
                                                 <FontAwesomeIcon icon={faEdit}/>
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendDelete" onClick={() => {confirmDeleteLicense(license.id_license)}}
+                                            <button className="sendDelete" onClick={() => {confirmDeleteLicense(license.id_license)}} style={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date) ? {backgroundColor: 'grey'}:null}
                                                     disabled={(new Date(dateBDToString(license.date_finish,'En')).getTime() < date)}>
                                                 <FontAwesomeIcon icon={faMinus}/>
                                             </button>

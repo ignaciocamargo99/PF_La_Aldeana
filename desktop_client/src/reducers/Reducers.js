@@ -22,7 +22,8 @@ export default combineReducers({
     supplies: suppliesReducer,
     paymentAmount: paymentAmountReducer,
     salesRegister: salesRegisterReducer,
-    //Menu
+
+    // Menu
     location: location,
     menu: menu,
 
@@ -52,5 +53,5 @@ export default combineReducers({
     flavorsProductDelivery: flavorsProductDeliveryReducer,
     productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientDelivery: clientDeliveryReducer,
-    productsStocksDelivery: productsStocksDeliveryReducer
+    productsStocksDelivery: productsStocksDeliveryReducer,
 })
