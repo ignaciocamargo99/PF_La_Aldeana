@@ -1,15 +1,17 @@
 const pool = require('../../config/connection');
 
 const employeeGetDB = (dni) => {
-    let sqlSelect = `SELECT e.dni, e.name AS name, e.last_name AS last_name, e.date_admission AS date_admission, c.name AS name_charge, er.name AS name_emp_relationship
+    let sqlSelect;
+    if (dni) {
+        sqlSelect = `SELECT e.dni, e.name AS name, e.last_name AS last_name, e.date_admission AS date_admission, c.name AS name_charge, er.name AS name_emp_relationship
                         FROM EMPLOYEES e INNER JOIN CHARGES c ON e.charge = c.id_charge 
                         INNER JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
                         WHERE e.active = 1 `;
-    if(dni !== undefined){
         sqlSelect = sqlSelect + `AND e.dni = ${dni} ORDER BY e.last_name`
     }
-    else{
-        sqlSelect = sqlSelect + `ORDER BY e.last_name`
+    else {
+        sqlSelect = `SELECT dni, name, last_name, date_admission ,charge, employment_relationship
+        FROM EMPLOYEES WHERE active = 1 ORDER BY last_name`;
     }
 
     return new Promise((resolve, reject) => {
