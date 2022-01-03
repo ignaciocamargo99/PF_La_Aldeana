@@ -129,16 +129,11 @@ export default function EmployeesTable() {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    {PORT() !== ''
-                                                        ? moment(element.date_entry).format('HH:mm')
-                                                        : moment(element.date_entry).add(3, 'hours').format('HH:mm')
-                                                    }
+                                                    {moment(element.date_entry).format('HH:mm')}
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                     {(element.date_egress)
-                                                        ? (PORT() !== ''
-                                                            ? moment(element.date_egress).format('HH:mm')
-                                                            : moment(element.date_egress).add(3, 'hours').format('HH:mm'))
+                                                        ? moment(element.date_egress).format('HH:mm')
                                                         : '-'}
                                                 </td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>

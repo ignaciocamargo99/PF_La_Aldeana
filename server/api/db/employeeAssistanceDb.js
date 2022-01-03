@@ -19,7 +19,7 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
 
 const allEmployeeAssistancesGetDB = () => {
     const sqlSelect = `
-            SELECT ae.id_assistance, CONVERT_TZ(ae.date_entry,'-00:00','-03:00') AS date_entry, CONVERT_TZ(ae.date_egress,'-00:00','-03:00') AS date_egress, ae.employee, e.name, e.last_name
+            SELECT ae.id_assistance, ae.date_entry AS date_entry, ae.date_egress AS date_egress, ae.employee, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
             JOIN EMPLOYEES e ON ae.employee = e.dni `
 
@@ -38,10 +38,10 @@ const allEmployeeAssistancesGetDB = () => {
 
 const employeeAssistanceGetDB = () => {
     const sqlSelect = `
-            SELECT ae.id_assistance, CONVERT_TZ(ae.date_entry,'-00:00','-03:00') AS date_entry, CONVERT_TZ(ae.date_egress,'-00:00','-03:00') AS date_egress, ae.employee, e.name, e.last_name
+            SELECT ae.id_assistance, ae.date_entry AS date_entry, ae.date_egress AS date_egress, ae.employee, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
-            JOIN EMPLOYEES e ON ae.employee = e.dni
-            WHERE (CAST(ae.date_entry AS DATE) = CURDATE() - 1) `
+            JOIN EMPLOYEES e ON ae.employee = e.dni 
+            WHERE DATE(ae.date_entry) = DATE(NOW())`
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
