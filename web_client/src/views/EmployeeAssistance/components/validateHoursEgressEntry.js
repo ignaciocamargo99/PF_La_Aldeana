@@ -94,8 +94,8 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
     else {
         // Validate if exists registers with the time range that the administrator is registering to this employee...
         // Distinct dates
-        if (inputDateEgress !== '' && (inputDateEntry !== inputDateEgress)) {
-            assistancesWithDateEntryDateEgress3 = assistance.find((employee) => ((dateEgress) && (employee.id_assistance !== id_assistance) &&
+        if (inputDateEgress !== '' && (inputDateEntry !== inputDateEgress) && dateEgress) {
+            assistancesWithDateEntryDateEgress3 = assistance.find((employee) => ((dateEgress && employee.id_assistance !== id_assistance) &&
                 (
                     ((employee.date_entry.slice(0, 10) === inputDateEntry) && (dateEntry >= moment(employee.date_entry).format('HH:mm')))
                     && ((employee.date_egress.slice(0, 10) === inputDateEgress) && (dateEgress <= moment(employee.date_egress).format('HH:mm')))
