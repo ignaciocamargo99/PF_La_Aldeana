@@ -130,6 +130,7 @@ const Sales = (props) => {
             }
         }
         props.updateProductsFiltered(aux);
+        console.log(props.productsFiltered);
     },[props.productsFiltered, props.detailProducts, props.refresh])
 
     const cancel = () => {

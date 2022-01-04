@@ -4,16 +4,16 @@ node_js:
   - "14.17"
 
 cache:
-  directories: 
+  directories:
     - $HOME/.npm
 
-jobs: 
+jobs:
   include:
     - stage: test
-      script: 
+      script:
         - npm install
         - npm test
 
 stages:
   - name: test
-    if: type = push AND branch = dev
+    if: type = push AND branch = staging

@@ -12,6 +12,7 @@ import PairListFlavors from './PairListFlavors';
 import {updateRefresh } from '../../../actions/SalesActions';
 import { updateChamberFlavorsDate, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp, updateAllElements, updateTableDown } from '../../../actions/TableUpDownActions';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../config');
 
@@ -55,6 +56,7 @@ const ChamberFlavorsDispatch = (props) => {
 
     const registerProduct = () => {
         if (ready) {
+            loadingMessage('Registrando salida de cámara...')
             let flavorsToDispatch = [];
             props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
             flavorsToDispatch = props.elementsTableDown;
@@ -108,6 +110,6 @@ const mapDispatchToProps = {
     updateAllElements,
     updateTableDown,
     updateRefresh
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChamberFlavorsDispatch);

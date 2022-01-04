@@ -1,4 +1,4 @@
-const { readPayTypes, createSale, readProductXSupply } = require('../services/salesService');
+const { readPayTypes, createSale, createSaleDelivery } = require('../services/salesService');
 
 async function getPayTypes(req, res) {
     try {
@@ -30,17 +30,21 @@ async function postSale(req, res) {
     }
 }
 
-async function getProductXSupply(req, res) {
+// HTTP: POST
+async function postSaleDelivery(req, res) {
     try {
-        const result = await readProductXSupply();
-        res.send(result)
+        await createSaleDelivery(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Venta registrada exitosamente.'
+        });
     }
     catch (e) {
         res.json({
             Ok: false,
-            Message: 'No se pudo acceder a la tabla.'
+            Message: e.message,
         })
     }
 }
 
-module.exports = { getPayTypes, postSale, getProductXSupply }
+module.exports = { getPayTypes, postSale, postSaleDelivery }

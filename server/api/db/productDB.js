@@ -12,7 +12,7 @@ const productGetDB = () => {
         'FROM PRODUCTS p ' +   
         'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
         'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
-        'WHERE active = 1 ORDER BY p.name';
+        'WHERE p.active = 1 ORDER BY p.name';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -200,6 +200,22 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
     });
 };
 
+const ProductXSupplyGetDB = () => {
+    const sqlSelect = "SELECT * FROM PRODUCT_X_SUPPLY"
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const productSupplyGetDB = (productID) => {
 
     const sqlSelect = 'SELECT * FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
@@ -238,4 +254,4 @@ const productStocksGetDB = () => {
     });
 };
 
-module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB };
+module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB };
