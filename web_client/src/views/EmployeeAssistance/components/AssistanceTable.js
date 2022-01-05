@@ -45,7 +45,7 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
+
         if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
         if (PORT() !== '') {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
@@ -57,6 +57,24 @@ export default function EmployeesTable() {
             aux.date_egress = moment(assistance.date_egress).format('HH:mm');
             aux.lastDateEntry = moment(assistance.date_entry).format('YYYY-MM-DD HH:mm:ss');
         }
+
+        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
+        if (aux.date_entry >= '21:00') {
+            const convertDate = new Date(aux.inputDateEntry);
+            const restDay = convertDate.setDate(convertDate.getDate());
+            const dateFormatted = moment(new Date(restDay)).format('YYYY-MM-DD');
+            aux.inputDateEntry = dateFormatted
+        }
+        if (assistance.date_egress) {
+            aux.inputDateEgress = assistance.date_egress.slice(0, 10);
+            if (aux.date_egress >= '21:00') {
+                const convertDateEgress = new Date(aux.inputDateEgress);
+                const restDayEgress = convertDateEgress.setDate(convertDateEgress.getDate());
+                const dateEgressFormatted = moment(new Date(restDayEgress)).format('YYYY-MM-DD');
+                aux.inputDateEgress = dateEgressFormatted
+            }
+        }
+
         aux.id_assistance = assistance.id_assistance;
         aux.editing = true;
         setEditing(aux);
@@ -67,8 +85,6 @@ export default function EmployeesTable() {
         let aux = backupAssistance(assistance);
         aux.name = assistance.name;
         aux.dni = assistance.employee;
-        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
-        if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
 
         if (PORT() === '') {
             aux.date_entry = moment(assistance.date_entry).format('HH:mm');
@@ -77,6 +93,23 @@ export default function EmployeesTable() {
         else {
             aux.date_entry = moment(assistance.date_entry).add(3, 'hours').format('HH:mm');
             aux.date_egress = moment(assistance.date_egress).add(3, 'hours').format('HH:mm');
+        }
+
+        aux.inputDateEntry = assistance.date_entry.slice(0, 10);
+        if (aux.date_entry >= '21:00') {
+            const convertDate = new Date(aux.inputDateEntry);
+            const restDay = convertDate.setDate(convertDate.getDate());
+            const dateFormatted = moment(new Date(restDay)).format('YYYY-MM-DD');
+            aux.inputDateEntry = dateFormatted
+        }
+        if (assistance.date_egress) {
+            aux.inputDateEgress = assistance.date_egress.slice(0, 10);
+            if (aux.date_egress >= '21:00') {
+                const convertDateEgress = new Date(aux.inputDateEgress);
+                const restDayEgress = convertDateEgress.setDate(convertDateEgress.getDate());
+                const dateEgressFormatted = moment(new Date(restDayEgress)).format('YYYY-MM-DD');
+                aux.inputDateEgress = dateEgressFormatted
+            }
         }
 
         aux.reading = true;
