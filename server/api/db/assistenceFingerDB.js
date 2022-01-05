@@ -6,6 +6,9 @@ const checkInOutDB = (check) => {
     let last_id;
     let { dniEmployee, dayHour } = check;
 
+    console.log(dniEmployee);
+    console.log(dayHour);
+
     // averiguar sobre ultima asistencia del empleado pasado
     
     sqlSelectLastDate = `SELECT date_egress AS last_date_egress, id_assistance AS last_id_assistance 
@@ -32,18 +35,28 @@ const checkInOutDB = (check) => {
                     else 
                     {
                         console.log(result);
-                        last_date = result[0].last_date_egress;
-                        last_id = result[0].last_id_assistence;
+                        console.log(result.length);
 
-                        if (last_date != null)
+                        if (result > 0)
                         {
+                            last_date = result[0].last_date_egress;
+                            last_id = result[0].last_id_assistence;
+    
+                            if (last_date != null)
+                            {
+                                // es un ingreso
+                                sqlCheck = `INSERT INTO ASSISTANCE_EMPLOYEES (date_entry, employee) VALUES (${dayHour}, ${dniEmployee})`
+                            } else 
+                            {
+                                // es un egreso
+                                sqlCheck = `UPDATE ASSISTANCE_EMPLOYEES SET date_egress = ${dayHour} WHERE id_assistance = ${last_id}`
+                            }
+                        }
+                        else {
                             // es un ingreso
                             sqlCheck = `INSERT INTO ASSISTANCE_EMPLOYEES (date_entry, employee) VALUES (${dayHour}, ${dniEmployee})`
-                        } else 
-                        {
-                            // es un egreso
-                            sqlCheck = `UPDATE ASSISTANCE_EMPLOYEES SET date_egress = ${dayHour} WHERE id_assistance = ${last_id}`
                         }
+                        
                         db.query(sqlCheck, (error, result) => {
                             if (error) {
                                 return db.rollback(() => reject('3:' + error))

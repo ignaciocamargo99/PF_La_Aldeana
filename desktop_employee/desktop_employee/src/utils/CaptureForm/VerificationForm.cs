@@ -37,7 +37,7 @@ namespace desktop_employee
             }
 		}
 
-		protected virtual void Process(DPFP.Sample Sample)
+		protected virtual void ProcessAsync(DPFP.Sample Sample)
 		{
 			// Draw fingerprint sample image.
 			DrawPicture(ConvertSampleToBitmap(Sample));
@@ -95,7 +95,7 @@ namespace desktop_employee
 		{
 			SetInfo("LA HUELLA FUE CAPTURADA");
 			//MakeReport("La muestra ha sido capturada");
-			Process(Sample);
+			ProcessAsync(Sample);
 		}
 
 		public void OnFingerGone(object Capture, string ReaderSerialNumber)
