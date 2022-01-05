@@ -1,12 +1,11 @@
 import moment from "moment";
 
-const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dni, dateEgress, assistance, id_assistance, editing, PORT) => {
+const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dni, dateEgress, assistance, id_assistance, editing) => {
     let assistancesWithDateEntryDateEgress1 = null;
     let assistancesWithDateEntryDateEgress2 = null;
     let assistancesWithDateEntryDateEgress3 = null;
     let assistancesWithDateEntryDateEgress4 = null
     let assistancesWithoutDateEgress = null;
-    let hours;
 
     if (!editing) {
         // Validate if exists registers with the time range that the administrator is registering to this employee...
