@@ -39,13 +39,19 @@ const checkInOutDB = (dni, check) => {
 
                         if (last_date_egress != null)
                         {
-                            // es un ingreso
-                            sqlCheck = `INSERT INTO ASSISTANCE_EMPLOYEES (date_entry, employee) VALUES ('${datetime}', ${dni})`
-                        } else 
-                        {
-                            // es un egreso
-                            sqlCheck = `UPDATE ASSISTANCE_EMPLOYEES SET date_egress = '${datetime}' WHERE id_assistance = ${last_id_assistance}`
-                        }
+                            last_date = result[0].last_date_egress;
+                            last_id = result[0].last_id_assistence;
+    
+                            if (last_date != null)
+                            {
+                                // es un ingreso
+                                sqlCheck = `INSERT INTO ASSISTANCE_EMPLOYEES (date_entry, employee) VALUES (${dayHour}, ${dniEmployee})`
+                            } else 
+                            {
+                                // es un egreso
+                                sqlCheck = `UPDATE ASSISTANCE_EMPLOYEES SET date_egress = ${dayHour} WHERE id_assistance = ${last_id}`
+                            }
+                        }                        
                         db.query(sqlCheck, (error, result) => {
                             if (error) {
                                 return db.rollback(() => reject('3:' + error))

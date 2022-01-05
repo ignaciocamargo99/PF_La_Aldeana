@@ -17,6 +17,7 @@ namespace desktop_employee.src.views.RegisterAssistance
     {
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
+        Reply oReply = new Reply();
 
         private DataTable fingerXEmployees;
         public DataTable FingerXEmployees { get => fingerXEmployees; set => fingerXEmployees = value; }
@@ -40,9 +41,9 @@ namespace desktop_employee.src.views.RegisterAssistance
         }
 
 
-        protected override void Process(DPFP.Sample Sample)
+        protected override async void ProcessAsync(DPFP.Sample Sample)
         {
-            base.Process(Sample);
+            base.ProcessAsync(Sample);
 
             // Process the sample and create a feature set for the enrollment purpose.
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
@@ -67,9 +68,19 @@ namespace desktop_employee.src.views.RegisterAssistance
                         Verificator.Verify(features, template, ref result);
                         if (result.Verified)
                         {
+                            DateTime timeInOut = DateTime.Now;
                             string nameEmployee = FingerXEmployees.Rows[i][1] + " " + FingerXEmployees.Rows[i][2];
                             MakeReport("The fingerprint was VERIFIED. " + nameEmployee);
                             SetEmployee(nameEmployee);
+
+                            CheckAsistencia checkAsistencia = new()
+                            {
+                                dniEmployee = Convert.ToString(FingerXEmployees.Rows[i][0]),
+                                dayHour = timeInOut
+                            };
+                            oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger", methodHttp.POST, checkAsistencia);
+
+
                             break;
                         }
                         else
