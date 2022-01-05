@@ -43,7 +43,7 @@ export default function EditAssistance(props) {
 
             if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
             else {
-                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
+                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing);
                 if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
 
                 let dateEntry, dateEgress;

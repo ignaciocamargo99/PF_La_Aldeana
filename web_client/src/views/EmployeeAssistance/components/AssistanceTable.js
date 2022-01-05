@@ -59,21 +59,7 @@ export default function EmployeesTable() {
         }
 
         aux.inputDateEntry = assistance.date_entry.slice(0, 10);
-        if (aux.date_entry >= '21:00') {
-            const convertDate = new Date(aux.inputDateEntry);
-            const restDay = convertDate.setDate(convertDate.getDate());
-            const dateFormatted = moment(new Date(restDay)).format('YYYY-MM-DD');
-            aux.inputDateEntry = dateFormatted
-        }
-        if (assistance.date_egress) {
-            aux.inputDateEgress = assistance.date_egress.slice(0, 10);
-            if (aux.date_egress >= '21:00') {
-                const convertDateEgress = new Date(aux.inputDateEgress);
-                const restDayEgress = convertDateEgress.setDate(convertDateEgress.getDate());
-                const dateEgressFormatted = moment(new Date(restDayEgress)).format('YYYY-MM-DD');
-                aux.inputDateEgress = dateEgressFormatted
-            }
-        }
+        if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
 
         aux.id_assistance = assistance.id_assistance;
         aux.editing = true;
@@ -96,21 +82,7 @@ export default function EmployeesTable() {
         }
 
         aux.inputDateEntry = assistance.date_entry.slice(0, 10);
-        if (aux.date_entry >= '21:00') {
-            const convertDate = new Date(aux.inputDateEntry);
-            const restDay = convertDate.setDate(convertDate.getDate());
-            const dateFormatted = moment(new Date(restDay)).format('YYYY-MM-DD');
-            aux.inputDateEntry = dateFormatted
-        }
-        if (assistance.date_egress) {
-            aux.inputDateEgress = assistance.date_egress.slice(0, 10);
-            if (aux.date_egress >= '21:00') {
-                const convertDateEgress = new Date(aux.inputDateEgress);
-                const restDayEgress = convertDateEgress.setDate(convertDateEgress.getDate());
-                const dateEgressFormatted = moment(new Date(restDayEgress)).format('YYYY-MM-DD');
-                aux.inputDateEgress = dateEgressFormatted
-            }
-        }
+        if (assistance.date_egress) aux.inputDateEgress = assistance.date_egress.slice(0, 10);
 
         aux.reading = true;
         setReading(aux);
