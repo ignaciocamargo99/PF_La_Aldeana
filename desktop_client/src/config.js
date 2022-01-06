@@ -1,4 +1,5 @@
-const ENVIRONMENT = 'D'
+// const ENVIRONMENT = 'D'
+const ENVIRONMENT = 'PP'
 
 //-------------------- 'L': localhost  ;  'D': development  ;  'PP': pre-production  ;  'P': production -----------------------------
 

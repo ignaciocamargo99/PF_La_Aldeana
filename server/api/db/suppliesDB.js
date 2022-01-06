@@ -16,6 +16,22 @@ const suppliesGetDB = () => {
     });
 };
 
+const suppliesWithStockGetDB = () => {
+    const sqlSelect = 'SELECT * FROM SUPPLIES WHERE id_supply_type != 3';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const supplyPostDB = (newSupply) => {
     const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?,?)';
 
@@ -60,4 +76,4 @@ const typeSupplyGetDB = () => {
     });
 };
 
-module.exports = { supplyPostDB, typeSupplyGetDB, suppliesGetDB }
+module.exports = { supplyPostDB, typeSupplyGetDB, suppliesGetDB, suppliesWithStockGetDB }

@@ -89,7 +89,7 @@ const Client = (props) => {
                 <div className="form-control-input">
                     <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} min="0" max="9999999999" maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
                     <BeShowed show={props.errorCellphone}>
-                        <label><b style={{color:'gray'}}>Número de 10 digitos</b></label>
+                        <small className="text-muted">Número de 10 digitos</small>
                     </BeShowed>
                 </div>
             </div>
@@ -100,7 +100,7 @@ const Client = (props) => {
                 <div className="form-control-input">
                     <input  type="text" className={props.errorNames?"form-control":"form-control is-valid"} minLength="0" maxLength="50" onChange={(e) => onChangeNames(e)} placeholder="Ingrese el nombre completo del cliente..." value={props.names}></input>
                     <BeShowed show={props.errorNames}>
-                        <label><b style={{color:'gray'}}>Texto de 1 a 50 caractéres</b></label>
+                        <small className="text-muted">Texto de 1 a 50 caractéres</small>
                     </BeShowed>
                 </div>
             </div>
@@ -111,7 +111,7 @@ const Client = (props) => {
                 <div className="form-input col-sm-6">
                     <input type="text" className={props.errorStreet?"form-control":"form-control is-valid"} min="0" maxLength="25" onChange={(e) => {onChangeStreet(e)}} placeholder="Ingrese el la calle..." value={props.street}></input>
                     <BeShowed show={props.errorStreet}>
-                        <label><b style={{color:'gray'}}>Texto de 1 a 25 caractéres</b></label>
+                        <small className="text-muted">Texto de 1 a 25 caractéres</small>
                     </BeShowed>
                 </div>
                 <div className="form-label-no-margin offset-sm-1 col-sm-1">
@@ -120,7 +120,7 @@ const Client = (props) => {
                 <div className="form-input col-sm-3">
                    <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} min="1" max="9999" maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
                     <BeShowed show={props.errorStreetNumber}>
-                        <label><b style={{color:'gray'}}>Número de 1 a 4 digitos</b></label>
+                        <small className="text-muted">Número de 1 a 4 digitos</small>
                     </BeShowed>
                 </div>
             </div>

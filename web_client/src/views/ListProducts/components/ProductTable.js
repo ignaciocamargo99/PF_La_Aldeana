@@ -5,6 +5,8 @@ import LoaderSpinner from '../../../common/LoaderSpinner';
 import displayError from '../../../utils/ErrorMessages/errorMesage';
 import EditProducts from './EditProducts/EditProducts';
 import TablePagination from './TablePagination/TablePagination';
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -77,32 +79,54 @@ const ProductTable = () => {
     const columnsHeaders = [
         {
             name: 'Nombre',
-            width: '60%'
+            width: '70%'
+        },
+        {
+            name: 'Ver',
+            width: '10%'
         },
         {
             name: 'Editar',
-            width: '20%'
+            width: '10%'
         },
         {
             name: 'Eliminar',
-            width: '20%'
+            width: '10%'
         }
     ];
 
+    const onClickNewProduct = () => window.location.replace('/app/registerProducts');
+
     return (
         <>
-            {isLoadingSpinner && (
-                <LoaderSpinner color="primary" loading="Cargando productos..." />
-            )}
-            {!isLoadingSpinner && (
+            {isLoadingSpinner ?
+                <LoaderSpinner color="primary" loading="Cargando..." />
+            : products && products.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                            <h1>Productos</h1>
+                            <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                        </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron productos registrados hasta el momento.</h4>
+                </div>
+                : (
                 <>
                     <BeShowed show={!isEditing}>
-                        <TablePagination
-                            columnsHeaders={columnsHeaders}
-                            currentElements={products}
-                            handleEdit={editProduct}
-                            handleDelete={productWasSuccessfullyDeleted}
-                        ></TablePagination>
+
+                        <div className="viewTitleBtn">
+                            <h1>Productos</h1>
+                            <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                        </div>
+                        <div className="viewBody">
+                            <TablePagination
+                                columnsHeaders={columnsHeaders}
+                                currentElements={products}
+                                handleEdit={editProduct}
+                                handleDelete={productWasSuccessfullyDeleted}
+                            ></TablePagination>
+                        </div>
                     </BeShowed>
                     <BeShowed show={isEditing}>
                         <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />

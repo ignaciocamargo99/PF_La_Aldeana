@@ -38,10 +38,10 @@ const SaleDetails = (props) => {
                                     <td style={{ textAlign: 'center', width: '13%'}}><label>${detail.subtotal}</label></td>
                                     <td style={{ textAlign: 'center', width: '24%'}}>
                                         <BeShowed show={detail.product.quantity_flavor > 0}>
-                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
+                                            <button type="button" className="sendAdd" onClick={() => {onClickShow(i)}}><FontAwesomeIcon icon={faIceCream} /></button>&nbsp;
                                         </BeShowed>
                                         <BeShowed show={props.buttons}> 
-                                            <button type="button" className="btn btn-info btn-sm px-3" onClick={() => {props.onClick(i)}}><FontAwesomeIcon icon={faMinus} /></button>
+                                            <button type="button" className="sendDelete" onClick={() => {props.onClick(i)}}><FontAwesomeIcon icon={faMinus} /></button>
                                         </BeShowed>
                                     </td>
                                 </tr>
