@@ -72,7 +72,7 @@ const DetailSale = (props) => {
                                 <tbody key={i}>
                                     <tr>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.subtotal}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >

@@ -5,7 +5,8 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/modalProduct.css';
-import '../styles/filterProducts.css'
+import '../styles/filterProducts.css';
+import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 
 const ModalProduct = (props) => {
 
@@ -14,7 +15,6 @@ const ModalProduct = (props) => {
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
-
 
     const cancel = () => {
         props.setShowModal(false);
@@ -57,6 +57,7 @@ const ModalProduct = (props) => {
                 setReady(false);
             } 
         }
+        if (quantity === 0) setReady(false);
     }, [quantity])
 
     useEffect(() => {
@@ -112,6 +113,10 @@ const ModalProduct = (props) => {
         }
     }
 
+    const validate = (e) => {
+        if (e.target.value.length > 4) e.target.value = e.target.value.slice(0, 4);
+    }
+
     return (
         <>
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >
@@ -140,7 +145,8 @@ const ModalProduct = (props) => {
                         <div className='formRow'>
                             <div className='col-6'>
                                 <label className='label-modal'>Cantidad:&nbsp;</label>
-                                <input type='number' min="1" id="id_quantity" ref={inputQuantity} placeholder="0" value={quantity} onChange={onChangeQuantity}></input>
+                                <input className={ready && quantity > 0 ? "form-control is-valid" : "form-control"} type='number' min="1" max={props.productSelected ? props.productSelected.stock_current : 10} id="id_quantity" ref={inputQuantity} placeholder="0" value={quantity} onChange={onChangeQuantity}
+                                onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}></input>
                             </div>
                             <div className='col-6'>
                                 <label className='label-modal'>Subtotal:&nbsp;$ </label>
