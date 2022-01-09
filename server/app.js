@@ -23,13 +23,9 @@ const franchiseRouter = require('./api/routes/franchiseRoute');
 const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
 const salesReportRouter = require('./api/routes/salesReportRoute'); 
-<<<<<<< HEAD
-const licensesRouter = require('./api/routes/licenseRoute'); 
-=======
 const employeeRouter = require('./api/routes/employeeRoute'); 
 const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
->>>>>>> dfbf1de69f3620e7c2b0ab238fc07b3f4c6f7f9a
 
 app.use(cors());
 app.use(logger('dev')); 

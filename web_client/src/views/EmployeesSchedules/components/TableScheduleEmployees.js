@@ -168,36 +168,36 @@ const TableScheduleEmployees = ({month, setMonth, year, setYear, employees, lice
         employees.forEach((employee) => {
             switch(document.getElementById(`inputTurn${employee.dni}_${i}`).value){
                 case 'M':
-                    if(employee.charge === 1){
+                    if(employee.name_charge === 'Delivery'){
                         deliverysM ++;
-                    }else if(employee.charge === 2){
+                    }else if(employee.name_charge === 'Cajera/o'){
                         cashiersM ++;
                     }else{
                         pubAtM ++;
                     }
                     break;
                 case 'T':
-                    if(employee.charge === 1){
+                    if(employee.name_charge === 'Delivery'){
                         deliverysT ++;
-                    }else if(employee.charge === 2){
+                    }else if(employee.name_charge === 'Cajera/o'){
                         cashiersT ++;
                     }else{
                         pubAtT ++;
                     }
                     break;
                 case 'N':
-                    if(employee.charge === 1){
+                    if(employee.name_charge === 'Delivery'){
                         deliverysN ++;
-                    }else if(employee.charge === 2){
+                    }else if(employee.name_charge === 'Cajera/o'){
                         cashiersN ++;
                     }else{
                         pubAtN ++;
                     }
                     break;
                 case 'UN':
-                    if(employee.charge === 1){
+                    if(employee.name_charge === 'Delivery'){
                         deliverysUN ++;
-                    }else if(employee.charge === 2){
+                    }else if(employee.name_charge === 'Cajera/o'){
                         cashiersUN ++;
                     }else{
                         pubAtUN ++;
@@ -276,7 +276,7 @@ const TableScheduleEmployees = ({month, setMonth, year, setYear, employees, lice
                                     tbody={employees?.map((employee, i) => {
                                         return (
                                             <tbody key={i}>
-                                                <tr id={`firstRowEmployee${employee.dni}`} className={`${showMeCharge(employee.charge)}`}>
+                                                <tr id={`firstRowEmployee${employee.dni}`} className={`${showMeCharge(employee.name_charge)}`}>
                                                     <td style={{ verticalAlign: 'middle'}}>
                                                         <button className="btn" style={{width: '100%', borderStyle: 'none', borderColor:'none', textAlign: 'left'}} onClick={() => {loadEmployeeStats(i)}}>{employee.name}</button>
                                                     </td>
@@ -323,7 +323,7 @@ const TableScheduleEmployees = ({month, setMonth, year, setYear, employees, lice
                                     tbody={employees?.map((employee, i) => {
                                         return (
                                             <tbody key={i}>
-                                                <tr id={`secondRowEmployee${employee.dni}`} className={`${showMeCharge(employee.charge)}`}>
+                                                <tr id={`secondRowEmployee${employee.dni}`} className={`${showMeCharge(employee.name_charge)}`}>
                                                     <td style={{ verticalAlign: 'middle'}}>
                                                         <button className="btn" style={{width: '100%', borderStyle: 'none', borderColor:'none', textAlign: 'left'}} onClick={() => {loadEmployeeStats(i)}}>{employee.name}</button>
                                                     </td>

@@ -8,6 +8,7 @@ import { addDaySchedule } from '../../actions/ScheduleActions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import TableScheduleEmployees from './components/TableScheduleEmployees';
+import AutomatedSchedule from './components/AutomatedSchedule';
 
 const PORT = require('../../config');
 
@@ -16,6 +17,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
     const [showNewScheduleModal, setShowNewScheduleModal] = useState(false);
     const [showNewSchedule, setShowNewSchedule] = useState(false);
     const [showMonthView, setShowMonthView] = useState(false);
+    const [showAutomatedSchedule, setShowAutomatedSchedule] = useState(false);
     const [month, setMonth] = useState(null);
     const [year, setYear] = useState(null);
     const [daysNewSchedule,setDaysNewSchedule] = useState(null);
@@ -85,7 +87,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                 <h1>{viewTitle}</h1>
             </div>
             <div className="viewBody">
-                <BeShowed show={!showNewSchedule && !showMonthView}>
+                <BeShowed show={!showNewSchedule && !showMonthView && !showAutomatedSchedule}>
                     <div className="schedules-cards-container">
                         <div className="cards-container d-flex-col">
                             <Card
@@ -102,6 +104,11 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                                 text='Visualiza los turnos asignados de tus empleados con estadisticas incluidas.'
                                 handleCardClicked={() => {setShowMonthView(true)}}
                             />
+                            <Card
+                                title='Generar cronograma automatico'
+                                text='Al seleccionar los parametros el cronograma se generará automaticamente.'
+                                handleCardClicked={() => {setShowAutomatedSchedule(true)}}
+                            />
                         </div>
                     </div>
                 </BeShowed>
@@ -114,6 +121,9 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                     <div className="container-fluid">
                         <TableScheduleEmployees month={month} setMonth={setMonth} year={year} setYear={setYear} employees={employees} licensesMonth={licensesMonth} nonworkingDays={nonworkingDays}/>
                     </div>
+                </BeShowed>
+                <BeShowed show={showAutomatedSchedule}>
+                    <AutomatedSchedule today={today} employees={employees}/>
                 </BeShowed>
             </div>
         </>
