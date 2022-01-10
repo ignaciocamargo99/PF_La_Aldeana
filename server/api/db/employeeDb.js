@@ -1,5 +1,24 @@
 const pool = require('../../config/connection');
 
+const chargeGetDB = () => {
+    const sqlSelect = `SELECT id_charge, name from CHARGES`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+
+            db.release();
+        })
+    });
+};
+
+// #region Employees ABMC
+
 const employeeGetDB = (dni) => {
     let sqlSelect = `
         SELECT
@@ -33,48 +52,11 @@ const employeeGetDB = (dni) => {
                 if (error) reject(error);
                 else resolve(result);
             });
+
             db.release();
         })
     });
 };
-
-
-const chargeGetDB = () => {
-    const sqlSelect = `SELECT id_charge, name from CHARGES`;
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
-
-
-const employeeDeleteDB = (dniEmployee) => {
-    const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
-    let dni;
-    if (dniEmployee) dni = dniEmployee
-    else throw Error('El dni es null');
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlUpdate, [dni], (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
-
 
 const employeeCreateDB = (newEmployee) => {
     if (!(isEmployeeDataValid(newEmployee))) {
@@ -108,19 +90,26 @@ const employeeCreateDB = (newEmployee) => {
     });
 };
 
+const employeeDeleteDB = (dniEmployee) => {
+    if (!(dniEmployee)) {
+        throw Error('El dni es null');
+    };
 
-const isEmployeeDataValid = (empDataToValidate) => {
-    return (
-        empDataToValidate.dni &&
-        empDataToValidate.nameEmployee &&
-        empDataToValidate.lastName &&
-        empDataToValidate.chargesIds.length > 0 &&
-        empDataToValidate.date_admission &&
-        empDataToValidate.employmentRelationshipId &&
-        empDataToValidate.dni.toString().length === 8
-    );
+    const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlUpdate, [dniEmployee], (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+
+            db.release();
+        })
+    });
 };
-
 
 const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
     if (!(isEmployeeDataValid(updateEmployee))) {
@@ -172,6 +161,21 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
     });
 };
 
+const isEmployeeDataValid = (empDataToValidate) => {
+    return (
+        empDataToValidate.dni &&
+        empDataToValidate.nameEmployee &&
+        empDataToValidate.lastName &&
+        empDataToValidate.chargesIds.length > 0 &&
+        empDataToValidate.date_admission &&
+        empDataToValidate.employmentRelationshipId &&
+        empDataToValidate.dni.toString().length === 8
+    );
+};
+
+// #endregion
+
+// #region Assistances
 
 const assistanceEmployeeCreateDB = (newAssistance) => {
     const sqlInsert = 'INSERT INTO ASSISTANCE_EMPLOYEES VALUES(?,?,?,?)';
@@ -189,7 +193,6 @@ const assistanceEmployeeCreateDB = (newAssistance) => {
         })
     });
 };
-
 
 const employeeAssistanceGetDB = () => {
     let yearNow = new Date().getFullYear();
@@ -220,7 +223,6 @@ const employeeAssistanceGetDB = () => {
     });
 };
 
-
 const assistanceDeleteDB = (dniEmployee, date_entry) => {
     const sqlDelete = 'DELETE FROM ASSISTANCE_EMPLOYEES WHERE employee = ? AND date_entry = ?';
     let dni, date;
@@ -243,7 +245,6 @@ const assistanceDeleteDB = (dniEmployee, date_entry) => {
     });
 };
 
-
 const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
     const sqlUpdate = `UPDATE ASSISTANCE_EMPLOYEES SET date_entry = ?, date_egress = ?
                         WHERE employee = ? AND date_entry = ?`;
@@ -265,6 +266,8 @@ const employeeAssistanceUpdateDB = (dniEmployee, updateAssistanceEmployee) => {
         })
     });
 };
+
+// #endregion
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
