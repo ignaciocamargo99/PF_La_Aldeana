@@ -5,12 +5,43 @@ const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
 const readEmployee = async (dni) => {
     try {
         let res = await employeeGetDB(dni);
-        return res;
+        return mapEmployeesData(res);
     }
     catch (error) {
         throw Error(error)
     };
 };
+
+const mapEmployeesData = (employeesDataDB) => {
+    let allEmployeesMapped = [];
+
+    employeesDataDB.forEach(empDB => {
+        const employeeInList = employeeIsInList(allEmployeesMapped, empDB);
+
+        if (employeeInList) {
+            employeeInList.charges = [...employeeInList.charges, empDB.charge]
+        }
+        else {
+            employeeToAdd = {
+                dni: empDB.dni,
+                name: empDB.name,
+                last_name: empDB.last_name,
+                date_admission: empDB.date_admission,
+                employment_relationship: empDB.employment_relationship,
+                name_emp_relationship: empDB.name_emp_relationship,
+                charges: [empDB.charge]
+            };
+
+            allEmployeesMapped.push(employeeToAdd);
+        }
+    });
+
+    return allEmployeesMapped;
+}
+
+const employeeIsInList = (allEmployeesMapped, emp) => {
+    return allEmployeesMapped.find(e => e.dni === emp.dni);
+}
 
 const readCharges = async () => {
     try {
