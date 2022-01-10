@@ -7,8 +7,8 @@ import displayError from "../../../../utils/ErrorMessages/displayError";
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
-import validateDateEntryEgress from '../validateDateEntryEgress';
-import validateHoursEgressEntry from '../validateHoursEgressEntry';
+import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
+import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 import DataAssistance from './DataAssistance';
 
 const PORT = require('../../../../config');

@@ -8,8 +8,8 @@ import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
-import validateDateEntryEgress from '../validateDateEntryEgress';
-import validateHoursEgressEntry from '../validateHoursEgressEntry';
+import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
+import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 
 const PORT = require('../../../../config');
 
