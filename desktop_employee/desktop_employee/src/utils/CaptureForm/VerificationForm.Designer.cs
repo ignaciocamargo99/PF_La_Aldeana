@@ -30,9 +30,9 @@ namespace desktop_employee
         {
             this.Picture = new System.Windows.Forms.PictureBox();
             this.StatusText = new System.Windows.Forms.TextBox();
-            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox3 = new FontAwesome.Sharp.IconPictureBox();
+            this.iconEsperando = new FontAwesome.Sharp.IconPictureBox();
+            this.iconAceptado = new FontAwesome.Sharp.IconPictureBox();
+            this.iconError = new FontAwesome.Sharp.IconPictureBox();
             this.lblEmployee = new System.Windows.Forms.Label();
             this.lblHoraE = new System.Windows.Forms.Label();
             this.lblHoraS = new System.Windows.Forms.Label();
@@ -41,9 +41,9 @@ namespace desktop_employee
             this.lblPromt = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconEsperando)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconAceptado)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconError)).BeginInit();
             this.SuspendLayout();
             // 
             // Picture
@@ -74,53 +74,56 @@ namespace desktop_employee
             this.StatusText.Size = new System.Drawing.Size(349, 59);
             this.StatusText.TabIndex = 4;
             // 
-            // iconPictureBox1
+            // iconEsperando
             // 
-            this.iconPictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.iconEsperando.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconPictureBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.iconPictureBox1.ForeColor = System.Drawing.Color.Blue;
-            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Clock;
-            this.iconPictureBox1.IconColor = System.Drawing.Color.Blue;
-            this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox1.IconSize = 68;
-            this.iconPictureBox1.Location = new System.Drawing.Point(354, 174);
-            this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Size = new System.Drawing.Size(68, 68);
-            this.iconPictureBox1.TabIndex = 5;
-            this.iconPictureBox1.TabStop = false;
+            this.iconEsperando.BackColor = System.Drawing.SystemColors.Control;
+            this.iconEsperando.ForeColor = System.Drawing.Color.Blue;
+            this.iconEsperando.IconChar = FontAwesome.Sharp.IconChar.Clock;
+            this.iconEsperando.IconColor = System.Drawing.Color.Blue;
+            this.iconEsperando.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconEsperando.IconSize = 68;
+            this.iconEsperando.Location = new System.Drawing.Point(354, 174);
+            this.iconEsperando.Name = "iconEsperando";
+            this.iconEsperando.Size = new System.Drawing.Size(68, 68);
+            this.iconEsperando.TabIndex = 5;
+            this.iconEsperando.TabStop = false;
+            this.iconEsperando.Visible = false;
             // 
-            // iconPictureBox2
+            // iconAceptado
             // 
-            this.iconPictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.iconAceptado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconPictureBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.iconPictureBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.CheckCircle;
-            this.iconPictureBox2.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.iconPictureBox2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox2.IconSize = 69;
-            this.iconPictureBox2.Location = new System.Drawing.Point(443, 174);
-            this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Size = new System.Drawing.Size(75, 69);
-            this.iconPictureBox2.TabIndex = 6;
-            this.iconPictureBox2.TabStop = false;
+            this.iconAceptado.BackColor = System.Drawing.SystemColors.Control;
+            this.iconAceptado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.iconAceptado.IconChar = FontAwesome.Sharp.IconChar.CheckCircle;
+            this.iconAceptado.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.iconAceptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconAceptado.IconSize = 69;
+            this.iconAceptado.Location = new System.Drawing.Point(443, 174);
+            this.iconAceptado.Name = "iconAceptado";
+            this.iconAceptado.Size = new System.Drawing.Size(75, 69);
+            this.iconAceptado.TabIndex = 6;
+            this.iconAceptado.TabStop = false;
+            this.iconAceptado.Visible = false;
             // 
-            // iconPictureBox3
+            // iconError
             // 
-            this.iconPictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.iconError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconPictureBox3.BackColor = System.Drawing.SystemColors.Control;
-            this.iconPictureBox3.ForeColor = System.Drawing.Color.Red;
-            this.iconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.TimesCircle;
-            this.iconPictureBox3.IconColor = System.Drawing.Color.Red;
-            this.iconPictureBox3.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconPictureBox3.IconSize = 63;
-            this.iconPictureBox3.Location = new System.Drawing.Point(545, 176);
-            this.iconPictureBox3.Name = "iconPictureBox3";
-            this.iconPictureBox3.Size = new System.Drawing.Size(63, 75);
-            this.iconPictureBox3.TabIndex = 7;
-            this.iconPictureBox3.TabStop = false;
+            this.iconError.BackColor = System.Drawing.SystemColors.Control;
+            this.iconError.ForeColor = System.Drawing.Color.Red;
+            this.iconError.IconChar = FontAwesome.Sharp.IconChar.TimesCircle;
+            this.iconError.IconColor = System.Drawing.Color.Red;
+            this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.iconError.IconSize = 63;
+            this.iconError.Location = new System.Drawing.Point(545, 176);
+            this.iconError.Name = "iconError";
+            this.iconError.Size = new System.Drawing.Size(63, 75);
+            this.iconError.TabIndex = 7;
+            this.iconError.TabStop = false;
+            this.iconError.Visible = false;
             // 
             // lblEmployee
             // 
@@ -170,9 +173,9 @@ namespace desktop_employee
             this.lblHoraEntrada.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblHoraEntrada.Location = new System.Drawing.Point(366, 358);
             this.lblHoraEntrada.Name = "lblHoraEntrada";
-            this.lblHoraEntrada.Size = new System.Drawing.Size(33, 21);
+            this.lblHoraEntrada.Size = new System.Drawing.Size(102, 21);
             this.lblHoraEntrada.TabIndex = 11;
-            this.lblHoraEntrada.Text = "--:--";
+            this.lblHoraEntrada.Text = "--/--/---- --:--:--";
             // 
             // lblHoraSalida
             // 
@@ -183,9 +186,9 @@ namespace desktop_employee
             this.lblHoraSalida.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblHoraSalida.Location = new System.Drawing.Point(553, 351);
             this.lblHoraSalida.Name = "lblHoraSalida";
-            this.lblHoraSalida.Size = new System.Drawing.Size(33, 21);
+            this.lblHoraSalida.Size = new System.Drawing.Size(102, 21);
             this.lblHoraSalida.TabIndex = 12;
-            this.lblHoraSalida.Text = "--:--";
+            this.lblHoraSalida.Text = "--/--/---- --:--:--";
             // 
             // lblPromt
             // 
@@ -219,9 +222,9 @@ namespace desktop_employee
             this.Controls.Add(this.lblHoraS);
             this.Controls.Add(this.lblHoraE);
             this.Controls.Add(this.lblEmployee);
-            this.Controls.Add(this.iconPictureBox3);
-            this.Controls.Add(this.iconPictureBox2);
-            this.Controls.Add(this.iconPictureBox1);
+            this.Controls.Add(this.iconError);
+            this.Controls.Add(this.iconAceptado);
+            this.Controls.Add(this.iconEsperando);
             this.Controls.Add(this.StatusText);
             this.Controls.Add(this.Picture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -235,9 +238,9 @@ namespace desktop_employee
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CaptureForm_FormClosed);
             this.Load += new System.EventHandler(this.CaptureForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconEsperando)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconAceptado)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconError)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -247,9 +250,9 @@ namespace desktop_employee
 
         private System.Windows.Forms.PictureBox Picture;
         private System.Windows.Forms.TextBox StatusText;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox3;
+        private FontAwesome.Sharp.IconPictureBox iconEsperando;
+        private FontAwesome.Sharp.IconPictureBox iconAceptado;
+        private FontAwesome.Sharp.IconPictureBox iconError;
         private System.Windows.Forms.Label lblEmployee;
         private System.Windows.Forms.Label lblHoraE;
         private System.Windows.Forms.Label lblHoraS;

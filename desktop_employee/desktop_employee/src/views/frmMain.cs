@@ -18,7 +18,6 @@ namespace desktop_employee
     {
         //se define el ancho del borde del form
         private int borderSize = 2;
-        public DataTable fingerPrintXEmployeesTable = new DataTable();
         public frmMain()
         {
             InitializeComponent();
@@ -102,7 +101,10 @@ namespace desktop_employee
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
         {
-            GetFingerPrintsXEmployeesAsync();
+            frmAssistanceFinger assistanceFinger = new();
+            lblTitulo.Text = "ASISTENCIA con HUELLA";
+            OpenForm(assistanceFinger);
+
 
             
         }
@@ -131,48 +133,5 @@ namespace desktop_employee
             form.Show();
         }
 
-        private async void GetFingerPrintsXEmployeesAsync()
-        {
-            List<FingerPrintXEmployee> listado = new List<FingerPrintXEmployee>();
-            Reply oReply = new Reply();
-            oReply = await Consumer.Execute<List<FingerPrintXEmployee>>("http://localhost:3001/api/fingerPrints", methodHttp.GET, listado);
-            this.dgvConvert.Visible = false;
-            this.dgvConvert.DataSource = oReply.Data;
-            fingerPrintXEmployeesTable = ConvertDgvToTable(dgvConvert);
-
-            frmAssistanceFinger assistanceFinger = new();
-            assistanceFinger.FingerXEmployees = fingerPrintXEmployeesTable;
-
-
-            lblTitulo.Text = "ASISTENCIA con HUELLA";
-            OpenForm(assistanceFinger);
-
-        }
-
-        private DataTable ConvertDgvToTable(DataGridView dgv)
-        {
-            DataTable table = new DataTable();
-            DataColumn cDni = new DataColumn("dni");
-            DataColumn cName = new DataColumn("name");
-            DataColumn cLastName = new DataColumn("last_name");
-            DataColumn cFingerPrint = new DataColumn("finger_print");
-            cFingerPrint.DataType = System.Type.GetType("System.Byte[]");
-            table.Columns.Add(cDni);
-            table.Columns.Add(cName);
-            table.Columns.Add(cLastName);
-            table.Columns.Add(cFingerPrint);
-
-            for (int i = 0; i < dgv.RowCount; i++)
-            {
-                DataRow row = table.NewRow();
-                row["dni"] = dgv.Rows[i].Cells[0].Value;
-                row["name"] = dgv.Rows[i].Cells[1].Value;
-                row["last_name"] = dgv.Rows[i].Cells[2].Value;
-                row["finger_print"] = (byte[])dgv.Rows[i].Cells[3].Value;
-                table.Rows.Add(row);
-            }
-
-            return table;
-        }
     }
 }

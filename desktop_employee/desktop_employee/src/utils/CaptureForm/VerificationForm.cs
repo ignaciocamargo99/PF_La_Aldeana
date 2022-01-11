@@ -22,7 +22,7 @@ namespace desktop_employee
 
 		protected virtual void Init()
 		{
-            try
+			try
             {
                 Capturer = new DPFP.Capture.Capture();				// Create a capture operation.
 
@@ -52,6 +52,7 @@ namespace desktop_employee
                     Capturer.StartCapture();
 					SetInfo("LISTO PARA COLOCAR DEDO");
                     SetPrompt("Coloca el dedo sobre el lector para marcar la asistencia.");
+					MostrarAzul();
                 }
                 catch
                 {
@@ -193,6 +194,48 @@ namespace desktop_employee
 		{
 			this.Invoke(new Function(delegate () {
 				lblInfo.Text = info;
+			}));
+		}
+
+		protected void MostrarAzul()
+		{
+			this.Invoke(new Function(delegate () {
+				iconEsperando.Visible = true;
+			}));
+		}
+
+		protected void OcultarAzul()
+		{
+			this.Invoke(new Function(delegate () {
+				iconEsperando.Visible = false;
+			}));
+		}
+
+		protected void MostrarVerde()
+		{
+			this.Invoke(new Function(delegate () {
+				iconAceptado.Visible = true;
+			}));
+		}
+
+		protected void OcultarVerde()
+		{
+			this.Invoke(new Function(delegate () {
+				iconAceptado.Visible = false;
+			}));
+		}
+
+		protected void MostrarRojo()
+		{
+			this.Invoke(new Function(delegate () {
+				iconError.Visible = true;
+			}));
+		}
+
+		protected void OcultarRojo()
+		{
+			this.Invoke(new Function(delegate () {
+				iconError.Visible = false;
 			}));
 		}
 

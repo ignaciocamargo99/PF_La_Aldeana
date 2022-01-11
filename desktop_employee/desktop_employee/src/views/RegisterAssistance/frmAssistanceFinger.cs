@@ -5,11 +5,13 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using desktop_employee.src.entities;
-using desktop_employee.src.views.Employees;
+using Newtonsoft.Json;
 
 namespace desktop_employee.src.views.RegisterAssistance
 {
@@ -17,10 +19,9 @@ namespace desktop_employee.src.views.RegisterAssistance
     {
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
+        bool seVerifico;
         Reply oReply = new Reply();
-
-        private DataTable fingerXEmployees;
-        public DataTable FingerXEmployees { get => fingerXEmployees; set => fingerXEmployees = value; }
+        dynamic datosHuellas;
 
         public frmAssistanceFinger()
         {
@@ -36,62 +37,153 @@ namespace desktop_employee.src.views.RegisterAssistance
         protected override void Init()
         {
             base.Init();
-            Verificator = new DPFP.Verification.Verification();     // Create a fingerprint template verificator
+            Verificator = new DPFP.Verification.Verification();
+
+            var urlGet = "http://localhost:3001/api/fingerPrints";
+            var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
+            requestGet.Method = "GET";
+            requestGet.ContentType = "application/json";
+            requestGet.Accept = "application/json";
+            try
+            {
+                using (WebResponse response = requestGet.GetResponse())
+                {
+                    using (Stream strReader = response.GetResponseStream())
+                    {
+                        if (strReader == null) return;
+                        using (StreamReader objReader = new StreamReader(strReader))
+                        {
+                            string responseBody = objReader.ReadToEnd();
+
+                            // Do something with responseBody
+                            datosHuellas = JsonConvert.DeserializeObject(responseBody);
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                // Handle error
+            }
 
         }
-
 
         protected override async void ProcessAsync(DPFP.Sample Sample)
         {
             base.ProcessAsync(Sample);
-
-            // Process the sample and create a feature set for the enrollment purpose.
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
-
-            // Check quality of the sample and start verification if it's good
-            // TODO: move to a separate task
 
             if (features != null)
             {
-                // Compare the feature set with our template
                 DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
-
+                seVerifico = false;
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
-                for (int i = 0; i < FingerXEmployees.Rows.Count; i++)
+                for (int i = 0; i < datosHuellas.Count; i++)
                 {
-                    if (FingerXEmployees.Rows[i][3] != null)
+                    if (datosHuellas[i].finger_print != null)
                     {
-                        stream = new MemoryStream((byte[])FingerXEmployees.Rows[i][3]);
+                        stream = new MemoryStream((byte[])datosHuellas[i].finger_print);
                         template = new DPFP.Template(stream);
 
                         Verificator.Verify(features, template, ref result);
                         if (result.Verified)
                         {
-                            DateTime timeInOut = DateTime.Now;
-                            string nameEmployee = FingerXEmployees.Rows[i][1] + " " + FingerXEmployees.Rows[i][2];
+                            seVerifico = true;
+
+
+
+                            string nameEmployee = datosHuellas[i].name + " " + datosHuellas[i].last_name;
                             MakeReport("The fingerprint was VERIFIED. " + nameEmployee);
                             SetEmployee(nameEmployee);
 
+
+                            DateTime timeInOut = DateTime.Now;
+                            string timeInOutFormated = convertDateTimeToString(timeInOut);
+
+
                             CheckAsistencia checkAsistencia = new()
                             {
-                                dniEmployee = Convert.ToString(FingerXEmployees.Rows[i][0]),
-                                dayHour = timeInOut
+                                datetime = timeInOutFormated
                             };
-                            oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger", methodHttp.POST, checkAsistencia);
+                            oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger/"+ Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
 
+
+                            var urlGet = "http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
+                            var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
+                            requestGet.Method = "GET";
+                            requestGet.ContentType = "application/json";
+                            requestGet.Accept = "application/json";
+                            try
+                            {
+                                using (WebResponse response = requestGet.GetResponse())
+                                {
+                                    using (Stream strReader = response.GetResponseStream())
+                                    {
+                                        if (strReader == null) return;
+                                        using (StreamReader objReader = new StreamReader(strReader))
+                                        {
+                                            string responseBody = objReader.ReadToEnd();
+
+                                            // Do something with responseBody
+                                            dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
+
+                                            DateTime horaEntrada = datosAsistencia[0].date_entry;
+                                            horaEntrada = horaEntrada.AddHours(-3);
+                                            SetHoraEntrada(Convert.ToString(horaEntrada));
+
+                                            if (datosAsistencia[0].date_egress != null)
+                                            {
+                                                DateTime horaSalida = datosAsistencia[0].date_egress;
+                                                horaSalida = horaSalida.AddHours(-3);
+                                                SetHoraSalida(Convert.ToString(horaSalida));
+                                            }
+
+                                            MostrarVerde();
+                                            OcultarAzul();
+
+                                            Thread.Sleep(5000);
+
+                                            OcultarVerde();
+                                            MostrarAzul();
+
+                                            SetHoraEntrada("--/--/---- --:--:--");
+                                            SetHoraSalida("--/--/---- --:--:--");
+
+                                        }
+                                    }
+                                }
+                            }
+                            catch (WebException ex)
+                            {
+                                // Handle error
+                            }
 
                             break;
                         }
-                        else
-                        {
-                            MakeReport("The fingerprint no se verifico. ");
-                        }
                     }
+                }
+                if (!seVerifico)
+                {
+                    MostrarRojo();
+                    OcultarAzul();
+
+                    Thread.Sleep(5000);
+
+                    OcultarRojo();
+                    MostrarAzul();
+
+                    MakeReport("The fingerprint no se verifico. ");
                 }
             }
         }
 
-
+        private string convertDateTimeToString(DateTime datetime)
+        {
+            string timeInOut = Convert.ToString(datetime.Year) + "-" + Convert.ToString(datetime.Month) + "-" + 
+                Convert.ToString(datetime.Day) + " " + Convert.ToString(datetime.Hour) + ":" + 
+                Convert.ToString(datetime.Minute) + ":" + Convert.ToString(datetime.Second);
+            return timeInOut;
+        }
     }
 }
