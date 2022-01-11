@@ -5,13 +5,14 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
     let assistanceWithoutDateEgress;
     let assistanceErrorValidation1;
     let assistanceErrorValidation2;
+    let assistanceErrorValidation3;
 
     let assistances1 = [];
     let assistances2 = [];
 
-    for(let i = 0; i < assistance.length; i++) {
-        if(assistance[i].date_egress && (assistance[i].date_entry.slice(0, 10) === assistance[i].date_egress.slice(0, 10))) assistances1.push(assistance[i]);
-        else if(assistance[i].date_egress && (assistance[i].date_entry.slice(0, 10) !== assistance[i].date_egress.slice(0, 10))) assistances2.push(assistance[i]);
+    for (let i = 0; i < assistance.length; i++) {
+        if (assistance[i].date_egress && (assistance[i].date_entry.slice(0, 10) === assistance[i].date_egress.slice(0, 10)) && assistance[i].employee === parseInt(dni, 10)) assistances1.push(assistance[i]);
+        else if (assistance[i].date_egress && (assistance[i].date_entry.slice(0, 10) !== assistance[i].date_egress.slice(0, 10)) && assistance[i].employee === parseInt(dni, 10)) assistances2.push(assistance[i]);
     }
 
     if (!editing) {
@@ -23,13 +24,13 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -39,9 +40,9 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_entry).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_entry).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -52,21 +53,47 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
 
             }
 
-
-
             else {
 
-                assistanceErrorValidation1 = assistances1.find(employees => employees.dateEgress &&
+                assistanceErrorValidation1 = assistances1.find(employees => employees.date_egress &&
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                    )
+                    &&
+                    (employees.employee === parseInt(dni, 10))
+                )
+
+                assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
+                    (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
+                    &&
+                    (
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                    )
+                    &&
+                    (employees.employee === parseInt(dni, 10))
+                )
+
+                assistanceErrorValidation3 = assistances1.find(employees => employees.date_egress &&
+                    (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEgress)
+                    &&
+                    (
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (dateEgress >= '00:00' && dateEgress <= '04:00'))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEntry))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -86,16 +113,16 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
             assistanceErrorValidation1 = assistances1.find(employees =>
                 (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEntry)
                 &&
-                ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEntry))
+                ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEntry))
                 &&
                 (employees.employee === parseInt(dni, 10))
             )
 
             // Verificar porque puede fallar...
-            assistanceErrorValidation2 = assistances2.find(employees => employees.dateEgress &&
+            assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
                 (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEntry)
                 &&
-                ((moment(employees.date_entry).format('HH:mm') <= dateEntry))
+                ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry))
                 &&
                 (employees.employee === parseInt(dni, 10))
             )
@@ -108,17 +135,17 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
         if (dateEgress !== '' && dateEgress) {
             if (inputDateEntry === inputDateEgress) {
 
-                assistanceErrorValidation1 = assistances1.find(employees => employees.dateEgress &&
+                assistanceErrorValidation1 = assistances1.find(employees => employees.date_egress &&
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -126,13 +153,13 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                     (employees.id_assistance !== id_assistance)
                 )
 
-                assistanceErrorValidation2 = assistances2.find(employees => employees.dateEgress &&
+                assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_entry).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_entry).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -146,17 +173,49 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
             }
 
             else {
-                assistanceErrorValidation1 = assistances1.find(employees => employees.dateEgress &&
+                assistanceErrorValidation1 = assistances1.find(employees => employees.date_egress &&
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
                     &&
                     (
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
                         ||
-                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') <= dateEgress))
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                    )
+                    &&
+                    (employees.employee === parseInt(dni, 10))
+                    &&
+                    (employees.id_assistance !== id_assistance)
+                )
+
+                assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
+                    (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEgress)
+                    &&
+                    (
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEgress))
+                        ||
+                        ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') <= dateEgress))
+                    )
+                    &&
+                    (employees.employee === parseInt(dni, 10))
+                    &&
+                    (employees.id_assistance !== id_assistance)
+                )
+
+                assistanceErrorValidation3 = assistances1.find(employees => employees.date_egress &&
+                    (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEgress)
+                    &&
+                    (
+                        ((moment(employees.date_entry).format('HH:mm') >= dateEntry) && (dateEgress >= '00:00' && dateEgress <= '04:00'))
+                        ||
+                        ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEntry))
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
@@ -179,7 +238,7 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
             assistanceErrorValidation1 = assistances1.find(employees =>
                 (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) === inputDateEntry)
                 &&
-                ((moment(employees.date_entry).format('HH:mm') <= dateEntry) && (moment(employees.date_egress).format('HH:mm') >= dateEntry))
+                ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEntry))
                 &&
                 (employees.employee === parseInt(dni, 10))
                 &&
@@ -187,10 +246,10 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
             )
 
             // Verificar porque puede fallar...
-            assistanceErrorValidation2 = assistances2.find(employees => employees.dateEgress &&
+            assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
                 (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEntry)
                 &&
-                ((moment(employees.date_entry).format('HH:mm') <= dateEntry))
+                ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry))
                 &&
                 (employees.employee === parseInt(dni, 10))
                 &&
@@ -203,7 +262,7 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
     // Warning
 
     if (assistanceWithoutDateEgress) return 'Hay un registro de este empleado que aún no tiene marcada la hora de egreso. Establezca la hora de egreso para registrar una nueva asistencia del mismo e intente nuevamente...';
-    if (assistanceErrorValidation1 || assistanceErrorValidation2) return 'Existen registros de que este empleado ya marcó el ingreso a la hora seleccionada o ya estuvo presente dentro de este rango horario. Modifique las horas de ingreso/egreso e intente nuevamente...';
+    if (assistanceErrorValidation1 || assistanceErrorValidation2 || assistanceErrorValidation3) return 'Existen registros de que este empleado ya marcó el ingreso a la hora seleccionada o ya estuvo presente dentro de este rango horario. Modifique las horas de ingreso/egreso e intente nuevamente...';
     else return null;
 }
 
