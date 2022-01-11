@@ -7,7 +7,7 @@ import BeShowed from '../../common/BeShowed';
 import { addDaySchedule } from '../../actions/ScheduleActions';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import TableScheduleEmployees from './components/TableScheduleEmployees';
+import MonthView from './components/MonthView';
 import AutomatedSchedule from './components/AutomatedSchedule';
 
 const PORT = require('../../config');
@@ -25,6 +25,8 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
     const [licenses, setLicenses] = useState(null);
     const [licensesMonth,setLicensesMonth] = useState(null);
     const [nonworkingDays,setNonworkingDays] = useState(null);
+    const [nonworkingDaysMonth,setNonworkingDaysMonth] = useState(null);
+    const [jdEmployees,setJDEmployees] = useState(null);
 
     const today = new Date()
     const tomorrow = new Date(today)
@@ -55,16 +57,14 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
     useEffect(() => {
         axios.get(`http://nolaborables.com.ar/api/v2/feriados/${today.getFullYear()}`)
         .then((response) => {
-            let filterPerMonth = []; 
-            response.data.forEach((nWDay) => {
-                if(nWDay.mes == (month+1)){
-                    filterPerMonth.push(nWDay.dia)
-                }
-            });
-            setNonworkingDays(filterPerMonth);
+            let newNonworkingDays = [];
+            response.data.forEach((nWD) => {
+                newNonworkingDays.push({day: nWD.dia, month: (nWD.mes - 1)})
+            })
+            setNonworkingDays(newNonworkingDays);
         })
         .catch((err) => {console.log(err)});
-    },[year,month])
+    },[])
 
     useEffect(() => {
         let newLicensesMonth
@@ -73,6 +73,22 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
             setLicensesMonth(newLicensesMonth);
         }
     },[licenses,month,year])
+
+    useEffect(() => {
+        let newNonworkingDaysMonth = [];
+        if(nonworkingDays){
+            nonworkingDays.forEach((nWD,i) => {if(nWD.month === month) newNonworkingDaysMonth.push(nWD.day)})
+            setNonworkingDaysMonth(newNonworkingDaysMonth);
+        }
+    },[nonworkingDays,month,year])
+
+    useEffect(() => {
+        axios.get(`${PORT()}/api/jdEmployee?yearMonth=${year}-${month+1<10?'0'+(month+1):month+1}`)
+        .then((response) => {
+            setJDEmployees(response.data); 
+        })
+        .catch((error) => console.log(error));
+    },[month,year])
 
     const viewTitle = 'Grilla de Horarios';
 
@@ -119,7 +135,9 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                 </BeShowed>
                 <BeShowed show={showMonthView}>
                     <div className="container-fluid">
-                        <TableScheduleEmployees month={month} setMonth={setMonth} year={year} setYear={setYear} employees={employees} licensesMonth={licensesMonth} nonworkingDays={nonworkingDays}/>
+                        <MonthView month={month} setMonth={setMonth} year={year} setYear={setYear} employees={employees} 
+                                    licensesMonth={licensesMonth} nonworkingDaysMonth={nonworkingDaysMonth}
+                                    jdEmployees={jdEmployees}/>
                     </div>
                 </BeShowed>
                 <BeShowed show={showAutomatedSchedule}>
