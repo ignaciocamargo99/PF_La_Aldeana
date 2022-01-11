@@ -26,7 +26,7 @@ export default function TableFlavorsDown({ flavors, download }) {
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <button type="button" className="btn btn-danger btn-sm px-3"
+                                        <button type="button" className="sendDelete"
                                             onClick={() => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
                                     </td>
                                 </tr>

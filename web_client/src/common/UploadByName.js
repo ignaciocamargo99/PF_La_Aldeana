@@ -54,7 +54,7 @@ const UploadByName = (props) => {
                 </BeShowed>
                 </div>
                 <div className="form-control-button">
-                    <button className="btn" style={{backgroundColor: '#A5DEF9'}} onClick={upload}><FontAwesomeIcon style={{color: '#383C77'}} icon={faPlus} /></button>
+                    <button className="sendAdd" onClick={upload}><FontAwesomeIcon icon={faPlus} /></button>
                 </div>
             </div>
         </div>

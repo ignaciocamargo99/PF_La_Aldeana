@@ -50,7 +50,7 @@ const Pay = (props) => {
                     <div className="form-control-input">
                         <input type="number" className={props.errorAmount?"form-control":"form-control is-valid"} placeholder="Ingrese el monto con el que abona el cliente..."  min="0" onChange={(e) => {onChangeAmount(e.target.value)}} onKeyDown={(e) => {validateFloatNumbers(e)}} value={props.amount}></input>
                         <BeShowed show={props.errorAmount}>
-                            <label><b style={{color:'gray'}}>Cantidad entera mayor al total</b></label>
+                            <small className="text-muted">Cantidad entera mayor al total</small>
                         </BeShowed>
                     </div>
                 </div>

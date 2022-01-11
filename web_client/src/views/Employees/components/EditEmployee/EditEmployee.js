@@ -27,27 +27,32 @@ export default function EditEmployee(props) {
             Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')
+                    else displayError('El nuevo dni ya corresponde a otro empleado')
                 })
                 .catch(error => console.log(error));
         }
-        else warningMessage('Atención', 'Todos los campos son obligatorios', 'error');
+        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
     };
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar empleado {props.employee.name}</h2>
+            
+            <div className="viewTitle">
+                <h1>Editar empleado {props.employee.name + " " + props.employee.lastName}</h1>
+            </div>
             <br />
-            <DataEmployee load={load} data={data} />
-            <ExtraDataEmployee load={load} data={data} />
-            <Buttons
-                label='Registrar' actionOK={updateEmployee}
-                actionNotOK={updateEmployee}
-                actionCancel={props.cancel}
-                ready={ready}
-                data={data} />
+            <div className="viewBody">
+                <DataEmployee load={load} data={data} />
+                <ExtraDataEmployee load={load} data={data} />
+                <Buttons
+                    label='Registrar' actionOK={updateEmployee}
+                    actionNotOK={updateEmployee}
+                    actionCancel={props.cancel}
+                    ready={ready}
+                    data={data} />
+            </div>
         </>
     );
 }
