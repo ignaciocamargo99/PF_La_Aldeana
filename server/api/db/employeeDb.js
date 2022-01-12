@@ -71,7 +71,7 @@ const employeeCreateDB = (newEmployee) => {
                 newEmployee.dni,
                 newEmployee.nameEmployee,
                 newEmployee.lastName,
-                newEmployee.date_admission,
+                newEmployee.date,
                 newEmployee.employmentRelationshipId,
                 1
             ], (error) => {
@@ -163,13 +163,13 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
 const isEmployeeDataValid = (empDataToValidate) => {
     return (
-        empDataToValidate.dni &&
-        empDataToValidate.nameEmployee &&
-        empDataToValidate.lastName &&
         empDataToValidate.chargesIds.length > 0 &&
-        empDataToValidate.date_admission &&
+        empDataToValidate.date &&
+        empDataToValidate.dni &&
+        empDataToValidate.dni.toString().length === 8 &&
         empDataToValidate.employmentRelationshipId &&
-        empDataToValidate.dni.toString().length === 8
+        empDataToValidate.lastName &&
+        empDataToValidate.nameEmployee
     );
 };
 
