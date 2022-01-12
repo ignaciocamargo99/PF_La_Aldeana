@@ -1,40 +1,31 @@
-import React, { useRef, useEffect, useState } from "react";
-import formattedDate from "../../../utils/formattedDate";
-import Axios from 'axios';
-import getNameCharge from './EditEmployee/getNameCharge';
+import React, { useEffect, useRef, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
+import { getCharges } from "../../../helpers/getCharges";
+import formattedDate from "../../../utils/formattedDate";
+import ChargeCheckbox from "./ChargeCheckbox";
 
-const PORT = require('../../../config');
-
-export default function RegisterEmployee(props) {
-    const maxDate = formattedDate(new Date(), 3);
-    const startDate = formattedDate(new Date());
-    const inputDate = useRef(null);
-    const [charge, setCharge] = useState();
+export default function ExtraDataEmployee(props) {
     const [date, setDate] = useState();
-    const [selectValue, setSelectValue] = useState("-1");
+    const [allCharges, setAllCharges] = useState([]);
+    const inputDate = useRef(null);
     const rb1 = useRef(null);
     const rb2 = useRef(null);
+    const maxDate = formattedDate(new Date(), 3);
+    const startDate = formattedDate(new Date());
     let data = props.data;
 
-    const handleCharge = (e) => setSelectValue(e.target.value);
-
     useEffect(() => {
-        if (selectValue > 0) {
-            data.id_charge = selectValue;
-            props.load(data);
-        }
         if (!data.date) {
             data.date = inputDate.current.value;
             props.load(data);
         }
-    }, [selectValue, data, props]);
+    }, [data, props]);
 
     useEffect(() => {
-        if (props.data.employmentRelationship === 1) {
+        if (props.data.employmentRelationshipId === 1) {
             rb1.current.checked = false;
             rb2.current.checked = true;
-        } else if (props.data.employmentRelationship === 2) {
+        } else if (props.data.employmentRelationshipId === 2) {
             rb1.current.checked = true;
             rb2.current.checked = false;
         } else {
@@ -58,9 +49,6 @@ export default function RegisterEmployee(props) {
             data.date = inputDate.current.value;
             props.load(data);
         }
-        Axios.get(`${PORT()}/api/charges`)
-            .then((response) => setCharge(response.data))
-            .catch((error) => console.log(error));
     }, [startDate, date, data]);
 
     const onChangeDate = () => {
@@ -68,40 +56,53 @@ export default function RegisterEmployee(props) {
     }
 
     const handlerOnChange = (e) => {
-        if (e.target.value === "black") data.employmentRelationship = 2;
-        else data.employmentRelationship = 1;
+        if (e.target.value === "black") data.employmentRelationshipId = 2;
+        else data.employmentRelationshipId = 1;
         props.data.editing = false;
         props.load(data);
     }
 
+    useEffect(() => {
+        getCharges().then((charges) => {
+            setAllCharges(charges);
+        })
+    }, []);
+
     return (
         <>
             <h2>Datos laborales</h2>
+
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="employeeCharge" >Cargo*</label>
-                </div>
-                <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <select className="form-control" id="employeeCharge" value={selectValue} readOnly>
-                            <option disabled value="-1">{getNameCharge(charge, props.data.charge)}</option>
-                        </select>
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <select className="form-control" id="employeeCharge" value={selectValue} onChange={handleCharge}>
-                            <BeShowed show={props.data.id_charge && props.data.editing }>
-                                <option disabled value="-1">{getNameCharge(charge, props.data.id_charge)}</option>
-                            </BeShowed>
-                            <BeShowed show={!props.data.id_charge || !props.data.editing}>
-                                <option disabled value="-1">Seleccione cargo del empleado...</option>
-                            </BeShowed>
-                            {charge?.map((element, i) => {
-                                return (<option key={i} value={element.id_charge}>{element.name}</option>)
-                            })}
-                        </select>
-                    </BeShowed>
+                    <label htmlFor="employeeCharge" >Cargos*</label>
                 </div>
             </div>
+
+            {!props.data.reading && allCharges.map((c) => {
+                if (props.data.editing) {
+                    return (
+                        <ChargeCheckbox
+                            key={c.id_charge}
+                            chargeId={c.id_charge}
+                            chargeName={c.name}
+                            employeeData={data}
+                            updateEmployeeData={props.load}
+                        ></ChargeCheckbox>
+                    )
+                }
+                else {
+                    return (
+                        <ChargeCheckbox
+                            key={c.id_charge}
+                            chargeId={c.id_charge}
+                            chargeName={c.name}
+                            employeeData={data}
+                            updateEmployeeData={props.load}
+                        ></ChargeCheckbox>
+                    )
+                }
+            })}
+
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="dateEmployee" >Fecha de ingreso*</label>
@@ -129,14 +130,34 @@ export default function RegisterEmployee(props) {
                         </BeShowed>
                         <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
+
                     <div className="form-check">
-                        <BeShowed show={props.data.reading}>
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="white" value="white" ref={rb2} disabled></input>
-                        </BeShowed>
-                        <BeShowed show={!props.data.reading}>
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="white" value="white" ref={rb2} onChange={handlerOnChange}></input>
-                        </BeShowed>
-                        <label className="form-check-label" htmlFor="white"> Independiente </label>
+                        {props.data.reading && (
+                            <input
+                                className="form-check-input"
+                                disabled
+                                id="white"
+                                name="flexRadioDefault"
+                                ref={rb2}
+                                type="radio"
+                                value="white"
+                            >
+                            </input>
+                        )}
+                        {!props.data.reading && (
+                            <input
+                                className="form-check-input"
+                                id="white"
+                                name="flexRadioDefault"
+                                onChange={handlerOnChange}
+                                ref={rb2}
+                                type="radio"
+                                value="white"
+                            >
+                            </input>
+                        )}
+
+                        <label className="form-check-label" htmlFor="white"> Relación de dependencia </label>
                     </div>
                 </div>
             </div>
