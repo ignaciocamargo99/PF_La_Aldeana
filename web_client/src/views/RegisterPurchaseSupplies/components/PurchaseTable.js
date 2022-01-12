@@ -66,11 +66,11 @@ const PurchaseTable  = (props) => {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col"  style={{ textAlign: 'center' }}><label><b>Nombre</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Precio</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Cantidad</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '7em' }}><label><b>Subtotal</b></label></th>
-                            <th scope="col"  style={{ textAlign: 'center', width: '10em' }}><label><b>Eliminar</b></label></th>
+                            <th scope="col"  style={{ backgroundColor: '#A5DEF9', textAlign: 'center' }}><label><b>Nombre</b></label></th>
+                            <th scope="col"  style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '7em' }}><label><b>Precio</b></label></th>
+                            <th scope="col"  style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '7em' }}><label><b>Cantidad</b></label></th>
+                            <th scope="col"  style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '7em' }}><label><b>Subtotal</b></label></th>
+                            <th scope="col"  style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '10em' }}><label><b>Eliminar</b></label></th>
                         </>
                     }
                 />
@@ -90,7 +90,7 @@ const PurchaseTable  = (props) => {
                                         <label id={`lblSubtotal${i}`}></label>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button id={`downloadSupplyButton${i}`} type="button" className="btn-sm px-3" style={{backgroundColor: '#F68634', borderColor: '#F68634'}} onClick={() => {props.download(element.id_supply,i)}}><FontAwesomeIcon style={{color: 'white'}}icon={faMinus} /></button>
+                                        <button id={`downloadSupplyButton${i}`} type="button" className="sendDelete" onClick={() => {props.download(element.id_supply,i)}}><FontAwesomeIcon style={{color: 'white'}}icon={faMinus} /></button>
                                     </td>
                                 </tr>
                             </tbody>

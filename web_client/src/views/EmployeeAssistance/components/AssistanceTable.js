@@ -12,6 +12,8 @@ import EditAssistance from "./EditAssistanceEmployee/EditAssistance";
 import backupAssistance from './EditAssistanceEmployee/backupAssistance';
 import ReadAssistanceEmployee from './ReadAssistanceEmployee/ReadAssistanceEmployee';
 import ReadAssistanceButton from "./ReadAssistanceButton";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -103,13 +105,24 @@ export default function EmployeesTable() {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    const onClickNewAssistance = () => {
+        window.location.replace('/app/registerAssistance');
+    }
+
     return (
         <>
-            {isLoadingSpinner && (
+            {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            )}
-            {!isLoadingSpinner && assistance && assistance.length === 0
-                ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
+            : assistance && assistance.length === 0
+                ? 
+                <div>
+                    <div className="viewTitleBtn">
+                        <h1>Asistencias</h1>
+                        <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </div>
+                    <br/>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
+                </div>
                 : (
                     <BeShowed show={!isEditing && !isReading && !isLoadingSpinner}>
                         <h3>Registros del día {new Date().toLocaleDateString()}</h3>

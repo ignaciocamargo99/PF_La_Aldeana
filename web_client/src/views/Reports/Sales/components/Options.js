@@ -121,10 +121,12 @@ const Options = (props) => {
                 <div  className="col-sm-3" style={{textAlign: 'right'}} >
                     <input type="date" style={{maxWidth: "9em", marginRight: '1em'}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
                 </div>
+            </div>
 
-                <div className="col-sm-1">
-                    <button className="btn" style={{backgroundColor: '#A5DEF9', marginRight: '1em'}} onClick={handlerLoader}><FaAngleRight style={{color: '#383C77'}} /></button>
-                    <button className="btn" style={{backgroundColor: '#A5DEF9'}}><FaFile style={{color: '#383C77'}} /></button>
+            <div className="formRow d-flex justify-content-between">
+                <div className="mx-auto">
+                    <button className="newBtn" style={{ marginRight: '1em', minWidth: '15em'}} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
+                    <button className="newBtn" style={{ minWidth: '15em'}}><FaFile /> Imprimir informe</button>
                 </div>
             </div>
         </>

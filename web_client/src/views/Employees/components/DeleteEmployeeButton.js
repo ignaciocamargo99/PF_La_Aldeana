@@ -25,7 +25,7 @@ export default function DeleteEmployeetButton (props) {
                 swal({
                     title: "Falló al dar de baja",
                     text: error,
-                    icon: "warning",
+                    icon: "error",
                 });
             });
     }
