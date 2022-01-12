@@ -149,6 +149,8 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                     )
                     &&
                     (employees.employee === parseInt(dni, 10))
+                    &&
+                    (employees.id_assistance !== id_assistance)
                 )
 
                 assistanceErrorValidation2 = assistances2.find(employees => employees.date_egress &&
