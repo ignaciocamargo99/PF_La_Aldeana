@@ -91,6 +91,11 @@ const validateHoursEgressEntry = (inputDateEntry, inputDateEgress, dateEntry, dn
                     (employees.date_entry.slice(0, 10) === inputDateEntry) && (employees.date_egress.slice(0, 10) !== inputDateEgress)
                     &&
                     (
+                        // REVISARRRRRRR COMPARAR STRING CON INT?
+
+
+
+                        
                         ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') >= dateEntry) && (dateEgress >= '00:00' && dateEgress <= '04:00'))
                         ||
                         ((moment(employees.date_entry).subtract(3, 'hours').format('HH:mm') <= dateEntry) && (moment(employees.date_egress).subtract(3, 'hours').format('HH:mm') >= dateEntry))
