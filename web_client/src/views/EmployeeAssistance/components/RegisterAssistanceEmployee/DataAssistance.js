@@ -47,8 +47,8 @@ export default function DataAssistance(props) {
 
     const handleTimeEgress = () => {
         if (inputDateEgress.current.value && (inputDateEntry.current.value !== inputDateEgress.current.value)) {
-            if (inputTimeEgress.current.value > '03:00') {
-                divTimeEgressValidation.current.innerHTML = 'La hora de egreso debe encontrarse entre las 00 A.M. y 3 A.M.';
+            if (inputTimeEgress.current.value > '04:00') {
+                divTimeEgressValidation.current.innerHTML = 'La hora de egreso debe encontrarse entre las 00 A.M. y 4 A.M.';
                 data.validationEgress = true;
                 props.load(data);
             }
@@ -81,7 +81,7 @@ export default function DataAssistance(props) {
     const handleDateEgress = () => {
         inputTimeEgress.current.value = '';
         if (inputDateEntry.current.value < inputDateEgress.current.value) {
-            setMaxTimeEgress('03:00');
+            setMaxTimeEgress('04:00');
             setMinTimeEgress('00:00')
         }
         else {
