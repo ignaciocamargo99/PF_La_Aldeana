@@ -44,7 +44,7 @@ const employeeAssistanceGetDB = () => {
     let hour = actualDateStr.slice(11, 13);
     let hourInt = parseInt(hour, 10);
 
-    if (hour >= 0 && hour < 3) {
+    if (hourInt >= 0 && hourInt < 3) {
         sqlSelect = `
             SELECT ae.id_assistance, ae.date_entry AS date_entry, ae.date_egress AS date_egress, ae.employee, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
