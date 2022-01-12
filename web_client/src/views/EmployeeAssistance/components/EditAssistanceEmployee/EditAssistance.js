@@ -11,6 +11,7 @@ import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
 import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 
+
 const PORT = require('../../../../config');
 
 export default function EditAssistance(props) {
