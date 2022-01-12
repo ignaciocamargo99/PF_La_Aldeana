@@ -12,6 +12,7 @@ import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
 import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 import getEmployees from '../getEmployees';
 
+
 const PORT = require('../../../../config');
 
 export default function EditAssistance(props) {
