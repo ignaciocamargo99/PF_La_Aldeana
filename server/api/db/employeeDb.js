@@ -26,7 +26,8 @@ const employeeGetDB = (dni) => {
             e.name,
             e.last_name,
             e.date_admission,
-            c.name AS charge,
+            c.id_charge as chargeId,
+            c.name AS chargeName,
             e.employment_relationship,
             er.name AS name_emp_relationship
         FROM
@@ -147,7 +148,7 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
                 updateEmployee.dni,
                 updateEmployee.nameEmployee,
                 updateEmployee.lastName,
-                updateEmployee.date_admission,
+                updateEmployee.date,
                 updateEmployee.employmentRelationshipId
             ];
 

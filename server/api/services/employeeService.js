@@ -19,17 +19,23 @@ const mapEmployeesData = (employeesDataDB) => {
         const employeeInList = employeeIsInList(allEmployeesMapped, empDB);
 
         if (employeeInList) {
-            employeeInList.charges = [...employeeInList.charges, empDB.charge]
+            employeeInList.charges = [...employeeInList.charges, {
+                chargeId: empDB.chargeId,
+                chargeName: empDB.chargeName
+            }];
         }
         else {
             employeeToAdd = {
                 dni: empDB.dni,
                 name: empDB.name,
                 last_name: empDB.last_name,
-                date_admission: empDB.date_admission,
+                date: empDB.date_admission,
                 employment_relationship: empDB.employment_relationship,
                 name_emp_relationship: empDB.name_emp_relationship,
-                charges: [empDB.charge]
+                charges: [{
+                    chargeId: empDB.chargeId,
+                    chargeName: empDB.chargeName
+                }]
             };
 
             allEmployeesMapped.push(employeeToAdd);
