@@ -8,13 +8,14 @@ import BeShowed from '../../../common/BeShowed';
 import FormSalary from './FormSalary';
 import ListLicensesFilter from './ListLicensesFilter';
 import LoaderSpinner from "../../../common/LoaderSpinner";
+import formattedDate from '../../../utils/formattedDate';
 
 const PORT = require('../../../config');
 
 const Salary = (props) => {
     
     const[salaries,setSalaries] = useState([]);
-    const[salary,setSalary] = useState(null);
+    const[salary,setSalary] = useState({month: formattedDate(new Date())});
     const[showSpinner,setShowSpinner] = useState(true);
     const[action,setAction] = useState('Listar');
     const[reloadList,setReloadList] = useState(false);
