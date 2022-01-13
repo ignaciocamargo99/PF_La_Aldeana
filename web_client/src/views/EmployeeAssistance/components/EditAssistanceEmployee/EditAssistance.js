@@ -12,7 +12,6 @@ import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
 import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 import getEmployees from '../getEmployees';
 
-
 const PORT = require('../../../../config');
 
 export default function EditAssistance(props) {
@@ -52,7 +51,7 @@ export default function EditAssistance(props) {
 
             if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
             else {
-                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing);
+                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
                 if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
 
                 let dateEntry, dateEgress;

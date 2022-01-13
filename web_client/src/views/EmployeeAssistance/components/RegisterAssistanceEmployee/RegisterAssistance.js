@@ -51,7 +51,7 @@ export default function RegisterAssistance() {
             else {
                 if (!ready) warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
                 else {
-                    validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.employee, data.date_egress, assistance, null, null);
+                    validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.employee, data.date_egress, assistance, null, null, PORT());
                     if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
 
                     let dateEntry, dateEgress;
