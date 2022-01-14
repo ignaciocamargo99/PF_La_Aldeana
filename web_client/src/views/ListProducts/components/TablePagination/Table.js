@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import DeleteProductButton from '../DeleteProductButton';
 import EditProductButton from '../EditProductButton';
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Table = ({ setNameSearch, pageElements, columnsHeaders, handleEdit, handleDelete }) => {
     return (
@@ -32,6 +33,9 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleEdit, handle
                             return (
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                        <button id='readProductButton' type="button" className="sendEdit" ><FontAwesomeIcon icon={faEye} /></button>
+                                    </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditProductButton product={element} edit={handleEdit} />
                                     </td>

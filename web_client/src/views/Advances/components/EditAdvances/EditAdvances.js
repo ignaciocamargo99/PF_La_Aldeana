@@ -83,15 +83,20 @@ export default function EditAdvances(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar adelanto"}</div>
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Editar adelanto" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar adelanto {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
+            
+            <div className="viewTitle">
+                <h1>Editar adelanto  {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h1>
+            </div>
             <br />
-            <ExtraDataAdvances load={load} data={data} />
-            <Buttons
-                label='Registrar' actionOK={updateAdvances}
-                actionNotOK={updateAdvances}
-                actionCancel={back}
-                ready={ready}
-                data={data} />
+            <div className="viewBody">
+                <ExtraDataAdvances load={load} data={data} />
+                <Buttons
+                    label='Registrar' actionOK={updateAdvances}
+                    actionNotOK={updateAdvances}
+                    actionCancel={back}
+                    ready={ready}
+                    data={data} />
+            </div>
         </>
     );
 }

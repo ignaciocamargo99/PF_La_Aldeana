@@ -76,7 +76,7 @@ const Products = (props) => {
         <div className="formRow">
             <div className="col-md-6">
                 <BeShowed show={props.productsQuantities.length === 0 }>    
-                    <LoaderSpinner color='primary' description="Cargando productos..."/>
+                    <LoaderSpinner color='primary' description="Cargando..."/>
                 </BeShowed>
                 <BeShowed show={props.productsQuantities.length !== 0 }>
                     <ListProducts onClick={upload} filter={filter}/>

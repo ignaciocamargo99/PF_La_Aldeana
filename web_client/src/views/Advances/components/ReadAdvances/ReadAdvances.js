@@ -46,11 +46,15 @@ export default function ReadAdvances(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Consultar adelanto"}</div>
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Consultar adelanto" />
-            <h2 style={{ fontWeight: 'bold' }}>Empleado {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h2>
+            <div className="viewTitle">
+                <h1>Empleado {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h1>
+            </div>
             <br />
-            <ExtraDataAdvances load={load} data={data}/>
-            <div className='buttons'>
-                <button className='sendOk' onClick={back}>Volver</button>
+            <div className="viewBody">
+                <ExtraDataAdvances load={load} data={data}/>
+                <div className='buttons'>
+                    <button className='sendOk' onClick={back}>Volver</button>
+                </div>
             </div>
         </>
     );

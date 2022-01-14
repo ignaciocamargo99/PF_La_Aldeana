@@ -44,7 +44,7 @@ export default function FlavorsAmount({ flavor, addAmountOfFlavor }) {
             inputAmountFlavors.current.value = '';
         }
         else {
-            warningMessage("Atención", "Se debe ingresar una cantidad válida para el sabor.", "info");
+            warningMessage("Atención", "Se debe ingresar una cantidad válida para el sabor.", "warning");
         };
     };
 
@@ -56,9 +56,7 @@ export default function FlavorsAmount({ flavor, addAmountOfFlavor }) {
                 <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountFlavorsValidation} />
             </td>
             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                <button className="btn-sm px-3" type="button" style={{ backgroundColor: '#A5DEF9', borderColor: '#A5DEF9' }}
-                    onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus}
-                    />
+                <button className="sendAdd" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} />
                 </button>
             </td>
         </>
