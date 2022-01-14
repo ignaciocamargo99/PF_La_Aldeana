@@ -29,8 +29,8 @@ namespace desktop_employee.src.views.Employees
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtDni = new System.Windows.Forms.TextBox();
             this.lblDni = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
@@ -55,6 +55,10 @@ namespace desktop_employee.src.views.Employees
             this.lblPI = new System.Windows.Forms.Label();
             this.lblPD = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnComprobarPD = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarID = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarPI = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarII = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).BeginInit();
             this.panel2.SuspendLayout();
@@ -162,23 +166,23 @@ namespace desktop_employee.src.views.Employees
             // 
             this.dgvFingerEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvFingerEmployee.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvFingerEmployee.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvFingerEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvFingerEmployee.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvFingerEmployee.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvFingerEmployee.Enabled = false;
             this.dgvFingerEmployee.Location = new System.Drawing.Point(632, 35);
             this.dgvFingerEmployee.Name = "dgvFingerEmployee";
@@ -189,6 +193,10 @@ namespace desktop_employee.src.views.Employees
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnComprobarII);
+            this.panel2.Controls.Add(this.btnComprobarPI);
+            this.panel2.Controls.Add(this.btnComprobarID);
+            this.panel2.Controls.Add(this.btnComprobarPD);
             this.panel2.Controls.Add(this.btnEliminarII);
             this.panel2.Controls.Add(this.btnEliminarPI);
             this.panel2.Controls.Add(this.btnEliminarID);
@@ -390,6 +398,66 @@ namespace desktop_employee.src.views.Employees
             this.label2.TabIndex = 11;
             this.label2.Text = "FOTO DEL EMPLEADO";
             // 
+            // btnComprobarPD
+            // 
+            this.btnComprobarPD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarPD.FlatAppearance.BorderSize = 0;
+            this.btnComprobarPD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarPD.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarPD.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarPD.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarPD.Location = new System.Drawing.Point(420, 192);
+            this.btnComprobarPD.Name = "btnComprobarPD";
+            this.btnComprobarPD.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarPD.TabIndex = 26;
+            this.btnComprobarPD.UseVisualStyleBackColor = true;
+            this.btnComprobarPD.Click += new System.EventHandler(this.btnComprobarPD_Click);
+            // 
+            // btnComprobarID
+            // 
+            this.btnComprobarID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarID.FlatAppearance.BorderSize = 0;
+            this.btnComprobarID.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarID.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarID.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarID.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarID.Location = new System.Drawing.Point(420, 248);
+            this.btnComprobarID.Name = "btnComprobarID";
+            this.btnComprobarID.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarID.TabIndex = 27;
+            this.btnComprobarID.UseVisualStyleBackColor = true;
+            this.btnComprobarID.Click += new System.EventHandler(this.btnComprobarID_Click);
+            // 
+            // btnComprobarPI
+            // 
+            this.btnComprobarPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarPI.FlatAppearance.BorderSize = 0;
+            this.btnComprobarPI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarPI.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarPI.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarPI.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarPI.Location = new System.Drawing.Point(420, 296);
+            this.btnComprobarPI.Name = "btnComprobarPI";
+            this.btnComprobarPI.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarPI.TabIndex = 28;
+            this.btnComprobarPI.UseVisualStyleBackColor = true;
+            this.btnComprobarPI.Click += new System.EventHandler(this.btnComprobarPI_Click);
+            // 
+            // btnComprobarII
+            // 
+            this.btnComprobarII.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarII.FlatAppearance.BorderSize = 0;
+            this.btnComprobarII.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarII.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarII.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarII.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarII.Location = new System.Drawing.Point(420, 344);
+            this.btnComprobarII.Name = "btnComprobarII";
+            this.btnComprobarII.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarII.TabIndex = 29;
+            this.btnComprobarII.UseVisualStyleBackColor = true;
+            this.btnComprobarII.Click += new System.EventHandler(this.btnComprobarII_Click);
+            // 
             // frmEditEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -401,7 +469,7 @@ namespace desktop_employee.src.views.Employees
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmEditEmployee";
             this.Text = "Dedo Pulgar Derecho";
-            this.Load += new System.EventHandler(this.frmEditEmployee_LoadAsync);
+            this.Load += new System.EventHandler(this.frmEditEmployee_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).EndInit();
@@ -437,5 +505,9 @@ namespace desktop_employee.src.views.Employees
         private FontAwesome.Sharp.IconButton btnEliminarPI;
         private FontAwesome.Sharp.IconButton btnEliminarID;
         private FontAwesome.Sharp.IconButton btnEliminarPD;
+        private FontAwesome.Sharp.IconButton btnComprobarII;
+        private FontAwesome.Sharp.IconButton btnComprobarPI;
+        private FontAwesome.Sharp.IconButton btnComprobarID;
+        private FontAwesome.Sharp.IconButton btnComprobarPD;
     }
 }

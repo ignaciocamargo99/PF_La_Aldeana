@@ -31,6 +31,7 @@ namespace desktop_employee
             //inicia la aplicación maximizada según el tamaño del monitor
             this.Location = Screen.PrimaryScreen.WorkingArea.Location;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
+
             //Inicia el menú contraido
             ContraerMenu();
 
@@ -111,14 +112,18 @@ namespace desktop_employee
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
+            // IMPORTANTE !!!!
+            // borrar/eliminar los formularios abiertos
+
             for (int i = 1; i <= Application.OpenForms.Count; i++) {
                 //string nombreForm = Application.OpenForms[i].ToString();
                 Application.OpenForms[i].Close();
             }
             MessageBox.Show("form abiertos" + Convert.ToString(Application.OpenForms.Count));
+
+
             frmAssistanceDNI assitenceDNI = new();
             lblTitulo.Text = "ASISTENCIA con DNI";
-            //pasar tabla
             OpenForm(assitenceDNI);
         }
 
@@ -128,10 +133,14 @@ namespace desktop_employee
                 this.pnlDesktop.Controls.RemoveAt(0);
             form.TopLevel = false;
             form.Dock = DockStyle.Fill;
-            //this.pnlDesktop.Tag = form;
             pnlDesktop.Controls.Add(form);
             form.Show();
         }
 
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+            this.Size = Screen.PrimaryScreen.WorkingArea.Size;
+        }
     }
 }

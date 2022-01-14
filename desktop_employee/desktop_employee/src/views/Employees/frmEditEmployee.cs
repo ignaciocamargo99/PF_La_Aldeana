@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using desktop_employee.src.entities;
+using Newtonsoft.Json;
 
 namespace desktop_employee.src.views.Employees
 {
@@ -15,7 +18,7 @@ namespace desktop_employee.src.views.Employees
     {
         private DPFP.Template Template;
         private DataTable employeeSelected;
-        DataTable fingersTable = new DataTable();
+        dynamic fingerEmployee;
         Reply oReply = new Reply();
         string txtLblCurrent;
 
@@ -29,7 +32,7 @@ namespace desktop_employee.src.views.Employees
             InitializeComponent();
         }
 
-        private async void frmEditEmployee_LoadAsync(object sender, EventArgs e)
+        private void frmEditEmployee_Load(object sender, EventArgs e)
         {
             txtDni.Text = Convert.ToString(EmployeeSelected.Rows[0][0]);
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
@@ -40,23 +43,38 @@ namespace desktop_employee.src.views.Employees
 
         private async void getFingers()
         {
-            string url = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
-            List<FingerXEmployee> listado = new List<FingerXEmployee>();
-            oReply = await Consumer.Execute<List<FingerXEmployee>>(url, methodHttp.GET, listado);
-            this.dgvFingerEmployee.DataSource = oReply.Data;
-            fingersTable = ConvertDgvToTable(dgvFingerEmployee);
-            onOffButtons();
+            var urlGet = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
+            var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
+            requestGet.Method = "GET";
+            requestGet.ContentType = "application/json";
+            requestGet.Accept = "application/json";
+            try
+            {
+                using WebResponse response = requestGet.GetResponse();
+                using Stream strReader = response.GetResponseStream();
+                if (strReader == null) return;
+                using StreamReader objReader = new StreamReader(strReader);
+                string responseBody = objReader.ReadToEnd();
+
+                // Do something with responseBody
+                fingerEmployee = JsonConvert.DeserializeObject(responseBody);
+                onOffButtons();
+            }
+            catch (WebException ex)
+            {
+                // Handle error
+            }            
         }
 
 
         private void onOffButtons()
         {
-            int cantidad = fingersTable.Rows.Count;
+            int cantidad = fingerEmployee.Count;
             if (cantidad > 0)
             {
                 for (int i = 0; i < cantidad; i++)
                 {
-                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblPD.Text)
+                    if (Convert.ToString(fingerEmployee[i].finger) == lblPD.Text)
                     {
                         btnCapturarPD.Enabled = false;
                         btnEliminarPD.Enabled = true;
@@ -70,7 +88,7 @@ namespace desktop_employee.src.views.Employees
                 }
                 for (int i = 0; i < cantidad; i++)
                 {
-                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblID.Text)
+                    if (Convert.ToString(fingerEmployee[i].finger) == lblID.Text)
                     {
                         btnCapturarID.Enabled = false;
                         btnEliminarID.Enabled = true;
@@ -84,7 +102,7 @@ namespace desktop_employee.src.views.Employees
                 }
                 for (int i = 0; i < cantidad; i++)
                 {
-                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblPI.Text)
+                    if (Convert.ToString(fingerEmployee[i].finger) == lblPI.Text)
                     {
                         btnCapturarPI.Enabled = false;
                         btnEliminarPI.Enabled = true;
@@ -98,7 +116,7 @@ namespace desktop_employee.src.views.Employees
                 }
                 for (int i = 0; i < cantidad; i++)
                 {
-                    if (Convert.ToString(fingersTable.Rows[i][1]) == lblII.Text)
+                    if (Convert.ToString(fingerEmployee[i].finger) == lblII.Text)
                     {
                         btnCapturarII.Enabled = false;
                         btnEliminarII.Enabled = true;
@@ -122,24 +140,6 @@ namespace desktop_employee.src.views.Employees
                 btnEliminarPI.Enabled = false;
                 btnEliminarII.Enabled = false;
             }
-        }
-
-        private DataTable ConvertDgvToTable(DataGridView dgv)
-        {
-            DataTable table = new DataTable();
-            DataColumn cDni = new DataColumn("dni");
-            DataColumn cFinger = new DataColumn("finger");
-            table.Columns.Add(cDni);
-            table.Columns.Add(cFinger);
-
-            for (int i = 0; i < dgv.RowCount; i++)
-            {
-                DataRow row = table.NewRow();
-                row["dni"] = dgv.Rows[i].Cells[0].Value;
-                row["finger"] = dgv.Rows[i].Cells[1].Value;
-                table.Rows.Add(row);
-            }
-            return table;
         }
 
         private void OnTemplate(DPFP.Template template)
@@ -223,33 +223,6 @@ namespace desktop_employee.src.views.Employees
             }
         }
 
-        private async void deleteFingers()
-        {
-            string message = "Esta seguro que desea eliminar la huella del "+ txtLblCurrent + "?";
-            DialogResult result = MessageBox.Show(message, "Confirmación", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                try
-                {
-                    FingerXEmployee fingerPrint = new()
-                    {
-                        dniEmployee = Convert.ToInt32(txtDni.Text),
-                        finger = txtLblCurrent
-                    };
-                    oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
-                    if (oReply.StatusCode == "OK")
-                    {
-                        MessageBox.Show("Huella eliminada correctamente.");
-                        getFingers();
-                    }                    
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }            
-        }
-
         private void btnEliminarPD_Click(object sender, EventArgs e)
         {
             txtLblCurrent = lblPD.Text;
@@ -272,6 +245,57 @@ namespace desktop_employee.src.views.Employees
         {
             txtLblCurrent = lblII.Text;
             deleteFingers();
+        }
+
+        private async void deleteFingers()
+        {
+            string message = "Esta seguro que desea eliminar la huella del " + txtLblCurrent + "?";
+            DialogResult result = MessageBox.Show(message, "Confirmación", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    FingerXEmployee fingerPrint = new()
+                    {
+                        dniEmployee = Convert.ToInt32(txtDni.Text),
+                        finger = txtLblCurrent
+                    };
+                    oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
+                    if (oReply.StatusCode == "OK")
+                    {
+                        MessageBox.Show("Huella eliminada correctamente.");
+                        getFingers();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnComprobarPD_Click(object sender, EventArgs e)
+        {
+            txtLblCurrent = lblPD.Text;
+
+        }
+
+        private void btnComprobarID_Click(object sender, EventArgs e)
+        {
+            txtLblCurrent = lblID.Text;
+
+        }
+
+        private void btnComprobarPI_Click(object sender, EventArgs e)
+        {
+            txtLblCurrent = lblPI.Text;
+
+        }
+
+        private void btnComprobarII_Click(object sender, EventArgs e)
+        {
+            txtLblCurrent = lblII.Text;
+
         }
     }
 }

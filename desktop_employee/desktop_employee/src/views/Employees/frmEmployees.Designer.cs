@@ -164,7 +164,7 @@ namespace desktop_employee.src.views.Employees
             this.Name = "frmEmployees";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmEmployees";
-            this.Load += new System.EventHandler(this.frmEmployees_LoadAsync);
+            this.Load += new System.EventHandler(this.frmEmployees_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -177,7 +177,6 @@ namespace desktop_employee.src.views.Employees
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvEmployee;
         private System.Windows.Forms.DataGridView dgvEmployees;
         private System.Windows.Forms.Button btnEditEmployee;
         private System.Windows.Forms.Label lblFiltros;

@@ -182,9 +182,8 @@ namespace desktop_employee
             this.lblTitulo.Font = new System.Drawing.Font("Verdana", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblTitulo.Location = new System.Drawing.Point(36, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(180, 46);
+            this.lblTitulo.Size = new System.Drawing.Size(0, 46);
             this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "TITULO";
             // 
             // ibtnMinimizar
             // 
@@ -236,6 +235,7 @@ namespace desktop_employee
             this.Name = "frmMain";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.pnlMenu.ResumeLayout(false);
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).EndInit();
