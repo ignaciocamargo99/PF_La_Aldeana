@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Buttons from '../../../common/Buttons';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
@@ -14,9 +14,8 @@ import '../../../assets/Buttons.css';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import formattedDate from "../../../utils/formattedDate";
-import dateToString from "../../../utils/ConverterDate/dateToString";
-import useHTTPGet from '../../../hooks/useHTTPGet';
+import { Label } from "reactstrap";
+import dateText from "../../../utils/DateFormat/dateText";
 
 const PORT = require('../../../config');
 
@@ -25,13 +24,9 @@ const FormSalary = (props) => {
     const [showSpinner,setShowSpinner] = useState(true);
     const [employees,setEmployees] = useState([]);
     const [employee,setEmployee] = useState(null);
-    const [employeesView,setEmployeesView] = useState([]);
-    const [employeesStart,setEmployeesStart] = useState(null);
-    const [errorDate,setErrorDate] = useState(true);
-    const [errorRelationship,setErrorRelationship] = useState(true);
+    const [nro, setNro] = useState(0);
     const [errorName,setErrorName] = useState(true);
     const [errorPrice,setErrorPrice] = useState(true);
-    const [searchState,setSearchState] = useState('');
     
     const [othersPlus, setOthersPlus] = useState([]);
     const [othersMinus, setOthersMinus] = useState([]);
@@ -46,62 +41,18 @@ const FormSalary = (props) => {
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const [date, setDate] = useState("null");
-    const [month, setMonth] = useState(props.salary.month);
-    const startDate = formattedDate(new Date(), -2);
-    let startMonth = formattedDate(new Date(),2);
-    const [maxMonth, setMaxMonth] = useState(formattedDate(new Date(), 6));
-    const inputMonth = useRef(null);
-    const [isValidMonth, setIsValidMonth] = useState("form-control");
-
-    const relationships = useHTTPGet(PORT() + '/api/relationships');
-    const [selectValue, setSelectValue] = useState("-1");
-
     useEffect(() => {
-        if(props.action !== "Registrar"){
-            Axios.get(`${PORT()}/api/employees/${props.license.dni}`)
-            .then((response) => {
-                setEmployee(response.data[0]);
-                setShowSpinner(false);
-            })
-            if(props.action === 'Ver'){
-            }
-            else{
-                employeesUpload();
-                setErrorDate(false);
-                setErrorRelationship(false);
-                setErrorName(false);
-                setErrorPrice(false);
-            }
-        }
-        else{
-            employeesUpload();
-            employeesViewUpload();
-        }
-    },[props.action])
-
-    useEffect(() => {
-        employeesViewUpload();
-    },[employeesStart])
-
-    const employeesUpload = () => {
-        Axios.get(PORT() + '/api/employees')
-            .then((response) => {
-                setEmployees(response.data);
-                setEmployeesView(response.data.slice(0,6));
-                setEmployeesStart(0);
-                setShowSpinner(false);
-            })
-            .catch((error) => {console.log(error);});
-    };
-
-    const employeesViewUpload = () => {
-        let aux = employees.slice(employeesStart,employeesStart+6);
-        setEmployeesView(aux);
-    }
+        Axios.get(`${PORT()}/api/employees`)
+        .then((response) => {
+            setEmployees(response.data);
+            if (props.action === 'Registrar') setEmployee(response.data[nro]);
+            else setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.employee }));
+            setShowSpinner(false);
+        });
+    },[props.action]);
     
-    const registerLicense = () => {
-        loadingMessage("Registrando la licencia")
+    const registerSalary = () => {
+        loadingMessage("Registrando el salario");
         /*Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
                 "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
         .then((response) => {
@@ -112,8 +63,8 @@ const FormSalary = (props) => {
         */
     }
 
-    const editLicense = () => {
-        loadingMessage("Editando licencia")
+    const editSalary = () => {
+        loadingMessage("Editando salario");
         /*
         Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {"date_init": dateInit.current.value,
             "date_finish": dateFinish.current.value,"dni_employee": employee.dni,"reason": reason.current.value})
@@ -129,8 +80,15 @@ const FormSalary = (props) => {
         if(showMsg){
             warningMessage('Atención','Se ha registrado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
+        } else if (nro < employees.length) {
+            if (nro === 0) {
+                setNro(nro + 2);
+                setEmployee(employees[nro + 2]);
+            } else {
+                setNro(nro + 1);
+                setEmployee(employees[nro + 1]);
+            }
         }
-        setSearchState('');
     }
 
     const comeBack = (msg) => {
@@ -142,16 +100,10 @@ const FormSalary = (props) => {
     }
 
     const actionNotOK = () =>{
-        if(errorRelationship){
-            warningMessage('Atención','Se debe cargar el tipo de relación laboral de los empleados a los cuales se les generara el salario','warning');
-        }
-        else if(errorDate){
-            warningMessage('Atención','Se debe cargar el mes para el cuál se desea generar los salarios','warning');
-        }
-        else if(errorName){
+        if (errorName){
             warningMessage('Atención','Se debe ingresar un nombre a totdos los adicionales y descuentos','warning');
         }
-        else if(errorPrice){
+        else if (errorPrice){
             warningMessage('Atención','Todos los campos de precio deben ser completados y superiores a 0','warning');
         }
     }
@@ -247,7 +199,7 @@ const FormSalary = (props) => {
                 setErrorPrice(true);
                 flagP = true;
             }
-            acuTotalHs += i.hs * i.price +1;
+            acuTotalHs += i.hs * i.price;
         });
         
         acuSubtotal += acuTotalHs;
@@ -278,68 +230,12 @@ const FormSalary = (props) => {
             acuTotal -= i.price;
         });
 
-        setTotalHs(acuTotalHs);
-        setSubtotal(acuSubtotal);
-        setTotal(acuTotal);
+        setTotalHs(acuTotalHs ? acuTotalHs : 0);
+        setSubtotal(acuSubtotal ? acuSubtotal : 0);
+        setTotal(acuTotal ? acuTotal : 0);
         setErrorName(flagN);
         setErrorPrice(flagP);
     }, [total, subtotal, totalHs, main, othersMinus, othersPlus]);
-
-    const onChangeMonth = () => {
-        if (inputMonth) {
-            setMonth(inputMonth.current.value);
-            setErrorDate(false);
-        }
-    }
-
-    useEffect(() => {
-        if (props.action === 'Registrar' && inputMonth.current && !inputMonth.current.value) {
-            inputMonth.current.value = startMonth.slice(0,-3);
-            setMonth(inputMonth.current.value + '-01');
-            props.salary.month = inputMonth.current.value + '-01';
-        }
-        else if (inputMonth.current && !inputMonth.current.value && props.action !== 'Registrar') {
-            inputMonth.current.value = props.salary.month.slice(0,-3);
-            setMonth(inputMonth.current.value + '-01');
-        }
-        else if (inputMonth.current) {
-
-            let aux = props.salary.month;
-            if (aux.length !== 10) aux = props.salary.month;
-            if (!inputMonth.current.value) inputMonth.current.value = aux.slice(0,-3);
-            let min = inputMonth.current.min + '-10';
-            let max = inputMonth.current.max + '-10';
-
-            if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
-                if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
-                    if (props.salary.month !== inputMonth.current.value){
-                        setIsValidMonth("form-control is-valid");
-                        props.salary.month = inputMonth.current.value + '-01';
-                        setMonth(inputMonth.current.value + '-01');
-                    }
-                }
-            } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5)) && parseInt(aux.slice(5, -3)) <= parseInt(max.slice(5, -3))) {
-                if (props.salary.month !== inputMonth.current.value && month){
-                    setIsValidMonth("form-control is-valid");
-                    props.salary.month = inputMonth.current.value + '-01';
-                    setMonth(inputMonth.current.value + '-01');
-                }
-            }/*
-            else {
-                if (!load) {
-                    inputMonth.current.value = aux;
-                    //isLoad(true);
-                }
-            }*/
-        }
-    }, [startMonth, month, props]);
-
-    const handleRelationship = (e) => {
-        if (e.target.value > 0) {
-            setSelectValue(e.target.value);
-            setErrorRelationship(false);
-        } else setErrorRelationship(true);
-    }
 
     return(
     <>
@@ -349,49 +245,13 @@ const FormSalary = (props) => {
             <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_license + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
         </div>
         <div className="container" >
-
-            <BeShowed show={!showSpinner && props.action === 'Registrar'}>
-                <div className="formRow">
-                    <div className="form-control-label">
-                        <label htmlFor="firstMonth" >Tipo de Empleado*</label>
-                    </div>
-                    <div className="form-control-input">
-                        <select className="form-control" id="selectRelationship"
-                            value={selectValue}
-                            onChange={handleRelationship}>
-                            <option disabled value="-1">Seleccione tipo de realción laboral...</option>
-                            {relationships?.map((r, i) => {
-                                if (r.id_employee_relationship === 1) return (<option key={i} value={r.id_employee_relationship}>{r.name}</option>);
-                                else return (<option disabled key={i} value={r.id_employee_relationship}>{r.name}</option>);
-                            })}
-                        </select>
-                    </div>
-                </div>
-                <div className="formRow">
-                    <div className="form-control-label">
-                        <label htmlFor="firstMonth" >Mes a generar*</label>
-                    </div>
-                    <div className="form-control-input">
-                        <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)}
-                        max={maxMonth.slice(0,-3)} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
-                    </div>
-                </div>
-            </BeShowed>
             <br/>
-
             <BeShowed show={showSpinner}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
-            <BeShowed show={!showSpinner && props.action !== 'Registrar'}>
-                <div className="form-control-label">
-                    <label htmlFor="firstMonth" >Mes a generar*</label>
-                </div>
-                <div className="form-control-label">
-                    <input ref={inputMonth} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
-                </div>
-                <ShowSelectedEmployee selectedEmployee={employee}/>
-            </BeShowed>
             <BeShowed show={!showSpinner}>
+                <label>Fecha: <a style={{fontWeight: 'bold'}} >{dateText(props.month, false, true)}</a></label>
+                <ShowSelectedEmployee selectedEmployee={employee}/>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-4">
                     </div>
@@ -420,7 +280,7 @@ const FormSalary = (props) => {
                                 onChange={(e) => addPrice(i, e, 0)} min='0' max='999999' />
                             </div>
                             <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
-                                <label style={{paddingLeft: '1em'}}>${i.hs*i.price}</label>
+                                <label style={{paddingLeft: '1em'}}>${(i.hs*i.price) ? i.hs*i.price : 0}</label>
                             </div>
                         </div>
                     )
@@ -434,7 +294,7 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
-                <BeShowed show={(month ? month.slice(5, -3) === '01' || month.slice(5, -3) === '12' : false) && props.action === 'Registrar'}>
+                <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && props.action === 'Registrar'}>
                     <div className="formRow justify-content-center">
                         <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>Aguinaldo</label>
@@ -501,12 +361,12 @@ const FormSalary = (props) => {
                 </div>
             </BeShowed>
             <BeShowed show={props.action === 'Registrar'}>   
-                <Buttons ready={(!errorDate && !errorRelationship && !errorName && !errorPrice)}
-                    label='Registrar' actionNotOK={actionNotOK} actionOK={registerLicense} actionCancel={() => {resetStates(false)}}/>
+                <Buttons ready={(!errorName && !errorPrice)}
+                    label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionCancel={() => {resetStates(false)}}/>
             </BeShowed>
             <BeShowed show={props.action === 'Editar'}>   
-                <Buttons ready={(!errorDate && !errorRelationship && !errorName && !errorPrice)}
-                    label='Confirmar' actionNotOK={actionNotOK} actionOK={editLicense} actionCancel={() => {comeBack(false)}}/>
+                <Buttons ready={(!errorName && !errorPrice)}
+                    label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
             </BeShowed>
             <BeShowed show={props.action === 'Ver'}> 
                 <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>

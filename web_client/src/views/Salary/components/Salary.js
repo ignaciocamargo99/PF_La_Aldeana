@@ -1,32 +1,43 @@
 import '../../../assets/Buttons.css';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import LicensesTable from './LicensesTable';
-import { useEffect, useState } from "react";
+import SalariesTable from './SalariesTable';
+import { useEffect, useState, useRef } from "react";
 import Axios from "axios";
 import BeShowed from '../../../common/BeShowed';
 import FormSalary from './FormSalary';
-import ListLicensesFilter from './ListLicensesFilter';
+import ListSalaryFilter from './ListSalaryFilter';
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import formattedDate from '../../../utils/formattedDate';
+import dateToString from "../../../utils/ConverterDate/dateToString";
+import useHTTPGet from '../../../hooks/useHTTPGet';
 
 const PORT = require('../../../config');
 
 const Salary = (props) => {
     
-    const[salaries,setSalaries] = useState([]);
-    const[salary,setSalary] = useState({month: formattedDate(new Date())});
-    const[showSpinner,setShowSpinner] = useState(true);
-    const[action,setAction] = useState('Listar');
-    const[reloadList,setReloadList] = useState(false);
-    const[filter,setFilter] = useState('All');
+    const [salaries,setSalaries] = useState([]);
+    const [salary,setSalary] = useState({month: formattedDate(new Date()), employee: 36185966});
+    const [showSpinner,setShowSpinner] = useState(true);
+    const [action,setAction] = useState('Listar');
+    const [reloadList,setReloadList] = useState(false);
+    const [filter,setFilter] = useState('All');
+    const [errorDate,setErrorDate] = useState(true);
+
+    const [date, setDate] = useState("null");
+    const [month, setMonth] = useState(formattedDate(new Date()));
+    const startDate = formattedDate(new Date(), -2);
+    let startMonth = formattedDate(new Date(),2);
+    const [maxMonth, setMaxMonth] = useState(formattedDate(new Date(), 6));
+    const inputMonth = useRef(null);
+    const [isValidMonth, setIsValidMonth] = useState("form-control");
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)
         .then((response) => {
             setSalaries(response.data);
             setShowSpinner(false);
-            setFilter('All');
+            setFilter('NonConfirm');
         })
     },[reloadList])
 
@@ -39,6 +50,57 @@ const Salary = (props) => {
         setAction('Registrar');
     }
 
+    const onChangeMonth = () => {
+        if (inputMonth) {
+            setMonth(inputMonth.current.value);
+            setErrorDate(false);
+        }
+    }
+
+    useEffect(() => {
+        if (action === 'Listar') {
+            if (inputMonth.current && !inputMonth.current.value) {
+                inputMonth.current.value = startMonth.slice(0,-3);
+                setMonth(inputMonth.current.value + '-01');
+                salary.month = inputMonth.current.value + '-01';
+            }
+            else if (inputMonth.current && !inputMonth.current.value) {
+                inputMonth.current.value = salary.month.slice(0,-3);
+                setMonth(inputMonth.current.value + '-01');
+            }
+            else if (inputMonth.current) {
+
+                let aux = salary.month;
+                if (aux.length !== 10) aux = salary.month;
+                if (!inputMonth.current.value) inputMonth.current.value = aux.slice(0,-3);
+                let min = inputMonth.current.min + '-10';
+                let max = inputMonth.current.max + '-10';
+
+                if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
+                    if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
+                        if (salary.month !== inputMonth.current.value){
+                            setIsValidMonth("form-control is-valid");
+                            salary.month = inputMonth.current.value + '-01';
+                            setMonth(inputMonth.current.value + '-01');
+                        }
+                    }
+                } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5)) && parseInt(aux.slice(5, -3)) <= parseInt(max.slice(5, -3))) {
+                    if (salary.month !== inputMonth.current.value && month){
+                        setIsValidMonth("form-control is-valid");
+                        salary.month = inputMonth.current.value + '-01';
+                        setMonth(inputMonth.current.value + '-01');
+                    }
+                }/*
+                else {
+                    if (!load) {
+                        inputMonth.current.value = aux;
+                        //isLoad(true);
+                    }
+                }*/
+            }
+        }
+    }, [startMonth, month, salary]);
+
     return(<>
             {showSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
@@ -48,17 +110,28 @@ const Salary = (props) => {
                         <div style={{display: 'none'}}>{document.title = "Salarios"}</div>
                         <div className="viewTitleBtn">
                             <h1>Salarios</h1>
-                            <button id='addSalaryButton' onClick={onClickNewSalary} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                         </div>
                         <div className="viewBody">
-                            <ListLicensesFilter onClickRB={setFilter} filter={filter}/>
-                            <LicensesTable licenses={salaries} showSpinner={showSpinner} setActionLicense={setActionSalary} 
-                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>
+                            <div className="formRow">
+                                <div className="form-control-label col-sm-3">
+                                    <label htmlFor="firstMonth" >Mes a generar*</label>
+                                </div>
+                                <div className="form-control-input col-sm-8">
+                                    <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)}
+                                    max={maxMonth.slice(0,-3)} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
+                                </div>
+                                <div className="form-control-input col-sm-1">
+                                    <button id='addSalaryButton' disabled={errorDate} style={errorDate ? {backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
+                                </div>
+                            </div>
+                            <ListSalaryFilter onClickRB={setFilter} filter={filter}/>
+                            {/*<SalariesTable licenses={salaries} showSpinner={showSpinner} setActionLicense={setActionSalary} 
+                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>*/}
                         </div>
                     </BeShowed>
                     <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
                         <FormSalary setActionSalary={setActionSalary} action={action} salary={salary} salaries={salaries} 
-                                    reloadList={reloadList} setReloadList={setReloadList}/>
+                                    reloadList={reloadList} setReloadList={setReloadList} month={month} />
                     </BeShowed>
                 </div>
             }

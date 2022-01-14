@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const PORT = require('../../../config');
 
-export default function LicensesTable(props) {
+export default function SalariesTable(props) {
 
     const[date,setDate] = useState(new Date().setHours(0,0,0,0))
 
@@ -103,7 +103,7 @@ export default function LicensesTable(props) {
             </BeShowed>
             <BeShowed show={!props.showSpinner && props.licenses.length === 0}>
                 <br/>
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron licencias registradas hasta el momento.</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron sueldos registrados hasta el momento que coincidan con la busqueda.</h4>
             </BeShowed>
         </>
     );
