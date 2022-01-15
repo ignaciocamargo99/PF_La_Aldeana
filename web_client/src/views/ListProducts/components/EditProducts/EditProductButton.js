@@ -1,6 +1,6 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import '../../../assets/Buttons.css';
+import '../../../../assets/Buttons.css';
 
 export default function EditProductButton (props) {
 

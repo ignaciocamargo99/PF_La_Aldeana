@@ -2,10 +2,10 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import DeleteProductButton from '../DeleteProductButton';
-import EditProductButton from '../EditProductButton';
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import EditProductButton from '../EditProducts/EditProductButton';
+import ReadProductButton from "../ReadProducts/ReadProductButton";
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleEdit, handleDelete }) => {
+const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
     return (
         <>
             <div className="formRow title-searcher">
@@ -34,7 +34,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleEdit, handle
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <button id='readProductButton' type="button" className="sendEdit" ><FontAwesomeIcon icon={faEye} /></button>
+                                        <ReadProductButton product={element} read={handleRead}/>
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditProductButton product={element} edit={handleEdit} />
