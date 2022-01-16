@@ -78,6 +78,16 @@ export default function ExtraDataEmployee(props) {
                 </div>
             </div>
 
+            {props.data.reading &&
+                <ul>
+                    {data.charges.map((c) => {
+                        return (
+                            <li key={c.chargeId}>{c.chargeName}</li>
+                        )
+                    })}
+                </ul>
+            }
+
             {!props.data.reading && allCharges.map((c) => {
                 if (props.data.editing) {
                     return (
