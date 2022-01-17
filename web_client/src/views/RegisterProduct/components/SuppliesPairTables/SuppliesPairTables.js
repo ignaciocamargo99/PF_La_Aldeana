@@ -180,17 +180,18 @@ export default function SuppliesPairTables({ load, data }) {
                             </table>
                         </div>
                         <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-                        <TableSuppliesDown download={download} supplies={destinyTable} data={data}/>
+                        <TableSuppliesDown download={download} supplies={destinyTable} data={data} />
                     </>
                 )}
             </BeShowed>
             <BeShowed show={data.reading}>
-                {isLoadingSpinner && (
-                    <SpinnerTableSupplies></SpinnerTableSupplies>
-                )}
-                {!isLoadingSpinner && (
-                    <TableSuppliesDown download={download} supplies={destinyTable} data={data}/>
-                )}
+                {!isLoadingSpinner ?
+                    destinyTable.length > 0
+                        ? <TableSuppliesDown download={download} supplies={destinyTable} data={data} />
+                        : <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron insumos cargados para este producto...</h4>
+                    : <SpinnerTableSupplies></SpinnerTableSupplies>
+                }
+
             </BeShowed>
 
         </>

@@ -63,33 +63,31 @@ export default function ImageProduct(props) {
                     </div>
                 </div>
             </BeShowed>
-            {isLoadingSpinner && (
+            {!isLoadingSpinner
+                ?
+                (previewImg || (image && image.length > 0))
+                    ?
+                    <>
+                        <BeShowed show={previewImg}>
+                            <img className="rounded mx-auto d-block img-thumbnail" id="imagenPrevisualizacion" src={previewImg}></img>
+                        </BeShowed>
+                        <BeShowed show={!previewImg && image}>
+                            {image?.map((image) => (
+                                <img className="rounded mx-auto d-block img-thumbnail" key={image} id="imagenPrevisualizacion" src={PORT() + '/' + image}></img>
+                            ))}
+                        </BeShowed>
+                    </>
+                    :
+                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>Este producto no tiene una imagen asociada aún...</h4>
+                :
                 <>
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <LoaderSpinner color="primary" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-center">
-                        <div className="col-auto">
-                            <label className="text-muted" style={{ margin: '10px', padding: '10px 50px 50px 50px' }}>Cargando imagen. Aguarde...</label>
+                            <LoaderSpinner color="primary" loading="Cargando imagen. Aguarde..." />
                         </div>
                     </div>
                 </>
-            )}
-
-            {!isLoadingSpinner && (
-                <>
-                    <BeShowed show={previewImg}>
-                        <img className="rounded mx-auto d-block img-thumbnail" id="imagenPrevisualizacion" src={previewImg}></img>
-                    </BeShowed>
-                    <BeShowed show={!previewImg && image}>
-                        {image?.map((image) => (
-                            <img className="rounded mx-auto d-block img-thumbnail" key={image} id="imagenPrevisualizacion" src={PORT() + '/' + image}></img>
-                        ))}
-                    </BeShowed>
-                </>
-            )}
+            }
         </>
     );
 };

@@ -24,7 +24,7 @@ const NameProduct = (props) => {
             data.name = name;
             props.load(data);
         }
-    }, [name && !props.data.reading]);
+    }, [name]);
 
     return (
         <div className="formRow">

@@ -11,6 +11,7 @@ import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
 import displayError from "../../../../utils/ErrorMessages/displayError";
+import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../../config');
 
@@ -49,7 +50,8 @@ const EditProducts = (props) => {
         formData.append('supplies', jsonArrSupplies);
         formData.append('flagImageUpdate', data.flagImageUpdate);
         formData.append('flavor', data.flavor);
-
+        
+        loadingMessage('Guardando cambios...');
         Axios.put(PORT() + urlApi, formData)
             .then((data) => {
                 if (data.data.Ok) successMessage('Atención', 'El producto se ha editado correctamente', 'success');
