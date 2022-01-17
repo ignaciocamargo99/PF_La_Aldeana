@@ -17,6 +17,7 @@ const ProductTable = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [productToEdit, setProductToEdit] = useState({});
+    const [productToRead, setProductToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     const getProducts = () => {
@@ -56,8 +57,8 @@ const ProductTable = () => {
             const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
             let aux = productData(product, productSupplies);
             aux.reading = true;
+            setProductToRead(aux);
             setIsReading(true);
-            setProductToEdit(aux);
         }
         catch {
             displayError();
@@ -135,7 +136,7 @@ const ProductTable = () => {
                         <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
                     </BeShowed>
                     <BeShowed show={isReading}>
-                        <ReadProducts onClickCancelRead={onClickCancelRead} productToRead={productToEdit} />
+                        <ReadProducts onClickCancelRead={onClickCancelRead} productToRead={productToRead} />
                     </BeShowed>
                 </>
             )}
