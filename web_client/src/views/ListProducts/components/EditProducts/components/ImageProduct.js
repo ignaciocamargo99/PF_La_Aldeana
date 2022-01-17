@@ -38,26 +38,31 @@ export default function ImageProduct(props) {
 
     useEffect(() => {
         let data = props.data;
-        if (inputImg.current.files[0]) {
-            data.flagImageUpdate = true
-            data.img = inputImg.current.files[0];
+        if (inputImg.current) {
+            if (inputImg.current.files[0]) {
+                data.flagImageUpdate = true
+                data.img = inputImg.current.files[0];
+            }
+            else data.flagImageUpdate = false;
+            props.load(data);
         }
-        else data.flagImageUpdate = false;
-        props.load(data);
+
     }, [previewImg]);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
         <>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="productImage2" className="form-label">Imagen</label>
+            <BeShowed show={!props.data.reading}>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="productImage2" className="form-label">Imagen</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
+                    </div>
                 </div>
-                <div className="form-control-input">
-                    <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
-                </div>
-            </div>
+            </BeShowed>
             {isLoadingSpinner && (
                 <>
                     <div className="row justify-content-center">
