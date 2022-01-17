@@ -56,6 +56,10 @@ export default function ExtraDataEmployee(props) {
     }
 
     const handlerOnChange = (e) => {
+        if (props.data.reading) {
+            return;
+        };
+
         if (e.target.value === "black") data.employmentRelationshipId = 2;
         else data.employmentRelationshipId = 1;
         props.data.editing = false;
@@ -89,28 +93,15 @@ export default function ExtraDataEmployee(props) {
             }
 
             {!props.data.reading && allCharges.map((c) => {
-                if (props.data.editing) {
-                    return (
-                        <ChargeCheckbox
-                            key={c.id_charge}
-                            chargeId={c.id_charge}
-                            chargeName={c.name}
-                            employeeData={data}
-                            updateEmployeeData={props.load}
-                        ></ChargeCheckbox>
-                    )
-                }
-                else {
-                    return (
-                        <ChargeCheckbox
-                            key={c.id_charge}
-                            chargeId={c.id_charge}
-                            chargeName={c.name}
-                            employeeData={data}
-                            updateEmployeeData={props.load}
-                        ></ChargeCheckbox>
-                    )
-                }
+                return (
+                    <ChargeCheckbox
+                        key={c.id_charge}
+                        chargeId={c.id_charge}
+                        chargeName={c.name}
+                        employeeData={data}
+                        updateEmployeeData={props.load}
+                    ></ChargeCheckbox>
+                )
             })}
 
             <div className="formRow">
@@ -126,46 +117,40 @@ export default function ExtraDataEmployee(props) {
                     </BeShowed>
                 </div>
             </div>
+
             <div className="formRow">
                 <div className="form-control-label">
                     <label>Relación laboral*</label>
                 </div>
                 <div className="d-flex form-radio-group">
                     <div className="form-check form-radio">
-                        <BeShowed show={props.data.reading}>
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="black" value="black" ref={rb1} disabled></input>
-                        </BeShowed>
-                        <BeShowed show={!props.data.reading}>
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="black" value="black" ref={rb1} onChange={handlerOnChange}></input>
-                        </BeShowed>
+                        <input
+                            className="form-check-input"
+                            disabled={props.data.reading}
+                            id="black"
+                            name="flexRadioDefault"
+                            onChange={handlerOnChange}
+                            ref={rb1}
+                            type="radio"
+                            value="black"
+                        >
+                        </input>
+
                         <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
 
                     <div className="form-check">
-                        {props.data.reading && (
-                            <input
-                                className="form-check-input"
-                                disabled
-                                id="white"
-                                name="flexRadioDefault"
-                                ref={rb2}
-                                type="radio"
-                                value="white"
-                            >
-                            </input>
-                        )}
-                        {!props.data.reading && (
-                            <input
-                                className="form-check-input"
-                                id="white"
-                                name="flexRadioDefault"
-                                onChange={handlerOnChange}
-                                ref={rb2}
-                                type="radio"
-                                value="white"
-                            >
-                            </input>
-                        )}
+                        <input
+                            className="form-check-input"
+                            disabled={props.data.reading}
+                            id="white"
+                            name="flexRadioDefault"
+                            onChange={handlerOnChange}
+                            ref={rb2}
+                            type="radio"
+                            value="white"
+                        >
+                        </input>
 
                         <label className="form-check-label" htmlFor="white"> Relación de dependencia </label>
                     </div>
