@@ -27,6 +27,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
     const [nonworkingDays,setNonworkingDays] = useState(null);
     const [nonworkingDaysMonth,setNonworkingDaysMonth] = useState(null);
     const [jdEmployees,setJDEmployees] = useState(null);
+    const [turns,setTurns] = useState(null);
 
     const today = new Date()
     const tomorrow = new Date(today)
@@ -90,6 +91,13 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
         .catch((error) => console.log(error));
     },[month,year])
 
+    useEffect(() => {
+        axios.get(`${PORT()}/api/turns`)
+        .then((response) => {
+            setTurns(response.data);
+        })
+    },[])
+
     const viewTitle = 'Grilla de Horarios';
 
     const generateNewScheduleClicked = () => {
@@ -137,7 +145,7 @@ const EmployeesSchedulesView = ({ schedule, addDaySchedule }) => {
                     <div className="container-fluid">
                         <MonthView month={month} setMonth={setMonth} year={year} setYear={setYear} employees={employees} 
                                     licensesMonth={licensesMonth} nonworkingDaysMonth={nonworkingDaysMonth}
-                                    jdEmployees={jdEmployees}/>
+                                    jdEmployees={jdEmployees} turns={turns}/>
                     </div>
                 </BeShowed>
                 <BeShowed show={showAutomatedSchedule}>

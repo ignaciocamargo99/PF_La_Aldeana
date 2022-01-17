@@ -1,28 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import showMeMonth from "../../../utils/ShowMeMonth/showMeMonth";
 
-const Stats = ({employee,day,month}) => {
+const Stats = ({employee,employeeStats,day,dayStats,month,turns}) => {
     
+    const[daysWorks,setDaysWorks] = useState(0);
+
+    useEffect(() => {
+        let newDaysWorks = 0;
+        employeeStats?.forEach((stat) => {
+            newDaysWorks = newDaysWorks + stat
+        })
+        setDaysWorks(newDaysWorks)
+    },[employeeStats])
+
     return(
         <>
             <BeShowed show={employee}>
                 <div style={{paddingLeft: '2%'}}>
                     <label><b>{employee?.name.toUpperCase()}</b></label>
+                    {turns?.map((turn,i) => {
+                        return(
+                        <div key={turn.id_compound_turn} className="formRow">
+                            <label style={{fontSize: 15}}>{turn.name}: {employeeStats?employeeStats[i]:0}</label>
+                        </div>)
+                    })}
                     <div className="formRow">
-                        <label style={{fontSize: 15}}>Mañanas: </label>
-                    </div>
-                    <div className="formRow">
-                        <label style={{fontSize: 15}}>Tardes: </label>
-                    </div>
-                    <div className="formRow">
-                        <label style={{fontSize: 15}}>Noches: </label>
-                    </div>
-                    <div className="formRow">
-                        <label style={{fontSize: 15}}>U. Noches: </label>
-                    </div>
-                    <div className="formRow">
-                        <label style={{fontSize: 15}}>Dias trabajados: </label>
+                        <label style={{fontSize: 15}}>Dias trabajados: {daysWorks}</label>
                     </div>
                 </div>
             </BeShowed>

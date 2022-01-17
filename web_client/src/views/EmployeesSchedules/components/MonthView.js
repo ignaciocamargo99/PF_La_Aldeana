@@ -4,17 +4,23 @@ import BeShowed from '../../../common/BeShowed';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import showMeMonth from '../../../utils/ShowMeMonth/showMeMonth';
 import Stats from './Stats';
-import './Employees.css';
 import axios from 'axios';
+import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import swal from 'sweetalert';
+import './Employees.css';
 
 const PORT = require('../../../config');
 
-const MonthView = ({month, setMonth, year, setYear, employees, licensesMonth, nonworkingDaysMonth ,jdEmployees}) => {
+
+const MonthView = ({month, setMonth, year, setYear, employees, licensesMonth, nonworkingDaysMonth ,jdEmployees, turns}) => {
 
     const[firstHalfMonth,setFirstHalfMonth] = useState(true);
-    //const[employee,setEmployee] = useState(null);
+    const[employee,setEmployee] = useState(null);
+    const[employeeStats,setEmployeeStats] = useState(null);
+    const[initialInputValues,setInitialInputValues] = useState([[]]);
     const[inputsValues,setInputsValues] = useState([[]]);
-    //const[day,setDay] = useState(null);
+    const[day,setDay] = useState(null);
+    const[dayStats,setDayStats] = useState(null);
 
     useEffect(() => {
         if(employees && licensesMonth && jdEmployees){
@@ -52,9 +58,8 @@ const MonthView = ({month, setMonth, year, setYear, employees, licensesMonth, no
                 index = employees.findIndex((employee) => employee.dni === jDE.employee_dni);
                 initInputValues[index][i] = jDE.abbreviation;
             })
-
         }
-        console.log(initInputValues);
+        setInitialInputValues(initInputValues);
         setInputsValues(initInputValues);
     }
 
@@ -77,7 +82,41 @@ const MonthView = ({month, setMonth, year, setYear, employees, licensesMonth, no
         let newMonth = parseInt(inputValue.slice(5,inputValue.length)) - 1;
         setMonth(newMonth);
         setYear(newYear);
+        setInputsValues([[]]);
     }
+
+    const loadDJEmployees = () => {
+        loadingMessage('Guardando datos...');
+        let changes = false;
+        for(let i = 0; i < inputsValues[0].length ; i++){
+            let newJDEmployee = {date: `${year}-${month<9?'0'+(month+1):month+1}-${i+1}`,
+                                 employee_dni: null,
+                                 id_compound_turn: null};
+            employees.forEach((employee,j) => {
+                if(!(initialInputValues[j][i] === inputsValues[j][i])){
+                    changes = true;
+                    newJDEmployee.employee_dni = employee.dni;
+                    let idTurn = turns.findIndex(turn => turn.abbreviation === inputsValues[j][i]);
+                    newJDEmployee.id_compound_turn = idTurn + 1;
+                    if(initialInputValues[j][i] !== ''){
+                        axios.put(`${PORT()}/api/jdEmployee`,newJDEmployee)
+                        .catch((error) => console.log(error));
+                    }else{
+                        axios.post(`${PORT()}/api/jdEmployee`,newJDEmployee)
+                        .catch((error) => console.log(error));
+                    }
+                }
+                if((i === inputsValues[0].length - 1) && j === (inputsValues.length - 1)){
+                    if(changes){
+                        swal("Correcto", "Se han grabado los datos correctamente", "success");
+                    }else{
+                        swal("Advertencia", "No has modificado ningun dato", "warning");
+                    }
+                }
+            })
+        }
+    }
+
     return(
         <>
             <div className="formRow">
@@ -91,9 +130,14 @@ const MonthView = ({month, setMonth, year, setYear, employees, licensesMonth, no
                     <div className="col-sm-10">
                         <TableScheduleEmployees inputsValues={inputsValues} nonworkingDaysMonth={nonworkingDaysMonth}
                                                 licensesMonth={licensesMonth} setInputsValues={setInputsValues}
-                                                employees={employees} year={year} month={month} firstHalfMonth={firstHalfMonth}/>
+                                                employees={employees} year={year} month={month} firstHalfMonth={firstHalfMonth}
+                                                turns={turns} setEmployee={setEmployee} setEmployeeStats={setEmployeeStats}
+                                                setDay={setDay} setDayStats={setDayStats}/>
                     </div>
-                    <Stats employee={null} day={1} month={month}/>
+                    <Stats employee={employee} employeeStats={employeeStats} day={day} dayStats={dayStats} month={month} turns={turns} />
+                </div>
+                <div className='formRow col-sm-1 offset-sm-11'>
+                    <button className='sendOk' style={{height: "20%"}} onClick={loadDJEmployees}>Grabar datos del mes</button> 
                 </div>
             </BeShowed>
             <div className='col-sm-10'>

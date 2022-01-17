@@ -10,8 +10,8 @@ const employeeGetDB = (dni) => {
         sqlSelect = sqlSelect + `AND e.dni = ${dni} ORDER BY e.last_name`
     }
     else {
-        sqlSelect = `SELECT dni, name, last_name, date_admission ,charge, employment_relationship
-        FROM EMPLOYEES WHERE active = 1 ORDER BY last_name`;
+        sqlSelect = `SELECT e.dni, e.name, e.last_name, e.date_admission ,e.charge, e.employment_relationship, c.name AS name_charge
+        FROM EMPLOYEES e INNER JOIN CHARGES c ON e.charge = c.id_charge WHERE active = 1 ORDER BY last_name`;
     }
 
     return new Promise((resolve, reject) => {

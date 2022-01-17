@@ -1,4 +1,4 @@
-const { jdEmployeeGetDB } = require('../db/jdEmployeeDB');
+const { jdEmployeeGetDB, jdEmployeeCreateDB, jdEmployeeUpdateDB } = require('../db/jdEmployeeDB');
 
 const readJDEmployee = async (params) => {
     try {
@@ -10,4 +10,24 @@ const readJDEmployee = async (params) => {
     };
 };
 
-module.exports = { readJDEmployee }
+const createJDEmployee = async (newJDEmployee) => {
+    try {
+        let res = await jdEmployeeCreateDB(newJDEmployee);
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+const modifyJDEmployee = async (updateJDEmployee) => {
+    try {
+        let res = await jdEmployeeUpdateDB(updateJDEmployee);
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+module.exports = { readJDEmployee , createJDEmployee, modifyJDEmployee}
