@@ -37,25 +37,29 @@ export default function App() {
       </header>
       <BrowserRouter>
         <div className="viewContainer">
-          <BeShowed show={cookies.get('nick_user') !== undefined}>
-            <Route path='/app/products' component={ListProducts}></Route>
-            <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
-            <Route path='/app/franchise' component={RegisterFranchise}></Route>
-            <Route path='/app/registerProducts' component={RegisterProductView}></Route>
-            <Route path='/app/supplies' component={RegisterSupplyView}></Route>
-            <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
-            <Route path='/app/production' component={RegisterProductionView}></Route>
-            <Route path='/app/salesReport' component={SalesReport}></Route>
-            <Route path='/app/employees' component={ListEmployees}></Route>
-            <Route path='/app/employeesSchedules' component={EmployeesSchedulesView}></Route>
-            <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
-            <Route path='/app/licenses' component={Licenses}></Route>
-            <Route path='/app/assistanceEmployees' component={ListEmployeesAssistance}></Route>
-            <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
-            <Route path='/app/advances' component={ListAdvances}></Route>
-            <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
-          </BeShowed>
-          <Route path='/app/index' component={Login}></Route>
+          {(window.location.pathname === '/app/index' || window.location.pathname === '/' || window.location.pathname === '/index')
+            ?
+            <Route path='/' component={Login}></Route>
+            :
+            <BeShowed show={cookies.get('nick_user') !== undefined}>
+              <Route path='/app/products' component={ListProducts}></Route>
+              <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
+              <Route path='/app/franchise' component={RegisterFranchise}></Route>
+              <Route path='/app/registerProducts' component={RegisterProductView}></Route>
+              <Route path='/app/supplies' component={RegisterSupplyView}></Route>
+              <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
+              <Route path='/app/production' component={RegisterProductionView}></Route>
+              <Route path='/app/salesReport' component={SalesReport}></Route>
+              <Route path='/app/employees' component={ListEmployees}></Route>
+              <Route path='/app/employeesSchedules' component={EmployeesSchedulesView}></Route>
+              <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
+              <Route path='/app/licenses' component={Licenses}></Route>
+              <Route path='/app/assistanceEmployees' component={ListEmployeesAssistance}></Route>
+              <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
+              <Route path='/app/advances' component={ListAdvances}></Route>
+              <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
+            </BeShowed>
+          }
         </div>
       </BrowserRouter>
       <footer className="footer text-center">
