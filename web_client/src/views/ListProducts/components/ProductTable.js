@@ -42,11 +42,11 @@ const ProductTable = () => {
         try {
             const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
             let aux = productData(product, productSupplies)
+            aux.editing = true;
             setProductToEdit(aux);
             setIsEditing(true);
         }
-        catch(error) {
-            console.error(error)
+        catch {
             displayError();
         }
     };
@@ -54,15 +54,15 @@ const ProductTable = () => {
     const readProduct = async (product) => {
         try {
             const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
-            let aux = productData(product, productSupplies)
-            setProductToEdit(aux);
+            let aux = productData(product, productSupplies);
+            aux.reading = true;
             setIsReading(true);
+            setProductToEdit(aux);
         }
         catch {
             displayError();
         }
     }
-
 
     const onClickCancelEdit = () => {
         <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
