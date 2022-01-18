@@ -6,7 +6,7 @@ export default function backupEmployee (employee) {
         dni: employee.dni,
         date: employee.date_admission,
         id_charge: employee.charge,
-        employmentRelationship: employee.employment_relationship
+        employmentRelationshipId: employee.employment_relationship
     }
     return aux;
 }
