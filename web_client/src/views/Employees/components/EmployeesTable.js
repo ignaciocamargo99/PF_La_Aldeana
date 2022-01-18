@@ -60,7 +60,7 @@ export default function EmployeesTable() {
     const readEmployee = (employees) => {
         let aux = employees;
         aux.lastName = employees.last_name;
-        aux.employmentRelationship = employees.employment_relationship;
+        aux.employmentRelationshipId = employees.employment_relationship;
         aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
         aux.reading = true;
         setReading(aux);
