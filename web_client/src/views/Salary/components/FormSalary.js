@@ -250,8 +250,10 @@ const FormSalary = (props) => {
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
             <BeShowed show={!showSpinner}>
-                <label>Fecha: <a style={{fontWeight: 'bold'}} >{dateText(props.month, false, true)}</a></label>
-                <ShowSelectedEmployee selectedEmployee={employee}/>
+                <label>Fecha: <a style={{fontWeight: 'bold'}} >{dateText(props.month, false, true)}</a> </label>
+                <label style={{textAlign: 'rigth'}} >{nro}/{employees.length}</label>
+                {//<ShowSelectedEmployee selectedEmployee={employee}/>
+                console.log(employee, employees)}
                 <div className="formRow justify-content-center">
                     <div className="col-sm-4">
                     </div>
