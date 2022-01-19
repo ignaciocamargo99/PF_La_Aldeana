@@ -4,7 +4,6 @@ import Breadcrumb from '../../../../common/Breadcrumb';
 import ExtraDataAdvances from '../ExtraDataAdvances';
 import dateText from "../../../../utils/DateFormat/dateText";
 import Axios from "axios";
-import formattedDate from '../../../../utils/formattedDate';
 import formatInstallments from "../formatInstallments";
 
 const PORT = require('../../../../config');
