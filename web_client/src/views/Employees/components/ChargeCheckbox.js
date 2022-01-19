@@ -11,11 +11,11 @@ const ChargeCheckbox = ({ chargeId, chargeName, employeeData, updateEmployeeData
         if (employeeData.editing) {
             checkIfEmployeeHasThisCharge(employeeData);
         }
-    }, []);
+    });
 
     useEffect(() => {
         manageChargeForEmployee();
-    }, [chargeChecked]);
+    });
 
     const checkIfEmployeeHasThisCharge = (empData) => {
         const employeeHasThisCharge = empData.charges.find((c) => {
