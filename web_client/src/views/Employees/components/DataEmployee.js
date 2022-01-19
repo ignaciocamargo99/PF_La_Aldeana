@@ -3,15 +3,18 @@ import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 
 export default function RegisterEmployee(props) {
-    const inputName = useRef(null);
-    const inputLastName = useRef(null);
+
     const inputDni = useRef(null);
-    const [name, setName] = useState("null");
-    const [lastName, setLastName] = useState("null");
+    const inputLastName = useRef(null);
+    const inputName = useRef(null);
+
     const [dni, setDni] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
     const [isValidClassDNI, setIsValidClassDNI] = useState("form-control");
+    const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
+    const [lastName, setLastName] = useState("null");
+    const [name, setName] = useState("null");
+
     let data = props.data;
 
     const handleName = () => setName(inputName.current.value);

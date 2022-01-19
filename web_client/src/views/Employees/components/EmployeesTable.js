@@ -7,7 +7,6 @@ import BodyTable from "../../../common/Table/BodyTable";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from '../../../common/Table/Table';
 import DeleteEmployeeButton from './DeleteEmployeeButton';
-import backupEmployee from './EditEmployee/backupEmployee';
 import EditEmployee from "./EditEmployee/EditEmployee";
 import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
@@ -18,11 +17,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const PORT = require('../../../config');
 
 export default function EmployeesTable() {
-    const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
-    const [isEditing, setIsEditing] = useState(false);
-    const [isReading, setIsReading] = useState(false);
-    const [employees, setEmployees] = useState([]);
+
     const [editing, setEditing] = useState({});
+    const [employees, setEmployees] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
+    const [isReading, setIsReading] = useState(false);
     const [reading, setReading] = useState({});
 
     useEffect(() => {
@@ -45,24 +45,33 @@ export default function EmployeesTable() {
         setEmployees(aux);
     };
 
-    const editEmployee = (employees) => {
-        let aux = backupEmployee(employees);
-        aux.charges = employees.charges;
-        aux.name = employees.name;
-        aux.lastName = employees.last_name;
-        aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
-        aux.previousDni = employees.dni;
-        aux.editing = true;
+    const editEmployee = (employee) => {
+
+        let aux = {
+            charges: employee.charges,
+            date: moment(employee.date).format('YYYY-MM-DD'),
+            dni: employee.dni,
+            editing: true,
+            employmentRelationshipId: employee.employment_relationship,
+            id_charge: employee.charge,
+            lastName: employee.last_name,
+            name: employee.name,
+            nameEmployee: employee.name,
+            previousDni: employee.dni,
+        };
+
         setEditing(aux);
         setIsEditing(true);
     };
 
-    const readEmployee = (employees) => {
-        let aux = employees;
-        aux.lastName = employees.last_name;
-        aux.employmentRelationshipId = employees.employment_relationship;
-        aux.date = moment(employees.date_admission).add(1, 'days').format('YYYY-MM-DD');
+    const readEmployee = (selectedEmployee) => {
+
+        let aux = selectedEmployee;
+        aux.date = moment(selectedEmployee.date).format('YYYY-MM-DD');
+        aux.employmentRelationshipId = selectedEmployee.employment_relationship;
+        aux.lastName = selectedEmployee.last_name;
         aux.reading = true;
+
         setReading(aux);
         setIsReading(true);
     };
@@ -130,7 +139,7 @@ export default function EmployeesTable() {
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_admission).add(1, 'days').format('YYYY-MM-DD')}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date).format('YYYY-MM-DD')}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                             <ReadEmployeeButton employee={element} read={readEmployee} />
                                                         </td>
