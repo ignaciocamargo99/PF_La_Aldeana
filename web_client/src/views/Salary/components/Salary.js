@@ -28,7 +28,7 @@ const Salary = (props) => {
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(), -2);
     let startMonth = formattedDate(new Date(),2);
-    const [maxMonth, setMaxMonth] = useState(formattedDate(new Date(), 6));
+    const [maxMonth, setMaxMonth] = useState(formattedDate(new Date(), 0, -(new Date().getDate())));
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
 

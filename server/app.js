@@ -27,6 +27,7 @@ const employeeRouter = require('./api/routes/employeeRoute');
 const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
+const salariesRoute = require('./api/routes/salariesRoute');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -62,6 +63,7 @@ app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
+app.use('/api', salariesRoute);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
