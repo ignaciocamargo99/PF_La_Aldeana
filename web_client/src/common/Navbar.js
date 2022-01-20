@@ -172,7 +172,7 @@ export default function Navbar(props) {
                                 <FontAwesomeIcon icon={faList} /> Ver licencias
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/assistanceEmployees">
-                                <FontAwesomeIcon icon={faList} /> Asistencia de empleados
+                                <FontAwesomeIcon icon={faList} /> Ver asistencias 
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/employeesSchedules">
                                 <FontAwesomeIcon icon={faCalendarAlt} /> Grilla de horarios

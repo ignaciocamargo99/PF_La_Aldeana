@@ -7,8 +7,8 @@ import displayError from '../../../../utils/ErrorMessages/displayError';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import DataEmployee from '../DataEmployee';
+import isEmployeeFormDataValid from '../EmployeeFormDataValidation';
 import ExtraDataEmployee from '../ExtraDataEmployee';
-
 
 const PORT = require('../../../../config');
 
@@ -17,13 +17,16 @@ export default function EditEmployee(props) {
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
+        setData(childData);
+
+        if (isEmployeeFormDataValid(data)) {
+            setReady(true);
+        }
         else setReady(false);
-    }
+    };
 
     const updateEmployee = () => {
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
+        if (isEmployeeFormDataValid(data) && ready) {
             Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
@@ -38,7 +41,7 @@ export default function EditEmployee(props) {
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
-            
+
             <div className="viewTitle">
                 <h1>Editar empleado {props.employee.name + " " + props.employee.lastName}</h1>
             </div>

@@ -1,15 +1,15 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
-import formattedDate from '../../../../utils/formattedDate';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
 import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
-import validateHoursEgressEntry from '../validateHoursEgressEntry';
+import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
+import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 import getEmployees from '../getEmployees';
 
 const PORT = require('../../../../config');
@@ -21,12 +21,17 @@ export default function EditAssistance(props) {
 
     const load = (childData) => {
         setData(childData);
-        if (data.date_entry && data.employee && (data.date_entry < data.date_egress)) setReady(true);
+        if (data.date_entry && data.dni && data.inputDateEntry && !data.validationEntry && !data.validationEgress) {
+            if (data.inputDateEgress && data.inputDateEgress !== '' && (!data.date_egress || data.date_egress === '')) setReady(false);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry === data.inputDateEgress) && (data.date_entry <= data.date_egress)) setReady(true);
+            else if (data.inputDateEgress && data.inputDateEgress !== '' && (data.inputDateEntry !== data.inputDateEgress)) setReady(true);
+            else setReady(true);
+        }
         else setReady(false);
     }
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/employeeAssistance`)
+        Axios.get(`${PORT()}/api/allEmployeeAssistance`)
             .then((response) => setAssistance(response.data))
     }, []);
 
@@ -38,33 +43,42 @@ export default function EditAssistance(props) {
     }, []);
 
     const updateAssistanceEmployee = () => {
-        let validateMessage;
-        if (data.date_egress === 'Invalid date') data.date_egress = null;
-        if (data.date_entry >= data.date_egress) warningMessage('Atención', 'Recuerde que la hora de ingreso debe ser anterior a la hora de salida', 'warning');
+        if (!ready) warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
         else {
-            validateMessage = validateHoursEgressEntry(data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
-            if (validateMessage) return warningMessage('Atención', validateMessage, 'warning');
-            
-            let actualDate;
-            actualDate = formattedDate(new Date());
-            let dateEntry, dateEgress;
-            dateEntry = actualDate + " " + data.date_entry;
-            if (data.date_egress) dateEgress = actualDate + " " + data.date_egress;
-            else dateEgress = null;
+            let validateHourEntryEgress;
+            if (data.date_egress === 'Invalid date') data.date_egress = null;
+            let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);
 
-            data.date_entry = dateEntry;
-            data.date_egress = dateEgress;
+            if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
+            else {
+                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
+                if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
 
-            if (data.date_entry && ready) {
-                loadingMessage('Modificando datos...');
-                Axios.put(`${PORT()}/api/employeeAssistance/${data.dni}`, data)
-                    .then((data) => {
-                        if (data.data.Ok) successMessage('Atención', 'Datos modificados', 'success');
-                        else displayError('No se ha podido realizar el registro.');
-                    })
-                    .catch((error) => console.error(error))
+                let dateEntry, dateEgress;
+
+                if (data.date_entry.length > 5) dateEntry = data.date_entry
+                else dateEntry = data.inputDateEntry + " " + data.date_entry;
+
+                if (data.date_egress) {
+                    if (data.date_egress.length > 5) dateEgress = data.date_egress;
+                    else dateEgress = data.inputDateEgress + " " + data.date_egress;
+                }
+                else dateEgress = null;
+
+                data.date_entry = dateEntry;
+                data.date_egress = dateEgress;
+
+                if (data.date_entry && ready) {
+                    loadingMessage('Modificando datos...');
+                    Axios.put(`${PORT()}/api/employeeAssistance/${data.dni}`, data)
+                        .then((data) => {
+                            if (data.data.Ok) successMessage('Atención', 'Datos modificados', 'success');
+                            else displayError('No se ha podido realizar el registro.');
+                        })
+                        .catch((error) => console.error(error))
+                }
+                else warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
             }
-            else warningMessage('Atención', 'Complete los campos obligatorios o ingrese un dni que corresponda a un empleado activo.', 'warning');
         }
     }
 
