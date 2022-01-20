@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `ASSISTANCE_EMPLOYEES` (
   `id_assistance` int(11) NOT NULL AUTO_INCREMENT,
   `date_entry` DATETIME NOT NULL,
-  `date_egress` DATETIME NOT NULL,
+  `date_egress` DATETIME,
   `employee` bigint(20) NOT NULL,
   PRIMARY KEY (`id_assistance`),
   KEY `FK__EMPLOYEE` (`employee`) USING BTREE,
