@@ -1,7 +1,7 @@
-import Swal from 'sweetalert2';
+import swal from 'sweetalert';
 
 const displayError = (text = 'Ha ocurrido un error.', title = '¡Lo sentimos!') => {
-    Swal.fire({
+    return swal({
         icon: 'error',
         title: title,
         text: text

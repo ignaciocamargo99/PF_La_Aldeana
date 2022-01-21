@@ -7,6 +7,8 @@ import './RegisterTypeProductView.css';
 import './styles/TypeProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
 import SectorProduct from '../RegisterProduct/components/SectorProduct';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -92,6 +94,7 @@ export default function RegisterTypeProductView() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar tipo de producto"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar tipo de producto" />
             <div className="viewTitle">
                 <h1>Registrar tipo de producto</h1>
             </div>

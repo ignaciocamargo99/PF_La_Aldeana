@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh } from '../../../actions/SalesActions';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
 import BeShowed from "../../../common/BeShowed";
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";
@@ -31,8 +31,10 @@ const DetailSale = (props) => {
     const changePrintModalDelete = (id) => {
         let product = props.detailProducts?.find(n => n.id_product == id)
         props.updateProductSelected(product);
-        setActionModal("D");
-        setPrintModal(true);
+        props.updateDetailsProductsDelete(props.productSelected);
+        props.updateRefresh(!props.refresh);
+        //setActionModal("D");
+        //setPrintModal(true);
         props.updateRefresh(!props.refresh);
     }
 
@@ -70,13 +72,13 @@ const DetailSale = (props) => {
                                 <tbody key={i}>
                                     <tr>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.subtotal}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
                                                 <FontAwesomeIcon icon={faPen} />
                                             </button>
-                                            <button type="button" className="btn btn-primary btn-sm px-3" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} style={{ backgroundColor: '#2284B6' }}>
+                                            <button type="button" className="sendDelete" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} >
                                                 <FontAwesomeIcon icon={faMinus} />
                                             </button>
                                         </td>
@@ -114,7 +116,8 @@ const mapDispatchToProps = {
     updateTotalAmount,
     updateDetailsProductsModify,
     updateProductSelected,
-    updateRefresh
+    updateRefresh,
+    updateDetailsProductsDelete
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailSale);

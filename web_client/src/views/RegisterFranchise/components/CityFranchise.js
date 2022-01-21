@@ -25,7 +25,7 @@ export default function CityFranchise (props) {
             data.city = "";
             props.load(data);
         }
-    }, [city]);
+    }, [city, props]);
 
     return (
         <div className="formRow">

@@ -1,4 +1,4 @@
-const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee, readEmployeebyDni, readEmployeeForDesktop } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee, readEmployeeForDesktop } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -28,19 +28,6 @@ async function getEmployeeForDesktop(req, res) {
     }
 }
  
-// HTTP: GET
-async function getEmployeeByDni(req, res) {
-    try {
-        const result = await readEmployeebyDni(req.params.dni);
-        res.send(result)
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        })
-    }
-}
 
 // HTTP: GET
 async function getCharges(req, res) {
@@ -57,7 +44,7 @@ async function getCharges(req, res) {
 }
 
 // HTTP: PUT
-async function deleteEmployee(req, res) { 
+async function deleteEmployee(req, res) {
     try {
         await deleteEmployees(req.params.dni);
         res.json({
@@ -107,4 +94,4 @@ async function updateEmployee(req, res) {
     }
 }
 
-module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee, getEmployeeByDni, getEmployeeForDesktop }
+module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee, getEmployeeForDesktop }

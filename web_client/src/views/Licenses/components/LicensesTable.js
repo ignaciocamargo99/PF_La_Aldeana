@@ -1,7 +1,6 @@
 import HeaderTable from "../../../common/Table/HeaderTable";
 import BodyTable from "../../../common/Table/BodyTable";
 import Table from '../../../common/Table/Table';
-import LoaderSpinner from "../../../common/LoaderSpinner";
 import BeShowed from "../../../common/BeShowed";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMinus, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +15,7 @@ const PORT = require('../../../config');
 
 export default function LicensesTable(props) {
 
-    const[date,setDate] = useState(new Date().setHours(0,0,0,0))
+    const[date] = useState(new Date().setHours(0,0,0,0))
 
     const deleteLicense = (idLicense) => {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)
@@ -48,10 +47,7 @@ export default function LicensesTable(props) {
 
     return (
         <>  
-            <BeShowed show={props.showSpinner}>
-                <LoaderSpinner color="secondary" loading="Cargando licencias"/>
-            </BeShowed>
-            <BeShowed show={!props.showSpinner}>
+            <BeShowed show={props.licenses.length !== 0}>
                 <Table>
                     <HeaderTable
                         th={
@@ -104,6 +100,10 @@ export default function LicensesTable(props) {
                         })}
                     />
                 </Table>
+            </BeShowed>
+            <BeShowed show={!props.showSpinner && props.licenses.length === 0}>
+                <br/>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron licencias registradas hasta el momento.</h4>
             </BeShowed>
         </>
     );

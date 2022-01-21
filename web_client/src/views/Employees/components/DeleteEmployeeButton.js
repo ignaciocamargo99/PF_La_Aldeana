@@ -12,7 +12,6 @@ export default function DeleteEmployeetButton (props) {
     const handleDelete = (e) => confirmDelete(deleteEmployee, dontDeleteProduct, e);
 
     const deleteEmployee = () => {
-        console.log(props.employee.dni)
         Axios.delete(PORT() + `/api/employees/${props.employee.dni}`)
             .then((response) => {
                 props.deleteEmployee(props.index);
@@ -25,7 +24,7 @@ export default function DeleteEmployeetButton (props) {
                 swal({
                     title: "Falló al dar de baja",
                     text: error,
-                    icon: "warning",
+                    icon: "error",
                 });
             });
     }

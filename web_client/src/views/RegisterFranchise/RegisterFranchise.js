@@ -9,6 +9,8 @@ import DataManager from './DataManager';
 import './RegisterFranchise.css';
 import './styles/FranchiseForm.css';
 import displayError from '../../utils/ErrorMessages/errorMesage';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faStore } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -67,13 +69,15 @@ export default function RegisterFranchise() {
             data.last_name_manager !== '' && data.last_name_manager !== 'null' &&
             data.dni_manager > 0) setReady(true);
         else setReady(false);
-    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
+    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild,
+    data.address, data.address_number, data.city, data.province, data.name_manager, data.name, data.dni_manager, data.last_name_manager, data.start_date]);
 
     const cancelRegisterFranchise = () => window.location.reload();
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar franquicia"}</div>
+            <Breadcrumb parentName="Franquicias" icon={faStore} parentLink="franchise" currentName="Registrar franquicia" />
             <div className="viewTitle">
                 <h1>Registrar Franquicia</h1>
             </div>

@@ -7,8 +7,8 @@ import displayError from '../../../../utils/ErrorMessages/displayError';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import DataEmployee from '../DataEmployee';
+import isEmployeeFormDataValid from '../EmployeeFormDataValidation';
 import ExtraDataEmployee from '../ExtraDataEmployee';
-
 
 const PORT = require('../../../../config');
 
@@ -17,37 +17,45 @@ export default function EditEmployee(props) {
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setData(childData)
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
+        setData(childData);
+
+        if (isEmployeeFormDataValid(data)) {
+            setReady(true);
+        }
         else setReady(false);
-    }
+    };
 
     const updateEmployee = () => {
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
+        if (isEmployeeFormDataValid(data) && ready) {
             Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('El nuevo dni ya corresponde a otro empleado', 'Atención')
+                    else displayError('El nuevo dni ya corresponde a otro empleado')
                 })
                 .catch(error => console.log(error));
         }
-        else warningMessage('Atención', 'Todos los campos son obligatorios', 'error');
+        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
     };
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Editar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
-            <h2 style={{ fontWeight: 'bold' }}>Editar empleado {props.employee.name}</h2>
+
+            <div className="viewTitle">
+                <h1>Editar empleado {props.employee.name + " " + props.employee.lastName}</h1>
+            </div>
             <br />
-            <DataEmployee load={load} data={data} />
-            <ExtraDataEmployee load={load} data={data} />
-            <Buttons
-                label='Registrar' actionOK={updateEmployee}
-                actionNotOK={updateEmployee}
-                actionCancel={props.cancel}
-                ready={ready}
-                data={data} />
+            <div className="viewBody">
+                <DataEmployee load={load} data={data} />
+                <ExtraDataEmployee load={load} data={data} />
+                <Buttons
+                    label='Registrar' actionOK={updateEmployee}
+                    actionNotOK={updateEmployee}
+                    actionCancel={props.cancel}
+                    ready={ready}
+                    data={data} />
+            </div>
         </>
     );
 }

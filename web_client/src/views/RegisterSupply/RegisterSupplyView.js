@@ -17,6 +17,8 @@ import displayError from '../../utils/ErrorMessages/errorMessage';
 import Axios from 'axios';
 import BeShowed from '../../common/BeShowed';
 import checkData from './checkData';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -77,18 +79,18 @@ const RegisterPurchaseSupplies = (props) => {
             stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
             unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
         }
-        
+
         Axios.post(PORT() + '/api/supplies', aux)
             .then(({ data }) => {
                 if (data.Ok) {
-                    resetStates('Registro completado');
+                    resetStates('El insumo se registro correctamente');
                     success();
                 }
                 else {
                     displayError('Ha ocurrido un error al registrar un insumo.');
                 }
             })
-            .catch(() => displayError('Ha ocurrido un error en el servidor.', 'Error'));
+            .catch(() => displayError('Ha ocurrido un error en el servidor.'));
     }
 
 
@@ -103,6 +105,7 @@ const RegisterPurchaseSupplies = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar insumo"}</div>
+            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar insumo" />
             <div className="viewTitle">
                 <h1>Registrar Insumo</h1>
             </div>

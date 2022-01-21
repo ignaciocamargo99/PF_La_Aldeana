@@ -31,7 +31,7 @@ async function getLastPurchase(req, res) {
 // HTTP: POST TRANSACTION
 async function postPurchaseSupplies(req, res) {
     try {
-        console.log(req.body)
+        //console.log(req.body)
         await createPurchaseSupplies(req.body);
         res.json({
             Ok: true,

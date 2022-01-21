@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateDetailsProductsModify, updateRefresh } from '../../../actions/SalesActions';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/modalProduct.css';
-import '../styles/filterProducts.css'
+import '../styles/filterProducts.css';
+import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 
 const ModalProduct = (props) => {
 
@@ -14,7 +15,6 @@ const ModalProduct = (props) => {
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
-
 
     const cancel = () => {
         props.setShowModal(false);
@@ -32,7 +32,7 @@ const ModalProduct = (props) => {
     useEffect(() => {
         if (props.actionModal == "N")
         {
-            if (quantity > 0 && quantity <= props.productSelected.stock_initial) {
+            if (quantity > 0 && quantity <= props.productSelected.stock_current || !props.productSelected.stock_current) {
                 setReady(true);
             }
             else {
@@ -41,7 +41,7 @@ const ModalProduct = (props) => {
         }
         else if (props.actionModal == "M")
         {
-            if (quantity > 0 && quantity <= props.productSelected.stock_initial) {
+            if (quantity > 0 && quantity <= props.productSelected.stock || !props.productSelected.stock_current) {
                 setReady(true);
             }
             else {
@@ -50,13 +50,14 @@ const ModalProduct = (props) => {
         }
         else if (props.actionModal == "A")
         {
-            if (quantity > 0 && quantity <= props.productSelected.stock_current) {
+            if (quantity > 0 && quantity <= props.productSelected.stock_current || !props.productSelected.stock_current) {
                 setReady(true);
             }
             else {
                 setReady(false);
             } 
         }
+        if (quantity === 0) setReady(false);
     }, [quantity])
 
     useEffect(() => {
@@ -78,20 +79,26 @@ const ModalProduct = (props) => {
                 let aux = props.productSelected;
                 aux.quantity = quantity;
                 aux.subtotal = subtotal;
-                aux.stock_current = aux.stock_initial - parseFloat(quantity);
+                if (aux.stock){
+                    aux.stock_current = aux.stock - parseFloat(quantity);
+                }
                 props.updateProductSelected(aux);
                 props.updateDetailProducts(aux);
             }
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
-                props.productSelected.stock_current = props.productSelected.stock_initial - parseFloat(quantity);
+                if (props.productSelected.stock){
+                    props.productSelected.stock_current = props.productSelected.stock - parseFloat(quantity);
+                }
                 props.updateDetailsProductsModify(props.productSelected);
             }
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
-                props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
+                if (props.productSelected.stock){
+                    props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
+                }
                 props.updateDetailsProductsModify(props.productSelected);
             }
             props.updateRefresh(!props.refresh);
@@ -101,24 +108,17 @@ const ModalProduct = (props) => {
             if (quantity == 0){
                 warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
             }
-            if (quantity > props.productSelected.stock_current)
+            if (quantity > props.productSelected.stock)
                 warningMessage("¡Error!", "No hay stock suficiente", "error");   
         }
     }
 
-    const onClickYES = () => {
-        props.updateDetailsProductsDelete(props.productSelected);
-        props.updateRefresh(!props.refresh);
-        props.setShowModal(false);
-    }
-
-    const onClickNO = () => {
-        props.setShowModal(false);
+    const validate = (e) => {
+        if (e.target.value.length > 4) e.target.value = e.target.value.slice(0, 4);
     }
 
     return (
         <>
-            {(props.actionModal != "D") &&
                 <Modal isOpen={props.show} className="modal-sale modal-lg" >
                     <ModalHeader>
                         <h2>{props.productSelected?.name}</h2>
@@ -145,7 +145,8 @@ const ModalProduct = (props) => {
                         <div className='formRow'>
                             <div className='col-6'>
                                 <label className='label-modal'>Cantidad:&nbsp;</label>
-                                <input type='number' min="1" id="id_quantity" ref={inputQuantity} placeholder="0" value={quantity} onChange={onChangeQuantity}></input>
+                                <input className={ready && quantity > 0 ? "form-control is-valid" : "form-control"} type='number' min="1" max={props.productSelected ? props.productSelected.stock_current : 10} id="id_quantity" ref={inputQuantity} placeholder="0" value={quantity} onChange={onChangeQuantity}
+                                onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}></input>
                             </div>
                             <div className='col-6'>
                                 <label className='label-modal'>Subtotal:&nbsp;$ </label>
@@ -154,33 +155,7 @@ const ModalProduct = (props) => {
                         </div>
                         <Buttons label="Confirmar" ready={ready} actionOK={registerProduct} actionNotOK={registerProduct} actionCancel={cancel}></Buttons>
                     </ModalBody>
-                </Modal>
-            }
-
-            {(props.actionModal == "D") &&
-                <Modal isOpen={props.show} className="modal-sale modal-lg" >
-                    <ModalHeader>
-                        <label>CONFIRMACIÓN</label>
-                    </ModalHeader>
-                    <ModalBody>
-                        <label>¿Esta seguro de que desea eliminar el producto {props.productSelected.name} ?</label>
-                        <div className='formRow'>
-                            <div className='col-6'>
-                                <label>Cantidad:&nbsp;</label>
-                                <label>{props.productSelected.quantity}</label>
-                            </div>
-                            <div className='col-6'>
-                                <label>Subtotal:&nbsp;$</label>
-                                <label>{props.productSelected.subtotal}</label>
-                            </div>
-                        </div>
-                    </ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" type="button" onClick={onClickYES}>SI</button>
-                        <button className="btn btn-primary" type="button" onClick={onClickNO}>NO</button>
-                    </ModalFooter>
-                </Modal>
-            }
+                </Modal>updateDetailsProductsDelete
         </>
     )
 
@@ -203,8 +178,7 @@ const mapDispatchToProps = {
     updateDetailProducts,
     updateProductSelected,
     updateDetailsProductsModify,
-    updateRefresh,
-    updateDetailsProductsDelete
+    updateRefresh
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalProduct);
