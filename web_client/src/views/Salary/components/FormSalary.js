@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Buttons from '../../../common/Buttons';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
@@ -7,14 +7,12 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
-import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Label } from "reactstrap";
 import dateText from "../../../utils/DateFormat/dateText";
 
 const PORT = require('../../../config');
@@ -27,7 +25,8 @@ const FormSalary = (props) => {
     const [nro, setNro] = useState(0);
     const [errorName,setErrorName] = useState(true);
     const [errorPrice,setErrorPrice] = useState(true);
-    
+    const nroRef = useRef(null);
+
     const [othersPlus, setOthersPlus] = useState([]);
     const [othersMinus, setOthersMinus] = useState([]);
     const [main, setMain] = useState([
@@ -81,13 +80,9 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se ha registrado la licencia correctamente','success');
             props.setReloadList(!props.reloadList);
         } else if (nro < employees.length) {
-            if (nro === 0) {
-                setNro(nro + 2);
-                setEmployee(employees[nro + 2]);
-            } else {
-                setNro(nro + 1);
-                setEmployee(employees[nro + 1]);
-            }
+            setNro(nro + 1);
+            setEmployee(employees[nro + 1]);
+            nroRef.current.focus();
         }
     }
 
@@ -245,21 +240,20 @@ const FormSalary = (props) => {
             <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_license + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
         </div>
         <div className="container" >
-            <br/>
             <BeShowed show={showSpinner}>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
             <BeShowed show={!showSpinner}>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-6" >
-                        <label>Fecha: <a style={{fontWeight: 'bold'}} >{dateText(props.month, false, true)}</a> </label>
+                        <label>Fecha: </label>
+                        <input ref={nroRef} value={dateText(props.month, false, true)} style={{fontWeight: 'bold', marginLeft: '1em', border: '0px'}} readOnly></input> 
                     </div>
                     <div className="col-sm-6" style={{fontWeight: 'bold', textAlign: 'right'}} >
-                        <label>{nro}/{employees.length}</label>
+                        <label >{nro + 1}/{employees.length}</label>
                     </div>
                 </div>
-                {//<ShowSelectedEmployee selectedEmployee={employee}/>
-                console.log(employee, employees)}
+                <ShowSelectedEmployee selectedEmployee={employee}/>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-4">
                     </div>

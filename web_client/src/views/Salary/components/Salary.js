@@ -10,7 +10,6 @@ import ListSalaryFilter from './ListSalaryFilter';
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import formattedDate from '../../../utils/formattedDate';
 import dateToString from "../../../utils/ConverterDate/dateToString";
-import useHTTPGet from '../../../hooks/useHTTPGet';
 
 const PORT = require('../../../config');
 
@@ -21,25 +20,32 @@ const Salary = (props) => {
     const [showSpinner,setShowSpinner] = useState(true);
     const [action,setAction] = useState('Listar');
     const [reloadList,setReloadList] = useState(false);
-    const [filter,setFilter] = useState('All');
+    const [filter,setFilter] = useState('NonConfirm');
     const [errorDate,setErrorDate] = useState(true);
 
     const [date, setDate] = useState("null");
     const [month, setMonth] = useState(formattedDate(new Date()));
-    const startDate = formattedDate(new Date(), -2);
+    const startDate = formattedDate(new Date(2021,6,1));
     let startMonth = formattedDate(new Date(),2);
     const [maxMonth, setMaxMonth] = useState(formattedDate(new Date(), 0, -(new Date().getDate())));
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/licenses`)
-        .then((response) => {
-            setSalaries(response.data);
-            setShowSpinner(false);
-            setFilter('NonConfirm');
-        })
-    },[reloadList])
+        if (isValidMonth !== "form-control"){
+            Axios.get(`${PORT()}/api/salaries?monthYear=${month+'-01'}`)
+            .then((response) => {
+                const aux = [];
+                const state = filter === 'Confirm' ? 2 : filter === 'OnHold' ? 1 : -1;
+                response.data.forEach((elem, i) => {
+                    
+                    if (elem.id_state === state) aux[i] = elem;
+                });
+                setSalaries(aux);
+                setShowSpinner(false);
+            });
+        } else setShowSpinner(false);
+    },[reloadList, month, filter, isValidMonth]);
 
     const setActionSalary = (action,salary) => {
         setAction(action);
@@ -125,8 +131,8 @@ const Salary = (props) => {
                                 </div>
                             </div>
                             <ListSalaryFilter onClickRB={setFilter} filter={filter}/>
-                            {/*<SalariesTable licenses={salaries} showSpinner={showSpinner} setActionLicense={setActionSalary} 
-                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>*/}
+                            <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter}
+                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
                         </div>
                     </BeShowed>
                     <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   

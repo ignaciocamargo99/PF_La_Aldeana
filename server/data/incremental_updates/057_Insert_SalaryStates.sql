@@ -1,7 +1,6 @@
 INSERT INTO m6aacureuqp9xsmy.SALARY_STATE (name,description) VALUES
 	 ('Pendiente','Salario generado por sin confirmar'),
-	 ('Confirmado','Salario generado y confirmado'),
-	 ('Sin generar','Salario sin generar');
+	 ('Confirmado','Salario generado y confirmado');
 
 INSERT INTO
   `DB_CHANGES`
