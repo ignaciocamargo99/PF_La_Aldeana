@@ -189,7 +189,7 @@ const Sales = (props) => {
     return (
         <>
             <div className="viewContent">
-                <h1 className="display-5">Ventas</h1>
+                <h1 className="display-5">Registrar ventas en Local</h1>
                 <hr />
                 <div className="row">
                     <div className="col-6">
@@ -201,7 +201,7 @@ const Sales = (props) => {
                         <ListProducts />
                     </div>
                     <div className="col-4">
-                        <h3>Detalle de la venta</h3>
+                        <h3><b>Detalle de venta</b></h3>
                         <DetailSale />
                         <PaymentSale />
                         <div>
