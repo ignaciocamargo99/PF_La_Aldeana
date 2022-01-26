@@ -38,4 +38,22 @@ const productionPostDB = (newProduction) => {
     });
 };
 
-module.exports = { productionPostDB };
+const productionGetDB = () => {
+    const sqlSelect = `SELECT p.*, f.name, f.description 
+                        FROM PRODUCTIONS p
+                        JOIN FLAVORS f ON f.id_flavor = p.id_flavor`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    })
+}
+
+module.exports = { productionPostDB, productionGetDB};

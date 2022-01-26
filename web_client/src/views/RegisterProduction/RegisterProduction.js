@@ -26,7 +26,7 @@ function RegisterProductionView(props) {
             Axios.post(PORT() + '/api/productions', production)
                 .then((production) => {
                     if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-                    else displayError('Ha ocurrido un error al registrar la producción.');
+                    else displayError('La producción del/los sabor/es ya fue/fueron registrado/s en la fecha actual.');
                 })
                 .catch(error => console.log(error))
         }
@@ -47,7 +47,7 @@ function RegisterProductionView(props) {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar producción"}</div>
-            <Breadcrumb parentName="Producción" icon={faIceCream} parentLink="production" currentName="Registrar producción" />
+            <Breadcrumb parentName="Producción" icon={faIceCream} parentLink="productions" currentName="Registrar producción" />
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
