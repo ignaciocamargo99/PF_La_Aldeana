@@ -15,6 +15,8 @@ function RegisterProductionView(props) {
 
     const PORT = require('../../config');
     const [ready, setReady] = useState(false);
+    const data = [];
+    data.reading = false;
 
     const cancelRegisterProduction = () => window.location.reload();
 
@@ -26,7 +28,7 @@ function RegisterProductionView(props) {
             Axios.post(PORT() + '/api/productions', production)
                 .then((production) => {
                     if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-                    else displayError('La producción del/los sabor/es ya fue/fueron registrado/s en la fecha actual.');
+                    else displayError('La producción del sabor/es ya fue registrada en la fecha actual.');
                 })
                 .catch(error => console.log(error))
         }
@@ -52,7 +54,7 @@ function RegisterProductionView(props) {
                 <h1>Registrar Producción</h1>
             </div>
             <div className="viewBody">
-                <DateProduction />
+                <DateProduction data={data} />
                 <br />
                 <FlavorsTable></FlavorsTable>
                 <Buttons label="Registrar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={cancelRegisterProduction}></Buttons>

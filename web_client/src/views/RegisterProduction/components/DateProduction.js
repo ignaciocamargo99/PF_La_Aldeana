@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { updateDate } from '../../../actions/DateActions';
+import BeShowed from '../../../common/BeShowed';
 import formattedDate from '../../../utils/ConverterDate/formattedDate'
 
 const DateProduction = (props) => {
@@ -10,8 +11,11 @@ const DateProduction = (props) => {
     const [isValidClass, setIsValidClass] = useState("form-control");
 
     useEffect(() => {
-        inputDate.current.value = startDate;
-        props.updateDate(inputDate.current.value);
+        if (!props.data.reading) {
+            inputDate.current.value = startDate;
+            props.updateDate(inputDate.current.value);
+        }
+
     }, [])
 
     const onChangeDate = () => {
@@ -27,9 +31,16 @@ const DateProduction = (props) => {
                 <label htmlFor="date">Fecha</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass}
-                    id="date" type="date" ref={inputDate} 
-                    onChange={onChangeDate} min={"2021-01-01"} max={startDate} />
+                <BeShowed show={!props.data.reading}>
+                    <input className={isValidClass}
+                        id="date" type="date" ref={inputDate}
+                        onChange={onChangeDate} min={"2021-01-01"} max={startDate} />
+                </BeShowed>
+                <BeShowed show={props.data.reading}>
+                    <input className={isValidClass}
+                        id="date" type="date" ref={inputDate}
+                        min={"2021-01-01"} max={startDate} defaultValue={props.data.date_production} readOnly />
+                </BeShowed>
             </div>
         </div>
     )
