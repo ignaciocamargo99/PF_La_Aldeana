@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DetailSale from './components/DetailSale';
+import DateFormat from '../../utils/DateFormat/dateFormat';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
 import PaymentSale from "./components/PaymentSale"; 
@@ -18,9 +19,15 @@ const Sales = (props) => {
 
     const [ready, setReady] = useState(false);
     const [saleCompleted, setSaleCompleted] = useState(false);
+    const [date,setDate] = useState('');
 
     useEffect(() => {
         initialCalls();
+    },[])
+
+    useEffect(() => {
+        let date = DateFormat(new Date())
+        setDate(date)   
     },[])
 
     const initialCalls = () => {
@@ -189,8 +196,16 @@ const Sales = (props) => {
     return (
         <>
             <div className="viewContent">
-                <h1 className="display-5">Registrar ventas en Local</h1>
+                <h1 className="display-5">Registrar venta en Local</h1>
                 <hr />
+                <div className="formRow" style={{justifyContent:'flex-end'}}>
+                    <div className="form-label-no-margin" style={{marginRight:'0%'}}>
+                        <label>Fecha:</label>
+                    </div>
+                    <div className="" style={{width:'200px'}}>
+                        <input type="date" className="form-control" value={date} readOnly></input>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-6">
                         <FilterProducts />
