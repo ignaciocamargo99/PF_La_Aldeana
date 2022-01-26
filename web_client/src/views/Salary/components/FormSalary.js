@@ -14,6 +14,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateText from "../../../utils/DateFormat/dateText";
+import dateToString from "../../../utils/ConverterDate/dateToString";
 
 const PORT = require('../../../config');
 
@@ -26,7 +27,6 @@ const FormSalary = (props) => {
     const [errorName,setErrorName] = useState(true);
     const [errorPrice,setErrorPrice] = useState(true);
     const nroRef = useRef(null);
-
     const [othersPlus, setOthersPlus] = useState([]);
     const [othersMinus, setOthersMinus] = useState([]);
     const [main, setMain] = useState([
@@ -39,6 +39,7 @@ const FormSalary = (props) => {
     const [totalHs, setTotalHs] = useState(0);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
+    const [advances, setAdvances] = useState([]);
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/employees`)
@@ -67,14 +68,14 @@ const FormSalary = (props) => {
                 }
             });
 
-            if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12')) {
+            if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
                 .then((res) => {
                     if (res.data.Ok === false) console.log(res.data);
                     else {
                         const aux = [];
                         othersPlus.map((inc, i) => {aux[i] = inc});
-                        if (res.data.length < 1) aux[0] = {name: 'Aguinaldo', price: 0};
+                        if (res.data.length < 6) aux[0] = {name: 'Aguinaldo', price: 0};
                         else {
                             let max = res.data[0].total;
                             aux[0] = {name: 'Aguinaldo', price: max/2};
@@ -83,19 +84,39 @@ const FormSalary = (props) => {
                     }
                 });
             }
+
+            if (props.salary.month && props.action === 'Registrar') {
+                Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
+                .then((r) => {
+                    if (r.data.Ok === false) console.log(r.data);
+                    else {
+                        if (r.data.length > 0) {
+                            const aux = [];
+                            othersMinus.map((dis, i) => {aux[i] = dis});
+                            let acu = 0;
+                            r.data.map((dis, i) => {
+                                dis.date = dateToString(dis.date, true);
+                                dis.month = dateToString(dis.month, true);
+                                acu += dis.amount
+                            });
+                            aux[0] = {name: 'Adelantos', price: acu};
+                            setOthersMinus(aux);
+                            setAdvances(r.data);
+                        }
+                    }
+                });
+            }
         }
     }, [employee]);
     
     const registerSalary = () => {
         loadingMessage("Registrando el salario");
-        /*Axios.post(`${PORT()}/api/licenses`, {"date_init": dateInit.current.value,"date_finish": dateFinish.current.value,
-                "dni_employee": employee.dni,"reason": reason.current.value, "active": 1})
+        Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, {advances})
         .then((response) => {
             if (response.data.Ok) resetStates(true)
             else warningMessage("Error", `${response.data.Message}`, "error")
         })
         .catch((error) => console.error(error))   
-        */
     }
 
     const editSalary = () => {
@@ -315,7 +336,7 @@ const FormSalary = (props) => {
                             </div>
                             <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                 <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price'+i.id} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' defaultValue={i.price} value={i.price} />
+                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
                             </div>
                             <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                 <label style={{paddingLeft: '1em'}}>${(i.hs*i.price) ? i.hs*i.price : 0}</label>
@@ -335,7 +356,6 @@ const FormSalary = (props) => {
                 {othersPlus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-
                             <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
@@ -371,19 +391,29 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
-                {othersMinus?.map(i => {
+                {othersMinus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <div className="col-sm-1" >
-                                <button id='deleteOtherMinusButton' style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
-                            </div>
-                            <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                <input className={i.name.length < 1 ? "form-control is-invalid" : "form-control"} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} />
-                            </div>
-                            <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
-                                <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' />
-                            </div>
+                            <BeShowed show={advances.length > 0 && n === 0}>
+                                <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
+                                    <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
+                                </div>
+                                <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold'}}>
+                                    <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
+                                </div>
+                            </BeShowed>
+                            <BeShowed show={advances.length === 0 || n !== 0}>
+                                <div className="col-sm-1" >
+                                    <button id='deleteOtherMinusButton' style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
+                                </div>
+                                <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
+                                    <input className={i.name.length < 1 ? "form-control is-invalid" : "form-control"} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} />
+                                </div>
+                                <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
+                                    <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' />
+                                </div>
+                            </BeShowed>
                         </div>
                     )
                 })}
