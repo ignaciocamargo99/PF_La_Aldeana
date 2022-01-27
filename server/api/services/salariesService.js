@@ -10,9 +10,9 @@ const readSalaries = async (monthYear) => {
     };
 };
 
-const readHSWorked = async (monthYear, dni) => {
+const readHSWorked = async (monthYear, dni, nonWorkingDays) => {
     try {
-        let res = await hsWorkedGetDB(monthYear, dni);
+        let res = await hsWorkedGetDB(monthYear, dni, nonWorkingDays);
         return res;
     }
     catch (error){

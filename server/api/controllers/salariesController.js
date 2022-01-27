@@ -19,7 +19,8 @@ async function getHSWorked(req, res) {
     try {
         var monthYear = req.query.monthYear;
         var dni = req.query.dni;
-        const result = await readHSWorked(monthYear, dni);
+        var nonWorkingDays = JSON.parse(req.query.nonWorkingDays);
+        const result = await readHSWorked(monthYear, dni, nonWorkingDays);
         res.send(result);
     } catch (e) {
         res.json({

@@ -26,9 +26,10 @@ function formattedDate (dateState) {
 }
 
 const salariesGetDB = (monthYear) => {
-    const sqlSelect = "SELECT s.id_salary, s.dni_employee, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total FROM SALARIES s " +
+    const sqlSelect = "SELECT s.id_salary, s.dni_employee, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total, er.name AS name_emp_relationship FROM SALARIES s " +
                 "LEFT JOIN EMPLOYEES e ON s.dni_employee = e.dni " +
                 "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
+                "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
                 "WHERE s.month_year >= '" + monthYear + "'";
 
     return new Promise((resolve, reject) => {
@@ -46,7 +47,7 @@ const salariesGetDB = (monthYear) => {
     });
 };
 
-const hsWorkedGetDB = (monthYear, dni) => {
+const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
     const sqlSelect = "SELECT hw.*, e.name, e.last_name, ht.name AS hs_type, ht.amount FROM HS_WORKED hw " +
                     "LEFT JOIN EMPLOYEES e ON e.dni = hw.dni_employee " +
                     "LEFT JOIN HS_TYPES ht ON ht.id_hs_type = hw.id_hs_type " +
@@ -62,8 +63,8 @@ const hsWorkedGetDB = (monthYear, dni) => {
                     reject("1:" + error);
                 }
                 else if (result.length === 0) {
-                    const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s WHERE date_entry >= '" + monthYear + "' and date_egress < '" +
-                    formattedDate(new Date(parseInt(monthYear.slice(0,-6)), parseInt(monthYear.slice(5, -3)) + 1 , parseInt(monthYear.slice(8))))
+                    const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
+                    formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
 
                     db.query(sqlAlterSelect, (err, res) => {
@@ -87,12 +88,28 @@ const hsWorkedGetDB = (monthYear, dni) => {
 
                                     res.map(assistance => {
                                         let date = new Date(assistance.date_entry).getDay();
+                                        let day = new Date(assistance.date_entry).getDate();
+                                        let month = new Date(assistance.date_entry).getMonth();
                                         let hs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
+                                        let isNonWorked = false;
+                                        
+                                        nonWorkingDays?.map(holiday => {
+                                            console.log(holiday.day, day, holiday.month , month)
+                                            if (holiday.day === day && holiday.month === month) isNonWorked = true;
+                                        });
 
-                                        if (date === 0 || date === 6) {
-                                            aux[1].hs_number += hs;
+                                        if (isNonWorked) {
+                                            if (date === 0 || date === 6) {
+                                                aux[3].hs_number += hs;
+                                            } else {
+                                                aux[2].hs_number += hs;
+                                            }
                                         } else {
-                                            aux[0].hs_number += hs;
+                                            if (date === 0 || date === 6) {
+                                                aux[1].hs_number += hs;
+                                            } else {
+                                                aux[0].hs_number += hs;
+                                            }
                                         }
                                     });
 
@@ -109,8 +126,9 @@ const hsWorkedGetDB = (monthYear, dni) => {
 };
 
 const bonusGetDB = (monthYear, dni) => {
-    const sqlSelect = "SELECT s.id_salary, s.dni_employee, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total FROM SALARIES s " +
+    const sqlSelect = "SELECT s.id_salary, s.dni_employee, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total, er.name AS name_emp_relationship FROM SALARIES s " +
     "LEFT JOIN EMPLOYEES e ON s.dni_employee = e.dni " +
+    "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
     "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
     "WHERE s.month_year >= '" + monthYear.slice(0,-5) + (parseInt(monthYear.slice(5,-3)) <= 8 ? "01-01" : "07-01") + "' AND s.month_year < '" +
     monthYear.slice(0,-5) + (parseInt(monthYear.slice(5,-3)) <= 8 ? "06-01" : "12-01" )+ "' AND s.dni_employee = " + dni +

@@ -43,53 +43,55 @@ const FormSalary = (props) => {
     const [advances, setAdvances] = useState([]);
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/relationships')
-        .then((res) => {
-            Axios.get(PORT() + '/api/employees')
-                .then((response) => {
-                    let aux = response.data;
-                    let display = [];
-                    aux.forEach((person)=>{
-                        person.fullName = person.last_name;
-                        person.fullName += ', ';
-                        person.fullName += person.name;
-                        const relationships = res.data;
-                        relationships?.forEach(relationship => {
-                            if (relationship.id_employee_relationship === person.employment_relationship) person.relationship = relationship.name;
-                        });
-                        const exist = props.salaries?.filter((elem) => {
-                            return elem.dni_employee.includes(person.dni);
-                        });
-                        //console.log(person.fullName + " - " + exist);
-                        //console.log(exist.length);
-                        if (exist.length < 1) display.push(person);
+        Axios.get(PORT() + '/api/employees')
+            .then((response) => {
+                let aux = response.data;
+                let display = [];
+                aux.forEach((person)=>{
+                    person.fullName = person.last_name;
+                    person.fullName += ', ';
+                    person.fullName += person.name;
+                    const exist = props.salaries?.filter((elem) => {
+                        return elem.dni_employee.includes(person.dni);
                     });
-                    setEmployees(display);
-                    if (props.action === 'Registrar') setEmployee(display[nro]);
-                    else setEmployee(display.find((employee) =>  { return employee.dni === props.salary.employee }));
-                    setShowSpinner(false);
-                })
-                .catch((error) => console.log(error));
+                    //console.log(person.fullName + " - " + exist);
+                    //console.log(exist.length);
+                    if (exist.length < 1) display.push(person);
+                });
+                setEmployees(display);
+                if (props.action === 'Registrar') setEmployee(display[nro]);
+                else setEmployee(display.find((employee) =>  { return employee.dni === props.salary.employee }));
             })
-            .catch((e) => console.log(e));
+            .catch((error) => console.log(error));
     },[props.action]);
 
     useEffect(() => {
         if (employee !== null) {
-            Axios.get(`${PORT()}/api/hsWorked?monthYear=${props.month}&dni=${employee.dni}`)
+            Axios.get(`http://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
             .then((response) => {
-                if (response.data.Ok === false) console.log(response.data);
-                else {
-                    let aux = [
-                        {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount},
-                        {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount},
-                        {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount},
-                        {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount},
-                        {id: 'F', name: 'Hs. Franco', hs: response.data[4].hs_number, price: response.data[4].amount}
-                    ];
-                    setMain(aux);
-                }
-            });
+                let newNonworkingDays = [];
+                response.data.forEach((nWD) => {
+                    newNonworkingDays.push({day: nWD.dia, month: (nWD.mes - 1)})
+                })
+                Axios.get(`${PORT()}/api/hsWorked?monthYear=${props.month}&dni=${employee.dni}&nonWorkingDays=${JSON.stringify(newNonworkingDays)}`)
+                    .then((response) => {
+                        if (response.data.Ok === false) console.log(response.data);
+                        else {
+                            console.log(response.data);
+                            let aux = [
+                                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount},
+                                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount},
+                                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount},
+                                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount},
+                                {id: 'F', name: 'Hs. Franco', hs: response.data[4].hs_number, price: response.data[4].amount}
+                            ];
+                            setMain(aux);
+                            setShowSpinner(false);
+                        }
+                    });
+            })
+            .catch((err) => {console.log(err)});
+            
 
             if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
@@ -160,6 +162,7 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se ha confirmado el salario correctamente','success');
             props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
+            setShowSpinner(true);
             setNro(nro + 1);
             setEmployee(employees[nro + 1]);
             nroRef.current.focus();
@@ -331,7 +334,7 @@ const FormSalary = (props) => {
                 <div className="formRow justify-content-center">
                     <div className="col-sm-6" >
                         <label>Fecha: </label>
-                        <input ref={nroRef} value={dateText(props.month, false, true)} style={{fontWeight: 'bold', marginLeft: '1em', border: '0px'}} readOnly></input> 
+                        <input ref={nroRef} value={dateText(props.month+'-01', false, true)} style={{fontWeight: 'bold', marginLeft: '1em', border: '0px'}} readOnly></input> 
                     </div>
                     <div className="col-sm-6" style={{fontWeight: 'bold', textAlign: 'right'}} >
                         <label >{nro + 1}/{employees.length}</label>

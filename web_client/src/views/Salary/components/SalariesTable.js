@@ -19,32 +19,24 @@ export default function SalariesTable(props) {
     const [nameSearch, setNameSearch] = useState('');
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/relationships')
-        .then((res) => {
-            Axios.get(PORT() + '/api/employees')
-                .then((response) => {
-                    let aux = response.data;
-                    let display = [];
-                    aux.forEach((person)=>{
-                        person.fullName = person.last_name;
-                        person.fullName += ', ';
-                        person.fullName += person.name;
-                        const relationships = res.data;
-                        relationships?.forEach(relationship => {
-                            if (relationship.id_employee_relationship === person.employment_relationship) person.relationship = relationship.name;
-                        });
-                        const exist = props.allSalaries?.filter((elem) => {
-                            return elem.dni_employee.includes(person.dni);
-                        });
-                        //console.log(person.fullName + " - " + exist);
-                        //console.log(exist.length);
-                        if (exist.length < 1) display.push(person);
+        Axios.get(PORT() + '/api/employees')
+            .then((response) => {
+                let aux = response.data;
+                let display = [];
+                aux.forEach((person)=>{
+                    person.fullName = person.last_name;
+                    person.fullName += ', ';
+                    person.fullName += person.name;
+                    const exist = props.allSalaries?.filter((elem) => {
+                        return elem.dni_employee.includes(person.dni);
                     });
-                    setEmployees(display);
-                })
-                .catch((error) => console.log(error));
+                    //console.log(person.fullName + " - " + exist);
+                    //console.log(exist.length);
+                    if (exist.length < 1) display.push(person);
+                });
+                setEmployees(display);
             })
-            .catch((e) => console.log(e));
+            .catch((error) => console.log(error));
     }, []);
 
     useEffect(() => {
@@ -132,7 +124,7 @@ export default function SalariesTable(props) {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.relationship}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button className="sendAdd" onClick={() => {props.setActionSalary('Ver',element)}}>
@@ -181,7 +173,7 @@ export default function SalariesTable(props) {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.relationship}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>------</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button className="sendAdd" style={{backgroundColor: 'grey'}} disabled={true} >
