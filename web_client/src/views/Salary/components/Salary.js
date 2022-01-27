@@ -16,7 +16,7 @@ const PORT = require('../../../config');
 const Salary = (props) => {
     
     const [salaries,setSalaries] = useState([]);
-    const [salary,setSalary] = useState({month: formattedDate(new Date()), employee: 36185966});
+    const [salary,setSalary] = useState({month: formattedDate(new Date()), employee: 0});
     const [showSpinner,setShowSpinner] = useState(true);
     const [action,setAction] = useState('Listar');
     const [reloadList,setReloadList] = useState(false);
@@ -67,15 +67,10 @@ const Salary = (props) => {
     useEffect(() => {
         if (action === 'Listar') {
             if (inputMonth.current && !inputMonth.current.value) {
-                inputMonth.current.value = startMonth.slice(0,-3);
-                setMonth(inputMonth.current.value + '-01');
-                salary.month = inputMonth.current.value + '-01';
-            }
-            else if (inputMonth.current && !inputMonth.current.value) {
-                inputMonth.current.value = salary.month.slice(0,-3);
-                setMonth(inputMonth.current.value + '-01');
-            }
-            else if (inputMonth.current) {
+                setIsValidMonth("form-control");
+                setErrorDate(true);
+                setSalary({month: formattedDate(new Date()), employee: 0});
+            } else if (inputMonth.current && inputMonth.current.value) {
 
                 let aux = salary.month;
                 if (aux.length !== 10) aux = salary.month;
