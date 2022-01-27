@@ -43,13 +43,35 @@ const FormSalary = (props) => {
     const [advances, setAdvances] = useState([]);
 
     useEffect(() => {
-        Axios.get(`${PORT()}/api/employees`)
-        .then((response) => {
-            setEmployees(response.data);
-            if (props.action === 'Registrar') setEmployee(response.data[nro]);
-            else setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.employee }));
-            setShowSpinner(false);
-        });
+        Axios.get(PORT() + '/api/relationships')
+        .then((res) => {
+            Axios.get(PORT() + '/api/employees')
+                .then((response) => {
+                    let aux = response.data;
+                    let display = [];
+                    aux.forEach((person)=>{
+                        person.fullName = person.last_name;
+                        person.fullName += ', ';
+                        person.fullName += person.name;
+                        const relationships = res.data;
+                        relationships?.forEach(relationship => {
+                            if (relationship.id_employee_relationship === person.employment_relationship) person.relationship = relationship.name;
+                        });
+                        const exist = props.salaries?.filter((elem) => {
+                            return elem.dni_employee.includes(person.dni);
+                        });
+                        //console.log(person.fullName + " - " + exist);
+                        //console.log(exist.length);
+                        if (exist.length < 1) display.push(person);
+                    });
+                    setEmployees(display);
+                    if (props.action === 'Registrar') setEmployee(display[nro]);
+                    else setEmployee(display.find((employee) =>  { return employee.dni === props.salary.employee }));
+                    setShowSpinner(false);
+                })
+                .catch((error) => console.log(error));
+            })
+            .catch((e) => console.log(e));
     },[props.action]);
 
     useEffect(() => {
@@ -440,7 +462,7 @@ const FormSalary = (props) => {
             </BeShowed>
             <BeShowed show={props.action === 'Editar'}>   
                 <Buttons ready={(!errorName && !errorPrice)}
-                    label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
+                    label='Registrar' labelCancel='Cancelar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
             </BeShowed>
             <BeShowed show={props.action === 'Ver'}> 
                 <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>

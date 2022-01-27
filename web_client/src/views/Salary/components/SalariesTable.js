@@ -2,7 +2,6 @@ import BeShowed from "../../../common/BeShowed";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
 import '../../../assets/Buttons.css';
-import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import { useEffect, useState } from "react";
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../../../common/TablePagination/Pagination';
@@ -11,8 +10,6 @@ import Axios from "axios";
 const PORT = require('../../../config');
 
 export default function SalariesTable(props) {
-
-    const [date,setDate] = useState(new Date().setHours(0,0,0,0));
 
     const [employees, setEmployees] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +24,7 @@ export default function SalariesTable(props) {
             Axios.get(PORT() + '/api/employees')
                 .then((response) => {
                     let aux = response.data;
+                    let display = [];
                     aux.forEach((person)=>{
                         person.fullName = person.last_name;
                         person.fullName += ', ';
@@ -35,8 +33,14 @@ export default function SalariesTable(props) {
                         relationships?.forEach(relationship => {
                             if (relationship.id_employee_relationship === person.employment_relationship) person.relationship = relationship.name;
                         });
+                        const exist = props.allSalaries?.filter((elem) => {
+                            return elem.dni_employee.includes(person.dni);
+                        });
+                        //console.log(person.fullName + " - " + exist);
+                        //console.log(exist.length);
+                        if (exist.length < 1) display.push(person);
                     });
-                    setEmployees(aux);
+                    setEmployees(display);
                 })
                 .catch((error) => console.log(error));
             })
@@ -150,7 +154,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter === 'NonConfirm'}>
+            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter === 'NonGenerate'}>
             <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -197,7 +201,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter !== 'NonConfirm'}>
+            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter !== 'NonGenerate'}>
                 <br/>
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>

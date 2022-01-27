@@ -3,6 +3,10 @@ import '../styles/Licenses.css';
 
 const ShowSelectedEmployee = (props) => {
     if(props.selectedEmployee !== null){
+        let charges = "";
+
+        props.selectedEmployee.charges?.map((charge, i) => i + 1 < props.selectedEmployee.charges.length ? charges += charge.chargeName + ", " : charges += charge.chargeName);
+
         return(
             <div>
                 <div className="row">
@@ -34,7 +38,7 @@ const ShowSelectedEmployee = (props) => {
                                 <label>Cargo: </label>
                             </div>
                             <div className="col">
-                                <label>{props.selectedEmployee.name_charge}</label>
+                                <label>{charges}</label>
                             </div>
                         </div>
                         <div className="row">

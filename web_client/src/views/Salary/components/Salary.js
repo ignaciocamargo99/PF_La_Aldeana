@@ -16,18 +16,18 @@ const PORT = require('../../../config');
 const Salary = (props) => {
     
     const [salaries,setSalaries] = useState([]);
+    const [allSalaries, setAllSalaries] = useState([]);
     const [salary,setSalary] = useState({month: formattedDate(new Date()), employee: 0});
     const [showSpinner,setShowSpinner] = useState(true);
     const [action,setAction] = useState('Listar');
     const [reloadList,setReloadList] = useState(false);
-    const [filter,setFilter] = useState('NonConfirm');
+    const [filter,setFilter] = useState('NonGenerate');
     const [errorDate,setErrorDate] = useState(true);
 
-    const [date, setDate] = useState("null");
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(2021,6,1));
     let startMonth = formattedDate(new Date(),2);
-    const [maxMonth, setMaxMonth] = useState(//formattedDate(new Date(), 0, -(new Date().getDate())));
+    const maxMonth = useState(//formattedDate(new Date(), 0, -(new Date().getDate())));
     "2023-01-01");
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
@@ -39,11 +39,11 @@ const Salary = (props) => {
                 const aux = [];
                 const state = filter === 'Confirm' ? 2 : filter === 'OnHold' ? 1 : -1;
                 response.data.forEach((elem, i) => {
-                    
                     if (elem.id_state === state) aux[i] = elem;
                 });
                 setSalaries(aux);
                 setShowSpinner(false);
+                setAllSalaries(response.data);
             });
         } else setShowSpinner(false);
     },[reloadList, month, filter, isValidMonth]);
@@ -103,7 +103,8 @@ const Salary = (props) => {
         }
     }, [startMonth, month, salary]);
 
-    return(<>
+    return(
+        <>
             {showSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
             :
@@ -119,7 +120,7 @@ const Salary = (props) => {
                                     <label htmlFor="firstMonth" >Mes a generar*</label>
                                 </div>
                                 <div className="form-control-input col-sm-8">
-                                    <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)}
+                                    <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0,-3)}
                                     max={maxMonth.slice(0,-3)} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
                                 </div>
                                 <div className="form-control-input col-sm-1">
@@ -127,17 +128,18 @@ const Salary = (props) => {
                                 </div>
                             </div>
                             <ListSalaryFilter onClickRB={setFilter} filter={filter}/>
-                            <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter}
+                            <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={allSalaries}
                                         reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
                         </div>
                     </BeShowed>
                     <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
-                        <FormSalary setActionSalary={setActionSalary} action={action} salary={salary} salaries={salaries} 
+                        <FormSalary setActionSalary={setActionSalary} action={action} salary={salary} salaries={allSalaries} 
                                     reloadList={reloadList} setReloadList={setReloadList} month={month} />
                     </BeShowed>
                 </div>
             }
-        </>)        
+        </>
+    );
 }
 
 export default Salary;
