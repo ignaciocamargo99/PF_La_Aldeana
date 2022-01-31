@@ -36,6 +36,7 @@ namespace desktop_employee
             ContraerMenu();
 
             //Inicia el formulario de asistencia
+            ibtnEmpleados_Click(null, e);
             //ibtnAsistencia_Click(null, e);
         }
         protected override void WndProc(ref Message m)

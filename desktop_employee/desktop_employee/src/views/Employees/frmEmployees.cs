@@ -56,8 +56,13 @@ namespace desktop_employee.src.views.Employees
                 column.Width = 250;
             }
 
+
             //validar boton
-            btnEditEmployee.Enabled = true;
+            if (datosEmpleados != null && datosEmpleados.Count > 0)
+            {
+                btnEditEmployee.BackgroundColor = ColorTranslator.FromHtml("#383C77");
+                btnEditEmployee.TextColor = Color.White;
+            }
         }
 
         private DataTable createTableEmployee()
@@ -94,19 +99,27 @@ namespace desktop_employee.src.views.Employees
 
         private void btnEditEmployee_Click(object sender, EventArgs e)
         {
-            int employee_dni = Convert.ToInt32(dgvEmployees.CurrentRow.Cells[0].Value);
-            employeeSelectedTable = filterEmployee(datosEmpleados, employee_dni);
+            if (dgvEmployees.SelectedRows.Count == 1)
+            {
+                int employee_dni = Convert.ToInt32(dgvEmployees.CurrentRow.Cells[0].Value);
+                employeeSelectedTable = filterEmployee(datosEmpleados, employee_dni);
 
-            frmEditEmployee frmEditEmployee = new();
-            frmEditEmployee.EmployeeSelected = employeeSelectedTable;
-            frmEditEmployee.PnlPadre = pnlPadre;
-            OpenForm(frmEditEmployee);
+                frmEditEmployee frmEditEmployee = new();
+                frmEditEmployee.EmployeeSelected = employeeSelectedTable;
+                frmEditEmployee.PnlPadre = pnlPadre;
+                OpenForm(frmEditEmployee);
+            }
+            else
+            {
+                MessageBox.Show("No se selecciono nungún empleado.");
+            }
         }
 
         private void btnAplicarFiltros_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Falta desarrollar los filtros");
         }
+
 
         private void OpenForm(Form form)
         {
@@ -117,5 +130,7 @@ namespace desktop_employee.src.views.Employees
             pnlPadre.Controls.Add(form);
             form.Show();
         }
+
+
     }
 }

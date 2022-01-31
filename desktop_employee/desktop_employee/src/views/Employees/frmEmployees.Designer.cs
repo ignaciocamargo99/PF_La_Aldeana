@@ -32,12 +32,12 @@ namespace desktop_employee.src.views.Employees
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvEmployees = new System.Windows.Forms.DataGridView();
-            this.btnEditEmployee = new System.Windows.Forms.Button();
             this.lblFiltros = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnAplicarFiltros = new System.Windows.Forms.Button();
+            this.btnAplicarFiltros = new desktop_employee.src.utils.Botones.CustomButton();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnEditEmployee = new desktop_employee.src.utils.Botones.CustomButton();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).BeginInit();
             this.panel1.SuspendLayout();
@@ -47,6 +47,8 @@ namespace desktop_employee.src.views.Employees
             // 
             // dgvEmployees
             // 
+            this.dgvEmployees.AllowUserToAddRows = false;
+            this.dgvEmployees.AllowUserToDeleteRows = false;
             this.dgvEmployees.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -75,19 +77,6 @@ namespace desktop_employee.src.views.Employees
             this.dgvEmployees.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmployees.Size = new System.Drawing.Size(896, 233);
             this.dgvEmployees.TabIndex = 0;
-            // 
-            // btnEditEmployee
-            // 
-            this.btnEditEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditEmployee.Enabled = false;
-            this.btnEditEmployee.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnEditEmployee.Location = new System.Drawing.Point(770, 334);
-            this.btnEditEmployee.Name = "btnEditEmployee";
-            this.btnEditEmployee.Size = new System.Drawing.Size(173, 36);
-            this.btnEditEmployee.TabIndex = 1;
-            this.btnEditEmployee.Text = "Editar Empleado";
-            this.btnEditEmployee.UseVisualStyleBackColor = true;
-            this.btnEditEmployee.Click += new System.EventHandler(this.btnEditEmployee_Click);
             // 
             // lblFiltros
             // 
@@ -119,27 +108,56 @@ namespace desktop_employee.src.views.Employees
             // 
             // btnAplicarFiltros
             // 
-            this.btnAplicarFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAplicarFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAplicarFiltros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.btnAplicarFiltros.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.btnAplicarFiltros.BorderColor = System.Drawing.Color.Black;
+            this.btnAplicarFiltros.BorderRadius = 25;
+            this.btnAplicarFiltros.BorderSize = 1;
+            this.btnAplicarFiltros.FlatAppearance.BorderSize = 0;
+            this.btnAplicarFiltros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAplicarFiltros.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAplicarFiltros.Location = new System.Drawing.Point(770, 18);
+            this.btnAplicarFiltros.ForeColor = System.Drawing.Color.White;
+            this.btnAplicarFiltros.Location = new System.Drawing.Point(804, 19);
             this.btnAplicarFiltros.Name = "btnAplicarFiltros";
-            this.btnAplicarFiltros.Size = new System.Drawing.Size(173, 36);
-            this.btnAplicarFiltros.TabIndex = 6;
+            this.btnAplicarFiltros.Size = new System.Drawing.Size(139, 48);
+            this.btnAplicarFiltros.TabIndex = 5;
             this.btnAplicarFiltros.Text = "Aplicar Filtros";
-            this.btnAplicarFiltros.UseVisualStyleBackColor = true;
+            this.btnAplicarFiltros.TextColor = System.Drawing.Color.White;
+            this.btnAplicarFiltros.UseVisualStyleBackColor = false;
             this.btnAplicarFiltros.Click += new System.EventHandler(this.btnAplicarFiltros_Click);
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnEditEmployee);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.dgvEmployees);
-            this.panel3.Controls.Add(this.btnEditEmployee);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 122);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(995, 398);
             this.panel3.TabIndex = 6;
+            // 
+            // btnEditEmployee
+            // 
+            this.btnEditEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditEmployee.BackColor = System.Drawing.Color.LightGray;
+            this.btnEditEmployee.BackgroundColor = System.Drawing.Color.LightGray;
+            this.btnEditEmployee.BorderColor = System.Drawing.Color.Black;
+            this.btnEditEmployee.BorderRadius = 25;
+            this.btnEditEmployee.BorderSize = 1;
+            this.btnEditEmployee.FlatAppearance.BorderSize = 0;
+            this.btnEditEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditEmployee.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnEditEmployee.ForeColor = System.Drawing.Color.Black;
+            this.btnEditEmployee.Location = new System.Drawing.Point(770, 326);
+            this.btnEditEmployee.Name = "btnEditEmployee";
+            this.btnEditEmployee.Size = new System.Drawing.Size(173, 48);
+            this.btnEditEmployee.TabIndex = 4;
+            this.btnEditEmployee.Text = "Editar Empleado";
+            this.btnEditEmployee.TextColor = System.Drawing.Color.Black;
+            this.btnEditEmployee.UseVisualStyleBackColor = false;
+            this.btnEditEmployee.Click += new System.EventHandler(this.btnEditEmployee_Click);
             // 
             // label1
             // 
@@ -178,12 +196,12 @@ namespace desktop_employee.src.views.Employees
         #endregion
 
         private System.Windows.Forms.DataGridView dgvEmployees;
-        private System.Windows.Forms.Button btnEditEmployee;
         private System.Windows.Forms.Label lblFiltros;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button btnAplicarFiltros;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label1;
+        private utils.Botones.CustomButton btnEditEmployee;
+        private utils.Botones.CustomButton btnAplicarFiltros;
     }
 }
