@@ -32,3 +32,4 @@ C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.frmMain.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.VerificationForm.resources
 C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmValidationFingerprint.resources
+C:\Users\joaqu\Desktop\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.ValidationForm.resources

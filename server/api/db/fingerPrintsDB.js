@@ -19,7 +19,7 @@ const fingerPrintsGetDB = () => {
 }; 
 
 const fingerPrintsByDniGetDB = (dniEmployee) => {
-    const sqlSelect = `SELECT dniEmployee, finger
+    const sqlSelect = `SELECT dniEmployee, finger, finger_print
                     FROM FINGER_PRINTS WHERE dniEmployee = ${dniEmployee}`;
 
     return new Promise((resolve, reject) => {

@@ -78,12 +78,14 @@ namespace desktop_employee.src.views.Employees
                     {
                         btnCapturarPD.Enabled = false;
                         btnEliminarPD.Enabled = true;
+                        btnComprobarPD.Enabled = true;
                         break;
                     }
                     else
                     {
                         btnCapturarPD.Enabled = true;
                         btnEliminarPD.Enabled = false;
+                        btnComprobarPD.Enabled = false;
                     }
                 }
                 for (int i = 0; i < cantidad; i++)
@@ -92,12 +94,14 @@ namespace desktop_employee.src.views.Employees
                     {
                         btnCapturarID.Enabled = false;
                         btnEliminarID.Enabled = true;
+                        btnComprobarID.Enabled = true;
                         break;
                     }
                     else
                     {
                         btnCapturarID.Enabled = true;
                         btnEliminarID.Enabled = false;
+                        btnComprobarID.Enabled = false;
                     }
                 }
                 for (int i = 0; i < cantidad; i++)
@@ -106,12 +110,14 @@ namespace desktop_employee.src.views.Employees
                     {
                         btnCapturarPI.Enabled = false;
                         btnEliminarPI.Enabled = true;
+                        btnComprobarPI.Enabled = true;
                         break;
                     }
                     else
                     {
                         btnCapturarPI.Enabled = true;
                         btnEliminarPI.Enabled = false;
+                        btnComprobarPI.Enabled = false;
                     }
                 }
                 for (int i = 0; i < cantidad; i++)
@@ -120,12 +126,14 @@ namespace desktop_employee.src.views.Employees
                     {
                         btnCapturarII.Enabled = false;
                         btnEliminarII.Enabled = true;
+                        btnComprobarII.Enabled = true;
                         break;
                     }
                     else
                     {
                         btnCapturarII.Enabled = true;
                         btnEliminarII.Enabled = false;
+                        btnComprobarII.Enabled = false;
                     }
                 }
             }
@@ -139,6 +147,10 @@ namespace desktop_employee.src.views.Employees
                 btnEliminarID.Enabled = false;
                 btnEliminarPI.Enabled = false;
                 btnEliminarII.Enabled = false;
+                btnComprobarPD.Enabled = false;
+                btnComprobarID.Enabled = false;
+                btnComprobarPI.Enabled = false;
+                btnComprobarII.Enabled = false;
             }
         }
 
@@ -277,25 +289,33 @@ namespace desktop_employee.src.views.Employees
         private void btnComprobarPD_Click(object sender, EventArgs e)
         {
             txtLblCurrent = lblPD.Text;
-
+            comprobarHuella();
         }
 
         private void btnComprobarID_Click(object sender, EventArgs e)
         {
             txtLblCurrent = lblID.Text;
-
+            comprobarHuella();
         }
 
         private void btnComprobarPI_Click(object sender, EventArgs e)
         {
             txtLblCurrent = lblPI.Text;
-
+            comprobarHuella();
         }
 
         private void btnComprobarII_Click(object sender, EventArgs e)
         {
             txtLblCurrent = lblII.Text;
+            comprobarHuella();
+        }
 
+        private void comprobarHuella()
+        {
+            frmValidationFingerprint validationForm = new();
+            validationForm.HuellasEmpleado = fingerEmployee;
+            validationForm.HuellaAcomparar = txtLblCurrent;
+            validationForm.Show();
         }
 
 
