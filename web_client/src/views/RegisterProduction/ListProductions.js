@@ -10,6 +10,7 @@ import HeaderTable from "../../common/Table/HeaderTable";
 import Table from '../../common/Table/Table';
 import TablePagination from "./components/TablePagination/TablePagination";
 import productionData from './productionData';
+import './styles/ButtonFilters.css';
 // import DeleteEmployeeButton from './DeleteEmployeeButton';
 // import EditEmployee from "./EditEmployee/EditEmployee";
 // import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
