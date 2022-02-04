@@ -7,5 +7,7 @@ router.post("/productions", productionController.postProductions);
 
 router.get("/productions", productionController.getProductions)
 
+router.get("/productions/:id_production", productionController.getProductionsFlavors)
+
 //#endregion
 module.exports = router;

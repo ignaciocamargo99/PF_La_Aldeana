@@ -1,4 +1,4 @@
-const { createProduction, readProduction } = require("../services/productionService");
+const { createProduction, readProduction, readProductionFlavors } = require("../services/productionService");
 
 
 // HTTP: POST
@@ -32,4 +32,18 @@ async function getProductions(req, res){
     }
 }
 
-module.exports = { postProductions, getProductions };   
+// HTTP: GET:id
+async function getProductionsFlavors(req, res){
+    try {
+        const result = await readProductionFlavors(req.params.id_production);
+        res.send(result);
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { postProductions, getProductions, getProductionsFlavors };   

@@ -33,8 +33,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                             return (
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_production).format('DD-MM-YYYY')}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total_quantity}</td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <ReadProductionButton production={element} read={handleRead} />
                                     </td>

@@ -68,19 +68,15 @@ export default function ListProductions() {
     const columnsHeaders = [
         {
             name: 'Fecha de producción',
-            width: '20%'
+            width: '40%'
         },
         {
-            name: 'Sabor',
-            width: '15%'
-        },
-        {
-            name: 'Descripción sabor',
-            width: '35%'
+            name: 'Cantidad de baldes producida',
+            width: '25%'
         },
         {
             name: 'Ver',
-            width: '10%'
+            width: '12%'
         },
         {
             name: 'Editar'
@@ -127,20 +123,20 @@ export default function ListProductions() {
                     </div>
                     : (
                         <BeShowed show={!isEditing && !isReading}>
-                        <>
-                            <div className="viewTitleBtn">
-                                <h1>Producciones</h1>
-                                <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                            </div>
-                            <div className="viewBody">
-                                <TablePagination
-                                    columnsHeaders={columnsHeaders}
-                                    currentElements={allProductions}
-                                    handleRead={readProduction}
-                                />
+                            <>
+                                <div className="viewTitleBtn">
+                                    <h1>Producciones</h1>
+                                    <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </div>
+                                <div className="viewBody">
+                                    <TablePagination
+                                        columnsHeaders={columnsHeaders}
+                                        currentElements={allProductions}
+                                        handleRead={readProduction}
+                                    />
 
-                            </div>
-                        </>
+                                </div>
+                            </>
                         </BeShowed>
                     )}
 
