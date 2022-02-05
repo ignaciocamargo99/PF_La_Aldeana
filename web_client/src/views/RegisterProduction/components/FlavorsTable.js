@@ -30,7 +30,7 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
             .then((response) => {
                 handlerLoadingSpinner();
                 let auxFlavor = response.data;
-                auxFlavor?.map((e, i) => e.amount = 0);
+                auxFlavor?.map((e, i) => e.quantity = 0);
                 setListTable(auxFlavor);
             })
             .catch((err) => {
@@ -50,9 +50,9 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
         }
     }, [nameSearch, listTable]);
 
-    const upload = (flavor, amount) => {
-        if (amount > 0) {
-            flavor.amount = amount;
+    const upload = (flavor, quantity) => {
+        if (quantity > 0) {
+            flavor.quantity = quantity;
 
             if (destinyTable.some(s => s.id_flavor == flavor.id_flavor)) {
                 let auxDestiny = [...destinyTable];
@@ -96,11 +96,15 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
             .then((response) => {
                 handlerLoadingSpinner();
                 setFlavorsToRead(response.data);
+                if(data.editing) {
+                    setDestinyTable(response.data);
+                    updateProductionFlavors(response.data);
+                }
             })
             .catch((err) => {
                 console.log(err);
             })
-    }, [])
+    }, []);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

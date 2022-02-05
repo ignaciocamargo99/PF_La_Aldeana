@@ -43,7 +43,7 @@ export default function TableFlavorsDown({ flavors, download, data }) {
                                     {!data.reading && (
                                         <>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <button type="button" className="sendDelete"
                                                     onClick={() => download(element)}><FontAwesomeIcon icon={faMinus} /></button>

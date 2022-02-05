@@ -2,8 +2,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, {useRef} from 'react';
 import ReadProductionButton from "../ReadProduction/ReadProductionButton";
-// import DeleteProductButton from '../DeleteProductButton';
-// import EditProductButton from '../EditProductButton';
+import DeleteProductionButton from '../DeleteProductionButton';
+import EditProductionButton from '../EditProduction/EditProductionButton';
 import moment from 'moment';
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
@@ -47,12 +47,10 @@ const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handle
                                             <ReadProductionButton production={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button id='readProductButton' type="button" className="sendEdit" ><FontAwesomeIcon icon={faEye} /></button>
-                                            {/* <EditProductButton product={element} edit={handleEdit} /> */}
+                                            <EditProductionButton production={element} edit={handleEdit} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button id='readProductButton' type="button" className="sendEdit" ><FontAwesomeIcon icon={faEye} /></button>
-                                            {/* <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} /> */}
+                                            <DeleteProductionButton deleteProduct={handleDelete} production={element} index={i} />
                                         </td>
                                     </tr>
                                 )

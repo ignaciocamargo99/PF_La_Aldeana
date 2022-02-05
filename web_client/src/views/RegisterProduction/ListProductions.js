@@ -12,8 +12,7 @@ import TablePagination from "./components/TablePagination/TablePagination";
 import productionData from './productionData';
 import './styles/ButtonFilters.css';
 // import DeleteEmployeeButton from './DeleteEmployeeButton';
-// import EditEmployee from "./EditEmployee/EditEmployee";
-// import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
+import EditProduction from "./components/EditProduction/EditProduction";
 import ReadProduction from './components/ReadProduction/ReadProduction';
 // import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
 
@@ -24,9 +23,10 @@ export default function ListProductions() {
     const [allProductions, setAllProductions] = useState([]);
     // const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
     const [productionToRead, setProductionToRead] = useState({});
-    const [isEditing, setIsEditing] = useState(false);
+    const [productionToEdit, setProductionToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         Axios.get(PORT() + '/api/productions')
@@ -101,10 +101,23 @@ export default function ListProductions() {
         }
     }
 
-    const onClickCancelRead = () => {
+    const goBackToAllProdctionsTable = () => {
         <div style={{ display: 'none' }}>{document.title = "Producciones"}</div>
         setIsReading(false);
+        setIsEditing(false);
         window.scrollTo(0, 0);
+    }
+
+    const editProduction = async (production) => {
+        try {
+            let aux = productionData(production);
+            aux.editing = true;
+            setProductionToEdit(aux);
+            setIsEditing(true);
+        }
+        catch {
+            displayError();
+        }
     }
 
     return (
@@ -134,6 +147,7 @@ export default function ListProductions() {
                                         columnsHeaders={columnsHeaders}
                                         currentElements={allProductions}
                                         handleRead={readProduction}
+                                        handleEdit = {editProduction}
                                     />
 
                                 </div>
@@ -146,7 +160,10 @@ export default function ListProductions() {
             }
 */}
             {isReading &&
-                <ReadProduction onClickCancelRead={onClickCancelRead} productionToRead={productionToRead} />
+                <ReadProduction onClickCancelRead={goBackToAllProdctionsTable} productionToRead={productionToRead} />
+            }
+            {isEditing &&
+                <EditProduction onClickCancelEdit={goBackToAllProdctionsTable} productionToEdit={productionToEdit} />
             }
         </>
     );

@@ -29,11 +29,11 @@ const productionPostDB = (newProduction) => {
                         return db.rollback(() => reject(error))
                     };
                     for (let i = 0; i < flavors.length; i++) {
-                        db.query(sqlInsertProductions_x_Flavors, [id_production, flavors[i].id_flavor, flavors[i].amount], (error) => {
+                        db.query(sqlInsertProductions_x_Flavors, [id_production, flavors[i].id_flavor, flavors[i].quantity], (error) => {
                             if (error) {
                                 return db.rollback(() => reject(error));
                             }
-                            db.query(sqlUpdate, [flavors[i].amount, flavors[i].id_flavor], (error) => {
+                            db.query(sqlUpdate, [flavors[i].quantity, flavors[i].id_flavor], (error) => {
                                 if (error) {
                                     return db.rollback(() => reject(error));
                                 }

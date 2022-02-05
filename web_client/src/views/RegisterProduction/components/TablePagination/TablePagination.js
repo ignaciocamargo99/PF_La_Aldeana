@@ -14,7 +14,6 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
         if (dateSearch !== "") {
             let dateFormatted = moment(dateSearch).format('DD-MM-YYYY')
             const filteredElementsList = currentElements.filter((elem) => moment(elem.date_production).format('DD-MM-YYYY') === dateFormatted);
-            console.log(filteredElementsList)
             setFilteredElements(filteredElementsList);
             setCurrentPage(1);
         } else {
@@ -38,7 +37,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
                 pageElements={pageElements}
                 setDateSearch={setDateSearch}
                 handleRead={handleRead}
-            // handleEdit={handleEdit}
+                handleEdit={handleEdit}
             // handleDelete={handleDelete}
             >
             </Table>
