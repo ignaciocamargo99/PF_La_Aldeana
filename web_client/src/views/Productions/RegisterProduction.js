@@ -33,7 +33,10 @@ function RegisterProductionView(props) {
 
     const registerProduction = () => {
         if (ready) {
-            let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
+            let productionDateRegistered = []
+            if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
+            else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date);
+            
             if (!productionDateRegistered) {
                 const flavorsValues = props.productionFlavors.filter(() => true);
                 let production = { "dateProduction": props.date, "flavors": flavorsValues };
@@ -46,7 +49,7 @@ function RegisterProductionView(props) {
                     .catch(error => console.log(error))
 
             }
-            else{
+            else {
                 warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
             }
         }

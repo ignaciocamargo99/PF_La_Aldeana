@@ -32,7 +32,10 @@ function EditProduction(props) {
 
     const registerProduction = () => {
         if (ready) {
-            let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
+            let productionDateRegistered = []
+            if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
+            else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
+            
             if (!productionDateRegistered) {
                 const flavorsValues = props.productionFlavors.filter(() => true);
                 let production = { "date_production": props.date, "id_production": data.id_production}
