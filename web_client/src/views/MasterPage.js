@@ -59,6 +59,7 @@ export default function App() {
               <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
               <Route path='/app/advances' component={ListAdvances}></Route>
               <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
+              <Route path='/app/productions' component={ListProductions}></Route>
             </BeShowed>
           }
         </div>
