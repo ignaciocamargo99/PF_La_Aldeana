@@ -10,7 +10,7 @@ const PORT = require('../../../../config');
 
 const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
     const dateFilter = useRef(null);
-    
+
     const onClickFilter = () => {
         dateFilter.current.value = '';
         setDateSearch('')
@@ -43,13 +43,12 @@ const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handle
                                 return (
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
-                                        PORT === '' 
-                                        ?
-                                        moment(element.date_production).format('DD-MM-YYYY')
-                                        : 
-                                        moment(element.date_production).add(1, 'hours').format('DD-MM-YYYY')
-                                    
-                                    }</td>
+                                            PORT() === ''
+                                                ?
+                                                moment(element.date_production).format('DD-MM-YYYY')
+                                                :
+                                                moment(element.date_production).add(1, 'hours').format('DD-MM-YYYY')}
+                                        </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total_quantity}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadProductionButton production={element} read={handleRead} />
