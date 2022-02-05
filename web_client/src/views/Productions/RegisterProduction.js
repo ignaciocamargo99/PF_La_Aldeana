@@ -10,25 +10,45 @@ import warningMessage from '../../utils/WarningMessages/warningMessage';
 import displayError from '../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 function RegisterProductionView(props) {
 
     const PORT = require('../../config');
     const [ready, setReady] = useState(false);
+    const [productions, setProductions] = useState(true);
+    const data = [];
+    data.reading = false;
+
+    useEffect(() => {
+        Axios.get(PORT() + '/api/productions')
+            .then(({ data }) => {
+                setProductions(data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     const cancelRegisterProduction = () => window.location.reload();
 
     const registerProduction = () => {
-
         if (ready) {
-            const flavorsValues = props.productionFlavors.filter(() => true);
-            let production = { "dateProduction": props.date, "flavors": flavorsValues }
-            Axios.post(PORT() + '/api/productions', production)
-                .then((production) => {
-                    if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-                    else displayError('Ha ocurrido un error al registrar la producción.');
-                })
-                .catch(error => console.log(error))
+            let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
+            if (!productionDateRegistered) {
+                const flavorsValues = props.productionFlavors.filter(() => true);
+                let production = { "dateProduction": props.date, "flavors": flavorsValues };
+                loadingMessage('Registrando producción...')
+                Axios.post(PORT() + '/api/productions', production)
+                    .then((production) => {
+                        if (production.data.Ok) successMessage("Atención", "Producción registrada", "success");
+                        else displayError('Ha ocurrido un error...');
+                    })
+                    .catch(error => console.log(error))
+
+            }
+            else{
+                warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+            }
         }
         else {
             warningMessage("Atención", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "warning");
@@ -47,14 +67,14 @@ function RegisterProductionView(props) {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar producción"}</div>
-            <Breadcrumb parentName="Producción" icon={faIceCream} parentLink="production" currentName="Registrar producción" />
+            <Breadcrumb parentName="Producción" icon={faIceCream} parentLink="productions" currentName="Registrar producción" />
             <div className="viewTitle">
                 <h1>Registrar Producción</h1>
             </div>
             <div className="viewBody">
-                <DateProduction />
+                <DateProduction data={data} />
                 <br />
-                <FlavorsTable></FlavorsTable>
+                <FlavorsTable data={data}></FlavorsTable>
                 <Buttons label="Registrar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={cancelRegisterProduction}></Buttons>
             </div>
         </>

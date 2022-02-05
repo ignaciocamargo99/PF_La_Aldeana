@@ -13,12 +13,12 @@ export default function FlavorsAmount({ flavor, addAmountOfFlavor }) {
     const onChangeAmount = () => checkValue();
 
     const checkValue = () => {
-        const amount = inputAmountFlavors.current.value;
+        const quantity = inputAmountFlavors.current.value;
 
-        if (amount <= 0) {
+        if (quantity <= 0) {
             setInvalidStatus("Ingrese un número mayor a 0");
         }
-        else if (amount >= 100) {
+        else if (quantity >= 100) {
             setInvalidStatus("Ingrese un número menor a 100");
         }
         else {
