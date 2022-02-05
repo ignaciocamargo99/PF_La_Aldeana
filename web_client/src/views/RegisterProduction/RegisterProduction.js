@@ -11,6 +11,7 @@ import displayError from '../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 function RegisterProductionView(props) {
 
@@ -35,10 +36,11 @@ function RegisterProductionView(props) {
             let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
             if (!productionDateRegistered) {
                 const flavorsValues = props.productionFlavors.filter(() => true);
-                let production = { "dateProduction": props.date, "flavors": flavorsValues }
+                let production = { "dateProduction": props.date, "flavors": flavorsValues };
+                loadingMessage('Registrando producción...')
                 Axios.post(PORT() + '/api/productions', production)
                     .then((production) => {
-                        if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
+                        if (production.data.Ok) successMessage("Atención", "Producción registrada", "success");
                         else displayError('Ha ocurrido un error...');
                     })
                     .catch(error => console.log(error))

@@ -1,4 +1,4 @@
-const { createProduction, readProduction, readProductionFlavors } = require("../services/productionService");
+const { createProduction, readProduction, readProductionFlavors, updateProductionFlavors } = require("../services/productionService");
 
 
 // HTTP: POST
@@ -19,7 +19,7 @@ async function postProductions(req, res) {
 }
 
 // HTTP: GET
-async function getProductions(req, res){
+async function getProductions(req, res) {
     try {
         const result = await readProduction();
         res.send(result);
@@ -33,7 +33,7 @@ async function getProductions(req, res){
 }
 
 // HTTP: GET:id
-async function getProductionsFlavors(req, res){
+async function getProductionsFlavors(req, res) {
     try {
         const result = await readProductionFlavors(req.params.id_production);
         res.send(result);
@@ -46,4 +46,18 @@ async function getProductionsFlavors(req, res){
     }
 }
 
-module.exports = { postProductions, getProductions, getProductionsFlavors };   
+// HTTP: UPDATE
+async function updateProductionsFlavors(req, res) {
+    try {
+        const result = await updateProductionFlavors(req.body[0], req.body[1]);
+        res.send(result);
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { postProductions, getProductions, getProductionsFlavors, updateProductionsFlavors };   

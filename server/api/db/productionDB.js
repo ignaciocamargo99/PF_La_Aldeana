@@ -93,7 +93,7 @@ const productionGetFlavorsDB = (id_production) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect, [id_production] ,(error, result) => {
+            db.query(sqlSelect, [id_production], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });
@@ -103,4 +103,60 @@ const productionGetFlavorsDB = (id_production) => {
 }
 
 
-module.exports = { productionPostDB, productionGetDB, productionGetFlavorsDB };
+const productionUpdateFlavorsDB = (production, flavors) => {
+    if (!production.date_production && !production.id_production && !flavors) {
+        throw Error('Faltan datos obligatorios...');
+    };
+    const sqlUpdateProduction = `UPDATE PRODUCTIONS p SET p.date_production = ?
+                                    WHERE p.id_production = ?`;
+    const sqlInsertProductionsFlavors = `INSERT INTO PRODUCTIONS_X_FLAVORS VALUES(?, ?, ?)`
+    const sqlDelete = `DELETE FROM PRODUCTIONS_X_FLAVORS 
+                        WHERE id_production = ?`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+                db.query(sqlUpdateProduction, [production.date_production, production.id_production], (error) => {
+                    if (error) {
+                        return db.rollback(() => reject(error))
+                    };
+                    db.query(sqlDelete, [production.id_production], (error) => {
+                        if (error) {
+                            return db.rollback(() => reject(error));
+                        };
+                        if (flavors.length > 0) {
+                            for (let i = 0; i < flavors.length; i++) {
+                                db.query(sqlInsertProductionsFlavors, [production.id_production, parseInt(flavors[i].id_flavor, 10), parseInt(flavors[i].quantity, 10)], (error) => {
+                                    if (error) {
+                                        db.rollback(() => { throw error; })
+                                    }
+                                    db.commit((error) => {
+                                        if (error) {
+                                            return db.rollback(() => { throw error; })
+                                        }
+                                        else resolve();
+                                    });
+                                });
+                            }
+                        }
+                        else {
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() => { throw error; })
+                                }
+                                else resolve();
+                            })
+                        }
+                    })
+                })
+                db.release();
+            })
+        })
+    })
+}
+
+
+module.exports = { productionPostDB, productionGetDB, productionGetFlavorsDB, productionUpdateFlavorsDB };

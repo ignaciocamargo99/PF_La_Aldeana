@@ -11,6 +11,7 @@ import displayError from '../../../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 
 function EditProduction(props) {
 
@@ -30,29 +31,27 @@ function EditProduction(props) {
     }, []);
 
     const registerProduction = () => {
-        console.log(data.id_production)
-        console.log(props.productionFlavors)
-        console.log(props.date)
-        // if (ready) {
-        //     let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
-        //     if (!productionDateRegistered) {
-        //         const flavorsValues = props.productionFlavors.filter(() => true);
-        //         let production = { "dateProduction": props.date, "flavors": flavorsValues }
-        //         Axios.post(PORT() + '/api/productions', production)
-        //             .then((production) => {
-        //                 if (production.data.Ok) successMessage("Atención", "Producción Registrada", "success");
-        //                 else displayError('Ha ocurrido un error...');
-        //             })
-        //             .catch(error => console.log(error))
+        if (ready) {
+            let productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
+            if (!productionDateRegistered) {
+                const flavorsValues = props.productionFlavors.filter(() => true);
+                let production = { "date_production": props.date, "id_production": data.id_production}
+                loadingMessage('Modificando datos de producción')
+                Axios.put(PORT() + '/api/productions', [production, flavorsValues])
+                    .then(production => {
+                        if (production.status === 200) successMessage("Atención", "Producción Registrada", "success");
+                        else displayError('Ha ocurrido un error...');
+                    })
+                    .catch(error => console.log(error))
 
-        //     }
-        //     else {
-        //         warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
-        //     }
-        // }
-        // else {
-        //     warningMessage("Atención", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "warning");
-        // }
+            }
+            else {
+                warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+            }
+        }
+        else {
+            warningMessage("Atención", "Se debe ingresar al menos un sabor y cargar la fecha para registrar la producción.", "warning");
+        }
     }
 
     useEffect(() => {
