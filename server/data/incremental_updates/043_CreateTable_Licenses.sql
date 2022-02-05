@@ -7,16 +7,16 @@ CREATE TABLE `LICENSES` (
 	`active` INT(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id_license`) USING BTREE,
 	INDEX `dni_employee` (`dni_employee`) USING BTREE,
-	CONSTRAINT `LICENSES_ibfk_1` FOREIGN KEY (`dni_employee`) REFERENCES `z9h36nfxtd89vcro`.`EMPLOYEES` (`dni`) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT `LICENSES_ibfk_1` FOREIGN KEY (`dni_employee`) REFERENCES `EMPLOYEES` (`dni`) ON UPDATE RESTRICT ON DELETE RESTRICT,
 	CONSTRAINT `CHK_dni_employee` CHECK (octet_length(`dni_employee`) = 8),
 	CONSTRAINT `CHK_date_finish` CHECK (`date_finish` >= `date_init`)
-)COLLATE='utf8mb4_unicode_ci' ENGINE=InnoDB AUTO_INCREMENT=56 ;
+) COLLATE = 'utf8mb4_unicode_ci' ENGINE = InnoDB AUTO_INCREMENT = 56;
 
 INSERT INTO
-  `DB_CHANGES`
+	`DB_CHANGES`
 VALUES
-  (
-    043,
-    'Create table',
-    'Tabla de licencias.'
-  );
+	(
+		043,
+		'Create table',
+		'Tabla de licencias.'
+	);
