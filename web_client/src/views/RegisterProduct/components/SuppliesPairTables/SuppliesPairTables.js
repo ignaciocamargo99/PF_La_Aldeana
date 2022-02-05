@@ -2,6 +2,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import BeShowed from '../../../../common/BeShowed';
 import Pagination from '../../../../common/TablePagination/Pagination';
 import displayError from '../../../../utils/ErrorMessages/displayError';
 import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
@@ -26,16 +27,12 @@ export default function SuppliesPairTables({ load, data }) {
         try {
             const { data: allSupplies } = await getAllSupplies();
 
-            if (data.editing) {
-                fillSuppliesOfProduct(allSupplies)
-            };
+            if (data.editing) fillSuppliesOfProduct(allSupplies);
 
             fillSuppliesTable(allSupplies);
-
             handlerLoadingSpinner();
         }
         catch (error) {
-            console.log(error);
             displayError();
         }
     }, []);
@@ -91,7 +88,6 @@ export default function SuppliesPairTables({ load, data }) {
                         s.number_supply = amount;
                     }
                 })
-
                 data.supplies = auxDestiny;
                 setDestinyTable(auxDestiny);
             } else {
@@ -101,7 +97,6 @@ export default function SuppliesPairTables({ load, data }) {
                 data.supplies = selectedSupplies;
                 setDestinyTable(selectedSupplies);
             };
-
             load(data);
         }
         else {
@@ -145,48 +140,60 @@ export default function SuppliesPairTables({ load, data }) {
 
     return (
         <>
-            {isLoadingSpinner && (
-                <SpinnerTableSupplies></SpinnerTableSupplies>
-            )}
-            {!isLoadingSpinner && (
-                <>
-                    <div className="formRow title-searcher">
-                        <h4 className="text-secondary">Insumos disponibles:</h4>
-                        <div className="search-input">
-                            <FontAwesomeIcon icon={faSearch} />
-                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+            <BeShowed show={!data.reading}>
+                {isLoadingSpinner && (
+                    <SpinnerTableSupplies></SpinnerTableSupplies>
+                )}
+                {!isLoadingSpinner && (
+                    <>
+                        <div className="formRow title-searcher">
+                            <h4 className="text-secondary">Insumos disponibles:</h4>
+                            <div className="search-input">
+                                <FontAwesomeIcon icon={faSearch} />
+                                <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                            </div>
                         </div>
-                    </div>
-                    <div className="table-responsive-md">
-                        <table className="table table-control table-hover" >
-                            <thead>
-                                <tr>
-                                    {columnsHeaders?.map((element, i) => {
+                        <div className="table-responsive-md">
+                            <table className="table table-control table-hover" >
+                                <thead>
+                                    <tr>
+                                        {columnsHeaders?.map((element, i) => {
+                                            return (
+                                                <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                    {element.name}
+                                                </th>
+                                            )
+                                        })}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {currentElements?.map((element, i) => {
                                         return (
-                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                {element.name}
-                                            </th>
+                                            <tr key={i}>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                                <SuppliesAmount supply={element} addAmountOfSupply={upload} />
+                                            </tr>
                                         )
                                     })}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {currentElements?.map((element, i) => {
-                                    return (
-                                        <tr key={i}>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                            <SuppliesAmount supply={element} addAmountOfSupply={upload} />
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-                    <TableSuppliesDown download={download} supplies={destinyTable} />
-                </>
-            )}
+                                </tbody>
+                            </table>
+                        </div>
+                        <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                        <TableSuppliesDown download={download} supplies={destinyTable} data={data} />
+                    </>
+                )}
+            </BeShowed>
+            <BeShowed show={data.reading}>
+                {!isLoadingSpinner ?
+                    destinyTable.length > 0
+                        ? <TableSuppliesDown download={download} supplies={destinyTable} data={data} />
+                        : <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron insumos cargados para este producto...</h4>
+                    : <SpinnerTableSupplies></SpinnerTableSupplies>
+                }
+
+            </BeShowed>
+
         </>
     );
 };
