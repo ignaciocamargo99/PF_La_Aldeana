@@ -1,4 +1,4 @@
-const { createProduction, readProduction, readProductionFlavors, updateProductionFlavors } = require("../services/productionService");
+const { createProduction, readProduction, readProductionFlavors, updateProductionFlavors, deleteProduction } = require("../services/productionService");
 
 
 // HTTP: POST
@@ -60,4 +60,18 @@ async function updateProductionsFlavors(req, res) {
     }
 }
 
-module.exports = { postProductions, getProductions, getProductionsFlavors, updateProductionsFlavors };   
+// HTTP: DELETE
+async function deleteProductions(req, res) {
+    try {
+        const result = await deleteProduction(req.params.id);
+        res.send(result);
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { postProductions, getProductions, getProductionsFlavors, updateProductionsFlavors, deleteProductions };   

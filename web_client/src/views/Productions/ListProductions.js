@@ -37,32 +37,15 @@ export default function ListProductions() {
             .catch((error) => console.log(error));
     }, []);
 
-    // const deleteEmployee = (i) => {
-    //     let aux = [];
-    //     allEmployees?.forEach((e, j) => {
-    //         if (j !== i) {
-    //             aux[j] = e;
-    //         }
-    //     });
-    //     setAllEmployees(aux);
-    // };
-
-    // const handleEditEmpoyee = (selectedEmployeeForEdit) => {
-    //     setEmployeeDataToEdit(selectedEmployeeForEdit);
-    //     setIsEditing(true);
-    // };
-
-    // const handleReadEmpoyee = (selectedEmployeeForRead) => {
-    //     setEmployeeDataToRead(selectedEmployeeForRead);
-    //     setIsReading(true);
-    // };
-
-    // const goBackToAllEmployeesTable = () => {
-    //     document.title = "Empleados";
-    //     setIsEditing(false);
-    //     setIsReading(false);
-    //     window.scrollTo(0, 0);
-    // };
+    const deleteProduction = (i) => {
+        let aux = [];
+        allProductions?.forEach((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
+            }
+        });
+        setAllProductions(aux);
+    };
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -148,17 +131,14 @@ export default function ListProductions() {
                                         currentElements={allProductions}
                                         handleRead={readProduction}
                                         handleEdit = {editProduction}
+                                        handleDelete = {deleteProduction}
+
                                     />
 
                                 </div>
                             </>
                         </BeShowed>
                     )}
-
-            {/* {isEditing &&
-                <EditEmployee goBack={goBackToAllEmployeesTable} employeeData={employeeDataToEdit} />
-            }
-*/}
             {isReading &&
                 <ReadProduction onClickCancelRead={goBackToAllProdctionsTable} productionToRead={productionToRead} />
             }

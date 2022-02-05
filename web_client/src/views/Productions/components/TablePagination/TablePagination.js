@@ -38,7 +38,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
                 setDateSearch={setDateSearch}
                 handleRead={handleRead}
                 handleEdit={handleEdit}
-            // handleDelete={handleDelete}
+                handleDelete={handleDelete}
             >
             </Table>
             <Pagination

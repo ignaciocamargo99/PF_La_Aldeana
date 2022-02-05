@@ -12,6 +12,8 @@ router.get("/productions/:id_production", productionController.getProductionsFla
 
 router.put("/productions", productionController.updateProductionsFlavors);
 
+router.delete("/production/:id", productionController.deleteProductions);
+
 //#endregion
 
 module.exports = router;

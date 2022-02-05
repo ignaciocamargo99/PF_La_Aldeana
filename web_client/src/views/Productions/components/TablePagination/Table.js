@@ -1,11 +1,10 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, {useRef} from 'react';
-import ReadProductionButton from "../ReadProduction/ReadProductionButton";
+import moment from 'moment';
+import React, { useRef } from 'react';
 import DeleteProductionButton from '../DeleteProductionButton';
 import EditProductionButton from '../EditProduction/EditProductionButton';
-import moment from 'moment';
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import ReadProductionButton from "../ReadProduction/ReadProductionButton";
 
 const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
     const dateFilter = useRef(null);
@@ -50,7 +49,7 @@ const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handle
                                             <EditProductionButton production={element} edit={handleEdit} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductionButton deleteProduct={handleDelete} production={element} index={i} />
+                                            <DeleteProductionButton deleteProduction={handleDelete} production={element} index={i} />
                                         </td>
                                     </tr>
                                 )

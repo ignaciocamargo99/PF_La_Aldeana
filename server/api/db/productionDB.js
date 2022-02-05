@@ -158,5 +158,41 @@ const productionUpdateFlavorsDB = (production, flavors) => {
     })
 }
 
+const productionDeleteDB = (id_production) => {
+    const sqlDeleteProduction = `DELETE FROM PRODUCTIONS WHERE id_production = ?`;
+    const sqlDeleteFlavors = `DELETE FROM PRODUCTIONS_X_FLAVORS WHERE id_production = ?`;
+    
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
 
-module.exports = { productionPostDB, productionGetDB, productionGetFlavorsDB, productionUpdateFlavorsDB };
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+                db.query(sqlDeleteFlavors, [id_production], (error) => {
+                    if (error) {
+                        return db.rollback(() => reject(error))
+                    };
+                    db.query(sqlDeleteProduction, [id_production], (error) => {
+                        if (error) {
+                            return db.rollback(() => reject(error));
+                        }
+                        else {
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() => { throw error; })
+                                }
+                                else resolve();
+                            })
+                        }
+                    })
+                })
+                db.release();
+            })
+        })
+    })
+
+
+}
+
+
+module.exports = { productionPostDB, productionGetDB, productionGetFlavorsDB, productionUpdateFlavorsDB, productionDeleteDB };

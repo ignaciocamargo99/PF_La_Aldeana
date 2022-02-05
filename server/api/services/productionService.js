@@ -1,4 +1,4 @@
-const { productionPostDB, productionGetDB, productionGetFlavorsDB, productionUpdateFlavorsDB } = require('../db/productionDB');
+const { productionPostDB, productionGetDB, productionGetFlavorsDB, productionUpdateFlavorsDB, productionDeleteDB } = require('../db/productionDB');
 
 const createProduction = async (newProduction) => {
     try {
@@ -30,7 +30,6 @@ const readProductionFlavors = async (id_production) => {
     };
 };
 
-
 const updateProductionFlavors = async (production, flavors) => {
     try {
         let res = await productionUpdateFlavorsDB(production, flavors);
@@ -41,4 +40,14 @@ const updateProductionFlavors = async (production, flavors) => {
     };
 };
 
-module.exports = { createProduction, readProduction, readProductionFlavors, updateProductionFlavors }; 
+const deleteProduction = async (id_production) => {
+    try {
+        let res = await productionDeleteDB(id_production);
+        return res;
+    }
+    catch (error){
+        throw Error(error);
+    };
+};
+
+module.exports = { createProduction, readProduction, readProductionFlavors, updateProductionFlavors, deleteProduction }; 
