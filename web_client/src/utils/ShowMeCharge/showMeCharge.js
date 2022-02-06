@@ -4,8 +4,12 @@ const showMeCharge = (name_charge) => {
             return 'delivery';
         case 'Cajera/o':
             return 'cashier';
-        case 'Atención al público':
+        case 'Dependiente de Mostrador':
             return 'publicAttention';
+        case 'Producción':
+            return 'production';
+        default:
+            return;
     }
 }
 

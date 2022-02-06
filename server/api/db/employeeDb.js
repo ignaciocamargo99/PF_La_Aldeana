@@ -1,18 +1,30 @@
 const pool = require('../../config/connection');
 
 const employeeGetDB = (dni) => {
-    let sqlSelect;
+    let sqlSelect = `
+        SELECT
+            e.dni,
+            e.name,
+            e.last_name,
+            e.date_admission,
+            c.id_charge as chargeId,
+            c.name AS chargeName,
+            e.employment_relationship,
+            er.name AS name_emp_relationship
+        FROM
+            EMPLOYEES e
+            JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
+            JOIN CHARGES_X_EMPLOYEES cxe ON cxe.dni_employee = e.dni
+            JOIN CHARGES c ON cxe.id_charge = c.id_charge
+        WHERE
+            active = 1
+    `;
+
     if (dni) {
-        sqlSelect = `SELECT e.dni, e.name AS name, e.last_name AS last_name, e.date_admission AS date_admission, c.name AS name_charge, er.name AS name_emp_relationship
-                        FROM EMPLOYEES e INNER JOIN CHARGES c ON e.charge = c.id_charge 
-                        INNER JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
-                        WHERE e.active = 1 `;
-        sqlSelect = sqlSelect + `AND e.dni = ${dni} ORDER BY e.last_name`
-    }
-    else {
-        sqlSelect = `SELECT e.dni, e.name, e.last_name, e.date_admission ,e.charge, e.employment_relationship, c.name AS name_charge
-        FROM EMPLOYEES e INNER JOIN CHARGES c ON e.charge = c.id_charge WHERE active = 1 ORDER BY last_name`;
-    }
+        sqlSelect += ` AND e.dni = ${dni}`;
+    };
+
+    sqlSelect += ' ORDER BY dni';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

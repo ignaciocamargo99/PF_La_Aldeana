@@ -1,21 +1,21 @@
 
-export const addDaySchedule = (date) =>{
+export const updateNonworkingDaysInMonthSchedule = (nonworkingDaysInMonth) =>{
     return{
-        type: 'ADD_DAY_SCHEDULE',
-        payload: {date: date}
+        type: 'UPDATE_NONWORKINGDAYS_MONTH_SCHEDULE',
+        payload: nonworkingDaysInMonth
     }
 }
 
-export const addEmplInTurnSchedule = (employee,turn,day) =>{
+export const updateMonthYearSelectedSchedule = (month,year) =>{
     return{
-        type: 'ADD_EMP_IN_TURN_SCHEDULE',
-        payload: {employee: employee, turn: turn, day: day}
+        type: 'UPDATE_MONTH_YEAR_SELECTED_SCHEDULE',
+        payload: { month: month, year: year }
     }
 }
 
-export const deleteEmplInTurnSchedule = (employee,turn,day) =>{
+export const updateSchedule = (schedule) =>{
     return{
-        type: 'DELETE_EMP_IN_TURN_SCHEDULE',
-        payload: {employee: employee, turn: turn, day: day}
+        type: 'UPDATE_SCHEDULE',
+        payload: schedule
     }
 }

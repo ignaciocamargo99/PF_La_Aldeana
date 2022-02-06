@@ -4,7 +4,7 @@ import { purchaseNumber, purchaseDate, purchaseSupplier, purchaseSupplies, purch
 import { productionFlavorsReducer } from "./FlavorReducers"
 import { dateReducer } from './DateReducers'
 import { nameSupply, descriptionSupply, singlePrice, multiplePrice, typeSupply, lotSupply, unitPerLotSupply, unitSupply, deliverySupply, franchiseSupply } from "./SupplyReducers"
-import { schedule } from './ScheduleReducers';
+import { nonworkingDaysInMonthSchedule , monthYearSelectedSchedule, schedule} from './ScheduleReducers';
 import { dateTo, dateFrom, productSales, topTenProductSales, typeProductSales } from "./ReportsReducers"
 
 export default combineReducers({
@@ -39,5 +39,7 @@ export default combineReducers({
     typeProductSales: typeProductSales,
     deliverySupply: deliverySupply,
     franchiseSupply: franchiseSupply,
+    nonworkingDaysInMonthSchedule: nonworkingDaysInMonthSchedule,
+    monthYearSelectedSchedule: monthYearSelectedSchedule,
     schedule: schedule
 })

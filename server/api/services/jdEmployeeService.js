@@ -1,8 +1,18 @@
-const { jdEmployeeGetDB, jdEmployeeCreateDB, jdEmployeeUpdateDB } = require('../db/jdEmployeeDB');
+const { jdEmployeeGetDB, jdEmployeeCreateDB, jdEmployeeUpdateDB, jdEmployeeDeleteDB, jdEmployeeInDateGetDB, scheduleDeleteDB } = require('../db/jdEmployeeDB');
 
 const readJDEmployee = async (params) => {
     try {
         let res = await jdEmployeeGetDB(params);
+        return res;
+    }
+    catch (error){
+        throw Error(error)
+    };
+};
+
+const readJDEmployeeInDate = async (params) => {
+    try {
+        let res = await jdEmployeeInDateGetDB(params);
         return res;
     }
     catch (error){
@@ -30,4 +40,24 @@ const modifyJDEmployee = async (updateJDEmployee) => {
     };
 };
 
-module.exports = { readJDEmployee , createJDEmployee, modifyJDEmployee}
+const removeJDEmployee = async (jdToDelete) => {
+    try {
+        let res = await jdEmployeeDeleteDB(jdToDelete);
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+const removeSchedule = async (dates) => {
+    try {
+        let res = await scheduleDeleteDB(dates);
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+module.exports = { readJDEmployee , createJDEmployee, modifyJDEmployee, removeJDEmployee, readJDEmployeeInDate, removeSchedule}
