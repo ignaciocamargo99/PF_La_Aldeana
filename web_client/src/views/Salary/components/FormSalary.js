@@ -91,7 +91,6 @@ const FormSalary = (props) => {
                     });
             })
             .catch((err) => {console.log(err)});
-            
 
             if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
@@ -100,9 +99,9 @@ const FormSalary = (props) => {
                     else {
                         const aux = [];
                         othersPlus.forEach((inc, i) => {aux[i] = inc});
-                        if (res.data.length < 6) aux[0] = {name: 'Aguinaldo', price: 0};
+                        let max = res.data[0].total;
+                        if (res.data.length < 6) aux[0] = {name: 'Aguinaldo', price: ((max/2)*4)/6};
                         else {
-                            let max = res.data[0].total;
                             aux[0] = {name: 'Aguinaldo', price: max/2};
                         }
                         setOthersPlus(aux);
