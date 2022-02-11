@@ -11,6 +11,7 @@ import './styles/ProductForm.css';
 import displayError from '../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -50,7 +51,8 @@ export default function RegisterProductView() {
         formData.append('id_product_type', data.id_product_type);
         formData.append('supplies', jsonArrSupplies);
         formData.append('flavor', data.flavor);
-
+        
+        loadingMessage('Registrando nuevo producto...');
         Axios.post(PORT() + urlApi, formData)
             .then((formData) => {
                 if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');

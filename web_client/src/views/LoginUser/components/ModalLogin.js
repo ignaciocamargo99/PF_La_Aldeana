@@ -34,7 +34,7 @@ const ModalLogin = (props) => {
                                             permissions.push(encrypt(response.data[i].name))
                                         }
                                         cookies.set('permissions', permissions, { path: '/' })
-                                        window.location.href = './index'
+                                        window.location.href = './app/index'
                                     })
                             })
                     }
