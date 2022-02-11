@@ -94,7 +94,7 @@ namespace desktop_employee.src.views.RegisterAssistance
 
 
                             string nameEmployee = datosHuellas[i].name + " " + datosHuellas[i].last_name;
-                            MakeReport("The fingerprint was VERIFIED. " + nameEmployee);
+                            MakeReport("La huella fue verificada y es de " + nameEmployee);
                             SetEmployee(nameEmployee);
 
 
@@ -149,7 +149,7 @@ namespace desktop_employee.src.views.RegisterAssistance
 
                                             SetHoraEntrada("--/--/---- --:--:--");
                                             SetHoraSalida("--/--/---- --:--:--");
-
+                                            MakeReport("Ingrese la siguiente huella.");
                                         }
                                     }
                                 }
@@ -173,7 +173,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                     OcultarRojo();
                     MostrarAzul();
 
-                    MakeReport("The fingerprint no se verifico. ");
+                    MakeReport("La huella no coincidie con ningún empleado.");
                 }
             }
         }

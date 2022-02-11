@@ -315,6 +315,8 @@ namespace desktop_employee.src.views.Employees
             frmValidationFingerprint validationForm = new();
             validationForm.HuellasEmpleado = fingerEmployee;
             validationForm.HuellaAcomparar = txtLblCurrent;
+            string cadena = Convert.ToString(EmployeeSelected.Rows[0][1]) + " " + Convert.ToString(EmployeeSelected.Rows[0][2]);
+            validationForm.NombreEmpleado = cadena; 
             validationForm.Show();
         }
 

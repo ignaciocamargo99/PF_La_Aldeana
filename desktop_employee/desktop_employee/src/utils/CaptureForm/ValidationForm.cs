@@ -50,11 +50,11 @@ namespace desktop_employee.src.views.Employees
                 try
                 {
                     Capturer.StartCapture();
-                    SetPrompt("Escanea tu huella usando el lector");
+                    SetPrompt("Escanea tu huella usando el lector.");
                 }
                 catch
                 {
-                    SetPrompt("No se puede iniciar la captura");
+                    SetPrompt("No se puede iniciar la captura. REINICIE LA APLICACIÓN");
                 }
             }
 		}
@@ -194,6 +194,24 @@ namespace desktop_employee.src.views.Employees
 			}));
 		}
 
+		protected void DesactivarAceptar()
+		{
+			this.Invoke(new Function(delegate () {
+				btnAceptar.Enabled = false;
+				btnAceptar.BackgroundColor = Color.White;
+				btnAceptar.TextColor = Color.Black;
+			}));
+		}
+
+		protected void ActivarAceptar()
+		{
+			this.Invoke(new Function(delegate () {
+				btnAceptar.Enabled = true;
+				btnAceptar.BackgroundColor = ColorTranslator.FromHtml("#383C77");
+				btnAceptar.TextColor = Color.White;
+			}));
+		}
+
 		protected void SetInfo(string mensaje)
 		{
 			this.Invoke(new Function(delegate () {
@@ -203,5 +221,10 @@ namespace desktop_employee.src.views.Employees
 
 		private DPFP.Capture.Capture Capturer;
 
-	}
+        private void btnAceptar_Click(object sender, EventArgs e)
+        {
+			this.Close();
+		}
+
+    }
 }

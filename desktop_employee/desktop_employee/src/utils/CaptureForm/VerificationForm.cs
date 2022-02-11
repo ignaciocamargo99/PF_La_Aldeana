@@ -29,7 +29,7 @@ namespace desktop_employee
                 if ( null != Capturer )
                     Capturer.EventHandler = this;					// Subscribe for capturing events.
                 else
-                    SetPrompt("No se pudo iniciar la operación de captura");
+                    SetPrompt("No se pudo iniciar la operación de captura. REINICIE LA APLICACIÓN.");
             }
             catch
             {               
@@ -71,7 +71,7 @@ namespace desktop_employee
                 }
                 catch
                 {
-                    SetPrompt("No se puede terminar la captura");
+                    SetPrompt("No se puede terminar la captura. REINICIE LA APLICACIÓN.");
                 }
             }
 		}

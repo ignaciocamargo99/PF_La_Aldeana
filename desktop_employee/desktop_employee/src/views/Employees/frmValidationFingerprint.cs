@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,6 +20,7 @@ namespace desktop_employee.src.views.Employees
         private DPFP.Verification.Verification Verificator;
         private dynamic huellasEmpleado;
         private string huellaAcomparar;
+        private string nombreEmpleado;
         bool seVerifico = false;
         public frmValidationFingerprint()
         {
@@ -27,6 +29,7 @@ namespace desktop_employee.src.views.Employees
 
         public dynamic HuellasEmpleado { get => huellasEmpleado; set => huellasEmpleado = value; }
         public string HuellaAcomparar { get => huellaAcomparar; set => huellaAcomparar = value; }
+        public string NombreEmpleado { get => nombreEmpleado; set => nombreEmpleado = value; }
 
         public void Verify(DPFP.Template template)
         {
@@ -42,6 +45,7 @@ namespace desktop_employee.src.views.Employees
 
         protected override void Process(DPFP.Sample Sample)
         {
+            string cadena;
             base.Process(Sample);
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
 
@@ -73,16 +77,23 @@ namespace desktop_employee.src.views.Employees
                 if (seVerifico)
                 {
                     MostrarVerde();
-                    OcultarRojo();
-                    SetInfo("La huella coincide.");
+                    cadena = "La huella " + huellaAcomparar + " de " + nombreEmpleado + " COINCIDE.";
+                    SetInfo(cadena);
                 }
                 else
                 {
                     MostrarRojo();
                     OcultarVerde();
-                    SetInfo("La huella NO coincide. Vuelva a intentarlo.");
-
-                    /// agregar timmer y volver a ingresar
+                    cadena = "La huella " + huellaAcomparar + " de " + nombreEmpleado + " NO COINCIDE.";
+                    DesactivarAceptar();
+                    for (int i = 5; i >= 1; i--)
+                    {
+                        SetInfo("La huella " + huellaAcomparar + " de " + nombreEmpleado + " NO COINCIDE.\n" + "Espere " + i + " segundos para volver a intentarlo.");
+                        Thread.Sleep(1000);
+                    }
+                    ActivarAceptar();
+                    SetInfo("Vuelva a intentarlo.");
+                    OcultarRojo();
                 }
 
             }

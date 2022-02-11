@@ -77,7 +77,7 @@ namespace desktop_employee
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StatusText.BackColor = System.Drawing.SystemColors.Window;
             this.StatusText.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StatusText.Location = new System.Drawing.Point(265, 163);
+            this.StatusText.Location = new System.Drawing.Point(271, 163);
             this.StatusText.Multiline = true;
             this.StatusText.Name = "StatusText";
             this.StatusText.ReadOnly = true;
