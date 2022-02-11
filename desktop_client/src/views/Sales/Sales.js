@@ -181,7 +181,7 @@ const Sales = (props) => {
         }
         else {
             if (props.detailProducts.length == 0) {
-                warningMessage("¡Error!", "No se cargo ningun producto", "error");
+                warningMessage("¡Error!", "No se cargo ningún producto", "error");
             }
             else if (props.payType != 1 && props.payType != 2) {
                 warningMessage("¡Error!", "No selecciono la forma de pago", "error");
