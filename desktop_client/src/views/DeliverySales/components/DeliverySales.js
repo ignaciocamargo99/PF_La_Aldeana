@@ -129,7 +129,7 @@ const DeliverySales = (props) => {
                 <BeShowed show={step===2}>
                     <Client setStep={setStep}/>
                     <Pay />
-                    <Buttons label='Registrar' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => {setStep(1)}} actionNotOK={() => {errorNextStepTwo()}} actionOK={confirmSale}/>
+                    <Buttons label='Registrar' cancel='Atrás' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => {setStep(1)}} actionNotOK={() => {errorNextStepTwo()}} actionOK={confirmSale}/>
                 </BeShowed>
                 
                 <BeShowed show={step===3}>
