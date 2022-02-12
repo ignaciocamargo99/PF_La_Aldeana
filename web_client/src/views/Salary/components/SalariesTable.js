@@ -49,15 +49,21 @@ export default function SalariesTable(props) {
 
     useEffect(() => {
         if (nameSearch !== "") {
-            const filteredElementsList = listTable.filter((elem) => {
+            const filteredElementsList = listTable.filter(salary => {
+                if (props.filter == 'Confirm' && salary.id_state == 2) return true;
+                else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
+            }).filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
 
             setFilteredElements(filteredElementsList);
         } else {
-            setFilteredElements(listTable);
+            setFilteredElements(listTable.filter(salary => {
+                if (props.filter == 'Confirm' && salary.id_state == 2) return true;
+                else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
+            }));
         }
-    }, [nameSearch, listTable]);
+    }, [nameSearch, listTable, props.filter]);
 
     const columnsHeaders = [
         {

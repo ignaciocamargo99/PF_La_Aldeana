@@ -19,6 +19,7 @@ const Salary = (props) => {
     const [allSalaries, setAllSalaries] = useState([]);
     const [salary,setSalary] = useState({month: formattedDate(new Date()), employee: 0});
     const [showSpinner,setShowSpinner] = useState(true);
+    const [showSecondSpinner,setShowSecondSpinner] = useState(false);
     const [action,setAction] = useState('Listar');
     const [reloadList,setReloadList] = useState(false);
     const [filter,setFilter] = useState('NonGenerate');
@@ -37,6 +38,7 @@ const Salary = (props) => {
 
     useEffect(() => {
         if (isValidMonth !== "form-control"){
+            setShowSecondSpinner(true);
             Axios.get(`${PORT()}/api/salaries?monthYear=${month}`)
             .then((response) => {
                 const aux = [];
@@ -49,6 +51,7 @@ const Salary = (props) => {
                 });
                 setSalaries(aux);
                 setShowSpinner(false);
+                setShowSecondSpinner(false);
                 setAllSalaries(response.data);
             });
         } else setShowSpinner(false);
@@ -135,8 +138,13 @@ const Salary = (props) => {
                                 </div>
                             </div>
                             <ListSalaryFilter onClickRB={setFilter} filter={filter}/>
-                            <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={allSalaries}
-                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
+                            <BeShowed show={showSecondSpinner} >
+                            <LoaderSpinner color="primary" loading="Cargando..." />
+                            </BeShowed>
+                            <BeShowed show={!showSecondSpinner} >
+                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={allSalaries}
+                                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
+                            </BeShowed>
                         </div>
                     </BeShowed>
                     <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
