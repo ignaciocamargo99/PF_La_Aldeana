@@ -28,10 +28,8 @@ export default function SalariesTable(props) {
                     person.fullName += ', ';
                     person.fullName += person.name;
                     const exist = props.allSalaries?.filter((elem) => {
-                        return elem.dni_employee.includes(person.dni);
+                        return elem.dni == person.dni;
                     });
-                    //console.log(person.fullName + " - " + exist);
-                    //console.log(exist.length);
                     if (exist.length < 1) display.push(person);
                 });
                 setEmployees(display);

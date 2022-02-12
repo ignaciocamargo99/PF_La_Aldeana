@@ -1,4 +1,4 @@
-const { salariesGetDB, hsWorkedGetDB, bonusGetDB } = require('../db/salariesDB');
+const { salariesGetDB, hsWorkedGetDB, bonusGetDB, salariesCreateDB } = require('../db/salariesDB');
 
 const readSalaries = async (monthYear) => {
     try {
@@ -7,6 +7,16 @@ const readSalaries = async (monthYear) => {
     }
     catch (error){
         throw new Error(error);
+    };
+};
+
+const createSalaries = async (newSalary) => {
+    try {
+        let res = await salariesCreateDB(newSalary);
+        return res;
+    }
+    catch(error) {
+        throw Error(error);
     };
 };
 
@@ -30,4 +40,4 @@ const readBonus = async (monthYear, dni) => {
     };
 };
 
-module.exports = { readSalaries, readHSWorked, readBonus };
+module.exports = { readSalaries, readHSWorked, readBonus, createSalaries };

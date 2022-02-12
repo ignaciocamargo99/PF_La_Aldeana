@@ -46,7 +46,6 @@ const createAdvances = async (newAdvance) => {
         return res;
     }
     catch(error) {
-        console.log(newAdvance)
         console.log(error);
         throw Error(error);
     };

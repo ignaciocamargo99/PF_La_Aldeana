@@ -1,4 +1,4 @@
-const { readSalaries, readHSWorked, readBonus } = require('../services/salariesService');
+const { readSalaries, readHSWorked, readBonus, createSalaries } = require('../services/salariesService');
 
 // HTTP: GET
 async function getSalaries(req, res) {
@@ -13,6 +13,23 @@ async function getSalaries(req, res) {
         });
     };
 };
+
+// HTTP: POST
+async function newSalaries(req, res) {
+    try {
+        await createSalaries(req.body);
+        res.json({
+            Ok: true,
+            Message: 'Salario registrado exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
 // HTTP: GET
 async function getHSWorked(req, res) {
@@ -45,4 +62,4 @@ async function getBonus(req, res) {
     };
 };
 
-module.exports = { getSalaries, getHSWorked, getBonus };
+module.exports = { getSalaries, getHSWorked, getBonus, newSalaries };

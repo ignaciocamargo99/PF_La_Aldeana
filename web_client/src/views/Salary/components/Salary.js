@@ -29,19 +29,22 @@ const Salary = (props) => {
     let startMonth = formattedDate(new Date(),2);
 
 //_________________________________________________________________________________________________________________________________________________Cambiar
-    const maxMonth = useState(//formattedDate(new Date(), 0, -(new Date().getDate())));
-    "2023-01-01");
+    const maxMonth = //formattedDate(new Date(), 0, -(new Date().getDate())));
+    "2023-01-01";
 //_________________________________________________________________________________________________________________________________________________Cambiar
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
 
     useEffect(() => {
         if (isValidMonth !== "form-control"){
-            Axios.get(`${PORT()}/api/salaries?monthYear=${month+'-01'}`)
+            Axios.get(`${PORT()}/api/salaries?monthYear=${month}`)
             .then((response) => {
                 const aux = [];
                 const state = filter === 'Confirm' ? 2 : filter === 'OnHold' ? 1 : -1;
                 response.data.forEach((elem, i) => {
+                    elem.fullName = elem.last_name;
+                    elem.fullName += ', ';
+                    elem.fullName += elem.name;
                     if (elem.id_state === state) aux[i] = elem;
                 });
                 setSalaries(aux);
@@ -82,6 +85,7 @@ const Salary = (props) => {
                 let max = inputMonth.current.max + '-10';
 
                 if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
+                    console.log(parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) 
                     if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
                         if (salary.month !== inputMonth.current.value){
                             setIsValidMonth("form-control is-valid");
@@ -89,7 +93,7 @@ const Salary = (props) => {
                             setMonth(inputMonth.current.value + '-01');
                         }
                     }
-                } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5)) && parseInt(aux.slice(5, -3)) <= parseInt(max.slice(5, -3))) {
+                } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5))) {
                     if (salary.month !== inputMonth.current.value && month){
                         setIsValidMonth("form-control is-valid");
                         salary.month = inputMonth.current.value + '-01';

@@ -52,10 +52,8 @@ const FormSalary = (props) => {
                     person.fullName += ', ';
                     person.fullName += person.name;
                     const exist = props.salaries?.filter((elem) => {
-                        return elem.dni_employee.includes(person.dni);
+                        return elem.dni == person.dni;
                     });
-                    //console.log(person.fullName + " - " + exist);
-                    //console.log(exist.length);
                     if (exist.length < 1) display.push(person);
                 });
                 setEmployees(display);
@@ -79,11 +77,11 @@ const FormSalary = (props) => {
                         else {
                             console.log(response.data);
                             let aux = [
-                                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount},
+                                {id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount},
                                 {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount},
-                                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount},
-                                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount},
-                                {id: 'F', name: 'Hs. Franco', hs: response.data[4].hs_number, price: response.data[4].amount}
+                                {id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount},
+                                {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount},
+                                {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount}
                             ];
                             setMain(aux);
                             setShowSpinner(false);
@@ -100,9 +98,9 @@ const FormSalary = (props) => {
                         const aux = [];
                         othersPlus.forEach((inc, i) => {aux[i] = inc});
                         let max = res.data[0].total;
-                        if (res.data.length < 6) aux[0] = {name: 'Aguinaldo', price: ((max/2)*4)/6};
+                        if (res.data.length < 6) aux[0] = {name: 'SAC 1*cta 2021 Negro', price: ((max/2)*4)/6};
                         else {
-                            aux[0] = {name: 'Aguinaldo', price: max/2};
+                            aux[0] = {name: 'SAC 1*cta 2021 Negro', price: max/2};
                         }
                         setOthersPlus(aux);
                     }
@@ -121,7 +119,7 @@ const FormSalary = (props) => {
                             r.data.forEach((dis, i) => {
                                 dis.date = dateToString(dis.date, true);
                                 dis.month = dateToString(dis.month, true);
-                                acu += dis.amount
+                                acu += dis.amount;
                             });
                             aux[0] = {name: 'Adelantos', price: acu};
                             setOthersMinus(aux);
@@ -134,13 +132,42 @@ const FormSalary = (props) => {
     }, [employee]);
     
     const registerSalary = () => {
-        loadingMessage("Registrando el salario");
-        Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, {advances})
-        .then((response) => {
-            if (response.data.Ok) resetStates(true)
-            else warningMessage("Error", `${response.data.Message}`, "error")
+        setShowSpinner(true);
+        if (advances.length > 0){
+            Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, {advances})
+            .then((response) => {
+                if (response.data.Ok !== false) {
+                    Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
+                            "dni":employee.dni, "monthYear": props.month, "state": 2})
+                        .then((res) => {
+                            if (res.data.Ok !== false) resetStates(false);
+                            else warningMessage("Error", `${res.data.Message}`, "error");
+                        })
+                        .catch((e) => console.error(e))   
+                }
+                else warningMessage("Error", `${response.data.Message}`, "error");
+            })
+            .catch((error) => console.error(error))
+        } else {
+            Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
+                    "dni":employee.dni, "monthYear": props.month, "state": 2})
+                .then((res) => {
+                    if (res.data.Ok !== false) resetStates(false);
+                    else warningMessage("Error", `${res.data.Message}`, "error");
+                })
+                .catch((e) => console.error(e))   
+            }
+    }
+
+    const jump = () => {
+        setShowSpinner(true);
+        Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
+            "dni":employee.dni, "monthYear": props.month, "state": 1})
+        .then((res) => {
+            if (res.data.Ok !== false) resetStates(false);
+            else warningMessage("Error", `${res.data.Message}`, "error");
         })
-        .catch((error) => console.error(error))   
+        .catch((e) => console.error(e))   
     }
 
     const editSalary = () => {
@@ -161,7 +188,6 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se ha confirmado el salario correctamente','success');
             props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
-            setShowSpinner(true);
             setNro(nro + 1);
             setEmployee(employees[nro + 1]);
             nroRef.current.focus();
@@ -327,6 +353,7 @@ const FormSalary = (props) => {
         </div>
         <div className="container" >
             <BeShowed show={showSpinner}>
+                <br/>
                 <LoaderSpinner color="secondary" loading="Cargando..."/>
             </BeShowed>
             <BeShowed show={!showSpinner}>
@@ -457,17 +484,17 @@ const FormSalary = (props) => {
                         <label style={{paddingLeft: '1em', fontWeight: 'bold'}}>${total}</label>
                     </div>
                 </div>
-            </BeShowed>
-            <BeShowed show={props.action === 'Registrar'}>   
-                <Buttons ready={(!errorName && !errorPrice)}
-                    label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionCancel={() => {resetStates(false)}}/>
-            </BeShowed>
-            <BeShowed show={props.action === 'Editar'}>   
-                <Buttons ready={(!errorName && !errorPrice)}
-                    label='Registrar' labelCancel='Cancelar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
-            </BeShowed>
-            <BeShowed show={props.action === 'Ver'}> 
-                <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>
+                <BeShowed show={props.action === 'Registrar'}>   
+                    <Buttons ready={(!errorName && !errorPrice)}
+                        label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionCancel={() => {jump()}}/>
+                </BeShowed>
+                <BeShowed show={props.action === 'Editar'}>   
+                    <Buttons ready={(!errorName && !errorPrice)}
+                        label='Registrar' labelCancel='Cancelar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
+                </BeShowed>
+                <BeShowed show={props.action === 'Ver'}> 
+                    <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>
+                </BeShowed>
             </BeShowed>
         </div>        
     </>
