@@ -91,46 +91,6 @@ const dniEmployeeGetDB = (dniEmployee) => {
     });
 };
 
-const employeeGetDB = (dni) => {
-    let sqlSelect = `
-        SELECT
-            e.dni,
-            e.name,
-            e.last_name,
-            e.date_admission,
-            c.id_charge as chargeId,
-            c.name AS chargeName,
-            e.employment_relationship,
-            er.name AS name_emp_relationship
-        FROM
-            EMPLOYEES e
-            JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
-            JOIN CHARGES_X_EMPLOYEES cxe ON cxe.dni_employee = e.dni
-            JOIN CHARGES c ON cxe.id_charge = c.id_charge
-        WHERE
-            active = 1
-    `;
-
-    if (dni) {
-        sqlSelect += ` AND e.dni = ${dni}`;
-    };
-
-    sqlSelect += ' ORDER BY last_name';
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-
-            db.release();
-        })
-    });
-};
-
 const employeeCreateDB = (newEmployee) => {
     if (!(isEmployeeDataValid(newEmployee))) {
         throw Error('Faltan datos obligatorios');
