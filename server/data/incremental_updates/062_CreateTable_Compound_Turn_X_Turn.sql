@@ -11,7 +11,7 @@ INSERT INTO
   `DB_CHANGES`
 VALUES
   (
-    046,
+    062,
     'Create table',
     'Tabla de relacion de turnos compuestos con los simples.'
   );

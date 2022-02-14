@@ -10,7 +10,7 @@ INSERT INTO
   `DB_CHANGES`
 VALUES
   (
-    045,
+    061,
     'Create table',
     'Tabla de turnos compuestos.'
   );

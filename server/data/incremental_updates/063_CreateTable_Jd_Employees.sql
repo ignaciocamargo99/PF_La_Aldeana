@@ -13,7 +13,7 @@ INSERT INTO
   `DB_CHANGES`
 VALUES
   (
-    047,
+    063,
     'Create table',
     'Tabla de dia trabajado de empleado.'
   );

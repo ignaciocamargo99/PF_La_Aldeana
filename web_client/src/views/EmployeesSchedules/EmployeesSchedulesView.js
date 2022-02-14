@@ -23,25 +23,7 @@ const EmployeesSchedulesView = () => {
     useEffect(() => {
         axios.get(`${PORT()}/api/employees`)
         .then((response) => {
-            let newEmployees = [];
-            response.data.forEach((e,i) => {
-                let employeeToAdd = {dni: e.dni, name: e.name, last_name: e.last_name, 
-                                    employment_relationship: e.employment_relationship, name_emp_relationship:e.name_emp_relationship,
-                                    charges: []};
-                if(e.dni === newEmployees[newEmployees.length-1]?.dni){
-                    newEmployees[newEmployees.length-1].charges.push({
-                        id: e.chargeId,
-                        chargeName: e.chargeName
-                    })
-                }else {
-                    employeeToAdd.charges.push({
-                        id: e.chargeId,
-                        chargeName: e.chargeName
-                    })
-                    newEmployees.push(employeeToAdd);
-                }
-            })
-            setEmployees(newEmployees);
+            setEmployees(response.data);
         })
     },[])
 
