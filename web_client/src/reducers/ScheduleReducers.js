@@ -1,15 +1,24 @@
 
-export const schedule = (state = [] ,action) => {
-    if(action.type === 'ADD_DAY_SCHEDULE'){
-        state.push({ date: action.payload.date, turns: [[],[],[],[]]})
-        return state
-    }
-    if(action.type === 'ADD_EMP_IN_TURN_SCHEDULE'){
-        state[action.payload.day].turns[action.payload.turn].push(action.payload.employee)
-        return state
-    }
-    if(action.type === 'DELETE_EMP_IN_TURN_SCHEDULE'){
+export const nonworkingDaysInMonthSchedule = (state = null ,action) => {
+    if(action.type === 'UPDATE_NONWORKINGDAYS_MONTH_SCHEDULE'){
+        return action.payload; 
+    } 
+    return state;
+}
 
-    }
-    return state
+let today = new Date();
+export const monthYearSelectedSchedule = (state = { month: today.getMonth() , year: today.getFullYear()} ,action) => {
+    if(action.type === 'UPDATE_MONTH_YEAR_SELECTED_SCHEDULE'){
+        state.month = action.payload.month;
+        state.year = action.payload.year;
+        return state; 
+    } 
+    return state;
+}
+
+export const schedule = (state = null, action) => {
+    if(action.type === 'UPDATE_SCHEDULE'){
+        return action.payload; 
+    } 
+    return state;
 }

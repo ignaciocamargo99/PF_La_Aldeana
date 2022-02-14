@@ -19,5 +19,7 @@
   "cacheDirectories": [
     "web_client/node_modules"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "javascript-lp-solver": "^0.4.24"
+  }
 }

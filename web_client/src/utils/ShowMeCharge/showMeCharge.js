@@ -1,11 +1,15 @@
-const showMeCharge = (idCharge) => {
-    switch(idCharge){
-        case 1:
+const showMeCharge = (name_charge) => {
+    switch(name_charge){
+        case 'Delivery':
             return 'delivery';
-        case 2:
+        case 'Cajera/o':
             return 'cashier';
-        case 3:
+        case 'Dependiente de Mostrador':
             return 'publicAttention';
+        case 'Producción':
+            return 'production';
+        default:
+            return;
     }
 }
 

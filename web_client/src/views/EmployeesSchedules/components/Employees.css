@@ -31,6 +31,10 @@
     background-color: #FEF211;
 }
 
+.production{
+    background-color: yellowgreen;
+}
+
 .imageEmployee-small{
     width: 2rem;
     height: 2rem;

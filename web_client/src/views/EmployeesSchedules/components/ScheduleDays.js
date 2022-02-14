@@ -4,28 +4,18 @@ import Table from '../../../common/Table/Table';
 import { dateToNameDay } from '../../../utils/DateToNameDay/dateToNameDay';
 import EmployeesSelection from './EmployeesSelection';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ContainerEmployees from './ContainersEmployees';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addEmplInTurnSchedule } from '../../../actions/ScheduleActions';
 import DateSchedule from './DateSchedule';
 
-const PORT = require('../../../config');
 
-const ScheduleDays = ({ schedule, addEmplInTurnSchedule }) => {
+const ScheduleDays = ({ schedule, addEmplInTurnSchedule, employees }) => {
 
-    const [employees, setEmployees] = useState([])
     const [daySchedule,setDaySchedule] = useState(0);
-
-    useEffect(() => {
-        axios.get(`${PORT()}/api/employees`)
-        .then((response) => {
-            setEmployees(response.data)
-        })
-    },[])
 
     return(
     <div className="container">
