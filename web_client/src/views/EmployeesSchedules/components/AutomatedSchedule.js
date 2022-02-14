@@ -155,6 +155,7 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
             dangerMode: true,
           })
           .then((willUpdate) => {
+            loadingMessage('Generando cronograma...');
             if (willUpdate) {
               axios.delete(`${PORT()}/api/jdEmployee/Schedule?dateInit=${initDate.current.value}&dateFinish=${finishDate.current.value}`)
               .then(() => {
