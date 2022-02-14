@@ -20,8 +20,11 @@ namespace desktop_employee.src.views.RegisterAssistance
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
         bool seVerifico;
+        bool esRepetido;
         Reply oReply = new Reply();
         dynamic datosHuellas;
+        string ultimaHuella = "";
+        DateTime ultimaHora;
 
         public frmAssistanceFinger()
         {
@@ -54,8 +57,6 @@ namespace desktop_employee.src.views.RegisterAssistance
                         using (StreamReader objReader = new StreamReader(strReader))
                         {
                             string responseBody = objReader.ReadToEnd();
-
-                            // Do something with responseBody
                             datosHuellas = JsonConvert.DeserializeObject(responseBody);
                         }
                     }
@@ -64,8 +65,8 @@ namespace desktop_employee.src.views.RegisterAssistance
             catch (WebException ex)
             {
                 // Handle error
+                //MessageBox.Show("No se recibió información del servidor. NO se puede capturar ninguna huella.");
             }
-
         }
 
         protected override async void ProcessAsync(DPFP.Sample Sample)
@@ -77,6 +78,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             {
                 DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
                 seVerifico = false;
+                esRepetido = false;
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
                 for (int i = 0; i < datosHuellas.Count; i++)
@@ -85,95 +87,96 @@ namespace desktop_employee.src.views.RegisterAssistance
                     {
                         stream = new MemoryStream((byte[])datosHuellas[i].finger_print);
                         template = new DPFP.Template(stream);
-
                         Verificator.Verify(features, template, ref result);
                         if (result.Verified)
                         {
-                            seVerifico = true;
-
-
-
-                            string nameEmployee = datosHuellas[i].name + " " + datosHuellas[i].last_name;
-                            MakeReport("La huella fue verificada y es de " + nameEmployee);
-                            SetEmployee(nameEmployee);
-
-
-                            DateTime timeInOut = DateTime.Now;
-                            string timeInOutFormated = convertDateTimeToString(timeInOut);
-
-
-                            CheckAsistencia checkAsistencia = new()
+                            if (ultimaHuella == Convert.ToString(datosHuellas[i].finger_print) && Convert.ToInt32((DateTime.Now - ultimaHora).TotalMinutes) < 5)
                             {
-                                datetime = timeInOutFormated
-                            };
-                            oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger/"+ Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
-
-
-                            var urlGet = "http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
-                            var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
-                            requestGet.Method = "GET";
-                            requestGet.ContentType = "application/json";
-                            requestGet.Accept = "application/json";
-                            try
+                                errorHuella("La huella fue ingresada en los últimos 5 minutos.");
+                                esRepetido = true;
+                                break;
+                            }
+                            else
                             {
-                                using (WebResponse response = requestGet.GetResponse())
+                                seVerifico = true;
+                                string nameEmployee = datosHuellas[i].name + " " + datosHuellas[i].last_name;
+                                MakeReport("La huella fue verificada y es de " + nameEmployee);
+                                SetEmployee(nameEmployee);
+
+                                DateTime timeInOut = DateTime.Now;
+                                string timeInOutFormated = convertDateTimeToString(timeInOut);
+
+                                CheckAsistencia checkAsistencia = new()
                                 {
-                                    using (Stream strReader = response.GetResponseStream())
+                                    datetime = timeInOutFormated
+                                };
+                                oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
+
+                                var urlGet = "http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
+                                var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
+                                requestGet.Method = "GET";
+                                requestGet.ContentType = "application/json";
+                                requestGet.Accept = "application/json";
+                                try
+                                {
+                                    using (WebResponse response = requestGet.GetResponse())
                                     {
-                                        if (strReader == null) return;
-                                        using (StreamReader objReader = new StreamReader(strReader))
+                                        using (Stream strReader = response.GetResponseStream())
                                         {
-                                            string responseBody = objReader.ReadToEnd();
-
-                                            // Do something with responseBody
-                                            dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
-
-                                            DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                            horaEntrada = horaEntrada.AddHours(-3);
-                                            SetHoraEntrada(Convert.ToString(horaEntrada));
-
-                                            if (datosAsistencia[0].date_egress != null)
+                                            if (strReader == null) return;
+                                            using (StreamReader objReader = new StreamReader(strReader))
                                             {
-                                                DateTime horaSalida = datosAsistencia[0].date_egress;
-                                                horaSalida = horaSalida.AddHours(-3);
-                                                SetHoraSalida(Convert.ToString(horaSalida));
+                                                string responseBody = objReader.ReadToEnd();
+                                                dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
+
+                                                DateTime horaEntrada = datosAsistencia[0].date_entry;
+                                                horaEntrada = horaEntrada.AddHours(-3);
+                                                SetHoraEntrada(Convert.ToString(horaEntrada));
+
+                                                if (datosAsistencia[0].date_egress != null)
+                                                {
+                                                    DateTime horaSalida = datosAsistencia[0].date_egress;
+                                                    horaSalida = horaSalida.AddHours(-3);
+                                                    SetHoraSalida(Convert.ToString(horaSalida));
+                                                }
+
+                                                MostrarVerde();
+                                                OcultarAzul();
+
+                                                for (int j = 5; j >= 1; j--)
+                                                {
+                                                    SetInfo("Espere " + j + " segundos para ingresar la siguiente huella.");
+                                                    Thread.Sleep(1000);
+                                                }
+                                                SetInfo("LISTO PARA COLOCAR DEDO");
+
+                                                ultimaHuella = datosHuellas[i].finger_print;
+                                                ultimaHora = timeInOut;
+
+                                                OcultarVerde();
+                                                MostrarAzul();
+
+                                                SetHoraEntrada("--/--/---- --:--:--");
+                                                SetHoraSalida("--/--/---- --:--:--");
+                                                SetEmployee("");
+                                                MakeReport("Ingrese la siguiente huella.");
                                             }
-
-                                            MostrarVerde();
-                                            OcultarAzul();
-
-                                            Thread.Sleep(5000);
-
-                                            OcultarVerde();
-                                            MostrarAzul();
-
-                                            SetHoraEntrada("--/--/---- --:--:--");
-                                            SetHoraSalida("--/--/---- --:--:--");
-                                            MakeReport("Ingrese la siguiente huella.");
                                         }
                                     }
                                 }
-                            }
-                            catch (WebException ex)
-                            {
-                                // Handle error
-                            }
+                                catch (WebException ex)
+                                {
+                                    // Handle error
+                                }
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
-                if (!seVerifico)
+                if (!seVerifico && !esRepetido)
                 {
-                    MostrarRojo();
-                    OcultarAzul();
-
-                    Thread.Sleep(5000);
-
-                    OcultarRojo();
-                    MostrarAzul();
-
-                    MakeReport("La huella no coincidie con ningún empleado.");
+                    errorHuella("La huella no coincidie con ningún empleado.");
                 }
             }
         }
@@ -184,6 +187,22 @@ namespace desktop_employee.src.views.RegisterAssistance
                 Convert.ToString(datetime.Day) + " " + Convert.ToString(datetime.Hour) + ":" + 
                 Convert.ToString(datetime.Minute) + ":" + Convert.ToString(datetime.Second);
             return timeInOut;
+        }
+
+        private void errorHuella(string report1)
+        {
+            MakeReport(report1);
+            MostrarRojo();
+            OcultarAzul();
+            for (int i = 5; i >= 1; i--)
+            {
+                SetInfo("Espere " + i + " segundos para ingresar la siguiente huella.");
+                Thread.Sleep(1000);
+            }
+            SetInfo("LISTO PARA COLOCAR DEDO");
+            MakeReport("Ingrese la siguiente huella.");
+            OcultarRojo();
+            MostrarAzul();
         }
     }
 }

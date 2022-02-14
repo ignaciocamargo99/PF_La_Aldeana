@@ -8,9 +8,6 @@ using System.Windows.Forms;
 
 namespace desktop_employee
 {
-    /* NOTE: This form is a base for the EnrollmentForm and the VerificationForm,
-		All changes in the CaptureForm will be reflected in all its derived forms.
-	*/
     delegate void Function1();
 
     public partial class VerificationForm : Form, DPFP.Capture.EventHandler
@@ -24,22 +21,20 @@ namespace desktop_employee
 		{
 			try
             {
-                Capturer = new DPFP.Capture.Capture();				// Create a capture operation.
-
+                Capturer = new DPFP.Capture.Capture();		
                 if ( null != Capturer )
-                    Capturer.EventHandler = this;					// Subscribe for capturing events.
+                    Capturer.EventHandler = this;			
                 else
                     SetPrompt("No se pudo iniciar la operación de captura. REINICIE LA APLICACIÓN.");
             }
             catch
             {               
-                MessageBox.Show("No se pudo iniciar la operación de captura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            
+                MessageBox.Show("No se pudo iniciar la operación de captura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);   
             }
 		}
 
 		protected virtual void ProcessAsync(DPFP.Sample Sample)
 		{
-			// Draw fingerprint sample image.
 			DrawPicture(ConvertSampleToBitmap(Sample));
 		}
 
@@ -95,26 +90,20 @@ namespace desktop_employee
 		public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
 		{
 			SetInfo("LA HUELLA FUE CAPTURADA");
-			//MakeReport("La muestra ha sido capturada");
 			ProcessAsync(Sample);
 		}
 
 		public void OnFingerGone(object Capture, string ReaderSerialNumber)
 		{
-			SetInfo("LISTO PARA COLOCAR DEDO");
-			//MakeReport("La huella fue removida del lector");
 		}
 
 		public void OnFingerTouch(object Capture, string ReaderSerialNumber)
 		{
-			//MakeReport("El lector fue tocado");
 		}
 
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
-			//SetInfo("EL LECTOR FUE CONECTADO");
 			SetInfo("LISTO PARA COLOCAR DEDO");
-			//MakeReport("El Lector de huellas ha sido conectado");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
@@ -153,7 +142,6 @@ namespace desktop_employee
 				return null;
 		}
 
-
 		protected void SetPrompt(string prompt)
 		{
 			this.Invoke(new Function(delegate() {
@@ -161,7 +149,6 @@ namespace desktop_employee
 			}));
 		}
 
-		//Borrar MakeReport
 		protected void MakeReport(string message)
 		{
 			this.Invoke(new Function(delegate() {
@@ -242,7 +229,7 @@ namespace desktop_employee
 		private void DrawPicture(Bitmap bitmap)
 		{
 			this.Invoke(new Function(delegate() {
-				Picture.Image = new Bitmap(bitmap, Picture.Size);	// fit the image into the picture box
+				Picture.Image = new Bitmap(bitmap, Picture.Size);
 			}));
 		}
 
