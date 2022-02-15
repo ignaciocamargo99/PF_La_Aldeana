@@ -23,8 +23,7 @@ namespace desktop_employee.src.views.RegisterAssistance
         bool esRepetido;
         Reply oReply = new Reply();
         dynamic datosHuellas;
-        string ultimaHuella = "";
-        DateTime ultimaHora;
+        DataTable ultimosRegistros;
 
         public frmAssistanceFinger()
         {
@@ -41,7 +40,7 @@ namespace desktop_employee.src.views.RegisterAssistance
         {
             base.Init();
             Verificator = new DPFP.Verification.Verification();
-
+            ultimosRegistros = crearTablaRegistros();
             var urlGet = "http://localhost:3001/api/fingerPrints";
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
@@ -69,6 +68,16 @@ namespace desktop_employee.src.views.RegisterAssistance
             }
         }
 
+        private DataTable crearTablaRegistros()
+        {
+            DataTable table = new();
+            DataColumn colDNI = new DataColumn("DNI");
+            DataColumn colHora = new DataColumn("Hora");
+            table.Columns.Add(colDNI);
+            table.Columns.Add(colHora);
+            return table;
+        }
+
         protected override async void ProcessAsync(DPFP.Sample Sample)
         {
             base.ProcessAsync(Sample);
@@ -90,7 +99,8 @@ namespace desktop_employee.src.views.RegisterAssistance
                         Verificator.Verify(features, template, ref result);
                         if (result.Verified)
                         {
-                            if (ultimaHuella == Convert.ToString(datosHuellas[i].finger_print) && Convert.ToInt32((DateTime.Now - ultimaHora).TotalMinutes) < 5)
+                            borrarRegistrosViejos();
+                            if (empleadoRepetido(Convert.ToInt32(datosHuellas[i].dniEmployee)))
                             {
                                 errorHuella("La huella fue ingresada en los últimos 5 minutos.");
                                 esRepetido = true;
@@ -150,8 +160,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                                                 }
                                                 SetInfo("LISTO PARA COLOCAR DEDO");
 
-                                                ultimaHuella = datosHuellas[i].finger_print;
-                                                ultimaHora = timeInOut;
+                                                cargarRegistros(Convert.ToInt32(datosHuellas[i].dniEmployee), timeInOut);
 
                                                 OcultarVerde();
                                                 MostrarAzul();
@@ -159,6 +168,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                                                 SetHoraEntrada("--/--/---- --:--:--");
                                                 SetHoraSalida("--/--/---- --:--:--");
                                                 SetEmployee("");
+                                                CleanPicture();
                                                 MakeReport("Ingrese la siguiente huella.");
                                             }
                                         }
@@ -177,6 +187,37 @@ namespace desktop_employee.src.views.RegisterAssistance
                 if (!seVerifico && !esRepetido)
                 {
                     errorHuella("La huella no coincidie con ningún empleado.");
+                }
+            }
+        }
+
+        private bool empleadoRepetido(int dni)
+        {
+            for (int i = 0; i < ultimosRegistros.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(ultimosRegistros.Rows[i]["DNI"]) == dni && Convert.ToInt32((DateTime.Now - Convert.ToDateTime(ultimosRegistros.Rows[i]["Hora"])).TotalMinutes) < 5)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void cargarRegistros(int dni, DateTime dateTime)
+        {
+            DataRow row = ultimosRegistros.NewRow();
+            row["DNI"] = dni;
+            row["Hora"] = dateTime;
+            ultimosRegistros.Rows.Add(row);
+        }
+
+        private void borrarRegistrosViejos()
+        {
+            for (int i = 0; i < ultimosRegistros.Rows.Count; i++)
+            {
+                if (Convert.ToInt32((DateTime.Now - Convert.ToDateTime(ultimosRegistros.Rows[i]["Hora"])).TotalMinutes) > 5)
+                {
+                    ultimosRegistros.Rows[i].Delete();
                 }
             }
         }

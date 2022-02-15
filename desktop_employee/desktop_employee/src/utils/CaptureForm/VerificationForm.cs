@@ -233,8 +233,14 @@ namespace desktop_employee
 			}));
 		}
 
+		protected void CleanPicture()
+		{
+			this.Invoke(new Function(delegate () {
+				Picture.Image = null;
+			}));
+		}
+
 		private DPFP.Capture.Capture Capturer;
 
-
-    }
+	}
 }
