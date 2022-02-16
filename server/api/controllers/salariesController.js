@@ -1,10 +1,25 @@
-const { readSalaries, readHSWorked, readBonus, createSalaries } = require('../services/salariesService');
+const { readSalaries, readHSWorked, readBonus, createSalaries, readSalary } = require('../services/salariesService');
 
 // HTTP: GET
 async function getSalaries(req, res) {
     try {
         var monthYear = req.query.monthYear;
         const result = await readSalaries(monthYear);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo encontrar datos de sueldos existentes para las condiciones solicitadas.'
+        });
+    };
+};
+
+// HTTP: GET
+async function getSalary(req, res) {
+    try {
+        var monthYear = req.query.monthYear;
+        var dni = req.query.dni;
+        const result = await readSalary(monthYear, dni);
         res.send(result);
     } catch (e) {
         res.json({
@@ -62,4 +77,4 @@ async function getBonus(req, res) {
     };
 };
 
-module.exports = { getSalaries, getHSWorked, getBonus, newSalaries };
+module.exports = { getSalaries, getHSWorked, getBonus, newSalaries, getSalary };

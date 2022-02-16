@@ -6,6 +6,7 @@ const salariesController = require("../controllers/salariesController");
 
 router.get('/salaries', salariesController.getSalaries);
 router.post('/salaries', salariesController.newSalaries);
+router.get('/salary', salariesController.getSalary);
 router.get('/hsWorked', salariesController.getHSWorked);
 router.get('/bonus', salariesController.getBonus);
 

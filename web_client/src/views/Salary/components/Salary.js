@@ -43,12 +43,13 @@ const Salary = (props) => {
             .then((response) => {
                 const aux = [];
                 const state = filter === 'Confirm' ? 2 : filter === 'OnHold' ? 1 : -1;
-                response.data.forEach((elem, i) => {
+                if (response.data.length > 1) {
+                    response.data.forEach(elem => {
                     elem.fullName = elem.last_name;
                     elem.fullName += ', ';
                     elem.fullName += elem.name;
-                    if (elem.id_state === state) aux[i] = elem;
-                });
+                    if (elem.id_state === state) aux.push(elem);
+                });}
                 setSalaries(aux);
                 setShowSpinner(false);
                 setShowSecondSpinner(false);
@@ -139,10 +140,10 @@ const Salary = (props) => {
                             </div>
                             <ListSalaryFilter onClickRB={setFilter} filter={filter}/>
                             <BeShowed show={showSecondSpinner} >
-                            <LoaderSpinner color="primary" loading="Cargando..." />
+                                <LoaderSpinner color="primary" loading="Cargando..." />
                             </BeShowed>
                             <BeShowed show={!showSecondSpinner} >
-                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={allSalaries}
+                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
                                             reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
                             </BeShowed>
                         </div>

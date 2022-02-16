@@ -143,7 +143,7 @@ const salariesCreateDB = (newSalary) => {
                                                             }
                                                             else resolve();
                                                         });
-                                                    });
+                                                    }); 
                                                 } else {
                                                     db.query(sqlInsertConcept, [newSalary.details[2][j].name], (error, r) => {
                                                     if (error) {
@@ -184,13 +184,35 @@ const salariesCreateDB = (newSalary) => {
     });
 };
 
-
 const salariesGetDB = (monthYear) => {
     const sqlSelect = "SELECT s.id_salary, e.dni, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total, er.name AS name_emp_relationship FROM SALARIES s " +
                 "LEFT JOIN EMPLOYEES e ON s.dni_employee = e.dni " +
                 "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
                 "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
-                "WHERE s.month_year >= '" + monthYear + "'";
+                "WHERE s.month_year = '" + (monthYear.length > 7 ? monthYear : (monthYear + '-01')) + "'";
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+const salaryGetDB = (monthYear, dni) => {
+    const sqlSelect = "SELECT s.id_salary, e.dni, e.name, e.last_name, s.month_year, s.id_state, ss.name AS state, s.salary_hs , s.subtotal, s.total, er.name AS name_emp_relationship FROM SALARIES s " +
+                "LEFT JOIN EMPLOYEES e ON s.dni_employee = e.dni " +
+                "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
+                "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
+                "WHERE s.month_year = '" + (monthYear.length > 7 ? monthYear : (monthYear + '-01')) + "' AND e.dni = " + dni;
+    console.log(sqlSelect)
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -343,4 +365,4 @@ const bonusGetDB = (monthYear, dni) => {
     });
 };
 
-module.exports = { salariesGetDB, hsWorkedGetDB, bonusGetDB, salariesCreateDB };
+module.exports = { salariesGetDB, hsWorkedGetDB, bonusGetDB, salariesCreateDB, salaryGetDB };

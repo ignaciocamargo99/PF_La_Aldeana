@@ -27,10 +27,12 @@ export default function SalariesTable(props) {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    const exist = props.allSalaries?.filter((elem) => {
-                        return elem.dni == person.dni;
-                    });
-                    if (exist.length < 1) display.push(person);
+                    if (props.allSalaries.length > 1) {
+                        const exist = props.allSalaries?.filter((elem) => {
+                            return elem.dni == person.dni;
+                        });
+                        if (exist.length < 1) display.push(person);
+                    } else  display.push(person);
                 });
                 setEmployees(display);
             })
@@ -52,6 +54,7 @@ export default function SalariesTable(props) {
             const filteredElementsList = listTable.filter(salary => {
                 if (props.filter == 'Confirm' && salary.id_state == 2) return true;
                 else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
+                else if (props.filter == 'NonGenerate') return true;
             }).filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
@@ -61,6 +64,7 @@ export default function SalariesTable(props) {
             setFilteredElements(listTable.filter(salary => {
                 if (props.filter == 'Confirm' && salary.id_state == 2) return true;
                 else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
+                else if (props.filter == 'NonGenerate') return true;
             }));
         }
     }, [nameSearch, listTable, props.filter]);
@@ -131,15 +135,21 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendAdd" onClick={() => {props.setActionSalary('Ver',element)}}>
-                                                <FontAwesomeIcon icon={faEye}/>
-                                            </button>
+                                            {console.log(((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24)}
+                                            <BeShowed show={props.filter == 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24 > 15}>
+                                                <button className="sendEdit" style={{backgroundColor: 'grey'}} disabled={true} >
+                                                    <FontAwesomeIcon icon={faEdit}/>
+                                                </button>
+                                            </BeShowed>
+                                            <BeShowed show={props.filter != 'Confirm' || (props.filter == 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24 <= 15)}>
+                                                <button className="sendEdit" onClick={() => {props.setActionSalary('Editar',element)}}>
+                                                    <FontAwesomeIcon icon={faEdit}/>
+                                                </button>
+                                            </BeShowed>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendEdit" onClick={() => {props.setActionSalary('Editar',element)}}>
-                                                 {/*style={(new Date(dateBDToString(element.month_year,'En')).getTime() < date) ? {backgroundColor: 'grey'}:null}
-                                                    disabled={(new Date(dateBDToString(element.month_year,'En')).getTime() < date)} */} 
-                                                <FontAwesomeIcon icon={faEdit}/>
+                                            <button className="sendAdd" onClick={() => {props.setActionSalary('Ver',element)}}>
+                                                <FontAwesomeIcon icon={faEye}/>
                                             </button>
                                         </td>
                                     </tr>
@@ -150,7 +160,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter === 'NonGenerate'}>
+            <BeShowed show={!props.showSpinner && currentElements.length !== 0 && props.isValidSearch && props.filter === 'NonGenerate'}>
             <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -181,12 +191,12 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>------</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button className="sendAdd" style={{backgroundColor: 'grey'}} disabled={true} >
-                                                <FontAwesomeIcon icon={faEye}/>
+                                                <FontAwesomeIcon icon={faEdit}/>
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button className="sendEdit" style={{backgroundColor: 'grey'}} disabled={true} >
-                                                <FontAwesomeIcon icon={faEdit}/>
+                                                <FontAwesomeIcon icon={faEye}/>
                                             </button>
                                         </td>
                                     </tr>
@@ -197,7 +207,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.salaries.length === 0 && props.isValidSearch && props.filter !== 'NonGenerate'}>
+            <BeShowed show={!props.showSpinner && currentElements.length === 0 && props.isValidSearch }>
                 <br/>
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>
