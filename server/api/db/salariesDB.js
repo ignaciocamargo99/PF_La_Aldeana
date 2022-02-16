@@ -61,25 +61,32 @@ const salariesCreateDB = (newSalary) => {
                                         for (var j = 0; j < newSalary.details[0].length; j++){
                                             r?.map(concept => {
                                                 if(concept.name == newSalary.details[0][j].name){
+                                                    console.log(newSalary.details[0][j] )
+                                                    const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
+                                                    console.log(updateHsType)
                                                     db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs], (error, r) => {
                                                         if (error) {
                                                             console.log(error);
                                                             db.rollback(()=> reject(error));
-                                                        }
-                                                        else {
-                                                            db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[0][j-1].price, concept.predictive], (error) => {
+                                                        } else {
+                                                            db.query(updateHsType, (error, r) => {
                                                                 if (error) {
                                                                     console.log(error);
                                                                     db.rollback(()=> reject(error));
-                                                                }
-                                                                db.commit((error) => {
+                                                                } else {    db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[0][j-1].price, concept.predictive], (error) => {
                                                                     if (error) {
                                                                         console.log(error);
-                                                                        return db.rollback(() => reject(error));
+                                                                        db.rollback(()=> reject(error));
                                                                     }
-                                                                    else resolve();
+                                                                    db.commit((error) => {
+                                                                        if (error) {
+                                                                            console.log(error);
+                                                                            return db.rollback(() => reject(error));
+                                                                        }
+                                                                        else resolve();
+                                                                    });
                                                                 });
-                                                            });
+                                                            }});
                                                         }});
                                                 }
                                             });
