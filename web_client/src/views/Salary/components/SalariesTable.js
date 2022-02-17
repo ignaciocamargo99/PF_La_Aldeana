@@ -135,7 +135,6 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {console.log(((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24)}
                                             <BeShowed show={props.filter == 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24 > 15}>
                                                 <button className="sendEdit" style={{backgroundColor: 'grey'}} disabled={true} >
                                                     <FontAwesomeIcon icon={faEdit}/>

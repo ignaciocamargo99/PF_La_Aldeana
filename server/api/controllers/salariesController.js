@@ -1,4 +1,4 @@
-const { readSalaries, readHSWorked, readBonus, createSalaries, readSalary } = require('../services/salariesService');
+const { readSalaries, readHSWorked, readBonus, createSalaries, readSalary, modifySalaries, readDetails } = require('../services/salariesService');
 
 // HTTP: GET
 async function getSalaries(req, res) {
@@ -10,6 +10,19 @@ async function getSalaries(req, res) {
         res.json({
             Ok: false,
             Message: 'No se pudo encontrar datos de sueldos existentes para las condiciones solicitadas.'
+        });
+    };
+};
+
+// HTTP: GET
+async function getDetails(req, res) {
+    try {
+        const result = await readDetails(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo encontrar datos de detalles de sueldos existentes para las condiciones solicitadas.'
         });
     };
 };
@@ -30,7 +43,7 @@ async function getSalary(req, res) {
 };
 
 // HTTP: POST
-async function newSalaries(req, res) {
+async function newSalary(req, res) {
     try {
         await createSalaries(req.body);
         res.json({
@@ -41,7 +54,24 @@ async function newSalaries(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
+            Message: 'Error al registrar los datos del nuevo salario.',
+        })
+    }
+}
+// HTTP: PUT
+async function putSalary(req, res) {
+    try {
+        console.log(req.params.id, req.body)
+        await modifySalaries(req.params.id, req.body);
+        res.json({
+            Ok: true,
+            Message: 'Salario actualizada exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'Error al actualizar los datos del salario.',
         })
     }
 }
@@ -77,4 +107,4 @@ async function getBonus(req, res) {
     };
 };
 
-module.exports = { getSalaries, getHSWorked, getBonus, newSalaries, getSalary };
+module.exports = { getSalaries, getHSWorked, getBonus, newSalary, getSalary, putSalary, getDetails };

@@ -58,7 +58,26 @@ const FormSalary = (props) => {
                 });
                 setEmployees(display);
                 if (props.action === 'Registrar') setEmployee(display[nro]);
-                else setEmployee(display.find((employee) =>  { return employee.dni === props.salary.employee }));
+                else {
+                    setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.dni }));
+                    Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
+                    .then((response) => {
+                        let aux = response.data;
+                        let plus = [];
+                        let minus = [];
+                        aux.forEach((detail)=>{
+                            if (detail.id_concept > 5) {
+                                if (detail.positive === 0) minus.push(detail);
+                                else plus.push(detail);
+                            }
+                            if (detail.id_concept == 8) setAdvances(advances.push());
+                        });
+                        if (plus.length > 0) setOthersPlus(plus);
+                        if (minus.length > 0) setOthersMinus(minus);
+                    })
+                    .catch((error) => console.log(error));
+                    setShowSpinner(false);
+                }
             })
             .catch((error) => console.log(error));
     },[props.action]);
@@ -75,13 +94,12 @@ const FormSalary = (props) => {
                     .then((response) => {
                         if (response.data.Ok === false) console.log(response.data);
                         else {
-                            console.log(response.data);
                             let aux = [
-                                {id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount},
-                                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount},
-                                {id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount},
-                                {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount},
-                                {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount}
+                                {id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0},
+                                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0},
+                                {id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0},
+                                {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0},
+                                {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0}
                             ];
                             setMain(aux);
                             setShowSpinner(false);
@@ -171,16 +189,31 @@ const FormSalary = (props) => {
     }
 
     const editSalary = () => {
-        loadingMessage("Editando salario");
-        /*
-        Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {"date_init": dateInit.current.value,
-            "date_finish": dateFinish.current.value,"dni_employee": employee.dni,"reason": reason.current.value})
-        .then((response) => {
-            if (response.data.Ok) comeBack(true)
-            else warningMessage("Error", `${response.data.Message}`, "error")
-        })
-        .catch((error) => console.error(error))
-        */
+        setShowSpinner(true);
+        if (advances.length > 0){
+            Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, {advances})
+            .then((response) => {
+                if (response.data.Ok !== false) {
+                    Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
+                            "dni":employee.dni, "monthYear": props.month, "state": 2})
+                        .then((res) => {
+                            if (res.data.Ok !== false) comeBack(false);
+                            else warningMessage("Error", `${res.data.Message}`, "error");
+                        })
+                        .catch((e) => console.error(e))   
+                }
+                else warningMessage("Error", `${response.data.Message}`, "error");
+            })
+            .catch((error) => console.error(error))
+        } else {
+            Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
+                    "dni":employee.dni, "monthYear": props.month, "state": 2})
+                .then((res) => {
+                    if (res.data.Ok !== false) comeBack(false);
+                    else warningMessage("Error", `${res.data.Message}`, "error");
+                })
+                .catch((e) => console.error(e))   
+            }
     }
     
     const resetStates = (showMsg) => {
@@ -195,15 +228,16 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se han generado todas los salarios correctamente','success');
             props.setReloadList(!props.reloadList);
             props.setActionSalary('Listar',null);
+            window.location.replace('/app/salary');
         }
     }
 
     const comeBack = (msg) => {
         if(msg){
             warningMessage('Atención','Se ha editado el salario correctamente','success');
-            props.setReloadList(!props.reloadList);
         }
         props.setActionSalary('Listar',null);
+        window.location.replace('/app/salary');
     }
 
     const actionNotOK = () =>{
@@ -363,7 +397,9 @@ const FormSalary = (props) => {
                         <input ref={nroRef} value={dateText(props.month+'-01', false, true)} style={{fontWeight: 'bold', marginLeft: '1em', border: '0px'}} readOnly></input> 
                     </div>
                     <div className="col-sm-6" style={{fontWeight: 'bold', textAlign: 'right'}} >
-                        <label >{nro + 1}/{employees.length}</label>
+                    <BeShowed show={props.action === 'Registrar'} >
+                            <label >{nro + 1}/{employees.length}</label>
+                    </BeShowed>
                     </div>
                 </div>
                 <ShowSelectedEmployee selectedEmployee={employee}/>
