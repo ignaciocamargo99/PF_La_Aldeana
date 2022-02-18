@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DetailSale from './components/DetailSale';
+import DateFormat from '../../utils/DateFormat/dateFormat';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
 import PaymentSale from "./components/PaymentSale"; 
@@ -18,9 +19,15 @@ const Sales = (props) => {
 
     const [ready, setReady] = useState(false);
     const [saleCompleted, setSaleCompleted] = useState(false);
+    const [date,setDate] = useState('');
 
     useEffect(() => {
         initialCalls();
+    },[])
+
+    useEffect(() => {
+        let date = DateFormat(new Date())
+        setDate(date)   
     },[])
 
     const initialCalls = () => {
@@ -174,7 +181,7 @@ const Sales = (props) => {
         }
         else {
             if (props.detailProducts.length == 0) {
-                warningMessage("¡Error!", "No se cargo ningun producto", "error");
+                warningMessage("¡Error!", "No se cargo ningún producto", "error");
             }
             else if (props.payType != 1 && props.payType != 2) {
                 warningMessage("¡Error!", "No selecciono la forma de pago", "error");
@@ -189,8 +196,16 @@ const Sales = (props) => {
     return (
         <>
             <div className="viewContent">
-                <h1 className="display-5">Ventas</h1>
+                <h1 className="display-5">Registrar venta en Local</h1>
                 <hr />
+                <div className="formRow" style={{justifyContent:'flex-end'}}>
+                    <div className="form-label-no-margin" style={{marginRight:'0%'}}>
+                        <label>Fecha:</label>
+                    </div>
+                    <div className="" style={{width:'200px'}}>
+                        <input type="date" className="form-control" value={date} readOnly></input>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-6">
                         <FilterProducts />
@@ -201,7 +216,7 @@ const Sales = (props) => {
                         <ListProducts />
                     </div>
                     <div className="col-4">
-                        <h3>Detalle de la venta</h3>
+                        <h3><b>Detalle de venta</b></h3>
                         <DetailSale />
                         <PaymentSale />
                         <div>

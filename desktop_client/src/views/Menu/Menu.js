@@ -20,14 +20,14 @@ const SideMenu = (props) => {
         <SidebarContent>
           <Menu iconShape="square">
             <MenuItem onClick={props.toRoot} icon={<GoHome/>}>Inicio</MenuItem>
-            <MenuItem onClick={props.toChamberFlavorsDispatch} icon={<GoTasklist/>}>Salida de camara</MenuItem>
+            <MenuItem onClick={props.toChamberFlavorsDispatch} icon={<GoTasklist/>}>Salida de cámara</MenuItem>
             
             <SubMenu title="Ventas" icon={<GoBell />}>
-              <MenuItem onClick={props.toSalesLocal}>Venta en local</MenuItem>
-              <MenuItem onClick={props.toSalesDelivery}>Venta por delivery</MenuItem>
+              <MenuItem onClick={props.toSalesLocal}>Venta en Local</MenuItem>
+              <MenuItem onClick={props.toSalesDelivery}>Venta por Delivery</MenuItem>
             </SubMenu>
 
-            <MenuItem onClick={props.toRegisterAttendance} icon={<IoFingerPrint/>}>Registrar asistencia</MenuItem>
+            <MenuItem onClick={props.toRegisterAttendance} icon={<IoFingerPrint/>}>Registrar Asistencia</MenuItem>
           </Menu>
         </SidebarContent>
         <SidebarFooter>

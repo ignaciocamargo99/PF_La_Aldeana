@@ -155,7 +155,7 @@ const ModalProduct = (props) => {
                         </div>
                         <Buttons label="Confirmar" ready={ready} actionOK={registerProduct} actionNotOK={registerProduct} actionCancel={cancel}></Buttons>
                     </ModalBody>
-                </Modal>updateDetailsProductsDelete
+                </Modal>
         </>
     )
 
