@@ -11,7 +11,8 @@ import '../assets/Footer.css';
 import Cookies from 'universal-cookie';
 import BeShowed from '../common/BeShowed';
 import ListProducts from './ListProducts/ListProducts';
-import RegisterFranchise from './RegisterFranchise/RegisterFranchise';
+import RegisterFranchise from './Franchises/RegisterFranchise';
+import Franchises from './Franchises/FranchiseTable';
 import '../assets/Views.css';
 import '../assets/Forms.css';
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
@@ -44,7 +45,7 @@ export default function App() {
             <BeShowed show={cookies.get('nick_user') !== undefined}>
               <Route path='/app/products' component={ListProducts}></Route>
               <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
-              <Route path='/app/franchise' component={RegisterFranchise}></Route>
+              <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
               <Route path='/app/registerProducts' component={RegisterProductView}></Route>
               <Route path='/app/supplies' component={RegisterSupplyView}></Route>
               <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
@@ -58,6 +59,7 @@ export default function App() {
               <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
               <Route path='/app/advances' component={ListAdvances}></Route>
               <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
+              <Route path='/app/franchises' component={Franchises}></Route>
             </BeShowed>
           }
         </div>

@@ -2,11 +2,10 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
 import Buttons from '../../common/Buttons';
-import success from '../../utils/SuccessMessages/successFranchise';
+import successMessage from '../../utils/SuccessMessages/successMessage';
 import validationFranchiseRegister from '../../utils/Validations/validationFranchiseRegister';
 import DataFranchise from './DataFranchise';
 import DataManager from './DataManager';
-import './RegisterFranchise.css';
 import './styles/FranchiseForm.css';
 import displayError from '../../utils/ErrorMessages/errorMesage';
 import Breadcrumb from '../../common/Breadcrumb';
@@ -44,12 +43,12 @@ export default function RegisterFranchise() {
     }
 
     const registerFranchise = () => {
-        let urlApi = '/api/franchises';        
+        let urlApi = '/api/franchises';
 
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {
                 if (data.Ok) {
-                    success();
+                    successMessage('Atención', 'Producto registrado exitosamente', 'success');
                 }
                 else {
                     displayError('Ha ocurrido un error al registrar una franquicia.');
@@ -59,25 +58,17 @@ export default function RegisterFranchise() {
     };
 
     useEffect(() => {
-        if (data.name !== '' && data.name !== 'null' &&
-            data.start_date !== '' && data.start_date !== 'null' &&
-            data.address !== '' && data.address !== 'null' &&
-            data.address_number >= 0 && data.address_number <= 99999 &&
-            data.city !== '' && data.city !== 'null' &&
-            data.province !== '' && data.province !== 'null' &&
-            data.name_manager !== '' && data.name_manager !== 'null' &&
-            data.last_name_manager !== '' && data.last_name_manager !== 'null' &&
-            data.dni_manager > 0) setReady(true);
+        if (data.name && data.start_date && data.address && (data.address_number >= 0 && data.address_number <= 99999) &&
+            data.city && data.province && data.name_manager && data.last_name_manager && data.dni_manager > 0) setReady(true);
         else setReady(false);
-    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild,
-    data.address, data.address_number, data.city, data.province, data.name_manager, data.name, data.dni_manager, data.last_name_manager, data.start_date]);
+    }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
 
     const cancelRegisterFranchise = () => window.location.reload();
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar franquicia"}</div>
-            <Breadcrumb parentName="Franquicias" icon={faStore} parentLink="franchise" currentName="Registrar franquicia" />
+            <Breadcrumb parentName="Franquicias" icon={faStore} parentLink="franchises" currentName="Registrar franquicia" />
             <div className="viewTitle">
                 <h1>Registrar Franquicia</h1>
             </div>
