@@ -5,8 +5,7 @@ class SupplyType extends Model { }
 
 SupplyType.init({
     // Model attributes are defined here
-    id: {
-        field: 'id_supply_type',
+    id_supply_type: {
         type: DataTypes.NUMBER,
         autoIncrement: true,
         primaryKey: true,
