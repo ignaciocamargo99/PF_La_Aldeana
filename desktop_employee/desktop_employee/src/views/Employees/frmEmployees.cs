@@ -20,6 +20,7 @@ namespace desktop_employee.src.views.Employees
         dynamic datosEmpleados;
         DataTable employeeSelectedTable = new DataTable();
         private Panel pnlPadre;
+        config config = new();
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
 
         public frmEmployees()
@@ -29,7 +30,7 @@ namespace desktop_employee.src.views.Employees
 
         private void frmEmployees_Load(object sender, EventArgs e)
         {
-            var urlGet = "http://localhost:3001/api/employeesDesktop";
+            var urlGet = config.getUrlPort() + "/api/employeesDesktop";
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
             requestGet.ContentType = "application/json";
@@ -123,14 +124,22 @@ namespace desktop_employee.src.views.Employees
 
         private void OpenForm(Form form)
         {
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Empl_Main")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             if (pnlPadre.Controls.Count > 0)
                 pnlPadre.Controls.RemoveAt(0);
             form.TopLevel = false;
+            form.Tag = "Empl_Sub";
             form.Dock = DockStyle.Fill;
             pnlPadre.Controls.Add(form);
             form.Show();
         }
-
-
     }
 }

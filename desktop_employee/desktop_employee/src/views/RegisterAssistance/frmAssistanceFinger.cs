@@ -24,6 +24,7 @@ namespace desktop_employee.src.views.RegisterAssistance
         Reply oReply = new Reply();
         dynamic datosHuellas;
         DataTable ultimosRegistros;
+        config config = new();
 
         public frmAssistanceFinger()
         {
@@ -41,7 +42,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             base.Init();
             Verificator = new DPFP.Verification.Verification();
             ultimosRegistros = crearTablaRegistros();
-            var urlGet = "http://localhost:3001/api/fingerPrints";
+            var urlGet = config.getUrlPort() + "/api/fingerPrints";
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
             requestGet.ContentType = "application/json";
@@ -120,9 +121,9 @@ namespace desktop_employee.src.views.RegisterAssistance
                                 {
                                     datetime = timeInOutFormated
                                 };
-                                oReply = await Consumer.Execute<CheckAsistencia>("http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
+                                oReply = await Consumer.Execute<CheckAsistencia>(config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
 
-                                var urlGet = "http://localhost:3001/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
+                                var urlGet = config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
                                 var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
                                 requestGet.Method = "GET";
                                 requestGet.ContentType = "application/json";

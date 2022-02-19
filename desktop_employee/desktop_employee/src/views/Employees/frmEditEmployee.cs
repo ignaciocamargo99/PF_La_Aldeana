@@ -21,6 +21,7 @@ namespace desktop_employee.src.views.Employees
         dynamic fingerEmployee;
         Reply oReply = new Reply();
         string txtLblCurrent;
+        config config = new();
 
         private Panel pnlPadre;
 
@@ -43,7 +44,7 @@ namespace desktop_employee.src.views.Employees
 
         private async void getFingers()
         {
-            var urlGet = "http://localhost:3001/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
+            var urlGet = config.getUrlPort() + "/api/fingerPrints/" + Convert.ToString(EmployeeSelected.Rows[0][0]);
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
             requestGet.ContentType = "application/json";
@@ -173,12 +174,22 @@ namespace desktop_employee.src.views.Employees
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             frmEmployees employees = new();
+            employees.Tag = "Empl_Main";
             employees.PnlPadre = pnlPadre;
             OpenForm(employees);
         }
 
         private void OpenForm(Form form)
         {
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Empl_Sub")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             if (pnlPadre.Controls.Count > 0)
                 pnlPadre.Controls.RemoveAt(0);
             form.TopLevel = false;
@@ -226,7 +237,7 @@ namespace desktop_employee.src.views.Employees
                     finger = txtLblCurrent,
                     fingerPrint = streamFingerPrint
                 };
-                oReply = await Consumer.Execute<FingerPrint>("http://localhost:3001/api/fingerPrints", methodHttp.POST, fingerPrint);
+                oReply = await Consumer.Execute<FingerPrint>(config.getUrlPort() + "/api/fingerPrints", methodHttp.POST, fingerPrint);
                 getFingers();
             }
             catch (Exception ex)
@@ -272,7 +283,7 @@ namespace desktop_employee.src.views.Employees
                         dniEmployee = Convert.ToInt32(txtDni.Text),
                         finger = txtLblCurrent
                     };
-                    oReply = await Consumer.Execute<FingerXEmployee>("http://localhost:3001/api/fingerPrints", methodHttp.PUT, fingerPrint);
+                    oReply = await Consumer.Execute<FingerXEmployee>(config.getUrlPort() + "/api/fingerPrints", methodHttp.PUT, fingerPrint);
                     if (oReply.StatusCode == "OK")
                     {
                         MessageBox.Show("Huella eliminada correctamente.");

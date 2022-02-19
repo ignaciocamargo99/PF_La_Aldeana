@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using System.Runtime.InteropServices;
 using desktop_employee.src.views.Employees;
 using desktop_employee.src.views.RegisterAssistance;
 using desktop_employee.src.entities;
@@ -36,8 +35,8 @@ namespace desktop_employee
             ContraerMenu();
 
             //Inicia el formulario de asistencia
-            //ibtnEmpleados_Click(null, e);
             ibtnAsistencia_Click(null, e);
+            ibtnAsistencia.Enabled = false;
         }
         protected override void WndProc(ref Message m)
         {
@@ -95,7 +94,20 @@ namespace desktop_employee
 
         private void ibtnEmpleados_Click(object sender, EventArgs e)
         {
+            ibtnEmpleados.Enabled = false;
+            ibtnAsistencia.Enabled = true;
+            ibtnAsistenciaDNI.Enabled = true;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Dni" || tag == "Asis_Hue")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             frmEmployees employees = new();
+            employees.Tag = "Empl_Main";
             lblTitulo.Text = "EMPLEADOS";
             employees.PnlPadre = pnlDesktop;
             OpenForm(employees);
@@ -103,27 +115,40 @@ namespace desktop_employee
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
         {
+            ibtnEmpleados.Enabled = true;
+            ibtnAsistencia.Enabled = false;
+            ibtnAsistenciaDNI.Enabled = true;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Dni" || tag == "Empl_Main" || tag == "Empl_Sub")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             frmAssistanceFinger assistanceFinger = new();
+            assistanceFinger.Tag = "Asis_Hue";
             lblTitulo.Text = "ASISTENCIA con HUELLA";
             OpenForm(assistanceFinger);
-
-
-            
         }
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
-            // IMPORTANTE !!!!
-            // borrar/eliminar los formularios abiertos
-
-            for (int i = 1; i <= Application.OpenForms.Count; i++) {
-                //string nombreForm = Application.OpenForms[i].ToString();
-                Application.OpenForms[i].Close();
+            ibtnEmpleados.Enabled = true;
+            ibtnAsistencia.Enabled = true;
+            ibtnAsistenciaDNI.Enabled = false;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Hue" || tag == "Empl_Main" || tag == "Empl_Sub")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
             }
-            MessageBox.Show("form abiertos" + Convert.ToString(Application.OpenForms.Count));
-
-
             frmAssistanceDNI assitenceDNI = new();
+            assitenceDNI.Tag = "Asis_Dni";
             lblTitulo.Text = "ASISTENCIA con DNI";
             OpenForm(assitenceDNI);
         }
