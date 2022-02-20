@@ -12,7 +12,7 @@ export default function DeleteFranchiseButton(props) {
     const handleDelete = (e) => confirmDelete(deleteFranchise, e);
 
     const deleteFranchise = () => {
-        Axios.delete(PORT() + `/api/franchises/${props.franchise.id_franchise}`)
+        Axios.put(PORT() + `/api/franchise/${props.franchise.id_franchise}`)
             .then(() => {
                 props.deleteFranchise(props.index);
                 swal("Franquicia dada de baja", {

@@ -3,15 +3,11 @@ import DeleteFranchiseButton from "../DeleteFranchiseButton";
 import EditFranchiseButton from '../EditFranchise/EditFranchiseButton';
 import ReadFranchiseButton from "../ReadFranchise/ReadFranchiseButton";
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
     return (
         <>
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Franquicias activas:</h4>
-                {/* <div className="search-input">
-                    <FontAwesomeIcon icon={faSearch} />
-                    <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
-                </div> */}
             </div>
             {(pageElements && pageElements.length > 0)
                 ?

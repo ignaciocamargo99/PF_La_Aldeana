@@ -20,7 +20,6 @@ const FranchiseTable = () => {
     const [franchiseToRead, setFranchiseToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
-
     useEffect(() => {
         Axios.get(PORT() + '/api/franchises')
             .then((response) => {

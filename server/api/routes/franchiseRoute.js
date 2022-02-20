@@ -10,7 +10,7 @@ router.post("/franchises", franchiseController.postFranchise);
 
 router.put("/franchises/:id", franchiseController.updateFranchise);
 
-router.delete("/franchises/:id", franchiseController.deleteFranchises);
+router.put("/franchise/:id", franchiseController.deleteFranchises);
 
 //#endregion
 
