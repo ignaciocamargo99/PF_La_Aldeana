@@ -7,7 +7,7 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe.skip('Tests unitarios sobre API Products',()=>{
+describe('Tests unitarios sobre API Products',()=>{
     
     describe('Check getTypeProducts',()=>{
         it('Recibe correctamente la funcion', (done) => {
@@ -133,7 +133,7 @@ describe.skip('Tests unitarios sobre API Products',()=>{
 
 
     describe('Check updateProduct',()=>{
-        it('Se actualiza correctamente', (done) => {
+        it.skip('Se actualiza correctamente', (done) => {
             chai.request(url)
                 .put('/products/370')
                 .send({name: 'prueba update from test', description: 'test update', price: 500, id_sector: 2, id_product_type: 1, id_product: 56})

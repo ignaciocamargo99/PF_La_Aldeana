@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe.skip('Tests unitarios sobre API Users',()=>{
+describe('Tests unitarios sobre API Users',()=>{
     
     describe('Check getClient',()=>{
         it('Recibe correctamente la funcion', (done) => {
