@@ -49,10 +49,10 @@ export default function RegisterFranchise() {
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {
                 if (data.Ok) {
-                    successMessage('Atención', 'Producto registrado exitosamente', 'success');
+                    successMessage('Atención', 'Franquicia registrada exitosamente', 'success');
                 }
                 else {
-                    displayError('Ha ocurrido un error al registrar una franquicia.');
+                    displayError('Ha ocurrido un error al registrar la franquicia');
                 }
             })
             .catch(error => console.log(error))
