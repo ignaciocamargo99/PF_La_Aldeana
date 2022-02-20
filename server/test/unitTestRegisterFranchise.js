@@ -7,7 +7,7 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe('Tests unitarios sobre API Franchise',()=>{
+describe.skip('Tests unitarios sobre API Franchise',()=>{
     
     describe('Check getFranchises',()=>{
         it('Recibe correctamente la funcion', (done) => {
@@ -28,7 +28,7 @@ describe('Tests unitarios sobre API Franchise',()=>{
         });
     });
 
-    describe.skip('Check postFranchise',()=>{
+    describe('Check postFranchise',()=>{
         it('Se inserta correctamente', (done) => {
             chai.request(url)
                 .post('/franchises')
