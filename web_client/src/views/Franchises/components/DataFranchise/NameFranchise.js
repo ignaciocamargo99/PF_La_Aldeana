@@ -34,7 +34,7 @@ export default function NameFranchise(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="name" type="text" maxLength="80" ref={inputName}
-                        placeholder="Ingrese nombre de la franquicia..." onChange={handleName} />
+                        placeholder="Ingrese nombre de la franquicia..." onChange={handleName} defaultValue={props.data.name}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

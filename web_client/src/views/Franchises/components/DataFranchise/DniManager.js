@@ -35,7 +35,7 @@ export default function DniManager(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="dni" onInput={(e) => validate(e)} type="number" min="10000000" max="99999999" ref={inputDni} onChange={onChangeDni}
-                        placeholder="Ingrese DNI del encargado..." onKeyDown={(e) => validateFloatNumbers(e)} />
+                        placeholder="Ingrese DNI del encargado..." onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={props.data.dni_manager} />
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

@@ -35,7 +35,7 @@ export default function ProvinceFranchise(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="province" type="text" maxLength="80" ref={inputProvince} placeholder="Ingrese provincia de la franquicia..."
-                        onChange={handleProvince} />
+                        onChange={handleProvince} defaultValue={props.data.province} />
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

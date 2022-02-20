@@ -9,14 +9,15 @@ import DataManager from './DataManager';
 import './styles/FranchiseForm.css';
 import displayError from '../../utils/ErrorMessages/errorMesage';
 import Breadcrumb from '../../common/Breadcrumb';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
 export default function RegisterFranchise() {
     const [data, setData] = useState({
-        name: '', start_date: '', address: '', address_number: -1, city: '', province: '',
-        name_manager: '', last_name_manager: '', dni_manager: 0
+        name: '', start_date: '', address: '', address_number: '', city: '', province: '',
+        name_manager: '', last_name_manager: '', dni_manager: ''
     });
     const [nameChild, setNameChild] = useState('');
     const [startDateChild, setStartDateChild] = useState('');
@@ -44,7 +45,7 @@ export default function RegisterFranchise() {
 
     const registerFranchise = () => {
         let urlApi = '/api/franchises';
-
+        loadingMessage('Registrando nueva franquicia...');
         Axios.post(PORT() + urlApi, data)
             .then(({ data }) => {
                 if (data.Ok) {
@@ -58,12 +59,12 @@ export default function RegisterFranchise() {
     };
 
     useEffect(() => {
-        if (data.name && data.start_date && data.address && (data.address_number >= 0 && data.address_number <= 99999) &&
-            data.city && data.province && data.name_manager && data.last_name_manager && data.dni_manager > 0) setReady(true);
+        if (data.name && data.start_date && data.address && (parseInt(data.address_number) >= 0 && parseInt(data.address_number) <= 99999) &&
+            data.city && data.province && data.name_manager && data.last_name_manager && parseInt(data.dni_manager) > 0) setReady(true);
         else setReady(false);
     }, [nameChild, startDateChild, addressChild, cityChild, provinceChild, nameManagerChild, lastNameManagerChild, dniManagerChild, addressNumberChild]);
 
-    const cancelRegisterFranchise = () => window.location.reload();
+    const cancelRegisterFranchise = () => window.location.replace('/app/franchises');
 
     return (
         <>

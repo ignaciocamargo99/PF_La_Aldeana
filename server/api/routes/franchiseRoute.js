@@ -8,6 +8,9 @@ router.get("/franchises", franchiseController.getFranchises);
 
 router.post("/franchises", franchiseController.postFranchise);
 
+router.put("/franchises/:id", franchiseController.updateFranchise);
+
+router.delete("/franchises/:id", franchiseController.deleteFranchises);
 
 //#endregion
 

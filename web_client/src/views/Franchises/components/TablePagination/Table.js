@@ -1,8 +1,5 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import DeleteFranchiseButton from "../DeleteFranchiseButton";
-// import DeleteProductButton from '../DeleteProductButton';
 import EditFranchiseButton from '../EditFranchise/EditFranchiseButton';
 import ReadFranchiseButton from "../ReadFranchise/ReadFranchiseButton";
 
@@ -45,8 +42,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <EditFranchiseButton franchise={element} edit={handleEdit} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteFranchiseButton />
-                                            {/* <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} /> */}
+                                            <DeleteFranchiseButton deleteFranchise={handleDelete} franchise={element} index={i} />
                                         </td>
                                     </tr>
                                 )

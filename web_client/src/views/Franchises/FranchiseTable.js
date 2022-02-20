@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import BeShowed from '../../common/BeShowed';
 import LoaderSpinner from '../../common/LoaderSpinner';
 import displayError from '../../utils/ErrorMessages/errorMesage';
-// import EditProducts from './EditProducts/EditProducts';
 import TablePagination from './components/TablePagination/TablePagination';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import franchiseData from "./components/franchiseData";
 import ReadFranchise from './components/ReadFranchise/ReadFranchise';
+import EditFranchise from './components/EditFranchise/EditFranchise';
 
 const PORT = require('../../config');
 
@@ -31,22 +31,25 @@ const FranchiseTable = () => {
             .catch((error) => console.log(error));
     }, []);
 
-    // const productWasSuccessfullyDeleted = () => {
-    //     getProducts()
-    // };
+    const deleteFranchise = (i) => {
+        let aux = [];
+        franchises?.forEach((e, j) => {
+            if (j !== i) aux[j] = e;
+        });
+        setFranchises(aux);
+    }
 
-    // const editProduct = async (product) => {
-    //     try {
-    //         const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
-    //         let aux = productData(product, productSupplies)
-    //         aux.editing = true;
-    //         setProductToEdit(aux);
-    //         setIsEditing(true);
-    //     }
-    //     catch {
-    //         displayError();
-    //     }
-    // };
+    const editFranchise = async (franchises) => {
+        try {
+            let aux = franchiseData(franchises)
+            aux.editing = true;
+            setFranchiseToEdit(aux);
+            setIsEditing(true);
+        }
+        catch {
+            displayError();
+        }
+    };
 
     const readFranchise = async (franchises) => {
         try {
@@ -126,14 +129,14 @@ const FranchiseTable = () => {
                                         columnsHeaders={columnsHeaders}
                                         currentElements={franchises}
                                         handleRead={readFranchise}
-                                    // handleEdit={editProduct}
-                                    // handleDelete={productWasSuccessfullyDeleted}
+                                        handleEdit={editFranchise}
+                                        handleDelete={deleteFranchise}
                                     ></TablePagination>
                                 </div>
                             </BeShowed>
-                            {/* <BeShowed show={isEditing}>
-                                <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
-                            </BeShowed> */}
+                            <BeShowed show={isEditing}>
+                                <EditFranchise onClickCancelEdit={onClickBackToFranchises} franchiseToEdit={franchiseToEdit} />
+                            </BeShowed>
                             <BeShowed show={isReading}>
                                 <ReadFranchise onClickCancelRead={onClickBackToFranchises} franchiseToRead={franchiseToRead} />
                             </BeShowed>

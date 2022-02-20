@@ -34,7 +34,7 @@ export default function AddressFranchise(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="address" type="text" maxLength="80" ref={inputAddress} placeholder="Ingrese dirección de la franquicia..."
-                        onChange={handleAddress} />
+                        onChange={handleAddress} defaultValue={props.data.address}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

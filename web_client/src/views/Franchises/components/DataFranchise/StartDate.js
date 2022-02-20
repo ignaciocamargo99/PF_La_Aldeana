@@ -37,7 +37,8 @@ export default function StartDate(props) {
 
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
-                    <input className={isValidClass} id="date" type="date" maxLength="80" ref={inputDate} placeholder="Ingrese fecha..." onChange={handleDate} />
+                    <input className={isValidClass} id="date" type="date" maxLength="80" ref={inputDate} placeholder="Ingrese fecha..." onChange={handleDate}
+                        defaultValue={props.data.start_date} />
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

@@ -35,7 +35,7 @@ export default function AddressNumberFranchise(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="address_number" onInput={(e) => validate(e)} type="number" min="0" max="99999" ref={inputNumber} onChange={onChangeNumber}
-                        placeholder="Ingrese número de calle..." onKeyDown={(e) => validateFloatNumbers(e)} />
+                        placeholder="Ingrese número de calle..." onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={props.data.address_number}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>

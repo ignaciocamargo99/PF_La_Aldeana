@@ -32,14 +32,12 @@ export default function CityFranchise(props) {
                 <label htmlFor="city" >Ciudad*</label>
             </div>
             <BeShowed show={!props.data.reading}>
-            {console.log(props.data.city)}
                 <div className="form-control-input">
                     <input className={isValidClass} id="city" type="text" maxLength="80" ref={inputCity} placeholder="Ingrese ciudad de la franquicia..."
-                        onChange={handleCity} />
+                        onChange={handleCity} defaultValue={props.data.city}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>
-                {console.log(props.data.city)}
                 <div className="form-control-input">
                     <input className={isValidClass} id="name" type="text" maxLength="80" defaultValue={props.data.city} readOnly />
                 </div>

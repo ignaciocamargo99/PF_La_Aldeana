@@ -35,7 +35,7 @@ export default function LastNameManager(props) {
             <BeShowed show={!props.data.reading}>
                 <div className="form-control-input">
                     <input className={isValidClass} id="lastNameManager" type="text" maxLength="80" ref={inputName} placeholder="Ingrese apellido del encargado..."
-                        onChange={handleName} />
+                        onChange={handleName} defaultValue={props.data.last_name_manager}/>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>
