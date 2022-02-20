@@ -105,10 +105,10 @@ export default function Navbar(props) {
                             Franquicias
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="">
+                            <Dropdown.Item href="/app/franchises">
                                 <FontAwesomeIcon icon={faList} /> Ver franquicias
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/franchise">
+                            <Dropdown.Item href="/app/newFranchise">
                                 <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva franquicia
                             </Dropdown.Item>
                         </Dropdown.Menu>

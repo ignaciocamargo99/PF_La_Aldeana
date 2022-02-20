@@ -7,7 +7,7 @@ import '../../../assets/Buttons.css';
 
 const PORT = require('../../../config');
 
-export default function DeleteEmployeetButton (props) {
+export default function DeleteEmployeeButton (props) {
 
     const handleDelete = (e) => confirmDelete(deleteEmployee, dontDeleteProduct, e);
 
