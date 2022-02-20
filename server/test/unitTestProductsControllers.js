@@ -7,7 +7,7 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe('Tests unitarios sobre API Products',()=>{
+describe.skip('Tests unitarios sobre API Products',()=>{
     
     describe('Check getTypeProducts',()=>{
         it('Recibe correctamente la funcion', (done) => {
