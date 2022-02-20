@@ -14,7 +14,6 @@ describe('Tests unitarios sobre API Users',()=>{
             chai.request(url)
                 .get('/users')
                 .end( function(err,res){
-                    //console.log(res.body);
                     expect(res).to.have.status(200);
                     done();
                 });
