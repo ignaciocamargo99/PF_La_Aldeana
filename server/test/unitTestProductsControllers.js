@@ -66,7 +66,7 @@ describe('Tests unitarios sobre API Products',()=>{
         });
     });
 
-    describe('Check getTypeSupplies',()=>{
+    describe.skip('Check getTypeSupplies',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
                 .get('/typeSupplies')
