@@ -28,8 +28,8 @@ describe('Tests unitarios sobre API Franchise',()=>{
         });
     });
 
-    describe('Check postFranchise',()=>{
-        it.skip('Se inserta correctamente', (done) => {
+    describe.skip('Check postFranchise',()=>{
+        it('Se inserta correctamente', (done) => {
             chai.request(url)
                 .post('/franchises')
                 .send({ name: 'test', start_date: '2021-1-1', address: 'a', address_number: 123, city: 'a', province: 'a',
