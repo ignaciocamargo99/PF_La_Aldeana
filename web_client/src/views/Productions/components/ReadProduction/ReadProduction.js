@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import DateProduction from './../../components/DateProduction';
-import FlavorsTable from './../../components/FlavorsTable';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { updateDate } from '../../../../actions/DateActions';
-import Buttons from '../../../../common/Buttons';
-import Axios from 'axios';
-import successMessage from '../../../../utils/SuccessMessages/successMessage';
-import warningMessage from '../../../../utils/WarningMessages/warningMessage';
-import displayError from '../../../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
-
-const PORT = require('../../../../config');
+import DateProduction from './../../components/DateProduction';
+import FlavorsTable from './../../components/FlavorsTable';
 
 function RegisterProductionView(props) {
 

@@ -2,26 +2,20 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
-import displayError from '../../utils/ErrorMessages/displayError';
 import BeShowed from "../../common/BeShowed";
 import LoaderSpinner from "../../common/LoaderSpinner";
-import BodyTable from "../../common/Table/BodyTable";
-import HeaderTable from "../../common/Table/HeaderTable";
-import Table from '../../common/Table/Table';
+import displayError from '../../utils/ErrorMessages/displayError';
+import EditProduction from "./components/EditProduction/EditProduction";
+import ReadProduction from './components/ReadProduction/ReadProduction';
 import TablePagination from "./components/TablePagination/TablePagination";
 import productionData from './productionData';
 import './styles/ButtonFilters.css';
-// import DeleteEmployeeButton from './DeleteEmployeeButton';
-import EditProduction from "./components/EditProduction/EditProduction";
-import ReadProduction from './components/ReadProduction/ReadProduction';
-// import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
 
 const PORT = require('../../config');
 
 export default function ListProductions() {
 
     const [allProductions, setAllProductions] = useState([]);
-    // const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
     const [productionToRead, setProductionToRead] = useState({});
     const [productionToEdit, setProductionToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
