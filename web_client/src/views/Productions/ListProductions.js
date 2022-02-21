@@ -99,6 +99,7 @@ export default function ListProductions() {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Producciones"}</div>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." /> :
 

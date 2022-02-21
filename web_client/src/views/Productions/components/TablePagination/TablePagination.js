@@ -14,12 +14,12 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
 
     useEffect(() => {
         if (dateSearch !== "") {
-            let filteredElementsList;
-            let dateFormatted = moment(dateSearch).format('DD-MM-YYYY');
-
-            if(PORT() === "") filteredElementsList = currentElements.filter((elem) => moment(elem.date_production).format('DD-MM-YYYY') === dateFormatted);
-            else filteredElementsList = currentElements.filter((elem) => moment(elem.date_production).subtract(1, 'days').format('DD-MM-YYYY') === dateFormatted);
-
+            let dateFormatted;
+            
+            if(PORT() === "") dateFormatted = moment(dateSearch).format('DD-MM-YYYY');
+            else dateFormatted = moment(dateSearch).subtract(1, 'days').format('DD-MM-YYYY');
+            
+            const filteredElementsList = currentElements.filter((elem) => moment(elem.date_production).format('DD-MM-YYYY') === dateFormatted);
             setFilteredElements(filteredElementsList);
             setCurrentPage(1);
         } else {
