@@ -3,6 +3,8 @@ import Pagination from '../../../../common/TablePagination/Pagination';
 import Table from './Table';
 import moment from 'moment';
 
+const PORT = require('../../../../config');
+
 const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -12,7 +14,9 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
 
     useEffect(() => {
         if (dateSearch !== "") {
-            let dateFormatted = moment(dateSearch).format('DD-MM-YYYY')
+            let dateFormatted;
+            if(PORT() === "") dateFormatted = moment(dateSearch).format('DD-MM-YYYY');
+            else dateFormatted = moment(dateSearch).add(1, 'days').format('DD-MM-YYYY');
             const filteredElementsList = currentElements.filter((elem) => moment(elem.date_production).format('DD-MM-YYYY') === dateFormatted);
             setFilteredElements(filteredElementsList);
             setCurrentPage(1);
