@@ -29,7 +29,7 @@ const salariesCreateDB = (newSalary) => {
     const sqlInsert = 'INSERT INTO SALARIES VALUES (?, ?, ?, ?, ?, ?, ?);';
     const sqlGetIdSalary = "SELECT id_salary FROM SALARIES s ";
     const sqlGetConcepts = "SELECT * FROM CONCEPTS c";
-    const sqlInsertConcept = "INSERT INTO CONCEPTS VALUES (null, ?, 1)";
+    const sqlInsertConcept = "INSERT INTO CONCEPTS VALUES (?, ?, 1)";
     const sqlInsertHsWorked = "INSERT INTO HS_WORKED VALUES (null, ?, ?, ?, ?)";
     const sqlInsertDetail = "INSERT INTO DETAIL_SALARIES VALUES (null, ?, ?, ?, ?);";
 
@@ -52,15 +52,18 @@ const salariesCreateDB = (newSalary) => {
                                 db.rollback(()=> reject(error));
                             }
                             else {
-                                db.query(sqlGetConcepts, (error, r) => {
+                                db.query(sqlGetConcepts, (error, response) => {
                                     if (error) {
                                         console.log(error);
                                         db.rollback(()=> reject(error));
                                     }
                                     else {
+                                        let r = [];
+                                        response.map((res, k) => r[k] = res);
+                                        let count = r.length;
                                         for (var j = 0; j < newSalary.details[0].length; j++){
                                             r?.map(concept => {
-                                                if(concept.name == newSalary.details[0][j].name){
+                                                if(concept.name.toUpperCase() == newSalary.details[0][j].name.toUpperCase()){
                                                     const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
                                                     db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs], (error, r) => {
                                                         if (error) {
@@ -91,9 +94,11 @@ const salariesCreateDB = (newSalary) => {
                                         }
                                         if (newSalary.details[1].length > 0) {
                                         for (var j = 0; j < newSalary.details[1].length; j++){
-                                            let count = 0;
+                                            let exist = false;
                                             r?.map(concept => {
-                                                if(concept.name == newSalary.details[1][j].name){
+                                                console.log(concept, newSalary.details[1][j])
+                                                if(concept.name.toUpperCase() == newSalary.details[1][j].name.toUpperCase()){
+                                                    exist = true;
                                                     db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[1][j].price, concept.predictive], (error) => {
                                                         if (error) {
                                                             console.log(error);
@@ -107,36 +112,43 @@ const salariesCreateDB = (newSalary) => {
                                                             else resolve();
                                                         });
                                                     });
-                                                } else {
-                                                    db.query(sqlInsertConcept, [newSalary.details[1][j].name], (error, r) => {
-                                                    if (error) {
-                                                        console.log(error);
-                                                        db.rollback(()=> reject(error));
-                                                    }
-                                                    else {
-                                                        count += 1;
-                                                        db.query(sqlInsertDetail, [id_salary, concept.length + count, newSalary.details[1][j].price, concept.predictive], (error) => {
+                                                } 
+                                            });
+                                            if (!exist) {
+                                                count += 1;
+                                                r[r.length] = {id_concept: count, name: newSalary.details[1][j].name, predictive: 1};
+                                                console.log('concept: ',count)
+                                                let aux1 = count;
+                                                db.query(sqlInsertConcept, [count, newSalary.details[1][j].name], (error, r) => {
+                                                if (error) {
+                                                    console.log(error);
+                                                    db.rollback(()=> reject(error));
+                                                }
+                                                else {
+                                                    console.log('detail: ',aux1)
+                                                    db.query(sqlInsertDetail, [id_salary, aux1-1, newSalary.details[1][j-1].price, 1], (error) => {
+                                                        if (error) {
+                                                            console.log(error);
+                                                            db.rollback(()=> reject(error));
+                                                        }
+                                                        db.commit((error) => {
                                                             if (error) {
                                                                 console.log(error);
-                                                                db.rollback(()=> reject(error));
+                                                                return db.rollback(() => reject(error));
                                                             }
-                                                            db.commit((error) => {
-                                                                if (error) {
-                                                                    console.log(error);
-                                                                    return db.rollback(() => reject(error));
-                                                                }
-                                                                else resolve();
-                                                            });
+                                                            else resolve();
                                                         });
-                                                    }});
-                                                }
-                                            });
+                                                    });
+                                                }});
+                                            }
                                         }}
                                         if (newSalary.details[2].length > 0) {
                                         for (var j = 0; j < newSalary.details[2].length; j++){
+                                            let exist = false;
                                             r?.map(concept => {
-                                                if(concept.name == newSalary.details[2][j].name){
-                                                    db.query(sqlInsertDetail, [res, concept.id_concept, newSalary.details[2][j].price, concept.predictive], (error) => {
+                                                if(concept.name.toUpperCase() == newSalary.details[2][j].name.toUpperCase()){
+                                                    exist = true;
+                                                    db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[2][j].price, concept.predictive], (error) => {
                                                         if (error) {
                                                             console.log(error);
                                                             db.rollback(()=> reject(error));
@@ -149,30 +161,36 @@ const salariesCreateDB = (newSalary) => {
                                                             else resolve();
                                                         });
                                                     }); 
-                                                } else {
-                                                    db.query(sqlInsertConcept, [newSalary.details[2][j].name], (error, r) => {
-                                                    if (error) {
-                                                        console.log(error);
-                                                        db.rollback(()=> reject(error));
-                                                    }
-                                                    else {
-                                                        count += 1;
-                                                        db.query(sqlInsertDetail, [res, concept.length + count, newSalary.details[2][j].price, concept.predictive], (error) => {
+                                                } 
+                                            });
+
+                                            if (!exist) {
+                                                count += 1;
+                                                r[r.length] = {id_concept: count, name: newSalary.details[2][j].name, predictive: 1};
+                                                console.log('concept: ',count)
+                                                let aux2 = count;
+                                                db.query(sqlInsertConcept, [count, newSalary.details[2][j].name], (error, r) => {
+                                                if (error) {
+                                                    console.log(error);
+                                                    db.rollback(()=> reject(error));
+                                                }
+                                                else {
+                                                    console.log('detail: ',aux2)
+                                                    db.query(sqlInsertDetail, [id_salary, aux2-1, newSalary.details[2][j-1].price, 1], (error) => {
+                                                        if (error) {
+                                                            console.log(error);
+                                                            db.rollback(()=> reject(error));
+                                                        }
+                                                        db.commit((error) => {
                                                             if (error) {
                                                                 console.log(error);
-                                                                db.rollback(()=> reject(error));
+                                                                return db.rollback(() => reject(error));
                                                             }
-                                                            db.commit((error) => {
-                                                                if (error) {
-                                                                    console.log(error);
-                                                                    return db.rollback(() => reject(error));
-                                                                }
-                                                                else resolve();
-                                                            });
+                                                            else resolve();
                                                         });
-                                                    }});
-                                                }
-                                            });
+                                                    });
+                                                }});
+                                            }
                                         }}
 
                                         resolve(result);
@@ -195,6 +213,24 @@ const salariesGetDB = (monthYear) => {
                 "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
                 "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
                 "WHERE s.month_year = '" + (monthYear.length > 7 ? monthYear : (monthYear + '-01')) + "'";
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+const conceptsGetDB = (id) => {
+    const sqlSelect = "SELECT * FROM CONCEPTS";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -542,4 +578,4 @@ const salariesUpdateDB = (id, newSalary) => {
     });
 };
 
-module.exports = { salariesGetDB, hsWorkedGetDB, bonusGetDB, salariesCreateDB, salaryGetDB, salariesUpdateDB, detailsGetDB };
+module.exports = { salariesGetDB, hsWorkedGetDB, bonusGetDB, salariesCreateDB, salaryGetDB, salariesUpdateDB, detailsGetDB, conceptsGetDB };

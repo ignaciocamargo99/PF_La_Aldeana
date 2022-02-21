@@ -6,7 +6,6 @@ import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
@@ -16,7 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateText from "../../../utils/DateFormat/dateText";
 import dateToString from "../../../utils/ConverterDate/dateToString";
 import floatToHour from "../../../utils/Hs/floatToHour";
-
 const PORT = require('../../../config');
 
 const FormSalary = (props) => {
@@ -41,6 +39,21 @@ const FormSalary = (props) => {
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
     const [advances, setAdvances] = useState([]);
+    const [concepts, setConcepts] = useState([]);
+
+    const validateConcepts = (concept, concepts) => {
+        let aux = concept;
+        concepts?.forEach(existentConcept => {
+            if (existentConcept.predictive === 0 && concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
+        });
+        othersPlus?.forEach(existentConcept => {
+            if (concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
+        });
+        othersMinus?.forEach(existentConcept => {
+            if (concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
+        });
+        return aux;
+    }
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
@@ -57,6 +70,12 @@ const FormSalary = (props) => {
                     if (exist.length < 1) display.push(person);
                 });
                 setEmployees(display);
+                Axios.get(PORT() + `/api/concepts`)
+                    .then((response) => {
+                        setConcepts(response.data);
+                    })
+                    .catch((error) => console.log(error));
+                    setShowSpinner(false);
                 if (props.action === 'Registrar') setEmployee(display[nro]);
                 else {
                     setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.dni }));
@@ -284,14 +303,14 @@ const FormSalary = (props) => {
         if (t === 1) {
             const aux = [];
             othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = {name: e.target.value, price: inc.price};
+                if (inc === j) aux[i] = {name: validateConcepts(e.target.value, concepts), price: inc.price};
                 else aux[i] = {name: inc.name, price: inc.price};
             });
             setOthersPlus(aux);
         } else {
             const aux = [];
             othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = {name: e.target.value, price: disc.price};
+                if (disc === j) aux[i] = {name: validateConcepts(e.target.value, concepts), price: disc.price};
                 else aux[i] = {name: disc.name, price: disc.price};
             });
             setOthersMinus(aux);

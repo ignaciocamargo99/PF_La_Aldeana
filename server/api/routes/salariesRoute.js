@@ -9,6 +9,7 @@ router.post('/salaries', salariesController.newSalary);
 router.put('/salaries/:id', salariesController.putSalary);
 router.get('/salariesdetails/:id', salariesController.getDetails);
 router.get('/salary', salariesController.getSalary);
+router.get('/concepts', salariesController.getConcepts);
 router.get('/hsWorked', salariesController.getHSWorked);
 router.get('/bonus', salariesController.getBonus);
 

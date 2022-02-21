@@ -1,4 +1,4 @@
-const { readSalaries, readHSWorked, readBonus, createSalaries, readSalary, modifySalaries, readDetails } = require('../services/salariesService');
+const { readSalaries, readHSWorked, readBonus, createSalaries, readSalary, modifySalaries, readDetails, readConcepts } = require('../services/salariesService');
 
 // HTTP: GET
 async function getSalaries(req, res) {
@@ -14,6 +14,18 @@ async function getSalaries(req, res) {
     };
 };
 
+// HTTP: GET
+async function getConcepts(req, res) {
+    try {
+        const result = await readConcepts();
+        res.send(result);
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo encontrar datos existentes de conceptos de campos adicionales para salarios.'
+        });
+    };
+};
 // HTTP: GET
 async function getDetails(req, res) {
     try {
@@ -107,4 +119,4 @@ async function getBonus(req, res) {
     };
 };
 
-module.exports = { getSalaries, getHSWorked, getBonus, newSalary, getSalary, putSalary, getDetails };
+module.exports = { getSalaries, getHSWorked, getBonus, newSalary, getSalary, putSalary, getDetails, getConcepts };
