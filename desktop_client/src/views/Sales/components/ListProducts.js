@@ -29,7 +29,7 @@ const ListProducts = (props) => {
 
     return (
         <>
-            <h2>Productos</h2>
+            <h2><b>Productos</b></h2>
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (
                     <div key={i}>
