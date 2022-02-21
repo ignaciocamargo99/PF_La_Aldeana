@@ -29,7 +29,7 @@ function RegisterProductionView(props) {
             .catch((error) => console.log(error));
     }, []);
 
-    const cancelRegisterProduction = () => window.location.reload();
+    const cancelRegisterProduction = () => window.location.replace('app/productions');
 
     const registerProduction = () => {
         if (ready) {
