@@ -21,8 +21,10 @@ const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handle
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Producciones registradas:</h4>
                 <div className="search-input">
-                    <FontAwesomeIcon icon={faSearch} />
-                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch(e.target.value)} ref={dateFilter}></input>{" "}
+                    <label className="lblDate">Fecha desde</label>
+                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch(e.target.value)} ref={dateFilter} />
+                    <label className="lblDate">Fecha hasta</label>
+                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch(e.target.value)} ref={dateFilter} />
                     <button id='filterProductionButton' type="button" onClick={onClickFilter} className="filterBtn">Limpiar filtros</button>
                 </div>
             </div>

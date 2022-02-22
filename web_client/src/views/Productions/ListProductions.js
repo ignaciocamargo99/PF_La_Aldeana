@@ -9,7 +9,6 @@ import EditProduction from "./components/EditProduction/EditProduction";
 import ReadProduction from './components/ReadProduction/ReadProduction';
 import TablePagination from "./components/TablePagination/TablePagination";
 import productionData from './productionData';
-import './styles/ButtonFilters.css';
 
 const PORT = require('../../config');
 
