@@ -4,7 +4,9 @@ const {
     chargeGetDB,
     employeeCreateDB,
     employeeUpdateDB,
-    dniEmployeeGetDB, employeeForDesktopGetDB,
+    dniEmployeeGetDB,
+    employeeForDesktopGetDB,
+    relationshipsGetDB
 } = require('../db/employeeDb');
 
 const readEmployee = async (dni) => {
@@ -83,6 +85,16 @@ const readCharges = async () => {
     };
 };
 
+const readRelationships = async () => {
+    try {
+        let res = await relationshipsGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    };
+};
+
 const deleteEmployees = async (dniEmployee) => {
     try {
         let res = await employeeDeleteDB(dniEmployee);
@@ -121,4 +133,5 @@ module.exports = {
     readEmployee,
     readEmployeeForDesktop,
     readEmployeebyDni,
+    readRelationships
 };

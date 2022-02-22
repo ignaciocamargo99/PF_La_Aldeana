@@ -810,6 +810,18 @@
           }
         }
       }
+    },
+    "/relationships": {
+      "get": {
+        "summary":"Lista los posibles tipos de realcones laborales de los empleados",
+        "tags": ["Empleados"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) con los tipos de relaciones laborales de los empleados."
+          }
+        }
+      }
     }
   }
 }

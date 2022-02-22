@@ -32,6 +32,7 @@ const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
 const turnsRouter = require('./api/routes/turnsRoute');
 const jdEmployeeRouter = require('./api/routes/jdEmployeeRoute');
+const salariesRoute = require('./api/routes/salariesRoute');
 
 app.use(cors());
 app.use(logger('dev')); 
@@ -72,6 +73,7 @@ app.use('/api', assistanceFingerRouter);
 app.use('/api', serviceTestRoute);
 app.use('/api', turnsRouter);
 app.use('/api', jdEmployeeRouter);
+app.use('/api', salariesRoute);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

@@ -1,5 +1,21 @@
 const pool = require('../../config/connection');
 
+const relationshipsGetDB = () => {
+    const sqlSelect = `SELECT * from EMPLOYMENT_RELATIONSHIP`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const employeeGetDB = (dni) => {
     let sqlSelect = `
         SELECT
@@ -216,4 +232,5 @@ module.exports = {
     employeeForDesktopGetDB,
     employeeGetDB,
     employeeUpdateDB,
+    relationshipsGetDB
 };
