@@ -60,10 +60,10 @@ const DetailSale = (props) => {
                 <HeaderTable
                     th={
                         <>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Producto</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}></th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Nombre</th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}></th>
                         </>}/>
                 <BeShowed show={ready}>
                     <BodyTable
@@ -73,7 +73,7 @@ const DetailSale = (props) => {
                                     <tr>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.subtotal}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${element.subtotal}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
                                                 <FontAwesomeIcon icon={faPen} />

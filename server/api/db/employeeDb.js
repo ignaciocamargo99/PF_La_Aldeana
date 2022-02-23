@@ -87,16 +87,16 @@ const employeeCreateDB = (newEmployee) => {
 
             db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
                 newEmployee.dni,
-                newEmployee.nameEmployee,
-                newEmployee.lastName,
+                newEmployee.name,
+                newEmployee.last_name,
                 newEmployee.date,
-                newEmployee.employmentRelationshipId,
+                newEmployee.employment_relationship,
                 1
             ], (error) => {
                 if (error) reject(error);
             });
 
-            newEmployee.chargesIds.forEach(chargeId => {
+            newEmployee.charges.forEach(({ chargeId }) => {
                 db.query('INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)', [newEmployee.dni, chargeId], (error, result) => {
                     if (error) reject(error);
                     else resolve(result);
@@ -155,7 +155,7 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
                 if (error) reject(error);
             });
 
-            updateEmployee.chargesIds.forEach(chargeId => {
+            updateEmployee.charges.forEach(({ chargeId }) => {
                 db.query(sqlInsertChargesOfemployee, [currentDniEmployee, chargeId], (error) => {
                     if (error) reject(error);
                 });
@@ -163,10 +163,10 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
             const updateEmpData = [
                 updateEmployee.dni,
-                updateEmployee.nameEmployee,
-                updateEmployee.lastName,
+                updateEmployee.name,
+                updateEmployee.last_name,
                 updateEmployee.date,
-                updateEmployee.employmentRelationshipId
+                updateEmployee.employment_relationship
             ];
 
             db.query(sqlUpdateEmployee, updateEmpData, (error, result) => {
@@ -181,13 +181,13 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
 const isEmployeeDataValid = (empDataToValidate) => {
     return (
-        empDataToValidate.chargesIds.length > 0 &&
+        empDataToValidate.charges.length > 0 &&
         empDataToValidate.date &&
         empDataToValidate.dni &&
         empDataToValidate.dni.toString().length === 8 &&
-        empDataToValidate.employmentRelationshipId &&
-        empDataToValidate.lastName &&
-        empDataToValidate.nameEmployee
+        empDataToValidate.employment_relationship &&
+        empDataToValidate.last_name &&
+        empDataToValidate.name
     );
 };
 

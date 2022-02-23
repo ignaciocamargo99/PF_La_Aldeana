@@ -87,6 +87,7 @@ const PaymentSale = (props) => {
                     }
                 </select>
                 <BeShowed show={boolPayCash}>
+                    
                     <div className='formRow'>
                         <label>Monto Total:  $  </label>
                         <label id="id_total">{props.totalAmount}</label>
@@ -104,6 +105,7 @@ const PaymentSale = (props) => {
                         <label id="id_turned">{turned?parseFloat(turned,2):"0"}</label>
                     </div>
                 </BeShowed>
+
                 <BeShowed show={boolPayCard}>
                     <div className='formRow'>
                         <label>Monto Total:  $  </label>

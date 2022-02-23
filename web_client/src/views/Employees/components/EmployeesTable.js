@@ -1,5 +1,6 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
-import moment from 'moment';
 import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
@@ -11,79 +12,51 @@ import EditEmployee from "./EditEmployee/EditEmployee";
 import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
 import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
 export default function EmployeesTable() {
 
-    const [editing, setEditing] = useState({});
-    const [employees, setEmployees] = useState([]);
+    const [allEmployees, setAllEmployees] = useState([]);
+    const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
+    const [employeeDataToRead, setEmployeeDataToRead] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
-    const [reading, setReading] = useState({});
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
-            .then((response) => {
+            .then(({ data }) => {
                 handlerLoadingSpinner();
-                let auxSupply = response.data;
-                setEmployees(auxSupply);
+
+                setAllEmployees(data);
             })
             .catch((error) => console.log(error));
     }, []);
 
     const deleteEmployee = (i) => {
         let aux = [];
-        employees?.forEach((e, j) => {
+        allEmployees?.forEach((e, j) => {
             if (j !== i) {
                 aux[j] = e;
             }
         });
-        setEmployees(aux);
+        setAllEmployees(aux);
     };
 
-    const editEmployee = (employee) => {
-
-        let aux = {
-            charges: employee.charges,
-            date: moment(employee.date).format('YYYY-MM-DD'),
-            dni: employee.dni,
-            editing: true,
-            employmentRelationshipId: employee.employment_relationship,
-            id_charge: employee.charge,
-            lastName: employee.last_name,
-            name: employee.name,
-            nameEmployee: employee.name,
-            previousDni: employee.dni,
-        };
-
-        setEditing(aux);
+    const handleEditEmpoyee = (selectedEmployeeForEdit) => {
+        setEmployeeDataToEdit(selectedEmployeeForEdit);
         setIsEditing(true);
     };
 
-    const readEmployee = (selectedEmployee) => {
-
-        let aux = selectedEmployee;
-        aux.date = moment(selectedEmployee.date).format('YYYY-MM-DD');
-        aux.employmentRelationshipId = selectedEmployee.employment_relationship;
-        aux.lastName = selectedEmployee.last_name;
-        aux.reading = true;
-
-        setReading(aux);
+    const handleReadEmpoyee = (selectedEmployeeForRead) => {
+        setEmployeeDataToRead(selectedEmployeeForRead);
         setIsReading(true);
     };
 
-    const cancelEditEmployee = () => {
-        <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
+    const goBackToAllEmployeesTable = () => {
+        document.title = "Empleados";
         setIsEditing(false);
-        window.scrollTo(0, 0);
-    };
-
-    const returnReadEmployee = () => {
-        <div style={{ display: 'none' }}>{document.title = "Empleados"}</div>
         setIsReading(false);
         window.scrollTo(0, 0);
     };
@@ -99,7 +72,7 @@ export default function EmployeesTable() {
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." /> :
 
-                employees && employees.length === 0
+                allEmployees?.length === 0
                     ?
                     <div>
                         <div className="viewTitleBtn">
@@ -132,19 +105,25 @@ export default function EmployeesTable() {
                                         }
                                     />
                                     <BodyTable
-                                        tbody={employees?.map((element, i) => {
+                                        tbody={allEmployees?.map((element, i) => {
                                             return (
                                                 <tbody key={i}>
                                                     <tr>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date).format('YYYY-MM-DD')}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date}</td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <ReadEmployeeButton employee={element} read={readEmployee} />
+                                                            <ReadEmployeeButton
+                                                                employeeData={element}
+                                                                handleReadEmpoyeeClicked={handleReadEmpoyee}
+                                                            />
                                                         </td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <EditEmployeeButton employee={element} edit={editEmployee} />
+                                                            <EditEmployeeButton
+                                                                employeeData={element}
+                                                                handleEditEmpoyeeClicked={handleEditEmpoyee}
+                                                            />
                                                         </td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                             <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} />
@@ -158,12 +137,14 @@ export default function EmployeesTable() {
                             </div>
                         </BeShowed>
                     )}
-            <BeShowed show={isEditing}>
-                <EditEmployee cancel={cancelEditEmployee} employee={editing} />
-            </BeShowed>
-            <BeShowed show={isReading}>
-                <ReadEmployee return={returnReadEmployee} employee={reading} />
-            </BeShowed>
+
+            {isEditing &&
+                <EditEmployee goBack={goBackToAllEmployeesTable} employeeData={employeeDataToEdit} />
+            }
+
+            {isReading &&
+                <ReadEmployee goBack={goBackToAllEmployeesTable} employeeData={employeeDataToRead} />
+            }
         </>
     );
 }

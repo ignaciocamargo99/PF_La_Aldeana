@@ -7,13 +7,17 @@ import EditProducts from './EditProducts/EditProducts';
 import TablePagination from './TablePagination/TablePagination';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import productData from './productData';
+import ReadProducts from './ReadProducts/ReadProducts';
 
 const PORT = require('../../../config');
 
 const ProductTable = () => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+    const [isReading, setIsReading] = useState(false);
     const [productToEdit, setProductToEdit] = useState({});
+    const [productToRead, setProductToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     const getProducts = () => {
@@ -38,28 +42,8 @@ const ProductTable = () => {
     const editProduct = async (product) => {
         try {
             const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
-
-            const aux = {
-                active: product.active,
-                description: product.description,
-                editing: true,
-                flagImageUpdate: product.flagImageUpdate,
-                flavor: product.quantity_flavor,
-                id_product: product.id_product,
-                id_product_type: product.id_product_type,
-                id_sector: product.id_sector,
-                image: product.image,
-                name: product.name,
-                price: product.price,
-                title: product.title,
-                supplies: productSupplies.map(({ id_supply, number_supply }) => {
-                    return {
-                        id_supply: id_supply,
-                        number_supply: number_supply
-                    }
-                })
-            };
-
+            let aux = productData(product, productSupplies)
+            aux.editing = true;
             setProductToEdit(aux);
             setIsEditing(true);
         }
@@ -68,9 +52,28 @@ const ProductTable = () => {
         }
     };
 
+    const readProduct = async (product) => {
+        try {
+            const { data: productSupplies } = await Axios.get(PORT() + `/api/productSupply/${product.id_product}`)
+            let aux = productData(product, productSupplies);
+            aux.reading = true;
+            setProductToRead(aux);
+            setIsReading(true);
+        }
+        catch {
+            displayError();
+        }
+    }
+
     const onClickCancelEdit = () => {
         <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
         setIsEditing(false);
+        window.scrollTo(0, 0);
+    }
+
+    const onClickCancelRead = () => {
+        <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
+        setIsReading(false);
         window.scrollTo(0, 0);
     }
 
@@ -113,7 +116,7 @@ const ProductTable = () => {
                 </div>
                 : (
                 <>
-                    <BeShowed show={!isEditing}>
+                    <BeShowed show={!isEditing && !isReading}>
 
                         <div className="viewTitleBtn">
                             <h1>Productos</h1>
@@ -123,6 +126,7 @@ const ProductTable = () => {
                             <TablePagination
                                 columnsHeaders={columnsHeaders}
                                 currentElements={products}
+                                handleRead={readProduct}
                                 handleEdit={editProduct}
                                 handleDelete={productWasSuccessfullyDeleted}
                             ></TablePagination>
@@ -130,6 +134,9 @@ const ProductTable = () => {
                     </BeShowed>
                     <BeShowed show={isEditing}>
                         <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
+                    </BeShowed>
+                    <BeShowed show={isReading}>
+                        <ReadProducts onClickCancelRead={onClickCancelRead} productToRead={productToRead} />
                     </BeShowed>
                 </>
             )}

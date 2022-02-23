@@ -15,7 +15,7 @@ const PORT = require('../../../config');
 
 export default function RegisterEmployee() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ nameEmployee: null, lastName: null, dni: null, id_charge: null, date: null, employmentRelationshipId: null, editing: false, reading: false });
+    const [data, setData] = useState({});
     const cancelRegisterEmployee = () => window.location.replace('/app/employees');
 
     const load = (childData) => {

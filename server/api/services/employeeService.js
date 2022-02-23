@@ -38,7 +38,7 @@ const mapEmployeesData = (employeesDataDB) => {
                 dni: empDB.dni,
                 name: empDB.name,
                 last_name: empDB.last_name,
-                date: empDB.date_admission,
+                date: empDB.date_admission.toISOString().split('T')[0],
                 employment_relationship: empDB.employment_relationship,
                 name_emp_relationship: empDB.name_emp_relationship,
                 charges: [{

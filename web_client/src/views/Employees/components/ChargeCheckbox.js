@@ -1,37 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ChargeCheckbox = ({ chargeId, chargeName, employeeData, updateEmployeeData }) => {
-    const [chargeChecked, setChargeChecked] = useState(false);
+const ChargeCheckbox = ({ chargeId, chargeName, checkedCheckbox = false, employeeData, updateEmployeeData }) => {
+    const [chargeChecked, setChargeChecked] = useState(checkedCheckbox);
 
     const handleChargeClicked = (e) => {
         setChargeChecked(e.target.checked);
     };
 
     useEffect(() => {
-        if (employeeData.editing) {
-            checkIfEmployeeHasThisCharge(employeeData);
-        }
-    });
-
-    useEffect(() => {
-        manageChargeForEmployee();
-    });
-
-    const checkIfEmployeeHasThisCharge = (empData) => {
-        const employeeHasThisCharge = empData.charges.find((c) => {
-            return +c.chargeId === +chargeId
-        });
-
-        if (employeeHasThisCharge) {
-            markCheckboxAsChecked();
-        };
-    };
-
-    const markCheckboxAsChecked = () => {
-        setChargeChecked(true);
-    }
-
-    const manageChargeForEmployee = () => {
         if (chargeChecked) {
             addChargeToEmployee(employeeData);
         }
@@ -40,24 +16,28 @@ const ChargeCheckbox = ({ chargeId, chargeName, employeeData, updateEmployeeData
         }
 
         updateEmployeeData(employeeData);
-    };
+
+    }, [chargeChecked]);
 
     const addChargeToEmployee = (empData) => {
-        const chargeAlreadyExistent = empData.chargesIds?.find(c => +c === +chargeId);
+        const chargeAlreadyExistent = empData.charges?.find(c => +c.chargeId === +chargeId);
 
         if (!chargeAlreadyExistent) {
-            if (!empData.chargesIds) {
-                empData.chargesIds = [];
+            if (!empData.charges) {
+                empData.charges = [];
             };
 
-            empData.chargesIds.push(+chargeId);
+            empData.charges.push({
+                chargeId: +chargeId,
+                chargeName: chargeName
+            });
         };
     };
 
     const removeChargeToEmployee = (empData) => {
-        if (empData?.chargesIds) {
-            empData.chargesIds = empData.chargesIds.filter((c) => {
-                return +c !== +chargeId;
+        if (empData?.charges) {
+            empData.charges = empData.charges.filter((c) => {
+                return +c.chargeId !== +chargeId;
             });
         };
     };
@@ -65,9 +45,9 @@ const ChargeCheckbox = ({ chargeId, chargeName, employeeData, updateEmployeeData
     return (
         <>
             <input
+                checked={chargeChecked}
                 className="form-check-input"
                 id={chargeId}
-                checked={chargeChecked}
                 onChange={handleChargeClicked}
                 type="checkbox"
             >
