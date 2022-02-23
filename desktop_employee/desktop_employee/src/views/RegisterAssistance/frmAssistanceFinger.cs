@@ -103,17 +103,50 @@ namespace desktop_employee.src.views.RegisterAssistance
                             borrarRegistrosViejos();
                             if (empleadoRepetido(Convert.ToInt32(datosHuellas[i].dniEmployee)))
                             {
-                                errorHuella("La huella fue ingresada en los últimos 5 minutos.");
+                                var urlGet = config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
+                                var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
+                                requestGet.Method = "GET";
+                                requestGet.ContentType = "application/json";
+                                requestGet.Accept = "application/json";
+                                try
+                                {
+                                    using (WebResponse response = requestGet.GetResponse())
+                                    {
+                                        using (Stream strReader = response.GetResponseStream())
+                                        {
+                                            if (strReader == null) return;
+                                            using (StreamReader objReader = new StreamReader(strReader))
+                                            {
+                                                string responseBody = objReader.ReadToEnd();
+                                                dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
+
+                                                DateTime horaEntrada = datosAsistencia[0].date_entry;
+                                                horaEntrada = horaEntrada.AddHours(-3);
+                                                SetHoraEntrada(Convert.ToString(horaEntrada));
+
+                                                if (datosAsistencia[0].date_egress != null)
+                                                {
+                                                    DateTime horaSalida = datosAsistencia[0].date_egress;
+                                                    horaSalida = horaSalida.AddHours(-3);
+                                                    SetHoraSalida(Convert.ToString(horaSalida));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (WebException ex)
+                                {
+                                    // Handle error
+                                }
+                                mostrarNombre(Convert.ToString(datosHuellas[i].name), Convert.ToString(datosHuellas[i].last_name));
+                                errorHuella("La huella fue ingresada en los últimos 5 minutos.");                               
                                 esRepetido = true;
-                                break;
+                                break;                             
                             }
                             else
                             {
                                 seVerifico = true;
-                                string nameEmployee = datosHuellas[i].name + " " + datosHuellas[i].last_name;
-                                MakeReport("La huella fue verificada y es de " + nameEmployee);
-                                SetEmployee(nameEmployee);
-
+                                mostrarNombre(Convert.ToString(datosHuellas[i].name), Convert.ToString(datosHuellas[i].last_name));
                                 DateTime timeInOut = DateTime.Now;
                                 string timeInOutFormated = convertDateTimeToString(timeInOut);
 
@@ -243,8 +276,19 @@ namespace desktop_employee.src.views.RegisterAssistance
             }
             SetInfo("LISTO PARA COLOCAR DEDO");
             MakeReport("Ingrese la siguiente huella.");
+            CleanPicture();
+            SetHoraEntrada("--/--/---- --:--:--");
+            SetHoraSalida("--/--/---- --:--:--");
+            SetEmployee("");
             OcultarRojo();
             MostrarAzul();
+        }
+
+        private void mostrarNombre(string name, string last_name)
+        {
+            string nameEmployee = name + " " + last_name;
+            MakeReport("La huella fue verificada y es de " + nameEmployee);
+            SetEmployee(nameEmployee);
         }
     }
 }
