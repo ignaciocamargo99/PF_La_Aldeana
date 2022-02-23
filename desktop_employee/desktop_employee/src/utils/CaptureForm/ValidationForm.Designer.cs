@@ -182,6 +182,7 @@ namespace desktop_employee.src.views.Employees
             this.Name = "ValidationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Validar Huella";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ValidationForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CaptureForm_FormClosed);
             this.Load += new System.EventHandler(this.CaptureForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();

@@ -262,6 +262,7 @@ namespace desktop_employee
             this.Name = "VerificationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Capture Enrollment";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VerificationForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CaptureForm_FormClosed);
             this.Load += new System.EventHandler(this.CaptureForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();

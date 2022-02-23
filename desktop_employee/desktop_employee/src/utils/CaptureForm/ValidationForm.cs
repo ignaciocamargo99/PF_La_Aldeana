@@ -15,6 +15,7 @@ namespace desktop_employee.src.views.Employees
 
     public partial class ValidationForm : Form, DPFP.Capture.EventHandler
 	{
+		bool activo = true;
 		public ValidationForm()
 		{
 			InitializeComponent();
@@ -189,9 +190,12 @@ namespace desktop_employee.src.views.Employees
 
 		protected void OcultarRojo()
 		{
-			this.Invoke(new Function(delegate () {
-				iconError.Visible = false;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					iconError.Visible = false;
+				}));
+			}
 		}
 
 		protected void DesactivarAceptar()
@@ -205,18 +209,24 @@ namespace desktop_employee.src.views.Employees
 
 		protected void ActivarAceptar()
 		{
-			this.Invoke(new Function(delegate () {
-				btnAceptar.Enabled = true;
-				btnAceptar.BackgroundColor = ColorTranslator.FromHtml("#383C77");
-				btnAceptar.TextColor = Color.White;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					btnAceptar.Enabled = true;
+					btnAceptar.BackgroundColor = ColorTranslator.FromHtml("#383C77");
+					btnAceptar.TextColor = Color.White;
+				}));
+			}
 		}
 
 		protected void SetInfo(string mensaje)
 		{
-			this.Invoke(new Function(delegate () {
-				lblInfo.Text = mensaje;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					lblInfo.Text = mensaje;
+				}));
+			}
 		}
 
 		private DPFP.Capture.Capture Capturer;
@@ -226,5 +236,9 @@ namespace desktop_employee.src.views.Employees
 			this.Close();
 		}
 
+        private void ValidationForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+			activo = false;
+        }
     }
 }

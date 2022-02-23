@@ -12,6 +12,7 @@ namespace desktop_employee
 
     public partial class VerificationForm : Form, DPFP.Capture.EventHandler
 	{
+		bool activo = true;
 		public VerificationForm()
 		{
 			InitializeComponent();
@@ -151,44 +152,62 @@ namespace desktop_employee
 
 		protected void MakeReport(string message)
 		{
-			this.Invoke(new Function(delegate() {
-				StatusText.AppendText(message + "\r\n");
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					StatusText.AppendText(message + "\r\n");
+				}));
+			}
 		}
 
 		protected void SetEmployee(string nameSurname)
         {
-			this.Invoke(new Function(delegate () {
-				lblEmployee.Text = nameSurname;
-			}));
+			if (activo)
+			{
+				this.Invoke(new Function(delegate () {
+					lblEmployee.Text = nameSurname;
+				}));
+			}
 		}
 
 		protected void SetHoraEntrada(string horaEntrada)
 		{
-			this.Invoke(new Function(delegate () {
-				lblHoraEntrada.Text = horaEntrada;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					lblHoraEntrada.Text = horaEntrada;
+				}));
+			}
 		}
 
 		protected void SetHoraSalida(string horaSalida)
 		{
-			this.Invoke(new Function(delegate () {
-				lblHoraSalida.Text = horaSalida;
-			}));
+			if (activo)
+			{
+				this.Invoke(new Function(delegate () {
+					lblHoraSalida.Text = horaSalida;
+				}));
+			}
 		}
 
 		protected void SetInfo(string info)
 		{
-			this.Invoke(new Function(delegate () {
-				lblInfo.Text = info;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					lblInfo.Text = info;
+				}));
+			}
 		}
 
 		protected void MostrarAzul()
 		{
-			this.Invoke(new Function(delegate () {
-				iconEsperando.Visible = true;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					iconEsperando.Visible = true;
+				}));
+			}
 		}
 
 		protected void OcultarAzul()
@@ -207,9 +226,12 @@ namespace desktop_employee
 
 		protected void OcultarVerde()
 		{
-			this.Invoke(new Function(delegate () {
-				iconAceptado.Visible = false;
-			}));
+			if (activo)
+			{
+				this.Invoke(new Function(delegate () {
+					iconAceptado.Visible = false;
+				}));
+			}
 		}
 
 		protected void MostrarRojo()
@@ -221,9 +243,12 @@ namespace desktop_employee
 
 		protected void OcultarRojo()
 		{
-			this.Invoke(new Function(delegate () {
-				iconError.Visible = false;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					iconError.Visible = false;
+				}));
+			}
 		}
 
 		private void DrawPicture(Bitmap bitmap)
@@ -235,12 +260,19 @@ namespace desktop_employee
 
 		protected void CleanPicture()
 		{
-			this.Invoke(new Function(delegate () {
-				Picture.Image = null;
-			}));
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					Picture.Image = null;
+				}));
+			}
 		}
 
 		private DPFP.Capture.Capture Capturer;
 
-	}
+        private void VerificationForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+			activo = false;
+		}
+    }
 }
