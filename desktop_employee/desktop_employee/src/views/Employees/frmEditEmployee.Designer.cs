@@ -29,20 +29,20 @@ namespace desktop_employee.src.views.Employees
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtDni = new System.Windows.Forms.TextBox();
             this.lblDni = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblApellido = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
-            this.btnAceptar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.dgvFingerEmployee = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnAceptar = new desktop_employee.src.utils.Botones.CustomButton();
+            this.btnComprobarII = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarPI = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarID = new FontAwesome.Sharp.IconButton();
+            this.btnComprobarPD = new FontAwesome.Sharp.IconButton();
             this.btnEliminarII = new FontAwesome.Sharp.IconButton();
             this.btnEliminarPI = new FontAwesome.Sharp.IconButton();
             this.btnEliminarID = new FontAwesome.Sharp.IconButton();
@@ -57,7 +57,6 @@ namespace desktop_employee.src.views.Employees
             this.lblPD = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).BeginInit();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +64,7 @@ namespace desktop_employee.src.views.Employees
             // 
             this.txtDni.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDni.BackColor = System.Drawing.SystemColors.Control;
             this.txtDni.Enabled = false;
             this.txtDni.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtDni.Location = new System.Drawing.Point(188, 30);
@@ -107,6 +107,7 @@ namespace desktop_employee.src.views.Employees
             // 
             this.txtNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNombre.BackColor = System.Drawing.SystemColors.Control;
             this.txtNombre.Enabled = false;
             this.txtNombre.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtNombre.Location = new System.Drawing.Point(188, 74);
@@ -127,31 +128,6 @@ namespace desktop_employee.src.views.Employees
             this.txtApellido.Size = new System.Drawing.Size(316, 32);
             this.txtApellido.TabIndex = 5;
             // 
-            // btnAceptar
-            // 
-            this.btnAceptar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAceptar.Enabled = false;
-            this.btnAceptar.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAceptar.Location = new System.Drawing.Point(593, 399);
-            this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(100, 40);
-            this.btnAceptar.TabIndex = 7;
-            this.btnAceptar.Text = "Aceptar";
-            this.btnAceptar.UseVisualStyleBackColor = true;
-            this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancelar.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCancelar.Location = new System.Drawing.Point(719, 399);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(100, 40);
-            this.btnCancelar.TabIndex = 8;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label1);
@@ -171,37 +147,14 @@ namespace desktop_employee.src.views.Employees
             this.label1.TabIndex = 12;
             this.label1.Text = "DATOS DEL EMPLEADO";
             // 
-            // dgvFingerEmployee
-            // 
-            this.dgvFingerEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvFingerEmployee.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvFingerEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvFingerEmployee.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvFingerEmployee.Location = new System.Drawing.Point(593, 161);
-            this.dgvFingerEmployee.Name = "dgvFingerEmployee";
-            this.dgvFingerEmployee.RowTemplate.Height = 25;
-            this.dgvFingerEmployee.Size = new System.Drawing.Size(243, 185);
-            this.dgvFingerEmployee.TabIndex = 12;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnAceptar);
+            this.panel2.Controls.Add(this.btnComprobarII);
+            this.panel2.Controls.Add(this.btnComprobarPI);
+            this.panel2.Controls.Add(this.btnComprobarID);
+            this.panel2.Controls.Add(this.btnComprobarPD);
             this.panel2.Controls.Add(this.btnEliminarII);
-            this.panel2.Controls.Add(this.dgvFingerEmployee);
             this.panel2.Controls.Add(this.btnEliminarPI);
             this.panel2.Controls.Add(this.btnEliminarID);
             this.panel2.Controls.Add(this.btnEliminarPD);
@@ -214,8 +167,6 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Controls.Add(this.lblPI);
             this.panel2.Controls.Add(this.lblPD);
             this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.btnCancelar);
-            this.panel2.Controls.Add(this.btnAceptar);
             this.panel2.Controls.Add(this.txtApellido);
             this.panel2.Controls.Add(this.txtNombre);
             this.panel2.Controls.Add(this.lblApellido);
@@ -227,6 +178,87 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(875, 451);
             this.panel2.TabIndex = 12;
+            // 
+            // btnAceptar
+            // 
+            this.btnAceptar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAceptar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.btnAceptar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.btnAceptar.BorderColor = System.Drawing.Color.Black;
+            this.btnAceptar.BorderRadius = 25;
+            this.btnAceptar.BorderSize = 1;
+            this.btnAceptar.FlatAppearance.BorderSize = 0;
+            this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAceptar.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAceptar.ForeColor = System.Drawing.Color.White;
+            this.btnAceptar.Location = new System.Drawing.Point(656, 344);
+            this.btnAceptar.Name = "btnAceptar";
+            this.btnAceptar.Size = new System.Drawing.Size(139, 48);
+            this.btnAceptar.TabIndex = 30;
+            this.btnAceptar.Text = "Aceptar";
+            this.btnAceptar.TextColor = System.Drawing.Color.White;
+            this.btnAceptar.UseVisualStyleBackColor = false;
+            this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
+            // 
+            // btnComprobarII
+            // 
+            this.btnComprobarII.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarII.FlatAppearance.BorderSize = 0;
+            this.btnComprobarII.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarII.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarII.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarII.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarII.Location = new System.Drawing.Point(420, 344);
+            this.btnComprobarII.Name = "btnComprobarII";
+            this.btnComprobarII.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarII.TabIndex = 29;
+            this.btnComprobarII.UseVisualStyleBackColor = true;
+            this.btnComprobarII.Click += new System.EventHandler(this.btnComprobarII_Click);
+            // 
+            // btnComprobarPI
+            // 
+            this.btnComprobarPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarPI.FlatAppearance.BorderSize = 0;
+            this.btnComprobarPI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarPI.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarPI.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarPI.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarPI.Location = new System.Drawing.Point(420, 296);
+            this.btnComprobarPI.Name = "btnComprobarPI";
+            this.btnComprobarPI.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarPI.TabIndex = 28;
+            this.btnComprobarPI.UseVisualStyleBackColor = true;
+            this.btnComprobarPI.Click += new System.EventHandler(this.btnComprobarPI_Click);
+            // 
+            // btnComprobarID
+            // 
+            this.btnComprobarID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarID.FlatAppearance.BorderSize = 0;
+            this.btnComprobarID.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarID.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarID.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarID.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarID.Location = new System.Drawing.Point(420, 248);
+            this.btnComprobarID.Name = "btnComprobarID";
+            this.btnComprobarID.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarID.TabIndex = 27;
+            this.btnComprobarID.UseVisualStyleBackColor = true;
+            this.btnComprobarID.Click += new System.EventHandler(this.btnComprobarID_Click);
+            // 
+            // btnComprobarPD
+            // 
+            this.btnComprobarPD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnComprobarPD.FlatAppearance.BorderSize = 0;
+            this.btnComprobarPD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComprobarPD.IconChar = FontAwesome.Sharp.IconChar.Question;
+            this.btnComprobarPD.IconColor = System.Drawing.Color.Blue;
+            this.btnComprobarPD.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnComprobarPD.Location = new System.Drawing.Point(420, 192);
+            this.btnComprobarPD.Name = "btnComprobarPD";
+            this.btnComprobarPD.Size = new System.Drawing.Size(45, 50);
+            this.btnComprobarPD.TabIndex = 26;
+            this.btnComprobarPD.UseVisualStyleBackColor = true;
+            this.btnComprobarPD.Click += new System.EventHandler(this.btnComprobarPD_Click);
             // 
             // btnEliminarII
             // 
@@ -414,10 +446,9 @@ namespace desktop_employee.src.views.Employees
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmEditEmployee";
             this.Text = "Dedo Pulgar Derecho";
-            this.Load += new System.EventHandler(this.frmEditEmployee_LoadAsync);
+            this.Load += new System.EventHandler(this.frmEditEmployee_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFingerEmployee)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -432,13 +463,10 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.Label lblApellido;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtApellido;
-        private System.Windows.Forms.Button btnAceptar;
-        private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView dgvFingerEmployee;
         private System.Windows.Forms.Label lblII;
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblPI;
@@ -451,5 +479,10 @@ namespace desktop_employee.src.views.Employees
         private FontAwesome.Sharp.IconButton btnEliminarPI;
         private FontAwesome.Sharp.IconButton btnEliminarID;
         private FontAwesome.Sharp.IconButton btnEliminarPD;
+        private FontAwesome.Sharp.IconButton btnComprobarII;
+        private FontAwesome.Sharp.IconButton btnComprobarPI;
+        private FontAwesome.Sharp.IconButton btnComprobarID;
+        private FontAwesome.Sharp.IconButton btnComprobarPD;
+        private utils.Botones.CustomButton btnAceptar;
     }
 }

@@ -15,6 +15,7 @@ namespace desktop_employee
 
     public partial class CaptureForm : Form, DPFP.Capture.EventHandler
 	{
+		bool huellaLista = false;
 		public CaptureForm()
 		{
 			InitializeComponent();
@@ -50,11 +51,11 @@ namespace desktop_employee
                 try
                 {
                     Capturer.StartCapture();
-                    SetPrompt("Escanea tu huella usando el lector");
+                    SetPrompt("Escanea tu huella usando el lector.");
                 }
                 catch
                 {
-                    SetPrompt("No se puede iniciar la captura");
+                    SetPrompt("No se puede iniciar la captura. REINICIE LA APLICACIÓN");
                 }
             }
 		}
@@ -110,11 +111,13 @@ namespace desktop_employee
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
 			MakeReport("El Lector de huellas ha sido conectado");
+			SetPrompt("Escanea tu huella usando el lector.");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
 		{
 			MakeReport("El Lector de huellas ha sido desconectado");
+			SetPrompt("REVISE si el lector esta conectado.");
 		}
 
 		public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
@@ -173,11 +176,27 @@ namespace desktop_employee
 			}));
 		}
 
+		protected void ValidarBotonAceptar()
+		{
+			this.Invoke(new Function(delegate () {
+				btnAceptar.BackgroundColor = ColorTranslator.FromHtml("#383C77");
+                btnAceptar.TextColor = Color.White;
+				huellaLista = true;
+			}));
+		}
+
 		private DPFP.Capture.Capture Capturer;
 
-        private void CloseButton_Click(object sender, EventArgs e)
+        private void btnAceptar_Click(object sender, EventArgs e)
         {
-			this.Close();
-        }
+			if (huellaLista)
+            {
+				this.Close();
+			}
+			else
+            {
+				MessageBox.Show("La huella no pudo ser capturada o faltan muestras...");
+            }
+		}
     }
 }

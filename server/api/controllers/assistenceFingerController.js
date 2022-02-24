@@ -1,9 +1,23 @@
-const { registerAssitance } = require('../services/assistenceFingerService');
+const { registerAssitance, getAssitance } = require('../services/assistenceFingerService');
+
+// HTTP: GET
+async function getAssistance(req, res) {
+    try {
+        const result = await getAssitance(req.params.dni);
+        res.send(result);
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
 // HTTP: POST/PUT
 async function newAssistance(req, res) {
     try {
-        await registerAssitance(req.body);
+        await registerAssitance(req.params.dni, req.body);
         res.json({
             Ok: true,
             Message: 'Asistencia registrada exitosamente.'
@@ -17,4 +31,4 @@ async function newAssistance(req, res) {
     }
 }
 
-module.exports = { newAssistance }
+module.exports = { newAssistance, getAssistance }

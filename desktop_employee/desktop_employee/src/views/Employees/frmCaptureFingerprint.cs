@@ -38,7 +38,10 @@ namespace desktop_employee.src.views.Employees
             }
             else
             {
-                SetStatus(String.Format("Huella Capturada correctamente"));
+                SetStatus(String.Format("Huella Capturada correctamente. Ya puede cerrar la ventana."));
+
+                //cambiar color boton y activarlo
+                ValidarBotonAceptar();
             }
             
         }
@@ -53,7 +56,7 @@ namespace desktop_employee.src.views.Employees
             // Check quality of the sample and add to enroller if it's good
             if (features != null) try
                 {
-                    MakeReport("The fingerprint feature set was created1.");
+                    MakeReport("La muestra de la huella se creo correctamente.");
                     Enroller.AddFeatures(features);     // Add feature set to template.
                 }
                 finally

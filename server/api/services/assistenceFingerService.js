@@ -1,8 +1,8 @@
-const { checkInOutDB } = require('../db/assistenceFingerDB');
+const { checkInOutDB , assistanceDB} = require('../db/assistenceFingerDB');
 
-const registerAssitance = async (check) => {
+const getAssitance = async (dni) => {
     try {
-        let res = await checkInOutDB(check);
+        let res = await assistanceDB(dni);
         return res;
     }
     catch(error) {
@@ -10,4 +10,14 @@ const registerAssitance = async (check) => {
     };
 };
 
-module.exports = { registerAssitance };
+const registerAssitance = async (dni, datetime) => {
+    try {
+        let res = await checkInOutDB(dni, datetime);
+        return res;
+    }
+    catch(error) {
+        throw Error(error)
+    };
+};
+
+module.exports = { registerAssitance, getAssitance };

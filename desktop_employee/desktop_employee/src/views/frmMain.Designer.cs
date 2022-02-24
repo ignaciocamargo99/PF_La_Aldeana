@@ -40,13 +40,11 @@ namespace desktop_employee
             this.lblTitulo = new System.Windows.Forms.Label();
             this.ibtnMinimizar = new FontAwesome.Sharp.IconButton();
             this.ibtnClose = new FontAwesome.Sharp.IconButton();
-            this.dgvConvert = new System.Windows.Forms.DataGridView();
             this.pnlDesktop = new System.Windows.Forms.Panel();
             this.pnlMenu.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).BeginInit();
             this.pnlTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConvert)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlMenu
@@ -149,7 +147,7 @@ namespace desktop_employee
             this.ibtnMenu.IconChar = FontAwesome.Sharp.IconChar.Bars;
             this.ibtnMenu.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.ibtnMenu.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.ibtnMenu.Location = new System.Drawing.Point(171, 0);
+            this.ibtnMenu.Location = new System.Drawing.Point(171, -1);
             this.ibtnMenu.Name = "ibtnMenu";
             this.ibtnMenu.Size = new System.Drawing.Size(39, 86);
             this.ibtnMenu.TabIndex = 1;
@@ -172,7 +170,6 @@ namespace desktop_employee
             this.pnlTitle.Controls.Add(this.lblTitulo);
             this.pnlTitle.Controls.Add(this.ibtnMinimizar);
             this.pnlTitle.Controls.Add(this.ibtnClose);
-            this.pnlTitle.Controls.Add(this.dgvConvert);
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitle.Location = new System.Drawing.Point(216, 0);
             this.pnlTitle.Name = "pnlTitle";
@@ -185,9 +182,8 @@ namespace desktop_employee
             this.lblTitulo.Font = new System.Drawing.Font("Verdana", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblTitulo.Location = new System.Drawing.Point(36, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(180, 46);
+            this.lblTitulo.Size = new System.Drawing.Size(0, 46);
             this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "TITULO";
             // 
             // ibtnMinimizar
             // 
@@ -219,16 +215,6 @@ namespace desktop_employee
             this.ibtnClose.UseVisualStyleBackColor = true;
             this.ibtnClose.Click += new System.EventHandler(this.ibtnClose_Click);
             // 
-            // dgvConvert
-            // 
-            this.dgvConvert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvConvert.Location = new System.Drawing.Point(126, 36);
-            this.dgvConvert.Name = "dgvConvert";
-            this.dgvConvert.RowTemplate.Height = 25;
-            this.dgvConvert.Size = new System.Drawing.Size(31, 30);
-            this.dgvConvert.TabIndex = 0;
-            this.dgvConvert.Visible = false;
-            // 
             // pnlDesktop
             // 
             this.pnlDesktop.BackColor = System.Drawing.Color.White;
@@ -249,12 +235,12 @@ namespace desktop_employee
             this.Name = "frmMain";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.pnlMenu.ResumeLayout(false);
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).EndInit();
             this.pnlTitle.ResumeLayout(false);
             this.pnlTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConvert)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -272,7 +258,6 @@ namespace desktop_employee
         private FontAwesome.Sharp.IconButton ibtnMinimizar;
         private FontAwesome.Sharp.IconButton ibtnClose;
         private FontAwesome.Sharp.IconButton ibtnAsistenciaDNI;
-        private System.Windows.Forms.DataGridView dgvConvert;
     }
 }
 

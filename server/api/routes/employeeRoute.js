@@ -8,8 +8,6 @@ router.get('/employees/:dni?', employeeController.getEmployee);
 
 router.get('/employeesDesktop', employeeController.getEmployeeForDesktop);
 
-router.get('/employees/:dni', employeeController.getEmployeeByDni);
-
 router.post('/employees', employeeController.newEmployee);
 
 router.put('/employees/:dni', employeeController.updateEmployee);

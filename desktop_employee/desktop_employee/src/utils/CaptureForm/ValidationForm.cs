@@ -6,36 +6,41 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace desktop_employee
+namespace desktop_employee.src.views.Employees
 {
-    delegate void Function1();
+    /* NOTE: This form is a base for the EnrollmentForm and the VerificationForm,
+		All changes in the CaptureForm will be reflected in all its derived forms.
+	*/
+    delegate void Function();
 
-    public partial class VerificationForm : Form, DPFP.Capture.EventHandler
+    public partial class ValidationForm : Form, DPFP.Capture.EventHandler
 	{
 		bool activo = true;
-		public VerificationForm()
+		public ValidationForm()
 		{
 			InitializeComponent();
 		}
 
 		protected virtual void Init()
 		{
-			try
+            try
             {
-                Capturer = new DPFP.Capture.Capture();		
+                Capturer = new DPFP.Capture.Capture();				// Create a capture operation.
+
                 if ( null != Capturer )
-                    Capturer.EventHandler = this;			
+                    Capturer.EventHandler = this;					// Subscribe for capturing events.
                 else
-                    SetPrompt("No se pudo iniciar la operación de captura. REINICIE LA APLICACIÓN.");
+                    SetPrompt("No se pudo iniciar la operación de captura");
             }
             catch
             {               
-                MessageBox.Show("No se pudo iniciar la operación de captura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);   
+                MessageBox.Show("No se pudo iniciar la operación de captura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            
             }
 		}
 
-		protected virtual void ProcessAsync(DPFP.Sample Sample)
+		protected virtual void Process(DPFP.Sample Sample)
 		{
+			// Draw fingerprint sample image.
 			DrawPicture(ConvertSampleToBitmap(Sample));
 		}
 
@@ -46,13 +51,11 @@ namespace desktop_employee
                 try
                 {
                     Capturer.StartCapture();
-					SetInfo("LISTO PARA COLOCAR DEDO");
-                    SetPrompt("Coloca el dedo sobre el lector para marcar la asistencia.");
-					MostrarAzul();
+                    SetPrompt("Escanea tu huella usando el lector.");
                 }
                 catch
                 {
-                    SetPrompt("No se puede registrar la asistencia. Revise si esta conectado el lector.");
+                    SetPrompt("No se puede iniciar la captura. REINICIE LA APLICACIÓN");
                 }
             }
 		}
@@ -67,7 +70,7 @@ namespace desktop_employee
                 }
                 catch
                 {
-                    SetPrompt("No se puede terminar la captura. REINICIE LA APLICACIÓN.");
+                    SetPrompt("No se puede terminar la captura");
                 }
             }
 		}
@@ -90,29 +93,31 @@ namespace desktop_employee
 
 		public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
 		{
-			SetInfo("LA HUELLA FUE CAPTURADA");
-			ProcessAsync(Sample);
+			MakeReport("La muestra ha sido capturada");
+			SetPrompt("Escanea tu misma huella otra vez");
+			Process(Sample);
 		}
 
 		public void OnFingerGone(object Capture, string ReaderSerialNumber)
 		{
+			MakeReport("La huella fue removida del lector");
 		}
 
 		public void OnFingerTouch(object Capture, string ReaderSerialNumber)
 		{
+			MakeReport("El lector fue tocado");
 		}
 
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
-			SetInfo("LISTO PARA COLOCAR DEDO");
+			MakeReport("El Lector de huellas ha sido conectado");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
 		{
-			SetInfo("EL LECTOR FUE DESCONECTADO");
 			MakeReport("El Lector de huellas ha sido desconectado");
 		}
-		
+
 		public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
 		{
 			if (CaptureFeedback == DPFP.Capture.CaptureFeedback.Good)
@@ -120,7 +125,6 @@ namespace desktop_employee
 			else
 				MakeReport("La calidad de la muestra es MALA");
 		}
-		
 	#endregion
 
 		protected Bitmap ConvertSampleToBitmap(DPFP.Sample Sample)
@@ -146,74 +150,20 @@ namespace desktop_employee
 		protected void SetPrompt(string prompt)
 		{
 			this.Invoke(new Function(delegate() {
-				lblPromt.Text = prompt;
+				Prompt.Text = prompt;
+			}));
+		}
+		protected void MakeReport(string message)
+		{
+			this.Invoke(new Function(delegate() {
+				StatusText.AppendText(message + "\r\n");
 			}));
 		}
 
-		protected void MakeReport(string message)
+		private void DrawPicture(Bitmap bitmap)
 		{
-			if (activo)
-            {
-				this.Invoke(new Function(delegate () {
-					StatusText.AppendText(message + "\r\n");
-				}));
-			}
-		}
-
-		protected void SetEmployee(string nameSurname)
-        {
-			if (activo)
-			{
-				this.Invoke(new Function(delegate () {
-					lblEmployee.Text = nameSurname;
-				}));
-			}
-		}
-
-		protected void SetHoraEntrada(string horaEntrada)
-		{
-			if (activo)
-            {
-				this.Invoke(new Function(delegate () {
-					lblHoraEntrada.Text = horaEntrada;
-				}));
-			}
-		}
-
-		protected void SetHoraSalida(string horaSalida)
-		{
-			if (activo)
-			{
-				this.Invoke(new Function(delegate () {
-					lblHoraSalida.Text = horaSalida;
-				}));
-			}
-		}
-
-		protected void SetInfo(string info)
-		{
-			if (activo)
-            {
-				this.Invoke(new Function(delegate () {
-					lblInfo.Text = info;
-				}));
-			}
-		}
-
-		protected void MostrarAzul()
-		{
-			if (activo)
-            {
-				this.Invoke(new Function(delegate () {
-					iconEsperando.Visible = true;
-				}));
-			}
-		}
-
-		protected void OcultarAzul()
-		{
-			this.Invoke(new Function(delegate () {
-				iconEsperando.Visible = false;
+			this.Invoke(new Function(delegate() {
+				Picture.Image = new Bitmap(bitmap, Picture.Size);	// fit the image into the picture box
 			}));
 		}
 
@@ -226,12 +176,9 @@ namespace desktop_employee
 
 		protected void OcultarVerde()
 		{
-			if (activo)
-			{
-				this.Invoke(new Function(delegate () {
-					iconAceptado.Visible = false;
-				}));
-			}
+			this.Invoke(new Function(delegate () {
+				iconAceptado.Visible = false;
+			}));
 		}
 
 		protected void MostrarRojo()
@@ -251,28 +198,47 @@ namespace desktop_employee
 			}
 		}
 
-		private void DrawPicture(Bitmap bitmap)
+		protected void DesactivarAceptar()
 		{
-			this.Invoke(new Function(delegate() {
-				Picture.Image = new Bitmap(bitmap, Picture.Size);
+			this.Invoke(new Function(delegate () {
+				btnAceptar.Enabled = false;
+				btnAceptar.BackgroundColor = Color.White;
+				btnAceptar.TextColor = Color.Black;
 			}));
 		}
 
-		protected void CleanPicture()
+		protected void ActivarAceptar()
 		{
 			if (activo)
             {
 				this.Invoke(new Function(delegate () {
-					Picture.Image = null;
+					btnAceptar.Enabled = true;
+					btnAceptar.BackgroundColor = ColorTranslator.FromHtml("#383C77");
+					btnAceptar.TextColor = Color.White;
+				}));
+			}
+		}
+
+		protected void SetInfo(string mensaje)
+		{
+			if (activo)
+            {
+				this.Invoke(new Function(delegate () {
+					lblInfo.Text = mensaje;
 				}));
 			}
 		}
 
 		private DPFP.Capture.Capture Capturer;
 
-        private void VerificationForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void btnAceptar_Click(object sender, EventArgs e)
+        {
+			this.Close();
+		}
+
+        private void ValidationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 			activo = false;
-		}
+        }
     }
 }

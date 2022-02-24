@@ -19,7 +19,7 @@ const fingerPrintsGetDB = () => {
 }; 
 
 const fingerPrintsByDniGetDB = (dniEmployee) => {
-    const sqlSelect = `SELECT dniEmployee AS DNI, finger AS DEDO
+    const sqlSelect = `SELECT dniEmployee, finger, finger_print
                     FROM FINGER_PRINTS WHERE dniEmployee = ${dniEmployee}`;
 
     return new Promise((resolve, reject) => {
@@ -54,14 +54,13 @@ const fingerPrintCreateDB = (newFingerPrint) => {
 };
 
 const fingerPrintDeleteDB = (fingerPrint) => {
-    let {dni, finger} = fingerPrint
+    let {dniEmployee, finger} = fingerPrint
     const sqlUpdate = 'DELETE FROM FINGER_PRINTS WHERE finger = ? AND dniEmployee = ?';
-
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlUpdate, [finger, dni], (error, result) => {
+            db.query(sqlUpdate, [finger, dniEmployee], (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
             });

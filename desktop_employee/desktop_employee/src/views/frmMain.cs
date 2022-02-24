@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using System.Runtime.InteropServices;
 using desktop_employee.src.views.Employees;
 using desktop_employee.src.views.RegisterAssistance;
 using desktop_employee.src.entities;
@@ -18,7 +17,6 @@ namespace desktop_employee
     {
         //se define el ancho del borde del form
         private int borderSize = 2;
-        public DataTable fingerPrintXEmployeesTable = new DataTable();
         public frmMain()
         {
             InitializeComponent();
@@ -27,21 +25,18 @@ namespace desktop_employee
             this.BackColor = Color.FromArgb(166, 222, 249);
         }
 
-        private async void frmMain_Load(object sender, EventArgs e)
+        private void frmMain_Load(object sender, EventArgs e)
         {
             //inicia la aplicación maximizada según el tamaño del monitor
             this.Location = Screen.PrimaryScreen.WorkingArea.Location;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
+
             //Inicia el menú contraido
             ContraerMenu();
 
             //Inicia el formulario de asistencia
-
-            //ibtnAsistencia_Click(null, e);
-            //ibtnEmpleados_Click(null, e);
-
-            GetFingerPrintsXEmployeesAsync();
-
+            ibtnAsistencia_Click(null, e);
+            ibtnAsistencia.Enabled = false;
         }
         protected override void WndProc(ref Message m)
         {
@@ -99,7 +94,20 @@ namespace desktop_employee
 
         private void ibtnEmpleados_Click(object sender, EventArgs e)
         {
+            ibtnEmpleados.Enabled = false;
+            ibtnAsistencia.Enabled = true;
+            ibtnAsistenciaDNI.Enabled = true;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Dni" || tag == "Asis_Hue")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             frmEmployees employees = new();
+            employees.Tag = "Empl_Main";
             lblTitulo.Text = "EMPLEADOS";
             employees.PnlPadre = pnlDesktop;
             OpenForm(employees);
@@ -107,19 +115,41 @@ namespace desktop_employee
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
         {
+            ibtnEmpleados.Enabled = true;
+            ibtnAsistencia.Enabled = false;
+            ibtnAsistenciaDNI.Enabled = true;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Dni" || tag == "Empl_Main" || tag == "Empl_Sub")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             frmAssistanceFinger assistanceFinger = new();
-            assistanceFinger.FingerXEmployees = fingerPrintXEmployeesTable;
-            
-
+            assistanceFinger.Tag = "Asis_Hue";
             lblTitulo.Text = "ASISTENCIA con HUELLA";
             OpenForm(assistanceFinger);
         }
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
+            ibtnEmpleados.Enabled = true;
+            ibtnAsistencia.Enabled = true;
+            ibtnAsistenciaDNI.Enabled = false;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Asis_Hue" || tag == "Empl_Main" || tag == "Empl_Sub")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
             frmAssistanceDNI assitenceDNI = new();
+            assitenceDNI.Tag = "Asis_Dni";
             lblTitulo.Text = "ASISTENCIA con DNI";
-            //pasar tabla
             OpenForm(assitenceDNI);
         }
 
@@ -129,45 +159,14 @@ namespace desktop_employee
                 this.pnlDesktop.Controls.RemoveAt(0);
             form.TopLevel = false;
             form.Dock = DockStyle.Fill;
-            //this.pnlDesktop.Tag = form;
             pnlDesktop.Controls.Add(form);
             form.Show();
         }
 
-        private async void GetFingerPrintsXEmployeesAsync()
+        private void frmMain_Resize(object sender, EventArgs e)
         {
-            List<FingerPrintXEmployee> listado = new List<FingerPrintXEmployee>();
-            Reply oReply = new Reply();
-            oReply = await Consumer.Execute<List<FingerPrintXEmployee>>("http://localhost:3001/api/fingerPrints", methodHttp.GET, listado);
-            this.dgvConvert.Visible = false;
-            this.dgvConvert.DataSource = oReply.Data;
-            fingerPrintXEmployeesTable = ConvertDgvToTable(dgvConvert);
-        }
-
-        private DataTable ConvertDgvToTable(DataGridView dgv)
-        {
-            DataTable table = new DataTable();
-            DataColumn cDni = new DataColumn("dni");
-            DataColumn cName = new DataColumn("name");
-            DataColumn cLastName = new DataColumn("last_name");
-            DataColumn cFingerPrint = new DataColumn("finger_print");
-            cFingerPrint.DataType = System.Type.GetType("System.Byte[]");
-            table.Columns.Add(cDni);
-            table.Columns.Add(cName);
-            table.Columns.Add(cLastName);
-            table.Columns.Add(cFingerPrint);
-
-            for (int i = 0; i < dgv.RowCount; i++)
-            {
-                DataRow row = table.NewRow();
-                row["dni"] = dgv.Rows[i].Cells[0].Value;
-                row["name"] = dgv.Rows[i].Cells[1].Value;
-                row["last_name"] = dgv.Rows[i].Cells[2].Value;
-                row["finger_print"] = (byte[])dgv.Rows[i].Cells[3].Value;
-                table.Rows.Add(row);
-            }
-
-            return table;
+            this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+            this.Size = Screen.PrimaryScreen.WorkingArea.Size;
         }
     }
 }

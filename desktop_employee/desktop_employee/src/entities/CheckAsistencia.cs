@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace desktop_employee.src.entities
 {
-    class FingerXEmployee
+    class CheckAsistencia
     {
-        public int dniEmployee { get; set; }
-        public string finger { get; set; }
+        public string datetime { get; set; }
     }
 }
