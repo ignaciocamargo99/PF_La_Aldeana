@@ -8,12 +8,15 @@ import ReadProductionButton from "../ReadProduction/ReadProductionButton";
 
 const PORT = require('../../../../config');
 
-const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
-    const dateFilter = useRef(null);
+const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+    const dateFilter1 = useRef(null);
+    const dateFilter2 = useRef(null);
 
     const onClickFilter = () => {
-        dateFilter.current.value = '';
-        setDateSearch('')
+        dateFilter1.current.value = '';
+        dateFilter2.current.value = '';
+        setDateSearch1('');
+        setDateSearch2('');
     }
 
     return (
@@ -22,9 +25,9 @@ const Table = ({ setDateSearch, pageElements, columnsHeaders, handleRead, handle
                 <h4 className="text-secondary">Producciones registradas:</h4>
                 <div className="search-input">
                     <label className="lblDate">Fecha desde</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch(e.target.value)} ref={dateFilter} />
+                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch1(e.target.value)} ref={dateFilter1} />
                     <label className="lblDate">Fecha hasta</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch(e.target.value)} ref={dateFilter} />
+                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch2(e.target.value)} ref={dateFilter2} />
                     <button id='filterProductionButton' type="button" onClick={onClickFilter} className="filterBtn">Limpiar filtros</button>
                 </div>
             </div>

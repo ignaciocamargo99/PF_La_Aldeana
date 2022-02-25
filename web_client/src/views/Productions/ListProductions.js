@@ -107,7 +107,7 @@ export default function ListProductions() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Producciones</h1>
-                            <button id='editProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron producciones registrados hasta el momento.</h4>
