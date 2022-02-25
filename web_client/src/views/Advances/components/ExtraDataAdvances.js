@@ -61,6 +61,26 @@ export default function ExtraDataAdvances(props) {
             props.load(data);
         }
     }
+    useEffect(()=>{
+        if (props.data.reading || props.data.editing) {
+            Axios.get(PORT() + `/api/installments?dniEmployee=${props.data.nroDNI}&date=${props.data.date}`)
+            .then((response) => {
+                setOption(response.data);
+
+                let aux = 0;
+                response?.data.map(installments => {if (installments.pay) aux += 1});
+                setPayedCuotes(aux);
+
+                inputFirstMonth.current.value = response.data[0].month.slice(0,-17);
+                setFirstMonth(inputFirstMonth.current.value + '-01');
+                data.firstMonth = inputFirstMonth.current.value + '-01';
+                props.load(data);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }, []);
 
     //find employees with amount of advances
     useEffect(()=>{
@@ -75,22 +95,6 @@ export default function ExtraDataAdvances(props) {
         .catch((err) => {
             console.log(err)
         })
-        if (props.data.reading || props.data.editing) {
-            Axios.get(PORT() + `/api/installments?dniEmployee=${props.data.nroDNI}&date=${props.data.date}`)
-            .then((response) => {
-                setOption(response.data);
-
-                response?.data.map(installments => {if (installments.pay) setPayedCuotes(payedCuotes +1)});
-
-                inputFirstMonth.current.value = response.data[0].month.slice(0,-17);
-                response.data[0].month.slice(0,-17);
-                data.firstMonth = inputFirstMonth.current.value + '-01';
-                props.load(data);
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
     }, [startFirstMonth]);
 
     //employee
@@ -145,68 +149,33 @@ export default function ExtraDataAdvances(props) {
         setAmountTotal(inputAmountTotal.current.value);
     }
 
-    //Monto total
+    //Monto total & Meses
     useEffect(() => {
-        const amount = parseInt(inputAmountTotal.current.value.trim());
         const month = parseInt(inputMonths.current.value.trim());
+        const amount = parseInt(inputAmountTotal.current.value.trim());
         const first = inputFirstMonth.current.value + '-01';
-        
-        if (amount === data.pay) {
-            setMinCuotes(payedCuotes + 1);
-        }
+        if (amount > data.pay) setMinCuotes(payedCuotes + 1);
+        else setMinCuotes(payedCuotes);
+        console.log(month, amount);
 
-        if (amount >= month && month > 0 && month < 19 && first.length === 10) {
+        if (month !== NaN && amount != NaN && month >= minCuotes && month < 19 && amount >= month && amount >= minTotal && first.length === 10) {
             setIsValidClassAmountTotal("form-control is-valid");
-            data.amount = amount;
-            console.log(amount , data.pay, payedCuotes)
+            setIsValidClassMonths("form-control is-valid");
             let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments, payedCuotes);
             setOption(aux);
             data.installments = aux;
-            props.load(data);
-        }
-        else {
-            setIsValidClassAmountTotal("form-control");
-            if (!data.nroDNI && amount && (props.data.editing || props.data.reading)) {
-                data.amount = null;
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-            } else {
-                data.amount = amount;
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-            }
-            props.load(data);
-        }
-    }, [months, amountTotal, props, data, firstMonth, employee]);
-
-    //Meses
-    useEffect(() => {
-        const month = parseInt(inputMonths.current.value.trim());
-        const amount = parseInt(inputAmountTotal.current.value.trim());
-        const first = inputFirstMonth.current.value + '-01';
-
-        if (amount === data.pay) {
-            setMinCuotes(payedCuotes + 1);
-        }
-
-        if (month > 0 && month < 19 && amount >= month && first.length === 10) {
-            setIsValidClassMonths("form-control is-valid");
-            console.log(amount , data.pay, payedCuotes)
-            let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments, payedCuotes);
-            data.installments = aux;
-            data.months = month;
-            props.load(data);
         }
         else {
             setIsValidClassMonths("form-control");
-            if (!data.nroDNI && month > 0 && (props.data.editing || props.data.reading)) {
+            setIsValidClassAmountTotal("form-control");
+            if (!data.nroDNI && month > 0 && !props.data.editing && !props.data.reading) {
                 data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-                data.months = null;
-            } else {
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-                data.months = month;
             }
-            props.load(data);
         }
-    }, [months, amountTotal, props, data, firstMonth, employee]);
+        data.months = month;
+        data.amount = amount;
+        props.load(data);
+    }, [months, amountTotal, props, data, firstMonth, employee, payedCuotes]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -293,10 +262,8 @@ export default function ExtraDataAdvances(props) {
                 </div>
             </div>
             <hr></hr>
-            {console.log(option)}
-            <BeShowed show={option[0].amount > 0}>
+            <BeShowed show={option[0].amount > 0} >
                 <InstallmentTable installments={option} reading={props.data.reading}></InstallmentTable>
-                {realTotal()}
             </BeShowed>
         </>
     );

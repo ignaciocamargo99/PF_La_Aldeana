@@ -19,10 +19,12 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
                 if (!installments[i].pay) {
                     installmentsMonths[i] = { month: date, amount: amountTotal-aux, label: dateText(new Date(year, monthD+i-1)), pay: 0 };
                     if (i === 0) installmentsMonths[i] = { month: monthN, amount:  amountTotal-aux, label: dateText(new Date(year, monthD+i-1)), pay: 0 };
+                    aux += parseInt(amountTotal/(months-payed));
                 } else {
                     installmentsMonths[i] = installments[i];
                 }
             } else {
+                console.log(false)
                 installmentsMonths[i] = { month: date, amount: amountTotal-aux, label: dateText(new Date(year, monthD+i-1)), pay: 0 };
                 if (i === 0) installmentsMonths[i] = { month: monthN, amount:  amountTotal-aux, label: dateText(new Date(year, monthD+i-1)), pay: 0 };
             }
@@ -34,10 +36,9 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
                     aux += parseInt(amountTotal/(months-payed));
                 } else {
                     installmentsMonths[i] = installments[i];
-                    //console.log(installmentsMonths[i])
-                    //aux += installments[i].amount;
                 }
             } else {
+                console.log(true)
                 installmentsMonths[i] = { month: date, amount: parseInt(amountTotal/(months-payed)), label: dateText(new Date(year, monthD+i-1)), pay: 0 };
                 if (i === 0) installmentsMonths[i] = { month: monthN, amount: parseInt(amountTotal/(months-payed)), label: dateText(new Date(year, monthD+i-1)), pay: 0 };
             }
