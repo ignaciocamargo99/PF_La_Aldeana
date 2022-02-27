@@ -84,6 +84,7 @@ const ModalProduct = (props) => {
                 }
                 props.updateProductSelected(aux);
                 props.updateDetailProducts(aux);
+                console.log(props.productsFiltered)
             }
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
@@ -104,11 +105,12 @@ const ModalProduct = (props) => {
             props.updateRefresh(!props.refresh);
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
-        } else {
+        } 
+        else {
             if (quantity == 0){
                 warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
             }
-            if (quantity > props.productSelected.stock)
+            if (quantity > props.productSelected.stock || quantity > props.productSelected.stock_current)
                 warningMessage("¡Error!", "No hay stock suficiente", "error");   
         }
     }

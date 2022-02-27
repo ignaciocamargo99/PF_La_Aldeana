@@ -56,67 +56,7 @@ const Sales = (props) => {
             })
             .catch(error => console.error(error));
     }
-/*
-    const thereIsStock = () => {
-        let aux = props.products;
-        let i,j,k,l,next_stock;
-        let auxSuppliesXProduct = [];
 
-        for (i = 0; i < aux.length; i++) {
-            for (j = 0; j < props.productsXsupplies.length; j++) {
-                if (aux[i].id_product == props.productsXsupplies[j].id_product) {
-                    auxSuppliesXProduct.push(props.productsXsupplies[j]);
-                }   
-            }
-            if (auxSuppliesXProduct.length > 0) {
-                for (k = 0; k < auxSuppliesXProduct.length; k++) {
-                    for (l = 0; l < props.supplies.length; l++) {
-                        if (auxSuppliesXProduct[k].id_supply == props.supplies[l].id_supply)
-                        {
-                            aux[i].listSupplies.push([auxSuppliesXProduct[k].number_supply, props.supplies[l]]);
-                            if (props.supplies[l].id_supply_type == 3)
-                            {
-                                aux[i].stock_initial = 99999;
-                                aux[i].stock_current = 99999;
-                            }
-                            else 
-                            {
-                                if (auxSuppliesXProduct[k].number_supply >= props.supplies[l].stock_unit)
-                                {
-                                    document.getElementById(`btn_${aux[i].id_product}`).disabled = true;
-                                    aux[i].stock_initial = 0;
-                                    aux[i].stock_current = 0;
-                                    break;
-                                }
-                                else
-                                {
-                                    if (aux[i].stock_initial == 0)
-                                    {
-                                        aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                    }
-                                    else   
-                                    {
-                                        next_stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        if (next_stock < aux[i].stock_initial) 
-                                        {   
-                                            aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                            aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                        }
-                    }
-                }
-            }
-            auxSuppliesXProduct = [];
-        }
-        props.updateProducts(aux);
-        props.updateProductsFiltered(aux);
-    }
-*/
     useEffect(() => {
         if (props.detailProducts.length > 0 && ((props.payType == 1 && props.paymentAmount >= props.totalAmount) || props.payType == 2)) {
             setReady(true);
@@ -137,7 +77,6 @@ const Sales = (props) => {
             }
         }
         props.updateProductsFiltered(aux);
-        console.log(props.productsFiltered);
     },[props.productsFiltered, props.detailProducts, props.refresh])
 
     const cancel = () => {
