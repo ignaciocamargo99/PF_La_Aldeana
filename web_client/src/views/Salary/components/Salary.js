@@ -28,11 +28,7 @@ const Salary = (props) => {
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(2021,6,1));
     let startMonth = formattedDate(new Date(),2);
-
-//_________________________________________________________________________________________________________________________________________________Cambiar
-    const maxMonth = //formattedDate(new Date(), 0, -(new Date().getDate())));
-    "2023-01-01";
-//_________________________________________________________________________________________________________________________________________________Cambiar
+    const maxMonth = formattedDate(new Date(), 0, -(new Date().getDate()));
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
 
@@ -51,9 +47,9 @@ const Salary = (props) => {
                     if (elem.id_state === state) aux.push(elem);
                 });}
                 setSalaries(aux);
+                setAllSalaries(response.data);
                 setShowSpinner(false);
                 setShowSecondSpinner(false);
-                setAllSalaries(response.data);
             });
         } else setShowSpinner(false);
     },[reloadList, month, filter, isValidMonth]);
@@ -103,13 +99,7 @@ const Salary = (props) => {
                         salary.month = inputMonth.current.value + '-01';
                         setMonth(inputMonth.current.value + '-01');
                     }
-                }/*
-                else {
-                    if (!load) {
-                        inputMonth.current.value = aux;
-                        //isLoad(true);
-                    }
-                }*/
+                }
             }
         }
     }, [startMonth, month, salary]);
@@ -126,15 +116,15 @@ const Salary = (props) => {
                             <h1>Salarios</h1>
                         </div>
                         <div className="viewBody">
-                            <div className="formRow">
-                                <div className="form-control-label col-sm-3">
+                            <div className="formRow title-searcher">
+                                <div className="form-control-label col-sm-2">
                                     <label htmlFor="firstMonth" >Mes a generar*</label>
                                 </div>
                                 <div className="form-control-input col-sm-8">
                                     <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0,-3)}
                                     max={maxMonth.slice(0,-3)} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
                                 </div>
-                                <div className="form-control-input col-sm-1">
+                                <div className="search-input">
                                     <button id='addSalaryButton' disabled={errorDate} style={errorDate ? {backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
                                 </div>
                             </div>
