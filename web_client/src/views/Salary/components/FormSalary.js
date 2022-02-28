@@ -75,7 +75,6 @@ const FormSalary = (props) => {
                         setConcepts(response.data);
                     })
                     .catch((error) => console.log(error));
-                    setShowSpinner(false);
                 if (props.action === 'Registrar') setEmployee(display[nro]);
                 else {
                     setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.dni }));
@@ -95,7 +94,6 @@ const FormSalary = (props) => {
                         if (minus.length > 0) setOthersMinus(minus);
                     })
                     .catch((error) => console.log(error));
-                    setShowSpinner(false);
                 }
             })
             .catch((error) => console.log(error));
@@ -177,12 +175,18 @@ const FormSalary = (props) => {
                     Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            if (res.data.Ok !== false) resetStates(false);
-                            else warningMessage("Error", `${res.data.Message}`, "error");
+                            if (res.data.Ok && res.data.Ok !== false) resetStates(false);
+                            else {
+                                setShowSpinner(false);
+                                warningMessage("Error", `${res.data.Message}`, "error");
+                            }
                         })
                         .catch((e) => console.error(e))   
                 }
-                else warningMessage("Error", `${response.data.Message}`, "error");
+                else {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${response.data.Message}`, "error");
+                }
             })
             .catch((error) => console.error(error))
         } else {
@@ -190,7 +194,10 @@ const FormSalary = (props) => {
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
                 .then((res) => {
                     if (res.data.Ok !== false) resetStates(false);
-                    else warningMessage("Error", `${res.data.Message}`, "error");
+                    else {
+                        setShowSpinner(false);
+                        warningMessage("Error", `${res.data.Message}`, "error");
+                    }
                 })
                 .catch((e) => console.error(e))   
             }
@@ -201,8 +208,11 @@ const FormSalary = (props) => {
         Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
             "dni":employee.dni, "monthYear": props.month, "state": 1})
         .then((res) => {
-            if (res.data.Ok !== false) resetStates(false);
-            else warningMessage("Error", `${res.data.Message}`, "error");
+            if (res.data.Ok && res.data.Ok !== false) resetStates(false);
+            else {
+                setShowSpinner(false);
+                warningMessage("Error", `${res.data.Message}`, "error");
+            }
         })
         .catch((e) => console.error(e))   
     }
@@ -216,19 +226,25 @@ const FormSalary = (props) => {
                     Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            if (res.data.Ok !== false) comeBack(false);
-                            else warningMessage("Error", `${res.data.Message}`, "error");
+                            if (res.data.Ok && res.data.Ok !== false) comeBack(false);
+                            else {
+                                setShowSpinner(false);
+                                warningMessage("Error", `${res.data.Message}`, "error");
+                            }
                         })
                         .catch((e) => console.error(e))   
                 }
-                else warningMessage("Error", `${response.data.Message}`, "error");
+                else {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${response.data.Message}`, "error");
+                }
             })
             .catch((error) => console.error(error))
         } else {
             Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
                 .then((res) => {
-                    if (res.data.Ok !== false) comeBack(false);
+                    if (res.data.Ok && res.data.Ok !== false) comeBack(false);
                     else warningMessage("Error", `${res.data.Message}`, "error");
                 })
                 .catch((e) => console.error(e))   
@@ -242,6 +258,7 @@ const FormSalary = (props) => {
         } else if (nro + 1 < employees.length) {
             setNro(nro + 1);
             setEmployee(employees[nro + 1]);
+            setShowSpinner(false);
             nroRef.current.focus();
         } else {
             warningMessage('Atención','Se han generado todas los salarios correctamente','success');

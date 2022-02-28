@@ -12,6 +12,7 @@ const PORT = require('../../../config');
 export default function SalariesTable(props) {
 
     const [employees, setEmployees] = useState([]);
+    const [nonConfirmLoader, setNonConfirmLoader] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
     const [filteredElements, setFilteredElements] = useState([]);
@@ -35,6 +36,7 @@ export default function SalariesTable(props) {
                     } else  display.push(person);
                 });
                 setEmployees(display);
+                setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -206,7 +208,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length === 0 && props.isValidSearch }>
+            <BeShowed show={!props.showSpinner && currentElements.length === 0 && props.isValidSearch && nonConfirmLoader }>
                 <br/>
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>
