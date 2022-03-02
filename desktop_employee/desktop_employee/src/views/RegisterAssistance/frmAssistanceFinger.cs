@@ -121,13 +121,19 @@ namespace desktop_employee.src.views.RegisterAssistance
                                                 dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
 
                                                 DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                                horaEntrada = horaEntrada.AddHours(-3);
+                                                if (config.getEnviroment() == "L")
+                                                {
+                                                    horaEntrada = horaEntrada.AddHours(-3);
+                                                }
                                                 SetHoraEntrada(Convert.ToString(horaEntrada));
 
                                                 if (datosAsistencia[0].date_egress != null)
                                                 {
                                                     DateTime horaSalida = datosAsistencia[0].date_egress;
-                                                    horaSalida = horaSalida.AddHours(-3);
+                                                    if (config.getEnviroment() == "L")
+                                                    {
+                                                        horaSalida = horaSalida.AddHours(-3);
+                                                    }
                                                     SetHoraSalida(Convert.ToString(horaSalida));
                                                 }
                                             }
@@ -174,13 +180,19 @@ namespace desktop_employee.src.views.RegisterAssistance
                                                 dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
 
                                                 DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                                horaEntrada = horaEntrada.AddHours(-3);
+                                                if (config.getEnviroment() == "L")
+                                                {
+                                                    horaEntrada = horaEntrada.AddHours(-3);
+                                                }
                                                 SetHoraEntrada(Convert.ToString(horaEntrada));
 
                                                 if (datosAsistencia[0].date_egress != null)
                                                 {
                                                     DateTime horaSalida = datosAsistencia[0].date_egress;
-                                                    horaSalida = horaSalida.AddHours(-3);
+                                                    if (config.getEnviroment() == "L")
+                                                    {
+                                                        horaSalida = horaSalida.AddHours(-3);
+                                                    }
                                                     SetHoraSalida(Convert.ToString(horaSalida));
                                                 }
 
