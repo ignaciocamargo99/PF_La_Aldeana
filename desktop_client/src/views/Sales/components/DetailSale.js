@@ -29,40 +29,24 @@ const DetailSale = (props) => {
     }
 
     const changePrintModalDelete = (id) => {
-
-        // aux.stock_current = aux.stock - parseFloat(quantity);
-
         let product = props.detailProducts?.find(n => n.id_product == id);
         product.stock_current = parseFloat(product.stock) + parseFloat(product.stock_current);
         product.disabled = false;
         props.updateProductSelected(product);
-        props.updateDetailsProductsDelete(props.productSelected);
+        props.updateDetailsProductsDelete(product);
         props.updateRefresh(!props.refresh);
-
-        console.log(props.productsFiltered)
-
-        //setActionModal("D");
-        //setPrintModal(true);
         props.updateRefresh(!props.refresh);
-
-        
-
     }
 
     useEffect(() => {
-        if (props.detailProducts.length > 0) {
-            setReady(true);
-        }
-        else {
-            setReady(false);
-        }
+        if (props.detailProducts.length > 0) setReady(true);
+        else setReady(false);
 
         for (let i = 0; i < props.detailProducts.length; i++) {
             aux = aux + parseFloat(props.detailProducts[i].subtotal,2);
         }
 
         props.updateTotalAmount(aux);
-
     },[props.detailProducts, props.refresh])
 
     return (
