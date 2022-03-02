@@ -39,7 +39,6 @@ const FilterProducts = (props) => {
 
     const actionsDefaultButtons = () => {
         setBoolTypeProduct(true);
-        //props.updateProductsFiltered(props.products);
         setValueSelect("-1");
     }
 
@@ -49,7 +48,7 @@ const FilterProducts = (props) => {
         setBoolBtnAll(true);
     }
 
-    const onChangeTypeProduct = (e) => { 
+    const onChangeTypeProduct = (e) => {
         const id_type_product_selected = e.target.value;
         setValueSelect(id_type_product_selected);
         props.updateProductsFiltered(props.products.filter(n => n.id_product_type == id_type_product_selected));
