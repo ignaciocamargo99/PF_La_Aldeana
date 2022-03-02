@@ -116,15 +116,15 @@ const Salary = (props) => {
                             <h1>Salarios</h1>
                         </div>
                         <div className="viewBody">
-                            <div className="formRow title-searcher">
-                                <div className="form-control-label col-sm-2">
+                            <div className="formRow d-flex justify-content-between align-items-center">
+                                <div className="form-control-label">
                                     <label htmlFor="firstMonth" >Mes a generar*</label>
                                 </div>
-                                <div className="form-control-input col-sm-8">
+                                <div className="form-control-input" style={{marginRight: '2em'}}>
                                     <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0,-3)}
                                     max={maxMonth.slice(0,-3)} defaultValue={dateToString(month, true).slice(0,-3).length === 10 ? dateToString(month, true).slice(0,-3).length : null} />
                                 </div>
-                                <div className="search-input">
+                                <div className="form-contorl-input">
                                     <button id='addSalaryButton' disabled={errorDate} style={errorDate ? {backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
                                 </div>
                             </div>
