@@ -101,7 +101,7 @@ const FormSalary = (props) => {
 
     useEffect(() => {
         if (employee !== null) {
-            Axios.get(`http://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
+            Axios.get(`https://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
             .then((response) => {
                 let newNonworkingDays = [];
                 response.data.forEach((nWD) => {
