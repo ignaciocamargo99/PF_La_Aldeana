@@ -8,26 +8,30 @@ namespace desktop_employee.src
 {
     class config
     {
+        //------------ 'L': localhost  ;  'D': development  ;  'PP': pre-production  ;  'P': production ------------
+        readonly string enviroment = "D";
         public string getUrlPort()
         {
-            //------------ 'L': localhost  ;  'D': development  ;  'PP': pre-production  ;  'P': production ------------
-            string var = "D";
-
             string url = "http://localhost:3001";
 
-            if (var == "D")
+            if (enviroment == "D")
             {
                 return url = "https://la-aldeana-dev.herokuapp.com";
             }
-            else if (var == "PP")
+            else if (enviroment == "PP")
             {
                 return url = "https://la-aldeana-staging.herokuapp.com";
             }
-            else if (var == "P")
+            else if (enviroment == "P")
             {
                 return url = ""; /** APIs SERVER PRODUCTION */
             }
             return url;
+        }
+
+        public string getEnviroment()
+        {
+            return enviroment;
         }
     }
 }
