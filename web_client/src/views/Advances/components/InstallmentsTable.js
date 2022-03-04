@@ -80,11 +80,9 @@ export default function InstallmentTable ({ installments, reading }) {
 
     return (
         <>
-            {isLoadingSpinner && (
+            {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando cuotas" />
-            )}
-
-            {!isLoadingSpinner && (
+                :
                 <>
                     <div className="formRow title-searcher">
                         <h4 className="text-secondary">Cuotas de plan de pago:</h4>
@@ -107,6 +105,7 @@ export default function InstallmentTable ({ installments, reading }) {
                                 </tr>
                             </thead>
                             <tbody>
+                                {console.log(currentElements)}
                                 {currentElements?.map((element, i) => {
                                     return (
                                         <tr key={i}>
@@ -132,7 +131,7 @@ export default function InstallmentTable ({ installments, reading }) {
                     </div>
                     <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                 </>
-            )}
+            }
         </>
     )
 };
