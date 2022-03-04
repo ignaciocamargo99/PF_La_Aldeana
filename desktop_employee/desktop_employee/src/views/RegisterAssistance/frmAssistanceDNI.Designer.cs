@@ -206,6 +206,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             // 
             // lblDNI
             // 
+            this.lblDNI.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblDNI.AutoSize = true;
             this.lblDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblDNI.Location = new System.Drawing.Point(143, 235);
@@ -216,32 +217,35 @@ namespace desktop_employee.src.views.RegisterAssistance
             // 
             // txtDNI
             // 
+            this.txtDNI.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.txtDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtDNI.Location = new System.Drawing.Point(201, 228);
             this.txtDNI.Name = "txtDNI";
             this.txtDNI.Size = new System.Drawing.Size(181, 32);
             this.txtDNI.TabIndex = 28;
+            this.txtDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDNI_KeyPress);
             // 
             // btnRegistrarAsistencia
             // 
-            this.btnRegistrarAsistencia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRegistrarAsistencia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
-            this.btnRegistrarAsistencia.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.btnRegistrarAsistencia.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnRegistrarAsistencia.BackColor = System.Drawing.Color.White;
+            this.btnRegistrarAsistencia.BackgroundColor = System.Drawing.Color.White;
             this.btnRegistrarAsistencia.BorderColor = System.Drawing.Color.Black;
             this.btnRegistrarAsistencia.BorderRadius = 25;
             this.btnRegistrarAsistencia.BorderSize = 1;
+            this.btnRegistrarAsistencia.Enabled = false;
             this.btnRegistrarAsistencia.FlatAppearance.BorderSize = 0;
             this.btnRegistrarAsistencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegistrarAsistencia.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRegistrarAsistencia.ForeColor = System.Drawing.Color.White;
+            this.btnRegistrarAsistencia.ForeColor = System.Drawing.Color.Black;
             this.btnRegistrarAsistencia.Location = new System.Drawing.Point(421, 220);
             this.btnRegistrarAsistencia.Name = "btnRegistrarAsistencia";
             this.btnRegistrarAsistencia.Size = new System.Drawing.Size(170, 48);
             this.btnRegistrarAsistencia.TabIndex = 29;
             this.btnRegistrarAsistencia.Text = "Registrar Asistencia";
-            this.btnRegistrarAsistencia.TextColor = System.Drawing.Color.White;
+            this.btnRegistrarAsistencia.TextColor = System.Drawing.Color.Black;
             this.btnRegistrarAsistencia.UseVisualStyleBackColor = false;
-            this.btnRegistrarAsistencia.Click += new System.EventHandler(this.btnRegistrarAsistencia_Click);
+            this.btnRegistrarAsistencia.Click += new System.EventHandler(this.btnRegistrarAsistencia_ClickAsync);
             // 
             // frmAssistanceDNI
             // 
