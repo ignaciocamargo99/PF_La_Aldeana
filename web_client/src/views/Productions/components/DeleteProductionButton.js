@@ -7,14 +7,14 @@ import '../../../assets/Buttons.css';
 
 const PORT = require('../../../config');
 
-export default function DeleteProductButton(props) {
+export default function DeleteProductionButton(props) {
 
-    const handleDelete = () => confirmDelete(deleteProduct);
+    const handleDelete = () => confirmDelete(deleteProduction);
 
-    const deleteProduct = () => {
-        Axios.delete(PORT() + `/api/products/${props.product.id_product}`)
+    const deleteProduction = () => {
+        Axios.delete(PORT() + `/api/production/${props.production.id_production}`)
             .then(() => {
-                props.deleteProduct(props.index);
+                props.deleteProduction(props.index);
                 swal("Elemento eliminado", {
                     icon: "success",
                 });
@@ -30,6 +30,6 @@ export default function DeleteProductButton(props) {
     }
 
     return (
-        <button id='deleteProductButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+        <button id='deleteProductButton' type="button" onClick={handleDelete} className="sendDelete"><FontAwesomeIcon icon={faMinus} /></button>
     );
 }
