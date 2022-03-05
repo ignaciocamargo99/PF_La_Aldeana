@@ -47,7 +47,7 @@ export default function EditEmployee({ goBack, employeeData }) {
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
 
             <div className="viewTitle">
-                <h1>Editar empleado {employeeData.name + " " + employeeData.last_name}</h1>
+                <h1>Editar empleado/a {employeeData.name + " " + employeeData.last_name}</h1>
             </div>
             <br />
             <div className="viewBody">
