@@ -9,6 +9,7 @@ import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
+import FingerPrint from './FingerPrint';
 
 const PORT = require('../../../config');
 

@@ -13,7 +13,7 @@ const ReadEmployee = ({ employeeData, goBack }) => {
             <div style={{ display: 'none' }}>{document.title = "Consultar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Consultar empleado" />
             <div className="viewTitle">
-                <h1>Empleado {employeeData.name + " " + employeeData.last_name}</h1>
+                <h1>Empleado/a {employeeData.name + " " + employeeData.last_name}</h1>
             </div>
             <br />
             <div className="viewBody">

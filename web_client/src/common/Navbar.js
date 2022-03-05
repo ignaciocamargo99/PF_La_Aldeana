@@ -84,7 +84,7 @@ export default function Navbar(props) {
                             Producción
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href="">
+                            <Dropdown.Item href="/app/productions">
                                 <FontAwesomeIcon icon={faList} /> Ver producciones
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/production">

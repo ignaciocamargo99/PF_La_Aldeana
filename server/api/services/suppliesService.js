@@ -1,11 +1,12 @@
-const { supplyPostDB, typeSupplyGetDB, suppliesGetDB, suppliesWithStockGetDB } = require('../db/suppliesDB');
+const { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB } = require('../db/suppliesDB');
+const { getSupplyTypesRepository } = require('../db/supplyTypeRepository.js');
 
 const readSupplies = async () => {
     try {
         let res = await suppliesGetDB();
         return res;
     }
-    catch (error){
+    catch (error) {
         throw Error(error)
     };
 };
@@ -15,7 +16,7 @@ const readSuppliesWithStock = async () => {
         let res = await suppliesWithStockGetDB();
         return res;
     }
-    catch (error){
+    catch (error) {
         throw Error(error)
     };
 };
@@ -24,14 +25,15 @@ const createSupply = async (newSupply) => {
     try {
         await supplyPostDB(newSupply);
     }
-    catch (error){
+    catch (error) {
         throw Error(error)
     };
 };
 
 const readTypeSupply = async () => {
     try {
-        let res = await typeSupplyGetDB();
+        let res = await getSupplyTypesRepository();
+
         return res;
     }
     catch (error) {
