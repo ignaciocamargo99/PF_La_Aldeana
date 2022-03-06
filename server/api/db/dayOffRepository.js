@@ -13,4 +13,8 @@ const getDaysOffOfEmployeeBetweenTwoDates = (minDate, maxDate, dniEmployee) => {
     })
 };
 
-module.exports = { getDaysOffOfEmployeeBetweenTwoDates };
+const saveDaysOff = (daysOffList) => {
+    DayOffModel.bulkCreate(daysOffList);
+};
+
+module.exports = { getDaysOffOfEmployeeBetweenTwoDates, saveDaysOff };
