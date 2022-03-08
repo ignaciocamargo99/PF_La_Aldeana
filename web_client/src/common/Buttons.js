@@ -13,7 +13,7 @@ const Buttons = (props) => {
                 </BeShowed>
                 <BeShowed show={!props.ready}>
                     <button className='sendNotOk' onClick={actionNotOK}>{props.label}</button>
-                    <button className='sendNotOk' onClick={actionNotOK}>{props.labelCancel}</button>
+                    <button className='cancelSendNotOk' onClick={actionNotOK}>{props.labelCancel}</button>
                 </BeShowed>
             </BeShowed>
             <BeShowed show={!props.labelCancel}>

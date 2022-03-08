@@ -258,6 +258,15 @@ const FormSalary = (props) => {
         } else if (nro + 1 < employees.length) {
             setNro(nro + 1);
             setEmployee(employees[nro + 1]);
+            setOthersPlus([]);
+            setOthersMinus([]);
+            setMain([
+                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: 0},
+                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: 0},
+                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: 0},
+                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0},
+                {id: 'F', name: 'Hs. Franco', hs: 1, price: 0}
+            ]);
             setShowSpinner(false);
             nroRef.current.focus();
         } else {
@@ -446,13 +455,12 @@ const FormSalary = (props) => {
                         <label style={{paddingLeft: '1em'}}>Horas</label>
                     </div>
                     <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
-                        <label style={{paddingLeft: '1em'}}>Precio X Hs.</label>
+                        <label style={{paddingLeft: '1em'}}>Precio X Hs. ($)</label>
                     </div>
                     <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em'}}>Subtotal</label>
                     </div>
                 </div>
-
                 {main?.map(i => {
                     return(
                         <div className="formRow justify-content-center">
@@ -481,6 +489,14 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <div className="formRow justify-content-center">
+                    <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
+                    </div>
+                    <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Precio ($)</label>
+                    </div>
+                </div>
                 {othersPlus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
@@ -519,6 +535,14 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <div className="formRow justify-content-center">
+                    <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
+                    </div>
+                    <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Precio ($)</label>
+                    </div>
+                </div>
                 {othersMinus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
