@@ -9,7 +9,7 @@ const url= 'http://localhost:3001/api';
 
 describe.skip('Tests unitarios sobre API Users',()=>{
     
-    describe('Check getUsers',()=>{
+    describe.skip('Check getUsers',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
                 .get('/users')

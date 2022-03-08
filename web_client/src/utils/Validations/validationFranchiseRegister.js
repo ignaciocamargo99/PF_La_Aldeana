@@ -1,26 +1,18 @@
-import errorAddressFranchise from "../ErrorMessages/errorAddressFranchise";
-import errorCityFranchise from "../ErrorMessages/errorCityFranchise";
-import errorStartDate from "../ErrorMessages/errorStartDate";
-import errorNumberAddress from "../ErrorMessages/errorNumberAddress";
-import errorProvinceFranchice from "../ErrorMessages/errorProvinceFranchice";
-import errorNameManager from "../ErrorMessages/errorNameManager";
-import errorLastNameManager from "../ErrorMessages/errorLastNameManager";
-import errorDniManager from "../ErrorMessages/errorDniManager";
-import errorNameFranchise from "../ErrorMessages/errorNameFranchise";
+import displayValidation from "./displayValidation";
 
 export default function validationProductRegister(data) {
 
     try {
 
-        if (data.name === "") errorNameFranchise();
-        else if (data.start_date === "") errorStartDate();
-        else if (data.address === "") errorAddressFranchise();
-        else if (data.address_number < 0) errorNumberAddress();
-        else if (data.city === "") errorCityFranchise();
-        else if (data.province === "") errorProvinceFranchice();
-        else if (data.name_manager === "") errorNameManager();
-        else if (data.last_name_manager === "") errorLastNameManager();
-        else if (data.dni_manager === 0) errorDniManager();
+        if (!data.name) displayValidation('No ha ingresado ningún nombre válido para la franquicia');
+        else if (!data.start_date) displayValidation('No ha ingresado ninguna fecha de inicio de actividades válida para la franquicia');
+        else if (!data.address) displayValidation('No ha ingresado ninguna dirección válida para la franquicia');
+        else if (parseInt(data.address_number) < 0) displayValidation('No ha ingresado ningún número de calle válido para la franquicia');
+        else if (!data.city) displayValidation('No ha ingresado ninguna ciudad válida para la franquicia');
+        else if (!data.province) displayValidation('No ha ingresado ninguna provincia válida para la franquicia');
+        else if (!data.name_manager) displayValidation('No ha ingresado ningún nombre válido para el franquiciado');
+        else if (!data.last_name_manager) displayValidation('No ha ingresado ningún apellido válido para el franquiciado');
+        else if (!data.dni_manager) displayValidation('No ha ingresado ningún DNI válido para el franquiciado');
 
     }
 
