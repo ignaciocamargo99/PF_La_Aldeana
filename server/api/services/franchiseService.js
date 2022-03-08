@@ -1,4 +1,4 @@
-const { franchisePostDB, franchiseGetDB } = require('../db/franchiseDB');
+const { franchisePostDB, franchiseGetDB, franchisePutDB, franchiseDeleteDB } = require('../db/franchiseDB');
 
 const readFranchises = async () => {
     try {
@@ -20,4 +20,24 @@ const createFranchise = async (newFranchise) => {
     }
 };
 
-module.exports = { createFranchise, readFranchises }
+const modifyFranchise = async (idFranchise, franchise) => {
+    try {
+        let res = await franchisePutDB(idFranchise, franchise);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    }
+};
+
+const deleteFranchise = async (franchiseDeleteID) => {
+    try {
+        let res = await franchiseDeleteDB(franchiseDeleteID);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    };
+};
+
+module.exports = { createFranchise, readFranchises, modifyFranchise, deleteFranchise }

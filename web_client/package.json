@@ -36,7 +36,6 @@
     "styled-components": "^5.3.1",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.0.18",
-    "uareu-node": "^1.0.5",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^1.0.1"
   },
