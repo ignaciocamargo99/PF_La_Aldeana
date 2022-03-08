@@ -17,6 +17,23 @@ const chargeGetDB = () => {
     });
 };
 
+const employeeForDesktopGetDB = () => {
+    const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
+                    FROM EMPLOYEES WHERE active = 1`; 
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 // #region Employees ABMC
 
 const employeeGetDB = (dni) => {
@@ -178,5 +195,5 @@ const isEmployeeDataValid = (empDataToValidate) => {
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB
+    employeeUpdateDB, employeeForDesktopGetDB
 };
