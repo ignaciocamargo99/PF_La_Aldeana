@@ -1,4 +1,5 @@
 import Axios from "axios";
+import formattedDate from '../../../utils/formattedDate';
 import { useEffect, useRef, useState } from "react";
 import Buttons from '../../../common/Buttons';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
@@ -281,8 +282,7 @@ const FormSalary = (props) => {
         if(msg){
             warningMessage('Atención','Se ha editado el salario correctamente','success');
         }
-        props.setActionSalary('Listar',null);
-        window.location.replace('/app/salary');
+        props.setActionSalary('Listar',{month: formattedDate(new Date()), employee: 0});
     }
 
     const actionNotOK = () =>{
@@ -500,7 +500,7 @@ const FormSalary = (props) => {
                 {othersPlus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0}>
+                            <BeShowed show={((props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0) || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -508,24 +508,26 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' : false) || n !== 0}>
+                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' ? true : n !== 0 : true) && props.action !== "Ver"}>
                                 <div className="col-sm-1">
                                     <button style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherPlus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 1)} />
+                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherPlus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 1)} defaultValue={i.name?i.name:null} />
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' />
+                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999'  defaultValue={i.amount?i.amount:null} />
                                 </div>
                             </BeShowed>
                         </div>
                     )
                 })}
-                <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                    <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Adicional</button>
-                </div>
+                <BeShowed show={props.action !== "Ver"}>
+                    <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Adicional</button>
+                    </div>
+                </BeShowed>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px', text: 'bold'}}>
                         <label style={{paddingLeft: '1em', fontWeight: 'bold'}}>Subtotal</label>
@@ -546,7 +548,7 @@ const FormSalary = (props) => {
                 {othersMinus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={advances.length > 0 && n === 0}>
+                            <BeShowed show={(advances.length > 0 && n === 0) || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -554,24 +556,26 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={advances.length === 0 || n !== 0}>
+                            <BeShowed show={(advances.length === 0 || n !== 0) && props.action !== "Ver"}>
                                 <div className="col-sm-1" >
                                     <button style={{marginRight: '0em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherMinus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} />
+                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherMinus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} defaultValue={i.name?i.name:null} />
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' />
+                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.amount?i.amount:null} />
                                 </div>
                             </BeShowed>
                         </div>
                     )
                 })}
-                <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                    <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Descuento</button>
-                </div>
+                <BeShowed show={props.action !== "Ver"}>
+                    <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Descuento</button>
+                    </div>
+                </BeShowed>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em', fontWeight: 'bold'}}>Total a cobrar</label>
@@ -582,11 +586,11 @@ const FormSalary = (props) => {
                 </div>
                 <BeShowed show={props.action === 'Registrar'}>   
                     <Buttons ready={(!errorName && !errorPrice)}
-                        label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionCancel={() => {jump()}}/>
+                        label='Confirmar' labelJump='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionJump={() => {jump()}} actionCancel={() => {comeBack(false)}} />
                 </BeShowed>
                 <BeShowed show={props.action === 'Editar'}>   
                     <Buttons ready={(!errorName && !errorPrice)}
-                        label='Registrar' labelCancel='Cancelar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
+                        label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
                 </BeShowed>
                 <BeShowed show={props.action === 'Ver'}> 
                     <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>

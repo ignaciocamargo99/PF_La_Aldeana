@@ -244,7 +244,7 @@ const conceptsGetDB = (id) => {
 };
 
 const detailsGetDB = (id) => {
-    const sqlSelect = "SELECT * FROM DETAIL_SALARIES WHERE id_salary = " + id;
+    const sqlSelect = "SELECT * FROM DETAIL_SALARIES d JOIN CONCEPTS c ON c.id_concept = d.id_concept WHERE d.id_salary = " + id;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -447,7 +447,7 @@ const salariesUpdateDB = (id, newSalary) => {
                                 }
                                 else {
                                     let r = [];
-                                    response.map((res, k) => r[k] = res);
+                                    response?.map((res, k) => r[k] = res);
                                     let count = r.length;
                                     for (var j = 0; j < newSalary.details[0].length; j++){
                                         r?.map(concept => {

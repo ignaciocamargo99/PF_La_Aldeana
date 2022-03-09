@@ -52,11 +52,15 @@ const Salary = (props) => {
                 setShowSecondSpinner(false);
             });
         } else setShowSpinner(false);
-    },[reloadList, month, filter, isValidMonth]);
+    },[reloadList, month, filter, isValidMonth, action]);
 
-    const setActionSalary = (action,salary) => {
-        setAction(action);
+    const setActionSalary = (newAction,salary) => {
+        setAction(newAction);
         setSalary(salary);
+        if (newAction === "Listar"){
+            setSalaries([]);
+            setAllSalaries([]);
+        }
     }
 
     const onClickNewSalary = () => {
@@ -102,7 +106,9 @@ const Salary = (props) => {
                 }
             }
         }
-    }, [startMonth, month, salary]);
+    }, [startMonth, month, action]);
+
+    const setEmptyNonGenerate = () => setErrorDate(true);
 
     return(
         <>
@@ -133,8 +139,8 @@ const Salary = (props) => {
                                 <LoaderSpinner color="primary" loading="Cargando..." />
                             </BeShowed>
                             <BeShowed show={!showSecondSpinner} >
-                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
-                                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
+                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
+                                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? isValidMonth !== "form-control" : false : false} emptyNonGenerate={setEmptyNonGenerate} />
                             </BeShowed>
                         </div>
                     </BeShowed>

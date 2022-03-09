@@ -24,11 +24,11 @@ export default function SalariesTable(props) {
             .then((response) => {
                 let aux = response.data;
                 let display = [];
-                aux.forEach((person)=>{
+                aux?.forEach((person)=>{
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    if (props.allSalaries.length > 1) {
+                    if (props.allSalaries && props.allSalaries.length > 1) {
                         const exist = props.allSalaries?.filter((elem) => {
                             return elem.dni == person.dni;
                         });
@@ -36,10 +36,11 @@ export default function SalariesTable(props) {
                     } else  display.push(person);
                 });
                 setEmployees(display);
+                if (response.data.length === props.allSalaries.length) props.emptyNonGenerate();
                 setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
-    }, []);
+    }, [true]);
 
     useEffect(() => {
         if (props.salaries.length > 0){
