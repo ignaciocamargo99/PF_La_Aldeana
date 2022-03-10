@@ -70,7 +70,7 @@ export default function DataEmployee(props) {
 
     return (
         <>
-            <h2>Datos del empleado</h2>
+            <h2>Datos del empleado/a</h2>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="nameEmployee" >Nombre*</label>
