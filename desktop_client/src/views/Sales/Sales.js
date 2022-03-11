@@ -3,9 +3,11 @@ import DetailSale from './components/DetailSale';
 import DateFormat from '../../utils/DateFormat/dateFormat';
 import ListProducts from './components/ListProducts';
 import FilterProducts from './components/FilterProducts';
-import PaymentSale from "./components/PaymentSale"; 
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateProductsXSupplies, 
-    updateSupplies, updatePaymentAmount, updateDetailsProductsClear, updateSalesRegister } from '../../actions/SalesActions';
+import PaymentSale from "./components/PaymentSale";
+import {
+    updateProducts, updateProductsFiltered, updateDetailProducts, updateProductSelected, updateProductsXSupplies,
+    updateSupplies, updatePaymentAmount, updateDetailsProductsClear, updateSalesRegister
+} from '../../actions/SalesActions';
 import Axios from "axios";
 import { connect } from 'react-redux';
 import Buttons from "../../common/Buttons";
@@ -15,20 +17,20 @@ import '../../assets/Buttons.css';
 
 const PORT = require('../../config');
 
-const Sales = (props) => { 
+const Sales = (props) => {
 
     const [ready, setReady] = useState(false);
     const [saleCompleted, setSaleCompleted] = useState(false);
-    const [date,setDate] = useState('');
+    const [date, setDate] = useState('');
 
     useEffect(() => {
         initialCalls();
-    },[])
+    }, [])
 
     useEffect(() => {
         let date = DateFormat(new Date())
-        setDate(date)   
-    },[])
+        setDate(date)
+    }, [])
 
     const initialCalls = () => {
         Axios.get(`${PORT()}/api/products`)
@@ -56,67 +58,7 @@ const Sales = (props) => {
             })
             .catch(error => console.error(error));
     }
-/*
-    const thereIsStock = () => {
-        let aux = props.products;
-        let i,j,k,l,next_stock;
-        let auxSuppliesXProduct = [];
 
-        for (i = 0; i < aux.length; i++) {
-            for (j = 0; j < props.productsXsupplies.length; j++) {
-                if (aux[i].id_product == props.productsXsupplies[j].id_product) {
-                    auxSuppliesXProduct.push(props.productsXsupplies[j]);
-                }   
-            }
-            if (auxSuppliesXProduct.length > 0) {
-                for (k = 0; k < auxSuppliesXProduct.length; k++) {
-                    for (l = 0; l < props.supplies.length; l++) {
-                        if (auxSuppliesXProduct[k].id_supply == props.supplies[l].id_supply)
-                        {
-                            aux[i].listSupplies.push([auxSuppliesXProduct[k].number_supply, props.supplies[l]]);
-                            if (props.supplies[l].id_supply_type == 3)
-                            {
-                                aux[i].stock_initial = 99999;
-                                aux[i].stock_current = 99999;
-                            }
-                            else 
-                            {
-                                if (auxSuppliesXProduct[k].number_supply >= props.supplies[l].stock_unit)
-                                {
-                                    document.getElementById(`btn_${aux[i].id_product}`).disabled = true;
-                                    aux[i].stock_initial = 0;
-                                    aux[i].stock_current = 0;
-                                    break;
-                                }
-                                else
-                                {
-                                    if (aux[i].stock_initial == 0)
-                                    {
-                                        aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                    }
-                                    else   
-                                    {
-                                        next_stock = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        if (next_stock < aux[i].stock_initial) 
-                                        {   
-                                            aux[i].stock_initial = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                            aux[i].stock_current = props.supplies[l].stock_unit / auxSuppliesXProduct[k].number_supply;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                        }
-                    }
-                }
-            }
-            auxSuppliesXProduct = [];
-        }
-        props.updateProducts(aux);
-        props.updateProductsFiltered(aux);
-    }
-*/
     useEffect(() => {
         if (props.detailProducts.length > 0 && ((props.payType == 1 && props.paymentAmount >= props.totalAmount) || props.payType == 2)) {
             setReady(true);
@@ -137,8 +79,7 @@ const Sales = (props) => {
             }
         }
         props.updateProductsFiltered(aux);
-        console.log(props.productsFiltered);
-    },[props.productsFiltered, props.detailProducts, props.refresh])
+    }, [props.productsFiltered, props.detailProducts, props.refresh])
 
     const cancel = () => {
         resetStates();
@@ -186,8 +127,7 @@ const Sales = (props) => {
             else if (props.payType != 1 && props.payType != 2) {
                 warningMessage("¡Error!", "No selecciono la forma de pago", "error");
             }
-            else if (props.payType == 1 && props.paymentAmount <= props.totalAmount)
-            {
+            else if (props.payType == 1 && props.paymentAmount <= props.totalAmount) {
                 warningMessage("¡Error!", "El monto ingresado es inferior al monto total", "error");
             }
         }
@@ -198,11 +138,11 @@ const Sales = (props) => {
             <div className="viewContent">
                 <h1 className="display-5">Registrar venta en Local</h1>
                 <hr />
-                <div className="formRow" style={{justifyContent:'flex-end'}}>
-                    <div className="form-label-no-margin" style={{marginRight:'0%'}}>
+                <div className="formRow" style={{ justifyContent: 'flex-end' }}>
+                    <div className="form-label-no-margin" style={{ marginRight: '0%' }}>
                         <label>Fecha:</label>
                     </div>
-                    <div className="" style={{width:'200px'}}>
+                    <div className="" style={{ width: '200px' }}>
                         <input type="date" className="form-control" value={date} readOnly></input>
                     </div>
                 </div>
@@ -251,7 +191,7 @@ const mapDispatchToProps = {
     updateProductsFiltered,
     updateDetailProducts,
     updateProductSelected,
-    updateProductsXSupplies, 
+    updateProductsXSupplies,
     updateSupplies,
     updatePaymentAmount,
     updateDetailsProductsClear,

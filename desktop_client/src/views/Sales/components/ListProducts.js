@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateProductSelected } from '../../../actions/SalesActions';
-import "../styles/listProduct.css";
-import ModalProduct from "./ModalProduct";
+import { updateDetailProducts, updateProducts, updateProductSelected, updateProductsFiltered } from '../../../actions/SalesActions';
 import DivGeneric from "../../../common/DivGeneric";
 import '../styles/filterProducts.css';
-
-const PORT = require('../../../config');
+import "../styles/listProduct.css";
+import ModalProduct from "./ModalProduct";
 
 const ListProducts = (props) => {
 
@@ -33,10 +31,10 @@ const ListProducts = (props) => {
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (
                     <div key={i}>
-                        <button style={product.disabled ? {backgroundColor: "grey"} : {backgroundColor: "#F68634"}} className="btn_products" id={`btn_${product.id_product}`} disabled={product.disabled} type='button' value={product.id_product} onClick={(e) => changePrintModal(product.id_product)}>{product.name}</button>
+                        <button style={product.disabled ? { backgroundColor: "grey" } : { backgroundColor: "#F68634" }} className="btn_products" id={`btn_${product.id_product}`} disabled={product.disabled} type='button' value={product.id_product} onClick={(e) => changePrintModal(product.id_product)}>{product.name}</button>
                     </div>
                 )
-            })}></DivGeneric>
+            })} />
             <ModalProduct show={printModal} setShowModal={setPrintModal} actionModal={actionModal}></ModalProduct>
         </>
     )

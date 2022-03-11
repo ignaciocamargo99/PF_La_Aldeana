@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { connect } from 'react-redux';
-import { updateProducts, updateProductsFiltered, updateDetailProducts, updatePayType, updateTotalAmount, updateDetailsProductsModify, updateProductSelected, updateRefresh, updateDetailsProductsDelete } from '../../../actions/SalesActions';
-import BeShowed from "../../../common/BeShowed";
-import HeaderTable from "../../../common/Table/HeaderTable";
-import BodyTable from "../../../common/Table/BodyTable";
-import Table from "../../../common/Table/Table";
 import { faMinus, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ModalProduct from "./ModalProduct";
+import React, { useEffect, useState } from "react";
+import { connect } from 'react-redux';
+import { updateDetailProducts, updateDetailsProductsDelete, updateDetailsProductsModify, updatePayType, updateProducts, updateProductSelected, updateProductsFiltered, updateRefresh, updateTotalAmount } from '../../../actions/SalesActions';
+import BeShowed from "../../../common/BeShowed";
+import BodyTable from "../../../common/Table/BodyTable";
+import HeaderTable from "../../../common/Table/HeaderTable";
+import Table from "../../../common/Table/Table";
 import '../styles/detailSale.css';
+import ModalProduct from "./ModalProduct";
 
 const DetailSale = (props) => {
 
@@ -29,29 +29,24 @@ const DetailSale = (props) => {
     }
 
     const changePrintModalDelete = (id) => {
-        let product = props.detailProducts?.find(n => n.id_product == id)
+        let product = props.detailProducts?.find(n => n.id_product == id);
+        product.stock_current = parseFloat(product.stock) + parseFloat(product.stock_current);
+        product.disabled = false;
         props.updateProductSelected(product);
-        props.updateDetailsProductsDelete(props.productSelected);
+        props.updateDetailsProductsDelete(product);
         props.updateRefresh(!props.refresh);
-        //setActionModal("D");
-        //setPrintModal(true);
         props.updateRefresh(!props.refresh);
     }
 
     useEffect(() => {
-        if (props.detailProducts.length > 0) {
-            setReady(true);
-        }
-        else {
-            setReady(false);
-        }
+        if (props.detailProducts.length > 0) setReady(true);
+        else setReady(false);
 
         for (let i = 0; i < props.detailProducts.length; i++) {
             aux = aux + parseFloat(props.detailProducts[i].subtotal,2);
         }
 
         props.updateTotalAmount(aux);
-
     },[props.detailProducts, props.refresh])
 
     return (
@@ -104,7 +99,8 @@ const mapStateToProps = state => {
         payType: state.payType,
         totalAmount: state.totalAmount,
         productSelected: state.productSelected,
-        refresh: state.refresh
+        refresh: state.refresh,
+        productSelected: state.productSelected,
     }
 }
 
