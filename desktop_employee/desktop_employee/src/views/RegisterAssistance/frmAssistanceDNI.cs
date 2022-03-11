@@ -33,6 +33,7 @@ namespace desktop_employee.src.views.RegisterAssistance
 
         private void frmAssistanceDNI_Load(object sender, EventArgs e)
         {
+            ultimosRegistros = crearTablaRegistros();
             var urlGet = config.getUrlPort() + "/api/employeesDesktop";
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
@@ -57,6 +58,10 @@ namespace desktop_employee.src.views.RegisterAssistance
             {
                 // Handle error
             }
+            SetInfo("LISTO PARA INGRESAR EL DNI");
+            SetPrompt("Ingresa el DNI para marcar la asistencia.");
+            MostrarAzul();
+            txtDNI.Focus();
         }
 
         private DataTable crearTablaRegistros()
@@ -90,14 +95,14 @@ namespace desktop_employee.src.views.RegisterAssistance
         }
 
         private void borrarRegistrosViejos()
-        {
+        {   
             for (int i = 0; i < ultimosRegistros.Rows.Count; i++)
             {
                 if (Convert.ToInt32((DateTime.Now - Convert.ToDateTime(ultimosRegistros.Rows[i]["Hora"])).TotalMinutes) > 5)
                 {
                     ultimosRegistros.Rows[i].Delete();
                 }
-            }
+            }           
         }
 
         private string convertDateTimeToString(DateTime datetime)
@@ -117,7 +122,10 @@ namespace desktop_employee.src.views.RegisterAssistance
 
         private void SetPrompt(string prompt)
         {
-            lblPromt.Text = prompt;
+            if (activo)
+            {
+                lblPromt.Text = prompt;
+            }
         }
 
         private void MakeReport(string message)
@@ -170,12 +178,18 @@ namespace desktop_employee.src.views.RegisterAssistance
 
         private void OcultarAzul()
         {
-            iconEsperando.Visible = false;
+            if (activo)
+            {
+                iconEsperando.Visible = false;
+            }
         }
 
         private void MostrarVerde()
         {
-            iconAceptado.Visible = true;
+            if (activo)
+            {
+                iconAceptado.Visible = true;
+            }
         }
 
         private void OcultarVerde()
@@ -188,7 +202,10 @@ namespace desktop_employee.src.views.RegisterAssistance
 
         private void MostrarRojo()
         {
-            iconError.Visible = true;
+            if (activo)
+            {
+                iconError.Visible = true;
+            }
         }
 
         private void OcultarRojo()
@@ -204,13 +221,99 @@ namespace desktop_employee.src.views.RegisterAssistance
             activo = false;
         }
 
+
+        //private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+//            if (Char.IsDigit(e.KeyChar))
+//            {
+//                e.Handled = false;
+//            }
+//            else if (Char.IsControl(e.KeyChar))
+//            {
+//                e.Handled = false;
+//            }
+//            else if (Char.IsSeparator(e.KeyChar))
+//{
+//    e.Handled = false;
+//}
+//else if (e.KeyChar == (char)32)
+//{
+//    e.Handled = false;
+//}
+//else
+//{
+//    e.Handled = true;
+//}
+//}
+
+private void errorHuella(string report1)
+        {
+            MakeReport(report1);
+            MostrarRojo();
+            OcultarAzul();
+            for (int i = 5; i >= 1; i--)
+            {
+                SetInfo("Espere " + i + " segundos para ingresar en siguiente DNI.");
+                Thread.Sleep(1000);
+            }
+            SetInfo("LISTO PARA INGRESAR EL DNI");
+            MakeReport("Ingrese el siguiente DNI.");
+            SetHoraEntrada("--/--/---- --:--:--");
+            SetHoraSalida("--/--/---- --:--:--");
+            SetEmployee("");
+            OcultarRojo();
+            MostrarAzul();
+        }
+
+        private void txtDNI_TextChanged(object sender, EventArgs e)
+        {
+            //controlamos la longitud del dni
+               dniEmpleado = txtDNI.Text.Replace(" ", string.Empty);
+            if (dniEmpleado.Length == 8)
+            {
+                btnRegistrarAsistencia.Enabled = true;
+                btnRegistrarAsistencia.BackgroundColor = ColorTranslator.FromHtml("#383c77");
+                btnRegistrarAsistencia.TextColor = Color.White;
+            }
+            else
+            {
+                btnRegistrarAsistencia.Enabled = false;
+                btnRegistrarAsistencia.BackgroundColor = Color.White;
+                btnRegistrarAsistencia.TextColor = Color.Black;
+            }
+        }
+
+        private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if (Char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if (Char.IsSeparator(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if (e.KeyChar == (char)32)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
         private async void btnRegistrarAsistencia_ClickAsync(object sender, EventArgs e)
         {
             seVerifico = false;
             esRepetido = false;
             for (int i = 0; i < datosDNIs.Count; i++)
             {
-                if (datosDNIs[i].DNI == Convert.ToInt32(dniEmpleado))
+                if (Convert.ToInt32(datosDNIs[i].DNI) == Convert.ToInt32(dniEmpleado))
                 {
                     borrarRegistrosViejos();
                     if (empleadoRepetido(Convert.ToInt32(datosDNIs[i].DNI)))
@@ -257,7 +360,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                             // Handle error
                         }
                         mostrarNombre(Convert.ToString(datosDNIs[i].NOMBRE), Convert.ToString(datosDNIs[i].APELLIDO));
-                        errorHuella("La huella fue ingresada en los últimos 5 minutos.");
+                        errorHuella("El DNI fue ingresado en los últimos 5 minutos.");
                         esRepetido = true;
                         break;
                     }
@@ -308,15 +411,15 @@ namespace desktop_employee.src.views.RegisterAssistance
                                             SetHoraSalida(Convert.ToString(horaSalida));
                                         }
 
-                                        MostrarVerde();
                                         OcultarAzul();
-
+                                        MostrarVerde();
+                                        
                                         for (int j = 5; j >= 1; j--)
                                         {
-                                            SetInfo("Espere " + j + " segundos para ingresar la siguiente huella.");
+                                            SetInfo("Espere " + j + " segundos para ingresar el siguiente DNI.");
                                             Thread.Sleep(1000);
                                         }
-                                        SetInfo("LISTO PARA COLOCAR DEDO");
+                                        SetInfo("LISTO PARA INGRESAR EL DNI");
 
                                         cargarRegistros(Convert.ToInt32(datosDNIs[i].DNI), timeInOut);
 
@@ -326,7 +429,7 @@ namespace desktop_employee.src.views.RegisterAssistance
                                         SetHoraEntrada("--/--/---- --:--:--");
                                         SetHoraSalida("--/--/---- --:--:--");
                                         SetEmployee("");
-                                        MakeReport("Ingrese la siguiente huella.");
+                                        MakeReport("Ingrese el siguiente DNI.");
                                     }
                                 }
                             }
@@ -342,67 +445,10 @@ namespace desktop_employee.src.views.RegisterAssistance
             }
             if (!seVerifico && !esRepetido)
             {
-                errorHuella("La huella no coincidie con ningún empleado.");
+                errorHuella("El DNI no coincidie con ningún empleado.");
             }
+            txtDNI.Text = "";
+            txtDNI.Focus();
         }
-
-        private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else if (Char.IsControl(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else if (Char.IsSeparator(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else if (e.KeyChar == (char)32)
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
-
-            // controlamos la longitud del dni
-            dniEmpleado = txtDNI.Text.Replace(" ", String.Empty);
-            if (dniEmpleado.Length == 7)
-            {
-                btnRegistrarAsistencia.Enabled = true;
-                btnRegistrarAsistencia.BackgroundColor = ColorTranslator.FromHtml("#383C77");
-                btnRegistrarAsistencia.TextColor = Color.White;
-            }
-            else
-            {
-                btnRegistrarAsistencia.Enabled = false;
-                btnRegistrarAsistencia.BackgroundColor = Color.White;
-                btnRegistrarAsistencia.TextColor = Color.Black;
-            }
-        }
-
-        private void errorHuella(string report1)
-        {
-            MakeReport(report1);
-            MostrarRojo();
-            OcultarAzul();
-            for (int i = 5; i >= 1; i--)
-            {
-                SetInfo("Espere " + i + " segundos para ingresar la siguiente huella.");
-                Thread.Sleep(1000);
-            }
-            SetInfo("LISTO PARA COLOCAR DEDO");
-            MakeReport("Ingrese la siguiente huella.");
-            SetHoraEntrada("--/--/---- --:--:--");
-            SetHoraSalida("--/--/---- --:--:--");
-            SetEmployee("");
-            OcultarRojo();
-            MostrarAzul();
-        }
-
     }
 }
