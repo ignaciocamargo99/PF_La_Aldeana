@@ -6,7 +6,7 @@ import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faTemperatureLow, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
@@ -85,6 +85,7 @@ const FormSalary = (props) => {
                         let plus = [];
                         let minus = [];
                         aux.forEach((detail)=>{
+                            detail.price = detail.amount;
                             if (detail.id_concept > 5) {
                                 if (detail.positive === 0) minus.push(detail);
                                 else plus.push(detail);
@@ -108,6 +109,7 @@ const FormSalary = (props) => {
                 response.data.forEach((nWD) => {
                     newNonworkingDays.push({day: nWD.dia, month: (nWD.mes - 1)})
                 })
+                setShowSpinner(true);
                 Axios.get(`${PORT()}/api/hsWorked?monthYear=${props.month}&dni=${employee.dni}&nonWorkingDays=${JSON.stringify(newNonworkingDays)}`)
                     .then((response) => {
                         if (response.data.Ok === false) console.log(response.data);
@@ -121,6 +123,7 @@ const FormSalary = (props) => {
                             ];
                             setMain(aux);
                             setShowSpinner(false);
+                            nroRef.current.focus();
                         }
                     });
             })
@@ -182,14 +185,20 @@ const FormSalary = (props) => {
                                 warningMessage("Error", `${res.data.Message}`, "error");
                             }
                         })
-                        .catch((e) => console.error(e))   
+                        .catch((e) => {
+                            setShowSpinner(false);
+                            warningMessage("Error", `${e}`, "error");
+                        })
                 }
                 else {
                     setShowSpinner(false);
                     warningMessage("Error", `${response.data.Message}`, "error");
                 }
             })
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                setShowSpinner(false);
+                warningMessage("Error", `${error}`, "error");
+            })
         } else {
             Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
@@ -200,7 +209,10 @@ const FormSalary = (props) => {
                         warningMessage("Error", `${res.data.Message}`, "error");
                     }
                 })
-                .catch((e) => console.error(e))   
+                .catch((e) => {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${e}`, "error");
+                }) 
             }
     }
 
@@ -215,7 +227,10 @@ const FormSalary = (props) => {
                 warningMessage("Error", `${res.data.Message}`, "error");
             }
         })
-        .catch((e) => console.error(e))   
+        .catch((error) => {
+            setShowSpinner(false);
+            warningMessage("Error", `${error}`, "error");
+        })
     }
 
     const editSalary = () => {
@@ -227,13 +242,17 @@ const FormSalary = (props) => {
                     Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            if (res.data.Ok && res.data.Ok !== false) comeBack(false);
+                            console.log(res.data)
+                            if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                             else {
                                 setShowSpinner(false);
                                 warningMessage("Error", `${res.data.Message}`, "error");
                             }
                         })
-                        .catch((e) => console.error(e))   
+                        .catch((e) => {
+                            setShowSpinner(false);
+                            warningMessage("Error", `${e}`, "error");
+                        })
                 }
                 else {
                     setShowSpinner(false);
@@ -245,10 +264,13 @@ const FormSalary = (props) => {
             Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
                 .then((res) => {
-                    if (res.data.Ok && res.data.Ok !== false) comeBack(false);
+                    if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                     else warningMessage("Error", `${res.data.Message}`, "error");
                 })
-                .catch((e) => console.error(e))   
+                .catch((e) => {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${e}`, "error");
+                }) 
             }
     }
     
@@ -257,7 +279,6 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se ha confirmado el salario correctamente','success');
             props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
-            setNro(nro + 1);
             setEmployee(employees[nro + 1]);
             setOthersPlus([]);
             setOthersMinus([]);
@@ -268,10 +289,9 @@ const FormSalary = (props) => {
                 {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0},
                 {id: 'F', name: 'Hs. Franco', hs: 1, price: 0}
             ]);
-            setShowSpinner(false);
-            nroRef.current.focus();
+            setNro(nro + 1);
         } else {
-            warningMessage('Atención','Se han generado todas los salarios correctamente','success');
+            //warningMessage('Atención','Se han generado todas los salarios correctamente','success');
             props.setReloadList(!props.reloadList);
             props.setActionSalary('Listar',null);
             window.location.replace('/app/salary');
@@ -299,7 +319,7 @@ const FormSalary = (props) => {
     }
 
     const addPrice = (j, e, t) => {
-        if (e.target.value <= 0) setErrorPrice(true);
+        if (e.target.value <= 0 || e.target.value.length <= 0) setErrorPrice(true);
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
@@ -381,7 +401,7 @@ const FormSalary = (props) => {
         let flagN = false;
 
         main?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -391,7 +411,7 @@ const FormSalary = (props) => {
         acuSubtotal += acuTotalHs;
 
         othersPlus?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -405,7 +425,7 @@ const FormSalary = (props) => {
         acuTotal += acuSubtotal;
 
         othersMinus?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -428,7 +448,7 @@ const FormSalary = (props) => {
         <Breadcrumb parentName="Salarios" icon={faUserFriends} parentLink="salary" currentName={`${props.action} salario`}/>
         <div style={{display: 'none'}}>{document.title = `${props.action} salario` }</div>
             <div className="viewTitleBtn">
-            <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_license + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
+            <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_salary + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
         </div>
         <div className="container" >
             <BeShowed show={showSpinner}>
@@ -517,7 +537,7 @@ const FormSalary = (props) => {
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999'  defaultValue={i.amount?i.amount:null} />
+                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999'  defaultValue={i.price?i.price:null} />
                                 </div>
                             </BeShowed>
                         </div>
@@ -565,7 +585,7 @@ const FormSalary = (props) => {
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.amount?i.amount:null} />
+                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.price?i.price:null} />
                                 </div>
                             </BeShowed>
                         </div>

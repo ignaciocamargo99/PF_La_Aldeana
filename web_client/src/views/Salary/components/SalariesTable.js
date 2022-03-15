@@ -36,11 +36,11 @@ export default function SalariesTable(props) {
                     } else  display.push(person);
                 });
                 setEmployees(display);
-                if (response.data.length === props.allSalaries.length) props.emptyNonGenerate();
+                if (response.data?.length === props.allSalaries?.length && response.data?.length > 0) props.emptyNonGenerate();
                 setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
-    }, [true]);
+    }, [true,props.reloadList]);
 
     useEffect(() => {
         if (props.salaries.length > 0){
@@ -162,7 +162,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length !== 0 && props.isValidSearch && props.filter === 'NonGenerate'}>
+            <BeShowed show={!props.showSpinner && currentElements.length !== 0 && props.filter === 'NonGenerate'}>
             <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -209,7 +209,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length === 0 && props.isValidSearch && nonConfirmLoader }>
+            <BeShowed show={!props.showSpinner && currentElements.length === 0 && nonConfirmLoader }>
                 <br/>
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>
