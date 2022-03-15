@@ -1,4 +1,4 @@
-const { permissionsGetDB, permissionsRolGetDB } = require('../db/permissionDB');
+const { permissionsGetDB, permissionsRolGetDB, viewsGetDB } = require('../db/permissionDB');
 
 const readPermissions = async () => {
     try {
@@ -20,4 +20,14 @@ const readPermissionsRol = async (rol) => {
     };
 };
 
-module.exports = { readPermissions, readPermissionsRol };
+const readViews = async () => {
+    try {
+        let res = await viewsGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    };
+};
+
+module.exports = { readPermissions, readPermissionsRol, readViews };

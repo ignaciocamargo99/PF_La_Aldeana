@@ -33,4 +33,20 @@ const permissionsRolGetDB = (rol) => {
     });
 };
 
-module.exports = { permissionsGetDB, permissionsRolGetDB };
+const viewsGetDB = () => {
+    const sqlSelect = 'SELECT * FROM PERMISSIONS';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { permissionsGetDB, permissionsRolGetDB, viewsGetDB };

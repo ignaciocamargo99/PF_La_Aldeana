@@ -183,6 +183,24 @@ export default function Navbar(props) {
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
+        };
+
+        const permission = permissions.find(option => option === "Permisos")
+        let permissionsAdministrator;
+        if(permission === "Permisos"){
+            permissionsAdministrator = 
+            <li>
+                <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Permisos
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/permissions">
+                                <FontAwesomeIcon icon={faList} /> Ver permisos
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+            </li>
         }
 
         return (
@@ -193,6 +211,7 @@ export default function Navbar(props) {
                 {sales}
                 {purchases}
                 {employees}
+                {permissionsAdministrator}
             </>
         )
     };

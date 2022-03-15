@@ -1,4 +1,4 @@
-const { readPermissions, readPermissionsRol } = require('../services/permissionService');
+const { readPermissions, readPermissionsRol, readViews } = require('../services/permissionService');
 
 // HTTP: GET
 async function getPermissions(req, res) {
@@ -28,4 +28,18 @@ async function getPermissionsRol(req, res) {
     }
 }
 
-module.exports = { getPermissions, getPermissionsRol };
+// HTTP: GET
+async function getViews(req, res) {
+    try {
+        const result = await readViews();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+module.exports = { getPermissions, getPermissionsRol, getViews };

@@ -4,14 +4,14 @@ CREATE TABLE IF NOT EXISTS `ACCESSES` (
     PRIMARY KEY (`id_access`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
--- INSERT INTO
---     `DB_CHANGES`
--- VALUES
---     (
---         066,
---         'Create table',
---         'Tabla de accesos de lectura, escritura, edición y eliminación.'
---     );
+INSERT INTO
+    `DB_CHANGES`
+VALUES
+    (
+        066,
+        'Create table',
+        'Tabla de accesos de lectura, escritura, edición y eliminación.'
+    );
     
     
     
