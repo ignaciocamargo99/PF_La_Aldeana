@@ -1,11 +1,12 @@
 import Axios from "axios";
+import formattedDate from '../../../utils/formattedDate';
 import { useEffect, useRef, useState } from "react";
 import Buttons from '../../../common/Buttons';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faTemperatureLow, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
@@ -84,6 +85,7 @@ const FormSalary = (props) => {
                         let plus = [];
                         let minus = [];
                         aux.forEach((detail)=>{
+                            detail.price = detail.amount;
                             if (detail.id_concept > 5) {
                                 if (detail.positive === 0) minus.push(detail);
                                 else plus.push(detail);
@@ -107,6 +109,7 @@ const FormSalary = (props) => {
                 response.data.forEach((nWD) => {
                     newNonworkingDays.push({day: nWD.dia, month: (nWD.mes - 1)})
                 })
+                setShowSpinner(true);
                 Axios.get(`${PORT()}/api/hsWorked?monthYear=${props.month}&dni=${employee.dni}&nonWorkingDays=${JSON.stringify(newNonworkingDays)}`)
                     .then((response) => {
                         if (response.data.Ok === false) console.log(response.data);
@@ -120,6 +123,7 @@ const FormSalary = (props) => {
                             ];
                             setMain(aux);
                             setShowSpinner(false);
+                            nroRef.current.focus();
                         }
                     });
             })
@@ -181,14 +185,20 @@ const FormSalary = (props) => {
                                 warningMessage("Error", `${res.data.Message}`, "error");
                             }
                         })
-                        .catch((e) => console.error(e))   
+                        .catch((e) => {
+                            setShowSpinner(false);
+                            warningMessage("Error", `${e}`, "error");
+                        })
                 }
                 else {
                     setShowSpinner(false);
                     warningMessage("Error", `${response.data.Message}`, "error");
                 }
             })
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                setShowSpinner(false);
+                warningMessage("Error", `${error}`, "error");
+            })
         } else {
             Axios.post(`${PORT()}/api/salaries`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
@@ -199,7 +209,10 @@ const FormSalary = (props) => {
                         warningMessage("Error", `${res.data.Message}`, "error");
                     }
                 })
-                .catch((e) => console.error(e))   
+                .catch((e) => {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${e}`, "error");
+                }) 
             }
     }
 
@@ -214,7 +227,10 @@ const FormSalary = (props) => {
                 warningMessage("Error", `${res.data.Message}`, "error");
             }
         })
-        .catch((e) => console.error(e))   
+        .catch((error) => {
+            setShowSpinner(false);
+            warningMessage("Error", `${error}`, "error");
+        })
     }
 
     const editSalary = () => {
@@ -226,13 +242,17 @@ const FormSalary = (props) => {
                     Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            if (res.data.Ok && res.data.Ok !== false) comeBack(false);
+                            console.log(res.data)
+                            if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                             else {
                                 setShowSpinner(false);
                                 warningMessage("Error", `${res.data.Message}`, "error");
                             }
                         })
-                        .catch((e) => console.error(e))   
+                        .catch((e) => {
+                            setShowSpinner(false);
+                            warningMessage("Error", `${e}`, "error");
+                        })
                 }
                 else {
                     setShowSpinner(false);
@@ -244,10 +264,13 @@ const FormSalary = (props) => {
             Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                     "dni":employee.dni, "monthYear": props.month, "state": 2})
                 .then((res) => {
-                    if (res.data.Ok && res.data.Ok !== false) comeBack(false);
+                    if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                     else warningMessage("Error", `${res.data.Message}`, "error");
                 })
-                .catch((e) => console.error(e))   
+                .catch((e) => {
+                    setShowSpinner(false);
+                    warningMessage("Error", `${e}`, "error");
+                }) 
             }
     }
     
@@ -256,12 +279,19 @@ const FormSalary = (props) => {
             warningMessage('Atención','Se ha confirmado el salario correctamente','success');
             props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
-            setNro(nro + 1);
             setEmployee(employees[nro + 1]);
-            setShowSpinner(false);
-            nroRef.current.focus();
+            setOthersPlus([]);
+            setOthersMinus([]);
+            setMain([
+                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: 0},
+                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: 0},
+                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: 0},
+                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0},
+                {id: 'F', name: 'Hs. Franco', hs: 1, price: 0}
+            ]);
+            setNro(nro + 1);
         } else {
-            warningMessage('Atención','Se han generado todas los salarios correctamente','success');
+            //warningMessage('Atención','Se han generado todas los salarios correctamente','success');
             props.setReloadList(!props.reloadList);
             props.setActionSalary('Listar',null);
             window.location.replace('/app/salary');
@@ -272,8 +302,7 @@ const FormSalary = (props) => {
         if(msg){
             warningMessage('Atención','Se ha editado el salario correctamente','success');
         }
-        props.setActionSalary('Listar',null);
-        window.location.replace('/app/salary');
+        props.setActionSalary('Listar',{month: formattedDate(new Date()), employee: 0});
     }
 
     const actionNotOK = () =>{
@@ -290,7 +319,7 @@ const FormSalary = (props) => {
     }
 
     const addPrice = (j, e, t) => {
-        if (e.target.value <= 0) setErrorPrice(true);
+        if (e.target.value <= 0 || e.target.value.length <= 0) setErrorPrice(true);
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
@@ -372,7 +401,7 @@ const FormSalary = (props) => {
         let flagN = false;
 
         main?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -382,7 +411,7 @@ const FormSalary = (props) => {
         acuSubtotal += acuTotalHs;
 
         othersPlus?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -396,7 +425,7 @@ const FormSalary = (props) => {
         acuTotal += acuSubtotal;
 
         othersMinus?.forEach(i => {
-            if (i.price < 1) {
+            if (i.price < 1 || i.price.toString() == 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -419,7 +448,7 @@ const FormSalary = (props) => {
         <Breadcrumb parentName="Salarios" icon={faUserFriends} parentLink="salary" currentName={`${props.action} salario`}/>
         <div style={{display: 'none'}}>{document.title = `${props.action} salario` }</div>
             <div className="viewTitleBtn">
-            <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_license + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
+            <h1>{props.action} salario: {props.action!=="Registrar"?props.salary?.id_salary + ' - ' + props.salary?.name + ' ' + props.salary?.last_name:''}</h1>
         </div>
         <div className="container" >
             <BeShowed show={showSpinner}>
@@ -446,13 +475,12 @@ const FormSalary = (props) => {
                         <label style={{paddingLeft: '1em'}}>Horas</label>
                     </div>
                     <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
-                        <label style={{paddingLeft: '1em'}}>Precio X Hs.</label>
+                        <label style={{paddingLeft: '1em'}}>Precio X Hs. ($)</label>
                     </div>
                     <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em'}}>Subtotal</label>
                     </div>
                 </div>
-
                 {main?.map(i => {
                     return(
                         <div className="formRow justify-content-center">
@@ -481,10 +509,18 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <div className="formRow justify-content-center">
+                    <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
+                    </div>
+                    <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Precio ($)</label>
+                    </div>
+                </div>
                 {othersPlus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0}>
+                            <BeShowed show={((props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0) || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -492,24 +528,26 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' : false) || n !== 0}>
+                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' ? true : n !== 0 : true) && props.action !== "Ver"}>
                                 <div className="col-sm-1">
                                     <button style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherPlus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 1)} />
+                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherPlus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 1)} defaultValue={i.name?i.name:null} />
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' />
+                                    onChange={(e) => addPrice(i, e, 1)} min='0' max='999999'  defaultValue={i.price?i.price:null} />
                                 </div>
                             </BeShowed>
                         </div>
                     )
                 })}
-                <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                    <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Adicional</button>
-                </div>
+                <BeShowed show={props.action !== "Ver"}>
+                    <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Adicional</button>
+                    </div>
+                </BeShowed>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px', text: 'bold'}}>
                         <label style={{paddingLeft: '1em', fontWeight: 'bold'}}>Subtotal</label>
@@ -519,10 +557,18 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <div className="formRow justify-content-center">
+                    <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
+                    </div>
+                    <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <label style={{paddingLeft: '1em'}}>Precio ($)</label>
+                    </div>
+                </div>
                 {othersMinus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={advances.length > 0 && n === 0}>
+                            <BeShowed show={(advances.length > 0 && n === 0) || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -530,24 +576,26 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={advances.length === 0 || n !== 0}>
+                            <BeShowed show={(advances.length === 0 || n !== 0) && props.action !== "Ver"}>
                                 <div className="col-sm-1" >
                                     <button style={{marginRight: '0em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherMinus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} />
+                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherMinus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} defaultValue={i.name?i.name:null} />
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' />
+                                    onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.price?i.price:null} />
                                 </div>
                             </BeShowed>
                         </div>
                     )
                 })}
-                <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                    <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Descuento</button>
-                </div>
+                <BeShowed show={props.action !== "Ver"}>
+                    <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
+                        <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Descuento</button>
+                    </div>
+                </BeShowed>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em', fontWeight: 'bold'}}>Total a cobrar</label>
@@ -558,11 +606,11 @@ const FormSalary = (props) => {
                 </div>
                 <BeShowed show={props.action === 'Registrar'}>   
                     <Buttons ready={(!errorName && !errorPrice)}
-                        label='Confirmar' labelCancel='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionCancel={() => {jump()}}/>
+                        label='Confirmar' labelJump='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionJump={() => {jump()}} actionCancel={() => {comeBack(false)}} />
                 </BeShowed>
                 <BeShowed show={props.action === 'Editar'}>   
                     <Buttons ready={(!errorName && !errorPrice)}
-                        label='Registrar' labelCancel='Cancelar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
+                        label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => {comeBack(false)}}/>
                 </BeShowed>
                 <BeShowed show={props.action === 'Ver'}> 
                     <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>

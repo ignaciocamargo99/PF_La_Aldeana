@@ -52,16 +52,19 @@ const Salary = (props) => {
                 setShowSecondSpinner(false);
             });
         } else setShowSpinner(false);
-    },[reloadList, month, filter, isValidMonth]);
+    },[reloadList, month, filter, isValidMonth, inputMonth.current]);
 
-    const setActionSalary = (action,salary) => {
-        setAction(action);
+    const setActionSalary = (newAction,salary) => {
+        setAction(newAction);
         setSalary(salary);
+        if (newAction === "Listar"){
+            setSalaries([]);
+            setAllSalaries([]);
+            setReloadList(!reloadList);
+        }
     }
 
-    const onClickNewSalary = () => {
-        setAction('Registrar');
-    }
+    const onClickNewSalary = () => setAction('Registrar');
 
     const onChangeMonth = () => {
         if (inputMonth) {
@@ -82,10 +85,8 @@ const Salary = (props) => {
                 if (aux.length !== 10) aux = salary.month;
                 if (!inputMonth.current.value) inputMonth.current.value = aux.slice(0,-3);
                 let min = inputMonth.current.min + '-10';
-                let max = inputMonth.current.max + '-10';
 
                 if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
-                    console.log(parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) 
                     if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
                         if (salary.month !== inputMonth.current.value){
                             setIsValidMonth("form-control is-valid");
@@ -102,7 +103,9 @@ const Salary = (props) => {
                 }
             }
         }
-    }, [startMonth, month, salary]);
+    }, [startMonth, month, action]);
+
+    const setEmptyNonGenerate = () => setErrorDate(true);
 
     return(
         <>
@@ -132,9 +135,9 @@ const Salary = (props) => {
                             <BeShowed show={showSecondSpinner} >
                                 <LoaderSpinner color="primary" loading="Cargando..." />
                             </BeShowed>
-                            <BeShowed show={!showSecondSpinner} >
-                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} filter={filter} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
-                                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={inputMonth.current ? inputMonth.current.value ? true : false : false} />
+                            <BeShowed show={!showSecondSpinner && isValidMonth === "form-control is-valid"} >
+                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
+                                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={isValidMonth === "form-control is-valid" } emptyNonGenerate={setEmptyNonGenerate} />
                             </BeShowed>
                         </div>
                     </BeShowed>
