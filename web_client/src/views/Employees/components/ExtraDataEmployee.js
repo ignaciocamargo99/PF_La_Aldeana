@@ -69,6 +69,8 @@ export default function ExtraDataEmployee(props) {
     }, [date]);
 
     useEffect(() => {
+        if (props.isReadingEmployeeData) return;
+
         data.firstDayOffDate = firstDayOffDate;
         props.load(data)
     }, [firstDayOffDate]);
