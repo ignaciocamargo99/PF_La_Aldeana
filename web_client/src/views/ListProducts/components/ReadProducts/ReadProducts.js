@@ -6,8 +6,6 @@ import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 
-const PORT = require('../../../../config');
-
 const ReadProducts = ({ productToRead, onClickCancelRead }) => {
     const [data, setData] = useState(productToRead);
 

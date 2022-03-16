@@ -12,7 +12,7 @@ import Stock from './components/Stock';
 import TypeSupply from './components/TypeSupply';
 import Buttons from '../../common/Buttons';
 import validateSupplyRegister from '../../utils/Validations/validateSupplyRegister';
-import success from '../../utils/SuccessMessages/successTypeProduct';
+import successMessage from '../../utils/SuccessMessages/successMessage';
 import displayError from '../../utils/ErrorMessages/errorMessage';
 import Axios from 'axios';
 import BeShowed from '../../common/BeShowed';
@@ -84,7 +84,7 @@ const RegisterPurchaseSupplies = (props) => {
             .then(({ data }) => {
                 if (data.Ok) {
                     resetStates('El insumo se registro correctamente');
-                    success();
+                    successMessage(`Atención`, 'Insumo registrado exitosamente', 'success');
                 }
                 else {
                     displayError('Ha ocurrido un error al registrar un insumo.');

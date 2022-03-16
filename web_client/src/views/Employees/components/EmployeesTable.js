@@ -80,7 +80,7 @@ export default function EmployeesTable() {
                             <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                         </div>
                         <br />
-                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
+                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron empleados registrados hasta el momento.</h4>
                     </div>
                     : (
                         <BeShowed show={!isEditing && !isReading}>

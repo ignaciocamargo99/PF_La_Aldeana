@@ -22,10 +22,12 @@ const productionsRouter = require('./api/routes/productionRoute');
 const franchiseRouter = require('./api/routes/franchiseRoute');
 const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
-const salesReportRouter = require('./api/routes/salesReportRoute');
 const employeeAssistanceRouter = require('./api/routes/employeeAssistanceRoute')
-const employeeRouter = require('./api/routes/employeeRoute');
-const licensesRouter = require('./api/routes/licenseRoute');
+const employeeRouter = require('./api/routes/employeeRoute'); 
+const fingerPrintRouter = require('./api/routes/fingerPrintsRoute'); 
+const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute'); 
+const salesReportRouter = require('./api/routes/salesReportRoute'); 
+const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
 const dayOffRouter = require('./api/routes/dayOffRoute');
@@ -58,10 +60,12 @@ app.use('/api', chamberFlavorDispatchRouter);
 app.use('/api', productionsRouter);
 app.use('/api', clientsRouter);
 app.use('/api', employeeRouter);
+app.use('/api', fingerPrintRouter);
 app.use('/api', licensesRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', assistanceFingerRouter);
 app.use('/api', employeeAssistanceRouter)
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
