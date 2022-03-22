@@ -19,6 +19,9 @@
     <Compile Update="src\views\Employees\frmEmployees.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="src\views\Employees\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="src\views\Employees\frmValidationFingerprint.cs">
       <SubType>Form</SubType>
     </Compile>
