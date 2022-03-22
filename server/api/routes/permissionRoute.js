@@ -7,7 +7,7 @@ router.get("/permissions", permissionsController.getPermissions);
 
 router.get("/permissions/filter/:rol", permissionsController.getPermissionsRol);
 
-// router.get("/views", permissionsController.getViews)
+router.get("/views", permissionsController.getViews)
 
 //#endregion
 module.exports = router;

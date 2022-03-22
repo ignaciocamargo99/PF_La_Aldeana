@@ -1,19 +1,23 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState, useEffect } from 'react';
-// import DeleteProductButton from '../DeleteProductButton';
-// import EditProductButton from '../EditProducts/EditProductButton';
-// import ReadProductButton from "../ReadProducts/ReadProductButton";
+import Axios from 'axios';
+import CheckBoxNew from '../CheckBoxNew';
+import CheckBoxRead from "../CheckBoxRead";
+import CheckBoxEdit from "../CheckBoxEdit";
+import CheckBoxDelete from "../CheckBoxDelete";
+import CheckBoxEnabled from "../CheckBoxEnabled";
 
-const Table = ({ pageElements, columnsHeaders, handleRead }) => {
+const PORT = require('../../../../config');
 
+const Table = ({ pageElements, columnsHeaders, permission }) => {
 
     return (
         <>
             <div className="formRow">
                 <h4 className="text-secondary">Permisos para empleados:</h4>
             </div>
-            {(pageElements && pageElements.length > 0)
+            {(pageElements && pageElements.length > 0 && permission)
                 ?
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
@@ -34,24 +38,19 @@ const Table = ({ pageElements, columnsHeaders, handleRead }) => {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="checkbox" id="enabledDisabledCheckBox" />
-                                            {/* <ReadProductButton product={element} read={handleRead} /> */}
+                                            <CheckBoxEnabled pageElements={pageElements} permission={permission} index={i} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="checkbox" />
-                                            {/* <EditProductButton product={element} edit={handleEdit} /> */}
+                                            <CheckBoxNew pageElements={pageElements} permission={permission} index={i} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="checkbox" />
-                                            {/* <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} /> */}
+                                            <CheckBoxRead pageElements={pageElements} permission={permission} index={i} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="checkbox" />
-                                            {/* <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} /> */}
+                                            <CheckBoxEdit pageElements={pageElements} permission={permission} index={i} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="checkbox" />
-                                            {/* <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} /> */}
+                                            <CheckBoxDelete pageElements={pageElements} permission={permission} index={i} />
                                         </td>
                                     </tr>
                                 )

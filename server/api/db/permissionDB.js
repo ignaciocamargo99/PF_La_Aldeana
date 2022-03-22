@@ -34,7 +34,9 @@ const permissionsRolGetDB = (rol) => {
 };
 
 const viewsGetDB = () => {
-    const sqlSelect = 'SELECT * FROM PERMISSIONS';
+    const sqlSelect = `SELECT rp.*, p.name FROM ROL_X_PERMISSION rp
+                        JOIN PERMISSIONS p ON p.id_permission = rp.id_permission
+                        WHERE rp.id_rol = 2`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

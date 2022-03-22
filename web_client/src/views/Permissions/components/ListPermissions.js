@@ -7,6 +7,7 @@ const PORT = require('../../../config')
 
 export default function ListPermissions() {
     const [views, setViews] = useState();
+    const [permission, setPermission] = useState();
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
 
     useEffect(() => {
@@ -16,6 +17,10 @@ export default function ListPermissions() {
                 setViews(response.data);
             })
             .catch((error) => console.log(error));
+
+        Axios.get(PORT() + '/api/views')
+            .then((response) => setPermission(response.data))
+            .catch((error) => console.error(error));
     }, []);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
@@ -70,6 +75,7 @@ export default function ListPermissions() {
                                 <TablePagination
                                     columnsHeaders={columnsHeaders}
                                     currentElements={views}
+                                    permission={permission}
                                 // handleRead={readProduction}
                                 />
 
