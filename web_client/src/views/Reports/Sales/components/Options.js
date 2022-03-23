@@ -6,6 +6,7 @@ import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import {FaAngleRight} from 'react-icons/fa';
 import {FaFile} from 'react-icons/fa';
 import Viewer from './PDFSalesReport';
+import dateText from '../../../../utils/DateFormat/dateText';
 
 const PORT = require('../../../../config');
 
@@ -91,8 +92,7 @@ const Options = (props) => {
     }
 
     const showRenderPDF = () => {
-        //ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
-        setShowPDF(true); //ReactPDF.renderToStream(<MyDocument />);
+        setShowPDF(true); 
     }
 
     const cancel = () => {
@@ -116,7 +116,7 @@ const Options = (props) => {
     const handlerLoader = () => props.setLoad(props.load + 1);
 
     const inputDescriptionReport = useRef();
-    const [description, setDescription] = useState("null");
+    const [description, setDescription] = useState(null);
 
     const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
@@ -156,7 +156,7 @@ const Options = (props) => {
                     onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                 </div>
             </div>
-            <Viewer showPdf={showPdf} cancel={cancel} description={!description ? 'SinDescripción' : description} ></Viewer>
+            <Viewer showPdf={showPdf} cancel={cancel} description={" (" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ") - " + (!description ? 'Sin Descripción' : description)} ></Viewer>
         </>
     );
 }
