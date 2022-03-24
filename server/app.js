@@ -29,6 +29,7 @@ const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute');
 const salesReportRouter = require('./api/routes/salesReportRoute'); 
 const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
+const nonWorkingDayRouter = require('./api/routes/nonWorkingDayRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
 
 app.use(cors());
@@ -67,6 +68,7 @@ app.use('/api', salesReportRouter);
 app.use('/api', assistanceFingerRouter);
 app.use('/api', employeeAssistanceRouter)
 app.use('/api', advancesRouter);
+app.use('/api', nonWorkingDayRouter);
 app.use('/api', serviceTestRoute);
 
 app.use(middleware.error404);
