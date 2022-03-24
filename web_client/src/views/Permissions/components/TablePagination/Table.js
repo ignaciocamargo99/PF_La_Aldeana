@@ -1,16 +1,13 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState, useEffect } from 'react';
-import Axios from 'axios';
+import React, { useState } from 'react';
+import CheckBoxDelete from "../CheckBoxDelete";
+import CheckBoxEdit from "../CheckBoxEdit";
+import CheckBoxEnabled from "../CheckBoxEnabled";
 import CheckBoxNew from '../CheckBoxNew';
 import CheckBoxRead from "../CheckBoxRead";
-import CheckBoxEdit from "../CheckBoxEdit";
-import CheckBoxDelete from "../CheckBoxDelete";
-import CheckBoxEnabled from "../CheckBoxEnabled";
 
 const PORT = require('../../../../config');
 
-const Table = ({ pageElements, columnsHeaders, permission }) => {
+const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
 
     const [enabledDisabled, setEnabledDisabled] = useState();
     let checkEnabledDisabled = [];
@@ -21,8 +18,12 @@ const Table = ({ pageElements, columnsHeaders, permission }) => {
 
     return (
         <>
-            <div className="formRow">
+            <div className="formRow title-searcher">
                 <h4 className="text-secondary">Permisos para empleados:</h4>
+                <div className="search-input">
+                    <button className='sendOk'>Confirmar</button>
+                    <button className='cancel' onClick={cancelChanges}>Cancelar</button>
+                </div>
             </div>
             {(pageElements && pageElements.length > 0 && permission)
                 ?

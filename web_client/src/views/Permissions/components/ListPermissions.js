@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import TablePagination from './TablePagination/TablePagination';
 
@@ -23,8 +23,10 @@ export default function ListPermissions() {
         Axios.get(PORT() + '/api/views')
             .then((response) => setPermission(response.data))
             .catch((error) => console.error(error));
-    }, [])
+    }, []);
 
+    const cancelChanges = () => window.location.reload();
+    
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     const columnsHeaders = [
@@ -62,7 +64,6 @@ export default function ListPermissions() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Permisos</h1>
-                            {/* <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button> */}
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron pantallas para administrar los permisos...</h4>
@@ -71,14 +72,13 @@ export default function ListPermissions() {
                         <>
                             <div className="viewTitleBtn">
                                 <h1>Permisos</h1>
-                                {/* <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button> */}
                             </div>
                             <div className="viewBody">
                                 <TablePagination
                                     columnsHeaders={columnsHeaders}
                                     currentElements={views}
                                     permission={permission}
-                                // handleRead={readProduction}
+                                    cancelChanges = {cancelChanges}
                                 />
 
                             </div>
