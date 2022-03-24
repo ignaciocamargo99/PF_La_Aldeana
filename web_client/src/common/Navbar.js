@@ -87,6 +87,9 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/productions">
                                 <FontAwesomeIcon icon={faList} /> Ver producciones
                             </Dropdown.Item>
+                            <Dropdown.Item href="/app/flavors">
+                                <FontAwesomeIcon icon={faList} /> Ver sabores
+                            </Dropdown.Item>
                             <Dropdown.Item href="/app/production">
                                 <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva producción
                             </Dropdown.Item>
