@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnEntrar = new desktop_employee.src.utils.Botones.CustomButton();
             this.btnCancelar = new desktop_employee.src.utils.Botones.CustomButton();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtUser
@@ -85,7 +86,7 @@
             this.btnEntrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEntrar.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnEntrar.ForeColor = System.Drawing.Color.White;
-            this.btnEntrar.Location = new System.Drawing.Point(41, 211);
+            this.btnEntrar.Location = new System.Drawing.Point(41, 225);
             this.btnEntrar.Name = "btnEntrar";
             this.btnEntrar.Size = new System.Drawing.Size(127, 48);
             this.btnEntrar.TabIndex = 6;
@@ -106,7 +107,7 @@
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(186, 211);
+            this.btnCancelar.Location = new System.Drawing.Point(186, 225);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(127, 48);
             this.btnCancelar.TabIndex = 7;
@@ -115,12 +116,25 @@
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
+            // lblInfo
+            // 
+            this.lblInfo.AutoSize = true;
+            this.lblInfo.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInfo.ForeColor = System.Drawing.Color.Red;
+            this.lblInfo.Location = new System.Drawing.Point(42, 186);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(226, 21);
+            this.lblInfo.TabIndex = 8;
+            this.lblInfo.Text = "* Usuario o contraseña incorrectas.";
+            this.lblInfo.Visible = false;
+            // 
             // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(222)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(341, 295);
+            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnEntrar);
             this.Controls.Add(this.label2);
@@ -144,5 +158,6 @@
         private System.Windows.Forms.Label label2;
         private utils.Botones.CustomButton btnEntrar;
         private utils.Botones.CustomButton btnCancelar;
+        private System.Windows.Forms.Label lblInfo;
     }
 }

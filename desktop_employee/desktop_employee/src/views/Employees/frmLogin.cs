@@ -26,7 +26,8 @@ namespace desktop_employee.src.views.Employees
         private void btnEntrar_Click(object sender, EventArgs e)
         {
             login();
-            this.Close();
+            if (isLogIn) this.Close();
+            else lblInfo.Visible = true;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -36,7 +37,7 @@ namespace desktop_employee.src.views.Employees
 
         private void login()
         {
-            isLogIn = true;
+            isLogIn = false;
             //try
             //{
             //    //Login login = new()
@@ -45,7 +46,7 @@ namespace desktop_employee.src.views.Employees
             //    //    password = txtPassword.Text,
             //    //};
             //    //oReply = await Consumer.Execute<Login>(config.getUrlPort() + "/api/loginDesktop", methodHttp.POST, login);        
-                
+
             //}
             //catch (Exception ex)
             //{

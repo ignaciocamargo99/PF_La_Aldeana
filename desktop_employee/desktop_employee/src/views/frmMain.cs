@@ -96,7 +96,7 @@ namespace desktop_employee
         private void ibtnEmpleados_Click(object sender, EventArgs e)
         {
             frmLogin login = new();
-            login.Show();
+            login.ShowDialog();
             isLoginOK = login.isLogin();
             // se esta ejecutando primero el if, osea no espera al que se aprete aceptar en login
             if (isLoginOK)
