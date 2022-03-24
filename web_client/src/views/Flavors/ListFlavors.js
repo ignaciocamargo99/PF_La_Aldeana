@@ -16,10 +16,12 @@ const ListFlavors = () => {
                     <div className="viewTitleBtn">
                         <h1>Sabores</h1>
                     </div>
+                    <div className="viewBody">
                     <ListFlavorsTable
                         flavors={activeFlavors}
-                    >
+                        >
                     </ListFlavorsTable>
+                        </div>
                 </>
             }
         </>

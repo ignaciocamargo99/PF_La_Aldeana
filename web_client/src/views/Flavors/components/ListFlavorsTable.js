@@ -16,7 +16,27 @@ const ListFlavorsTable = ({ flavors }) => {
         const columnsHeaders = [
             {
                 name: 'Nombre',
-                width: '70%'
+                width: '15%'
+            },
+            {
+                name: 'Familia',
+                width: '15%'
+            },
+            {
+                name: 'Tipo',
+                width: '10%'
+            },
+            {
+                name: 'Stock',
+                width: '10%'
+            },
+            {
+                name: 'Stock de Reorden',
+                width: '10%'
+            },
+            {
+                name: 'Precio',
+                width: '10%'
             },
             {
                 name: 'Ver',

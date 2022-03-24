@@ -25,6 +25,21 @@ const FlavorsTable = ({ pageElements, columnsHeaders, handleRead, handleEdit, ha
                                     {element.name}
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {element.FlavorFamily.name}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {element.FlavorType.name}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {element.stock}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {element.reorderStock}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    {element.price}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     <ReadFlavorButton />
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
