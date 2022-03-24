@@ -1,4 +1,7 @@
-const pool = require('../../config/connection'); 
+const pool = require('../../config/connection');
+const Flavor = require('../database/models/flavor');
+const FlavorFamily = require('../database/models/flavorFamily');
+const FlavorType = require('../database/models/flavorType');
 
 const flavorsGetDB = () => {
     const sqlSelect = 'SELECT f.id_flavor AS id_flavor, f.name AS name, f.family_flavor AS family_flavor, ff.name AS name_family_flavor, '+
@@ -21,6 +24,15 @@ const flavorsGetDB = () => {
     });
 };
 
+const getFlavorsDBByActiveState = (onlyActiveFlavors) => {
+    return Flavor.findAll({
+        where: {
+            active: onlyActiveFlavors
+        },
+        include: [FlavorFamily, FlavorType]
+    });
+};
+
 const typeFlavorGetDB = () => {
     const sqlSelect = 'SELECT id_type_flavor, name, description FROM FLAVOR_TYPES';
 
@@ -37,4 +49,4 @@ const typeFlavorGetDB = () => {
     });
 };
 
-module.exports = { flavorsGetDB, typeFlavorGetDB };
+module.exports = { flavorsGetDB, typeFlavorGetDB, getFlavorsDBByActiveState };

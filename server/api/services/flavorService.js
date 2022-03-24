@@ -1,4 +1,4 @@
-const { flavorsGetDB, typeFlavorGetDB } = require('../db/flavorDb');
+const { flavorsGetDB, typeFlavorGetDB, getFlavorsDBByActiveState } = require('../db/flavorDb');
 
 const readFlavor = async () => {
     try {
@@ -8,7 +8,17 @@ const readFlavor = async () => {
     catch (error) {
         throw Error(error)
     };
-}; 
+};
+
+const searchFlavorsByActiveState = async (onlyActiveFlavors) => {
+    try {
+        let res = await getFlavorsDBByActiveState(onlyActiveFlavors);
+        return res;
+    }
+    catch (error) {
+        throw Error(error)
+    };
+};
 
 const readTypeFlavor = async () => {
     try {
@@ -20,4 +30,4 @@ const readTypeFlavor = async () => {
     };
 };
 
-module.exports = { readFlavor, readTypeFlavor };
+module.exports = { readFlavor, readTypeFlavor, searchFlavorsByActiveState };
