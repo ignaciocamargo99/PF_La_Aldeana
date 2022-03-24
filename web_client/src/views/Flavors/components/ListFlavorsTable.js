@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetActiveFlavors } from '../../../hooks/useGetActiveFlavors';
+import FlavorsTablePagination from './FlavorsTablePagination';
 
 const ListFlavorsTable = ({ flavors }) => {
 
@@ -13,10 +13,31 @@ const ListFlavorsTable = ({ flavors }) => {
         )
     }
     else {
+        const columnsHeaders = [
+            {
+                name: 'Nombre',
+                width: '70%'
+            },
+            {
+                name: 'Ver',
+                width: '10%'
+            },
+            {
+                name: 'Editar',
+                width: '10%'
+            },
+            {
+                name: 'Eliminar',
+                width: '10%'
+            }
+        ];
+
         return (
-            < h4 className="row justify-content-center">
-                En desarrollo...
-            </h4 >
+            <FlavorsTablePagination
+                columnsHeaders={columnsHeaders}
+                currentElements={flavors}
+            >
+            </FlavorsTablePagination>
         )
     }
 };

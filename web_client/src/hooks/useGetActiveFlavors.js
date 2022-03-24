@@ -8,9 +8,9 @@ export const useGetActiveFlavors = () => {
     });
 
     useEffect(() => {
-        getActiveFlavors().then((flavors) => {
+        getActiveFlavors().then(({ Ok, Data }) => {
             setstate({
-                activeFlavors: flavors,
+                activeFlavors: Data,
                 loadingFlavors: false,
             });
         })
