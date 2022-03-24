@@ -15,6 +15,7 @@ namespace desktop_employee.src.views.Employees
     {
         Reply oReply = new Reply();
         config config = new();
+        bool isLogIn = false;
         dynamic responseLogin;
 
         public frmLogin()
@@ -24,29 +25,37 @@ namespace desktop_employee.src.views.Employees
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-
+            login();
+            this.Close();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
-        private async void login()
+        private void login()
         {
-            try
-            {
-                Login login = new()
-                {
-                    user = txtUser.Text,
-                    password = txtPassword.Text,
-                };
-                oReply = await Consumer.Execute<Login>(config.getUrlPort() + "/api/loginDesktop", methodHttp.POST, login);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            isLogIn = true;
+            //try
+            //{
+            //    //Login login = new()
+            //    //{
+            //    //    user = txtUser.Text,
+            //    //    password = txtPassword.Text,
+            //    //};
+            //    //oReply = await Consumer.Execute<Login>(config.getUrlPort() + "/api/loginDesktop", methodHttp.POST, login);        
+                
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+        }
+
+        public bool isLogin()
+        {
+            return isLogIn;
         }
     }
 }

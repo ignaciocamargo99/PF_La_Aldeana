@@ -44,7 +44,7 @@ const getUserDB = (user) => {
     })
 }
 
-
+ 
 const loginDesktop = (login) => {
     const {user, password} = login;
 
@@ -60,7 +60,8 @@ const loginDesktop = (login) => {
 
                 // comparar las claves y devolver true o false
                 const compare = bcryptjs.compareSync(password, result.password)
-                resolve(result);
+                if (compare) resolve(true);
+                else resolve(false);
             });
 
             db.release();
@@ -68,4 +69,4 @@ const loginDesktop = (login) => {
     })
 }
 
-module.exports = { logInDB, getUserDB }
+module.exports = { logInDB, getUserDB, loginDesktop }
