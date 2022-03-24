@@ -12,6 +12,13 @@ const PORT = require('../../../../config');
 
 const Table = ({ pageElements, columnsHeaders, permission }) => {
 
+    const [enabledDisabled, setEnabledDisabled] = useState();
+    let checkEnabledDisabled = [];
+
+    const load = (childData) => {
+        setEnabledDisabled(childData);
+    }
+
     return (
         <>
             <div className="formRow">
@@ -38,19 +45,24 @@ const Table = ({ pageElements, columnsHeaders, permission }) => {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxEnabled pageElements={pageElements} permission={permission} index={i} />
+                                            <CheckBoxEnabled pageElements={pageElements} permission={permission} index={i} load={load}
+                                                valueCheck={checkEnabledDisabled} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxNew pageElements={pageElements} permission={permission} index={i} />
+                                            <CheckBoxNew pageElements={pageElements} permission={permission} index={i}
+                                                valueCheck={enabledDisabled} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxRead pageElements={pageElements} permission={permission} index={i} />
+                                            <CheckBoxRead pageElements={pageElements} permission={permission} index={i}
+                                                valueCheck={enabledDisabled} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxEdit pageElements={pageElements} permission={permission} index={i} />
+                                            <CheckBoxEdit pageElements={pageElements} permission={permission} index={i}
+                                                valueCheck={enabledDisabled} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxDelete pageElements={pageElements} permission={permission} index={i} />
+                                            <CheckBoxDelete pageElements={pageElements} permission={permission} index={i}
+                                                valueCheck={enabledDisabled} />
                                         </td>
                                     </tr>
                                 )

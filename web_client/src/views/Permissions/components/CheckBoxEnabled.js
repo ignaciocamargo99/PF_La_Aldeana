@@ -4,18 +4,25 @@ import showPermissions from "../showPermissions";
 
 export default function CheckBoxEnabled(props) {
     const enabledDisabledCheck = useRef(null);
+    let checkBox = props.valueCheck;
 
-    const enabledChange = (e, i) => {
-        console.log(enabledDisabledCheck.current.checked);
-        // if(enabledDisabledCheck.current.checked === false){
-        // }
+
+    const enabledChange = () => {
+        checkBox.push(enabledDisabledCheck.current.checked);
+        props.load(checkBox);
+    }
+
+    const enabledOnClick = (e) => {
+        checkBox.push(e);
+        props.load(checkBox);
     }
 
     useEffect(() => {
-        showPermissions(enabledDisabledCheck, props.permission, props.index, 'ED')
+        showPermissions(enabledDisabledCheck, props.permission, props.index, 'ED');
     }, [])
 
     return (
-        <input type="checkbox" id="enabledDisabledCheckBox" ref={enabledDisabledCheck} onChange={(e) => enabledChange(e)} />
+        <input type="checkbox" id="enabledDisabledCheckBox" ref={enabledDisabledCheck}
+            onChange={enabledChange} onClick={() => enabledOnClick(props.index)} />
     );
 }

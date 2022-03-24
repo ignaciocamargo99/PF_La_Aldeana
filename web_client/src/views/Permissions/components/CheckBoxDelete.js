@@ -18,7 +18,17 @@ export default function CheckBoxDelete(props) {
     useEffect(() => {
         showPermissions(deleteCheck, props.permission, props.index, 'D');
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (props.valueCheck) {
+            if ((props.valueCheck[1] === false) && props.index === props.valueCheck[0]) {
+                deleteCheck.current.disabled = true;
+            }
+            else if(props.index === props.valueCheck[0]) deleteCheck.current.disabled = false;
+        }
+
+    }, [props.valueCheck])
 
     return (
         <input type="checkbox" id="deleteCheckBox" ref={deleteCheck} onChange={deleteOnChange} />

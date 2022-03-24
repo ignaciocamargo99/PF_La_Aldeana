@@ -18,7 +18,17 @@ export default function CheckBoxEdit(props) {
     useEffect(() => {
         showPermissions(editCheck, props.permission, props.index, 'E');
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (props.valueCheck) {
+            if ((props.valueCheck[1] === false) && props.index === props.valueCheck[0]) {
+                editCheck.current.disabled = true;
+            }
+            else if(props.index === props.valueCheck[0]) editCheck.current.disabled = false;
+        }
+
+    }, [props.valueCheck])
 
     return (
         <input type="checkbox" id="editCheckBox" ref={editCheck} onChange={editOnChange} />

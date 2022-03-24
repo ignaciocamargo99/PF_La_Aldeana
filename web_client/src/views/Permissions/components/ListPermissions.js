@@ -17,11 +17,13 @@ export default function ListPermissions() {
                 setViews(response.data);
             })
             .catch((error) => console.log(error));
+    }, []);
 
+    useEffect(() => {
         Axios.get(PORT() + '/api/views')
             .then((response) => setPermission(response.data))
             .catch((error) => console.error(error));
-    }, []);
+    }, [])
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
