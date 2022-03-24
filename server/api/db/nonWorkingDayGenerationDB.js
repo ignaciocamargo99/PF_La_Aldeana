@@ -9,11 +9,11 @@ const nonWorkingDayGenerationDB = () => {
     let finishMonthString = `${finishMonth.getFullYear()}${finishMonth.getMonth() > 8 ? finishMonth.getMonth() + 1 : '0' + (finishMonth.getMonth() + 1)}${finishMonth.getDate() > 9 ? finishMonth.getDate() : ('0' + finishMonth.getDate())}`;
 
     const sqlSelectLastNonWorkingDays = `
-        SELECT id_day_off, dni_employee, MAX(DATE) AS date 
-            FROM DAYS_OFF 
-            WHERE DATE BETWEEN '${initMonthString}' AND '${finishMonthString}' 
+        SELECT d.id_day_off, d.dni_employee, MAX(d.date) AS date , cXe.id_charge AS charge
+            FROM DAYS_OFF d INNER JOIN CHARGES_X_EMPLOYEES cXe ON d.dni_employee = cXe.dni_employee
+            WHERE date BETWEEN '${initMonthString}' AND '${finishMonthString}' 
             GROUP BY dni_employee 
-            ORDER BY DATE DESC`;
+            ORDER BY date DESC`;
 
     let employees;
 
@@ -28,14 +28,17 @@ const nonWorkingDayGenerationDB = () => {
             
             db.beginTransaction((error) => {
                 if (error) reject('1,5:' + error);
+                
+                let gap;
 
                 for(let i = 0 ; i < employees.length ; i++){
+                    gap = (employees[i].charge === 4) ? 6 : 7;
                     let date = new Date(employees[i].date);
                     let finishDate = new Date(date.getFullYear(),date.getMonth()+2,0)
                     console.log(finishDate.toDateString());
                     let dateString;
                     let sqlInsertNonworkingDays;
-                    date.setDate(date.getDate() + 7);
+                    date.setDate(date.getDate() + gap );
                     while (date.getTime() <= finishDate.getTime()) {
                         let postDate = new Date(date.getTime());
                         postDate.setDate(postDate.getDate() + 1);
@@ -54,7 +57,7 @@ const nonWorkingDayGenerationDB = () => {
                                 return db.rollback(() => reject('3:' + error))
                             }
                         });
-                        date.setDate(date.getDate() + 8);
+                        date.setDate(date.getDate() + (gap + 1));
                     }
                 }
 
