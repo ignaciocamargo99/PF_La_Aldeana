@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LoaderSpinner from '../../common/LoaderSpinner';
+import { useGetActiveFlavors } from '../../hooks/useGetActiveFlavors';
+import ListFlavorsTable from './components/ListFlavorsTable';
 
 const ListFlavors = () => {
-    const [isLoadingSpinner, setIsLoadingSpinner] = useState(false);
+    const { loadingFlavors, activeFlavors } = useGetActiveFlavors();
 
     return (
         <>
-            {isLoadingSpinner &&
+            {loadingFlavors &&
                 <LoaderSpinner color="primary" loading="Cargando..." />
             }
-            {!isLoadingSpinner &&
-                <div className="viewTitleBtn">
-                    <h1>Sabores</h1>
-                </div>
+            {!loadingFlavors &&
+                <>
+                    <div className="viewTitleBtn">
+                        <h1>Sabores</h1>
+                    </div>
+                    <ListFlavorsTable
+                        flavors={activeFlavors}
+                    >
+                    </ListFlavorsTable>
+                </>
             }
         </>
     )
-}
+};
 
-export default ListFlavors
+export default ListFlavors;
