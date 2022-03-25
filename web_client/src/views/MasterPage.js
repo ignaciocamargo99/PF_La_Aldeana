@@ -28,6 +28,7 @@ import ListAdvances from './Advances/ListAdvances';
 import RegisterAdvances from './Advances/components/RegisterAdvances';
 import ListProductions from './Productions/ListProductions';
 import ListFlavors from './Flavors/ListFlavors';
+import FlavorForm from './Flavors/components/FlavorForm';
 
 const cookies = new Cookies();
 
@@ -63,7 +64,8 @@ export default function App() {
               <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
               <Route path='/app/franchises' component={Franchises}></Route>
               <Route path='/app/productions' component={ListProductions}></Route>
-              <Route path='/app/flavors' component={ListFlavors}></Route>
+              <Route exact path='/app/flavors' component={ListFlavors}></Route>
+              <Route exact path='/app/flavors/:idFlavor' component={FlavorForm}></Route>
             </BeShowed>
           }
         </div>
