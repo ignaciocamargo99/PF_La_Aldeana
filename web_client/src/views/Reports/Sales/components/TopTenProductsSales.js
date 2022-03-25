@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { connect } from 'react-redux';
 
 const TopTenProductsSales = (props) => {
     let [labels, setLabels] = useState([]);
     let [dat, setDat] = useState([]);
+    const chartRef = useRef();
 
     useEffect(()=>{
       let l = []
@@ -14,8 +15,8 @@ const TopTenProductsSales = (props) => {
         d = [...d, e.quantity]
       })
 
-      setLabels(l)
-      setDat(d)
+      setLabels(l);
+      setDat(d);
     }, [props.topTenProductSales])
 
     const data = {
@@ -56,10 +57,11 @@ const TopTenProductsSales = (props) => {
         ],
       },
     };
+
     return (
         <>
             <h2>Top 10 productos más vendidos</h2>
-            <Bar data={data} options={options} />
+            <Bar data={data} options={options} ref={chartRef}/>
         </>
     );
 }
