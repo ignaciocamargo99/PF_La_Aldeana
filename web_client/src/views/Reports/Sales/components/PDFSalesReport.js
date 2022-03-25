@@ -6,6 +6,7 @@ import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import { style } from '@material-ui/system';
 import { connect } from 'react-redux';
 import BeShowed from '../../../../common/BeShowed';
+import dataChartToURL from '../../../../utils/dataChartToURL';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     paddingBottom: 15,
-    paddingTop: 5,
+    paddingTop: 15,
     color: 'grey',
   },
   mainTitle: {
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    marginVertical: 15,
-    marginHorizontal: 100,
+    marginVertical: 30,
+    marginHorizontal: 50,
   },
   logo: {
     marginVertical: 10,
@@ -92,6 +93,7 @@ const MyDocument = (props) => {
           </View>
           <View style={styles.section}>
               <Text style={styles.title}>Top 10 productos con más unidades vendidas</Text>
+              <Image style={styles.image} src={dataChartToURL(props.topChart)}></Image>
               <View style={styles.row}>
                 <View style={styles.col}>
                     <Text style={styles.subtitle}>Nombre del producto</Text>
@@ -115,6 +117,8 @@ const MyDocument = (props) => {
                   )
               })}
               <Text style={styles.title}>Total de ventas de tipos productos por unidad</Text>
+              <Image style={styles.image} src={dataChartToURL(props.typesChart)}></Image>
+              <Text style={styles.detail}>Total de ventas: {props.typesChart.total} uds.</Text>
               <View style={styles.row}>
                 <View style={styles.col}>
                     <Text style={styles.subtitle}>Tipo de producto</Text>
@@ -169,8 +173,6 @@ const MyDocument = (props) => {
               })}
             
           </View>
-
-          {/*<Image src={"https://quickchart.io/chart?c="+props.data}></Image>*/}
         </Page>
     </Document>
       </>
@@ -193,7 +195,7 @@ const Viewer = (props) => {
     setDat(d);
   }, [props.topTenProductSales])
 
-  const data = JSON.stringify({
+  const top = {
     type: 'bar',
     labels: labels,
     datasets: [
@@ -202,7 +204,34 @@ const Viewer = (props) => {
         data: dat,
       },
     ],
-  });
+  };
+
+  let [labelsTypes, setLabelsTypes] = useState([]);
+  let [datTypes, setDatTypes] = useState([]);
+
+  useEffect(()=>{
+    let l = []
+    let d = []
+    props.typeProductSales.types?.forEach((e)=>{
+      l = [...l, e.id]
+      d = [...d, e.quantity]
+    })
+
+    setLabelsTypes(l);
+    setDatTypes(d);
+  }, [props.typeProductSales.types])
+
+  const types = {
+    type: 'pie',
+    labels: labelsTypes,
+    datasets: [
+      {
+        label: 'número de ventas',
+        data: datTypes,
+      },
+    ],
+    total: props.typeProductSales.total
+  };
 
   
     return(
@@ -215,11 +244,11 @@ const Viewer = (props) => {
         </ModalHeader>
         <ModalBody style={{height: '50em'}}>
             <PDFViewer style={{width: '100%', height: '45em'}} showToolbar={false}>
-                <MyDocument title={props.description} data={data} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />
+                <MyDocument title={props.description} topChart={top} sales={props.productSales} typesChart={types} top={props.topTenProductSales} types={props.typeProductSales.types} />
             </PDFViewer>
         </ModalBody>
         <ModalFooter>
-            <PDFDownloadLink document={<MyDocument title={props.description} data={data} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
+            <PDFDownloadLink document={<MyDocument title={props.description} topChart={top} typesChart={types} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
                 <button className='sendOk' >Descargar</button>
             </PDFDownloadLink>
             <button className='cancel' onClick={props.cancel}>Cancelar</button>
