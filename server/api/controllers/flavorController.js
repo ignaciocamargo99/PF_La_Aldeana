@@ -1,4 +1,5 @@
-const { readFlavor, readTypeFlavor, searchFlavorsByActiveState } = require('../services/flavorService');
+const { readFlavor, readTypeFlavor, searchFlavorsByActiveState, searchFlavorById } = require('../services/flavorService');
+const { genericServerError } = require('../shared/errorMessages');
 
 // HTTP: GET
 async function getFlavor(req, res) {
@@ -14,7 +15,7 @@ async function getFlavor(req, res) {
     }
 }
 
-// HTTP: GET
+// HTTP: GET /api/flavors
 async function getActiveFlavors(req, res) {
     try {
         const result = await searchFlavorsByActiveState(true);
@@ -26,7 +27,26 @@ async function getActiveFlavors(req, res) {
     catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
+            Message: genericServerError,
+        })
+    }
+}
+
+// HTTP: GET /api/flavors/:idFlavor
+async function getSingleFlavor(req, res) {
+    try {
+        const { idFlavor } = req.params;
+        const result = await searchFlavorById(idFlavor);
+        res.json({
+            Ok: true,
+            Data: result,
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Data: [],
+            Message: genericServerError,
         })
     }
 }
@@ -45,4 +65,4 @@ async function getTypeFlavor(req, res) {
     }
 }
 
-module.exports = { getTypeFlavor, getFlavor, getActiveFlavors }
+module.exports = { getTypeFlavor, getFlavor, getActiveFlavors, getSingleFlavor }

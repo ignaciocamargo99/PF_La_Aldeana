@@ -33,6 +33,15 @@ const getFlavorsDBByActiveState = (onlyActiveFlavors) => {
     });
 };
 
+const getFlavorDBById = (flavorId) => {
+    return Flavor.findOne({
+        where: {
+            idFlavor: flavorId
+        },
+        include: [FlavorFamily, FlavorType]
+    });
+};
+
 const typeFlavorGetDB = () => {
     const sqlSelect = 'SELECT id_type_flavor, name, description FROM FLAVOR_TYPES';
 
@@ -49,4 +58,4 @@ const typeFlavorGetDB = () => {
     });
 };
 
-module.exports = { flavorsGetDB, typeFlavorGetDB, getFlavorsDBByActiveState };
+module.exports = { flavorsGetDB, typeFlavorGetDB, getFlavorsDBByActiveState, getFlavorDBById };
