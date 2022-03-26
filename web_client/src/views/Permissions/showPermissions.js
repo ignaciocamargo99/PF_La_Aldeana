@@ -1,6 +1,6 @@
 let flag0 = false, flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false, flag7 = false;
 
-export default function showPermissions(check, permission, index, typePermission) {
+export default function showPermissions(check, permission, index, typePermission, matrix) {
 
     // Types permission
     //------------- N: NEW ------------ R: READ --------- E: EDIT -------- D: DELETE----------------
@@ -11,7 +11,6 @@ export default function showPermissions(check, permission, index, typePermission
     else if (typePermission === 'D') idAccess = 4;
     else if (typePermission === 'ED') idAccess = 5;
 
-
     let showPermission1 = [];
     let showPermission2 = [];
 
@@ -21,16 +20,21 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[0][0] = 1;
                 flag0 = true;
             }
         }
         else {
             if (showPermission1.length === 0 && flag0 === false) check.current.disabled = true;
             else {
-                showPermission2 = permission.find(element => element.name === "Ventas" && element.id_access === idAccess)
+                showPermission2 = permission.find(element => element.name === "Ventas" && element.id_access === idAccess);
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[0][1] = 1;
+                    else if(idAccess === 2) matrix[0][2] = 1;
+                    else if(idAccess === 3) matrix[0][3] = 1;
+                    else if(idAccess === 4) matrix[0][4] = 1;
                 }
             }
         }
@@ -42,6 +46,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[1][0] = 1;
                 flag1 = true;
             }
         }
@@ -52,6 +57,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[1][1] = 1;
+                    else if(idAccess === 2) matrix[1][2] = 1;
+                    else if(idAccess === 3) matrix[1][3] = 1;
+                    else if(idAccess === 4) matrix[1][4] = 1;
                 }
             }
         }
@@ -62,6 +71,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[2][0] = 1;
                 flag2 = true;
             }
         }
@@ -72,6 +82,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[2][1] = 1;
+                    else if(idAccess === 2) matrix[2][2] = 1;
+                    else if(idAccess === 3) matrix[2][3] = 1;
+                    else if(idAccess === 4) matrix[2][4] = 1;
                 }
             }
         }
@@ -82,6 +96,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[3][0] = 1;
                 flag3 = true;
             }
         }
@@ -92,6 +107,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[3][1] = 1;
+                    else if(idAccess === 2) matrix[3][2] = 1;
+                    else if(idAccess === 3) matrix[3][3] = 1;
+                    else if(idAccess === 4) matrix[3][4] = 1;
                 }
             }
         }
@@ -102,6 +121,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[4][0] = 1;
                 flag4 = true;
             }
         }
@@ -112,6 +132,11 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[4][1] = 1;
+                    else if(idAccess === 2) matrix[4][2] = 1;
+                    else if(idAccess === 3) matrix[4][3] = 1;
+                    else if(idAccess === 4) matrix[4][4] = 1;
+                    
                 }
             }
         }
@@ -122,6 +147,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[5][0] = 1;
                 flag5 = true;
             }
         }
@@ -132,6 +158,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[5][1] = 1;
+                    else if(idAccess === 2) matrix[5][2] = 1;
+                    else if(idAccess === 3) matrix[5][3] = 1;
+                    else if(idAccess === 4) matrix[5][4] = 1;
                 }
             }
         }
@@ -142,6 +172,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[6][0] = 1;
                 flag6 = true;
             }
         }
@@ -152,6 +183,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[6][1] = 1;
+                    else if(idAccess === 2) matrix[6][2] = 1;
+                    else if(idAccess === 3) matrix[6][3] = 1;
+                    else if(idAccess === 4) matrix[6][4] = 1;
                 }
             }
         }
@@ -162,6 +197,7 @@ export default function showPermissions(check, permission, index, typePermission
             if (showPermission1) {
                 check.current.checked = true;
                 showPermission1 = [];
+                matrix[7][0] = 1;
                 flag7 = true;
             }
         }
@@ -172,6 +208,10 @@ export default function showPermissions(check, permission, index, typePermission
                 if (showPermission2) {
                     check.current.checked = true;
                     showPermission2 = [];
+                    if(idAccess === 1) matrix[7][1] = 1;
+                    else if(idAccess === 2) matrix[7][2] = 1;
+                    else if(idAccess === 3) matrix[7][3] = 1;
+                    else if(idAccess === 4) matrix[7][4] = 1;
                 }
             }
         }

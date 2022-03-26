@@ -5,32 +5,27 @@ import showPermissions from "../showPermissions";
 export default function CheckBoxRead(props) {
     const readCheck = useRef(null);
 
-    const readChange = (e) => {
-        props.pageElements.forEach((element, i) => {
-            console.log(props.permissions.name)
-            console.log(i)
-            if (props.permissions.name === element.name) {
-                if (props.permissions.id_access === 1) readCheck.current.checked = true;
-            }
-        })
+    const readOnClick = (e) => {
+        if(readCheck.current.checked) props.matrix[e][2] = 1;
+        else props.matrix[e][2] = 0;
     }
 
     useEffect(() => {
-        showPermissions(readCheck, props.permission, props.index, 'R')
+        showPermissions(readCheck, props.permission, props.index, 'R', props.matrix)
 
     }, []);
 
     useEffect(() => {
-        if (props.valueCheck) {
-            if ((props.valueCheck[1] === false) && props.index === props.valueCheck[0]) {
+        if (props.checkEnabledDisabled) {
+            if ((props.checkEnabledDisabled[1] === false) && props.index === props.checkEnabledDisabled[0]) {
                 readCheck.current.disabled = true;
             }
-            else if(props.index === props.valueCheck[0]) readCheck.current.disabled = false;
+            else if(props.index === props.checkEnabledDisabled[0]) readCheck.current.disabled = false;
         }
 
-    }, [props.valueCheck])
+    }, [props.checkEnabledDisabled])
 
     return (
-        <input type="checkbox" id="readCheckBox" ref={readCheck} onChange={readChange} />
+        <input type="checkbox" id="readCheckBox" ref={readCheck} onClick={() => readOnClick(props.index)} />
     );
 }
