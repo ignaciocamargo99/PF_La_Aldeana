@@ -147,7 +147,7 @@ namespace desktop_employee
                     i--;
                 }
             }
-            frmAssistanceDNI assitenceDNI = new();
+            frmAssistanceDNIs assitenceDNI = new();
             assitenceDNI.Tag = "Asis_Dni";
             lblTitulo.Text = "ASISTENCIA con DNI";
             OpenForm(assitenceDNI);

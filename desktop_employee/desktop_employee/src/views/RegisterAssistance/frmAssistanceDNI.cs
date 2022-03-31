@@ -268,7 +268,7 @@ private void errorHuella(string report1)
         private void txtDNI_TextChanged(object sender, EventArgs e)
         {
             //controlamos la longitud del dni
-               dniEmpleado = txtDNI.Text.Replace(" ", string.Empty);
+            dniEmpleado = txtDNI.Text.Replace(" ", string.Empty);
             if (dniEmpleado.Length == 8)
             {
                 btnRegistrarAsistencia.Enabled = true;

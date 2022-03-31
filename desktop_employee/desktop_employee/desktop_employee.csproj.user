@@ -28,6 +28,9 @@
     <Compile Update="src\views\RegisterAssistance\frmAssistanceDNI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="src\views\RegisterAssistance\frmAssistanceDNIs.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="src\views\RegisterAssistance\frmAssistanceFinger.cs">
       <SubType>Form</SubType>
     </Compile>

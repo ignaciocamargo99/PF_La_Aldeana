@@ -132,7 +132,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             this.iconError.IconColor = System.Drawing.Color.Red;
             this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconError.IconSize = 200;
-            this.iconError.Location = new System.Drawing.Point(201, 314);
+            this.iconError.Location = new System.Drawing.Point(364, 397);
             this.iconError.Name = "iconError";
             this.iconError.Size = new System.Drawing.Size(225, 200);
             this.iconError.TabIndex = 48;
@@ -148,7 +148,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             this.iconEsperando.IconColor = System.Drawing.Color.Blue;
             this.iconEsperando.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconEsperando.IconSize = 200;
-            this.iconEsperando.Location = new System.Drawing.Point(201, 314);
+            this.iconEsperando.Location = new System.Drawing.Point(211, 427);
             this.iconEsperando.Name = "iconEsperando";
             this.iconEsperando.Size = new System.Drawing.Size(229, 200);
             this.iconEsperando.TabIndex = 46;
