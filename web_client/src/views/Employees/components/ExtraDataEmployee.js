@@ -5,8 +5,10 @@ import ChargeCheckbox from "./ChargeCheckbox";
 
 export default function ExtraDataEmployee(props) {
     const [date, setDate] = useState();
+    const [firstDayOffDate, setFirstDayOffDate] = useState();
     const [allCharges, setAllCharges] = useState([]);
     const inputDate = useRef(null);
+    const inputFirstDayOff = useRef(null);
     const rb1 = useRef(null);
     const rb2 = useRef(null);
     const maxDate = formattedDate(new Date(), 3);
@@ -54,8 +56,31 @@ export default function ExtraDataEmployee(props) {
         }
     }, [startDate, date, data]);
 
+    useEffect(() => {
+        if (props.data.isCreatingNewEmployee) {
+            const employeeEntryDate = inputDate.current.value;
+            const currentFirstDayOffValue = inputFirstDayOff.current.value;
+
+            if (currentFirstDayOffValue < employeeEntryDate) {
+                inputFirstDayOff.current.value = null
+                setFirstDayOffDate(null)
+            }
+        }
+    }, [date]);
+
+    useEffect(() => {
+        if (props.isReadingEmployeeData) return;
+
+        data.firstDayOffDate = firstDayOffDate;
+        props.load(data)
+    }, [firstDayOffDate]);
+
     const onChangeDate = () => {
         if (inputDate) setDate(inputDate.current.value);
+    }
+
+    const onChangeFirstDayOffDate = () => {
+        if (inputFirstDayOff) setFirstDayOffDate(inputFirstDayOff.current.value);
     }
 
     const handlerOnChange = (e) => {
@@ -124,6 +149,24 @@ export default function ExtraDataEmployee(props) {
                     />
                 </div>
             </div>
+
+            {data.isCreatingNewEmployee && (
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="employeeFirstDayOff" >Fecha primer franco*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input
+                            className="form-control"
+                            id="employeeFirstDayOff"
+                            min={date}
+                            onChange={onChangeFirstDayOffDate}
+                            ref={inputFirstDayOff}
+                            type="date"
+                        />
+                    </div>
+                </div>
+            )}
 
             <div className="formRow">
                 <div className="form-control-label">
