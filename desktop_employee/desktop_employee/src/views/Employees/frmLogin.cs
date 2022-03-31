@@ -37,7 +37,7 @@ namespace desktop_employee.src.views.Employees
 
         private void login()
         {
-            isLogIn = false;
+            isLogIn = true;
             //try
             //{
             //    //Login login = new()
