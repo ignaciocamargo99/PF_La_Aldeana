@@ -9,35 +9,61 @@ import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
+import FingerPrint from './FingerPrint';
 
 const PORT = require('../../../config');
 
 export default function RegisterEmployee() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({});
+    const [data, setData] = useState({
+        isCreatingNewEmployee: true
+    });
     const cancelRegisterEmployee = () => window.location.replace('/app/employees');
 
     const load = (childData) => {
         setData(childData);
 
-        if (isEmployeeFormDataValid(data)) {
+        if (isEmployeeFormDataValid(data, false)) {
             setReady(true);
         }
         else setReady(false);
     };
 
-    const registerNewEmployee = () => {
-        if (isEmployeeFormDataValid(data) && ready) {
-            Axios.post(`${PORT()}/api/employees`, data)
-                .then((response) => {
+    const registerEmployee = (data) => {
+        return Axios.post(`${PORT()}/api/employees`, data);
+    }
+
+    const registerDaysOff = (data) => {
+        const dniEmployee = data.dni;
+        const firstDayOff = data.firstDayOffDate.replaceAll("-", "/")
+
+        return Axios.post(`${PORT()}/api/consecutiveDaysOffOfEmployee`, null, { params: { dniEmployee, firstDayOff } });
+    }
+
+    const displayRegisterError = () => {
+        displayError('Ha ocurrido un error al intentar registrar al empleado.');
+    }
+
+    const registerNewEmployee = async () => {
+        if (isEmployeeFormDataValid(data, false) && ready) {
+            try {
+                let response = await registerEmployee(data);
+                if (response.data.Ok) {
+                    response = await registerDaysOff(data);
                     if (response.data.Ok) {
                         successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
                     }
                     else {
-                        displayError('El dni ingresado ya corresponde a otro empleado');
+                        displayRegisterError();
                     }
-                })
-                .catch((error) => console.error(error))
+                }
+                else {
+                    displayRegisterError();
+                }
+            }
+            catch {
+                displayRegisterError();
+            }
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios.', 'warning');
     };
