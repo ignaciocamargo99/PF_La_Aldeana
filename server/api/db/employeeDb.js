@@ -17,8 +17,9 @@ const chargeGetDB = () => {
     });
 };
 
-const relationshipsGetDB = () => {
-    const sqlSelect = `SELECT * from EMPLOYMENT_RELATIONSHIP`;
+const employeeForDesktopGetDB = () => {
+    const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
+                    FROM EMPLOYEES WHERE active = 1`; 
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -32,6 +33,8 @@ const relationshipsGetDB = () => {
         })
     });
 };
+
+// #region Employees ABMC
 
 const employeeGetDB = (dni) => {
     let sqlSelect = `
@@ -84,16 +87,16 @@ const employeeCreateDB = (newEmployee) => {
 
             db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
                 newEmployee.dni,
-                newEmployee.nameEmployee,
-                newEmployee.lastName,
+                newEmployee.name,
+                newEmployee.last_name,
                 newEmployee.date,
-                newEmployee.employmentRelationshipId,
+                newEmployee.employment_relationship,
                 1
             ], (error) => {
                 if (error) reject(error);
             });
 
-            newEmployee.chargesIds.forEach(chargeId => {
+            newEmployee.charges.forEach(({ chargeId }) => {
                 db.query('INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)', [newEmployee.dni, chargeId], (error, result) => {
                     if (error) reject(error);
                     else resolve(result);
@@ -152,7 +155,7 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
                 if (error) reject(error);
             });
 
-            updateEmployee.chargesIds.forEach(chargeId => {
+            updateEmployee.charges.forEach(({ chargeId }) => {
                 db.query(sqlInsertChargesOfemployee, [currentDniEmployee, chargeId], (error) => {
                     if (error) reject(error);
                 });
@@ -160,10 +163,10 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
             const updateEmpData = [
                 updateEmployee.dni,
-                updateEmployee.nameEmployee,
-                updateEmployee.lastName,
+                updateEmployee.name,
+                updateEmployee.last_name,
                 updateEmployee.date,
-                updateEmployee.employmentRelationshipId
+                updateEmployee.employment_relationship
             ];
 
             db.query(sqlUpdateEmployee, updateEmpData, (error, result) => {
@@ -178,13 +181,13 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
 const isEmployeeDataValid = (empDataToValidate) => {
     return (
-        empDataToValidate.chargesIds.length > 0 &&
+        empDataToValidate.charges.length > 0 &&
         empDataToValidate.date &&
         empDataToValidate.dni &&
         empDataToValidate.dni.toString().length === 8 &&
-        empDataToValidate.employmentRelationshipId &&
-        empDataToValidate.lastName &&
-        empDataToValidate.nameEmployee
+        empDataToValidate.employment_relationship &&
+        empDataToValidate.last_name &&
+        empDataToValidate.name
     );
 };
 
@@ -192,5 +195,5 @@ const isEmployeeDataValid = (empDataToValidate) => {
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, relationshipsGetDB
+    employeeUpdateDB, relationshipsGetDB, employeeForDesktopGetDB
 };

@@ -11,14 +11,25 @@ import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
 import displayError from "../../../../utils/ErrorMessages/displayError";
+import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../../config');
 
-const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
-    const [data, setData] = useState(productToEdit);
+const EditProducts = (props) => {
+    const [data, setData] = useState(props.productToEdit);
+    const [nameProductChild, setNameProductChild] = useState(props.productToEdit.name);
+    const [priceProductChild, setPriceProductChild] = useState(props.productToEdit.price);
+    const [sectorProductChild, setSectorProductChild] = useState(props.productToEdit.id_sector);
+    const [typeProductChild, setTypeProductChild] = useState(props.productToEdit.id_product_type);
+    const [imgProductChild, setImgProductChild] = useState(props.productToEdit.image);
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
+        setNameProductChild(childData.name);
+        setPriceProductChild(childData.price);
+        setSectorProductChild(childData.id_sector);
+        setTypeProductChild(childData.id_product_type);
+        setImgProductChild(childData.img);
         setData(childData);
     }
 
@@ -39,7 +50,8 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
         formData.append('supplies', jsonArrSupplies);
         formData.append('flagImageUpdate', data.flagImageUpdate);
         formData.append('flavor', data.flavor);
-
+        
+        loadingMessage('Guardando cambios...');
         Axios.put(PORT() + urlApi, formData)
             .then((data) => {
                 if (data.data.Ok) successMessage('Atención', 'El producto se ha editado correctamente', 'success');
@@ -61,16 +73,16 @@ const EditProducts = ({ productToEdit, onClickCancelEdit }) => {
             <div style={{ display: 'none' }}>{document.title = "Editar producto"}</div>
             <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Editar producto" />
             <div className="viewTitle">
-                <h1>Editar {productToEdit.title}</h1>
+                <h1>Editar {props.productToEdit.title}</h1>
             </div>
             <br />
             <div className="viewBody">
-                <GeneralDataProduct load={load} data={productToEdit} />
-                <ExtraDataProduct load={load} data={productToEdit} />
+                <GeneralDataProduct load={load} data={data} />
+                <ExtraDataProduct load={load} data={data} />
                 <Buttons
                     label='Registrar' actionOK={registerProduct}
                     actionNotOK={validationProductRegister}
-                    actionCancel={onClickCancelEdit}
+                    actionCancel={props.onClickCancelEdit}
                     ready={ready}
                     data={data} />
             </div>

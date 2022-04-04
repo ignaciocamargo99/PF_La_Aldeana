@@ -1,5 +1,5 @@
 const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, relationshipsGetDB } = require('../db/employeeDb');
+    employeeUpdateDB, employeeForDesktopGetDB } = require('../db/employeeDb');
 
 const readEmployee = async (dni) => {
     try {
@@ -7,6 +7,16 @@ const readEmployee = async (dni) => {
         return mapEmployeesData(res);
     }
     catch (error) {
+        throw Error(error)
+    };
+};
+
+const readEmployeeForDesktop = async () => {
+    try {
+        let res = await employeeForDesktopGetDB();
+        return res;
+    }
+    catch(error) {
         throw Error(error)
     };
 };
@@ -28,7 +38,7 @@ const mapEmployeesData = (employeesDataDB) => {
                 dni: empDB.dni,
                 name: empDB.name,
                 last_name: empDB.last_name,
-                date: empDB.date_admission,
+                date: empDB.date_admission.toISOString().split('T')[0],
                 employment_relationship: empDB.employment_relationship,
                 name_emp_relationship: empDB.name_emp_relationship,
                 charges: [{
@@ -101,5 +111,5 @@ const modifyEmployee = async (dniEmployee, updateEmployee) => {
 
 module.exports = {
     readEmployee, deleteEmployees, readCharges, createEmployee,
-    modifyEmployee, readRelationships
+    modifyEmployee, readEmployeeForDesktop
 };

@@ -3,6 +3,7 @@ const router = express.Router();
 const employeeController = require("../controllers/employeeController");
 
 //#region APIs
+router.get('/employeesDesktop', employeeController.getEmployeeForDesktop);
 
 router.get('/employees/:dni?', employeeController.getEmployee);
 

@@ -6,7 +6,6 @@ import InstallmentTable from "./InstallmentsTable";
 import formattedDate from "../../../utils/formattedDate";
 import UploadByName from "./UploadByName";
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
-import dateToString from "../../../utils/ConverterDate/dateToString";
 import Axios from 'axios';
 const PORT = require('../../../config');
 
@@ -18,14 +17,21 @@ export default function ExtraDataAdvances(props) {
     const [amountTotal, setAmountTotal] = useState("null");
     const [isValidClassMonths, setIsValidClassMonths] = useState("form-control");
     const [isValidClassAmountTotal, setIsValidClassAmountTotal] = useState("form-control");
-    const [load, isLoad] = useState(false);
 
     const [option, setOption] = useState(data.installments);
 
+    const realTotal = () => {
+        let acu = 0;
+        option.map(op => {acu += op.amount})
+        return acu;
+    }
     //Data
 
     const maxDate = formattedDate(new Date(), 2);
     const minDate = formattedDate(new Date(), 0,-14);
+    const minTotal = data.pay;
+    const [payedCuotes, setPayedCuotes] = useState(0);
+    const [minCuotes, setMinCuotes] = useState(1);
     const startDate = formattedDate(new Date());
     let startFirstMonth = formattedDate(new Date(),2);
     const [maxFirstMonth, setMaxFirstMonth] = useState(formattedDate(new Date(), 6));
@@ -37,8 +43,6 @@ export default function ExtraDataAdvances(props) {
     const [date, setDate] = useState("null");
     const [firstMonth, setFirstMonth] = useState(option[0].month);
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassDate, setIsValidClassDate] = useState("form-control");
-    const [isValidClassFirstMonth, setIsValidClassFirstMonth] = useState("form-control");
 
     const handleEmployee = (id) => setEmployee(id);
     const onChangeDate = () => {
@@ -50,9 +54,33 @@ export default function ExtraDataAdvances(props) {
 
     const onChangeFirstMonth = () => {
         console.log(inputFirstMonth.current.value);
-        if (inputFirstMonth) setFirstMonth(inputFirstMonth.current.value);
-        console.log(firstMonth)
+        if (inputFirstMonth) {
+            data.firstMonth = inputFirstMonth.current.value + '-01';
+            setFirstMonth(inputFirstMonth.current.value + '-01');
+            data.installments[0].month =  inputFirstMonth.current.value + '-01';
+            props.load(data);
+        }
     }
+    useEffect(()=>{
+        if (props.data.reading || props.data.editing) {
+            Axios.get(PORT() + `/api/installments?dniEmployee=${props.data.nroDNI}&date=${props.data.date}`)
+            .then((response) => {
+                setOption(response.data);
+
+                let aux = 0;
+                response?.data.map(installments => {if (installments.pay) aux += 1});
+                setPayedCuotes(aux);
+
+                inputFirstMonth.current.value = response.data[0].month.slice(0,-17);
+                setFirstMonth(inputFirstMonth.current.value + '-01');
+                data.firstMonth = inputFirstMonth.current.value + '-01';
+                props.load(data);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }, []);
 
     //find employees with amount of advances
     useEffect(()=>{
@@ -62,13 +90,11 @@ export default function ExtraDataAdvances(props) {
                 person.name += ' ';
                 person.name += person.last_name;
             });
-            setEmployees(response.data)
+            setEmployees(response.data);
         })
         .catch((err) => {
             console.log(err)
         })
-
-        inputFirstMonth.current.value = startFirstMonth;
     }, [startFirstMonth]);
 
     //employee
@@ -95,152 +121,61 @@ export default function ExtraDataAdvances(props) {
 
     //DateAdvances
     useEffect(() => {
-        if (!props.data.editing && !inputDate.current.value) {
-            inputDate.current.value = startDate;
-            setDate(inputDate.current.value);
-            data.date = inputDate.current.value;
-            setIsValidClassDate("form-control");
-            props.load(data);
-        }
-        else if (!inputDate.current.value) {
-            inputDate.current.value = props.data.date;
-            setDate(inputDate.current.value);
-            setIsValidClassDate("form-control");
-        }
-        else {
 
-            if (data.date !== inputDate.current.value){
-                data.date = inputDate.current.value;
-                props.load(data);
-                if (parseInt(firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
-                    if (parseInt(firstMonth.slice(5, -3)) >= parseInt(data.date.slice(5, -3))) setIsValidClassDate("form-control is-valid");
-                    else setIsValidClassDate("form-control");
+        if (data.date !== inputDate.current.value){
+            data.date = inputDate.current.value;
+            props.load(data);
+            if (parseInt(firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
+                if (parseInt(firstMonth.slice(5, -3)) < parseInt(data.date.slice(5, -3))) {
+                    inputFirstMonth.current.value = null;
+                    data.firstMonth = null;
                 }
-                else if (parseInt(firstMonth.slice(0, -5)) >= parseInt(data.date.slice(0, -5))) setIsValidClassDate("form-control is-valid");
-                else setIsValidClassDate("form-control");
+            }
+            else if (parseInt(firstMonth.slice(0, -5)) < parseInt(data.date.slice(0, -5)))  {
+                inputFirstMonth.current.value = null;
+                data.firstMonth = null;
             }
         }
     }, [startDate, date, data, props]);
 
-    //first month
-    useEffect(() => {
-        if (!props.data.editing && !props.data.reading && !inputFirstMonth.current.value) {
-            inputFirstMonth.current.value = startFirstMonth.slice(0,-3);
-            setFirstMonth(inputFirstMonth.current.value + '-01');
-            data.firstMonth = inputFirstMonth.current.value + '-01';
-            props.load(data);
-            setIsValidClassDate("form-control");
-        }
-        else if (!inputFirstMonth.current.value && !props.data.editing && !props.data.reading) {
-            inputFirstMonth.current.value = data.firstMonth.slice(0,-3);
-            setFirstMonth(inputFirstMonth.current.value + '-01');
-            setIsValidClassDate("form-control");
-        }
-        else {
-
-            let aux = data.firstMonth;
-            if (aux.length !== 10) aux = data.firstMonth;
-            if (!inputFirstMonth.current.value) inputFirstMonth.current.value = aux.slice(0,-3);
-            let min = inputFirstMonth.current.min + '-10';
-            let max = inputFirstMonth.current.max + '-10';
-
-            if (parseInt(aux.slice(0, -5)) === parseInt(min.slice(0, -5))) {
-                if (parseInt(aux.slice(5, -3)) >= parseInt(min.slice(5, -3))) {
-                    if (data.firstMonth !== inputFirstMonth.current.value){
-                        setIsValidClassFirstMonth("form-control is-valid");
-                        data.firstMonth = inputFirstMonth.current.value + '-01';
-                        setFirstMonth(inputFirstMonth.current.value + '-01');
-                        data.installments[0].month =  inputFirstMonth.current.value + '-01';
-                        props.load(data);
-                    }
-                }
-                else {
-                    data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
-                    props.load(data);
-                    setIsValidClassDate("form-control");
-                }
-            } else if (parseInt(aux.slice(0, -5)) > parseInt(min.slice(0, -5)) && parseInt(aux.slice(5, -3)) <= parseInt(max.slice(5, -3))) {
-                if (data.firstMonth !== inputFirstMonth.current.value && firstMonth){
-                    setIsValidClassFirstMonth("form-control is-valid");
-                    data.firstMonth = inputFirstMonth.current.value + '-01';
-                    setFirstMonth(inputFirstMonth.current.value + '-01');
-                    data.installments[0].month =  inputFirstMonth.current.value + '-01';
-                    props.load(data);
-                }
-            }
-            else {
-                if (!load) {
-                    data.installments = [{month: props.data.installments[0].month, amount: 0, label: "", pay: 0}];
-                    inputFirstMonth.current.value = aux;
-                    props.load(data);
-                    setIsValidClassDate("form-control");
-                    isLoad(true);
-                }
-            }
-        }
-    }, [startFirstMonth, firstMonth, data, props]);
-
     //extra
 
     const handleMonths = () => {
+        console.log(inputMonths.current.value)
         setMonths(inputMonths.current.value);
     }
     const handleAmountTotal = () => {
+        console.log(inputAmountTotal.current.value)
         setAmountTotal(inputAmountTotal.current.value);
     }
 
-    //Monto total
+    //Monto total & Meses
     useEffect(() => {
-        const amount = parseInt(inputAmountTotal.current.value.trim());
         const month = parseInt(inputMonths.current.value.trim());
+        const amount = parseInt(inputAmountTotal.current.value.trim());
         const first = inputFirstMonth.current.value + '-01';
-        
-        if (amount >= month && month > 0 && month < 19 && first.length === 10) {
+        if (amount > data.pay) setMinCuotes(payedCuotes + 1);
+        else setMinCuotes(payedCuotes);
+        console.log(month, amount);
+
+        if (month !== NaN && amount != NaN && month >= minCuotes && month < 19 && amount >= month && amount >= minTotal && first.length === 10) {
             setIsValidClassAmountTotal("form-control is-valid");
-            data.amount = amount;
-            let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments);
+            setIsValidClassMonths("form-control is-valid");
+            let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments, payedCuotes);
             setOption(aux);
             data.installments = aux;
-            props.load(data);
-        }
-        else {
-            setIsValidClassAmountTotal("form-control");
-            if (!data.nroDNI && amount && (props.data.editing || props.data.reading)) {
-                data.amount = null;
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-            } else {
-                data.amount = amount;
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-            }
-            props.load(data);
-        }
-    }, [months, amountTotal, props, data, firstMonth, employee]);
-
-    //Meses
-    useEffect(() => {
-        const month = parseInt(inputMonths.current.value.trim());
-        const amount = parseInt(inputAmountTotal.current.value.trim());
-        const first = inputFirstMonth.current.value + '-01';
-
-        if (month > 0 && month < 19 && amount >= month && first.length === 10) {
-            setIsValidClassMonths("form-control is-valid");
-            let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments);
-            data.installments = aux;
-            data.months = month;
-            props.load(data);
         }
         else {
             setIsValidClassMonths("form-control");
-            if (!data.nroDNI && month > 0 && (props.data.editing || props.data.reading)) {
+            setIsValidClassAmountTotal("form-control");
+            if (!data.nroDNI && month > 0 && !props.data.editing && !props.data.reading) {
                 data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-                data.months = null;
-            } else {
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
-                data.months = month;
             }
-            props.load(data);
         }
-    }, [months, amountTotal, props, data, firstMonth, employee]);
+        data.months = month;
+        data.amount = amount;
+        props.load(data);
+    }, [months, amountTotal, props, data, firstMonth, employee, payedCuotes]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -272,10 +207,10 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading  || props.data.editing}>
-                        <input className={isValidClassDate} id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
+                        <input className="form-control" id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading  && !props.data.editing}>
-                        <input className={isValidClassDate} id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
+                        <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
                     </BeShowed>
                 </div>
             </div>
@@ -285,10 +220,10 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className={isValidClassFirstMonth} id="firstMonth" readOnly type="month" min={date !== "null" ? date : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} ref={inputFirstMonth} defaultValue={dateToString(data.firstMonth, true).slice(0,-3).length === 10 ? dateToString(data.firstMonth, true).slice(0,-3).length : null} />
+                        <input className="form-control" id="firstMonth" readOnly type="month" min={date !== "null" ? date : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} ref={inputFirstMonth} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassFirstMonth} id="firstMonth" type="month" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} defaultValue={dateToString(data.firstMonth, true).slice(0,-3).length === 10 ? dateToString(data.firstMonth, true).slice(0,-3).length : null} />
+                        <input className="form-control" id="firstMonth" type="month" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} />
                     </BeShowed>
                 </div>
             </div>
@@ -302,7 +237,7 @@ export default function ExtraDataAdvances(props) {
                         <input className={isValidClassAmountTotal} id="amountTotal" readOnly type="number" ref={inputAmountTotal} onChange={handleAmountTotal} defaultValue={props.data.amount ? props.data.amount : null} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassAmountTotal} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min={months} placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.amount ? props.data.amount : null} />
+                        <input className={isValidClassAmountTotal} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min={months > minTotal ? months : minTotal} placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.amount ? props.data.amount : null} />
                     </BeShowed>
                 </div>
             </div>
@@ -321,13 +256,13 @@ export default function ExtraDataAdvances(props) {
                         <input className={isValidClassMonths} id="months" readOnly type="number" ref={inputMonths} onChange={handleMonths} defaultValue={data.months ? data.months : null} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min="1" max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months ? data.months : null} />
+                        <input className={isValidClassMonths} id="months" type="number" ref={inputMonths} onChange={handleMonths} min={minCuotes} max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months ? data.months : null} />
                     </BeShowed>
                     <small className="text-muted">(entre 1 y 18 meses)</small>
                 </div>
             </div>
             <hr></hr>
-            <BeShowed show={option[0].amount > 0}>
+            <BeShowed show={option[0].amount > 0} >
                 <InstallmentTable installments={option} reading={props.data.reading}></InstallmentTable>
             </BeShowed>
         </>

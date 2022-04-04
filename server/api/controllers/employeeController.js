@@ -1,5 +1,4 @@
-
-const { readEmployee, deleteEmployees, readCharges, createEmployee,
+const { readEmployee, deleteEmployees, readCharges, createEmployee, readEmployeeForDesktop,
     modifyEmployee, readRelationships } = require('../services/employeeService');
 
 // HTTP: GET
@@ -15,6 +14,21 @@ async function getEmployee(req, res) {
         })
     }
 }
+
+// HTTP: GET
+async function getEmployeeForDesktop(req, res) {
+    try {
+        const result = await readEmployeeForDesktop();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+ 
 
 // HTTP: GET
 async function getCharges(req, res) {
@@ -98,5 +112,4 @@ async function updateEmployee(req, res) {
 
 module.exports = {
     getEmployee, deleteEmployee, getCharges, newEmployee,
-    updateEmployee, getRelationships
-}
+    updateEmployee, getRelationships, getEmployeeForDesktop }

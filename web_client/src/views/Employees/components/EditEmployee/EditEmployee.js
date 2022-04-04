@@ -12,22 +12,26 @@ import ExtraDataEmployee from '../ExtraDataEmployee';
 
 const PORT = require('../../../../config');
 
-export default function EditEmployee(props) {
-    const [data, setData] = useState(props.employee);
-    const [ready, setReady] = useState(true);
+export default function EditEmployee({ goBack, employeeData }) {
+    const [newEmployeeData, setNewEmployeeData] = useState({ ...employeeData });
+    const [readyForSubmit, setReadyForSubmit] = useState(true);
+
+    const isEditingEmployeeData = true;
 
     const load = (childData) => {
-        setData(childData);
+        setNewEmployeeData(childData);
 
-        if (isEmployeeFormDataValid(data)) {
-            setReady(true);
+        if (isEmployeeFormDataValid(newEmployeeData, true)) {
+            setReadyForSubmit(true);
         }
-        else setReady(false);
+        else setReadyForSubmit(false);
     };
 
     const updateEmployee = () => {
-        if (isEmployeeFormDataValid(data) && ready) {
-            Axios.put(`${PORT()}/api/employees/${data.dni}`, data)
+        const formDataValid = isEmployeeFormDataValid(newEmployeeData, true);
+
+        if (formDataValid && readyForSubmit) {
+            Axios.put(`${PORT()}/api/employees/${newEmployeeData.dni}`, newEmployeeData)
                 .then((data) => {
                     if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
                     else displayError('El nuevo dni ya corresponde a otro empleado')
@@ -43,18 +47,30 @@ export default function EditEmployee(props) {
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Editar empleado" />
 
             <div className="viewTitle">
-                <h1>Editar empleado {props.employee.name + " " + props.employee.lastName}</h1>
+                <h1>Editar empleado/a {employeeData.name + " " + employeeData.last_name}</h1>
             </div>
             <br />
             <div className="viewBody">
-                <DataEmployee load={load} data={data} />
-                <ExtraDataEmployee load={load} data={data} />
+                <DataEmployee
+                    data={newEmployeeData}
+                    isEditingEmployeeData={isEditingEmployeeData}
+                    load={load}
+                />
+
+                <ExtraDataEmployee
+                    data={newEmployeeData}
+                    isEditingEmployeeData={isEditingEmployeeData}
+                    load={load}
+                />
+
                 <Buttons
-                    label='Registrar' actionOK={updateEmployee}
+                    actionCancel={goBack}
                     actionNotOK={updateEmployee}
-                    actionCancel={props.cancel}
-                    ready={ready}
-                    data={data} />
+                    actionOK={updateEmployee}
+                    data={newEmployeeData}
+                    label='Confirmar'
+                    ready={readyForSubmit}
+                />
             </div>
         </>
     );

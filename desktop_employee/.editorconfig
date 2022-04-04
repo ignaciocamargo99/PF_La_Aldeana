@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0252: Posible comparación de referencias involuntaria: El lado de la mano izquierda necesita conversión
+dotnet_diagnostic.CS0252.severity = none

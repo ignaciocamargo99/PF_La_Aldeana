@@ -232,6 +232,8 @@ const FormLicense = (props) => {
         dateInit.current.value = "";
         dateFinish.current.value = "";
         reason.current.value = "";
+
+        props.setActionLicense('Listar',null);
     }
 
     const comeBack = (msg) => {
