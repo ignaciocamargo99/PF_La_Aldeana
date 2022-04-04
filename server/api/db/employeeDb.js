@@ -195,5 +195,5 @@ const isEmployeeDataValid = (empDataToValidate) => {
 
 module.exports = {
     employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, relationshipsGetDB, employeeForDesktopGetDB
+    employeeUpdateDB, employeeForDesktopGetDB
 };

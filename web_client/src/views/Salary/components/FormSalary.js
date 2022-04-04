@@ -6,7 +6,7 @@ import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
-import { faTemperatureLow, faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
@@ -78,7 +78,13 @@ const FormSalary = (props) => {
                     .catch((error) => console.log(error));
                 if (props.action === 'Registrar') setEmployee(display[nro]);
                 else {
-                    setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.dni }));
+                    let employ = response.data.find((employee) =>  { return employee.dni === props.salary.dni })
+                    if (employ == null) warningMessage("Error", "No se encontraron empleados activos que coincidan con el salario solicitado", "error")
+                    .then((value) => {
+                        window.location.replace('/app/salary');
+                    });
+                    setEmployee(employ);
+                    
                     Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
                     .then((response) => {
                         let aux = response.data;
@@ -102,7 +108,7 @@ const FormSalary = (props) => {
     },[props.action]);
 
     useEffect(() => {
-        if (employee !== null) {
+        if (employee != null) {
             Axios.get(`https://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
             .then((response) => {
                 let newNonworkingDays = [];
@@ -125,7 +131,8 @@ const FormSalary = (props) => {
                             setShowSpinner(false);
                             nroRef.current.focus();
                         }
-                    });
+                    })
+                    .catch((err) => {console.log(err)});
             })
             .catch((err) => {console.log(err)});
 
@@ -242,7 +249,6 @@ const FormSalary = (props) => {
                     Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            console.log(res.data)
                             if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                             else {
                                 setShowSpinner(false);
