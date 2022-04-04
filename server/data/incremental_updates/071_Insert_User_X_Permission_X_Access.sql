@@ -34,10 +34,6 @@ VALUES
     ('RCamandona1.', 8, 2, 1),
     ('RCamandona1.', 8, 3, 1),
 
-    ('RCamandona1.', 9, 1, 1),
-    ('RCamandona1.', 9, 2, 1),
-    ('RCamandona1.', 9, 3, 1),
-
 
     -- Ignacio 22. --
     ('Ignacio22.', 1, 1, 1),
@@ -70,19 +66,14 @@ VALUES
     
     ('Ignacio22.', 8, 1, 1),
     ('Ignacio22.', 8, 2, 1),
-    ('Ignacio22.', 8, 3, 1),
-
-    ('Ignacio22.', 9, 1, 1),
-    ('Ignacio22.', 9, 2, 1),
-    ('Ignacio22.', 9, 3, 1);
+    ('Ignacio22.', 8, 3, 1);
 
 
-
--- INSERT INTO
--- `DB_CHANGES`
--- VALUES
---     (
---         071,
---         'Insert table',
---         'Usuarios por permiso por acceso.'
---     );
+INSERT INTO
+`DB_CHANGES`
+VALUES
+    (
+        071,
+        'Insert table',
+        'Usuarios por permiso por acceso.'
+    );
