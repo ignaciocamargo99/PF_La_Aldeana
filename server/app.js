@@ -30,9 +30,10 @@ const salesReportRouter = require('./api/routes/salesReportRoute');
 const licensesRouter = require('./api/routes/licenseRoute'); 
 const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
+const dayOffRouter = require('./api/routes/dayOffRoute');
 
 app.use(cors());
-app.use(logger('dev')); 
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
@@ -68,6 +69,7 @@ app.use('/api', assistanceFingerRouter);
 app.use('/api', employeeAssistanceRouter)
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
+app.use('/api', dayOffRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

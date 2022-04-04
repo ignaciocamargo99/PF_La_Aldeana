@@ -21,14 +21,14 @@ export default function EditEmployee({ goBack, employeeData }) {
     const load = (childData) => {
         setNewEmployeeData(childData);
 
-        if (isEmployeeFormDataValid(newEmployeeData)) {
+        if (isEmployeeFormDataValid(newEmployeeData, true)) {
             setReadyForSubmit(true);
         }
         else setReadyForSubmit(false);
     };
 
     const updateEmployee = () => {
-        const formDataValid = isEmployeeFormDataValid(newEmployeeData);
+        const formDataValid = isEmployeeFormDataValid(newEmployeeData, true);
 
         if (formDataValid && readyForSubmit) {
             Axios.put(`${PORT()}/api/employees/${newEmployeeData.dni}`, newEmployeeData)
