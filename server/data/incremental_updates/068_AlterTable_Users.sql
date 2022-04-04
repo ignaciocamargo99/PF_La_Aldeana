@@ -12,7 +12,7 @@ INSERT INTO
 `DB_CHANGES`
 VALUES
     (
-        072,
+        068,
         'Alter table',
         'Columna rol eliminada.'
     );
