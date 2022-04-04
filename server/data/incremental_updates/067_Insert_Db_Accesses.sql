@@ -1,10 +1,9 @@
 INSERT INTO
-    `ACCESSES` (`name_access`)
+    `ACCESSES` (`name_access`, `description`)
 VALUES
-    ('Registrar'),
-    ('Ver'),
-    ('Editar'),
-    ('Eliminar');
+    ('Ver', 'Los usuarios pueden ver/consultar las funcionalidades'),
+    ('Ver/Registrar', 'Los usuarios pueden ver y registrar las funcionalidades'),
+    ('Todos', 'Los usuarios pueden ver, registrar, editar y eliminar las funcionalidades');
 
 INSERT INTO
     `DB_CHANGES`

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import CheckBoxDelete from "../CheckBoxDelete";
 import CheckBoxEdit from "../CheckBoxEdit";
 import CheckBoxEnabled from "../CheckBoxEnabled";
 import CheckBoxNew from '../CheckBoxNew';
 import CheckBoxRead from "../CheckBoxRead";
-
+import successMessage from "../../../../utils/SuccessMessages/successMessage"
+import displayError from "../../../../utils/ErrorMessages/displayError"
 const PORT = require('../../../../config');
 
 
@@ -23,15 +25,19 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
             }
         };
         setValueCheckBoxes(matrix);
-    }, [])
+    }, []);
 
     const load = (childData) => setEnabledDisabled(childData);
 
     const onClickSaveChanges = () => {
-        console.log('Guardar');
         console.log(valueCheckBoxes);
-    }
-
+        Axios.put(`${PORT()}/api/permissions`, valueCheckBoxes)
+            .then((data) => {
+                if (data.Ok) successMessage('Atención', 'Se han modificado los permisos para los empleados', 'success')
+                else displayError('Ha ocurrido un error al guardar los cambios...')
+            })
+            .catch(error => console.log(error));
+    };
 
     return (
         <>
@@ -68,19 +74,19 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxNew pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes}/>
+                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxRead pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes}/>
+                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxEdit pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes}/>
+                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxDelete pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes}/>
+                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
                                         </td>
                                     </tr>
                                 )

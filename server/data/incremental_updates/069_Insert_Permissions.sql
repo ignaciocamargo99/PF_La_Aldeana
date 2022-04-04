@@ -1,6 +1,6 @@
-INSERT INTO PERMISSIONS VALUES (NULL, 'Permisos', 'Módulo de permisos');
-
-INSERT INTO ROL_X_PERMISSION VALUES(1 , 8, 1);
+INSERT INTO PERMISSIONS VALUES (NULL, 'Usuarios', 'Módulo de usuarios');
+INSERT INTO PERMISSIONS VALUES (NULL, 'Reportes Ventas', 'Módulo de reportes');
+UPDATE PERMISSIONS SET name = 'Reportes Recursos Humanos', description = 'Módulo de reportes' WHERE id_permission = 1
 
 INSERT INTO
 `DB_CHANGES`
@@ -8,5 +8,5 @@ VALUES
     (
         069,
         'Insert table',
-        'Nuevo registro de permisos.'
+        'Nuevos registros de permisos.'
     );
