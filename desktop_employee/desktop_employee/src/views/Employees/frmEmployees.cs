@@ -290,6 +290,7 @@ namespace desktop_employee.src.views.Employees
                 desactivarLimpiarCampos();
                 txtApellido.Enabled = true;
                 txtDNI.Enabled = true;
+                dgvEmployees.DataSource = datosEmpleados;
             }
         }
 
@@ -306,6 +307,7 @@ namespace desktop_employee.src.views.Employees
                 desactivarLimpiarCampos();
                 txtNombre.Enabled = true;
                 txtDNI.Enabled = true;
+                dgvEmployees.DataSource = datosEmpleados;
             }
         }
 
@@ -322,6 +324,7 @@ namespace desktop_employee.src.views.Employees
                 desactivarLimpiarCampos();
                 txtApellido.Enabled = true;
                 txtNombre.Enabled = true;
+                dgvEmployees.DataSource = datosEmpleados;
             }
         }
 
