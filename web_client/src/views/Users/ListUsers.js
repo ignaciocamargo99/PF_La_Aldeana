@@ -69,7 +69,7 @@ export default function ListUsers() {
         }
     ];
 
-    const onClickNewProduction = () => window.location.replace('/app/users');
+    const onClickNewUser = () => window.location.replace('/app/registerUser');
 
     const readUser = async (user) => {
         try {
@@ -113,7 +113,7 @@ export default function ListUsers() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Usuarios</h1>
-                            <button id='newUsersButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            <button id='newUsersButton' type="button" onClick={onClickNewUser} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron usuarios registrados hasta el momento.</h4>
@@ -123,7 +123,7 @@ export default function ListUsers() {
                             <>
                                 <div className="viewTitleBtn">
                                     <h1>Usuarios</h1>
-                                    <button id='editUsersButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <button id='editUsersButton' onClick={onClickNewUser} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                 </div>
                                 <div className="viewBody">
                                     <TablePagination

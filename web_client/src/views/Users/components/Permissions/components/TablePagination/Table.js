@@ -5,48 +5,51 @@ import CheckBoxEdit from "../CheckBoxEdit";
 import CheckBoxEnabled from "../CheckBoxEnabled";
 import CheckBoxNew from '../CheckBoxNew';
 import CheckBoxRead from "../CheckBoxRead";
-import successMessage from "../../../../utils/SuccessMessages/successMessage"
-import displayError from "../../../../utils/ErrorMessages/displayError"
-const PORT = require('../../../../config');
+import successMessage from "../../../../../../utils/SuccessMessages/successMessage"
+import displayError from "../../../../../../utils/ErrorMessages/displayError"
+const PORT = require('../../../../../../config');
 
 
-const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
+const Table = ({ pageElements, columnsHeaders, permission, cancelChanges, matrix, load, valueSelect }) => {
 
-    const [enabledDisabled, setEnabledDisabled] = useState();
-    const [valueCheckBoxes, setValueCheckBoxes] = useState();
-    let checkEnabledDisabled = [];
-    let matrix = new Array();
+    // const [enabledDisabled, setEnabledDisabled] = useState();
+    // const [valueCheckBoxes, setValueCheckBoxes] = useState();
+    // let checkEnabledDisabled = [];
+    // let matrix = new Array();
 
-    useEffect(() => {
-        for (let x = 0; x <= 7; x++) {
-            matrix[x] = new Array();
-            for (let y = 0; y <= 4; y++) {
-                matrix[x][y] = 0;
-            }
-        };
-        setValueCheckBoxes(matrix);
-    }, []);
+    // useEffect(() => {
+    //     for (let x = 0; x <= 7; x++) {
+    //         matrix[x] = new Array();
+    //         for (let y = 0; y <= 4; y++) {
+    //             matrix[x][y] = 0;
+    //         }
+    //     };
+    //     setValueCheckBoxes(matrix);
+    // }, []);
 
-    const load = (childData) => setEnabledDisabled(childData);
+    // const load = (childData) => {
+    //     setEnabledDisabled(childData);
+    //     console.log(matrix)
+    // }
 
-    const onClickSaveChanges = () => {
-        console.log(valueCheckBoxes);
-        Axios.put(`${PORT()}/api/permissions`, valueCheckBoxes)
-            .then((data) => {
-                if (data.Ok) successMessage('Atención', 'Se han modificado los permisos para los empleados', 'success')
-                else displayError('Ha ocurrido un error al guardar los cambios...')
-            })
-            .catch(error => console.log(error));
-    };
+    // const onClickSaveChanges = () => {
+    //     console.log(valueCheckBoxes);
+    //     Axios.put(`${PORT()}/api/permissions`, valueCheckBoxes)
+    //         .then((data) => {
+    //             if (data.Ok) successMessage('Atención', 'Se han modificado los permisos para los empleados', 'success')
+    //             else displayError('Ha ocurrido un error al guardar los cambios...')
+    //         })
+    //         .catch(error => console.log(error));
+    // };
 
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Permisos para empleados:</h4>
-                <div className="search-input">
+                <h4 className="text-secondary">Permisos establecidos:</h4>
+                {/* <div className="search-input">
                     <button className='sendOk' onClick={onClickSaveChanges}>Guardar</button>
                     <button className='cancel' onClick={cancelChanges}>Cancelar</button>
-                </div>
+                </div> */}
             </div>
             {(pageElements && pageElements.length > 0 && permission)
                 ?
@@ -69,10 +72,10 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxEnabled pageElements={pageElements} permission={permission} index={i} load={load}
-                                                checkEnabledDisabled={checkEnabledDisabled} matrix={valueCheckBoxes} />
+                                            <CheckBoxEnabled pageElements={pageElements} permission={permission}
+                                                index={i} load={load} matrix={valueSelect} />
                                         </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                        {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxNew pageElements={pageElements} permission={permission} index={i}
                                                 checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
                                         </td>
@@ -87,7 +90,7 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <CheckBoxDelete pageElements={pageElements} permission={permission} index={i}
                                                 checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 )
                             })}
@@ -95,7 +98,7 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges }) => {
                     </table>
                 </div>
                 :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>Aguarde...</h4>
             }
 
         </>

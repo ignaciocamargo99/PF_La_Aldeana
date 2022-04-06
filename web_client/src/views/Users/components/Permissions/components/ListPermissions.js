@@ -1,11 +1,11 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import LoaderSpinner from "../../../common/LoaderSpinner";
+import LoaderSpinner from "../../../../../common/LoaderSpinner";
 import TablePagination from './TablePagination/TablePagination';
 
-const PORT = require('../../../config')
+const PORT = require('../../../../../config')
 
-export default function ListPermissions() {
+export default function ListPermissions(props) {
     const [views, setViews] = useState();
     const [permission, setPermission] = useState();
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
@@ -20,13 +20,16 @@ export default function ListPermissions() {
     }, []);
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/views')
-            .then((response) => setPermission(response.data))
-            .catch((error) => console.error(error));
+        if (props.data.reading) {
+            Axios.get(PORT() + '/api/views')
+                .then((response) => setPermission(response.data))
+                .catch((error) => console.error(error));
+        }
+        else setPermission([]);
     }, []);
 
     const cancelChanges = () => window.location.reload();
-    
+
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     const columnsHeaders = [
@@ -35,53 +38,43 @@ export default function ListPermissions() {
             // width: '40%'
         },
         {
-            name: '¿Habilitada?',
+            name: '¿Habilitar permiso?',
             // width: '25%'
-        },
-        {
-            name: 'Registrar',
-            // width: '12%'
-        },
-        {
-            name: 'Ver',
-            // width: '12%'
-        },
-        {
-            name: 'Editar'
-        },
-        {
-            name: 'Eliminar'
         }
+        // {
+        //     name: 'Ver',
+        //     // width: '12%'
+        // },
+        // {
+        //     name: 'Ver/Registrar'
+        // },
+        // {
+        //     name: 'Todos'
+        // }
     ];
 
     return (
         <>
-            <div style={{ display: 'none' }}>{document.title = "Permisos"}</div>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." /> :
                 views?.length === 0
                     ?
                     <div>
-                        <div className="viewTitleBtn">
-                            <h1>Permisos</h1>
-                        </div>
-                        <br />
+                        <h2>Datos generales</h2>
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron pantallas para administrar los permisos...</h4>
                     </div>
                     : (
                         <>
-                            <div className="viewTitleBtn">
-                                <h1>Permisos</h1>
-                            </div>
-                            <div className="viewBody">
-                                <TablePagination
-                                    columnsHeaders={columnsHeaders}
-                                    currentElements={views}
-                                    permission={permission}
-                                    cancelChanges = {cancelChanges}
-                                />
-
-                            </div>
+                            <h2>Permisos</h2>
+                            <TablePagination
+                                columnsHeaders={columnsHeaders}
+                                currentElements={views}
+                                permission={permission}
+                                cancelChanges={cancelChanges}
+                                matrix={props.matrix}
+                                load={(childData) => props.load(childData)}
+                                valueSelect = {props.valueSelect}
+                            />
                         </>
                     )}
         </>

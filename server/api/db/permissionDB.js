@@ -20,7 +20,7 @@ const permissionsUserGetDB = (nick_user) => {
 
     const sqlSelect = `SELECT p.name FROM USER_X_PERMISSION_X_ACCESS upa 
                         JOIN PERMISSIONS p ON upa.id_permission = p.id_permission 
-                        WHERE upa.nick_user = ?`
+                        WHERE upa.nick_user = ?`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -36,7 +36,7 @@ const permissionsUserGetDB = (nick_user) => {
 };
 
 const viewsGetDB = () => {
-    const sqlSelect = `SELECT rp.*, p.name FROM USER_X_PERMISSION_X_ACCESS upa
+    const sqlSelect = `SELECT upa.*, p.name FROM USER_X_PERMISSION_X_ACCESS upa
                         JOIN PERMISSIONS p ON p.id_permission = upa.id_permission`;
 
     return new Promise((resolve, reject) => {
@@ -174,4 +174,20 @@ const permissionRolUpdateDB = (permissions) => {
     });
 };
 
-module.exports = { permissionsGetDB, permissionsUserGetDB, viewsGetDB, permissionRolUpdateDB };
+const accessesGetDB = () => {
+    const sqlSelect = 'SELECT * FROM ACCESSES';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
+module.exports = { permissionsGetDB, permissionsUserGetDB, viewsGetDB, permissionRolUpdateDB, accessesGetDB };
