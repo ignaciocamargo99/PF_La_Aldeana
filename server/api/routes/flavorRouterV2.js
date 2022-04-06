@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// const flavorController = require('../controllers/flavorController');
+const flavorController = require('../controllers/flavorController');
 
-//endpoint in progress
-//router.post('/', flavorController.postFlavors);
+router.post('/', flavorController.postFlavors);
+router.put('/:idFlavor', flavorController.updateFlavor);
+router.delete('/:idFlavor', flavorController.deleteFlavor);
 
 module.exports = router;

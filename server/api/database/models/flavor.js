@@ -28,8 +28,8 @@ Flavor.init({
     },
     reorderStock: {
         type: DataTypes.NUMBER,
-        allowNull: false,
         field: 'reorder_stock'
+        // allowNull defaults to true
     },
     price: {
         type: DataTypes.NUMBER,
@@ -38,6 +38,7 @@ Flavor.init({
     active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: 1,
     },
 }, {
     // Other model options go here

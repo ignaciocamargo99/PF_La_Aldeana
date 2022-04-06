@@ -28,6 +28,9 @@
         "no-redeclare": [
             "warn"
         ],
+        "no-prototype-builtins": [
+            "warn"
+        ],
         "semi": [
             "warn",
             "always"
