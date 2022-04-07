@@ -1,16 +1,20 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
 import '../../../../assets/Buttons.css';
 
-export default function EditEmployeeButton (props) {
+
+const EditEmployeeButton = ({ employeeData, handleEditEmpoyeeClicked }) => {
 
     const handleEdit = () => {
-        let aux = props.employee;
-        aux.title = aux.name;
-        props.edit(aux);
-    }
-    
+        handleEditEmpoyeeClicked(employeeData);
+    };
+
     return (
-        <button id='editEmployeeButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+        <button id='editEmployeeButton' type="button" className="sendEdit" onClick={handleEdit}>
+            <FontAwesomeIcon icon={faEdit} />
+        </button>
     );
-}
+};
+
+export default EditEmployeeButton;

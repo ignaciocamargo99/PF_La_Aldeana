@@ -7,9 +7,9 @@ var assert = require("chai").assert;
 chai.use(chaiHttp);
 const url= 'http://localhost:3001/api';
 
-describe('Tests unitarios sobre API Users',()=>{
+describe.skip('Tests unitarios sobre API Users',()=>{
     
-    describe('Check getUsers',()=>{
+    describe.skip('Check getUsers',()=>{
         it('Recibe correctamente la funcion', (done) => {
             chai.request(url)
                 .get('/users')

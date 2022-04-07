@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 
 const PriceProduct = (props) => {
@@ -29,10 +30,16 @@ const PriceProduct = (props) => {
                 <label htmlFor="productPrice" >Precio*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice}
-                    onChange={onChangePrice} placeholder="Ingrese precio del producto..."
-                    defaultValue={props.data.price} onKeyDown={(e) => validateFloatNumbers(e)} />
-                <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} ref={divPriceValidation} />
+                <BeShowed show={!props.data.reading}>
+                    <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice}
+                        onChange={onChangePrice} placeholder="Ingrese precio del producto..."
+                        defaultValue={props.data.price} onKeyDown={(e) => validateFloatNumbers(e)} />
+                    <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} ref={divPriceValidation} />
+                </BeShowed>
+                <BeShowed show={props.data.reading}>
+                    <input className={isValidClass} id="productPrice" type="number" min="0" ref={inputPrice}
+                        defaultValue={props.data.price} readOnly />
+                </BeShowed>
             </div>
         </div>
     );

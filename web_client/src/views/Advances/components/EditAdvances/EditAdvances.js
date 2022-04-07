@@ -6,7 +6,6 @@ import Buttons from '../../../../common/Buttons';
 import dateToString from '../../../../utils/ConverterDate/dateToString';
 import dateText from '../../../../utils/DateFormat/dateText';
 import displayError from '../../../../utils/ErrorMessages/displayError';
-import formattedDate from '../../../../utils/formattedDate';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import ExtraDataAdvances from '../ExtraDataAdvances';

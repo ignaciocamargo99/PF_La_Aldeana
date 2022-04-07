@@ -21,10 +21,10 @@ export default function TypeProduct(props) {
 
     useEffect(() => {
         let data = props.data;
-        if(data.id_sector && data.editing === false){
+        if (data.id_sector && data.editing === false) {
             setSelectValue("-1");
             setType("null");
-            data.editing=false;
+            data.editing = false;
             data.id_product_type = null;
             props.load(data)
 
@@ -46,23 +46,31 @@ export default function TypeProduct(props) {
                 <label htmlFor="productType">Tipo*</label>
             </div>
             <div className="form-control-input">
-                <select className="form-control" id="selectTypeProduct"
-                    value={selectValue}
-                    onChange={handleType}>
-                    <BeShowed show={props.data.id_product_type && props.data.editing === true}>
-                        <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
+                <BeShowed show={!props.data.reading}>
+                    <select className="form-control" id="selectTypeProduct"
+                        value={selectValue}
+                        onChange={handleType}>
+                        <BeShowed show={props.data.id_product_type && props.data.editing === true}>
+                            <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
+                        </BeShowed>
+                        <BeShowed show={!props.data.id_product_type || props.data.editing === false}>
+                            <option disabled value="-1">Seleccione tipo de producto...</option>
+                        </BeShowed>
+                        {typeProduct && typeProduct.map((product, i) => {
+                            if (product.id_sector === props.data.id_sector)
+                                return (<option key={i} value={product.id_product_type}>{product.name}</option>)
+                        })}
+                    </select>
+                    <BeShowed show={errorMessage !== "null" && prevType !== "null"}>
+                        <div style={{ color: 'red' }}>{errorMessage}</div>
                     </BeShowed>
-                    <BeShowed show={!props.data.id_product_type || props.data.editing === false}>
-                        <option disabled value="-1">Seleccione tipo de producto...</option>
-                    </BeShowed>
-                    {typeProduct && typeProduct.map((product, i) => {
-                        if (product.id_sector === props.data.id_sector)
-                            return (<option key={i} value={product.id_product_type}>{product.name}</option>)
-                    })}
-                </select>
-                <BeShowed show={errorMessage !== "null" && prevType !== "null"}>
-                    <div style={{ color: 'red' }}>{errorMessage}</div>
                 </BeShowed>
+                <BeShowed show={props.data.reading}>
+                    <select className="form-control" id="selectTypeProduct" value={selectValue} readOnly>
+                        <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
+                    </select>
+                </BeShowed>
+
             </div>
         </div>
     );

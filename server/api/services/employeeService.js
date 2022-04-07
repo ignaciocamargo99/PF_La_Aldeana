@@ -1,16 +1,62 @@
 const { employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, assistanceEmployeeCreateDB, employeeAssistanceGetDB,
-    assistanceDeleteDB, employeeAssistanceUpdateDB } = require('../db/employeeDb');
+    employeeUpdateDB, employeeForDesktopGetDB } = require('../db/employeeDb');
 
 const readEmployee = async (dni) => {
     try {
         let res = await employeeGetDB(dni);
-        return res;
+        return mapEmployeesData(res);
     }
     catch (error) {
         throw Error(error)
     };
 };
+
+const readEmployeeForDesktop = async () => {
+    try {
+        let res = await employeeForDesktopGetDB();
+        return res;
+    }
+    catch(error) {
+        throw Error(error)
+    };
+};
+
+const mapEmployeesData = (employeesDataDB) => {
+    let allEmployeesMapped = [];
+
+    employeesDataDB.forEach(empDB => {
+        const employeeInList = employeeIsInList(allEmployeesMapped, empDB);
+
+        if (employeeInList) {
+            employeeInList.charges = [...employeeInList.charges, {
+                chargeId: empDB.chargeId,
+                chargeName: empDB.chargeName
+            }];
+        }
+        else {
+            employeeToAdd = {
+                dni: empDB.dni,
+                name: empDB.name,
+                last_name: empDB.last_name,
+                date: empDB.date_admission.toISOString().split('T')[0],
+                employment_relationship: empDB.employment_relationship,
+                name_emp_relationship: empDB.name_emp_relationship,
+                charges: [{
+                    chargeId: empDB.chargeId,
+                    chargeName: empDB.chargeName
+                }]
+            };
+
+            allEmployeesMapped.push(employeeToAdd);
+        }
+    });
+
+    return allEmployeesMapped;
+}
+
+const employeeIsInList = (allEmployeesMapped, emp) => {
+    return allEmployeesMapped.find(e => e.dni === emp.dni);
+}
 
 const readCharges = async () => {
     try {
@@ -53,50 +99,7 @@ const modifyEmployee = async (dniEmployee, updateEmployee) => {
 };
 
 
-const createAssistanceEmployee = async (newAssistance) => {
-    try {
-        let res = await assistanceEmployeeCreateDB(newAssistance);
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    };
-};
-
-
-const readEmployeeAssistance = async () => {
-    try {
-        let res = await employeeAssistanceGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error)
-    };
-};
-
-const deleteAssistanceEmployee = async (dniEmployee, date_entry) => {
-    try {
-        let res = await assistanceDeleteDB(dniEmployee, date_entry);
-        return res;
-    }
-    catch (error) {
-        throw Error(error)
-    };
-};
-
-const modifyAssistanceEmployee = async (dniEmployee, updateAssistanceEmployee) => {
-    try {
-        let res = await employeeAssistanceUpdateDB(dniEmployee, updateAssistanceEmployee);
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    };
-};
-
-
 module.exports = {
     readEmployee, deleteEmployees, readCharges, createEmployee,
-    modifyEmployee, createAssistanceEmployee, readEmployeeAssistance,
-    deleteAssistanceEmployee, modifyAssistanceEmployee
+    modifyEmployee, readEmployeeForDesktop
 };

@@ -1,28 +1,32 @@
 import React, { useRef, useState, useEffect } from "react";
-import BeShowed from "../../../common/BeShowed";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 
-export default function RegisterEmployee(props) {
-    const inputName = useRef(null);
-    const inputLastName = useRef(null);
+export default function DataEmployee(props) {
+
     const inputDni = useRef(null);
-    const [name, setName] = useState("null");
-    const [lastName, setLastName] = useState("null");
+    const inputLastName = useRef(props.data.last_name);
+    const inputName = useRef(props.data.name);
+
     const [dni, setDni] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
     const [isValidClassDNI, setIsValidClassDNI] = useState("form-control");
+    const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
+    const [lastName, setLastName] = useState(props.data.last_name);
+    const [name, setName] = useState(props.data.name);
+
     let data = props.data;
 
-    const handleName = () => setName(inputName.current.value);
-    const handleLastName = () => setLastName(inputLastName.current.value);
+    const handleName = () => setName(inputName.current.value.trim());
+    const handleLastName = () => setLastName(inputLastName.current.value.trim());
     const handleDni = () => setDni(inputDni.current.value);
 
     useEffect(() => {
+        if (props.isReadingEmployeeData) return;
+
         const dni = inputDni.current.value.trim();
         if (dni.length === 8) {
             setIsValidClassDNI("form-control is-valid");
-            data.dni = dni;
+            data.dni = +dni;
             props.load(data);
         }
         else {
@@ -33,32 +37,32 @@ export default function RegisterEmployee(props) {
     }, [dni, props, data])
 
     useEffect(() => {
-        const lastName = inputLastName.current.value.trim();
+        if (props.isReadingEmployeeData) return;
+
         if (lastName) {
             setIsValidClassLastName("form-control is-valid");
-            data.lastName = lastName;
-            props.load(data);
         }
         else {
             setIsValidClassLastName("form-control");
-            data.lastName = lastName;
-            props.load(data);
         }
-    }, [lastName, props, data]);
+
+        data.last_name = lastName;
+        props.load(data);
+    }, [lastName]);
 
     useEffect(() => {
-        const name = inputName.current.value.trim();
+        if (props.isReadingEmployeeData) return;
+
         if (name) {
             setIsValidClass("form-control is-valid");
-            data.nameEmployee = name;
-            props.load(data);
         }
         else {
             setIsValidClass("form-control")
-            data.nameEmployee = name;
-            props.load(data);
         }
-    }, [name, props, data]);
+
+        props.data.name = name;
+        props.load(data);
+    }, [name]);
 
     const validate = (e) => {
         if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, 8);
@@ -66,31 +70,42 @@ export default function RegisterEmployee(props) {
 
     return (
         <>
-            <h2>Datos del empleado</h2>
+            <h2>Datos del empleado/a</h2>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="employeeName" >Nombre*</label>
+                    <label htmlFor="nameEmployee" >Nombre*</label>
                 </div>
                 <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClass} id="employeeName" readOnly type="text" maxLength="80" ref={inputName} defaultValue={props.data.name} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClass} id="employeeName" autoFocus type="text" maxLength="80" ref={inputName} onChange={handleName} placeholder="Ingrese nombre..." defaultValue={props.data.name} />
-                    </BeShowed>
+                    <input
+                        autoFocus={!props.isReadingEmployeeData}
+                        className={isValidClass}
+                        defaultValue={props.data.name}
+                        id="nameEmployee"
+                        maxLength="80"
+                        onChange={handleName}
+                        placeholder="Ingrese nombre..."
+                        readOnly={props.isReadingEmployeeData}
+                        ref={inputName}
+                        type="text"
+                    />
                 </div>
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="lastName" >Apellido*</label>
+                    <label htmlFor="lastNameEmployee" >Apellido*</label>
                 </div>
                 <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClassLastName} id="lastName" readOnly type="text" maxLength="80" ref={inputLastName} defaultValue={props.data.lastName} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassLastName} id="lastName" type="text" maxLength="80" ref={inputLastName} onChange={handleLastName} placeholder="Ingrese apellido..." defaultValue={props.data.lastName} />
-                    </BeShowed>
+                    <input
+                        className={isValidClassLastName}
+                        defaultValue={props.data.last_name}
+                        id="lastNameEmployee"
+                        maxLength="80"
+                        onChange={handleLastName}
+                        placeholder="Ingrese apellido..."
+                        readOnly={props.isReadingEmployeeData}
+                        ref={inputLastName}
+                        type="text"
+                    />
                 </div>
             </div>
             <div className="formRow">
@@ -98,12 +113,19 @@ export default function RegisterEmployee(props) {
                     <label htmlFor="dniEmployee" >DNI*</label>
                 </div>
                 <div className="form-control-input">
-                    <BeShowed show={props.data.reading}>
-                        <input className={isValidClassDNI} id="dniEmployee" readOnly type="number" ref={inputDni} onChange={handleDni} defaultValue={props.data.dni} />
-                    </BeShowed>
-                    <BeShowed show={!props.data.reading}>
-                        <input className={isValidClassDNI} id="dniEmployee" type="number" ref={inputDni} onChange={handleDni} min="1" placeholder="Ingrese DNI..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.dni} />
-                    </BeShowed>
+                    <input
+                        className={isValidClassDNI}
+                        defaultValue={props.data.dni}
+                        id="dniEmployee"
+                        min="1"
+                        onChange={handleDni}
+                        onInput={(e) => validate(e)}
+                        onKeyDown={(e) => validateFloatNumbers(e)}
+                        placeholder="Ingrese DNI..."
+                        readOnly={props.isReadingEmployeeData || props.isEditingEmployeeData}
+                        ref={inputDni}
+                        type="number"
+                    />
                 </div>
             </div>
         </>

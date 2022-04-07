@@ -1,29 +1,36 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import React from 'react';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import DataEmployee from '../DataEmployee';
 import ExtraDataEmployee from '../ExtraDataEmployee';
 
-export default function EditEmployee(props) {
-    const [data, setData] = useState(props.employee);
+const ReadEmployee = ({ employeeData, goBack }) => {
 
-    const load = (childData) => setData(childData)
+    const isReadingEmployeeData = true;
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Consultar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Consultar empleado" />
             <div className="viewTitle">
-                <h1>Empleado {props.employee.name + " " + props.employee.lastName}</h1>
+                <h1>Empleado/a {employeeData.name + " " + employeeData.last_name}</h1>
             </div>
             <br />
             <div className="viewBody">
-                <DataEmployee load={load} data={data} />
-                <ExtraDataEmployee load={load} data={data} />
+                <DataEmployee
+                    data={employeeData}
+                    isReadingEmployeeData={isReadingEmployeeData}
+                />
+                <ExtraDataEmployee
+                    data={employeeData}
+                    isReadingEmployeeData={isReadingEmployeeData}
+                />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={props.return}>Volver</button>
+                    <button className='sendOk' onClick={goBack}>Volver</button>
                 </div>
             </div>
         </>
     );
 }
+
+export default ReadEmployee;

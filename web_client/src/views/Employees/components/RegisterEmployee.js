@@ -7,32 +7,65 @@ import displayError from "../../../utils/ErrorMessages/displayError";
 import successMessage from '../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
+import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
 
 const PORT = require('../../../config');
 
 export default function RegisterEmployee() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ nameEmployee: null, lastName: null, dni: null, id_charge: null, date: null, employmentRelationship: null, editing: false, reading: false });
+    const [data, setData] = useState({
+        isCreatingNewEmployee: true
+    });
     const cancelRegisterEmployee = () => window.location.replace('/app/employees');
 
     const load = (childData) => {
         setData(childData);
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && data.dni.length === 8) setReady(true);
+
+        if (isEmployeeFormDataValid(data, false)) {
+            setReady(true);
+        }
         else setReady(false);
+    };
+
+    const registerEmployee = (data) => {
+        return Axios.post(`${PORT()}/api/employees`, data);
     }
 
-    const registerNewEmployee = () => {
-        if (data.nameEmployee && data.lastName && data.dni && data.id_charge && data.date && data.employmentRelationship && ready) {
-            Axios.post(`${PORT()}/api/employees`, data)
-                .then((data) => {
-                    if (data.data.Ok) successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
-                    else displayError('El dni ingresado ya corresponde a otro empleado');
-                })
-                .catch((error) => console.error(error))
+    const registerDaysOff = (data) => {
+        const dniEmployee = data.dni;
+        const firstDayOff = data.firstDayOffDate.replaceAll("-", "/")
+
+        return Axios.post(`${PORT()}/api/consecutiveDaysOffOfEmployee`, null, { params: { dniEmployee, firstDayOff } });
+    }
+
+    const displayRegisterError = () => {
+        displayError('Ha ocurrido un error al intentar registrar al empleado.');
+    }
+
+    const registerNewEmployee = async () => {
+        if (isEmployeeFormDataValid(data, false) && ready) {
+            try {
+                let response = await registerEmployee(data);
+                if (response.data.Ok) {
+                    response = await registerDaysOff(data);
+                    if (response.data.Ok) {
+                        successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
+                    }
+                    else {
+                        displayRegisterError();
+                    }
+                }
+                else {
+                    displayRegisterError();
+                }
+            }
+            catch {
+                displayRegisterError();
+            }
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios.', 'warning');
-    }
+    };
 
     return (
         <>
@@ -42,11 +75,21 @@ export default function RegisterEmployee() {
                 <h1>Registrar empleado</h1>
             </div>
             <div className="viewBody">
-                <DataEmployee load={load} data={data} />
-                <ExtraDataEmployee load={load} data={data} />
+                <DataEmployee
+                    data={data}
+                    load={load}
+                />
+                <ExtraDataEmployee
+                    data={data}
+                    load={load}
+                />
                 <Buttons
-                    label='Registrar' ready={ready} actionOK={registerNewEmployee} actionNotOK={registerNewEmployee}
-                    data={data} actionCancel={cancelRegisterEmployee}
+                    actionCancel={cancelRegisterEmployee}
+                    actionNotOK={registerNewEmployee}
+                    actionOK={registerNewEmployee}
+                    data={data}
+                    label='Registrar'
+                    ready={ready}
                 />
             </div>
         </>

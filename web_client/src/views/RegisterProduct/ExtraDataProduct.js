@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import BeShowed from '../../common/BeShowed';
 import FlavorsAmount from './components/FlavorsAmount';
 import ImageProduct from './components/ImageProduct';
@@ -5,24 +6,30 @@ import ImageEditProduct from '../ListProducts/components/EditProducts/components
 import SuppliesPairTables from './components/SuppliesPairTables/SuppliesPairTables';
 import TypeProduct from './components/TypeProduct';
 
-const ExtraDataProduct = ({ load, data }) => {
+const ExtraDataProduct = (props) => {
+    const [data, setData] = useState({});
+
+    const load = (childData) => {
+        setData(childData);
+        props.load(childData);
+    }
 
     return (
         <>
-            <TypeProduct load={load} data={data} />
-            <BeShowed show={parseInt(data.id_product_type, 10) === 3}>
-                <FlavorsAmount load={load} data={data} />
+            <TypeProduct load={props.load} data={props.data} />
+            <BeShowed show={parseInt(props.data.id_product_type, 10) === 3}>
+                <FlavorsAmount load={props.load} data={props.data} />
             </BeShowed>
             <hr />
             <h2>Insumos</h2>
-            <SuppliesPairTables load={load} data={data} />
+            <SuppliesPairTables load={props.load} data={props.data} />
             <hr />
             <h2>Imagen</h2>
-            <BeShowed show={data.editing}>
-                <ImageEditProduct load={load} data={data} />
+            <BeShowed show={props.data.editing}>
+                <ImageEditProduct load={props.load} data={props.data} />
             </BeShowed>
-            <BeShowed show={!data.editing}>
-                <ImageProduct load={load} data={data} />
+            <BeShowed show={!props.data.editing}>
+                <ImageProduct load={props.load} data={props.data} />
             </BeShowed>
         </>
     );

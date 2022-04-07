@@ -15,7 +15,7 @@ const PORT = require('../../../config');
 
 export default function LicensesTable(props) {
 
-    const[date,setDate] = useState(new Date().setHours(0,0,0,0))
+    const[date] = useState(new Date().setHours(0,0,0,0))
 
     const deleteLicense = (idLicense) => {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)

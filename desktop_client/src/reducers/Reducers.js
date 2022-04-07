@@ -8,7 +8,6 @@ import { productsReducer, productsFilteredReducer, detailProductsReducer, payTyp
     refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
-import { employeeAssistance } from "./EmployeeAssistanceReducer";
 
 export default combineReducers({
     // Products
@@ -55,7 +54,4 @@ export default combineReducers({
     productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientDelivery: clientDeliveryReducer,
     productsStocksDelivery: productsStocksDeliveryReducer,
-
-    // Employee Assistance
-    employeeAssistance: employeeAssistance,
 })
