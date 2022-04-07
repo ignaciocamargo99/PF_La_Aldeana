@@ -11,13 +11,13 @@ const NickUser = (props) => {
         if (nick_user) {
             setIsValidClass("form-control is-valid");
             data.nick_user = nick_user;
-            props.load(data);
+            props.loadData(data);
         }
         else {
             setIsValidClass("form-control");
             let data = props.data;
             data.nick_user = null;
-            props.load(data);
+            props.loadData(data);
         }
     };
 

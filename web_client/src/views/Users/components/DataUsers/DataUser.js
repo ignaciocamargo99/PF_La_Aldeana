@@ -9,11 +9,11 @@ const DataUser = (props) => {
     return (
         <>
             <h2>Datos generales</h2>
-            <NickUser load={(childData) => props.load(childData)} data={props.data} />
-            <FirstName load={(childData) => props.load(childData)} data={props.data} />
-            <LastName load={(childData) => props.load(childData)} data={props.data} />
+            <NickUser loadData={(childData) => props.loadData(childData)} data={props.data} />
+            <FirstName loadData={(childData) => props.loadData(childData)} data={props.data} />
+            <LastName loadData={(childData) => props.loadData(childData)} data={props.data} />
             <BeShowed show={!props.data.reading}>
-                <Password load={(childData) => props.load(childData)} data={props.data} />
+                <Password loadData={(childData) => props.loadData(childData)} data={props.data} />
             </BeShowed>
         </>
     );

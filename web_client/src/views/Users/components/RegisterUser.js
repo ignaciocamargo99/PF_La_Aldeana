@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '../../../assets/Buttons.css';
 import Buttons from '../../../common/Buttons';
 import successMessage from '../../../utils/SuccessMessages/successMessage';
-// import GeneralDataProduct from './GeneralDataProduct';
+import warningMessage from '../../../utils/WarningMessages/warningMessage';
 import displayError from '../../../utils/ErrorMessages/displayError';
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -14,42 +14,48 @@ import ListPermissions from './Permissions/components/ListPermissions';
 const PORT = require('../../../config');
 
 export default function RegisterUser() {
+    const [quantityPermissions, setQuantityPermissions] = useState();
     const [data, setData] = useState({ nick_user: null, first_name: null, last_name: null, password: null, editing: false });
     const [ready, setReady] = useState(false);
-    // For view permissions
     const [valueSelect, setValueSelect] = useState();
     let matrix = [];
 
     useEffect(() => {
-        for (let x = 0; x <= 7; x++) {
-            matrix[x] = [];
-            for (let y = 0; y <= 3; y++) {
-                matrix[x][y] = 0;
-            }
-        };
-        setValueSelect(matrix);
-        console.log(matrix)
+        Axios.get(PORT() + '/api/permissions')
+            .then((response) => {
+                setQuantityPermissions(response.data);
+            })
+            .catch((error) => console.log(error));
     }, []);
-    // const [nameProductChild, setNameProductChild] = useState('');
-    // const [priceProductChild, setPriceProductChild] = useState('');
-    // const [sectorProductChild, setSectorProductChild] = useState('');
-    // const [typeProductChild, setTypeProductChild] = useState(-1);
-    // const [imgProductChild, setImgProductChild] = useState('');
-    // const [supplyProductChild, setSupplyProductChild] = useState('');
 
-    const load = (childData) => {
+    useEffect(() => {
+        if (quantityPermissions) {
+            for (let x = 0; x < quantityPermissions.length; x++) {
+                matrix[x] = [];
+                for (let y = 0; y <= 3; y++) {
+                    matrix[x][y] = 0;
+                }
+            };
+            setValueSelect(matrix);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quantityPermissions]);
+
+    const loadData = (childData) => {
         setData(childData);
-        // setNameProductChild(childData.name);
-        // setPriceProductChild(childData.price);
-        // setSectorProductChild(childData.id_sector);
-        // setTypeProductChild(childData.id_product_type);
-        // setImgProductChild(childData.img);
-        // setSupplyProductChild(childData.supplies);
+        if (data.nick_user && data.first_name && data.last_name && data.password) setReady(true);
+        else setReady(false);
     }
 
-    const registerUser = () => {
+    const loadMatrix = (matrix) => setValueSelect(matrix);
 
-        console.log(data);
+    const registerUser = () => {
+        if(ready){
+            console.log(data);
+            console.log(valueSelect);
+        }
+
+        else warningMessage('Atención','Todos los campos son obligatorios', 'warning');
         // let urlApi = '';
         // const formData = new FormData();
 
@@ -75,22 +81,6 @@ export default function RegisterUser() {
         //     .catch(error => console.log(error))
     };
 
-    // useEffect(() => {
-    //     if (data.name !== '' && data.price && data.price > 0 && data.name && data.id_sector > 0 && data.id_product_type) setReady(true);
-    //     else setReady(false);
-    // }, [
-    //     nameProductChild,
-    //     priceProductChild,
-    //     sectorProductChild,
-    //     typeProductChild,
-    //     imgProductChild,
-    //     supplyProductChild,
-    //     data.id_sector,
-    //     data.id_product_type,
-    //     data.name,
-    //     data.price
-    // ]);
-
     const cancelRegisterUser = () => window.location.replace('/app/users');
 
     return (
@@ -101,10 +91,8 @@ export default function RegisterUser() {
                 <h1>Registrar usuario</h1>
             </div>
             <div className="viewBody">
-                <DataUser data={data} load={load} />
-                <ListPermissions data={data} load={load} matrix={matrix} valueSelect={valueSelect}/>
-                {/* <GeneralDataProduct load={load} data={data} /> */}
-                {/* <ExtraDataProduct load={load} data={data} /> */}
+                <DataUser data={data} loadData={loadData} />
+                <ListPermissions data={data} loadMatrix={loadMatrix} valueSelect={valueSelect} />
                 <Buttons
                     label='Registrar' actionOK={registerUser}
                     actionNotOK={registerUser}

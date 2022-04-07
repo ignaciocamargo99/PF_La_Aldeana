@@ -11,13 +11,13 @@ const FirstName = (props) => {
         if (first_name) {
             setIsValidClass("form-control is-valid");
             data.first_name = first_name;
-            props.load(data);
+            props.loadData(data);
         }
         else {
             setIsValidClass("form-control");
             let data = props.data;
             data.first_name = null;
-            props.load(data);
+            props.loadData(data);
         }
     }
 

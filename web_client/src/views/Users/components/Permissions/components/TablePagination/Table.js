@@ -1,36 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import CheckBoxDelete from "../CheckBoxDelete";
-import CheckBoxEdit from "../CheckBoxEdit";
-import CheckBoxEnabled from "../CheckBoxEnabled";
-import CheckBoxNew from '../CheckBoxNew';
-import CheckBoxRead from "../CheckBoxRead";
-import successMessage from "../../../../../../utils/SuccessMessages/successMessage"
-import displayError from "../../../../../../utils/ErrorMessages/displayError"
+import React from 'react';
+import useHTTPGet from '../../../../../../hooks/useHTTPGet';
+import SelectPermission from "../SelectPermission";
+
 const PORT = require('../../../../../../config');
 
-
-const Table = ({ pageElements, columnsHeaders, permission, cancelChanges, matrix, load, valueSelect }) => {
-
-    // const [enabledDisabled, setEnabledDisabled] = useState();
-    // const [valueCheckBoxes, setValueCheckBoxes] = useState();
-    // let checkEnabledDisabled = [];
-    // let matrix = new Array();
-
-    // useEffect(() => {
-    //     for (let x = 0; x <= 7; x++) {
-    //         matrix[x] = new Array();
-    //         for (let y = 0; y <= 4; y++) {
-    //             matrix[x][y] = 0;
-    //         }
-    //     };
-    //     setValueCheckBoxes(matrix);
-    // }, []);
-
-    // const load = (childData) => {
-    //     setEnabledDisabled(childData);
-    //     console.log(matrix)
-    // }
+const Table = ({ pageElements, columnsHeaders, permission, loadMatrix, valueSelect }) => {
+    const access = useHTTPGet(PORT() + '/api/accesses');
 
     // const onClickSaveChanges = () => {
     //     console.log(valueCheckBoxes);
@@ -46,10 +21,6 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges, matrix
         <>
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Permisos establecidos:</h4>
-                {/* <div className="search-input">
-                    <button className='sendOk' onClick={onClickSaveChanges}>Guardar</button>
-                    <button className='cancel' onClick={cancelChanges}>Cancelar</button>
-                </div> */}
             </div>
             {(pageElements && pageElements.length > 0 && permission)
                 ?
@@ -72,25 +43,9 @@ const Table = ({ pageElements, columnsHeaders, permission, cancelChanges, matrix
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxEnabled pageElements={pageElements} permission={permission}
-                                                index={i} load={load} matrix={valueSelect} />
+                                            <SelectPermission pageElements={pageElements} permission={permission}
+                                                index={i} loadMatrix={loadMatrix} matrix={valueSelect} access={access} />
                                         </td>
-                                        {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxNew pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxRead pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxEdit pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <CheckBoxDelete pageElements={pageElements} permission={permission} index={i}
-                                                checkEnabledDisabled={enabledDisabled} matrix={valueCheckBoxes} />
-                                        </td> */}
                                     </tr>
                                 )
                             })}

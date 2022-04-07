@@ -11,13 +11,13 @@ const Password = (props) => {
         if (password) {
             setIsValidClass("form-control is-valid");
             data.password = password;
-            props.load(data);
+            props.loadData(data);
         }
         else {
             setIsValidClass("form-control");
             let data = props.data;
             data.password = null;
-            props.load(data);
+            props.loadData(data);
         }
     }
 

@@ -28,8 +28,6 @@ export default function ListPermissions(props) {
         else setPermission([]);
     }, []);
 
-    const cancelChanges = () => window.location.reload();
-
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     const columnsHeaders = [
@@ -69,10 +67,8 @@ export default function ListPermissions(props) {
                             <TablePagination
                                 columnsHeaders={columnsHeaders}
                                 currentElements={views}
-                                permission={permission}
-                                cancelChanges={cancelChanges}
-                                matrix={props.matrix}
-                                load={(childData) => props.load(childData)}
+                                permission={permission}        
+                                loadMatrix={(matrix) => props.loadMatrix(matrix)}
                                 valueSelect = {props.valueSelect}
                             />
                         </>
