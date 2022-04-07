@@ -17,6 +17,7 @@ const EmployeesSchedulesView = () => {
     const [turns,setTurns] = useState(null);
     const [nonworkingDays,setNonworkingDays] = useState(null);
     const [licenses,setLicenses] = useState(null);
+    const [charges,setCharges] = useState(null);
 
     const today = new Date();
 
@@ -86,6 +87,14 @@ const EmployeesSchedulesView = () => {
         .catch((error) => console.log(error));
     },[])
 
+    useEffect(() => {
+        axios.get(`${PORT()}/api/charges`)
+        .then((res) => {
+            setCharges(res.data);
+        })
+        .catch((error) => console.log(error));
+    },[])
+
     const viewTitle = 'Grilla de Horarios';
 
     return (
@@ -122,7 +131,7 @@ const EmployeesSchedulesView = () => {
                 </BeShowed>
                 <BeShowed show={showAutomatedSchedule}>
                     <AutomatedSchedule today={today} nonworkingDays={nonworkingDays} employees={employees} turns={turns} 
-                                        setShowAutomatedSchedule={setShowAutomatedSchedule} licenses={licenses}/>
+                                        charges={charges} setShowAutomatedSchedule={setShowAutomatedSchedule} licenses={licenses}/>
                 </BeShowed>
             </div>
         </>

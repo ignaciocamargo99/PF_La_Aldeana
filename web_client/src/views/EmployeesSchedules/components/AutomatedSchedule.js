@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import generateAutomatedDay from '../AutomatedFunction/GenerateAutomatedDay';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import { sumArray, calculateTypeEmployees } from '../../../utils/ArrayFunctions/ArrayFunctions';
 import swal from 'sweetalert';
 
 const PORT = require('../../../config'); 
 
-const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAutomatedSchedule, licenses}) => {
+const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAutomatedSchedule, licenses, charges}) => {
 
-    // 0 - Dia Normal // 1 - Fin de Semana // 2 - Feriados y Domingos
+    // 0 - Dia Normal // 1 - Fin de Semana // 2 - Feriados
     const[typeDay,setTypeDay] = useState(0);
     const[params,setParams] = useState(null);
     const initDate = useRef();
@@ -30,7 +31,7 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
         setParams(initParams);
     }
 
-    const buildVariables = (bool,disabledEmployees) => {
+    const buildVariables = (disabledEmployees) => {
         let variables = {};
         for(let i=0; i < employees.length; i++){
             for(let j=0; j < employees[i].charges.length; j++){
@@ -39,7 +40,6 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                         && !disabledEmployees.includes(employees[i].dni)){
                         
                         let object = {};
-                        object.value = bool?(i+k):((i+k)*-1);
                         object[`${employees[i].dni}`] = 1;
                         for(let l=0; l < turns.length; l++){
                             if(k === l){
@@ -93,15 +93,13 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
         let init = new Date(initDate.current.value.slice(0,4),parseInt(initDate.current.value.slice(5,7))-1,initDate.current.value.slice(8,10));
         let finish = new Date(finishDate.current.value.slice(0,4),parseInt(finishDate.current.value.slice(5,7))-1,finishDate.current.value.slice(8,10));
 
-        let value = true;
         let arrayInsertsEmployees = [];
 
         while(init.getTime() <= finish.getTime()){
 
             let isNwD = nonworkingDays.findIndex((nwD) => nwD.dia === init.getDate() && nwD.mes === init.getMonth()+1)
-            let isSunday = init.getDay() === 0;
-            let isWeekendDay = init.getDay() === 5 || init.getDay() === 6;
-            let typeDay = isNwD !== -1 || isSunday? 2 : isWeekendDay ? 1 : 0;
+            let isWeekendDay = init.getDay() === 6 || init.getDay() === 0;
+            let typeDay = isNwD !== -1 ? 2 : isWeekendDay ? 1 : 0;
 
             
             let disabledEmployees = [];
@@ -119,7 +117,9 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                 }
             });
 
-            let variables = buildVariables(value,disabledEmployees);
+
+
+            let variables = buildVariables(disabledEmployees);
             let constraints = buildConstraints(typeDay);    
             let results = generateAutomatedDay(constraints,variables);
 
@@ -144,7 +144,6 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
             }
 
             init.setDate(init.getDate() + 1);
-            value = !value;
         }
 
         swal({
@@ -211,16 +210,21 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
             </div>
             <br/>
             <div className="formRow">
-                <button className={`btn ${typeDay===0?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(0)}}>Dias Normales</button>
-                <button className={`btn ${typeDay===1?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(1)}}>Fin De Semana</button>
-                <button className={`btn ${typeDay===2?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(2)}}>Dias Feriados y Domingos</button>
+                <button className={`btn ${typeDay===0?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(0)}}>Dias Normales (Lun a Vier)</button>
+                <button className={`btn ${typeDay===1?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(1)}}>Fin De Semana (Sab y Dom)</button>
+                <button className={`btn ${typeDay===2?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(2)}}>Feriados</button>
             </div>
             <br/>
+            <label className='col-sm-2 offset-sm-10'>Empleados: {params ? employees.length - sumArray(params[typeDay]) : '-'}</label>
+            {charges?.map((charge) => {
+                return(
+                    <label className='col-sm-2 offset-sm-10'>{charge.name}: {calculateTypeEmployees(employees, charge.id_charge)}</label>
+            )})}
             {params?turns.map((turn,i) => {
                 return(
                     <div key={turn.id} className="formRow">
                         <div className='col-sm-5 offset-sm-3'>
-                            <label>Cantidad de Empleados requeridos en el turno {turn.name} &nbsp;</label>
+                            <label>{turn.name} &nbsp;</label>
                         </div>
                         <input id={`inputTurn${turn.id}`} className="col-sm-1" type="number" min="0" 
                                 style={{textAlign: 'center'}} value={params[typeDay][i]}
