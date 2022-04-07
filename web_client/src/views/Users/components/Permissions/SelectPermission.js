@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import showPermissions from "../showPermissions";
+import showPermissions from "./showPermissions";
 
 export default function CheckBoxEnabled(props) {
     const enabledDisabledCheck = useRef(null);

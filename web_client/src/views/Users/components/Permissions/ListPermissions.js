@@ -1,9 +1,9 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import LoaderSpinner from "../../../../../common/LoaderSpinner";
+import LoaderSpinner from "../../../../common/LoaderSpinner";
 import TablePagination from './TablePagination/TablePagination';
 
-const PORT = require('../../../../../config')
+const PORT = require('../../../../config')
 
 export default function ListPermissions(props) {
     const [views, setViews] = useState();

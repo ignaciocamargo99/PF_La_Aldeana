@@ -9,7 +9,7 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import DataUser from './DataUsers/DataUser';
-import ListPermissions from './Permissions/components/ListPermissions';
+import ListPermissions from './Permissions/ListPermissions';
 
 const PORT = require('../../../config');
 

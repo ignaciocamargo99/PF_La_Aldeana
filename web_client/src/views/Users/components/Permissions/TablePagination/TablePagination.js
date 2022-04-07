@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '../../../../../../common/TablePagination/Pagination';
+import Pagination from '../../../../../common/TablePagination/Pagination';
 import Table from './Table';
 
 const TablePagination = ({ columnsHeaders, currentElements, permission, loadMatrix, valueSelect}) => {
