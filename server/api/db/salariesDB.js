@@ -30,7 +30,7 @@ const salariesCreateDB = (newSalary) => {
     const sqlGetIdSalary = "SELECT id_salary FROM SALARIES s ";
     const sqlGetConcepts = "SELECT * FROM CONCEPTS c";
     const sqlInsertConcept = "INSERT INTO CONCEPTS VALUES (?, ?, 1)";
-    const sqlInsertHsWorked = "INSERT INTO HS_WORKED VALUES (null, ?, ?, ?, ?)";
+    const sqlInsertHsWorked = "INSERT INTO HS_WORKED VALUES (null, ?, ?, ?, ?, ?)";
     const sqlInsertDetail = "INSERT INTO DETAIL_SALARIES VALUES (null, ?, ?, ?, ?);";
 
     return new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ const salariesCreateDB = (newSalary) => {
                                             r?.map(concept => {
                                                 if(concept.name.toUpperCase() == newSalary.details[0][j].name.toUpperCase()){
                                                     const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
-                                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs], (error, r) => {
+                                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs, newSalary.details[0][j].price], (error, r) => {
                                                         if (error) {
                                                             console.log(error);
                                                             db.rollback(()=> reject(error));
@@ -286,9 +286,13 @@ const salaryGetDB = (monthYear, dni) => {
         })
     });
 };
-
+const calcHs = (hs, res) => {
+    if (res.employment_relationship === 1) hs - 6 < 0 ? hs = 0 : hs -= 6;
+    else if (res.employment_relationship === 3) hs - 4 < 0 ? hs = 0 : hs -= 4;
+    return hs;
+}
 const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
-    const sqlSelect = "SELECT hw.*, e.name, e.last_name, ht.name AS hs_type, ht.amount FROM HS_WORKED hw " +
+    const sqlSelect = "SELECT hw.*, e.name, e.last_name, ht.name AS hs_type FROM HS_WORKED hw " +
                     "LEFT JOIN EMPLOYEES e ON e.dni = hw.dni_employee " +
                     "LEFT JOIN HS_TYPES ht ON ht.id_hs_type = hw.id_hs_type " +
                     "WHERE hw.month_year = '" + monthYear + "' AND hw.dni_employee = " + dni;
@@ -303,7 +307,7 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                     reject("1:" + error);
                 }
                 else if (result.length === 0) {
-                    const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
+                    const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s LEFT JOIN EMPLOYEES e ON e.dni = s.employee WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
                     formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
 
@@ -344,7 +348,8 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                         let isWeekend = (date === 0 || (date === 6 && hours >= 13 ? true : (hours === 13 && minutes > 0)));
                                         let isWeekendTo = (dateTo === 0 || (dateTo === 6 && hoursTo >= 13 ? true : (hoursTo === 13 && minutesTo > 0)));
                                         //console.log(isWeekend , isWeekendTo)
-                                        
+                                        let absHs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
+
                                         nonWorkingDays?.map(holiday => {
                                             if (holiday.day === day && holiday.month === month) isNonWorked = true;
                                             if (holiday.day === dayTo && holiday.month === monthTo) isNonWorkedTo = true;
@@ -370,17 +375,17 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                             if (isWeekend === isWeekendTo) {
                                                 let hs = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
                                                 if (isWeekendTo) aux[1].hs_number += hs;
-                                                else aux[0].hs_number += hs;
+                                                else aux[0].hs_number += calcHs(hs, assistance);
                                             } else if (isWeekend) {
                                                 let hsTo = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, 23, 59).getTime())/1000/60/60;
                                                 let hs = (new Date(year, month, day, 23, 59).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
                                                 aux[1].hs_number += hs;
-                                                aux[0].hs_number += hsTo;
+                                                aux[0].hs_number += calcHs(hsTo, assistance);
                                             } else {
                                                 let hsTo = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, 13).getTime())/1000/60/60;
                                                 let hs = (new Date(yearTo, monthTo, dayTo, 13).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
                                                 aux[1].hs_number += hsTo;
-                                                aux[0].hs_number += hs;
+                                                aux[0].hs_number += calcHs(hs, assistance);
                                             }
                                         }
                                     });
@@ -428,7 +433,7 @@ const salariesUpdateDB = (id, newSalary) => {
     const sqlGetConcepts = "SELECT * FROM CONCEPTS c";
     const sqlClearDetails = "DELETE FROM DETAIL_SALARIES WHERE id_detail_salary = " + id + " AND id_concept > 5; ";
     const sqlInsertConcept = "INSERT INTO CONCEPTS VALUES (?, ?, 1)";
-    const sqlInsertHsWorked = "UPDATE HS_WORKED SET hs_number = ? WHERE id_hs_worked = ?";
+    const sqlInsertHsWorked = "UPDATE HS_WORKED SET amount = ? WHERE id_hs_worked = ?";
     const sqlInsertDetail = "INSERT INTO DETAIL_SALARIES VALUES (null, ?, ?, ?, ?);";
 
     //console.log(newSalary.details)
@@ -464,7 +469,7 @@ const salariesUpdateDB = (id, newSalary) => {
                                                 r?.map(concept => {
                                                     if(concept.name.toUpperCase() == newSalary.details[0][j].name.toUpperCase()){
                                                         const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
-                                                        db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs], (error, r) => {
+                                                        db.query(sqlInsertHsWorked, [newSalary.details[0][j].price, newSalary.details[0][j].id_hs_worked], (error, r) => {
                                                             if (error) {
                                                                 console.log(error);
                                                                 db.rollback(()=> reject(error));
