@@ -25,15 +25,15 @@ const UploadByName = (props) => {
         const j = props.i;
         const aux = [];
         props.destiny.forEach((inc, i) => {
-            if (inc === j) aux[i] = {name: /*validateConcepts(*/e.target.value/*, props.listName)*/, price: inc.price};
+            if (inc === j) aux[i] = {name: validateConcepts(e.target.value, props.list), price: inc.price};
             else aux[i] = {name: inc.name, price: inc.price};
         });
-        //props.upload(aux);
+        props.upload(aux);
     }
 
-    const updateShowOptions = () => {
+    const updateShowOptions = (e) => {
         setShowOptions(true);
-        upload();
+        upload(e);
     }
 
     return(
@@ -45,9 +45,7 @@ const UploadByName = (props) => {
                     })}
                 </datalist>
             </BeShowed>
-            <div className="form-control-input">
-                <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + props.class + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default?props.default:null}/>
-            </div>
+            <input className={(props.i.name.length < 1 ? "form-control is-invalid" : "form-control") + props.class + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default?props.default:null}/>
         </>
     );
 }
