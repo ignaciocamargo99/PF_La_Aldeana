@@ -126,6 +126,8 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                     disabledEmployees.push(dayOff.dni)    
                 });
                 
+                console.log(disabledEmployees)
+
                 let variables = buildVariables(disabledEmployees);
                 let constraints = buildConstraints(typeDay);    
                 let results = generateAutomatedDay(constraints,variables);

@@ -3,7 +3,8 @@ export const sumArray = (array) =>{
     array.forEach(element => {
         sum = element + sum;
     });
-    return sum
+    if(sum.toString() == 'NaN'){ sum = '...'}
+    return sum;
 }
 
 export const calculateTypeEmployees = (employees, charge, turns, params) => {
