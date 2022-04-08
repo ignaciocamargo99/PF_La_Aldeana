@@ -19,9 +19,10 @@ const permissionsGetDB = () => {
 const permissionsUserGetDB = (nick_user) => {
 
     const sqlSelect = `SELECT upa.*, p.name, a.name_access FROM USER_X_PERMISSION_X_ACCESS upa 
+                        JOIN USERS u ON u.id_user = upa.id_user
                         JOIN PERMISSIONS p ON upa.id_permission = p.id_permission
                         JOIN ACCESSES a ON upa.id_access = a.id_access
-                        WHERE upa.nick_user = ?`;
+                        WHERE u.nick_user = ?`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
