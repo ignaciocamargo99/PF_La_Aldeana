@@ -24,25 +24,7 @@ const EmployeesSchedulesView = () => {
     useEffect(() => {
         axios.get(`${PORT()}/api/employees`)
         .then((response) => {
-            let newEmployees = [];
-            response.data.forEach((e,i) => {
-                let employeeToAdd = {dni: e.dni, name: e.name, last_name: e.last_name, 
-                                    employment_relationship: e.employment_relationship, name_emp_relationship:e.name_emp_relationship,
-                                    charges: []};
-                if(e.dni === newEmployees[newEmployees.length-1]?.dni){
-                    newEmployees[newEmployees.length-1].charges.push({
-                        id: e.chargeId,
-                        chargeName: e.chargeName
-                    })
-                }else {
-                    employeeToAdd.charges.push({
-                        id: e.chargeId,
-                        chargeName: e.chargeName
-                    })
-                    newEmployees.push(employeeToAdd);
-                }
-            })
-            setEmployees(newEmployees);
+            setEmployees(response.data);
         })
     },[])
 
@@ -107,10 +89,6 @@ const EmployeesSchedulesView = () => {
                 <BeShowed show={ !showMonthView && !showAutomatedSchedule }>
                     <div className="schedules-cards-container">
                         <div className="cards-container d-flex-col">
-                            <Card
-                                title='Ver Últimas Grillas'
-                                text='Mira las últimas grillas que has creado.'
-                            />
                             <Card
                                 title='Visualizar cronograma por mes'
                                 text='Visualiza los turnos asignados de tus empleados con estadisticas incluidas.'
