@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../../../../../common/TablePagination/Pagination';
 import Table from './Table';
 
-const TablePagination = ({ columnsHeaders, currentElements, permission, loadMatrix, valueSelect}) => {
+const TablePagination = ({ columnsHeaders, currentElements, data, permission, loadMatrix, valueSelect}) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(15);
@@ -31,6 +31,7 @@ const TablePagination = ({ columnsHeaders, currentElements, permission, loadMatr
                 pageElements={pageElements}
                 permission={permission}
                 loadMatrix={loadMatrix}
+                data={data}
                 valueSelect={valueSelect}
             >
             </Table>

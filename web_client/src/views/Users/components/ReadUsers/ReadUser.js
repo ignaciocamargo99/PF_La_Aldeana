@@ -3,7 +3,7 @@ import { useState } from 'react';
 import '../../../../assets/Buttons.css';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import DataUser from '../DataUsers/DataUser';
-// import PermissionUser from '../PermissionUser';
+import ListPermissions from '../Permissions/ListPermissions';
 
 const ReadUser = ({ userToRead, onClickCancelRead }) => {
     const [data, setData] = useState(userToRead);
@@ -20,7 +20,7 @@ const ReadUser = ({ userToRead, onClickCancelRead }) => {
             <br />
             <div className="viewBody">
                 <DataUser load={load} data={data} />
-                {/* <PermissionUser load={load} data={data} /> */}
+                <ListPermissions data={data} />
                 <div className='buttons'>
                     <button className='sendOk' onClick={onClickCancelRead}>Volver</button>
                 </div>

@@ -6,13 +6,13 @@ import '../../../../assets/Buttons.css';
 export default function EditUserButton(props) {
 
     const handleEdit = () => {
-        let aux = props.production;
-        aux.title = aux.name;
+        let aux = props.data;
+        aux.title = aux.nick_user;
         props.edit(aux);
     }
 
     return (
-        <button id='editUserButton' type="button" className="sendEdit"><FontAwesomeIcon icon={faEdit} /></button>
+        <button id='editUserButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
     );
 
 }

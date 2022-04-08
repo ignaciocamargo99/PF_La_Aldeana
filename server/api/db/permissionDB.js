@@ -18,8 +18,9 @@ const permissionsGetDB = () => {
 
 const permissionsUserGetDB = (nick_user) => {
 
-    const sqlSelect = `SELECT p.name FROM USER_X_PERMISSION_X_ACCESS upa 
-                        JOIN PERMISSIONS p ON upa.id_permission = p.id_permission 
+    const sqlSelect = `SELECT upa.*, p.name, a.name_access FROM USER_X_PERMISSION_X_ACCESS upa 
+                        JOIN PERMISSIONS p ON upa.id_permission = p.id_permission
+                        JOIN ACCESSES a ON upa.id_access = a.id_access
                         WHERE upa.nick_user = ?`;
 
     return new Promise((resolve, reject) => {

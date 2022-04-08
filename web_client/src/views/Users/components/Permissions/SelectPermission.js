@@ -1,77 +1,89 @@
-import React, { useEffect, useRef, useState } from "react";
-import showPermissions from "./showPermissions";
+import React, { useRef, useState, useEffect } from "react";
+import BeShowed from "../../../../common/BeShowed";
+import getPermission from "./getPermission";
 
 export default function CheckBoxEnabled(props) {
-    const enabledDisabledCheck = useRef(null);
     const [selectValue, setSelectValue] = useState('0');
-
+    const selectorRef = useRef(null);
 
     useEffect(() => {
-        showPermissions(enabledDisabledCheck, props.permission, props.index, 'ED', props.matrix);
-    }, []);
+        if (props.data.editing && props.matrix) {
+            let permissions1 = [];
+            let idPermission = [];
+            permissions1 = props.permission.find((permission) => permission.id_permission === props.index + 1);
+            if (permissions1) {
+                idPermission = props.access.find(a => a.name_access === permissions1.name_access);
+                setSelectValue(idPermission.id_access)
+                //Armamos la matriz...
+                if (props.matrix) props.matrix[props.index][permissions1.id_access] = 1;
+            }
+            else {
+                if (props.matrix) props.matrix[props.index][0] = 1;
+                setSelectValue('0')
+            }
+            props.loadMatrix(props.matrix);
+        }
+    }, [])
 
     const onClickSelectValue = (e) => {
-        let matrixValuesSelected = props.matrix
-        if(selectValue === '0'){
-            matrixValuesSelected[e][0] = 1;
-            matrixValuesSelected[e][1] = 0;
-            matrixValuesSelected[e][2] = 0;
-            matrixValuesSelected[e][3] = 0;
-        }
-        else{
-            // Ver
-            if (selectValue === '1') {
-                matrixValuesSelected[e][0] = 0;
-                matrixValuesSelected[e][2] = 0;
-                matrixValuesSelected[e][3] = 0;
-                matrixValuesSelected[e][selectValue] = 1;
-            }
-            // Ver/Registrar
-            else if (selectValue === '2') {
-                matrixValuesSelected[e][0] = 0;
-                matrixValuesSelected[e][1] = 0;
-                matrixValuesSelected[e][3] = 0;
-                matrixValuesSelected[e][selectValue] = 1;
-            }
-            // Todos
-            else if (selectValue === '3') {
-                matrixValuesSelected[e][0] = 0;
+        if (!props.data.reading) {
+            let matrixValuesSelected = props.matrix
+            if (selectValue === '0') {
+                matrixValuesSelected[e][0] = 1;
                 matrixValuesSelected[e][1] = 0;
                 matrixValuesSelected[e][2] = 0;
-                matrixValuesSelected[e][selectValue] = 1;
+                matrixValuesSelected[e][3] = 0;
             }
+            else {
+                // Ver
+                if (selectValue === '1') {
+                    matrixValuesSelected[e][0] = 0;
+                    matrixValuesSelected[e][2] = 0;
+                    matrixValuesSelected[e][3] = 0;
+                    matrixValuesSelected[e][selectValue] = 1;
+                }
+                // Ver/Registrar
+                else if (selectValue === '2') {
+                    matrixValuesSelected[e][0] = 0;
+                    matrixValuesSelected[e][1] = 0;
+                    matrixValuesSelected[e][3] = 0;
+                    matrixValuesSelected[e][selectValue] = 1;
+                }
+                // Todos
+                else if (selectValue === '3') {
+                    matrixValuesSelected[e][0] = 0;
+                    matrixValuesSelected[e][1] = 0;
+                    matrixValuesSelected[e][2] = 0;
+                    matrixValuesSelected[e][selectValue] = 1;
+                }
+            }
+            props.loadMatrix(props.matrix);
         }
-        console.log(props.matrix);
-        props.loadMatrix(props.matrix);
-    }
+    };
 
-
-
-    const handleSelectValue = (e) => {
-        setSelectValue(e.target.value);
-        // showPermissions(enabledDisabledCheck, props.permission, props.index, 'ED', props.matrix);
-        // props.load(selectValue);
-    }
+    const handleSelectValue = (e) => setSelectValue(e.target.value);
 
     return (
-        // <input type="checkbox" id="enabledDisabledCheckBox" ref={enabledDisabledCheck}
-        //     onChange={enabledChange} onClick={() => enabledOnClick(props.index)} />
-
-
         <select className="form-control" id="selectTypeProduct"
             value={selectValue}
             onChange={handleSelectValue}
-            onClick={() => onClickSelectValue(props.index)}>
-            {/* <BeShowed show={props.data.id_product_type && props.data.editing === true}>
-                <option disabled value="-1">{getNameTypeProduct(typeProduct, props.data.id_product_type)}</option>
-            </BeShowed> */}
-            {/* <BeShowed show={!props.data.id_product_type || props.data.editing === false}> */}
-            <option value="0">No</option>
-            {/* </BeShowed> */}
-            {props.access && props.access.map((a, i) => {
-                // if (product.id_sector === props.data.id_sector)
-                return (<option key={i} value={a.id_access}>{a.name_access}</option>)
-            })}
+            onClick={() => onClickSelectValue(props.index)} ref={selectorRef}>
+            <BeShowed show={props.data.reading}>
+                <option disabled value="0">{getPermission(props.permission, props.access, props.index, props.data.reading)}</option>
+            </BeShowed>
+            <BeShowed show={props.data.editing}>
+                <option value="0">No</option>
+                {props.access && props.access.map((a, i) => {
+                    return (<option key={i} value={a.id_access}>{a.name_access}</option>)
+                })}
+            </BeShowed>
+            <BeShowed show={!props.data.reading && !props.data.editing}>
+                <option value="0">No</option>
+                {props.access && props.access.map((a, i) => {
+                    return (<option key={i} value={a.id_access}>{a.name_access}</option>)
+                })}
+            </BeShowed>
+
         </select>
     );
 }

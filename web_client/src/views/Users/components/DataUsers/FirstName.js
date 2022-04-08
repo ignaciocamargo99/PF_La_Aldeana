@@ -1,10 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import BeShowed from '../../../../common/BeShowed';
 
 const FirstName = (props) => {
     const firstName = useRef(null);
     const [isValidClass, setIsValidClass] = useState("form-control");
     let data = props.data;
+
+    useEffect(() => {
+        if (data.first_name) setIsValidClass("form-control is-valid");
+    }, [])
 
     const onChangeFirstName = () => {
         const first_name = firstName.current.value.trim();

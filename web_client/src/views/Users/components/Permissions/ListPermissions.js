@@ -20,8 +20,8 @@ export default function ListPermissions(props) {
     }, []);
 
     useEffect(() => {
-        if (props.data.reading) {
-            Axios.get(PORT() + '/api/views')
+        if (props.data.reading || props.data.editing) {
+            Axios.get(`${PORT()}/api/permissions/filter/${props.data.nick_user}`)
                 .then((response) => setPermission(response.data))
                 .catch((error) => console.error(error));
         }
@@ -33,22 +33,10 @@ export default function ListPermissions(props) {
     const columnsHeaders = [
         {
             name: 'Pantalla',
-            // width: '40%'
         },
         {
             name: '¿Habilitar permiso?',
-            // width: '25%'
         }
-        // {
-        //     name: 'Ver',
-        //     // width: '12%'
-        // },
-        // {
-        //     name: 'Ver/Registrar'
-        // },
-        // {
-        //     name: 'Todos'
-        // }
     ];
 
     return (
@@ -67,14 +55,13 @@ export default function ListPermissions(props) {
                             <TablePagination
                                 columnsHeaders={columnsHeaders}
                                 currentElements={views}
-                                permission={permission}        
+                                permission={permission}
+                                data={props.data}
                                 loadMatrix={(matrix) => props.loadMatrix(matrix)}
-                                valueSelect = {props.valueSelect}
+                                valueSelect={props.valueSelect}
                             />
                         </>
                     )}
         </>
     );
-
-
 }

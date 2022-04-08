@@ -4,7 +4,6 @@ export default function productionData(user) {
         nick_user : user.nick_user,
         first_name : user.first_name,
         last_name : user.last_name,
-        password : user.password
     }
     return aux;
 }

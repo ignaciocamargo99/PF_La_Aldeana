@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import BeShowed from "../../common/BeShowed";
 import LoaderSpinner from "../../common/LoaderSpinner";
 import displayError from '../../utils/ErrorMessages/displayError';
-// import EditProduction from "./components/EditProduction/EditProduction";
+import EditUser from "./components/EditUsers/EditUser";
 import ReadUser from './components/ReadUsers/ReadUser';
 import TablePagination from "./components/TablePagination/TablePagination";
 import userData from './userData';
@@ -16,7 +16,7 @@ export default function ListUsers() {
 
     const [users, setUsers] = useState([]);
     const [userToRead, setUserToRead] = useState({});
-    const [productionToEdit, setProductionToEdit] = useState({});
+    const [userToEdit, setUserToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -90,17 +90,18 @@ export default function ListUsers() {
         window.scrollTo(0, 0);
     }
 
-    // const editProduction = async (production) => {
-    //     try {
-    //         let aux = productionData(production);
-    //         aux.editing = true;
-    //         setProductionToEdit(aux);
-    //         setIsEditing(true);
-    //     }
-    //     catch {
-    //         displayError();
-    //     }
-    // }
+    const editUser = async (user) => {
+
+        try {
+            let aux = userData(user)
+            aux.editing = true;
+            setUserToEdit(aux);
+            setIsEditing(true);
+        }
+        catch {
+            displayError();
+        }
+    }
 
     return (
         <>
@@ -130,9 +131,8 @@ export default function ListUsers() {
                                         columnsHeaders={columnsHeaders}
                                         currentElements={users}
                                         handleRead={readUser}
-                                    // handleEdit = {editProduction}
+                                        handleEdit={editUser}
                                     // handleDelete = {deleteProduction}
-
                                     />
 
                                 </div>
@@ -142,9 +142,9 @@ export default function ListUsers() {
             {isReading &&
                 <ReadUser onClickCancelRead={goBackToAllUsersTable} userToRead={userToRead} />
             }
-            {/* {isEditing &&
-                <EditProduction onClickCancelEdit={goBackToAllProdctionsTable} productionToEdit={productionToEdit} />
-            } */}
+            {isEditing &&
+                <EditUser onClickCancelEdit={goBackToAllUsersTable} userToEdit={userToEdit} />
+            }
         </>
     );
 }

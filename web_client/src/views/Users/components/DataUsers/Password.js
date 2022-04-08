@@ -22,16 +22,31 @@ const Password = (props) => {
     }
 
     return (
-        <div className="formRow">
-            <div className="form-control-label">
-                <label htmlFor="password" >Contraseña*</label>
+        <>
+            <div className="formRow">
+                <BeShowed show={props.data.editing}>
+                    <div className="form-control-label">
+                        <label htmlFor="password" >Contraseña</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidClass}
+                            id="nickUser" type="text" ref={pass}
+                            onChange={onChangePassword} />
+                        <p style={{ color: '#383C77', fontSize: '19px' }}>La contraseña no es visible, solo puede cambiarla por otra de ser necesario...</p>
+                    </div>
+                </BeShowed>
+                <BeShowed show={!props.data.editing}>
+                    <div className="form-control-label">
+                        <label htmlFor="password" >Contraseña*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidClass}
+                            id="nickUser" type="text" ref={pass}
+                            onChange={onChangePassword} />
+                    </div>
+                </BeShowed>
             </div>
-            <div className="form-control-input">
-                <input className={isValidClass}
-                    id="nickUser" type="text" ref={pass}
-                    onChange={onChangePassword} defaultValue={props.data.password} />
-            </div>
-        </div>
+        </>
     );
 }
 

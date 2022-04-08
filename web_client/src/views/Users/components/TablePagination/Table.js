@@ -39,12 +39,10 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.first_name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <ReadUserButton data={element} read={handleRead}/>
-                                            {/* <ReadProductionButton production={element} read={handleRead} /> */}
+                                            <ReadUserButton data={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditUserButton />
-                                            {/* <EditProductionButton production={element} edit={handleEdit} /> */}
+                                            <EditUserButton data={element} edit={handleEdit} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <DeleteUserButton />

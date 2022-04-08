@@ -50,12 +50,12 @@ export default function RegisterUser() {
     const loadMatrix = (matrix) => setValueSelect(matrix);
 
     const registerUser = () => {
-        if(ready){
+        if (ready) {
             console.log(data);
             console.log(valueSelect);
         }
 
-        else warningMessage('Atención','Todos los campos son obligatorios', 'warning');
+        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
         // let urlApi = '';
         // const formData = new FormData();
 
