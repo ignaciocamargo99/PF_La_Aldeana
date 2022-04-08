@@ -29,12 +29,13 @@ namespace desktop_employee.src.views.Employees
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvEmployees = new System.Windows.Forms.DataGridView();
             this.lblFiltros = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.cbxSinHuella = new System.Windows.Forms.CheckBox();
             this.btnLimpiarCampos = new desktop_employee.src.utils.Botones.CustomButton();
             this.label4 = new System.Windows.Forms.Label();
             this.txtDNI = new System.Windows.Forms.TextBox();
@@ -42,7 +43,6 @@ namespace desktop_employee.src.views.Employees
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
-            this.btnAplicarFiltros = new desktop_employee.src.utils.Botones.CustomButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnEditEmployee = new desktop_employee.src.utils.Botones.CustomButton();
             this.label1 = new System.Windows.Forms.Label();
@@ -59,23 +59,23 @@ namespace desktop_employee.src.views.Employees
             this.dgvEmployees.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Abel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvEmployees.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Abel", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmployees.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvEmployees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEmployees.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEmployees.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvEmployees.Location = new System.Drawing.Point(47, 63);
             this.dgvEmployees.MultiSelect = false;
             this.dgvEmployees.Name = "dgvEmployees";
@@ -84,6 +84,7 @@ namespace desktop_employee.src.views.Employees
             this.dgvEmployees.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmployees.Size = new System.Drawing.Size(896, 221);
             this.dgvEmployees.TabIndex = 0;
+            this.dgvEmployees.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvEmployees_DataBindingComplete);
             // 
             // lblFiltros
             // 
@@ -106,6 +107,7 @@ namespace desktop_employee.src.views.Employees
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.cbxSinHuella);
             this.panel2.Controls.Add(this.btnLimpiarCampos);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.txtDNI);
@@ -113,12 +115,23 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Controls.Add(this.txtApellido);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.txtNombre);
-            this.panel2.Controls.Add(this.btnAplicarFiltros);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(995, 109);
             this.panel2.TabIndex = 5;
+            // 
+            // cbxSinHuella
+            // 
+            this.cbxSinHuella.AutoSize = true;
+            this.cbxSinHuella.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cbxSinHuella.Location = new System.Drawing.Point(449, 66);
+            this.cbxSinHuella.Name = "cbxSinHuella";
+            this.cbxSinHuella.Size = new System.Drawing.Size(113, 29);
+            this.cbxSinHuella.TabIndex = 13;
+            this.cbxSinHuella.Text = "Sin Huellas";
+            this.cbxSinHuella.UseVisualStyleBackColor = true;
+            this.cbxSinHuella.CheckedChanged += new System.EventHandler(this.cbxSinHuella_CheckedChanged);
             // 
             // btnLimpiarCampos
             // 
@@ -133,7 +146,7 @@ namespace desktop_employee.src.views.Employees
             this.btnLimpiarCampos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLimpiarCampos.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnLimpiarCampos.ForeColor = System.Drawing.Color.Black;
-            this.btnLimpiarCampos.Location = new System.Drawing.Point(659, 55);
+            this.btnLimpiarCampos.Location = new System.Drawing.Point(804, 55);
             this.btnLimpiarCampos.Name = "btnLimpiarCampos";
             this.btnLimpiarCampos.Size = new System.Drawing.Size(139, 48);
             this.btnLimpiarCampos.TabIndex = 12;
@@ -169,7 +182,7 @@ namespace desktop_employee.src.views.Employees
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(449, 21);
+            this.label3.Location = new System.Drawing.Point(449, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 25);
             this.label3.TabIndex = 9;
@@ -207,27 +220,6 @@ namespace desktop_employee.src.views.Employees
             this.txtNombre.TabIndex = 6;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
-            // 
-            // btnAplicarFiltros
-            // 
-            this.btnAplicarFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAplicarFiltros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
-            this.btnAplicarFiltros.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
-            this.btnAplicarFiltros.BorderColor = System.Drawing.Color.Black;
-            this.btnAplicarFiltros.BorderRadius = 25;
-            this.btnAplicarFiltros.BorderSize = 1;
-            this.btnAplicarFiltros.FlatAppearance.BorderSize = 0;
-            this.btnAplicarFiltros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAplicarFiltros.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAplicarFiltros.ForeColor = System.Drawing.Color.White;
-            this.btnAplicarFiltros.Location = new System.Drawing.Point(804, 55);
-            this.btnAplicarFiltros.Name = "btnAplicarFiltros";
-            this.btnAplicarFiltros.Size = new System.Drawing.Size(139, 48);
-            this.btnAplicarFiltros.TabIndex = 5;
-            this.btnAplicarFiltros.Text = "Aplicar Filtros";
-            this.btnAplicarFiltros.TextColor = System.Drawing.Color.White;
-            this.btnAplicarFiltros.UseVisualStyleBackColor = false;
-            this.btnAplicarFiltros.Click += new System.EventHandler(this.btnAplicarFiltros_Click);
             // 
             // panel3
             // 
@@ -306,7 +298,6 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label1;
         private utils.Botones.CustomButton btnEditEmployee;
-        private utils.Botones.CustomButton btnAplicarFiltros;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label label4;
@@ -314,5 +305,6 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtApellido;
         private utils.Botones.CustomButton btnLimpiarCampos;
+        private System.Windows.Forms.CheckBox cbxSinHuella;
     }
 }
