@@ -43,6 +43,9 @@ namespace desktop_employee
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnRegistrarAsistencia = new desktop_employee.src.utils.Botones.CustomButton();
+            this.txtDNI = new System.Windows.Forms.TextBox();
+            this.lblDNI = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconEsperando)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconAceptado)).BeginInit();
@@ -231,6 +234,9 @@ namespace desktop_employee
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnRegistrarAsistencia);
+            this.panel3.Controls.Add(this.txtDNI);
+            this.panel3.Controls.Add(this.lblDNI);
             this.panel3.Controls.Add(this.lblHoraSalida);
             this.panel3.Controls.Add(this.lblEmployee);
             this.panel3.Controls.Add(this.lblHoraE);
@@ -244,6 +250,50 @@ namespace desktop_employee
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(673, 614);
             this.panel3.TabIndex = 17;
+            // 
+            // btnRegistrarAsistencia
+            // 
+            this.btnRegistrarAsistencia.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnRegistrarAsistencia.BackColor = System.Drawing.Color.White;
+            this.btnRegistrarAsistencia.BackgroundColor = System.Drawing.Color.White;
+            this.btnRegistrarAsistencia.BorderColor = System.Drawing.Color.Black;
+            this.btnRegistrarAsistencia.BorderRadius = 25;
+            this.btnRegistrarAsistencia.BorderSize = 1;
+            this.btnRegistrarAsistencia.Enabled = false;
+            this.btnRegistrarAsistencia.FlatAppearance.BorderSize = 0;
+            this.btnRegistrarAsistencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegistrarAsistencia.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRegistrarAsistencia.ForeColor = System.Drawing.Color.Black;
+            this.btnRegistrarAsistencia.Location = new System.Drawing.Point(389, 24);
+            this.btnRegistrarAsistencia.Name = "btnRegistrarAsistencia";
+            this.btnRegistrarAsistencia.Size = new System.Drawing.Size(183, 48);
+            this.btnRegistrarAsistencia.TabIndex = 56;
+            this.btnRegistrarAsistencia.Text = "Registrar Asistencia";
+            this.btnRegistrarAsistencia.TextColor = System.Drawing.Color.Black;
+            this.btnRegistrarAsistencia.UseVisualStyleBackColor = false;
+            this.btnRegistrarAsistencia.Click += new System.EventHandler(this.btnRegistrarAsistencia_Click);
+            // 
+            // txtDNI
+            // 
+            this.txtDNI.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txtDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtDNI.Location = new System.Drawing.Point(163, 31);
+            this.txtDNI.Name = "txtDNI";
+            this.txtDNI.Size = new System.Drawing.Size(194, 32);
+            this.txtDNI.TabIndex = 55;
+            this.txtDNI.TextChanged += new System.EventHandler(this.txtDNI_TextChanged);
+            this.txtDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDNI_KeyPress);
+            // 
+            // lblDNI
+            // 
+            this.lblDNI.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblDNI.AutoSize = true;
+            this.lblDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblDNI.Location = new System.Drawing.Point(105, 38);
+            this.lblDNI.Name = "lblDNI";
+            this.lblDNI.Size = new System.Drawing.Size(37, 25);
+            this.lblDNI.TabIndex = 54;
+            this.lblDNI.Text = "DNI";
             // 
             // VerificationForm
             // 
@@ -295,5 +345,8 @@ namespace desktop_employee
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private src.utils.Botones.CustomButton btnRegistrarAsistencia;
+        private System.Windows.Forms.TextBox txtDNI;
+        private System.Windows.Forms.Label lblDNI;
     }
 }
