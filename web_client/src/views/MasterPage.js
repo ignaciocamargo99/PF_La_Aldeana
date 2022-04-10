@@ -29,7 +29,8 @@ import RegisterAdvances from './Advances/components/RegisterAdvances';
 import ListProductions from './Productions/ListProductions';
 import ListFlavors from './Flavors/ListFlavors';
 import FlavorForm from './Flavors/components/FlavorForm';
-import ListPermissions from './Permissions/components/ListPermissions';
+import ListUsers from './Users/ListUsers';
+import RegisterUser from './Users/components/RegisterUser';
 
 const cookies = new Cookies();
 
@@ -67,7 +68,8 @@ export default function App() {
               <Route path='/app/productions' component={ListProductions}></Route>
               <Route exact path='/app/flavors' component={ListFlavors}></Route>
               <Route exact path='/app/flavors/:idFlavor' component={FlavorForm}></Route>
-              <Route path='/app/permissions' component={ListPermissions}></Route>
+              <Route path='/app/users' component={ListUsers}></Route>
+              <Route path='/app/registerUser' component={RegisterUser}></Route>
             </BeShowed>
           }
         </div>
