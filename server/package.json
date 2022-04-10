@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "lint": "eslint ./",
     "test": "./node_modules/.bin/mocha --reporter spec",
     "start": "node ./bin/www",
     "devStart": "nodemon",
@@ -11,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.25.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
@@ -32,6 +32,7 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "eslint": "^8.12.0",
     "nodemon": "^2.0.10"
   }
 }

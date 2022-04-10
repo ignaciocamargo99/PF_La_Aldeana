@@ -6,16 +6,15 @@ import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import Breadcrumb from '../../../common/Breadcrumb';
-import { faTemperatureLow, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus , faMinus, faUserFriends, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateText from "../../../utils/DateFormat/dateText";
 import dateToString from "../../../utils/ConverterDate/dateToString";
 import floatToHour from "../../../utils/Hs/floatToHour";
+import UploadByName from "./UploadByName";
 const PORT = require('../../../config');
 
 const FormSalary = (props) => {
@@ -41,20 +40,7 @@ const FormSalary = (props) => {
     const [total, setTotal] = useState(0);
     const [advances, setAdvances] = useState([]);
     const [concepts, setConcepts] = useState([]);
-
-    const validateConcepts = (concept, concepts) => {
-        let aux = concept;
-        concepts?.forEach(existentConcept => {
-            if (existentConcept.predictive === 0 && concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
-        });
-        othersPlus?.forEach(existentConcept => {
-            if (concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
-        });
-        othersMinus?.forEach(existentConcept => {
-            if (concept.toUpperCase() === existentConcept.name.toUpperCase()) aux = '';
-        });
-        return aux;
-    }
+    const [warning, setWarning] = useState(-1);
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
@@ -78,7 +64,13 @@ const FormSalary = (props) => {
                     .catch((error) => console.log(error));
                 if (props.action === 'Registrar') setEmployee(display[nro]);
                 else {
-                    setEmployee(response.data.find((employee) =>  { return employee.dni === props.salary.dni }));
+                    let employ = response.data.find((employee) =>  { return employee.dni === props.salary.dni })
+                    if (employ == null) warningMessage("Error", "No se encontraron empleados activos que coincidan con el salario solicitado", "error")
+                    .then((value) => {
+                        window.location.replace('/app/salary');
+                    });
+                    setEmployee(employ);
+                    
                     Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
                     .then((response) => {
                         let aux = response.data;
@@ -101,8 +93,11 @@ const FormSalary = (props) => {
             .catch((error) => console.log(error));
     },[props.action]);
 
+    const even = element => element.price === 0;
+
     useEffect(() => {
-        if (employee !== null) {
+        console.log(nro)
+        if (employee != null) {
             Axios.get(`https://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
             .then((response) => {
                 let newNonworkingDays = [];
@@ -121,11 +116,12 @@ const FormSalary = (props) => {
                                 {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0},
                                 {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0}
                             ];
-                            setMain(aux);
+                            if(main.some(even)) setMain(aux);
                             setShowSpinner(false);
                             nroRef.current.focus();
                         }
-                    });
+                    })
+                    .catch((err) => {console.log(err)});
             })
             .catch((err) => {console.log(err)});
 
@@ -242,7 +238,6 @@ const FormSalary = (props) => {
                     Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {"total": total, "subtotal": subtotal, "totalHs":totalHs, "details":[main,othersPlus,othersMinus],
                             "dni":employee.dni, "monthYear": props.month, "state": 2})
                         .then((res) => {
-                            console.log(res.data)
                             if (res.data.Ok && res.data.Ok !== false) comeBack(true);
                             else {
                                 setShowSpinner(false);
@@ -283,15 +278,14 @@ const FormSalary = (props) => {
             setOthersPlus([]);
             setOthersMinus([]);
             setMain([
-                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: 0},
-                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: 0},
-                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: 0},
-                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0},
-                {id: 'F', name: 'Hs. Franco', hs: 1, price: 0}
+                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price},
+                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price},
+                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price},
+                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price},
+                {id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price}
             ]);
             setNro(nro + 1);
         } else {
-            //warningMessage('Atención','Se han generado todas los salarios correctamente','success');
             props.setReloadList(!props.reloadList);
             props.setActionSalary('Listar',null);
             window.location.replace('/app/salary');
@@ -307,7 +301,7 @@ const FormSalary = (props) => {
 
     const actionNotOK = () =>{
         if (errorName){
-            warningMessage('Atención','Se debe ingresar un nombre a totdos los adicionales y descuentos','warning');
+            warningMessage('Atención','Se debe ingresar un nombre a todos los adicionales y descuentos','warning');
         }
         else if (errorPrice){
             warningMessage('Atención','Todos los campos de precio deben ser completados y superiores a 0','warning');
@@ -323,40 +317,21 @@ const FormSalary = (props) => {
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
-                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: parseInt(e.target.value)};
+                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: hs.price};
             });
             setMain(aux);
-
         } else if (t === 1) {
             const aux = [];
             othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = {name: inc.name, price: parseInt(e.target.value)};
+                if (inc === j) aux[i] = {name: inc.name, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {name: inc.name, price: inc.price};
             });
             setOthersPlus(aux);
         } else {
             const aux = [];
             othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = {name: disc.name, price: parseInt(e.target.value)};
-                else aux[i] = {name: disc.name, price: disc.price};
-            });
-            setOthersMinus(aux);
-        }
-    }
-
-    const addName = (j, e, t) => {
-        if (t === 1) {
-            const aux = [];
-            othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = {name: validateConcepts(e.target.value, concepts), price: inc.price};
-                else aux[i] = {name: inc.name, price: inc.price};
-            });
-            setOthersPlus(aux);
-        } else {
-            const aux = [];
-            othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = {name: validateConcepts(e.target.value, concepts), price: disc.price};
+                if (disc === j) aux[i] = {name: disc.name, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {name: disc.name, price: disc.price};
             });
             setOthersMinus(aux);
@@ -443,6 +418,11 @@ const FormSalary = (props) => {
         setErrorPrice(flagP);
     }, [total, subtotal, totalHs, main, othersMinus, othersPlus]);
 
+    const warner = (k) => {
+        if (k == warning) setWarning(-1);
+        else setWarning(k);
+    }
+
     return(
     <>
         <Breadcrumb parentName="Salarios" icon={faUserFriends} parentLink="salary" currentName={`${props.action} salario`}/>
@@ -468,6 +448,7 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <ShowSelectedEmployee selectedEmployee={employee}/>
+                <h3 style={{paddingLeft: '1em', paddingTop: '1em'}}>Horas trabajadas</h3>                
                 <div className="formRow justify-content-center">
                     <div className="col-sm-4">
                     </div>
@@ -481,8 +462,9 @@ const FormSalary = (props) => {
                         <label style={{paddingLeft: '1em'}}>Subtotal</label>
                     </div>
                 </div>
-                {main?.map(i => {
+                {main?.map((i, k) => {
                     return(
+                        <>
                         <div className="formRow justify-content-center">
                             <div className="col-sm-4" style={{border: '1px solid', borderRadius: '2px'}}>
                                 <label style={{paddingLeft: '1em'}}>{i.name}</label>
@@ -491,13 +473,18 @@ const FormSalary = (props) => {
                                 <label style={{paddingLeft: '1em'}}>{floatToHour(i.hs, true)}</label>
                             </div>
                             <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
-                                <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price'+i.id} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
+                                <div class="input-group has-validation">
+                                    <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price'+i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                    onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
+                                    <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{color: 'orange'}} icon={faExclamationCircle} /></span>
+                                </div>
                             </div>
                             <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                 <label style={{paddingLeft: '1em'}}>${(i.hs*i.price) ? +(Math.round(i.hs*i.price+ "e+2")  + "e-2") : 0}</label>
                             </div>
                         </div>
+                        <BeShowed show={k == warning}><div className="alert alert-warning d-flex align-items-center" role="alert" style={{height: '1em'}}>Si cambia el precio, el valor por defecto de este se vera cambiado para futuras consultas.</div></BeShowed>
+                        </>
                     )
                 })}
                 <div className="formRow justify-content-center">
@@ -509,6 +496,7 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <h3 style={{paddingLeft: '1em', borderTop: '1px dotted', paddingTop: '1em'}}>Adicionales</h3>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
@@ -533,7 +521,8 @@ const FormSalary = (props) => {
                                     <button style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherPlus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 1)} defaultValue={i.name?i.name:null} />
+                                    <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherPlus"} n={n} default={i.name} 
+                                        placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersPlus} otherDestiny={othersMinus}/>
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
@@ -545,7 +534,7 @@ const FormSalary = (props) => {
                 })}
                 <BeShowed show={props.action !== "Ver"}>
                     <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                        <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Adicional</button>
+                        <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                     </div>
                 </BeShowed>
                 <div className="formRow justify-content-center">
@@ -557,6 +546,7 @@ const FormSalary = (props) => {
                     </div>
                 </div>
                 <br/>
+                <h3 style={{paddingLeft: '1em', borderTop: '1px dotted', paddingTop: '1em'}}>Descuentos</h3>
                 <div className="formRow justify-content-center">
                     <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                         <label style={{paddingLeft: '1em'}}>Concepto </label> <small>(no se aceptan duplicados)</small>
@@ -581,7 +571,8 @@ const FormSalary = (props) => {
                                     <button style={{marginRight: '0em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
-                                    <input className={(i.name.length < 1 ? "form-control is-invalid" : "form-control") + " nameOtherMinus"+n} type="text" style={{width: '100%'}} maxLength={100} onChange={(e) => addName(i, e, 2)} defaultValue={i.name?i.name:null} />
+                                    <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherMinus"} n={n} default={i.name}
+                                        placeholder="Ingrese el nombre del concepto..." maxLength="100"  destiny={othersMinus} otherDestiny={othersPlus}/>
                                 </div>
                                 <div className="col-sm-3" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus"+n} type="number" style={{width: '100%'}} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
@@ -593,7 +584,7 @@ const FormSalary = (props) => {
                 })}
                 <BeShowed show={props.action !== "Ver"}>
                     <div className="formRow justify-content-center" style={{border: '1px solid', borderRadius: '2px'}}>
-                        <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Descuento</button>
+                        <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{width: '11em', marginRight: '0.2em'}} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                     </div>
                 </BeShowed>
                 <div className="formRow justify-content-center">

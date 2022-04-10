@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
-const relationshipsGetDB = () => {
-    const sqlSelect = `SELECT * from EMPLOYMENT_RELATIONSHIP`;
+const chargeGetDB = () => {
+    const sqlSelect = `SELECT id_charge, name from CHARGES`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -11,6 +11,7 @@ const relationshipsGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
+
             db.release();
         })
     });
@@ -59,24 +60,7 @@ const employeeGetDB = (dni) => {
         sqlSelect += ` AND e.dni = ${dni}`;
     };
 
-    sqlSelect += ' ORDER BY dni';
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        })
-    });
-};
-
-
-const chargeGetDB = () => {
-    const sqlSelect = `SELECT id_charge, name from CHARGES`;
+    sqlSelect += ' ORDER BY last_name';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -87,23 +71,6 @@ const chargeGetDB = () => {
                 else resolve(result);
             });
 
-            db.release();
-        })
-    });
-};
-
-const dniEmployeeGetDB = (dniEmployee) => {
-    const sqlSelect = `SELECT dni, name, last_name, date_admission ,charge, employment_relationship
-                    FROM EMPLOYEES WHERE dni = ${dniEmployee}`;
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
             db.release();
         })
     });
@@ -227,12 +194,6 @@ const isEmployeeDataValid = (empDataToValidate) => {
 // #endregion
 
 module.exports = {
-    chargeGetDB,
-    dniEmployeeGetDB,
-    employeeCreateDB,
-    employeeDeleteDB,
-    employeeForDesktopGetDB,
-    employeeGetDB,
-    employeeUpdateDB,
-    relationshipsGetDB
+    employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
+    employeeUpdateDB, employeeForDesktopGetDB
 };

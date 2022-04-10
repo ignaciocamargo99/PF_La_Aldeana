@@ -397,9 +397,9 @@
         }
       }
     },  
-    "/permissions/filter/{rol}": {
+    "/permissions/filter/{nick_user}": {
       "get": {
-        "summary":"Trae los permisos que posee un rol en particular",
+        "summary":"Trae los permisos que posee un usuario en particular",
         "tags": ["Permisos de usuario"],
         "parameters": [
           {

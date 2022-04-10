@@ -116,23 +116,29 @@ export default function Navbar(props) {
                 </li>
         };
 
-        const permissionSales = permissions.find(option => option === "Ventas")
-        let sales;
-        const permissionReports = permissions.find(option => option === "Reportes");
-        if (permissionSales === "Ventas") {
-            sales =
+        let reports;
+        const permissionReports = permissions.find(option => option === "Reportes Ventas" || option === "Reportes Recursos Humanos");
+        const permissionReportsSales = permissions.find(option => option === "Reportes Ventas");
+        const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
+        if (permissionReports) {
+            reports =
                 <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
-                            Ventas
+                            Reportes
                         </Dropdown.Toggle>
-                        <BeShowed show={permissionReports === "Reportes"}>
-                            <Dropdown.Menu>
+                        <Dropdown.Menu>
+                            <BeShowed show={permissionReportsSales === "Reportes Ventas"}>
                                 <Dropdown.Item href="/app/salesReport">
-                                    <FontAwesomeIcon icon={faFile} /> Ver informe de productos vendidos
+                                    <FontAwesomeIcon icon={faFile} /> Informe de productos vendidos
                                 </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </BeShowed>
+                            </BeShowed>
+                            <BeShowed show={permissionReportsHumanResources === "Reportes Recursos Humanos"}>
+                                <Dropdown.Item href="#">
+                                    <FontAwesomeIcon icon={faFile} /> Informe de recursos humanos
+                                </Dropdown.Item>
+                            </BeShowed>
+                        </Dropdown.Menu>
                     </Dropdown>
                 </li>
         };
@@ -172,7 +178,7 @@ export default function Navbar(props) {
                                 <FontAwesomeIcon icon={faList} /> Ver licencias
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/assistanceEmployees">
-                                <FontAwesomeIcon icon={faList} /> Ver asistencias 
+                                <FontAwesomeIcon icon={faList} /> Ver asistencias
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/employeesSchedules">
                                 <FontAwesomeIcon icon={faCalendarAlt} /> Grilla de horarios
@@ -186,6 +192,24 @@ export default function Navbar(props) {
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
+        };
+
+        const permission = permissions.find(option => option === "Usuarios")
+        let permissionsAdministrator;
+        if (permission === "Usuarios") {
+            permissionsAdministrator =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Usuarios
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/users">
+                                <FontAwesomeIcon icon={faList} /> Ver usuarios
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
         }
 
         return (
@@ -193,9 +217,10 @@ export default function Navbar(props) {
                 {products}
                 {productions}
                 {franchises}
-                {sales}
+                {reports}
                 {purchases}
                 {employees}
+                {permissionsAdministrator}
             </>
         )
     };

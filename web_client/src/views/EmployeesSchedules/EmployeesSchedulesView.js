@@ -17,6 +17,7 @@ const EmployeesSchedulesView = () => {
     const [turns,setTurns] = useState(null);
     const [nonworkingDays,setNonworkingDays] = useState(null);
     const [licenses,setLicenses] = useState(null);
+    const [charges,setCharges] = useState(null);
 
     const today = new Date();
 
@@ -68,6 +69,14 @@ const EmployeesSchedulesView = () => {
         .catch((error) => console.log(error));
     },[])
 
+    useEffect(() => {
+        axios.get(`${PORT()}/api/charges`)
+        .then((res) => {
+            setCharges(res.data);
+        })
+        .catch((error) => console.log(error));
+    },[])
+
     const viewTitle = 'Grilla de Horarios';
 
     return (
@@ -80,10 +89,6 @@ const EmployeesSchedulesView = () => {
                 <BeShowed show={ !showMonthView && !showAutomatedSchedule }>
                     <div className="schedules-cards-container">
                         <div className="cards-container d-flex-col">
-                            <Card
-                                title='Ver Últimas Grillas'
-                                text='Mira las últimas grillas que has creado.'
-                            />
                             <Card
                                 title='Visualizar cronograma por mes'
                                 text='Visualiza los turnos asignados de tus empleados con estadisticas incluidas.'
@@ -104,7 +109,7 @@ const EmployeesSchedulesView = () => {
                 </BeShowed>
                 <BeShowed show={showAutomatedSchedule}>
                     <AutomatedSchedule today={today} nonworkingDays={nonworkingDays} employees={employees} turns={turns} 
-                                        setShowAutomatedSchedule={setShowAutomatedSchedule} licenses={licenses}/>
+                                        charges={charges} setShowAutomatedSchedule={setShowAutomatedSchedule} licenses={licenses}/>
                 </BeShowed>
             </div>
         </>

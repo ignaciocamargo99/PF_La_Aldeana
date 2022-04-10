@@ -40,7 +40,7 @@ export default function SalariesTable(props) {
                 setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
-    }, [true,props.reloadList]);
+    }, [props.reloadList]);
 
     useEffect(() => {
         if (props.salaries.length > 0){
@@ -50,7 +50,7 @@ export default function SalariesTable(props) {
             if (employees.length !== listTable.length) setCurrentPage(1);
             setListTable(employees);
         }
-    }, [props.salaries, employees, props]);
+    }, [props.salaries, employees]);
 
     useEffect(() => {
         if (nameSearch !== "") {

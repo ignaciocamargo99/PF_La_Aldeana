@@ -44,7 +44,7 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
             axios.get(`https://nolaborables.com.ar/api/v2/feriados/${monthYear.year}`)
             .then((nwdResponse) => {
                 let nwdMonth = [];
-                nwdResponse.data.forEach((nWD,i) => {if(nWD.month === month) nwdMonth.push(nWD.day)})
+                nwdResponse.data.forEach((nWD,i) => {if(nWD.mes === (month+1)) nwdMonth.push(nWD.dia)})
                 updateNonworkingDaysInMonthSchedule(nwdMonth);
                 axios.get(`${PORT()}/api/licenses`)
                 .then((licResponse) => {
