@@ -1,10 +1,12 @@
-import React, { useEffect , useRef } from 'react';
+import React, { useEffect , useRef, useState } from 'react';
 import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTopTenProductSales, updateTypeProductSales } from '../../../../actions/ReportsActions';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import {FaAngleRight} from 'react-icons/fa';
 import {FaFile} from 'react-icons/fa';
+import Viewer from './PDFSalesReport';
+import dateText from '../../../../utils/DateFormat/dateText';
 
 const PORT = require('../../../../config');
 
@@ -12,6 +14,7 @@ const Options = (props) => {
 
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
+    const [ showPdf, setShowPDF ] = useState(false);
 
     useEffect(()=>{
 
@@ -72,7 +75,7 @@ const Options = (props) => {
             inputDateFrom.current.value = prevMounth;
             props.updateReportDateFrom(prevMounth);
             props.updateReportDateTo(dateString);
-            console.log(props.dateTo +' '+ props.dateFrom);
+            //console.log(props.dateTo +' '+ props.dateFrom);
         }
 
     },[props.load]);
@@ -86,6 +89,14 @@ const Options = (props) => {
             props.updateReportDateFrom(inputDateTo.current.value);
             inputDateFrom.current.value = inputDateTo.current.value;
         }
+    }
+
+    const showRenderPDF = () => {
+        setShowPDF(true); 
+    }
+
+    const cancel = () => {
+        setShowPDF(false);
     }
 
     const onChangeDateTo = () => {
@@ -103,6 +114,11 @@ const Options = (props) => {
     }
 
     const handlerLoader = () => props.setLoad(props.load + 1);
+
+    const inputDescriptionReport = useRef();
+    const [description, setDescription] = useState(null);
+
+    const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     return (
         <>
@@ -123,12 +139,24 @@ const Options = (props) => {
                 </div>
             </div>
 
-            <div className="formRow d-flex justify-content-between">
-                <div className="mx-auto">
-                    <button className="newBtn" style={{ marginRight: '1em', minWidth: '15em'}} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                    <button className="newBtn" style={{ minWidth: '15em'}}><FaFile /> Imprimir informe</button>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label>Descripción adicional del reporte</label>
+                </div>
+                <div className="form-control-input">
+                    <input className="form-control" type="text" id='descriptionReport' maxLength="80" ref={inputDescriptionReport} onChange={onChangeDescriptionReport} />
                 </div>
             </div>
+
+            <div className="formRow d-flex justify-content-between">
+
+                <div className="mx-auto">
+                    <button className="newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em'}} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
+                    <button className="newBtn" id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em'} : {minWidth: '15em', backgroundColor: 'grey'}}
+                    onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
+                </div>
+            </div>
+            <Viewer showPdf={showPdf} cancel={cancel} description={" (" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ") - " + (!description ? 'Sin Descripción' : description)} ></Viewer>
         </>
     );
 }

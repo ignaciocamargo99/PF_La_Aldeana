@@ -17,7 +17,10 @@ const SalesReport = (props) => {
     const [load, setLoad] = useState(0);
 
     const [from, setFrom] = useState(props.dateFrom);
-    const [to, setTo] = useState(props.dateTo)
+    const [to, setTo] = useState(props.dateTo);
+
+    const [topTen, setTopTen] = useState(null);
+    const [typeProduct, setTypeProduct] = useState(null);
 
     useEffect(() => {
         setFrom(props.dateFrom);
@@ -33,7 +36,7 @@ const SalesReport = (props) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} />
+                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} topTen={topTen} />
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load > 0}>
