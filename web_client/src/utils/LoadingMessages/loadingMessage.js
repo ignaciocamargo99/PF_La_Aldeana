@@ -1,8 +1,9 @@
 import swal from 'sweetalert';
 
 export default function loadingMessage(msg) {
+    
     let loading = document.createElement('div')
-    let divSpinner = document.createElement('div')
+    let divSpinner = document.createElement('div') 
     divSpinner.className = "formRow justify-content-center"
     let spinner1 = document.createElement('div')
     spinner1.className = "spinner-grow text-success"

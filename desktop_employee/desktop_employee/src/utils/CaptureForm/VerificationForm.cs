@@ -39,6 +39,9 @@ namespace desktop_employee
 			DrawPicture(ConvertSampleToBitmap(Sample));
 		}
 
+		protected virtual void ProcessDNIAsync(string dni…mpleado)
+        {}
+
 		protected void Start()
 		{
             if (null != Capturer)
@@ -105,6 +108,7 @@ namespace desktop_employee
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
 			SetInfo("LISTO PARA COLOCAR DEDO");
+			MakeReport("El Lector de huellas ha sido conectado");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
@@ -267,12 +271,76 @@ namespace desktop_employee
 				}));
 			}
 		}
+		
+		protected void focusTxtDNI()
+		{
+			this.Invoke(new Function(delegate () {
+				txtDNI.Focus();
+			}));
+			
+		}
+
+		protected void cleanTxtDNI()
+		{
+			this.Invoke(new Function(delegate () {
+				txtDNI.Text = "";
+				txtDNI.Focus();
+			}));
+
+		}
 
 		private DPFP.Capture.Capture Capturer;
 
         private void VerificationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 			activo = false;
+		}
+
+        private void txtDNI_TextChanged(object sender, EventArgs e)
+        {
+			//controlamos la longitud del dni
+			var dniEmpleado = txtDNI.Text.Replace(" ", string.Empty);
+			if (dniEmpleado.Length == 8)
+			{
+				btnRegistrarAsistencia.Enabled = true;
+				btnRegistrarAsistencia.BackgroundColor = ColorTranslator.FromHtml("#383c77");
+				btnRegistrarAsistencia.TextColor = Color.White;
+			}
+			else
+			{
+				btnRegistrarAsistencia.Enabled = false;
+				btnRegistrarAsistencia.BackgroundColor = Color.White;
+				btnRegistrarAsistencia.TextColor = Color.Black;
+			}
+		}
+
+        private void btnRegistrarAsistencia_Click(object sender, EventArgs e)
+        {
+			ProcessDNIAsync(Convert.ToString(txtDNI.Text));
+        }
+
+        private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+			if (Char.IsDigit(e.KeyChar))
+			{
+				e.Handled = false;
+			}
+			else if (Char.IsControl(e.KeyChar))
+			{
+				e.Handled = false;
+			}
+			else if (Char.IsSeparator(e.KeyChar))
+			{
+				e.Handled = false;
+			}
+			else if (e.KeyChar == (char)32)
+			{
+				e.Handled = false;
+			}
+			else
+			{
+				e.Handled = true;
+			}
 		}
     }
 }
