@@ -75,12 +75,12 @@ const Options = (props) => {
             inputDateFrom.current.value = prevMounth;
             props.updateReportDateFrom(prevMounth);
             props.updateReportDateTo(dateString);
-            //console.log(props.dateTo +' '+ props.dateFrom);
         }
 
     },[props.load]);
 
     const onChangeDateFrom = () => {
+        props.setLoad(false);
         if(inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01-01"){
             inputDateTo.current.min = inputDateFrom.current.value;
             props.updateReportDateFrom(inputDateFrom.current.value);
@@ -102,6 +102,7 @@ const Options = (props) => {
     const onChangeDateTo = () => {
         let date = new Date();
         let dateString = dateFormat(date);
+        props.setLoad(false);
         if(inputDateTo.current.value >= "2021-01-01" && inputDateTo.current.value < dateString){
 
             inputDateFrom.current.max = inputDateTo.current.value;
@@ -113,7 +114,7 @@ const Options = (props) => {
         }
     }
 
-    const handlerLoader = () => props.setLoad(props.load + 1);
+    const handlerLoader = () => props.setLoad(true);
 
     const inputDescriptionReport = useRef();
     const [description, setDescription] = useState(null);
@@ -144,7 +145,7 @@ const Options = (props) => {
                     <label>Descripción adicional del reporte</label>
                 </div>
                 <div className="form-control-input">
-                    <input className="form-control" type="text" id='descriptionReport' maxLength="80" ref={inputDescriptionReport} onChange={onChangeDescriptionReport} />
+                    <input className="form-control" type="text" id='descriptionReport' maxLength="120" ref={inputDescriptionReport} onChange={onChangeDescriptionReport} />
                 </div>
             </div>
 
@@ -156,7 +157,7 @@ const Options = (props) => {
                     onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                 </div>
             </div>
-            <Viewer showPdf={showPdf} cancel={cancel} description={" (" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ") - " + (!description ? 'Sin Descripción' : description)} ></Viewer>
+            <Viewer showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }
