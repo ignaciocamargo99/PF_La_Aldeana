@@ -21,6 +21,7 @@ import RegisterAdvances from './Advances/components/RegisterAdvances';
 import ListProductions from './Productions/ListProductions';
 import ListUsers from './Users/ListUsers';
 import RegisterUser from './Users/components/RegisterUser';
+import NotPermissionPage from '../common/NotPermissionPage';
 
 export default function RouterPage(props) {
 
@@ -38,7 +39,7 @@ export default function RouterPage(props) {
                     <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
                     <Route path='/app/supplies' component={RegisterSupplyView}></Route>
                 </>
-        };
+        }
 
         const permissionProduction = permissions.find(option => option === "Producciones");
         let productions;
@@ -48,7 +49,7 @@ export default function RouterPage(props) {
                     <Route path='/app/production' component={RegisterProductionView}></Route>
                     <Route path='/app/productions' component={ListProductions}></Route>
                 </>
-        };
+        }
 
         const permissionFranchises = permissions.find(option => option === "Franquicias");
         let franchises;
@@ -58,14 +59,18 @@ export default function RouterPage(props) {
                     <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     <Route path='/app/franchises' component={Franchises}></Route>
                 </>
-        };
+        }
+
 
         let reportsSales;
         const permissionReportsSales = permissions.find(option => option === "Reportes Ventas");
         if (permissionReportsSales === 'Reportes Ventas') {
             reportsSales =
                 <Route path='/app/salesReport' component={SalesReport}></Route>
-        };
+        }
+
+
+        // else reportsSales = <NotPermissionPage />
 
         // const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
         // let reportHumanResources;
@@ -79,7 +84,8 @@ export default function RouterPage(props) {
         if (permissionPurchases === "Compras") {
             purchases =
                 <Route path='/app/purchaseSupplies' component={RegisterPurchaseSupplies}></Route>
-        };
+        }
+
 
         const permissionEmployees = permissions.find(option => option === "Empleados")
         let employees;
@@ -95,7 +101,8 @@ export default function RouterPage(props) {
                     <Route path='/app/advances' component={ListAdvances}></Route>
                     <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
                 </>
-        };
+        }
+
 
         const permission = permissions.find(option => option === "Usuarios")
         let permissionsAdministrator;
@@ -106,6 +113,13 @@ export default function RouterPage(props) {
                     <Route path='/app/registerUser' component={RegisterUser}></Route>
                 </>
         }
+
+
+        // let pageNotPermission;
+
+        // if (!products && !productions && !franchises && !reportsSales && !purchases && !employees && !permissionsAdministrator) {
+        //     pageNotPermission = <NotPermissionPage />
+        // }
 
         return (
             <>

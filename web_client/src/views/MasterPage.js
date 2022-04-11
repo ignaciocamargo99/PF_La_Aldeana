@@ -7,6 +7,7 @@ import '../assets/Views.css';
 import BeShowed from '../common/BeShowed';
 import Footer from '../common/Footer';
 import Navbar from '../common/Navbar';
+import SesionPage from '../common/SesionPage';
 import Login from './LoginUser/Login';
 import './MasterPage.css';
 import RouterPage from './RoutePage';
@@ -26,9 +27,14 @@ export default function App() {
             ?
             <Route path='/' component={Login}></Route>
             :
-            <BeShowed show={cookies.get('nick_user') !== undefined}>
-              <RouterPage options={cookies.get('permissions')} />
-            </BeShowed>
+            <>
+              <BeShowed show={cookies.get('nick_user') !== undefined}>
+                <RouterPage options={cookies.get('permissions')} />
+              </BeShowed>
+              <BeShowed show={cookies.get('nick_user') === undefined}>
+                <SesionPage />
+              </BeShowed>
+            </>
           }
         </div>
       </BrowserRouter>
