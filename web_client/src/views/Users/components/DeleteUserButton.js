@@ -10,27 +10,27 @@ const PORT = require('../../../config');
 
 export default function DeleteUserButton(props) {
 
-    // const handleDelete = () => confirmDelete(deleteProduction);
+    const handleDelete = () => confirmDelete(deleteUser);
 
-    // const deleteProduction = () => {
-    //     Axios.delete(PORT() + `/api/production/${props.production.id_production}`)
-    //         .then(() => {
-    //             props.deleteProduction(props.index);
-    //             swal("Elemento eliminado", {
-    //                 icon: "success",
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             swal({
-    //                 title: "Falla al eliminar elemento",
-    //                 text: error,
-    //                 icon: "error",
-    //             });
-    //         });
-    // }
+    const deleteUser = () => {
+        Axios.put(PORT() + `/api/userPermission/${props.data.id_user}`)
+            .then(() => {
+                props.deleteUser(props.index);
+                swal("Elemento eliminado", {
+                    icon: "success",
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                swal({
+                    title: "Falla al eliminar elemento",
+                    text: error,
+                    icon: "error",
+                });
+            });
+    }
 
     return (
-        <button id='deleteUserButton' type="button" className="sendDelete"><FontAwesomeIcon icon={faMinus} /></button>
+        <button id='deleteUserButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
     );
 }

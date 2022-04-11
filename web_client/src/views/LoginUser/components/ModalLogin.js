@@ -24,32 +24,30 @@ const ModalLogin = (props) => {
                     if (compare) {
                         Axios.get(PORT() + `/api/users/search/${props.nick}`)
                             .then((res) => {
-                                cookies.set('nick_user', res.data.nick_user, { path: '/' })
-                                cookies.set('first_name', res.data.first_name, { path: '/' })
-                                cookies.set('last_name', res.data.last_name, { path: '/' })
-                                Axios.get(PORT() + `/api/permissions/filter/${res.data.nick_user}`)
-                                    .then((response) => {
-                                        let permissions = [encrypt('Inicio')]
-                                        for (let i = 0; i < response.data.length; i++) {
-                                            permissions.push(encrypt(response.data[i].name))
-                                        }
-                                        cookies.set('permissions', permissions, { path: '/' })
-                                        window.location.href = './app/index'
-                                    })
+                                if (res.data.Ok) {
+                                    cookies.set('nick_user', res.data.nick_user, { path: '/' })
+                                    cookies.set('first_name', res.data.first_name, { path: '/' })
+                                    cookies.set('last_name', res.data.last_name, { path: '/' })
+                                    Axios.get(PORT() + `/api/permissions/filter/${res.data.nick_user}`)
+                                        .then((response) => {
+                                            let permissions = [encrypt('Inicio')]
+                                            for (let i = 0; i < response.data.length; i++) {
+                                                permissions.push(encrypt(response.data[i].name))
+                                            }
+                                            cookies.set('permissions', permissions, { path: '/' })
+                                            // eslint-disable-next-line no-cond-assign
+                                            if(window.location.pathname = '/app/index') window.location.replace = window.location.hostname + '/app/index';
+                                            else window.location.href = './app/index'
+                                        })
+                                }
+                                else errrorLogin('Atención', res.data.Message)
                             })
                     }
-                    else {
-                        errrorLogin('Atención', 'Usuario o Password incorrectos')
-                    }
+                    else errrorLogin('Atención', 'Usuario o Password incorrectos.')
                 })
-                .catch((error) => {
-                    errrorLogin('Oops...', 'Error en el servidor')
-                })
+                .catch(() => errrorLogin('Oops...', 'Error en el servidor'))
         }
-        else {
-            errrorLogin('Atención', 'Usuario o Password incorrectos')
-        }
-
+        else errrorLogin('Atención', 'Usuario o Password incorrectos')
     }
 
     return (

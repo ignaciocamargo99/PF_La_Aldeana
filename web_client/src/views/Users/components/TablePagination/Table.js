@@ -45,8 +45,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <EditUserButton data={element} edit={handleEdit} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteUserButton />
-                                            {/* <DeleteProductionButton deleteProduction={handleDelete} production={element} index={i} /> */}
+                                            <DeleteUserButton data = {element} deleteUser={handleDelete} index={i}/>
                                         </td>
                                     </tr>
                                 )
