@@ -125,18 +125,18 @@ const FormSalary = (props) => {
             })
             .catch((err) => {console.log(err)});
 
-            if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar') {
+            if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar' && employee.employment_relationship === 2) {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
                 .then((res) => {
                     if (res.data.Ok === false) console.log(res.data);
                     else {
                         const aux = [];
                         othersPlus.forEach((inc, i) => {aux[i] = inc});
-                        let max = res.data[0].total;
-                        if (res.data.length < 6) aux[0] = {name: 'SAC 1*cta 2021 Negro', price: ((max/2)*4)/6};
-                        else {
-                            aux[0] = {name: 'SAC 1*cta 2021 Negro', price: max/2};
-                        }
+                        if (res.data.length > 0) {
+                            let max = res.data[0].total;
+                            if (res.data.length < 6) aux[0] = {name: 'SAC 1*cta 2021 Negro', price: ((max/2)*4)/6};
+                            else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: max/2};
+                        } else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: 0};
                         setOthersPlus(aux);
                     }
                 });
