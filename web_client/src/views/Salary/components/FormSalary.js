@@ -52,7 +52,7 @@ const FormSalary = (props) => {
                     person.fullName += ', ';
                     person.fullName += person.name;
                     const exist = props.salaries?.filter((elem) => {
-                        return elem.dni == person.dni;
+                        return elem.dni === person.dni;
                     });
                     if (exist.length < 1) display.push(person);
                 });
@@ -82,7 +82,7 @@ const FormSalary = (props) => {
                                 if (detail.positive === 0) minus.push(detail);
                                 else plus.push(detail);
                             }
-                            if (detail.id_concept == 8) setAdvances(advances.push());
+                            if (detail.id_concept === 8) setAdvances(advances.push());
                         });
                         if (plus.length > 0) setOthersPlus(plus);
                         if (minus.length > 0) setOthersMinus(minus);
@@ -317,21 +317,21 @@ const FormSalary = (props) => {
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
-                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
+                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: hs.price};
             });
             setMain(aux);
         } else if (t === 1) {
             const aux = [];
             othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = {name: inc.name, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
+                if (inc === j) aux[i] = {name: inc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {name: inc.name, price: inc.price};
             });
             setOthersPlus(aux);
         } else {
             const aux = [];
             othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = {name: disc.name, price: e.target.value.toString() == 'NaN' ? 0 : parseInt(e.target.value)};
+                if (disc === j) aux[i] = {name: disc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
                 else aux[i] = {name: disc.name, price: disc.price};
             });
             setOthersMinus(aux);
@@ -376,7 +376,7 @@ const FormSalary = (props) => {
         let flagN = false;
 
         main?.forEach(i => {
-            if (i.price < 1 || i.price.toString() == 'NaN') {
+            if (i.price < 1 || i.price.toString() === 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -386,7 +386,7 @@ const FormSalary = (props) => {
         acuSubtotal += acuTotalHs;
 
         othersPlus?.forEach(i => {
-            if (i.price < 1 || i.price.toString() == 'NaN') {
+            if (i.price < 1 || i.price.toString() === 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -400,7 +400,7 @@ const FormSalary = (props) => {
         acuTotal += acuSubtotal;
 
         othersMinus?.forEach(i => {
-            if (i.price < 1 || i.price.toString() == 'NaN') {
+            if (i.price < 1 || i.price.toString() === 'NaN') {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -419,7 +419,7 @@ const FormSalary = (props) => {
     }, [total, subtotal, totalHs, main, othersMinus, othersPlus]);
 
     const warner = (k) => {
-        if (k == warning) setWarning(-1);
+        if (k === warning) setWarning(-1);
         else setWarning(k);
     }
 
@@ -483,7 +483,7 @@ const FormSalary = (props) => {
                                 <label style={{paddingLeft: '1em'}}>${(i.hs*i.price) ? +(Math.round(i.hs*i.price+ "e+2")  + "e-2") : 0}</label>
                             </div>
                         </div>
-                        <BeShowed show={k == warning}><div className="alert alert-warning d-flex align-items-center" role="alert" style={{height: '1em'}}>Si cambia el precio, el valor por defecto de este se vera cambiado para futuras consultas.</div></BeShowed>
+                        <BeShowed show={k === warning}><div className="alert alert-warning d-flex align-items-center" role="alert" style={{height: '1em'}}>Si cambia el precio, el valor por defecto de este se vera cambiado para futuras consultas.</div></BeShowed>
                         </>
                     )
                 })}
@@ -518,7 +518,7 @@ const FormSalary = (props) => {
                             </BeShowed>
                             <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' ? true : n !== 0 : true) && props.action !== "Ver"}>
                                 <div className="col-sm-1">
-                                    <button style={{marginRight: '0em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
+                                    <button style={{marginRight: '0em', marginLeft: '0.2em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherPlus"} n={n} default={i.name} 
@@ -568,7 +568,7 @@ const FormSalary = (props) => {
                             </BeShowed>
                             <BeShowed show={(advances.length === 0 || n !== 0) && props.action !== "Ver"}>
                                 <div className="col-sm-1" >
-                                    <button style={{marginRight: '0em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} style={{marginLeft: '0.2em'}} ><FontAwesomeIcon icon={faMinus} /></button>
+                                    <button style={{marginRight: '0em', marginLeft: '0.2em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 <div className="col-sm-8" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherMinus"} n={n} default={i.name}
