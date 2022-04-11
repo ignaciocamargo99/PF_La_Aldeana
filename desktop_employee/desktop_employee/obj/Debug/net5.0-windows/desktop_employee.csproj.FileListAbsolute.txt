@@ -90,6 +90,10 @@ C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employ
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmEmployees.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmValidationFingerprint.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.frmMain.resources
+<<<<<<< HEAD
+=======
+C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceDNI.resources
+>>>>>>> US/721-Agregar-filtros-huella-empleados
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceFinger.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.csproj.GenerateResource.cache
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.GeneratedMSBuildEditorConfig.editorconfig

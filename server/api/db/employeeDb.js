@@ -18,8 +18,10 @@ const chargeGetDB = () => {
 };
 
 const employeeForDesktopGetDB = () => {
-    const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
-                    FROM EMPLOYEES WHERE active = 1`; 
+    const sqlSelect = `SELECT e.dni AS DNI, e.name AS NOMBRE, e.last_name AS APELLIDO, 
+                        (SELECT COUNT(fp.dniEmployee) FROM FINGER_PRINTS fp WHERE e.dni = fp.dniEmployee) AS "HUELLAS"
+                    FROM EMPLOYEES e
+                    WHERE e.active = 1`; 
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
