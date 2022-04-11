@@ -92,7 +92,7 @@ namespace desktop_employee
             this.iconEsperando.IconColor = System.Drawing.Color.Blue;
             this.iconEsperando.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconEsperando.IconSize = 200;
-            this.iconEsperando.Location = new System.Drawing.Point(219, 78);
+            this.iconEsperando.Location = new System.Drawing.Point(219, 121);
             this.iconEsperando.Name = "iconEsperando";
             this.iconEsperando.Size = new System.Drawing.Size(229, 200);
             this.iconEsperando.TabIndex = 5;
@@ -108,7 +108,7 @@ namespace desktop_employee
             this.iconAceptado.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconAceptado.IconSize = 200;
-            this.iconAceptado.Location = new System.Drawing.Point(218, 78);
+            this.iconAceptado.Location = new System.Drawing.Point(218, 121);
             this.iconAceptado.Name = "iconAceptado";
             this.iconAceptado.Size = new System.Drawing.Size(230, 200);
             this.iconAceptado.TabIndex = 6;
@@ -124,7 +124,7 @@ namespace desktop_employee
             this.iconError.IconColor = System.Drawing.Color.Red;
             this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconError.IconSize = 200;
-            this.iconError.Location = new System.Drawing.Point(219, 78);
+            this.iconError.Location = new System.Drawing.Point(219, 121);
             this.iconError.Name = "iconError";
             this.iconError.Size = new System.Drawing.Size(225, 200);
             this.iconError.TabIndex = 7;
@@ -136,7 +136,7 @@ namespace desktop_employee
             this.lblEmployee.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblEmployee.AutoSize = true;
             this.lblEmployee.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblEmployee.Location = new System.Drawing.Point(204, 311);
+            this.lblEmployee.Location = new System.Drawing.Point(205, 314);
             this.lblEmployee.Name = "lblEmployee";
             this.lblEmployee.Size = new System.Drawing.Size(260, 44);
             this.lblEmployee.TabIndex = 8;

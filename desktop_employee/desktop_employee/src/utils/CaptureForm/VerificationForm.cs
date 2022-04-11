@@ -108,6 +108,7 @@ namespace desktop_employee
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
 			SetInfo("LISTO PARA COLOCAR DEDO");
+			MakeReport("El Lector de huellas ha sido conectado");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
