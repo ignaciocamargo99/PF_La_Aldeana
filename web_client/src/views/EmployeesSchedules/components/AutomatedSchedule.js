@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import generateAutomatedDay from '../AutomatedFunction/GenerateAutomatedDay';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
-import { sumArray, calculateTypeEmployees } from '../../../utils/ArrayFunctions/ArrayFunctions';
+import { calculateEmployees, calculateTypeEmployees } from '../../../utils/ArrayFunctions/ArrayEmployeesFunctions';
 import swal from 'sweetalert';
 
 const PORT = require('../../../config'); 
@@ -94,10 +94,10 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
         let finish = new Date(finishDate.current.value.slice(0,4),parseInt(finishDate.current.value.slice(5,7))-1,finishDate.current.value.slice(8,10));
 
         let daysOff;
-        axios.get(`${PORT()}/api/licenses`)
+        axios.get(`${PORT()}/api/daysOff?minDate=${init.getFullYear()}${init.getMonth() < 9 ?'0'+(init.getMonth() + 1):(init.getMonth() + 1)}${init.getDate() < 10 ?'0'+(init.getDate()):(init.getDate())}&maxDate=${finish.getFullYear()}${finish.getMonth() < 9 ?'0'+(finish.getMonth() + 1):(finish.getMonth() + 1)}${finish.getDate() < 10 ?'0'+(finish.getDate()):(finish.getDate())}`)
         .then((res) => {
 
-            daysOff = res.data;
+            daysOff = res.data.Data;
             let arrayInsertsEmployees = [];
     
             while(init.getTime() <= finish.getTime()){
@@ -123,11 +123,9 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                 });
                 
                 daysOff.forEach((dayOff) => {
-                    disabledEmployees.push(dayOff.dni)    
+                    disabledEmployees.push(dayOff.dni_employee)    
                 });
                 
-                console.log(disabledEmployees)
-
                 let variables = buildVariables(disabledEmployees);
                 let constraints = buildConstraints(typeDay);    
                 let results = generateAutomatedDay(constraints,variables);
@@ -225,7 +223,7 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                 <button className={`btn ${typeDay===2?'btn-secondary':'btn-primary'} col-sm-4`} onClick={() => {setTypeDay(2)}}>Feriados</button>
             </div>
             <br/>
-            <label className='col-sm-2'>Empleados: {params && employees ? employees.length - sumArray(params[typeDay]) : '-'}</label>
+            <label className='col-sm-2'>Empleados: {params && employees ? calculateEmployees(employees, params[typeDay]) : '-'}</label>
             {charges?.map((charge) => {
                 return(
                     <div style={{margin: '2%'}}>
