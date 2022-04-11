@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Page, Text, View, Document, StyleSheet, Canvas , Image, renderToFile} from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image} from '@react-pdf/renderer';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
-import { style } from '@material-ui/system';
 import { connect } from 'react-redux';
-import BeShowed from '../../../../common/BeShowed';
 import dataChartToURL from '../../../../utils/dataChartToURL';
 
 // Create styles
@@ -24,11 +22,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   col: {
-    borderWidth: '1px',
+    borderWidth: '2px',
     width: '1000em',
+    textAlign: 'center',
+    margin: '-1px',
   },
   col3: {
-    borderWidth: '1px',
+    borderWidth: '2px',
+    textAlign: 'center',
+    margin: '-1px',
     width: '500em',
   },
   title: {
@@ -44,7 +46,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-    textAlign: 'justify',
   },
   header: {
     fontSize: 12,
@@ -56,11 +57,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: '3px',
     paddingRight: '3px',
-  },
-  header: {
-    fontSize: 12,
-    marginBottom: 5,
-    textAlign: 'center',
     color: 'grey',
   },
   detail: {
@@ -84,12 +80,13 @@ const MyDocument = (props) => {
     return (
       <>
       <Document>
-        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos -' + props.title} author={'Heladería y cafetería - La Aldeana'}>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
           <View style={styles.section}>
             <Text style={styles.header}>{dateFormat(new Date())}</Text>
             <Text style={styles.mainTitle}>~ Venta De Productos ~</Text>
-            <Text style={styles.detail}>{props.title}</Text>
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png"/>
+            <Text style={styles.detail}>{props.description}</Text>
+            <Text style={styles.header}>{props.title}</Text>
           </View>
           <View style={styles.section}>
               <Text style={styles.title}>Top 10 productos con más unidades vendidas</Text>
@@ -244,11 +241,11 @@ const Viewer = (props) => {
         </ModalHeader>
         <ModalBody style={{height: '50em'}}>
             <PDFViewer style={{width: '100%', height: '45em'}} showToolbar={false}>
-                <MyDocument title={props.description} topChart={top} sales={props.productSales} typesChart={types} top={props.topTenProductSales} types={props.typeProductSales.types} />
+                <MyDocument title={props.title} description={props.description} topChart={top} sales={props.productSales} typesChart={types} top={props.topTenProductSales} types={props.typeProductSales.types} />
             </PDFViewer>
         </ModalBody>
         <ModalFooter>
-            <PDFDownloadLink document={<MyDocument title={props.description} topChart={top} typesChart={types} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
+            <PDFDownloadLink document={<MyDocument title={props.title} description={props.description} topChart={top} typesChart={types} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
                 <button className='sendOk' >Descargar</button>
             </PDFDownloadLink>
             <button className='cancel' onClick={props.cancel}>Cancelar</button>
