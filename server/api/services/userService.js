@@ -7,8 +7,8 @@ const createUser = async (newUser, matrix) => {
         return res;
     }
     catch (error) {
-        throw Error(error)
-    };
+        throw Error(error);
+    }
 };
 
 module.exports = { createUser };

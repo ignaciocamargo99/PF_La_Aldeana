@@ -51,34 +51,15 @@ export default function RegisterUser() {
 
     const registerUser = () => {
         if (ready) {
-            console.log(data);
-            console.log(valueSelect);
+            loadingMessage('Registrando nuevo usuario...');
+            Axios.post(`${PORT()}/api/user`, [data, valueSelect])
+                .then((data) => {
+                    if (data.data.Ok) successMessage("Atención", "Usuario dado de alta", "success");
+                    else displayError('Ha ocurrido un error...');
+                })
+                .catch(error => console.log(error))
         }
-
         else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
-        // let urlApi = '';
-        // const formData = new FormData();
-
-        // urlApi = '/api/products';
-
-        // const jsonArrSupplies = JSON.stringify(data.supplies);
-
-        // formData.append('name', data.name);
-        // formData.append('description', data.description);
-        // formData.append('image', data.img)
-        // formData.append('price', data.price);
-        // formData.append('id_sector', data.id_sector);
-        // formData.append('id_product_type', data.id_product_type);
-        // formData.append('supplies', jsonArrSupplies);
-        // formData.append('flavor', data.flavor);
-
-        // loadingMessage('Registrando nuevo producto...');
-        // Axios.post(PORT() + urlApi, formData)
-        //     .then((formData) => {
-        //         if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
-        //         else displayError('Ha ocurrido un error al registrar el producto.');
-        //     })
-        //     .catch(error => console.log(error))
     };
 
     const cancelRegisterUser = () => window.location.replace('/app/users');

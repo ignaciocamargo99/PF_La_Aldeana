@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
 //#region APIs
 
-router.get('/user', userController.postUser);
+router.post('/user', userController.postUser);
 
 //#endregion
 module.exports = router;

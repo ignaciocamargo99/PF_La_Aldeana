@@ -23,14 +23,15 @@ const franchiseRouter = require('./api/routes/franchiseRoute');
 const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
 const employeeAssistanceRouter = require('./api/routes/employeeAssistanceRoute')
-const employeeRouter = require('./api/routes/employeeRoute'); 
-const fingerPrintRouter = require('./api/routes/fingerPrintsRoute'); 
-const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute'); 
-const salesReportRouter = require('./api/routes/salesReportRoute'); 
-const licensesRouter = require('./api/routes/licenseRoute'); 
+const employeeRouter = require('./api/routes/employeeRoute');
+const fingerPrintRouter = require('./api/routes/fingerPrintsRoute');
+const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute');
+const salesReportRouter = require('./api/routes/salesReportRoute');
+const licensesRouter = require('./api/routes/licenseRoute');
 const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
 const dayOffRouter = require('./api/routes/dayOffRoute');
+const userRouter = require('./api/routes/userRoute');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -70,6 +71,7 @@ app.use('/api', employeeAssistanceRouter)
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
 app.use('/api', dayOffRouter);
+app.use('/api', userRouter);
 
 app.use(middleware.error404);
 app.use(middleware.error500);

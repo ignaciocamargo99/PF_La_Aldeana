@@ -13,8 +13,8 @@ async function postUser(req, res) {
         res.json({
             Ok: false,
             Message: e.message
-        })
+        });
     }
 }
 
-module.exports = { postUser }
+module.exports = { postUser };
