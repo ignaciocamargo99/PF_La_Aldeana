@@ -1,4 +1,4 @@
-const { createUser } = require('../services/userService');
+const { createUser, modifyUser, userDelete } = require('../services/userService');
 
 // HTTP: POST
 async function postUser(req, res) {
@@ -17,4 +17,36 @@ async function postUser(req, res) {
     }
 }
 
-module.exports = { postUser };
+async function updateUser(req, res) {
+    try {
+        await modifyUser(req.params.id_user, req.body[0], req.body[1]);
+        res.json({
+            Ok: true,
+            Message: 'Usuario modificado exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
+
+async function deleteUser(req, res) {
+    try {
+        await userDelete(req.params.id_user);
+        res.json({
+            Ok: true,
+            Message: 'Usuario eliminado lógicamente exitosamente.'
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
+
+module.exports = { postUser, updateUser, deleteUser };

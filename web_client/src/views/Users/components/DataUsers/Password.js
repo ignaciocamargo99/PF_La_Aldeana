@@ -13,17 +13,32 @@ const Password = (props) => {
         const password = pass.current.value.trim();
         const passwordWithNumber = stringContainsNumber(password);
         if (password.length >= 8 && passwordWithNumber) {
-            setIsValidClass("form-control is-valid");
-            data.password = password;
-            props.loadData(data);
-            divPasswordFormatValidation.current.innerHTML = '';
+            if (data.editing) {
+                setIsValidClass("form-control is-valid");
+                data.password = password;
+                props.loadData(data);
+            }
+            else {
+                setIsValidClass("form-control is-valid");
+                data.password = password;
+                props.loadData(data);
+                divPasswordFormatValidation.current.innerHTML = '';
+            }
         }
         else {
-            setIsValidClass("form-control");
-            let data = props.data;
-            data.password = null;
-            props.loadData(data);
-            divPasswordFormatValidation.current.innerHTML = 'Recuerde que la contraseña debe contener al menos 8 dígitos y un número...';
+            if (data.editing) {
+                setIsValidClass("form-control");
+                let data = props.data;
+                data.password = password;
+                props.loadData(data);
+            }
+            else {
+                setIsValidClass("form-control");
+                let data = props.data;
+                data.password = null;
+                props.loadData(data);
+                divPasswordFormatValidation.current.innerHTML = 'Recuerde que la contraseña debe contener al menos 8 dígitos y un número...';
+            }
         }
     }
 

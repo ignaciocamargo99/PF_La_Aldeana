@@ -6,5 +6,9 @@ const userController = require('../controllers/userController');
 
 router.post('/user', userController.postUser);
 
+router.put('/user/:id_user', userController.updateUser);
+
+router.put('/userPermission/:id_user', userController.deleteUser);
+
 //#endregion
 module.exports = router;

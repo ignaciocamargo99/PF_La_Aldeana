@@ -43,47 +43,36 @@ export default function EditUser(props) {
 
     const loadData = (childData) => {
         setData(childData);
-        if (data.nick_user && data.first_name && data.last_name) setReady(true);
+        if (data.password) {
+            if (stringContainsNumber(data.password) && data.nick_user && data.first_name && data.last_name) setReady(true);
+            else setReady(false);
+        }
+        else if (data.nick_user && data.first_name && data.last_name) setReady(true);
         else setReady(false);
     }
 
     useEffect(() => {
         if (data.nick_user && data.first_name && data.last_name) setReady(true);
         else setReady(false);
-    },[])
+    }, [])
 
     const loadMatrix = (matrix) => setValueSelect(matrix);
 
+    const stringContainsNumber = (_string) => /\d/.test(_string);
+
+
     const updateUser = () => {
         if (ready) {
-            console.log(data);
-            console.log(valueSelect);
+            console.log(valueSelect)
+            loadingMessage('Actualizando datos...');
+            Axios.put(`${PORT()}/api/user/${data.id_user}`, [data, valueSelect])
+                .then((data) => {
+                    if (data.data.Ok) successMessage("Atención", "Datos modificados correctamente", "success");
+                    else displayError('Ha ocurrido un error...');
+                })
+                .catch(error => console.log(error))
         }
-
-        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
-        // let urlApi = '';
-        // const formData = new FormData();
-
-        // urlApi = '/api/products';
-
-        // const jsonArrSupplies = JSON.stringify(data.supplies);
-
-        // formData.append('name', data.name);
-        // formData.append('description', data.description);
-        // formData.append('image', data.img)
-        // formData.append('price', data.price);
-        // formData.append('id_sector', data.id_sector);
-        // formData.append('id_product_type', data.id_product_type);
-        // formData.append('supplies', jsonArrSupplies);
-        // formData.append('flavor', data.flavor);
-
-        // loadingMessage('Registrando nuevo producto...');
-        // Axios.post(PORT() + urlApi, formData)
-        //     .then((formData) => {
-        //         if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
-        //         else displayError('Ha ocurrido un error al registrar el producto.');
-        //     })
-        //     .catch(error => console.log(error))
+        else warningMessage('Atención', 'Recuerde que la contraseña debe tener 8 dígitos como mínimo incluído un número y todos los campos son obligatorios', 'warning');
     };
 
     return (
@@ -91,7 +80,7 @@ export default function EditUser(props) {
             <div style={{ display: 'none' }}>{document.title = "Editar usuario"}</div>
             <Breadcrumb parentName="Usuarios" icon={faUser} parentLink="users" currentName="Editar usuario" />
             <div className="viewTitle">
-                <h1>Usuario {props.userToEdit.nick_user}</h1>
+                <h1>Usuario N° {props.userToEdit.id_user}</h1>
             </div>
             <div className="viewBody">
                 <DataUser data={data} loadData={loadData} />

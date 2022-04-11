@@ -29,10 +29,7 @@ async function getUsersByNick(req, res) {
             });
         } else {
             let random = Math.round(Math.random()* (1000 - 1) + 1).toString();
-            console.log(random)
             let notIsAToken = await bcryptjs.hash(random, 8);
-
-            console.log(notIsAToken)
             res.json({
                 Ok: true,
                 Message: 'Validando usuario.',

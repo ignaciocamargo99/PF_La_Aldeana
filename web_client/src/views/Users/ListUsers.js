@@ -30,15 +30,15 @@ export default function ListUsers() {
             .catch((error) => console.log(error));
     }, []);
 
-    // const deleteProduction = (i) => {
-    //     let aux = [];
-    //     allProductions?.forEach((e, j) => {
-    //         if (j !== i) {
-    //             aux[j] = e;
-    //         }
-    //     });
-    //     setAllProductions(aux);
-    // };
+    const deleteUser = (i) => {
+        let aux = [];
+        users?.forEach((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
+            }
+        });
+        setUsers(aux);
+    };
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
@@ -132,7 +132,7 @@ export default function ListUsers() {
                                         currentElements={users}
                                         handleRead={readUser}
                                         handleEdit={editUser}
-                                    // handleDelete = {deleteProduction}
+                                        handleDelete={deleteUser}
                                     />
 
                                 </div>
