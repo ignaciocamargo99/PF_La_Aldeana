@@ -17,6 +17,7 @@ namespace desktop_employee
     {
         //se define el ancho del borde del form
         private int borderSize = 2;
+        bool isLoginOK = false;
         public frmMain()
         {
             InitializeComponent();
@@ -94,22 +95,30 @@ namespace desktop_employee
 
         private void ibtnEmpleados_Click(object sender, EventArgs e)
         {
-            ibtnEmpleados.Enabled = false;
-            ibtnAsistencia.Enabled = true;
-            for (int i = 0; i < Application.OpenForms.Count; i++)
+            frmLogin login = new();
+            login.ShowDialog();
+            isLoginOK = login.isLogin();
+            int perm = login.permissions();
+            if (isLoginOK && perm != 0)
             {
-                var tag = Application.OpenForms[i].Tag;
-                if (tag == "Asis")
+                ibtnEmpleados.Enabled = false;
+                ibtnAsistencia.Enabled = true;
+                for (int i = 0; i < Application.OpenForms.Count; i++)
                 {
-                    Application.OpenForms[i].Close();
-                    i--;
+                    var tag = Application.OpenForms[i].Tag;
+                    if (tag == "Asis")
+                    {
+                        Application.OpenForms[i].Close();
+                        i--;
+                    }
                 }
+                frmEmployees employees = new();
+                employees.Tag = "Empl_Main";
+                employees.Permisos = perm;
+                lblTitulo.Text = "EMPLEADOS";
+                employees.PnlPadre = pnlDesktop;
+                OpenForm(employees);                
             }
-            frmEmployees employees = new();
-            employees.Tag = "Empl_Main";
-            lblTitulo.Text = "EMPLEADOS";
-            employees.PnlPadre = pnlDesktop;
-            OpenForm(employees);
         }
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
