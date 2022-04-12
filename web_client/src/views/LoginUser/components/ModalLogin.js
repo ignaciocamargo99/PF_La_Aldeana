@@ -27,7 +27,7 @@ const ModalLogin = (props) => {
                                 cookies.set('nick_user', res.data.nick_user, { path: '/' })
                                 cookies.set('first_name', res.data.first_name, { path: '/' })
                                 cookies.set('last_name', res.data.last_name, { path: '/' })
-                                Axios.get(PORT() + `/api/permissions/filter/${res.data.rol_ID}`)
+                                Axios.get(PORT() + `/api/permissions/filter/${res.data.nick_user}`)
                                     .then((response) => {
                                         let permissions = [encrypt('Inicio')]
                                         for (let i = 0; i < response.data.length; i++) {

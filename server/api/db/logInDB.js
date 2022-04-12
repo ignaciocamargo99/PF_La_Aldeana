@@ -24,9 +24,8 @@ const logInDB = (user) => {
 }
 const getUserDB = (user) => {
     
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol, u.id_rol as rol_ID " + 
+    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password " + 
     "FROM USERS u " + 
-    "INNER JOIN ROLES r ON u.id_rol = r.id_rol " + 
     "WHERE u.nick_user = ?";
     
     return new Promise((resolve, reject) => {
