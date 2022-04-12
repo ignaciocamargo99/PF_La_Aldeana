@@ -51,9 +51,7 @@ const FormSalary = (props) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    const exist = props.salaries?.filter((elem) => {
-                        return elem.dni === person.dni;
-                    });
+                    const exist = props.salaries?.filter((elem) => {return elem.dni === person.dni;});
                     if (exist.length < 1) display.push(person);
                 });
                 setEmployees(display);
@@ -96,7 +94,6 @@ const FormSalary = (props) => {
     const even = element => element.price === 0;
 
     useEffect(() => {
-        console.log(nro)
         if (employee != null) {
             Axios.get(`https://nolaborables.com.ar/api/v2/feriados/${new Date().getFullYear()}`)
             .then((response) => {
@@ -110,11 +107,11 @@ const FormSalary = (props) => {
                         if (response.data.Ok === false) console.log(response.data);
                         else {
                             let aux = [
-                                {id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0},
-                                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0},
-                                {id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0},
-                                {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0},
-                                {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0}
+                                {id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0},
+                                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0},
+                                {id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0},
+                                {id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0},
+                                {id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0}
                             ];
                             if(main.some(even)) setMain(aux);
                             setShowSpinner(false);
@@ -134,9 +131,9 @@ const FormSalary = (props) => {
                         othersPlus.forEach((inc, i) => {aux[i] = inc});
                         if (res.data.length > 0) {
                             let max = res.data[0].total;
-                            if (res.data.length < 6) aux[0] = {name: 'SAC 1*cta 2021 Negro', price: ((max/2)*4)/6};
-                            else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: max/2};
-                        } else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: 0};
+                            if (res.data.length < 6) aux[0] = {name: 'SAC 1*cta 2021 Negro', price: ((max/2)*4)/6, predictive: 0};
+                            else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: max/2, predictive: 0};
+                        } else aux[0] = {name: 'SAC 1*cta 2021 Negro', price: 0, predictive: 0};
                         setOthersPlus(aux);
                     }
                 });
@@ -156,7 +153,7 @@ const FormSalary = (props) => {
                                 dis.month = dateToString(dis.month, true);
                                 acu += dis.amount;
                             });
-                            aux[0] = {name: 'Adelantos', price: acu};
+                            aux[0] = {name: 'Adelantos', price: acu, predictive: 0};
                             setOthersMinus(aux);
                             setAdvances(r.data);
                         }
@@ -278,11 +275,11 @@ const FormSalary = (props) => {
             setOthersPlus([]);
             setOthersMinus([]);
             setMain([
-                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price},
-                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price},
-                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price},
-                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price},
-                {id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price}
+                {id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price, predictive: 0},
+                {id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price, predictive: 0},
+                {id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price, predictive: 0},
+                {id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price, predictive: 0},
+                {id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price, predictive: 0}
             ]);
             setNro(nro + 1);
         } else {
@@ -317,22 +314,22 @@ const FormSalary = (props) => {
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
-                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
-                else aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: hs.price};
+                if (hs === j) aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: hs.predictive};
+                else aux[i] = {id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive};
             });
             setMain(aux);
         } else if (t === 1) {
             const aux = [];
             othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = {name: inc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
-                else aux[i] = {name: inc.name, price: inc.price};
+                if (inc === j) aux[i] = {name: inc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: 1};
+                else aux[i] = {name: inc.name, price: inc.price, predictive: inc.predictive};
             });
             setOthersPlus(aux);
         } else {
             const aux = [];
             othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = {name: disc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value)};
-                else aux[i] = {name: disc.name, price: disc.price};
+                if (disc === j) aux[i] = {name: disc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: 1};
+                else aux[i] = {name: disc.name, price: disc.price, predictive: disc.predictive};
             });
             setOthersMinus(aux);
         }
@@ -341,21 +338,21 @@ const FormSalary = (props) => {
     const addOtherPlus = () => {
         const aux = [];
         othersPlus.forEach((inc, i) => {aux[i] = inc});
-        aux.push({name: '', price: 0});
+        aux.push({name: '', price: 0, predictive: 1});
         setOthersPlus(aux);
     }
 
     const addOtherMinus = () => {
         const aux = [];
         othersMinus.forEach((disc, i) => {aux[i] = disc});
-        aux.push({name: '', price: 0});
+        aux.push({name: '', price: 0, predictive: 1});
         setOthersMinus(aux);
     }
 
     const deleteOtherMinus = (e) => {
         const aux = [];
         othersMinus.forEach((disc, i) => {
-            if (disc !== e) aux[i] = {name: disc.name, price: disc.price}
+            if (disc !== e) aux[i] = {name: disc.name, price: disc.price, predictive: disc.predictive}
         });
         setOthersMinus(aux);
     }
@@ -363,7 +360,7 @@ const FormSalary = (props) => {
     const deleteOtherPlus = (e) => {
         const aux = [];
         othersPlus.forEach((inc, i) => {
-            if (inc !== e) aux[i] = {name: inc.name, price: inc.price}
+            if (inc !== e) aux[i] = {name: inc.name, price: inc.price, predictive: inc.predictive}
         });
         setOthersPlus(aux);
     }
@@ -508,7 +505,7 @@ const FormSalary = (props) => {
                 {othersPlus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={((props.salary.month ? props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12' : false) && n === 0) || props.action === "Ver"}>
+                            <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -516,7 +513,7 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={(props.salary.month ? props.salary.month.slice(5, -3) !== '06' && props.salary.month.slice(5, -3) !== '12' ? true : n !== 0 : true) && props.action !== "Ver"}>
+                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                 <div className="col-sm-1">
                                     <button style={{marginRight: '0em', marginLeft: '0.2em'}} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
@@ -558,7 +555,7 @@ const FormSalary = (props) => {
                 {othersMinus?.map((i, n) => {
                     return(
                         <div className="formRow justify-content-center">
-                            <BeShowed show={(advances.length > 0 && n === 0) || props.action === "Ver"}>
+                            <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
                                 <div className="col-sm-9" style={{border: '1px solid', borderRadius: '2px'}}>
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.name}</label>
                                 </div>
@@ -566,7 +563,7 @@ const FormSalary = (props) => {
                                     <label style={{paddingLeft: '1em', fontStyle: 'italic'}}>{i.price}</label>
                                 </div>
                             </BeShowed>
-                            <BeShowed show={(advances.length === 0 || n !== 0) && props.action !== "Ver"}>
+                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                 <div className="col-sm-1" >
                                     <button style={{marginRight: '0em', marginLeft: '0.2em'}} type="button" className={"sendDelete deleteOtherMinusButton"+n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>

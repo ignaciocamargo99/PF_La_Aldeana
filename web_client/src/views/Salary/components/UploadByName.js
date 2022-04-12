@@ -25,8 +25,8 @@ const UploadByName = (props) => {
         const j = props.i;
         const aux = [];
         props.destiny.forEach((inc, i) => {
-            if (inc === j) aux[i] = {name: validateConcepts(e.target.value, props.list), price: inc.price};
-            else aux[i] = {name: inc.name, price: inc.price};
+            if (inc === j) aux[i] = {name: validateConcepts(e.target.value, props.list), price: inc.price, predictive: 1};
+            else aux[i] = {name: inc.name, price: inc.price, predictive: inc.predictive};
         });
         props.upload(aux);
     }
@@ -40,7 +40,7 @@ const UploadByName = (props) => {
         <>
             <BeShowed show={showOptions}>
                 <datalist id={props.listName}>
-                    {props.list.map((item, i) => {
+                    {props.list?.filter((elem) => {return elem.predictive === 1;}).map((item, i) => {
                         return (<option value={item.name} key={i}></option>)
                     })}
                 </datalist>

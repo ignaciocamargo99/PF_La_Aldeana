@@ -64,7 +64,8 @@ const salariesCreateDB = (newSalary) => {
                                         for (var j = 0; j < newSalary.details[0].length; j++){
                                             r?.map(concept => {
                                                 if(concept.name.toUpperCase() == newSalary.details[0][j].name.toUpperCase()){
-                                                    const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
+                                                    const updateHsType = "UPDATE HS_TYPES h SET h.amount = " + newSalary.details[0][j].price + " WHERE h.id_hs_type = " + (j+1);
+                                                    const price = newSalary.details[0][j].price;
                                                     db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs, newSalary.details[0][j].price], (error, r) => {
                                                         if (error) {
                                                             console.log(error);
@@ -74,7 +75,7 @@ const salariesCreateDB = (newSalary) => {
                                                                 if (error) {
                                                                     console.log(error);
                                                                     db.rollback(()=> reject(error));
-                                                                } else {    db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[0][j-1].price, concept.predictive], (error) => {
+                                                                } else { db.query(sqlInsertDetail, [id_salary, concept.id_concept, price, concept.predictive], (error) => {
                                                                     if (error) {
                                                                         console.log(error);
                                                                         db.rollback(()=> reject(error));
@@ -96,7 +97,6 @@ const salariesCreateDB = (newSalary) => {
                                         for (var k = 0; k < newSalary.details[1].length; k++){
                                             let exist = false;
                                             r?.map(concept => {
-                                                //console.log(concept, newSalary.details[1][k])
                                                 if(concept.name.toUpperCase() == newSalary.details[1][k].name.toUpperCase()){
                                                     exist = true;
                                                     db.query(sqlInsertDetail, [id_salary, concept.id_concept, newSalary.details[1][k].price, 1], (error) => {
@@ -118,14 +118,12 @@ const salariesCreateDB = (newSalary) => {
                                                 count += 1;
                                                 r[r.length] = {id_concept: count, name: newSalary.details[1][k].name, predictive: 1};
                                                 let aux1 = count;
-                                                //console.log(r[r.length], r.length)
                                                 db.query(sqlInsertConcept, [count, newSalary.details[1][k].name], (error, r) => {
                                                 if (error) {
                                                     console.log(error);
                                                     db.rollback(()=> reject(error));
                                                 }
                                                 else {
-                                                    //console.log(newSalary.details[1], k)
                                                     db.query(sqlInsertDetail, [id_salary, aux1, newSalary.details[1][k-1].price, 1], (error) => {
                                                         if (error) {
                                                             console.log(error);
@@ -168,7 +166,6 @@ const salariesCreateDB = (newSalary) => {
                                                 count += 1;
                                                 r[r.length] = {id_concept: count, name: newSalary.details[2][h].name, predictive: 1};
                                                 let aux2 = count;
-                                                //console.log(r[r.length], r.length)
                                                 db.query(sqlInsertConcept, [count, newSalary.details[2][h].name], (error, r) => {
                                                 if (error) {
                                                     console.log(error);
@@ -270,7 +267,6 @@ const salaryGetDB = (monthYear, dni) => {
                 "LEFT JOIN SALARY_STATE ss ON s.id_state = ss.id_salary_state " +
                 "LEFT JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship " +
                 "WHERE s.month_year = '" + (monthYear.length > 7 ? monthYear : (monthYear + '-01')) + "' AND e.dni = " + dni;
-    //console.log(sqlSelect)
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -306,7 +302,7 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                     console.log(error);
                     reject("1:" + error);
                 }
-                else if (result.length === 0) {
+                else if (result.length <= 5) {
                     const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s LEFT JOIN EMPLOYEES e ON e.dni = s.employee WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
                     formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
@@ -347,7 +343,6 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                         let isNonWorkedTo = false;
                                         let isWeekend = (date === 0 || (date === 6 && hours >= 13 ? true : (hours === 13 && minutes > 0)));
                                         let isWeekendTo = (dateTo === 0 || (dateTo === 6 && hoursTo >= 13 ? true : (hoursTo === 13 && minutesTo > 0)));
-                                        //console.log(isWeekend , isWeekendTo)
                                         let absHs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
 
                                         nonWorkingDays?.map(holiday => {
@@ -431,12 +426,11 @@ const bonusGetDB = (monthYear, dni) => {
 const salariesUpdateDB = (id, newSalary) => {
     const sqlInsert = 'UPDATE SALARIES SET id_state = 2, salary_hs = ?, subtotal = ?, total = ? WHERE id_salary = ?';
     const sqlGetConcepts = "SELECT * FROM CONCEPTS c";
-    const sqlClearDetails = "DELETE FROM DETAIL_SALARIES WHERE id_detail_salary = " + id + " AND id_concept > 5; ";
+    const sqlClearDetails = "DELETE FROM DETAIL_SALARIES WHERE id_salary = " + id;
     const sqlInsertConcept = "INSERT INTO CONCEPTS VALUES (?, ?, 1)";
     const sqlInsertHsWorked = "UPDATE HS_WORKED SET amount = ? WHERE id_hs_worked = ?";
     const sqlInsertDetail = "INSERT INTO DETAIL_SALARIES VALUES (null, ?, ?, ?, ?);";
 
-    //console.log(newSalary.details)
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -468,7 +462,8 @@ const salariesUpdateDB = (id, newSalary) => {
                                             for (var j = 0; j < newSalary.details[0].length; j++){
                                                 r?.map(concept => {
                                                     if(concept.name.toUpperCase() == newSalary.details[0][j].name.toUpperCase()){
-                                                        const updateHsType = "UPDATE HS_TYPES h SET h.amount = IF (" + newSalary.details[0][j].price + " = h.amount, h.amount, " + newSalary.details[0][j].price + ") WHERE h.id_hs_type = " + (j+1);
+                                                        const updateHsType = "UPDATE HS_TYPES h SET h.amount = " + newSalary.details[0][j].price + " WHERE h.id_hs_type = " + (j+1);
+                                                        const price = newSalary.details[0][j].price;
                                                         db.query(sqlInsertHsWorked, [newSalary.details[0][j].price, newSalary.details[0][j].id_hs_worked], (error, r) => {
                                                             if (error) {
                                                                 console.log(error);
@@ -478,7 +473,7 @@ const salariesUpdateDB = (id, newSalary) => {
                                                                     if (error) {
                                                                         console.log(error);
                                                                         db.rollback(()=> reject(error));
-                                                                    } else {    db.query(sqlInsertDetail, [id, concept.id_concept, newSalary.details[0][j-1].price, concept.predictive], (error) => {
+                                                                    } else {    db.query(sqlInsertDetail, [id, concept.id_concept, price, concept.predictive], (error) => {
                                                                         if (error) {
                                                                             console.log(error);
                                                                             db.rollback(()=> reject(error));
@@ -500,7 +495,6 @@ const salariesUpdateDB = (id, newSalary) => {
                                             for (var k = 0; k < newSalary.details[1].length; k++){
                                                 let exist = false;
                                                 r?.map(concept => {
-                                                    //console.log(concept, newSalary.details[1][k])
                                                     if(concept.name.toUpperCase() == newSalary.details[1][k].name.toUpperCase()){
                                                         exist = true;
                                                         db.query(sqlInsertDetail, [id, concept.id_concept, newSalary.details[1][k].price, 1], (error) => {
@@ -522,14 +516,12 @@ const salariesUpdateDB = (id, newSalary) => {
                                                     count += 1;
                                                     r[r.length] = {id_concept: count, name: newSalary.details[1][k].name, predictive: 1};
                                                     let aux1 = count;
-                                                    //console.log(r[r.length], r.length)
                                                     db.query(sqlInsertConcept, [count, newSalary.details[1][k].name], (error, r) => {
                                                     if (error) {
                                                         console.log(error);
                                                         db.rollback(()=> reject(error));
                                                     }
                                                     else {
-                                                        //console.log(newSalary.details[1], k)
                                                         db.query(sqlInsertDetail, [id, aux1, newSalary.details[1][k-1].price, 1], (error) => {
                                                             if (error) {
                                                                 console.log(error);
