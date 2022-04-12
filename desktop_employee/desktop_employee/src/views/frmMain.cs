@@ -98,9 +98,9 @@ namespace desktop_employee
             frmLogin login = new();
             login.ShowDialog();
             isLoginOK = login.isLogin();
-            // se esta ejecutando primero el if, osea no espera al que se aprete aceptar en login
-            if (isLoginOK)
-            { 
+            int perm = login.permissions();
+            if (isLoginOK && perm != 0)
+            {
                 ibtnEmpleados.Enabled = false;
                 ibtnAsistencia.Enabled = true;
                 ibtnAsistenciaDNI.Enabled = true;
@@ -115,9 +115,10 @@ namespace desktop_employee
                 }
                 frmEmployees employees = new();
                 employees.Tag = "Empl_Main";
+                employees.Permisos = perm;
                 lblTitulo.Text = "EMPLEADOS";
                 employees.PnlPadre = pnlDesktop;
-                OpenForm(employees);
+                OpenForm(employees);                
             }
         }
 

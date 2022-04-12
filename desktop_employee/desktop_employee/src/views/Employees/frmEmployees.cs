@@ -20,8 +20,10 @@ namespace desktop_employee.src.views.Employees
         dynamic datosEmpleados;
         DataTable employeeSelectedTable = new DataTable();
         private Panel pnlPadre;
+        private int permisos;
         config config = new();
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
+        public int Permisos { get => permisos; set => permisos = value; }
 
         public frmEmployees()
         {
@@ -63,6 +65,11 @@ namespace desktop_employee.src.views.Employees
             {
                 btnEditEmployee.BackgroundColor = ColorTranslator.FromHtml("#383C77");
                 btnEditEmployee.TextColor = Color.White;
+            }
+
+            if (permisos == 1)
+            {
+                btnEditEmployee.Visible = false;
             }
         }
 
@@ -108,6 +115,7 @@ namespace desktop_employee.src.views.Employees
                 frmEditEmployee frmEditEmployee = new();
                 frmEditEmployee.EmployeeSelected = employeeSelectedTable;
                 frmEditEmployee.PnlPadre = pnlPadre;
+                frmEditEmployee.Permisos = permisos;
                 OpenForm(frmEditEmployee);
             }
             else
