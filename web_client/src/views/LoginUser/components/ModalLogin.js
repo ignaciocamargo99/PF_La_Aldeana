@@ -30,13 +30,20 @@ const ModalLogin = (props) => {
                                     cookies.set('last_name', res.data.last_name, { path: '/' })
                                     Axios.get(PORT() + `/api/permissions/filter/${res.data.nick_user}`)
                                         .then((response) => {
-                                            let permissions = [encrypt('Inicio')]
-                                            for (let i = 0; i < response.data.length; i++) {
-                                                permissions.push(encrypt(response.data[i].name))
-                                            }
-                                            cookies.set('permissions', permissions, { path: '/' })
+                                            let permissions = [encrypt('Inicio')];
+                                            let accesses = [];
+                                            permissions = response.data.reduce((acc, el) => {
+                                                acc.push(encrypt(el.name))
+                                                return acc;
+                                            }, [])
+                                            accesses = response.data.reduce((acc, el) => ({
+                                                ...acc,
+                                                [(el.id_permission)]: el.id_access,
+                                            }), [])
+                                            cookies.set('permissions', permissions, { path: '/' });
+                                            cookies.set('accesses', accesses, { path: '/' });
                                             // eslint-disable-next-line no-cond-assign
-                                            if(window.location.pathname = '/app/index') window.location.replace = window.location.hostname + '/app/index';
+                                            if (window.location.pathname = '/app/index') window.location.replace = window.location.hostname + '/app/index';
                                             else window.location.href = './app/index'
                                         })
                                 }

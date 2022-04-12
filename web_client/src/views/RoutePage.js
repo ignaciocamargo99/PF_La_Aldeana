@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
 import { Route } from 'react-router-dom';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
@@ -23,31 +24,37 @@ import ListUsers from './Users/ListUsers';
 import RegisterUser from './Users/components/RegisterUser';
 import NotPermissionPage from '../common/NotPermissionPage';
 
+
 export default function RouterPage(props) {
 
     const showOptionsWithPermissions = () => {
+        console.log(props.accesses[3]);
         let permissions = []
-        props.options.forEach((option) => { permissions.push(decrypt(option)) })
+        props.options.forEach((option) => { permissions.push(decrypt(option)) });
 
+        // ---------- PRODUCTS -----------------
         const permissionProducts = permissions.find(option => option === "Productos");
         let products;
         if (permissionProducts === "Productos") {
+            let permissionsAccessProducts = props.accesses[3]
             products =
                 <>
-                    <Route path='/app/products' component={ListProducts}></Route>
+                    <Route path='/app/products' render={() => <ListProducts permissionsAccess={permissionsAccessProducts} />}></Route>
                     <Route path='/app/registerProducts' component={RegisterProductView}></Route>
                     <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
                     <Route path='/app/supplies' component={RegisterSupplyView}></Route>
                 </>
         }
 
+        // ---------- PRODUCCTIONS ---------------
         const permissionProduction = permissions.find(option => option === "Producciones");
         let productions;
         if (permissionProduction === 'Producciones') {
+            let permissionsAccessProductions = props.accesses[4]
             productions =
                 <>
+                    <Route path='/app/productions' render={() => <ListProductions permissionsAccess={permissionsAccessProductions} />}></Route>
                     <Route path='/app/production' component={RegisterProductionView}></Route>
-                    <Route path='/app/productions' component={ListProductions}></Route>
                 </>
         }
 
@@ -68,9 +75,6 @@ export default function RouterPage(props) {
             reportsSales =
                 <Route path='/app/salesReport' component={SalesReport}></Route>
         }
-
-
-        // else reportsSales = <NotPermissionPage />
 
         // const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
         // let reportHumanResources;
@@ -114,26 +118,12 @@ export default function RouterPage(props) {
                 </>
         }
 
-
-        // let pageNotPermission;
-
-        // if (!products && !productions && !franchises && !reportsSales && !purchases && !employees && !permissionsAdministrator) {
-        //     pageNotPermission = <NotPermissionPage />
-        // }
-
         return (
             <>
-                {products}
-                {productions}
-                {franchises}
-                {reportsSales}
-                {purchases}
-                {employees}
-                {permissionsAdministrator}
+                {products} {productions} {franchises} {reportsSales} {purchases} {employees} {permissionsAdministrator}
             </>
         )
     };
-
 
     return (
         <div>

@@ -15,7 +15,7 @@ import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
-export default function RegisterProductView() {
+export default function RegisterProductView(props) {
     const [data, setData] = useState({ name: null, description: '', price: null, id_sector: null, id_product_type: null, img: null, supplies: [], flavor: null, editing: false });
     const [nameProductChild, setNameProductChild] = useState('');
     const [priceProductChild, setPriceProductChild] = useState('');

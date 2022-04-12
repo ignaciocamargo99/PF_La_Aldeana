@@ -29,7 +29,7 @@ export default function App() {
             :
             <>
               <BeShowed show={cookies.get('nick_user') !== undefined}>
-                <RouterPage options={cookies.get('permissions')} />
+                <RouterPage options={cookies.get('permissions')} user={cookies.get('nick_user')} accesses={cookies.get('accesses')} />
               </BeShowed>
               <BeShowed show={cookies.get('nick_user') === undefined}>
                 <SesionPage />
