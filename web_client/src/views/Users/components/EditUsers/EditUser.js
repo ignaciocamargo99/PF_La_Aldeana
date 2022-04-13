@@ -63,7 +63,6 @@ export default function EditUser(props) {
 
     const updateUser = () => {
         if (ready) {
-            console.log(valueSelect)
             loadingMessage('Actualizando datos...');
             Axios.put(`${PORT()}/api/user/${data.id_user}`, [data, valueSelect])
                 .then((data) => {

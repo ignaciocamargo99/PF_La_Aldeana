@@ -122,7 +122,12 @@ export default function ListProductions(props) {
                             <>
                                 <div className="viewTitleBtn">
                                     <h1>Producciones</h1>
-                                    <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                        <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                    <BeShowed show={permissionsAccess === 1}>
+                                        <button id='newProductionButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                                    </BeShowed>
                                 </div>
                                 <div className="viewBody">
                                     <TablePagination

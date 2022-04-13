@@ -8,7 +8,7 @@ import ReadUserButton from "../ReadUsers/ReadUserButton";
 
 const PORT = require('../../../../config');
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
     return (
         <>
@@ -42,10 +42,10 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <ReadUserButton data={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditUserButton data={element} edit={handleEdit} />
+                                            <EditUserButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteUserButton data = {element} deleteUser={handleDelete} index={i}/>
+                                            <DeleteUserButton data={element} deleteUser={handleDelete} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )

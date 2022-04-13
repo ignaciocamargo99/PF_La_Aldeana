@@ -17,13 +17,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
-export default function EmployeesTable() {
+export default function EmployeesTable(props) {
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [assistance, setAssistance] = useState();
     const [editing, setEditing] = useState({});
     const [reading, setReading] = useState({});
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employeeAssistance')
@@ -113,22 +114,32 @@ export default function EmployeesTable() {
         <>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            : assistance && assistance.length === 0
-                ? 
-                <div>
-                    <div className="viewTitleBtn">
-                        <h1>Asistencias</h1>
-                        <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                : assistance && assistance.length === 0
+                    ?
+                    <div>
+                        <div className="viewTitleBtn">
+                            <h1>Asistencias</h1>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='editAssistanceButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                        </div>
+                        <br />
+                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
                     </div>
-                    <br/>
-                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No ha marcado nadie el ingreso/egreso en esta fecha</h4>
-                </div>
-                : (
+                    : (
 
-                    <BeShowed show={!isEditing && !isReading}>
+                        <BeShowed show={!isEditing && !isReading}>
                             <div className="viewTitleBtn">
                                 <h1>Asistencias</h1>
-                                <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                    <button id='editAssistanceButton' onClick={onClickNewAssistance} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
+                                <BeShowed show={permissionsAccess === 1}>
+                                    <button id='editAssistanceButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
                             </div>
 
                             <div className="viewBody">
@@ -173,10 +184,10 @@ export default function EmployeesTable() {
                                                             <ReadAssistanceButton assistance={element} read={readAssistance} />
                                                         </td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <EditAssistanceButton assistance={element} edit={editAssistance} />
+                                                            <EditAssistanceButton assistance={element} edit={editAssistance} permissionsAccess={permissionsAccess} />
                                                         </td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} />
+                                                            <DeleteAssistanceButton assistance={element} index={i} deleteAssistance={deleteAssistance} permissionsAccess={permissionsAccess} />
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -185,8 +196,8 @@ export default function EmployeesTable() {
                                     />
                                 </Table>
                             </div>
-                    </BeShowed>
-                )}
+                        </BeShowed>
+                    )}
             <BeShowed show={isEditing}>
                 <EditAssistance cancel={cancelEditAssistance} assistance={editing} />
             </BeShowed>

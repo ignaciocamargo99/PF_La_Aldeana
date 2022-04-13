@@ -3,7 +3,7 @@ import DeleteFranchiseButton from "../DeleteFranchiseButton";
 import EditFranchiseButton from '../EditFranchise/EditFranchiseButton';
 import ReadFranchiseButton from "../ReadFranchise/ReadFranchiseButton";
 
-const Table = ({ pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
     return (
         <>
             <div className="formRow title-searcher">
@@ -35,10 +35,10 @@ const Table = ({ pageElements, columnsHeaders, handleRead, handleEdit, handleDel
                                             <ReadFranchiseButton franchise={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditFranchiseButton franchise={element} edit={handleEdit} />
+                                            <EditFranchiseButton franchise={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteFranchiseButton deleteFranchise={handleDelete} franchise={element} index={i} />
+                                            <DeleteFranchiseButton deleteFranchise={handleDelete} franchise={element} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )
