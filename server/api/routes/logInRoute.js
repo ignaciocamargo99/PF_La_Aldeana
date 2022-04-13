@@ -11,7 +11,7 @@ router.get("/users/filter/:nick", userController.getUsersByNick);
 router.get("/users/search/:nick", userController.getDataUsersByNick);
 
 router.post("/users", userController.postUser);
-router.post("/loginDesktop", userController.logDesktop);
+router.get("/loginDesktop", userController.logDesktop);
 
 //#endregion
 

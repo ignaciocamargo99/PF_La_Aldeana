@@ -35,7 +35,6 @@
             this.btnEntrar = new desktop_employee.src.utils.Botones.CustomButton();
             this.btnCancelar = new desktop_employee.src.utils.Botones.CustomButton();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.txtPerm = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtUser
@@ -129,21 +128,12 @@
             this.lblInfo.Text = "* Usuario o contraseña incorrectas.";
             this.lblInfo.Visible = false;
             // 
-            // txtPerm
-            // 
-            this.txtPerm.Location = new System.Drawing.Point(213, 12);
-            this.txtPerm.Name = "txtPerm";
-            this.txtPerm.Size = new System.Drawing.Size(100, 23);
-            this.txtPerm.TabIndex = 9;
-            this.txtPerm.Text = "0";
-            // 
             // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(222)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(341, 295);
-            this.Controls.Add(this.txtPerm);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnEntrar);
@@ -155,6 +145,7 @@
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmLogin";
+            this.Load += new System.EventHandler(this.frmLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,6 +160,5 @@
         private utils.Botones.CustomButton btnEntrar;
         private utils.Botones.CustomButton btnCancelar;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.TextBox txtPerm;
     }
 }

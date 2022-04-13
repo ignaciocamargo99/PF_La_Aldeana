@@ -106,10 +106,11 @@ async function getLogin(req, res) {
 
 async function logDesktop(req, res) {
     try {
-        await logInDesktop(req.body);
+        const data = await logInDesktop(req.query);
         res.json({
             Ok: true,
-            Message: 'Sesion iniciada correctamente'
+            Message: 'Sesion iniciada correctamente',
+            data
         });
     }
     catch (e) {
