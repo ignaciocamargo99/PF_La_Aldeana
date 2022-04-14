@@ -38,6 +38,7 @@ export default function Navbar(props) {
         cookies.remove('first_name', { path: '/' })
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
+        cookies.remove('accesses', { path: '/'})
         window.location.href = '/app/index'
     };
 

@@ -12,7 +12,7 @@ import userData from './userData';
 
 const PORT = require('../../config');
 
-export default function ListUsers() {
+export default function ListUsers(props) {
 
     const [users, setUsers] = useState([]);
     const [userToRead, setUserToRead] = useState({});
@@ -20,6 +20,7 @@ export default function ListUsers() {
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/users')
@@ -108,13 +109,17 @@ export default function ListUsers() {
             <div style={{ display: 'none' }}>{document.title = "Usuarios"}</div>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." /> :
-
                 users?.length === 0
                     ?
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Usuarios</h1>
-                            <button id='newUsersButton' type="button" onClick={onClickNewUser} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='newUsersButton' type="button" onClick={onClickNewUser} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='newUsersButton' disabled type="button"className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            </BeShowed>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron usuarios registrados hasta el momento.</h4>
@@ -133,6 +138,7 @@ export default function ListUsers() {
                                         handleRead={readUser}
                                         handleEdit={editUser}
                                         handleDelete={deleteUser}
+                                        permissionsAccess={permissionsAccess}
                                     />
 
                                 </div>

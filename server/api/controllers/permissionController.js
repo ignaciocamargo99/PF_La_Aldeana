@@ -1,10 +1,10 @@
-const { readPermissions, readPermissionsUser, readViews, modifyPermissionRol, readAccesses } = require('../services/permissionService');
+const { readPermissions, readPermissionsUser, readViews, readAccesses } = require('../services/permissionService');
 
 // HTTP: GET
 async function getPermissions(req, res) {
     try {
         const result = await readPermissions();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
@@ -18,7 +18,7 @@ async function getPermissions(req, res) {
 async function getPermissionsUser(req, res) {
     try {
         const result = await readPermissionsUser(req.params.nick_user);
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
@@ -32,24 +32,7 @@ async function getPermissionsUser(req, res) {
 async function getViews(req, res) {
     try {
         const result = await readViews();
-        res.send(result)
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        });
-    }
-}
-
-// HTTP: PUT
-async function putPermissionsRol(req, res) {
-    try {
-        await modifyPermissionRol(req.body);
-        res.json({
-            Ok: true,
-            Message: 'Permisos actualizados exitosamente.'
-        });
+        res.send(result);
     }
     catch (e) {
         res.json({
@@ -73,4 +56,4 @@ async function getAccesses(req, res) {
     }
 }
 
-module.exports = { getPermissions, getPermissionsUser, getViews, putPermissionsRol, getAccesses };
+module.exports = { getPermissions, getPermissionsUser, getViews, getAccesses };

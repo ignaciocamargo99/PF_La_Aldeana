@@ -8,12 +8,12 @@ import ReadUserButton from "../ReadUsers/ReadUserButton";
 
 const PORT = require('../../../../config');
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Usuarios:</h4>
+                <h4 className="text-secondary">Usuarios activos:</h4>
                 <div className="search-input">
                     <FontAwesomeIcon icon={faSearch} />
                     <input id="inputSearchName" type="text" placeholder="Buscar por usuario..." onChange={(e) => setNameSearch(e.target.value)}></input>
@@ -42,10 +42,10 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <ReadUserButton data={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditUserButton data={element} edit={handleEdit} />
+                                            <EditUserButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteUserButton data = {element} deleteUser={handleDelete} index={i}/>
+                                            <DeleteUserButton data={element} deleteUser={handleDelete} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )
