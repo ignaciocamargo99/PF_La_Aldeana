@@ -14,7 +14,7 @@ export const useGetFlavor = (flavorId) => {
                 loadingFlavor: false,
             });
         })
-    }, [])
+    }, [flavorId])
 
     return state;
 };

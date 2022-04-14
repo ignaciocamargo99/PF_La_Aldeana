@@ -107,7 +107,7 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
         flavor.description = flavorData.description;
     }
     if (flavorData.hasOwnProperty('reorderStock')) {
-        flavor.reorderStock = flavorData.reorderStock;
+        flavor.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
     }
     if (flavorData.flavorFamilyId) {
         flavor.family_flavor = flavorData.flavorFamilyId;
