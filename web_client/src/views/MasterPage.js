@@ -27,10 +27,9 @@ import EmployeesSchedulesView from './EmployeesSchedules/EmployeesSchedulesView'
 import ListAdvances from './Advances/ListAdvances';
 import RegisterAdvances from './Advances/components/RegisterAdvances';
 import ListProductions from './Productions/ListProductions';
-import ListFlavors from './Flavors/ListFlavors';
-import FlavorForm from './Flavors/components/FlavorForm';
 import ListUsers from './Users/ListUsers';
 import RegisterUser from './Users/components/RegisterUser';
+import FlavorRoutes from './Flavors/FlavorRoutes';
 
 const cookies = new Cookies();
 
@@ -66,8 +65,9 @@ export default function App() {
               <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
               <Route path='/app/franchises' component={Franchises}></Route>
               <Route path='/app/productions' component={ListProductions}></Route>
-              <Route exact path='/app/flavors' component={ListFlavors}></Route>
-              <Route exact path='/app/flavors/:idFlavor' component={FlavorForm}></Route>
+              <Route path='/app/flavors'>
+                <FlavorRoutes />
+              </Route>
               <Route path='/app/users' component={ListUsers}></Route>
               <Route path='/app/registerUser' component={RegisterUser}></Route>
             </BeShowed>

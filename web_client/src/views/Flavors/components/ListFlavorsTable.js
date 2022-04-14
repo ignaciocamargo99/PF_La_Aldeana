@@ -1,9 +1,36 @@
-import React from 'react';
+import Axios from 'axios';
+import React, { useState } from 'react';
+import swal from 'sweetalert';
 import FlavorsTablePagination from './FlavorsTablePagination';
+import displayError from '../../../utils/ErrorMessages/displayError';
 
-const ListFlavorsTable = ({ flavors }) => {
+const PORT = require('../../../config');
+
+const ListFlavorsTable = ({ initialFlavors }) => {
+
+    const [flavors, setflavors] = useState(initialFlavors)
 
     const thereAreNoFlavors = flavors.length === 0;
+
+    const deleteFlavor = async (idFlavor) => {
+        Axios.delete(PORT() + `/api/flavors/${idFlavor}`)
+            .then(response => {
+                if (response.data.flavorDeleted) {
+                    swal("Sabor dado de baja exitosamente", {
+                        icon: "success",
+                    });
+                    const updatedFlavorsList = flavors.filter(f => f.idFlavor !== idFlavor);
+
+                    setflavors(updatedFlavorsList);
+                } else {
+                    displayError(response.data.message, 'Error al efectuar la baja');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                displayError();
+            });
+    }
 
     if (thereAreNoFlavors) {
         return (
@@ -16,7 +43,7 @@ const ListFlavorsTable = ({ flavors }) => {
         const columnsHeaders = [
             {
                 name: 'Nombre',
-                width: '15%'
+                width: '25%'
             },
             {
                 name: 'Familia',
@@ -38,12 +65,12 @@ const ListFlavorsTable = ({ flavors }) => {
                 name: 'Precio',
                 width: '10%'
             },
+            // {
+            //     name: 'Ver',
+            //     width: '10%'
+            // },
             {
-                name: 'Ver',
-                width: '10%'
-            },
-            {
-                name: 'Editar',
+                name: 'Ver / Editar',
                 width: '10%'
             },
             {
@@ -56,6 +83,7 @@ const ListFlavorsTable = ({ flavors }) => {
             <FlavorsTablePagination
                 columnsHeaders={columnsHeaders}
                 currentElements={flavors}
+                deleteFlavor={deleteFlavor}
             >
             </FlavorsTablePagination>
         )

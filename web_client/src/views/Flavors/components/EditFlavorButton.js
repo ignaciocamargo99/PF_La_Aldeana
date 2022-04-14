@@ -1,10 +1,10 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function EditFlavorButton() {
+export default function EditFlavorButton({ flavorId }) {
 
     const handleEditFlavorBtnClicked = () => {
-        alert("editando sabor")
+        window.location.replace(`/app/flavors/${flavorId}`);
     };
 
     return (

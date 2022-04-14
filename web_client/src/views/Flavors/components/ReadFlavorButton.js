@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function ReadFlavorButton() {
 
     const handleReadFlavorBtnClicked = () => {
-        alert("leyendo sabor")
+        // to do
     };
 
     return (

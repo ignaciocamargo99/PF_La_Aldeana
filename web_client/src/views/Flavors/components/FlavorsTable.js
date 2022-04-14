@@ -1,8 +1,8 @@
 import DeleteFlavorButton from "./DeleteFlavorButton";
 import EditFlavorButton from './EditFlavorButton';
-import ReadFlavorButton from "./ReadFlavorButton";
+// import ReadFlavorButton from "./ReadFlavorButton";
 
-const FlavorsTable = ({ pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor }) => {
     return (
         <div className="table-responsive-md">
             <table className="table table-control table-hover" >
@@ -39,14 +39,17 @@ const FlavorsTable = ({ pageElements, columnsHeaders, handleRead, handleEdit, ha
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     {element.price}
                                 </td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                {/* <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     <ReadFlavorButton />
+                                </td> */}
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    <EditFlavorButton flavorId={element.idFlavor} />
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                    <EditFlavorButton />
-                                </td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                    <DeleteFlavorButton />
+                                    <DeleteFlavorButton
+                                        flavorData={element}
+                                        deleteFlavor={deleteFlavor}
+                                    />
                                 </td>
                             </tr>
                         )
