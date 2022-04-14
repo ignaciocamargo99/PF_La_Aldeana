@@ -12,12 +12,11 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const SalesReport = (props) => {
-
     const [loaded, setLoaded] = useState(false);
     const [load, setLoad] = useState(false);
-
     const [from, setFrom] = useState(props.dateFrom);
     const [to, setTo] = useState(props.dateTo);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         setFrom(props.dateFrom);
@@ -32,9 +31,8 @@ const SalesReport = (props) => {
                 <h1>Reporte de productos vendidos</h1>
             </div>
             <div className="viewBody">
-                {console.log(load)}
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} />
+                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} permissionsAccess={permissionsAccess} />
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load}>

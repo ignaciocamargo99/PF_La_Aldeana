@@ -74,8 +74,9 @@ export default function RouterPage(props) {
             let reportsSales;
             const permissionReportsSales = permissions.find(option => option === "Reportes Ventas");
             if (permissionReportsSales === 'Reportes Ventas') {
+                let permissionsAccessSalesReports = props.accesses[6];
                 reportsSales =
-                    <Route path='/app/salesReport' component={SalesReport}></Route>
+                    <Route path='/app/salesReport' render={() => <SalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
             }
 
             // const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");

@@ -47,6 +47,7 @@ export default function validationRouters(route, accesses) {
     }
     else if(pathsToAllReportsSale.indexOf(route) !== -1){
         if((accesses[6] === 2 || accesses[6] === 3 || accesses[6] === 1) && pathsToAllReportsSale.indexOf(route) === -1) return false;
+        else if(!accesses[6]) return false;
         else return true;
    
     }
