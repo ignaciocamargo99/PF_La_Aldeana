@@ -1,8 +1,9 @@
-export const sumArray = (array) =>{
+export const calculateEmployees = (employees, params) =>{
     let sum = 0;
-    array.forEach(element => {
+    params.forEach(element => {
         sum = element + sum;
     });
+    sum = employees.length - sum
     if(sum.toString() == 'NaN'){ sum = '...'}
     return sum;
 }
@@ -22,4 +23,10 @@ export const calculateTypeEmployees = (employees, charge, turns, params) => {
     })
     if(counter.toString() == 'NaN'){ counter = '...'}
     return counter;
+}
+
+export const filledWith = (array, element) => {
+    
+    return array.every((content) => content === element)
+    
 }
