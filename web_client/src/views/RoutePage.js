@@ -58,7 +58,7 @@ export default function RouterPage(props) {
                     </>
             }
 
-            // ------------------------------------ FRANQUICIAS --------------------------------------
+            // ------------------------------------ FRANCHISES --------------------------------------
             const permissionFranchises = permissions.find(option => option === "Franquicias");
             let franchises;
             if (permissionFranchises === "Franquicias") {
@@ -70,7 +70,7 @@ export default function RouterPage(props) {
                     </>
             }
 
-            // ---------------------------------- REPORTES VENTAS --------------------------------------
+            // ---------------------------------- SALES REPORTS --------------------------------------
             let reportsSales;
             const permissionReportsSales = permissions.find(option => option === "Reportes Ventas");
             if (permissionReportsSales === 'Reportes Ventas') {
@@ -85,7 +85,7 @@ export default function RouterPage(props) {
 
             // }
 
-            // -------------------------------------- COMPRAS -------------------------------------
+            // -------------------------------------- PURCHASES -------------------------------------
             const permissionPurchases = permissions.find(option => option === "Compras")
             let purchases
             if (permissionPurchases === "Compras") {
@@ -96,7 +96,7 @@ export default function RouterPage(props) {
                     </>
             }
 
-            // ----------------------------------- EMPLEADOS -------------------------------------
+            // ----------------------------------- EMPLOYEES -------------------------------------
             const permissionEmployees = permissions.find(option => option === "Empleados")
             let employees;
             if (permissionEmployees === "Empleados") {
@@ -116,7 +116,7 @@ export default function RouterPage(props) {
                     </>
             }
 
-
+            // ----------------------------------- USERS ---------------------------------------
             const permissionUser = permissions.find(option => option === "Usuarios")
             let permissionsAdministrator;
             if (permissionUser === "Usuarios") {
@@ -134,13 +134,8 @@ export default function RouterPage(props) {
                 </>
             )
         }
-        else if (validateRouting === false) {
-            return <NotPermissionPage />
-        }
-        else {
-            return <SesionPage />
-        }
-
+        else if (validateRouting === false) return <NotPermissionPage />
+        else return <SesionPage />
     };
 
     return (
