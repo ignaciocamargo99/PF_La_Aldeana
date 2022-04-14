@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import generateAutomatedDay from '../AutomatedFunction/GenerateAutomatedDay';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
-import { calculateEmployees, calculateTypeEmployees } from '../../../utils/ArrayFunctions/ArrayEmployeesFunctions';
+import { calculateEmployees, calculateTypeEmployees, filledWith } from '../../../utils/ArrayFunctions/ArrayEmployeesFunctions';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 const PORT = require('../../../config'); 
 
@@ -88,83 +89,96 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
     }
 
     const generateSchedule = () => {
-        loadingMessage('Generando cronograma...');
+        let isFilledWithZeros = 0;
+        params.forEach((param) => { if(filledWith(param, 0)) {isFilledWithZeros ++}});
+        if(isFilledWithZeros === 3) {
+            swal("Advertencia", "No has modificado ningun dato", "warning");  
+            return;
+        }
 
-        let init = new Date(initDate.current.value.slice(0,4),parseInt(initDate.current.value.slice(5,7))-1,initDate.current.value.slice(8,10));
-        let finish = new Date(finishDate.current.value.slice(0,4),parseInt(finishDate.current.value.slice(5,7))-1,finishDate.current.value.slice(8,10));
-
-        let daysOff;
-        axios.get(`${PORT()}/api/daysOff?minDate=${init.getFullYear()}${init.getMonth() < 9 ?'0'+(init.getMonth() + 1):(init.getMonth() + 1)}${init.getDate() < 10 ?'0'+(init.getDate()):(init.getDate())}&maxDate=${finish.getFullYear()}${finish.getMonth() < 9 ?'0'+(finish.getMonth() + 1):(finish.getMonth() + 1)}${finish.getDate() < 10 ?'0'+(finish.getDate()):(finish.getDate())}`)
-        .then((res) => {
-
-            daysOff = res.data.Data;
-            let arrayInsertsEmployees = [];
-    
-            while(init.getTime() <= finish.getTime()){
-    
-                let isNwD = nonworkingDays.findIndex((nwD) => nwD.dia === init.getDate() && nwD.mes === init.getMonth()+1)
-                let isWeekendDay = init.getDay() === 6 || init.getDay() === 0;
-                let typeDay = isNwD !== -1 ? 2 : isWeekendDay ? 1 : 0;
-    
-                
-                let disabledEmployees = [];
-                licenses.forEach((lic) => {
-                    let initLic = new Date();
-                    let finishLic = new Date();
-                    initLic.setFullYear(lic.date_init.slice(0,4));
-                    finishLic.setFullYear(lic.date_finish.slice(0,4));
-                    initLic.setMonth((parseInt(lic.date_init.slice(5,7))-1));
-                    finishLic.setMonth((parseInt(lic.date_finish.slice(5,7))-1));
-                    initLic.setDate(lic.date_init.slice(8,10));
-                    finishLic.setDate(lic.date_finish.slice(8,10));
-                    if(initLic.getTime() <= init.getTime() && finishLic.getTime() >= init.getTime()){
-                        disabledEmployees.push(lic.dni)
-                    }
-                });
-                
-                daysOff.forEach((dayOff) => {
-                    disabledEmployees.push(dayOff.dni_employee)    
-                });
-                
-                let variables = buildVariables(disabledEmployees);
-                let constraints = buildConstraints(typeDay);    
-                let results = generateAutomatedDay(constraints,variables);
-    
-    
-                if(results.feasible === false){
-                    swal("Error","No se puede generar la grilla con los parametros elegidos","error");
-                    return;
-                }else{
-                    for(let i=0; i < employees.length; i++){
-                        for(let j=0; j < employees[i].charges.length; j++){
-                            for(let k=0; k < turns.length; k++){
-                               if(results.hasOwnProperty(`${employees[i].dni}_${employees[i].charges[j].id}_${turns[k].id}`)){
-                                    let newJDEmployee ={
-                                            date: `${init.getFullYear()}-${init.getMonth()<9?'0'+(init.getMonth()+1):(init.getMonth()+1)}-${init.getDate()<10?'0'+init.getDate():init.getDate()}`,
-                                            employee_dni: employees[i].dni,
-                                            id_compound_turn: turns[k].id}
-                                    arrayInsertsEmployees.push(newJDEmployee);    
-                               }
-                            }
-                        }
-                    }
-                }
-    
-                init.setDate(init.getDate() + 1);
-            }
-    
-            swal({
-                title: "Atención",
-                text: "Si existiese un cronograma ya generado entre los dias seleccionados, ¿Desea sobreescribir los datos con los nuevos parametros?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-              })
-              .then((willUpdate) => {
-                loadingMessage('Generando cronograma...');
-                if (willUpdate) {
+        Swal.fire({
+            title: "Atención",
+            text: "Si existiese un cronograma ya generado entre los dias seleccionados, ¿Desea sobreescribir los datos con los nuevos parametros?",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Sobreescribir',
+            confirmButtonColor: '#B29500',
+            denyButtonText: 'Generar sin sobreescribir',
+            denyButtonColor: '#64629C',
+            cancelButtonText: 'Cancelar la generación',
+            cancelButtonColor: '#6C6C6C'
+          })
+          .then((result) => {
+              if(result.isDismissed) return;
+              loadingMessage('Generando grilla...')
+              let init = new Date(initDate.current.value.slice(0,4),parseInt(initDate.current.value.slice(5,7))-1,initDate.current.value.slice(8,10));
+              let finish = new Date(finishDate.current.value.slice(0,4),parseInt(finishDate.current.value.slice(5,7))-1,finishDate.current.value.slice(8,10));
+      
+              let daysOff;
+              axios.get(`${PORT()}/api/daysOff?minDate=${init.getFullYear()}${init.getMonth() < 9 ?'0'+(init.getMonth() + 1):(init.getMonth() + 1)}${init.getDate() < 10 ?'0'+(init.getDate()):(init.getDate())}&maxDate=${finish.getFullYear()}${finish.getMonth() < 9 ?'0'+(finish.getMonth() + 1):(finish.getMonth() + 1)}${finish.getDate() < 10 ?'0'+(finish.getDate()):(finish.getDate())}`)
+              .then((res) => {
+      
+                  daysOff = res.data.Data;
+                  let arrayInsertsEmployees = [];
+                  
+                  while(init.getTime() <= finish.getTime()){
+          
+                      let isNwD = nonworkingDays.findIndex((nwD) => nwD.dia === init.getDate() && nwD.mes === init.getMonth()+1)
+                      let isWeekendDay = init.getDay() === 6 || init.getDay() === 0;
+                      let typeDay = isNwD !== -1 ? 2 : isWeekendDay ? 1 : 0;
+          
+                      
+                      let disabledEmployees = [];
+                      licenses.forEach((lic) => {
+                          let initLic = new Date();
+                          let finishLic = new Date();
+                          initLic.setFullYear(lic.date_init.slice(0,4));
+                          finishLic.setFullYear(lic.date_finish.slice(0,4));
+                          initLic.setMonth((parseInt(lic.date_init.slice(5,7))-1));
+                          finishLic.setMonth((parseInt(lic.date_finish.slice(5,7))-1));
+                          initLic.setDate(lic.date_init.slice(8,10));
+                          finishLic.setDate(lic.date_finish.slice(8,10));
+                          if(initLic.getTime() <= init.getTime() && finishLic.getTime() >= init.getTime()){
+                              disabledEmployees.push(lic.dni)
+                          }
+                      });
+                      
+                      daysOff.forEach((dayOff) => {
+                          disabledEmployees.push(dayOff.dni_employee)    
+                      });
+                      
+                      let variables = buildVariables(disabledEmployees);
+                      let constraints = buildConstraints(typeDay);    
+                      let results = generateAutomatedDay(constraints,variables);
+          
+          
+                      if(results.feasible === false){
+                          swal("Error","No se puede generar la grilla con los parametros elegidos","error");
+                          return;
+                      }else{
+                          for(let i=0; i < employees.length; i++){
+                              for(let j=0; j < employees[i].charges.length; j++){
+                                  for(let k=0; k < turns.length; k++){
+                                     if(results.hasOwnProperty(`${employees[i].dni}_${employees[i].charges[j].id}_${turns[k].id}`)){
+                                          let newJDEmployee ={
+                                                  date: `${init.getFullYear()}-${init.getMonth()<9?'0'+(init.getMonth()+1):(init.getMonth()+1)}-${init.getDate()<10?'0'+init.getDate():init.getDate()}`,
+                                                  employee_dni: employees[i].dni,
+                                                  id_compound_turn: turns[k].id}
+                                          arrayInsertsEmployees.push(newJDEmployee);    
+                                     }
+                                  }
+                              }
+                          }
+                      }
+          
+                      init.setDate(init.getDate() + 1);
+                  }
+              if(result.isConfirmed) { 
                   axios.delete(`${PORT()}/api/jdEmployee/Schedule?dateInit=${initDate.current.value}&dateFinish=${finishDate.current.value}`)
                   .then(() => {
+                    if(arrayInsertsEmployees.length === 0) swal("Correcto","Cronograma generado exitosamente","success");
                       arrayInsertsEmployees.forEach((newJDEmployee, i) => {
                         axios.post(`${PORT()}/api/jdEmployee`,newJDEmployee)
                         .then(() => {
@@ -173,26 +187,28 @@ const AutomatedSchedule = ({today, nonworkingDays, employees, turns, setShowAuto
                               }
                         })
                     }) 
-                  })
-                }else {
-                    arrayInsertsEmployees.forEach((newJDEmployee, i) => {
-                        axios.get(`${PORT()}/api/jdEmployee/Date?date=${newJDEmployee.date}`)
-                        .then((res) => {
-                            if(res.data.length === 0){
-                                axios.post(`${PORT()}/api/jdEmployee`,newJDEmployee)
-                                .then(() => {
-                                    if(i === (arrayInsertsEmployees.length - 1)){
-                                        swal("Correcto","Cronograma generado exitosamente","success");
-                                    }
-                                })
-                            }
-                            else if(i === (arrayInsertsEmployees.length - 1)){
-                                swal("Correcto","Cronograma generado exitosamente","success");
-                            }
-                        })
+                })
+            }
+            else if (result.isDenied) { 
+                if(arrayInsertsEmployees.length === 0) swal("Correcto","Cronograma generado exitosamente","success");
+                arrayInsertsEmployees.forEach((newJDEmployee, i) => {
+                    axios.get(`${PORT()}/api/jdEmployee/Date?date=${newJDEmployee.date}`)
+                    .then((res) => {
+                        if(res.data.length === 0){
+                            axios.post(`${PORT()}/api/jdEmployee`,newJDEmployee)
+                            .then(() => {
+                                if(i === (arrayInsertsEmployees.length - 1)){
+                                    swal("Correcto","Cronograma generado exitosamente","success");
+                                }
+                            })
+                        }
+                        else if(i === (arrayInsertsEmployees.length - 1)){
+                            swal("Correcto","Cronograma generado exitosamente","success");
+                        }
                     })
-                }
-              });
+                })
+            }
+        });
         })
         .catch((error) => console.log(error));
         }

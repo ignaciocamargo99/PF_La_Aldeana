@@ -24,3 +24,9 @@ export const calculateTypeEmployees = (employees, charge, turns, params) => {
     if(counter.toString() == 'NaN'){ counter = '...'}
     return counter;
 }
+
+export const filledWith = (array, element) => {
+    
+    return array.every((content) => content === element)
+    
+}
