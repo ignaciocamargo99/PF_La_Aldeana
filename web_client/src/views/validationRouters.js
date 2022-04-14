@@ -31,17 +31,20 @@ export default function validationRouters(route, accesses) {
     if (pathsToReadRegisterProducts.indexOf(route) !== -1){
         if(accesses[3] === 1 && pathsToReadProducts.indexOf(route) === -1) return false
         else if((accesses[3] === 2 || accesses[3] === 3) && pathsToReadRegisterProducts.indexOf(route) === -1) return false
+        else if(!accesses[3]) return false;
         else return true;
     } 
 
     else if (pathsToReadRegisterProductions.indexOf(route) !== -1){
         if(accesses[4] === 1 && pathsToReadProductions.indexOf(route) === -1) return false;
         else if((accesses[4] === 2 || accesses[4] === 3) && pathsToReadRegisterProductions.indexOf(route) === -1) return false;
+        else if(!accesses[4]) return false;
         else return true;
     }
     else if(pathsToReadRegisterFranchises.indexOf(route) !== -1){
         if(accesses[5] === 1 && pathsToReadFranchises.indexOf(route) === -1) return false;
         else if((accesses[5] === 2 || accesses[5] === 3) && pathsToReadRegisterFranchises.indexOf(route) === -1) return false;
+        else if(!accesses[5]) return false;
         else return true;
 
     }
@@ -53,17 +56,20 @@ export default function validationRouters(route, accesses) {
     }
     else if(pathsToReadRegisterPurchases.indexOf(route) !== -1){
         if((accesses[2] === 1) && pathsToReadRegisterPurchases.indexOf(route) === -1) return false;
+        else if(!accesses[2]) return false;
         else return true;
 
     }
     else if(pathsToReadRegisterEmployees.indexOf(route) !== -1){
         if(accesses[7] === 1 && pathsToReadEmployees.indexOf(route) === -1) return false;
         else if((accesses[7] === 2 || accesses[5] === 3) && pathsToReadRegisterEmployees.indexOf(route) === -1) return false;
+        else if(!accesses[7]) return false;
         else return true;
     }
     else if(pathToReadRegisterUsers.indexOf(route) !== -1){
         if(accesses[8] === 1 && pathToReadUsers.indexOf(route) === -1) return false;
         else if((accesses[8] === 2 || accesses[5] === 3) && pathToReadRegisterUsers.indexOf(route) === -1) return false;
+        else if(!accesses[8]) return false;
         else return true;
     }
 }
