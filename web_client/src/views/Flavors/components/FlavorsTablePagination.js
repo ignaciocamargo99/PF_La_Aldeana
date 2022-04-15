@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from 'common/TablePagination/Pagination';
 import FlavorsTable from './FlavorsTable';
 
-const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor }) => {
+const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor, permissionsAccess }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
@@ -30,6 +30,7 @@ const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor 
                 columnsHeaders={columnsHeaders}
                 pageElements={pageElements}
                 deleteFlavor={deleteFlavor}
+                permissionsAccess={permissionsAccess}
             >
             </FlavorsTable>
             <Pagination

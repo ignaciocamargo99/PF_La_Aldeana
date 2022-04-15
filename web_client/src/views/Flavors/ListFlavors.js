@@ -4,9 +4,11 @@ import React from 'react';
 import LoaderSpinner from 'common/LoaderSpinner';
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
 import ListFlavorsTable from './components/ListFlavorsTable';
+import BeShowed from 'common/BeShowed';
 
-const ListFlavors = () => {
+const ListFlavors = (props) => {
     const { loadingFlavors, activeFlavors } = useGetActiveFlavors();
+    let permissionsAccess = props.permissionsAccess;
 
     const handleNewFlavorBtnClicked = () => {
         window.location.replace('/app/flavors/new');
@@ -21,19 +23,27 @@ const ListFlavors = () => {
                 <>
                     <div className="viewTitleBtn">
                         <h1>Sabores</h1>
-                        <button
-                            onClick={handleNewFlavorBtnClicked}
-                            type="button"
-                            className="newBtn"
-                        >
-                            <FontAwesomeIcon icon={faPlus} /> Nuevo
-                        </button>
+                        <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                            <button
+                                onClick={handleNewFlavorBtnClicked}
+                                type="button"
+                                className="newBtn"
+                            >
+                                <FontAwesomeIcon icon={faPlus} /> Nuevo
+                            </button>
+                        </BeShowed>
+                        <BeShowed show={permissionsAccess === 1}>
+                            <button
+                                disabled
+                                type="button"
+                                className="disabledNewBtn"
+                            >
+                                <FontAwesomeIcon icon={faPlus} /> Nuevo
+                            </button>
+                        </BeShowed>
                     </div>
                     <div className="viewBody">
-                        <ListFlavorsTable
-                            initialFlavors={activeFlavors}
-                        >
-                        </ListFlavorsTable>
+                        <ListFlavorsTable initialFlavors={activeFlavors} permissionsAccess={permissionsAccess} />
                     </div>
                 </>
             }

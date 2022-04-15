@@ -49,6 +49,7 @@ const EditFlavor = () => {
     if (flavor) {
         return (
             <>
+                <div style={{ display: 'none' }}>{document.title = "Editar sabor"}</div>
                 <FlavorForm
                     breadcrumbName={flavor.name}
                     formTitle={'Editar sabor'}
@@ -62,6 +63,7 @@ const EditFlavor = () => {
 
     return (
         <>
+            <div style={{ display: 'none' }}>{document.title = "Editar sabor"}</div>
             <Breadcrumb
                 parentLink='/app/flavors'
                 parentName="Volver a Sabores"

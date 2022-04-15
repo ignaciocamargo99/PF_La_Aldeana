@@ -6,7 +6,7 @@ import displayError from 'utils/ErrorMessages/displayError';
 
 const PORT = require('../../../config');
 
-const ListFlavorsTable = ({ initialFlavors }) => {
+const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
 
     const [flavors, setflavors] = useState(initialFlavors)
 
@@ -80,12 +80,15 @@ const ListFlavorsTable = ({ initialFlavors }) => {
         ];
 
         return (
-            <FlavorsTablePagination
-                columnsHeaders={columnsHeaders}
-                currentElements={flavors}
-                deleteFlavor={deleteFlavor}
-            >
-            </FlavorsTablePagination>
+            <>
+                <div style={{ display: 'none' }}>{document.title = "Sabores"}</div>
+                <FlavorsTablePagination
+                    columnsHeaders={columnsHeaders}
+                    currentElements={flavors}
+                    deleteFlavor={deleteFlavor}
+                    permissionsAccess={permissionsAccess}
+                />
+            </>
         )
     }
 };

@@ -40,12 +40,15 @@ const NewFlavor = () => {
   };
 
   return (
-    <FlavorForm
-      breadcrumbName={'Nuevo sabor'}
-      formTitle={'Registrar sabor'}
-      submitBtnText={'Registrar'}
-      onSubmit={onSubmitRegisterFlavor}
-    ></FlavorForm>
+    <>
+      <div style={{ display: 'none' }}>{document.title = "Sabores"}</div>
+      <FlavorForm
+        breadcrumbName={'Nuevo sabor'}
+        formTitle={'Registrar sabor'}
+        submitBtnText={'Registrar'}
+        onSubmit={onSubmitRegisterFlavor}
+      ></FlavorForm>
+    </>
   )
 }
 
