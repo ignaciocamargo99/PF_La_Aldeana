@@ -10,7 +10,7 @@ import Breadcrumb from 'common/Breadcrumb';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
-const PORT = require('config');
+const PORT = require('../../../config');
 
 const EditFlavor = () => {
 

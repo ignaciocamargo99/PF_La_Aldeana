@@ -38,7 +38,8 @@ const createNewFlavors = async ({ flavors }) => {
 
     if (flavors.length === 1) {
         if (isNewFlavorDataValid(flavors[0])) {
-            const { dataValues: newFlavor } = await saveFlavorDB(flavors[0]);
+            const flavorDataMapped = mapFlavorData(flavors[0]);
+            const { dataValues: newFlavor } = await saveFlavorDB(flavorDataMapped);
 
             return {
                 flavorsCreated: true,
@@ -55,8 +56,15 @@ const createNewFlavors = async ({ flavors }) => {
     }
 };
 
+const mapFlavorData = (flavorData) => {
+    const flavorDataMapped = { ...flavorData };
+    flavorDataMapped.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
+    flavorDataMapped.name = flavorData.name.trim();
+    return flavorDataMapped;
+};
+
 const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, price, reorderStock, stock }) => {
-    if (!name) {
+    if (!name || (name.trim() === '')) {
         return false;
     }
     if (!stock) {

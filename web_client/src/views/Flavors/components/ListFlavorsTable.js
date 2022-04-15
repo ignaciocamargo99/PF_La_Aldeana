@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import FlavorsTablePagination from './FlavorsTablePagination';
 import displayError from 'utils/ErrorMessages/displayError';
 
-const PORT = require('config');
+const PORT = require('../../../config');
 
 const ListFlavorsTable = ({ initialFlavors }) => {
 
