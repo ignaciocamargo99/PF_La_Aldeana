@@ -1,8 +1,8 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import LoaderSpinner from '../../common/LoaderSpinner';
-import { useGetActiveFlavors } from '../../hooks/useGetActiveFlavors';
+import LoaderSpinner from 'common/LoaderSpinner';
+import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
 import ListFlavorsTable from './components/ListFlavorsTable';
 
 const ListFlavors = () => {
