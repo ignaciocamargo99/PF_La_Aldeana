@@ -1,12 +1,12 @@
+import { faCalendarAlt, faFile, faList, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
-import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile, faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
+import BeShowed from './BeShowed';
 
 const cookies = new Cookies();
 
@@ -38,10 +38,7 @@ export default function Navbar(props) {
         cookies.remove('first_name', { path: '/' })
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
-        window.location.href = '/app/index'
-    };
-
-    const signIn = () => {
+        cookies.remove('accesses', { path: '/'})
         window.location.href = '/app/index'
     };
 
@@ -231,12 +228,13 @@ export default function Navbar(props) {
                 </a>
                 <ul className="navbar-list">
                     {showOptionsWithPermissions()}
-
-                    <div className="li-btn-close-session">
-                        <li>
-                            <a className="navbar-ref" href="#"><button className="navbar-btn" onClick={signOut}>Cerrar sesión</button></a>
-                        </li>
-                    </div>
+                    <BeShowed show={cookies.get('nick_user')}>
+                        <div className="li-btn-close-session">
+                            <li>
+                                <a className="navbar-ref" href="#"><button className="navbar-btn" onClick={signOut}>Cerrar sesión</button></a>
+                            </li>
+                        </div>
+                    </BeShowed>
                 </ul>
             </div>
 
@@ -245,10 +243,6 @@ export default function Navbar(props) {
                     <BeShowed show={cookies.get('nick_user')}>
                         <label><b className='color-blue signed-user'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}&nbsp;</b></label>
                         <button className="btn" onClick={signOut}><FontAwesomeIcon icon={faSignOutAlt} /></button>
-                    </BeShowed>
-                    <BeShowed show={!cookies.get('nick_user')}>
-                        <label><b className='color-blue'>Iniciar sesion&nbsp;</b></label>
-                        <button className="btn" onClick={signIn}><FontAwesomeIcon icon={faSignInAlt} /></button>
                     </BeShowed>
                 </ul>
             </div>

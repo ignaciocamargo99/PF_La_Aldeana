@@ -4,11 +4,12 @@ import confirmDelete from '../../../utils/confirmDelete';
 import Axios from "axios";
 import swal from "sweetalert";
 import '../../../assets/Buttons.css';
+import BeShowed from '../../../common/BeShowed';
 
 const PORT = require('../../../config');
 
-export default function DeleteEmployeeButton (props) {
-
+export default function DeleteEmployeeButton(props) {
+    let permissionsAccess = props.permissionsAccess
     const handleDelete = (e) => confirmDelete(deleteEmployee, dontDeleteProduct, e);
 
     const deleteEmployee = () => {
@@ -32,6 +33,13 @@ export default function DeleteEmployeeButton (props) {
     const dontDeleteProduct = () => console.log('No se dio de baja al empleado ' + props.employee.dni + ' ' + props.employee.name);
 
     return (
-        <button id='deleteEmployeeButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+        <>
+            <BeShowed show={permissionsAccess === 3}>
+                <button id='deleteEmployeeButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+            </BeShowed>
+            <BeShowed show={permissionsAccess !== 3}>
+                <button id='deleteEmployeeButton' disabled type="button" className="disabledSendBtn" ><FontAwesomeIcon icon={faMinus} /></button>
+            </BeShowed>
+        </>
     );
 }

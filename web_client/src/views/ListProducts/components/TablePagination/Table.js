@@ -5,7 +5,7 @@ import DeleteProductButton from '../DeleteProductButton';
 import EditProductButton from '../EditProducts/EditProductButton';
 import ReadProductButton from "../ReadProducts/ReadProductButton";
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess}) => {
     return (
         <>
             <div className="formRow title-searcher">
@@ -39,10 +39,10 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <ReadProductButton product={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditProductButton product={element} edit={handleEdit} />
+                                            <EditProductButton product={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} />
+                                            <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} permissionsAccess={permissionsAccess}/>
                                         </td>
                                     </tr>
                                 )
