@@ -5,11 +5,12 @@ import Axios from "axios";
 import swal from "sweetalert";
 import '../../../assets/Buttons.css';
 import moment from 'moment';
+import BeShowed from '../../../common/BeShowed';
 
 const PORT = require('../../../config');
 
 export default function DeleteAssistancetButton(props) {
-
+    let permissionsAccess = props.permissionsAccess;
     const handleDelete = (e) => confirmDelete(deleteEmployeeAssistance, dontDeleteAssistance, e);
 
     const deleteEmployeeAssistance = () => {
@@ -36,6 +37,13 @@ export default function DeleteAssistancetButton(props) {
     const dontDeleteAssistance = () => console.log('No se dio de baja la asistencia ' + props.assistance.employee);
 
     return (
-        <button id='deleteAssistanceButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+        <>
+            <BeShowed show={permissionsAccess === 3}>
+                <button id='deleteAssistanceButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+            </BeShowed>
+            <BeShowed show={permissionsAccess !== 3}>
+                <button id='deleteAssistanceButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faMinus} /></button>
+            </BeShowed>
+        </>
     );
 }
