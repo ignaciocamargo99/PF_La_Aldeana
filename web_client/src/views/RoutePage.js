@@ -19,6 +19,7 @@ import EmployeesSchedulesView from './EmployeesSchedules/EmployeesSchedulesView'
 import ListAdvances from './Advances/ListAdvances';
 import RegisterAdvances from './Advances/components/RegisterAdvances';
 import ListProductions from './Productions/ListProductions';
+import FlavorRoutes from './Flavors/FlavorRoutes';
 import ListUsers from './Users/ListUsers';
 import RegisterUser from './Users/components/RegisterUser';
 import NotPermissionPage from '../common/NotPermissionPage';
@@ -55,6 +56,9 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/productions' render={() => <ListProductions permissionsAccess={permissionsAccessProductions} />}></Route>
                         <Route path='/app/production' component={RegisterProductionView}></Route>
+                        <Route path='/app/flavors'>
+                            <FlavorRoutes />
+                        </Route>
                     </>
             }
 
