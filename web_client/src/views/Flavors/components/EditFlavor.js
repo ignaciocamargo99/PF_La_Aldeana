@@ -1,16 +1,16 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import LoaderSpinner from '../../../common/LoaderSpinner';
-import { useGetFlavor } from '../../../hooks/useGetFlavor';
+import LoaderSpinner from 'common/LoaderSpinner';
+import { useGetFlavor } from 'hooks/useGetFlavor';
 import FlavorForm from './FlavorForm';
 import Axios from 'axios';
-import displayError from '../../../utils/ErrorMessages/displayError';
+import displayError from 'utils/ErrorMessages/displayError';
 import swal from 'sweetalert';
-import Breadcrumb from '../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
-import { defaultQuestionSweetAlert2 } from '../../../utils/questionMessages/sweetAlert2Questions';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
-const PORT = require('../../../config');
+const PORT = require('config');
 
 const EditFlavor = () => {
 

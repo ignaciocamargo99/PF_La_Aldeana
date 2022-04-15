@@ -1,12 +1,11 @@
 import { faIceCream } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useState } from 'react'
-import Breadcrumb from '../../../common/Breadcrumb'
-import Buttons from '../../../common/Buttons'
-import { useGetFlavorFamilies } from '../../../hooks/useGetFlavorFamilies'
-import { useGetFlavorTypes } from '../../../hooks/useGetFlavorTypes'
-import warnSweetAlert from '../../../utils/WarningMessages/warnSweetAlert'
-import validateFloatNumbers from '../../../utils/validateFloatNumbers';
-
+import Breadcrumb from 'common/Breadcrumb'
+import Buttons from 'common/Buttons'
+import { useGetFlavorFamilies } from 'hooks/useGetFlavorFamilies'
+import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes'
+import React, { useState } from 'react'
+import validateFloatNumbers from 'utils/validateFloatNumbers'
+import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
 
 const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSubmit }) => {
 

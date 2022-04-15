@@ -1,6 +1,6 @@
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import confirmDelete from "../../../utils/confirmDelete";
+import confirmDelete from 'utils/confirmDelete';
 
 export default function DeleteFlavorButton({ flavorData, deleteFlavor }) {
 
