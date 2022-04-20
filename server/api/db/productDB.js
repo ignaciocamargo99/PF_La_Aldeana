@@ -9,7 +9,7 @@ const productGetDB = () => {
         FROM PRODUCT_X_SUPPLY pxs INNER JOIN SUPPLIES s ON pxs.id_supply = s.id_supply
         WHERE pxs.id_product = p.id_product) AS stock ` +
 
-        'FROM PRODUCTS p ' +   
+        'FROM PRODUCTS p ' +
         'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
         'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
         'WHERE p.active = 1 ORDER BY p.name';
@@ -24,7 +24,7 @@ const productGetDB = () => {
             });
             db.release();
         })
-    }); 
+    });
 };
 
 const productPostDB = (newProduct, imageProduct) => {
@@ -102,14 +102,20 @@ const imageProductGetDB = (productID) => {
                 if (error) reject(error);
 
                 result.map(img => {
-                    if (img.image && img.id_product) fs.writeFileSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'), img.image);
-                })
+                    if (img.image && img.id_product) {
+                        fs.writeFileSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'), img.image);
+                        console.log('hola')
+                    }
+                    else if (!img.image && fs.existsSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'))) {
+                        fs.rmSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'));
+                    }
+                });
                 const imagedir = fs.readdirSync(path.join(__dirname, `../images/productDBImages/`));
                 const imagedirFilter = imagedir.filter((valor) => valor === `${productID}-product.png`);
                 resolve(imagedirFilter);
             });
             db.release();
-        })
+        });
     });
 };
 
@@ -143,11 +149,11 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
     // Check if the image is modified from the front ...
     if (flagImage == 'true') {
         sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.image = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, JSON.parse(flavor), id_product,]
+        valuesToUpdate = [name, description, image, price, id_sector, id_product_type, JSON.parse(flavor), id_product];
     }
     else {
         sqlInsert = 'UPDATE PRODUCTS p SET p.name = ?, p.description = ?, p.price = ?, p.id_sector = ?, p.id_product_type = ?, p.quantity_flavor = ? WHERE p.id_product = ?';
-        valuesToUpdate = [name, description, price, id_sector, id_product_type, JSON.parse(flavor), id_product,]
+        valuesToUpdate = [name, description, price, id_sector, id_product_type, JSON.parse(flavor), id_product];
     }
 
     const sqlDelete = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_product = ?';
@@ -162,7 +168,7 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
 
                 db.query(sqlInsert, valuesToUpdate, (error) => {
                     if (error) {
-                        return db.rollback(() => reject(error))
+                        return db.rollback(() => reject(error));
                     }
 
                     db.query(sqlDelete, [id_product], (error) => {
@@ -177,11 +183,11 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
                                     }
                                     db.commit((error) => {
                                         if (error) {
-                                            return db.rollback(() => { throw error; })
+                                            return db.rollback(() => { throw error; });
                                         }
                                         else resolve();
-                                    })
-                                })
+                                    });
+                                });
                             }
                         }
                         else {
@@ -190,13 +196,13 @@ const productUpdateDB = (id_product, productUpdate, imageUpdate, flagImage) => {
                                     return db.rollback(() => { throw error; })
                                 }
                                 else resolve();
-                            })
+                            });
                         }
-                    })
-                })
+                    });
+                });
                 db.release();
             });
-        })
+        });
     });
 };
 

@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import BeShowed from "../../../../../common/BeShowed";
 import LoaderSpinner from "../../../../../common/LoaderSpinner";
 import warningSizeImages from "../../../../../utils/WarningMessages/warningSizeImages";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../../../../config');
 
@@ -38,18 +40,34 @@ export default function ImageProduct(props) {
 
     useEffect(() => {
         let data = props.data;
-        if (inputImg.current) {
-            if (inputImg.current.files[0]) {
-                data.flagImageUpdate = true
-                data.img = inputImg.current.files[0];
+        if (inputImg.current && inputImg.current.value) {
+            if (inputImg.current) {
+                if (inputImg.current.files[0]) {
+                    data.flagImageUpdate = true;
+                    data.img = inputImg.current.files[0];
+                }
+                else data.flagImageUpdate = false;
+                props.load(data);
             }
-            else data.flagImageUpdate = false;
-            props.load(data);
         }
-
+        console.log(data)
     }, [previewImg]);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
+
+    const handleDeleteImg = () => {
+        let data = props.data;
+        if (image) setImage([]);
+        if (previewImg && inputImg.current) {
+            inputImg.current.value = "";
+            setPreviewImg(false);
+        }
+
+        data.flagImageUpdate = true;
+        data.img = null;
+        props.load(data);
+        console.log(data)
+    }
 
     return (
         <>
@@ -58,9 +76,15 @@ export default function ImageProduct(props) {
                     <div className="form-control-label">
                         <label htmlFor="productImage2" className="form-label">Imagen</label>
                     </div>
-                    <div className="form-control-input">
+                    <div className="form-control-input-img">
                         <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
                     </div>
+                    <BeShowed show={(image && image.length > 0) || previewImg}>
+                        <button className="imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
+                    </BeShowed>
+                    <BeShowed show={!previewImg && (image && image.length === 0)}>
+                        <button className="disabledImgBtn" type="button" disabled><FontAwesomeIcon icon={faMinus} /></button>
+                    </BeShowed>
                 </div>
             </BeShowed>
             {!isLoadingSpinner
