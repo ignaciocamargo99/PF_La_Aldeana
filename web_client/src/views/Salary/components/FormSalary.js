@@ -430,7 +430,7 @@ const FormSalary = (props) => {
         <div className="container" >
             <BeShowed show={showSpinner}>
                 <br/>
-                <LoaderSpinner color="secondary" loading="Cargando..."/>
+                <LoaderSpinner color="primary" loading="Calculando horas trabajadas del empleado..."/> 
             </BeShowed>
             <BeShowed show={!showSpinner}>
                 <div className="formRow justify-content-center">

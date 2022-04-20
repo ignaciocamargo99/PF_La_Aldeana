@@ -364,47 +364,38 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                                     if (holiday.day === dayTo && holiday.month === monthTo) isNonWorkedTo = true;
                                                 });
                                                 
-                                                if (isNonWorked) {
+                                                if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
+                                                else if (isNonWorked) {
                                                     if (isWeekend === isWeekendTo) {
                                                         let hs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
                                                         if (isWeekendTo) aux[3].hs_number += hs;
-                                                        else if (isDayOff(dayTo, daysOff) || isDayOff(day, daysOff)) aux[4].hs_number += hs;
                                                         else aux[2].hs_number += hs;
                                                     } else if (isWeekend) {
                                                         let hs = (new Date(assistance.date_egress).getTime() - new Date(yearTo, monthTo, dayTo, 23, 59).getTime())/1000/60/60;
                                                         let hsTo = (new Date(year, month, day, 23, 59).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
-                                                        if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[3].hs_number += hsTo;
-                                                        if (isDayOff(dayTo, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[2].hs_number += hs;
+                                                        aux[3].hs_number += hsTo;
+                                                        aux[2].hs_number += hs;
                                                     } else {
                                                         let hsTo = (new Date(assistance.date_egress).getTime() - new Date(year, month, day, 13).getTime())/1000/60/60;
                                                         let hs = (new Date(yearTo, monthTo, dayTo, 13).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
-                                                        if (isDayOff(dayTo, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[3].hs_number += hsTo;
-                                                        if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[2].hs_number += hs;
+                                                        aux[3].hs_number += hsTo;
+                                                        aux[2].hs_number += hs;
                                                     }
                                                 } else {
                                                     if (isWeekend === isWeekendTo) {
                                                         let hs = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
                                                         if (isWeekendTo) aux[1].hs_number += hs;
-                                                        else if (isDayOff(dayTo, daysOff) || isDayOff(day, daysOff)) aux[4].hs_number += hs;
                                                         else aux[0].hs_number += calcHs(hs, assistance);
                                                     } else if (isWeekend) {
                                                         let hsTo = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, 23, 59).getTime())/1000/60/60;
                                                         let hs = (new Date(year, month, day, 23, 59).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
-                                                        if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[1].hs_number += hsTo;
-                                                        if (isDayOff(dayTo, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[0].hs_number += hs;
+                                                        aux[1].hs_number += hsTo;
+                                                        aux[0].hs_number += hs;
                                                     } else {
                                                         let hsTo = (new Date(yearTo, monthTo, dayTo, hoursTo, minutesTo).getTime() - new Date(year, month, day, 13).getTime())/1000/60/60;
                                                         let hs = (new Date(yearTo, monthTo, dayTo, 13).getTime() - new Date(year, month, day, hours, minutes).getTime())/1000/60/60;
-                                                        if (isDayOff(dayTo, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[1].hs_number += hsTo;
-                                                        if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
-                                                        else aux[0].hs_number += hs;
+                                                        aux[1].hs_number += hsTo;
+                                                        aux[0].hs_number += hs;
                                                     }
                                                 }
                                             });
