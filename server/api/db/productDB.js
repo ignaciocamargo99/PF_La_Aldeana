@@ -104,7 +104,6 @@ const imageProductGetDB = (productID) => {
                 result.map(img => {
                     if (img.image && img.id_product) {
                         fs.writeFileSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'), img.image);
-                        console.log('hola')
                     }
                     else if (!img.image && fs.existsSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'))) {
                         fs.rmSync(path.join(__dirname, '../images/productDBImages/' + img.id_product + '-product.png'));

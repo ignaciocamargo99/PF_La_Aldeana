@@ -50,7 +50,6 @@ export default function ImageProduct(props) {
                 props.load(data);
             }
         }
-        console.log(data)
     }, [previewImg]);
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
@@ -66,8 +65,7 @@ export default function ImageProduct(props) {
         data.flagImageUpdate = true;
         data.img = null;
         props.load(data);
-        console.log(data)
-    }
+    };
 
     return (
         <>
