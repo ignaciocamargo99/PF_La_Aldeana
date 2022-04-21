@@ -90,7 +90,7 @@ const employeeCreateDB = (newEmployee) => {
             db.query(sqlSelect, (error, result) => {
                 if (error) reject(error);
                 else {
-                    if (result.length > 0)result.map(employee => {if(employee.dni = newEmployee.dni) reject('El dni ingresado ya se encuentra en uso')});
+                    if (result.length > 0)result.map(employee => {if(employee.dni === newEmployee.dni) reject('El dni ingresado ya se encuentra en uso')});
                     db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
                         newEmployee.dni,
                         newEmployee.name,

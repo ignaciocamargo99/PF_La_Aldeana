@@ -213,7 +213,7 @@ export default function ExtraDataEmployee(props) {
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white"> Relación de dependencia 4 horas </label>
+                        <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
                     </div>
                     
                     <div className="form-check col-sm-6">
