@@ -10,7 +10,6 @@ import Axios from "axios";
 const PORT = require('../../../config');
 
 export default function SalariesTable(props) {
-
     const [employees, setEmployees] = useState([]);
     const [nonConfirmLoader, setNonConfirmLoader] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,22 +17,23 @@ export default function SalariesTable(props) {
     const [filteredElements, setFilteredElements] = useState([]);
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
             .then((response) => {
                 let aux = response.data;
                 let display = [];
-                aux?.forEach((person)=>{
+                aux?.forEach((person) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
                     if (props.allSalaries && props.allSalaries.length > 1) {
                         const exist = props.allSalaries?.filter((elem) => {
-                            return elem.dni == person.dni;
+                            return elem.dni === person.dni;
                         });
                         if (exist.length < 1) display.push(person);
-                    } else  display.push(person);
+                    } else display.push(person);
                 });
                 setEmployees(display);
                 if (response.data?.length === props.allSalaries?.length && response.data?.length > 0) props.emptyNonGenerate();
@@ -43,7 +43,7 @@ export default function SalariesTable(props) {
     }, [props.reloadList]);
 
     useEffect(() => {
-        if (props.salaries.length > 0){
+        if (props.salaries.length > 0) {
             if (props.salaries.length !== listTable.length) setCurrentPage(1);
             setListTable(props.salaries);
         } else if (employees.length > 0) {
@@ -55,9 +55,9 @@ export default function SalariesTable(props) {
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter(salary => {
-                if (props.filter == 'Confirm' && salary.id_state == 2) return true;
-                else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
-                else if (props.filter == 'NonGenerate') return true;
+                if (props.filter === 'Confirm' && salary.id_state == 2) return true;
+                else if (props.filter === 'OnHold' && salary.id_state == 1) return true;
+                else if (props.filter === 'NonGenerate') return true;
             }).filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
@@ -65,9 +65,9 @@ export default function SalariesTable(props) {
             setFilteredElements(filteredElementsList);
         } else {
             setFilteredElements(listTable.filter(salary => {
-                if (props.filter == 'Confirm' && salary.id_state == 2) return true;
-                else if (props.filter == 'OnHold' && salary.id_state == 1) return true;
-                else if (props.filter == 'NonGenerate') return true;
+                if (props.filter === 'Confirm' && salary.id_state == 2) return true;
+                else if (props.filter === 'OnHold' && salary.id_state == 1) return true;
+                else if (props.filter === 'NonGenerate') return true;
             }));
         }
     }, [nameSearch, listTable, props.filter]);
@@ -107,7 +107,7 @@ export default function SalariesTable(props) {
     const currentElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
     return (
-        <> 
+        <>
             <BeShowed show={props.salaries.length !== 0}>
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
@@ -138,20 +138,27 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <BeShowed show={props.filter == 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24 > 15}>
-                                                <button className="sendEdit" style={{backgroundColor: 'grey'}} disabled={true} >
-                                                    <FontAwesomeIcon icon={faEdit}/>
+                                            <BeShowed show={permissionsAccess !== 3} >
+                                                <button className="disabledSendBtn" disabled >
+                                                    <FontAwesomeIcon icon={faEdit} />
                                                 </button>
                                             </BeShowed>
-                                            <BeShowed show={props.filter != 'Confirm' || (props.filter == 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime())/1000/60/60/24 <= 15)}>
-                                                <button className="sendEdit" onClick={() => {props.setActionSalary('Editar',element)}}>
-                                                    <FontAwesomeIcon icon={faEdit}/>
-                                                </button>
+                                            <BeShowed show={permissionsAccess === 3 } >
+                                                <BeShowed show={props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
+                                                    <button className="disabledSendBtn" disabled >
+                                                        <FontAwesomeIcon icon={faEdit} />
+                                                    </button>
+                                                </BeShowed>
+                                                <BeShowed show={props.filter !== 'Confirm' || (props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
+                                                    <button className="sendEdit" onClick={() => { props.setActionSalary('Editar', element) }}>
+                                                        <FontAwesomeIcon icon={faEdit} />
+                                                    </button>
+                                                </BeShowed>
                                             </BeShowed>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendAdd" onClick={() => {props.setActionSalary('Ver',element)}}>
-                                                <FontAwesomeIcon icon={faEye}/>
+                                            <button className="sendAdd" onClick={() => { props.setActionSalary('Ver', element) }}>
+                                                <FontAwesomeIcon icon={faEye} />
                                             </button>
                                         </td>
                                     </tr>
@@ -163,7 +170,7 @@ export default function SalariesTable(props) {
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
             <BeShowed show={!props.showSpinner && currentElements.length !== 0 && props.filter === 'NonGenerate'}>
-            <div className="formRow title-searcher">
+                <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
                         <FontAwesomeIcon icon={faSearch} />
@@ -192,13 +199,13 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>------</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendAdd" style={{backgroundColor: 'grey'}} disabled={true} >
-                                                <FontAwesomeIcon icon={faEdit}/>
+                                            <button className="disabledSendBtn" disabled >
+                                                <FontAwesomeIcon icon={faEdit} />
                                             </button>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendEdit" style={{backgroundColor: 'grey'}} disabled={true} >
-                                                <FontAwesomeIcon icon={faEye}/>
+                                            <button className="disabledSendBtn" disabled>
+                                                <FontAwesomeIcon icon={faEye} />
                                             </button>
                                         </td>
                                     </tr>
@@ -209,8 +216,8 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length === 0 && nonConfirmLoader }>
-                <br/>
+            <BeShowed show={!props.showSpinner && currentElements.length === 0 && nonConfirmLoader}>
+                <br />
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>
         </>
