@@ -56,9 +56,7 @@ export default function RegisterEmployee() {
                         displayRegisterError();
                     }
                 }
-                else {
-                    displayRegisterError();
-                }
+                else warningMessage('Error', 'El número de documento ingresado ya se encuentra en uso.', 'error');
             }
             catch {
                 displayRegisterError();
