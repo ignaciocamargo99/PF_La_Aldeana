@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import BeShowed from '../../../common/BeShowed';
 
 const UploadByName = (props) => {
@@ -20,13 +20,13 @@ const UploadByName = (props) => {
         return aux;
     }
 
-    
+
     const upload = (e) => {
         const j = props.i;
         const aux = [];
         props.destiny.forEach((inc, i) => {
-            if (inc === j) aux[i] = {name: validateConcepts(e.target.value, props.list), price: inc.price, predictive: 1};
-            else aux[i] = {name: inc.name, price: inc.price, predictive: inc.predictive};
+            if (inc === j) aux[i] = { name: validateConcepts(e.target.value, props.list), price: inc.price, predictive: 1 };
+            else aux[i] = { name: inc.name, price: inc.price, predictive: inc.predictive };
         });
         props.upload(aux);
     }
@@ -36,16 +36,16 @@ const UploadByName = (props) => {
         upload(e);
     }
 
-    return(
+    return (
         <>
             <BeShowed show={showOptions}>
                 <datalist id={props.listName}>
-                    {props.list?.filter((elem) => {return elem.predictive === 1;}).map((item, i) => {
+                    {props.list?.filter((elem) => { return elem.predictive === 1; }).map((item, i) => {
                         return (<option value={item.name} key={i}></option>)
                     })}
                 </datalist>
             </BeShowed>
-            <input className={(props.i.name.length < 1 ? "form-control is-invalid" : "form-control") + props.class + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default?props.default:null}/>
+            <input className={(props.i.name.length < 1 ? "form-control is-invalid" : "form-control") + props.class + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default ? props.default : null} />
         </>
     );
 }

@@ -1,13 +1,13 @@
 import employeeIMG from '../../../common/CommonImages/Empleado_Generico.png';
-import '../styles/Licenses.css';    
+import '../styles/Licenses.css';
 
 const ShowSelectedEmployee = (props) => {
-    if(props.selectedEmployee !== null){
+    if (props.selectedEmployee !== null) {
         let charges = "";
 
         props.selectedEmployee.charges?.map((charge, i) => i + 1 < props.selectedEmployee.charges.length ? charges += charge.chargeName + ", " : charges += charge.chargeName);
 
-        return(
+        return (
             <div>
                 <div className="row">
                     <label>Empleado seleccionado: </label>
@@ -54,8 +54,8 @@ const ShowSelectedEmployee = (props) => {
             </div>
         )
     }
-    else{
-        return(<></>)
+    else {
+        return (<></>)
     }
 }
 

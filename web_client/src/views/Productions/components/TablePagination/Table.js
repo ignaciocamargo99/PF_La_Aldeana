@@ -8,7 +8,7 @@ import ReadProductionButton from "../ReadProduction/ReadProductionButton";
 
 const PORT = require('../../../../config');
 
-const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete }) => {
+const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
     const dateFilter1 = useRef(null);
     const dateFilter2 = useRef(null);
 
@@ -59,10 +59,10 @@ const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, h
                                             <ReadProductionButton production={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditProductionButton production={element} edit={handleEdit} />
+                                            <EditProductionButton production={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductionButton deleteProduction={handleDelete} production={element} index={i} />
+                                            <DeleteProductionButton deleteProduction={handleDelete} production={element} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )
