@@ -11,6 +11,7 @@ export default function ExtraDataEmployee(props) {
     const inputFirstDayOff = useRef(null);
     const rb1 = useRef(null);
     const rb2 = useRef(null);
+    const rb3 = useRef(null);
     const maxDate = formattedDate(new Date(), 3);
     const startDate = formattedDate(new Date());
     let data = props.data;
@@ -25,15 +26,23 @@ export default function ExtraDataEmployee(props) {
     }, [data, props]);
 
     useEffect(() => {
-        if (props.data.employment_relationship === 1) {
+        console.log(data.employment_relationship )
+        if (data.employment_relationship === 1) {
             rb1.current.checked = false;
-            rb2.current.checked = true;
-        } else if (props.data.employment_relationship === 2) {
+            rb2.current.checked = false;
+            rb3.current.checked = true;
+        } else if (data.employment_relationship === 2) {
             rb1.current.checked = true;
             rb2.current.checked = false;
+            rb3.current.checked = false;
+        } else if (data.employment_relationship === 3) {
+            rb1.current.checked = false;
+            rb2.current.checked = true;
+            rb3.current.checked = false;
         } else {
             rb1.current.checked = false;
             rb2.current.checked = false;
+            rb3.current.checked = false;
         }
     })
 
@@ -87,6 +96,7 @@ export default function ExtraDataEmployee(props) {
         if (props.isReadingEmployeeData) return;
 
         if (e.target.value === "black") data.employment_relationship = 2;
+        else if (e.target.value === "white4") data.employment_relationship = 3;
         else data.employment_relationship = 1;
         props.data.editing = false;
         props.load(data);
@@ -107,6 +117,7 @@ export default function ExtraDataEmployee(props) {
                     <label htmlFor="employeeCharge" >Cargos*</label>
                 </div>
             </div>
+            {console.log(data)}
 
             {props.isReadingEmployeeData &&
                 <ul>
@@ -173,7 +184,7 @@ export default function ExtraDataEmployee(props) {
                     <label>Relación laboral*</label>
                 </div>
                 <div className="d-flex form-radio-group">
-                    <div className="form-check form-radio">
+                    <div className="form-check form-radio col-sm-3">
                         <input
                             className="form-check-input"
                             disabled={props.isReadingEmployeeData}
@@ -189,20 +200,36 @@ export default function ExtraDataEmployee(props) {
                         <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
 
-                    <div className="form-check">
+                    <div className="form-check col-sm-6">
+                        <input
+                            className="form-check-input"
+                            disabled={props.isReadingEmployeeData}
+                            id="white4"
+                            name="flexRadioDefault"
+                            onChange={handlerOnChange}
+                            ref={rb2}
+                            type="radio"
+                            value="white4"
+                        >
+                        </input>
+
+                        <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
+                    </div>
+                    
+                    <div className="form-check col-sm-6">
                         <input
                             className="form-check-input"
                             disabled={props.isReadingEmployeeData}
                             id="white"
                             name="flexRadioDefault"
                             onChange={handlerOnChange}
-                            ref={rb2}
+                            ref={rb3}
                             type="radio"
                             value="white"
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white"> Relación de dependencia </label>
+                        <label className="form-check-label" htmlFor="white"> Relación de dependencia 6 horas </label>
                     </div>
                 </div>
             </div>
