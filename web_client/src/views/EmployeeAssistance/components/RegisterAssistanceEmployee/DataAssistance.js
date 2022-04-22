@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
-import BeShowed from "../../../../common/BeShowed";
 import Axios from 'axios';
-import getEmployees from '../getEmployees';
+import React, { useEffect, useRef, useState } from "react";
+import BeShowed from "../../../../common/BeShowed";
 import formattedDate from "../../../../utils/formattedDate";
 
 const PORT = require('../../../../config');
@@ -122,7 +121,7 @@ export default function DataAssistance(props) {
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading || props.data.editing}>
                         <select className="form-control" id="employeeCharge" value={selectValue} readOnly>
-                            <option disabled value="-1">{getEmployees(employees, props.data.dni)}</option>
+                            <option disabled value="-1">{data.name + ' ' + data.last_name}</option>
                         </select>
                     </BeShowed>
                     <BeShowed show={!props.data.reading && !props.data.editing}>
