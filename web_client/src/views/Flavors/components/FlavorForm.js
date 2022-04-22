@@ -9,15 +9,14 @@ import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
 
 const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSubmit }) => {
 
+    // #region hooks
+
     const { flavorTypes } = useGetFlavorTypes();
     const { flavorFamilies } = useGetFlavorFamilies();
 
-    const initializeForm = () => {
-        if (flavorData) {
-            return createFlavorModel(flavorData)
-        }
-        return createFlavorModel()
-    }
+    // #endregion
+
+    // #region useStates
 
     const createFlavorModel = (flavorData) => {
         return {
@@ -29,43 +28,108 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
             family_flavor: flavorData?.family_flavor || '',
             type_flavor: flavorData?.type_flavor || '',
         }
-    }
+    };
+
+    const initializeForm = () => {
+        if (flavorData) {
+            return createFlavorModel(flavorData);
+        }
+        return createFlavorModel();
+    };
 
     const [formData, setFormData] = useState(initializeForm());
 
+    const defaultInputStyle = 'form-control';
+    const validInputStyle = 'form-control is-valid';
+    const invalidInputStyle = 'form-control is-invalid';
+
+    const [nameInputStyle, setNameInputStyle] = useState(defaultInputStyle);
+    const [nameInputErrorText, setNameInputErrorText] = useState('');
+
+    const [priceInputStyle, setPriceInputStyle] = useState(defaultInputStyle);
+    const [priceInputErrorText, setPriceInputErrorText] = useState('');
+
+    const [stockInputStyle, setStockInputStyle] = useState(defaultInputStyle);
+    const [stockInputErrorText, setStockInputErrorText] = useState('');
+
+    const [reorderStockInputStyle, setReorderStockInputStyle] = useState(defaultInputStyle);
+    const [reorderStockInputErrorText, setReorderStockInputErrorText] = useState('');
+
+    // #endregion
+
+    // #region Validators
+
+    // #region Name Validators 
+
     const isFormNameValid = () => {
-        return formData?.name?.trim() !== '';
+        return formData?.name?.trim();
+    };
+
+    // #endregion
+
+    // #region Price Validators
+
+    const isFormPriceValid = () => {
+        return isPriceValid(formData?.price);
+    };
+
+    const isPriceValid = (price) => {
+        if (!(price)) {
+            return false;
+        }
+        if (isNaN(price)) {
+            return false;
+        }
+        return (price > 0 && price.length <= 5);
+    };
+
+    const isFormPriceEmpty = () => {
+        return (!(formData?.price));
+    };
+
+    // #endregion
+
+    // #region Stock Validators
+
+    const isFormStockValid = () => {
+        return isStockValid(formData?.stock);
+    };
+
+    const isStockValid = (stock) => {
+        if (!(stock)) {
+            return false;
+        }
+        if (isNaN(stock)) {
+            return false;
+        }
+        return (stock > 0 && stock.length <= 5);
     }
 
-    const isPriceValid = () => {
-        if (!(formData?.price)) {
-            return false;
-        }
-        if (isNaN(formData.price)) {
-            return false;
-        }
-        return formData.price > 0;
-    }
+    const isFormStockEmpty = () => {
+        return (!(formData?.stock));
+    };
 
-    const isStockValid = () => {
-        if (!(formData?.stock)) {
-            return false;
-        }
-        if (isNaN(formData.stock)) {
-            return false;
-        }
-        return formData.stock > 0;
-    }
+    // #endregion
+
+    // #region ReorderStock Validators
 
     const isReorderStockValid = () => {
         if (formData?.reorderStock) {
             if (isNaN(formData.reorderStock)) {
                 return false;
             }
-            return formData.reorderStock >= 0;
+            return isValidReorderStock(formData.reorderStock);
         }
         return true;
-    }
+    };
+
+    const isValidReorderStock = (reorderStock) => {
+        return (reorderStock > 0 && reorderStock.length <= 5);
+    };
+
+    // #endregion
+
+    // #region FamilyFlavor Validators
 
     const isFamilyFlavorValid = () => {
         if (!(formData?.family_flavor)) {
@@ -80,6 +144,10 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         return false;
     }
 
+    // #endregion
+
+    // #region FlavorType Validators
+
     const isTypeFlavorValid = () => {
         if (!(formData?.type_flavor)) {
             return false;
@@ -91,108 +159,211 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
             return flavorTypes.map((ft) => ft.id_type_flavor).includes(+formData.type_flavor);
         }
         return false;
-    }
+    };
 
-    const isFormDataValid = () => {
+    // #endregion
+
+    const isFormDataValid = (warn = false) => {
         if (!(isFormNameValid())) {
+            if (warn) {
+                warnSweetAlert('Ingrese el nombre del sabor.');
+            }
             return false;
         }
-        if (!(isPriceValid())) {
+        if (!(isFormPriceValid())) {
+            if (warn) {
+                if (isFormPriceEmpty()) {
+                    warnSweetAlert('Ingrese el precio del sabor.');
+                } else {
+                    warnSweetAlert('Ingrese el precio del sabor correctamente.');
+                }
+            }
             return false;
         }
-        if (!(isStockValid())) {
+        if (!(isFormStockValid())) {
+            if (warn) {
+                if (isFormStockEmpty()) {
+                    warnSweetAlert('Ingrese el stock del sabor.');
+                } else {
+                    warnSweetAlert('Ingrese el stock del sabor correctamente.');
+                }
+            }
             return false;
         }
         if (!(isReorderStockValid())) {
+            if (warn) {
+                warnSweetAlert('Stock de reorden inválido.');
+            }
             return false;
         }
         if (!(isFamilyFlavorValid())) {
+            if (warn) {
+                warnSweetAlert('Ingrese la familia del sabor.');
+            }
             return false;
         }
         if (!(isTypeFlavorValid())) {
+            if (warn) {
+                warnSweetAlert('Ingrese el tipo del sabor.')
+            }
             return false;
         }
         return true;
-    }
+    };
 
-    let formDataValid = isFormDataValid();
+    // #endregion
 
-    const warnFormDataInvalid = () => {
-        if (!(isFormNameValid())) {
-            warnSweetAlert('Ingrese el nombre del sabor.');
-            return;
-        }
-        if (!(isPriceValid())) {
-            warnSweetAlert('Ingrese el precio del sabor.');
-            return;
-        }
-        if (!(isStockValid())) {
-            warnSweetAlert('Ingrese el stock del sabor.');
-            return;
-        }
-        if (!(isReorderStockValid())) {
-            warnSweetAlert('Stock de reorden inválido.');
-            return;
-        }
-        if (!(isFamilyFlavorValid())) {
-            warnSweetAlert('Ingrese la familia del sabor.');
-            return;
-        }
-        if (!(isTypeFlavorValid())) {
-            warnSweetAlert('Ingrese el tipo del sabor.')
-            return;
-        }
-    }
+    const formDataValid = isFormDataValid();
+
+    // #region OnInputChange
+
+    const genericNumberInputErrorText = 'Ingrese un valor mayor a 0 y de hasta 5 cifras';
+
+    // #region OnNameChange
 
     const handleNameChange = ({ target }) => {
-        let newFormData = { ...formData }
-        newFormData.name = target.value
-        setFormData(newFormData)
-    }
+        let newFormData = { ...formData };
+        newFormData.name = target.value;
+        setFormData(newFormData);
+        checkNameInputError(target.value);
+    };
+
+    const checkNameInputError = (nameInputValue) => {
+        if (!nameInputValue) {
+            setNameInputStyle(defaultInputStyle)
+            setNameInputErrorText('');
+            return;
+        };
+
+        if (nameInputValue.trim()) {
+            setNameInputStyle(validInputStyle)
+            setNameInputErrorText('');
+            return;
+        };
+
+        setNameInputStyle(invalidInputStyle)
+        setNameInputErrorText('Ingrese un nombre válido');
+    };
+
+    // #endregion
+
+    // #region OnDescriptionChange
 
     const handleDescriptionChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.description = target.value
         setFormData(newFormData)
-    }
+    };
+
+    // #endregion
+
+    // #region OnPriceChange
 
     const handlePriceChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.price = target.value
-        setFormData(newFormData)
-    }
+        setFormData(newFormData);
+        checkPriceInputError(target.value)
+    };
+
+    const checkPriceInputError = (priceInputValue) => {
+        if (!priceInputValue) {
+            setPriceInputStyle(defaultInputStyle);
+            setPriceInputErrorText('');
+            return;
+        }
+        if (isPriceValid(priceInputValue)) {
+            setPriceInputStyle(validInputStyle);
+            setPriceInputErrorText('');
+            return;
+        }
+
+        setPriceInputStyle(invalidInputStyle);
+        setPriceInputErrorText(genericNumberInputErrorText);
+    };
+
+    // #endregion
+
+    // #region OnStockChange
 
     const handleStockChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.stock = target.value
         setFormData(newFormData)
-    }
+        checkStockInputError(target.value)
+    };
+
+    const checkStockInputError = (stockInputValue) => {
+        if (!stockInputValue) {
+            setStockInputStyle(defaultInputStyle);
+            setStockInputErrorText('');
+            return;
+        }
+        if (isStockValid(stockInputValue)) {
+            setStockInputStyle(validInputStyle);
+            setStockInputErrorText('');
+            return;
+        }
+
+        setStockInputStyle(invalidInputStyle);
+        setStockInputErrorText(genericNumberInputErrorText);
+    };
+
+    // #endregion
+
+    // #region OnReorderStockChange
 
     const handleReorderStockChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.reorderStock = target.value
         setFormData(newFormData)
-    }
+        checkReorderStockInputError(target.value)
+    };
+
+    const checkReorderStockInputError = (reorderStockInputValue) => {
+        if ((!reorderStockInputValue) || (isValidReorderStock(reorderStockInputValue))) {
+            setReorderStockInputStyle(defaultInputStyle);
+            setReorderStockInputErrorText('');
+            return;
+        };
+
+        setReorderStockInputStyle(invalidInputStyle)
+        setReorderStockInputErrorText(genericNumberInputErrorText);
+    };
+
+    // #endregion
+
+    // #region OnFlavorTypeChange
 
     const handleFlavorTypeChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.type_flavor = target.value
         setFormData(newFormData)
-    }
+    };
+
+    // #endregion
+
+    // #region OnFlavorFamilyChange
 
     const handleFlavorFamilyChange = ({ target }) => {
         let newFormData = { ...formData }
         newFormData.family_flavor = target.value
         setFormData(newFormData)
-    }
-
-    const handleCancelBtnClicked = () => {
-        window.location.replace('/app/flavors');
     };
 
-    const handleSubmitBtnClicked = () => {
-        onSubmit(formData);
-    };
+    // #endregion
+
+    // #endregion
+
+    // #region Submit/Cancel
+
+    const warnFormDataInvalid = () => isFormDataValid(true);
+
+    const handleCancelBtnClicked = () => window.location.replace('/app/flavors');
+
+    const handleSubmitBtnClicked = () => onSubmit(formData);
+
+    // #endregion
 
     return (
         <>
@@ -213,24 +384,26 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     <div className="form-control-input">
                         <input
                             autoFocus
-                            className="form-control"
+                            className={nameInputStyle}
+                            maxLength="80"
                             onChange={handleNameChange}
                             placeholder='Ingrese nombre del sabor...'
                             type='text'
                             value={formData.name}
                         >
                         </input>
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{nameInputErrorText}</div>
                     </div>
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label className='col-3 lbTexttarea'>Descripción</label>
+                        <label >Descripción (opcional)</label>
                     </div>
                     <div className="form-control-input">
                         <textarea
                             className="form-control"
                             onChange={handleDescriptionChange}
-                            maxLength="150"
+                            maxLength="200"
                             placeholder='Ingrese descripción del sabor...'
                             type='text'
                             value={formData.description}
@@ -244,13 +417,14 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     </div>
                     <div className="form-control-input">
                         <input
-                            className="form-control"
+                            className={priceInputStyle}
                             onChange={handlePriceChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
                             placeholder="Ingrese precio del sabor..."
                             type="number"
                             value={formData.price}
                         />
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{priceInputErrorText}</div>
                     </div>
                 </div>
                 <div className="formRow">
@@ -259,28 +433,30 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     </div>
                     <div className="form-control-input">
                         <input
-                            className="form-control"
+                            className={stockInputStyle}
                             onChange={handleStockChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
                             placeholder="Ingrese stock actual..."
                             type="number"
                             value={formData.stock}
                         />
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{stockInputErrorText}</div>
                     </div>
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Stock de Reorden</label>
+                        <label >Stock de Reorden (opcional)</label>
                     </div>
                     <div className="form-control-input">
                         <input
-                            className="form-control"
+                            className={reorderStockInputStyle}
                             onChange={handleReorderStockChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
                             placeholder="Ingrese stock de reorden..."
                             type="number"
                             value={formData.reorderStock}
                         />
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{reorderStockInputErrorText}</div>
                     </div>
                 </div>
                 <div className="formRow">
@@ -339,6 +515,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
             </div>
         </>
     )
-}
+};
 
-export default FlavorForm
+export default FlavorForm;
