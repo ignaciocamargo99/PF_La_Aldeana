@@ -23,33 +23,18 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
             <div className="formRow title-searcher">
                 {dateFilter1.current && dateFilter1.current.value !== '' && dateFilter2.current && dateFilter2.current.value !== ''
                     ?
-                    <h4 className="text-secondary">Asistencias registradas desde el {PORT() === ''
-                        ?
-                        moment(dateFilter1.current.value).format('DD/MM/YYYY')
-                        :
-                        moment(dateFilter1.current.value).add(1, 'days').format('DD/MM/YYYY')} hasta el {PORT() === ''
-                            ?
-                            moment(dateFilter2.current.value).format('DD/MM/YYYY')
-                            :
-                            moment(dateFilter2.current.value).add(1, 'days').format('DD/MM/YYYY')}
+                    <h4 className="text-secondary">Asistencias registradas desde el { moment(dateFilter1.current.value).format('DD/MM/YYYY')} hasta el {
+                            moment(dateFilter2.current.value).format('DD/MM/YYYY')}
                     </h4>
                     :
                     dateFilter1.current && dateFilter1.current.value !== ''
                         ?
-                        <h4 className="text-secondary">Asistencias registradas desde la fecha {PORT() === ''
-                            ?
-                            moment(dateFilter1.current.value).format('DD/MM/YYYY')
-                            :
-                            moment(dateFilter1.current.value).add(1, 'days').format('DD/MM/YYYY')}
+                        <h4 className="text-secondary">Asistencias registradas desde la fecha {moment(dateFilter1.current.value).format('DD/MM/YYYY')}
                         </h4>
                         :
                         dateFilter2.current && dateFilter2.current.value !== ''
                             ?
-                            <h4 className="text-secondary">Asistencias registradas hasta la fecha {PORT() === ''
-                                ?
-                                moment(dateFilter2.current.value).format('DD/MM/YYYY')
-                                :
-                                moment(dateFilter2.current.value).add(1, 'days').format('DD/MM/YYYY')}
+                            <h4 className="text-secondary">Asistencias registradas hasta la fecha {moment(dateFilter2.current.value).format('DD/MM/YYYY')}
                             </h4>
                             :
                             <h4 className="text-secondary">Asistencias registradas en la fecha {dateNow}</h4>
