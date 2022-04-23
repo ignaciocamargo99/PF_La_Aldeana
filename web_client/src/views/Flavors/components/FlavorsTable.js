@@ -1,6 +1,6 @@
 import DeleteFlavorButton from "./DeleteFlavorButton";
 import EditFlavorButton from './EditFlavorButton';
-// import ReadFlavorButton from "./ReadFlavorButton";
+import ReadFlavorButton from "./ReadFlavorButton";
 
 const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsAccess }) => {
     return (
@@ -38,6 +38,9 @@ const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsA
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     {element.price}
+                                </td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                    <ReadFlavorButton flavorId={element.idFlavor} permissionsAccess={permissionsAccess}/>
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     <EditFlavorButton flavorId={element.idFlavor} permissionsAccess={permissionsAccess} />

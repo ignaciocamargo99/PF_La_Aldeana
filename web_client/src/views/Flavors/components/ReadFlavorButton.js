@@ -1,10 +1,10 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function ReadFlavorButton() {
+export default function ReadFlavorButton({ flavorId, permissionsAccess }) {
 
     const handleReadFlavorBtnClicked = () => {
-        // to do
+        window.location.replace(`/app/flavors/view/${flavorId}`);
     };
 
     return (
