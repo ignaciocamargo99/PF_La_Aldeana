@@ -1,7 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const logger = require('morgan');
-const path = require("path");
+const path = require('path');
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
@@ -16,13 +16,14 @@ const purchaseSuppliesRouter = require('./api/routes/purchaseSuppliesRoute');
 const logInRouter = require('./api/routes/logInRoute');
 const permissionsRouter = require('./api/routes/permissionRoute');
 const flavorsRouter = require('./api/routes/flavorRoute');
+const flavorRouterV2 = require('./api/routes/flavorRouterV2');
 const familyFlavorsRouter = require('./api/routes/familyFlavorsRoute');
 const chamberFlavorDispatchRouter = require('./api/routes/chamberFlavorDispatchRoute');
 const productionsRouter = require('./api/routes/productionRoute');
 const franchiseRouter = require('./api/routes/franchiseRoute');
 const salesRouter = require('./api/routes/salesRoute');
 const clientsRouter = require('./api/routes/clientRoute');
-const employeeAssistanceRouter = require('./api/routes/employeeAssistanceRoute')
+const employeeAssistanceRouter = require('./api/routes/employeeAssistanceRoute');
 const employeeRouter = require('./api/routes/employeeRoute');
 const fingerPrintRouter = require('./api/routes/fingerPrintsRoute');
 const assistanceFingerRouter = require('./api/routes/assistenceFingerRoute');
@@ -42,8 +43,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('web_client/build'));
 app.use(express.static(path.join(__dirname, './api/images/productDBImages')));
 
-app.get("/app/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "../web_client/build/index.html"));
+app.get('/app/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../web_client/build/index.html'));
 });
 
 /** Swagger */
@@ -58,6 +59,7 @@ app.use('/api', typeProductsRouter);
 app.use('/api', suppliesRouter);
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', flavorsRouter);
+app.use('/api/flavors', flavorRouterV2);
 app.use('/api', familyFlavorsRouter);
 app.use('/api', chamberFlavorDispatchRouter);
 app.use('/api', productionsRouter);
@@ -74,7 +76,7 @@ app.use('/api', serviceTestRoute);
 app.use('/api', turnsRouter);
 app.use('/api', jdEmployeeRouter);
 app.use('/api', assistanceFingerRouter);
-app.use('/api', employeeAssistanceRouter)
+app.use('/api', employeeAssistanceRouter);
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
 app.use('/api', dayOffRouter);
