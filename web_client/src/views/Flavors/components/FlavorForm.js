@@ -80,7 +80,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isNaN(price)) {
             return false;
         }
-        return (price > 0 && price.length <= 5);
+        return (price > 0 && price.toString().length <= 5);
     };
 
     const isFormPriceEmpty = () => {
@@ -102,7 +102,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isNaN(stock)) {
             return false;
         }
-        return (stock > 0 && stock.length <= 5);
+        return (stock > 0 && stock.toString().length <= 5);
     }
 
     const isFormStockEmpty = () => {
@@ -124,7 +124,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     };
 
     const isValidReorderStock = (reorderStock) => {
-        return (reorderStock > 0 && reorderStock.length <= 5);
+        return (reorderStock > 0 && reorderStock.toString().length <= 5);
     };
 
     // #endregion
