@@ -24,7 +24,7 @@ const logInDB = (user) => {
 }
 const getUserDB = (user) => {
     
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password " + 
+    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, u.active " + 
     "FROM USERS u " + 
     "WHERE u.nick_user = ?";
     

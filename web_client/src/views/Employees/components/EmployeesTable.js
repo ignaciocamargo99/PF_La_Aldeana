@@ -15,7 +15,7 @@ import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
 
 const PORT = require('../../../config');
 
-export default function EmployeesTable() {
+export default function EmployeesTable(props) {
 
     const [allEmployees, setAllEmployees] = useState([]);
     const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
@@ -23,6 +23,7 @@ export default function EmployeesTable() {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
@@ -77,7 +78,12 @@ export default function EmployeesTable() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Empleados</h1>
-                            <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron empleados registrados hasta el momento.</h4>
@@ -86,7 +92,12 @@ export default function EmployeesTable() {
                         <BeShowed show={!isEditing && !isReading}>
                             <div className="viewTitleBtn">
                                 <h1>Empleados</h1>
-                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                    <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
+                                <BeShowed show={permissionsAccess === 1}>
+                                    <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
                             </div>
 
                             <div className="viewBody">
@@ -123,10 +134,14 @@ export default function EmployeesTable() {
                                                             <EditEmployeeButton
                                                                 employeeData={element}
                                                                 handleEditEmpoyeeClicked={handleEditEmpoyee}
+                                                                permissionsAccess={permissionsAccess}
                                                             />
                                                         </td>
                                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} />
+                                                            <DeleteEmployeeButton employee={element} index={i}
+                                                                deleteEmployee={deleteEmployee}
+                                                                permissionsAccess={permissionsAccess}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 </tbody>

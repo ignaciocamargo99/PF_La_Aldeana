@@ -1,8 +1,8 @@
 import formattedDate from "../formattedDate";
 
-export default function dateText (date, day){
+export default function dateText (date, day, format){
 
-    let dateFormat = formattedDate(date);
+    let dateFormat = format ? date : formattedDate(date);
 
     let year = parseInt(dateFormat.slice(0,-3));
     let monthD = parseInt(dateFormat.slice(5,-3));

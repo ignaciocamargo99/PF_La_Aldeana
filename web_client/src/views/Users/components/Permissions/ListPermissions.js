@@ -43,7 +43,7 @@ export default function ListPermissions(props) {
         <>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." /> :
-                views?.length === 0
+                views?.length === 0 && permission?.length === 0
                     ?
                     <div>
                         <h2>Datos generales</h2>

@@ -1,12 +1,12 @@
 import ProductTable from "./components/ProductTable";
 import '../../assets/Buttons.css';
 
-export default function ListProducts() {
+export default function ListProducts(props) {
 
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Productos"}</div>
-            <ProductTable />
+            <ProductTable permissionsAccess={props.permissionsAccess}/>
         </>
     );
 }
