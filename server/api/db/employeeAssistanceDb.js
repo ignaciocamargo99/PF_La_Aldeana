@@ -37,27 +37,11 @@ const allEmployeeAssistancesGetDB = () => {
 };
 
 const employeeAssistanceGetDB = () => {
-    let sqlSelect;
-    let actualDate = new Date();
-    // Get actual hour in ISO format...
-    let actualDateStr = actualDate.toISOString();
-    let hour = actualDateStr.slice(11, 13);
-    let hourInt = parseInt(hour, 10);
-
-    if (hourInt >= 0 && hourInt < 3) {
-        sqlSelect = `
+    let sqlSelect = `
             SELECT ae.id_assistance, ae.date_entry AS date_entry, ae.date_egress AS date_egress, ae.employee, e.name, e.last_name
             FROM ASSISTANCE_EMPLOYEES ae
             JOIN EMPLOYEES e ON ae.employee = e.dni 
-            WHERE DATE(ae.date_entry) = DATE(NOW()) - 1`
-    }
-    else {
-        sqlSelect = `
-            SELECT ae.id_assistance, ae.date_entry AS date_entry, ae.date_egress AS date_egress, ae.employee, e.name, e.last_name
-            FROM ASSISTANCE_EMPLOYEES ae
-            JOIN EMPLOYEES e ON ae.employee = e.dni 
-            WHERE DATE(ae.date_entry) = DATE(NOW())`
-    }
+            ORDER BY ae.date_entry DESC`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -68,7 +52,7 @@ const employeeAssistanceGetDB = () => {
                 else resolve(result);
             });
             db.release();
-        })
+        });
     });
 };
 
