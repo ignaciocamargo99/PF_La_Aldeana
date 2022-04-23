@@ -129,6 +129,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                                         backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FF8B8B' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#8DFF8B' : ''}`
                                                     }}>
                                                         <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
+                                                            className={schedule[i][j] === 'F'?"bg-dark text-light":""}
                                                             disabled={schedule[i][j] === 'X'} value={schedule[i][j]}
                                                             onChange={(e) => onChangeInputValue(e, i, j)}
                                                             onBlur={(e) => onBlurInputValue(e, i, j)}></input>
@@ -140,6 +141,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                                         backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FF8B8B' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#8DFF8B' : ''}`
                                                     }}>
                                                         <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
+                                                            className={schedule[i][j] === 'F'?"bg-dark text-light":""}
                                                             disabled value={schedule[i][j]}
                                                             onChange={(e) => onChangeInputValue(e, i, j)}
                                                             onBlur={(e) => onBlurInputValue(e, i, j)}></input>
