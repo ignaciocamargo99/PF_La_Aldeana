@@ -2,18 +2,24 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import '../../../../assets/Buttons.css';
+import BeShowed from '../../../../common/BeShowed';
 
-
-const EditEmployeeButton = ({ employeeData, handleEditEmpoyeeClicked }) => {
+const EditEmployeeButton = ({ employeeData, handleEditEmpoyeeClicked, permissionsAccess }) => {
 
     const handleEdit = () => {
         handleEditEmpoyeeClicked(employeeData);
     };
 
     return (
-        <button id='editEmployeeButton' type="button" className="sendEdit" onClick={handleEdit}>
-            <FontAwesomeIcon icon={faEdit} />
-        </button>
+        <>
+            <BeShowed show={permissionsAccess === 3}>
+                <button id='editEmployeeButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+            </BeShowed>
+            <BeShowed show={permissionsAccess !== 3}>
+                <button id='editEmployeeButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faEdit} /></button>
+            </BeShowed>
+        </>
+
     );
 };
 

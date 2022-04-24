@@ -1,9 +1,8 @@
-# dependencies
-/node_modules
+
 /.env
-
 /.directory
-
+/node_modules
+/.vscode
 
 .DS_Store
 .env.local
@@ -13,3 +12,4 @@
 
 /.directory
 ./.env
+.vscode

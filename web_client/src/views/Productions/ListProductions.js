@@ -12,14 +12,14 @@ import productionData from './productionData';
 
 const PORT = require('../../config');
 
-export default function ListProductions() {
-
+export default function ListProductions(props) {
     const [allProductions, setAllProductions] = useState([]);
     const [productionToRead, setProductionToRead] = useState({});
     const [productionToEdit, setProductionToEdit] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/productions')
@@ -107,7 +107,12 @@ export default function ListProductions() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Producciones</h1>
-                            <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='newProductionButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                            </BeShowed>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron producciones registrados hasta el momento.</h4>
@@ -117,16 +122,21 @@ export default function ListProductions() {
                             <>
                                 <div className="viewTitleBtn">
                                     <h1>Producciones</h1>
-                                    <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                        <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                    <BeShowed show={permissionsAccess === 1}>
+                                        <button id='newProductionButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                                    </BeShowed>
                                 </div>
                                 <div className="viewBody">
                                     <TablePagination
                                         columnsHeaders={columnsHeaders}
                                         currentElements={allProductions}
                                         handleRead={readProduction}
-                                        handleEdit = {editProduction}
-                                        handleDelete = {deleteProduction}
-
+                                        handleEdit={editProduction}
+                                        handleDelete={deleteProduction}
+                                        permissionsAccess={permissionsAccess}
                                     />
 
                                 </div>
