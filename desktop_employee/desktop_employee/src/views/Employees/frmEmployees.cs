@@ -150,15 +150,17 @@ namespace desktop_employee.src.views.Employees
 
         private void filtrar()
         {
-            if (txtNombre.Text != "" || txtApellido.Text != "" || txtDNI.Text != "" || cbxSinHuella.Checked)
+            if (txtNombre.Text != "" || txtDNI.Text != "" || cbxSinHuella.Checked)
             {
                 employeeFilteredTable = createTableEmployee();
 
-                var nombreIngresado = "";
-                var nombreEmpleado = "";
+                var nombreCompleto = "";
 
-                var apellidoIngresado = "";
-                var apellidoEmpleado = "";
+                var nombreIngresado = "";
+                //var nombreEmpleado = "";
+
+                //var apellidoIngresado = "";
+                //var apellidoEmpleado = "";
 
                 var dniIngresado = "";
                 var dniEmpleado = "";
@@ -169,11 +171,11 @@ namespace desktop_employee.src.views.Employees
                     nombreIngresado = eliminarAcentos(nombreIngresado);
                 }
 
-                if (txtApellido.Text != "")
-                {
-                    apellidoIngresado = txtApellido.Text.ToUpper();
-                    apellidoIngresado = eliminarAcentos(apellidoIngresado);
-                }
+                //if (txtApellido.Text != "")
+                //{
+                //    apellidoIngresado = txtApellido.Text.ToUpper();
+                //    apellidoIngresado = eliminarAcentos(apellidoIngresado);
+                //}
 
                 if (txtDNI.Text != "")
                 {
@@ -182,18 +184,21 @@ namespace desktop_employee.src.views.Employees
 
                 for (int i = 0; i < datosEmpleados.Count; i++)
                 {
-                    nombreEmpleado = Convert.ToString((datosEmpleados[i].NOMBRE)).ToUpper();
-                    nombreEmpleado = eliminarAcentos(nombreEmpleado);
+                    nombreCompleto = Convert.ToString((datosEmpleados[i].NOMBRE)).ToUpper() + " " + Convert.ToString((datosEmpleados[i].APELLIDO)).ToUpper();
+                    nombreCompleto = eliminarAcentos(nombreCompleto);
 
-                    apellidoEmpleado = Convert.ToString((datosEmpleados[i].APELLIDO)).ToUpper();
-                    apellidoEmpleado = eliminarAcentos(apellidoEmpleado);
+                    //nombreEmpleado = Convert.ToString((datosEmpleados[i].NOMBRE)).ToUpper();
+                    //nombreEmpleado = eliminarAcentos(nombreEmpleado);
+
+                    //apellidoEmpleado = Convert.ToString((datosEmpleados[i].APELLIDO)).ToUpper();
+                    //apellidoEmpleado = eliminarAcentos(apellidoEmpleado);
 
                     dniEmpleado = Convert.ToString((datosEmpleados[i].DNI));
 
                     if (cbxSinHuella.Checked)
                     {
-                        if (nombreEmpleado.Contains(nombreIngresado) &&
-                            apellidoEmpleado.Contains(apellidoIngresado) &&
+                        if (nombreCompleto.Contains(nombreIngresado) &&
+                           // apellidoEmpleado.Contains(apellidoIngresado) &&
                             dniEmpleado.Contains(dniIngresado) &&
                             Convert.ToInt32(datosEmpleados[i].HUELLAS) == 0)
                         {
@@ -207,8 +212,8 @@ namespace desktop_employee.src.views.Employees
                     }
                     else
                     {
-                        if (nombreEmpleado.Contains(nombreIngresado) &&
-                            apellidoEmpleado.Contains(apellidoIngresado) &&
+                        if (nombreCompleto.Contains(nombreIngresado) &&
+                            // apellidoEmpleado.Contains(apellidoIngresado) &&
                             dniEmpleado.Contains(dniIngresado))
                         {
                             DataRow row = employeeFilteredTable.NewRow();
@@ -247,7 +252,7 @@ namespace desktop_employee.src.views.Employees
         private void btnLimpiarCampos_Click(object sender, EventArgs e)
         {
             txtNombre.Text = "";
-            txtApellido.Text = "";
+            //txtApellido.Text = "";
             txtDNI.Text = "";
             cbxSinHuella.Checked = false;
             dgvEmployees.DataSource = datosEmpleados;
@@ -284,7 +289,7 @@ namespace desktop_employee.src.views.Employees
 
         private void activarOdesactivar()
         {
-            if (txtNombre.Text.Length > 0 || txtApellido.Text.Length > 0 || txtDNI.Text.Length > 0) activarLimpiarCampos();
+            if (txtNombre.Text.Length > 0 || txtDNI.Text.Length > 0) activarLimpiarCampos();
             else desactivarLimpiarCampos();
             filtrar();
         }
@@ -304,26 +309,6 @@ namespace desktop_employee.src.views.Employees
         }
 
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsLetter(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else if (Char.IsControl(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else if (Char.IsSeparator(e.KeyChar))
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Char.IsLetter(e.KeyChar))
             {

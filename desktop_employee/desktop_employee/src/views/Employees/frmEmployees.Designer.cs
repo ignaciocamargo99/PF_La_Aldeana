@@ -39,8 +39,6 @@ namespace desktop_employee.src.views.Employees
             this.btnLimpiarCampos = new desktop_employee.src.utils.Botones.CustomButton();
             this.label4 = new System.Windows.Forms.Label();
             this.txtDNI = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtApellido = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -111,8 +109,6 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Controls.Add(this.btnLimpiarCampos);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.txtDNI);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.txtApellido);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.txtNombre);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -157,7 +153,6 @@ namespace desktop_employee.src.views.Employees
             // 
             // label4
             // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label4.Location = new System.Drawing.Point(47, 66);
@@ -168,7 +163,6 @@ namespace desktop_employee.src.views.Employees
             // 
             // txtDNI
             // 
-            this.txtDNI.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.txtDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtDNI.Location = new System.Drawing.Point(125, 63);
             this.txtDNI.Name = "txtDNI";
@@ -177,46 +171,22 @@ namespace desktop_employee.src.views.Employees
             this.txtDNI.TextChanged += new System.EventHandler(this.txtDNI_TextChanged);
             this.txtDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDNI_KeyPress);
             // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(449, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 25);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Apellido:";
-            // 
-            // txtApellido
-            // 
-            this.txtApellido.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txtApellido.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtApellido.Location = new System.Drawing.Point(527, 18);
-            this.txtApellido.Name = "txtApellido";
-            this.txtApellido.Size = new System.Drawing.Size(271, 32);
-            this.txtApellido.TabIndex = 8;
-            this.txtApellido.TextChanged += new System.EventHandler(this.txtApellido_TextChanged);
-            this.txtApellido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtApellido_KeyPress);
-            // 
             // label2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.Location = new System.Drawing.Point(47, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 25);
+            this.label2.Size = new System.Drawing.Size(144, 25);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Nombre:";
+            this.label2.Text = "Nombre y Apellido:";
             // 
             // txtNombre
             // 
-            this.txtNombre.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.txtNombre.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtNombre.Location = new System.Drawing.Point(125, 18);
+            this.txtNombre.Location = new System.Drawing.Point(227, 18);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(271, 32);
+            this.txtNombre.Size = new System.Drawing.Size(399, 32);
             this.txtNombre.TabIndex = 6;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
@@ -302,8 +272,6 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtDNI;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtApellido;
         private utils.Botones.CustomButton btnLimpiarCampos;
         private System.Windows.Forms.CheckBox cbxSinHuella;
     }
