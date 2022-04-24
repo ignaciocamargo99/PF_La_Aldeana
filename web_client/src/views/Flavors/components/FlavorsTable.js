@@ -40,7 +40,7 @@ const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsA
                                     {element.price}
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                    <ReadFlavorButton flavorId={element.idFlavor} permissionsAccess={permissionsAccess}/>
+                                    <ReadFlavorButton flavorId={element.idFlavor} />
                                 </td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                     <EditFlavorButton flavorId={element.idFlavor} permissionsAccess={permissionsAccess} />
