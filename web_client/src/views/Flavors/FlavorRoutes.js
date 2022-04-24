@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import EditFlavor from "./components/EditFlavor";
 import NewFlavor from "./components/NewFlavor";
+import ReadFlavor from "./components/ReadFlavor";
 import ListFlavors from "./ListFlavors";
 
 const FlavorRoutes = ({ permissionsAccess }) => {
@@ -12,6 +13,7 @@ const FlavorRoutes = ({ permissionsAccess }) => {
             <Switch>
                 <Route exact path={path} render={() => <ListFlavors permissionsAccess={permissionsAccess} />}></Route>
                 <Route path={`${path}/new`} component={NewFlavor}></Route>
+                <Route path={`${path}/view/:idFlavor`} component={ReadFlavor}></Route>
                 <Route path={`${path}/:idFlavor`} component={EditFlavor}></Route>
             </Switch>
         </div>

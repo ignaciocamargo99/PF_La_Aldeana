@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from 'common/TablePagination/Pagination';
+import SearchFilter from 'common/SearchFilter';
 import FlavorsTable from './FlavorsTable';
 
 const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor, permissionsAccess }) => {
@@ -21,10 +22,27 @@ const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor,
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const onFilterInputChange = (nameSearch) => {
+        if (nameSearch.trim() !== "") {
+            const filteredElementsList = currentElements.filter((elem) => {
+                return elem.name.toUpperCase().includes(nameSearch.toUpperCase());
+            });
+
+            setFilteredElements(filteredElementsList);
+            setCurrentPage(1);
+        } else {
+            setFilteredElements(currentElements);
+            setCurrentPage(1);
+        }
+    }
+
     return (
         <>
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Sabores activos:</h4>
+                <div className="search-input">
+                    <SearchFilter onChange={onFilterInputChange} />
+                </div>
             </div>
             <FlavorsTable
                 columnsHeaders={columnsHeaders}
