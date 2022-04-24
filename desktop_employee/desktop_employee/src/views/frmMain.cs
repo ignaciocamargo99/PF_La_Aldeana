@@ -98,26 +98,31 @@ namespace desktop_employee
             frmLogin login = new();
             login.ShowDialog();
             isLoginOK = login.isLogin();
-            int perm = login.permissions();
-            if (isLoginOK && perm != 0)
+            
+            if (isLoginOK)
             {
-                ibtnEmpleados.Enabled = false;
-                ibtnAsistencia.Enabled = true;
-                for (int i = 0; i < Application.OpenForms.Count; i++)
+                int perm = login.permissions();
+                if (perm != 0)
                 {
-                    var tag = Application.OpenForms[i].Tag;
-                    if (tag == "Asis")
+                    ibtnEmpleados.Enabled = false;
+                    ibtnAsistencia.Enabled = true;
+
+                    for (int i = 0; i < Application.OpenForms.Count; i++)
                     {
-                        Application.OpenForms[i].Close();
-                        i--;
+                        var tag = Application.OpenForms[i].Tag;
+                        if (tag == "Asis_Dni" || tag == "Asis_Hue")
+                        {
+                            Application.OpenForms[i].Close();
+                            i--;
+                        }
                     }
-                }
-                frmEmployees employees = new();
-                employees.Tag = "Empl_Main";
-                employees.Permisos = perm;
-                lblTitulo.Text = "EMPLEADOS";
-                employees.PnlPadre = pnlDesktop;
-                OpenForm(employees);                
+                    frmEmployees employees = new();
+                    employees.Tag = "Empl_Main";
+                    employees.Permisos = perm;
+                    lblTitulo.Text = "EMPLEADOS";
+                    employees.PnlPadre = pnlDesktop;
+                    OpenForm(employees);
+                }                             
             }
         }
 
