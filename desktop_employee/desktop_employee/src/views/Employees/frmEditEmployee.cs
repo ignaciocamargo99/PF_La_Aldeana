@@ -22,11 +22,13 @@ namespace desktop_employee.src.views.Employees
         Reply oReply = new Reply();
         string txtLblCurrent;
         config config = new();
+        private int permisos;
 
         private Panel pnlPadre;
 
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
         public DataTable EmployeeSelected { get => employeeSelected; set => employeeSelected = value; }
+        public int Permisos { get => permisos; set => permisos = value; }
 
         public frmEditEmployee()
         {
@@ -39,6 +41,14 @@ namespace desktop_employee.src.views.Employees
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
             txtApellido.Text = Convert.ToString(EmployeeSelected.Rows[0][2]);
             getFingers();
+
+            if (permisos == 2)
+            {
+                btnEliminarPD.Visible = false;
+                btnEliminarID.Visible = false;
+                btnEliminarPI.Visible = false;
+                btnEliminarII.Visible = false;
+            }
         }
 
 

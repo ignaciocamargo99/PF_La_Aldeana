@@ -1,7 +1,7 @@
 const db = require("../../config/connection");
 const bcryptjs = require('bcryptjs');
 
-const { logIn, getUser } = require('../services/logInService')
+const { logIn, getUser, logInDesktop } = require('../services/logInService')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
@@ -94,8 +94,36 @@ async function postUser(req, res) {
 })
 };
 
+async function getLogin(req, res) {
 
-module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick };
+    const sqlSelect =
+        "SELECT nick_user, password, id_rol " +
+        "FROM USERS " + 
+        "WHERE condicion AND condicion";
+
+
+}
+
+async function logDesktop(req, res) {
+    try {
+        const data = await logInDesktop(req.query);
+        res.json({
+            Ok: true,
+            Message: 'Sesion iniciada correctamente',
+            data
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+
+
+module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick, logDesktop };
 
 
 
