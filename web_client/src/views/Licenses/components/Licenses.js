@@ -12,24 +12,24 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 const PORT = require('../../../config');
 
 const Licenses = (props) => {
-    
-    const[licenses,setLicenses] = useState([]);
-    const[license,setLicense] = useState(null);
-    const[showSpinner,setShowSpinner] = useState(true);
-    const[action,setAction] = useState('Listar');
-    const[reloadList,setReloadList] = useState(false);
-    const[filter,setFilter] = useState('All');
+
+    const [licenses, setLicenses] = useState([]);
+    const [license, setLicense] = useState(null);
+    const [showSpinner, setShowSpinner] = useState(true);
+    const [action, setAction] = useState('Listar');
+    const [reloadList, setReloadList] = useState(false);
+    const [filter, setFilter] = useState('All');
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)
-        .then((response) => {
-            setLicenses(response.data);
-            setShowSpinner(false);
-            setFilter('All');
-        })
-    },[reloadList])
+            .then((response) => {
+                setLicenses(response.data);
+                setShowSpinner(false);
+                setFilter('All');
+            })
+    }, [reloadList])
 
-    const setActionLicense = (action,license) => {
+    const setActionLicense = (action, license) => {
         setAction(action);
         setLicense(license);
     }
@@ -38,30 +38,35 @@ const Licenses = (props) => {
         setAction('Registrar');
     }
 
-    return(<>
-            {showSpinner ?
-                <LoaderSpinner color="primary" loading="Cargando..." />
+    return (<>
+        {showSpinner ?
+            <LoaderSpinner color="primary" loading="Cargando..." />
             :
-                <div>
-                    <BeShowed show={action === 'Listar'}>
-                        <div style={{display: 'none'}}>{document.title = "Licencias Activas"}</div>
-                        <div className="viewTitleBtn">
-                            <h1>Licencias Activas</h1>
+            <div>
+                <BeShowed show={action === 'Listar'}>
+                    <div style={{ display: 'none' }}>{document.title = "Licencias Activas"}</div>
+                    <div className="viewTitleBtn">
+                        <h1>Licencias Activas</h1>
+                        <BeShowed show={props.permissionsAccess === 2 || props.permissionsAccess === 3}>
                             <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
-                        </div>
-                        <div className="viewBody">
-                            <ListLicensesFilter onClickRB={setFilter} filter={filter}/>
-                            <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} 
-                                        reloadList={reloadList} setReloadList={setReloadList} filter={filter}/>
-                        </div>
-                    </BeShowed>
-                    <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>   
-                        <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses} 
-                                    reloadList={reloadList} setReloadList={setReloadList}/>
-                    </BeShowed>
-                </div>
-            }
-        </>)        
+                        </BeShowed>
+                        <BeShowed show={props.permissionsAccess === 1}>
+                            <button id='editLicenseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
+                        </BeShowed>
+                    </div>
+                    <div className="viewBody">
+                        <ListLicensesFilter onClickRB={setFilter} filter={filter} />
+                        <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense}
+                            reloadList={reloadList} setReloadList={setReloadList} filter={filter} permissionsAccess={props.permissionsAccess} />
+                    </div>
+                </BeShowed>
+                <BeShowed show={action === 'Ver' || action === 'Editar' || action === 'Registrar'}>
+                    <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
+                        reloadList={reloadList} setReloadList={setReloadList} />
+                </BeShowed>
+            </div>
+        }
+    </>)
 }
 
 export default Licenses

@@ -9,8 +9,6 @@ router.get('/permissions/filter/:nick_user', permissionsController.getPermission
 
 router.get('/views', permissionsController.getViews);
 
-router.put('/permissions', permissionsController.putPermissionsRol);
-
 router.get('/accesses', permissionsController.getAccesses);
 
 //#endregion

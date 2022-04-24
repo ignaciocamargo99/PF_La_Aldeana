@@ -12,13 +12,14 @@ import EditFranchise from './components/EditFranchise/EditFranchise';
 
 const PORT = require('../../config');
 
-const FranchiseTable = () => {
+const FranchiseTable = (props) => {
     const [franchises, setFranchises] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [franchiseToEdit, setFranchiseToEdit] = useState({});
     const [franchiseToRead, setFranchiseToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/franchises')
@@ -110,7 +111,12 @@ const FranchiseTable = () => {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Franquicias</h1>
-                            <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='newFranchiseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron franquicias registrados hasta el momento...</h4>
@@ -118,10 +124,14 @@ const FranchiseTable = () => {
                     : (
                         <>
                             <BeShowed show={!isEditing && !isReading}>
-
                                 <div className="viewTitleBtn">
                                     <h1>Franquicias</h1>
-                                    <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                        <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                    <BeShowed show={permissionsAccess === 1}>
+                                        <button id='newFranchiseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
                                 </div>
                                 <div className="viewBody">
                                     <TablePagination
@@ -130,6 +140,7 @@ const FranchiseTable = () => {
                                         handleRead={readFranchise}
                                         handleEdit={editFranchise}
                                         handleDelete={deleteFranchise}
+                                        permissionsAccess={permissionsAccess}
                                     ></TablePagination>
                                 </div>
                             </BeShowed>

@@ -5,9 +5,10 @@ import getPermission from "./getPermission";
 export default function CheckBoxEnabled(props) {
     const [selectValue, setSelectValue] = useState('0');
     const selectorRef = useRef(null);
+    let matrixValuesSelected = props.matrix;
 
     useEffect(() => {
-        if (props.data.editing && props.matrix) {
+        if (props.data.editing && props.matrix && props.permission) {
             let permissions1 = [];
             let idPermission = [];
             permissions1 = props.permission.find((permission) => permission.id_permission === props.index + 1);
@@ -27,7 +28,6 @@ export default function CheckBoxEnabled(props) {
 
     const onClickSelectValue = (e) => {
         if (!props.data.reading) {
-            let matrixValuesSelected = props.matrix
             if (selectValue === '0') {
                 matrixValuesSelected[e][0] = 1;
                 matrixValuesSelected[e][1] = 0;
@@ -61,12 +61,46 @@ export default function CheckBoxEnabled(props) {
         }
     };
 
-    const handleSelectValue = (e) => setSelectValue(e.target.value);
+    const handleSelectValue = (e, i) => {
+        setSelectValue(e.target.value);
+        if (!props.data.reading) {
+            if (e.target.value === '0') {
+                matrixValuesSelected[i][0] = 1;
+                matrixValuesSelected[i][1] = 0;
+                matrixValuesSelected[i][2] = 0;
+                matrixValuesSelected[i][3] = 0;
+            }
+            else {
+                // Ver
+                if (e.target.value === '1') {
+                    matrixValuesSelected[i][0] = 0;
+                    matrixValuesSelected[i][2] = 0;
+                    matrixValuesSelected[i][3] = 0;
+                    matrixValuesSelected[i][e.target.value] = 1;
+                }
+                // Ver/Registrar
+                else if (e.target.value === '2') {
+                    matrixValuesSelected[i][0] = 0;
+                    matrixValuesSelected[i][1] = 0;
+                    matrixValuesSelected[i][3] = 0;
+                    matrixValuesSelected[i][e.target.value] = 1;
+                }
+                // Todos
+                else if (e.target.value === '3') {
+                    matrixValuesSelected[i][0] = 0;
+                    matrixValuesSelected[i][1] = 0;
+                    matrixValuesSelected[i][2] = 0;
+                    matrixValuesSelected[i][e.target.value] = 1;
+                }
+            }
+            props.loadMatrix(props.matrix);
+        }
+    }
 
     return (
         <select className="form-control" id="selectTypeProduct"
             value={selectValue}
-            onChange={handleSelectValue}
+            onChange={(e) => handleSelectValue(e, props.index)}
             onClick={() => onClickSelectValue(props.index)} ref={selectorRef}>
             <BeShowed show={props.data.reading}>
                 <option disabled value="0">{getPermission(props.permission, props.access, props.index, props.data.reading)}</option>

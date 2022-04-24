@@ -12,12 +12,11 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 
 const SalesReport = (props) => {
-
     const [loaded, setLoaded] = useState(false);
-    const [load, setLoad] = useState(0);
-
+    const [load, setLoad] = useState(false);
     const [from, setFrom] = useState(props.dateFrom);
-    const [to, setTo] = useState(props.dateTo)
+    const [to, setTo] = useState(props.dateTo);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         setFrom(props.dateFrom);
@@ -33,15 +32,15 @@ const SalesReport = (props) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} />
+                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} permissionsAccess={permissionsAccess} />
                 </div>
                 <br />
-                <BeShowed show={loaded === false && load > 0}>
+                <BeShowed show={loaded === false && load}>
                     <div className="text-center">
                         <Spinner size="sm" color="secondary" />
                     </div>
                 </BeShowed>
-                <BeShowed show={loaded === true && load > 0}>
+                <BeShowed show={loaded === true && load}>
                     <BeShowed show={props.productSales.length > 0}>
                         <div className="text-center">
                             <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Productos vendidos desde {dateBDToString(from, 'Es')} hasta {dateBDToString(to, 'Es')}</h5>
@@ -57,7 +56,7 @@ const SalesReport = (props) => {
                             </div>
                         </div>
                     </BeShowed>
-                    <BeShowed show={props.productSales.length < 1}>
+                    <BeShowed show={props.productSales.length < 1 && load}>
                         <br />
                         <div className="text-center">
                             <h2>No se encontraron ventas para el período ({from} - {to})</h2>

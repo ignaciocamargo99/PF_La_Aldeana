@@ -12,13 +12,14 @@ import ReadProducts from './ReadProducts/ReadProducts';
 
 const PORT = require('../../../config');
 
-const ProductTable = () => {
+const ProductTable = (props) => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [productToEdit, setProductToEdit] = useState({});
     const [productToRead, setProductToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
+    let permissionsAccess = props.permissionsAccess;
 
     const getProducts = () => {
         Axios.get(PORT() + '/api/products')
@@ -104,42 +105,52 @@ const ProductTable = () => {
         <>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            : products && products.length === 0
-                ? 
-                <div>
-                    <div className="viewTitleBtn">
-                            <h1>Productos</h1>
-                            <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                        </div>
-                    <br/>
-                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron productos registrados hasta el momento.</h4>
-                </div>
-                : (
-                <>
-                    <BeShowed show={!isEditing && !isReading}>
-
+                : products && products.length === 0
+                    ?
+                    <div>
                         <div className="viewTitleBtn">
                             <h1>Productos</h1>
-                            <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='editProductButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
                         </div>
-                        <div className="viewBody">
-                            <TablePagination
-                                columnsHeaders={columnsHeaders}
-                                currentElements={products}
-                                handleRead={readProduct}
-                                handleEdit={editProduct}
-                                handleDelete={productWasSuccessfullyDeleted}
-                            ></TablePagination>
-                        </div>
-                    </BeShowed>
-                    <BeShowed show={isEditing}>
-                        <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
-                    </BeShowed>
-                    <BeShowed show={isReading}>
-                        <ReadProducts onClickCancelRead={onClickCancelRead} productToRead={productToRead} />
-                    </BeShowed>
-                </>
-            )}
+                        <br />
+                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron productos registrados hasta el momento.</h4>
+                    </div>
+                    : (
+                        <>
+                            <BeShowed show={!isEditing && !isReading}>
+                                <div className="viewTitleBtn">
+                                    <h1>Productos</h1>
+                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                        <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                    <BeShowed show={permissionsAccess === 1}>
+                                        <button id='editProductButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                </div>
+                                <div className="viewBody">
+                                    <TablePagination
+                                        columnsHeaders={columnsHeaders}
+                                        currentElements={products}
+                                        handleRead={readProduct}
+                                        handleEdit={editProduct}
+                                        handleDelete={productWasSuccessfullyDeleted}
+                                        permissionsAccess={permissionsAccess}
+                                    ></TablePagination>
+                                </div>
+                            </BeShowed>
+                            <BeShowed show={isEditing}>
+                                <EditProducts onClickCancelEdit={onClickCancelEdit} productToEdit={productToEdit} />
+                            </BeShowed>
+                            <BeShowed show={isReading}>
+                                <ReadProducts onClickCancelRead={onClickCancelRead} productToRead={productToRead} />
+                            </BeShowed>
+                        </>
+                    )}
         </>
     );
 };
