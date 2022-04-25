@@ -23,8 +23,8 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
             <div className="formRow title-searcher">
                 {dateFilter1.current && dateFilter1.current.value !== '' && dateFilter2.current && dateFilter2.current.value !== ''
                     ?
-                    <h4 className="text-secondary">Asistencias registradas desde el { moment(dateFilter1.current.value).format('DD/MM/YYYY')} hasta el {
-                            moment(dateFilter2.current.value).format('DD/MM/YYYY')}
+                    <h4 className="text-secondary">Asistencias registradas desde el {moment(dateFilter1.current.value).format('DD/MM/YYYY')} hasta el {
+                        moment(dateFilter2.current.value).format('DD/MM/YYYY')}
                     </h4>
                     :
                     dateFilter1.current && dateFilter1.current.value !== ''
@@ -64,12 +64,7 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                             {pageElements?.map((element, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
-                                            PORT() === ''
-                                                ?
-                                                moment(element.date_entry).format('DD-MM-YYYY')
-                                                :
-                                                moment(element.date_entry).add(1, 'days').format('DD-MM-YYYY')}
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('DD-MM-YYYY')}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
