@@ -88,6 +88,8 @@ const MyDocument = (props) => {
             <Text style={styles.detail}>{props.description}</Text>
             <Text style={styles.header}>{props.title}</Text>
           </View>
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
           <View style={styles.section}>
             <Text style={styles.title}>Top 10 productos con más unidades vendidas</Text>
             <Image style={styles.image} src={dataChartToURL(props.topChart)}></Image>
@@ -113,6 +115,9 @@ const MyDocument = (props) => {
                 </>
               )
             })}
+          </View>
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
             <Text style={styles.title}>Total de ventas de tipos productos por unidad</Text>
             <Image style={styles.image} src={dataChartToURL(props.typesChart)}></Image>
             <Text style={styles.detail}>Total de ventas: {props.typesChart.total} uds.</Text>
@@ -138,7 +143,8 @@ const MyDocument = (props) => {
                 </>
               )
             })}
-
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
             <Text style={styles.title}>Total de ventas de productos por unidad</Text>
             <View style={styles.row}>
               <View style={styles.col3}>
@@ -168,8 +174,6 @@ const MyDocument = (props) => {
                 </>
               )
             })}
-
-          </View>
         </Page>
       </Document>
     </>
