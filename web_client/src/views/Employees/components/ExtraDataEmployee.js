@@ -113,34 +113,34 @@ export default function ExtraDataEmployee(props) {
             <h2>Datos laborales</h2>
 
             <div className="formRow">
-                <div className="form-control-label">
+                <div className="form-control-label col-sm-3">
                     <label htmlFor="employeeCharge" >Cargos*</label>
                 </div>
-            </div>
-            {console.log(data)}
+                <div className="col-sm-9">
+                    {props.isReadingEmployeeData &&
+                        <ul>
+                            {data.charges?.map((c) => {
+                                return (
+                                    <li key={c.chargeId}>{c.chargeName}</li>
+                                )
+                            })}
+                        </ul>
+                    }
 
-            {props.isReadingEmployeeData &&
-                <ul>
-                    {data.charges?.map((c) => {
+                    {!props.isReadingEmployeeData && allCharges.map((c) => {
                         return (
-                            <li key={c.chargeId}>{c.chargeName}</li>
+                            <ChargeCheckbox
+                                key={c.id_charge}
+                                chargeId={c.id_charge}
+                                chargeName={c.name}
+                                checkedCheckbox={data.charges?.map(x => x.chargeId).includes(c.id_charge)}
+                                employeeData={data}
+                                updateEmployeeData={props.load}
+                            ></ChargeCheckbox>
                         )
                     })}
-                </ul>
-            }
-
-            {!props.isReadingEmployeeData && allCharges.map((c) => {
-                return (
-                    <ChargeCheckbox
-                        key={c.id_charge}
-                        chargeId={c.id_charge}
-                        chargeName={c.name}
-                        checkedCheckbox={data.charges?.map(x => x.chargeId).includes(c.id_charge)}
-                        employeeData={data}
-                        updateEmployeeData={props.load}
-                    ></ChargeCheckbox>
-                )
-            })}
+                </div>
+            </div>
 
             <div className="formRow">
                 <div className="form-control-label">
@@ -180,11 +180,11 @@ export default function ExtraDataEmployee(props) {
             )}
 
             <div className="formRow">
-                <div className="form-control-label">
+                <div className="form-control-label col-sm-3">
                     <label>Relación laboral*</label>
                 </div>
-                <div className="d-flex form-radio-group">
-                    <div className="form-check form-radio col-sm-3">
+                <div className="form-radio-group col-sm-9">
+                    <div className="form-check form-radio formRow">
                         <input
                             className="form-check-input"
                             disabled={props.isReadingEmployeeData}
@@ -200,7 +200,7 @@ export default function ExtraDataEmployee(props) {
                         <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
 
-                    <div className="form-check col-sm-6">
+                    <div className="form-check formRow">
                         <input
                             className="form-check-input"
                             disabled={props.isReadingEmployeeData}
@@ -216,7 +216,7 @@ export default function ExtraDataEmployee(props) {
                         <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
                     </div>
                     
-                    <div className="form-check col-sm-6">
+                    <div className="form-check formRow">
                         <input
                             className="form-check-input"
                             disabled={props.isReadingEmployeeData}
