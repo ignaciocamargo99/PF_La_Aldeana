@@ -98,7 +98,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                 return (
                                     <th key={i + 1} style={{
                                         padding: '0px', verticalAlign: 'middle', textAlign: 'center',
-                                        backgroundColor: `${nonworkingDaysMonth.includes(i + 1) ? '#FF8B8B' : new Date(monthYear.year, monthYear.month, i + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, i + 1).getDay() === 6 ? '#8DFF8B' : 'gray'}`
+                                        backgroundColor: `${nonworkingDaysMonth.includes(i + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, i + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, i + 1).getDay() === 6 ? '#84F965' : 'gray'}`
                                     }}>
                                         <button className="btn" onClick={() => { loadDayStats(i) }}>
                                             <p>{nonworkingDaysMonth.includes(i + 1) ? 'F' : showMeDay(new Date(monthYear.year, monthYear.month, i + 1).getDay()).slice(0, 2)}</p>
@@ -126,7 +126,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                                 <BeShowed show={permissionsAccess === 3}>
                                                     <td key={j + 1 + i} style={{
                                                         verticalAlign: 'middle', textAlign: 'center',
-                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FF8B8B' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#8DFF8B' : ''}`
+                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
                                                     }}>
                                                         <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
                                                             className={schedule[i][j] === 'F'?"bg-dark text-light":""}
@@ -138,7 +138,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                                 <BeShowed show={permissionsAccess !== 3}>
                                                     <td key={j + 1 + i} style={{
                                                         verticalAlign: 'middle', textAlign: 'center',
-                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FF8B8B' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#8DFF8B' : ''}`
+                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
                                                     }}>
                                                         <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
                                                             className={schedule[i][j] === 'F'?"bg-dark text-light":""}

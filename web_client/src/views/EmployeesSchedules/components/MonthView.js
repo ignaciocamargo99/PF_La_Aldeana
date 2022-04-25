@@ -185,10 +185,10 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
                         month={monthYear.month} turns={turns} infoTurns={infoTurns} />
                 </div>
                 <div className='formRow'>
-                    <button className='sendNotOk col-sm-1 offset-sm-9' onClick={() => { setShowMonthView(false) }}>Volver</button>
                     <BeShowed show={permissionsAccess === 3}>
-                        <button className='sendOk col-sm-1 offset-sm-1' style={{ height: "20%" }} onClick={loadJDEmployees}>Grabar datos del mes</button>
+                        <button className='sendOk col-sm-1 offset-sm-9' style={{ height: "20%" }} onClick={loadJDEmployees}>Grabar datos del mes</button>
                     </BeShowed>
+                    <button className='sendNotOk col-sm-1 offset-sm-1' onClick={() => { setShowMonthView(false) }}>Volver</button>
                     <BeShowed show={permissionsAccess !== 3}>
                         <button className='sendOk col-sm-1 offset-sm-1 disabledSendBtn' style={{ height: "20%" }} disabled>Grabar datos del mes</button>
                     </BeShowed>
