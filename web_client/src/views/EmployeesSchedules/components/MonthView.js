@@ -41,7 +41,12 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
         let days = calculateDays(monthYear.month, monthYear.year);
         let newSchedule = [];
         let jde, lic;
-        axios.get(`${PORT()}/api/jdEmployee?yearMonth=${year}-${month + 1 < 10 ? '0' + (month + 1) : month + 1}`)
+        let initDate = new Date(year,month,1);
+        let finishDate = new Date(year,month+1,0);
+        let monthInFormat = month + 1 < 10 ? '0' + (month + 1) : month + 1;
+        let dayInitInFormat = initDate.getDate() < 10 ? '0'+initDate.getDate():initDate.getDate();
+        let dayFinishInFormat = finishDate.getDate() < 10 ? '0'+finishDate.getDate():finishDate.getDate();
+        axios.get(`${PORT()}/api/jdEmployee?yearMonth=${year}-${monthInFormat}`)
             .then((jdeResponse) => {
                 jde = jdeResponse.data;
                 axios.get(`https://nolaborables.com.ar/api/v2/feriados/${monthYear.year}`)
@@ -49,36 +54,49 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
                         let nwdMonth = [];
                         nwdResponse.data.forEach((nWD, i) => { if (nWD.mes === (month + 1)) nwdMonth.push(nWD.dia) })
                         updateNonworkingDaysInMonthSchedule(nwdMonth);
-                        axios.get(`${PORT()}/api/licenses`)
-                            .then((licResponse) => {
-                                lic = licResponse.data.filter(license => (parseInt(license.date_init.slice(0, 4)) === year && parseInt(license.date_init.slice(5, 7)) === month + 1) || (parseInt(license.date_finish.slice(0, 4)) === year && parseInt(license.date_finish.slice(5, 7)) === month + 1));
-
-                                for (let i = 0; i < employees.length; i++) {
-                                    newSchedule.push([]);
-                                    for (let j = 0; j < days; j++) {
-                                        newSchedule[i].push('')
-                                    }
-                                }
-                                for (let i = 0; i < days; i++) {
-                                    employees.forEach((emp, j) => {
-                                        let findLicense, findjobDay;
-                                        findLicense = lic.find((license) => license.dni === emp.dni
-                                            && parseInt(license.date_init.slice(8, 10)) <= i + 1
-                                            && parseInt(license.date_finish.slice(8, 10)) >= i + 1);
-                                        if (findLicense) {
-                                            newSchedule[j][i] = 'X';
-                                        }
-                                        else {
-                                            findjobDay = jde.find((jd) => jd.employee_dni === emp.dni
-                                                && jd.date.slice(0, 10) === `${year}-${month < 9 ? '0' + (month + 1) : (month + 1)}-${i < 9 ? '0' + (i + 1) : (i + 1)}`);
-                                            if (findjobDay) {
-                                                newSchedule[j][i] = findjobDay.abbreviation;
+                        axios.get(`${PORT()}/api/daysOff?minDate=${year}${monthInFormat}${dayInitInFormat}&maxDate=${year}${monthInFormat}${dayFinishInFormat}`)
+                            .then((daysOffResponse) => {
+                                let daysOff = daysOffResponse.data.Data;
+                                axios.get(`${PORT()}/api/licenses`)
+                                    .then((licResponse) => {
+                                        lic = licResponse.data.filter(license => (parseInt(license.date_init.slice(0, 4)) === year && parseInt(license.date_init.slice(5, 7)) === month + 1) || (parseInt(license.date_finish.slice(0, 4)) === year && parseInt(license.date_finish.slice(5, 7)) === month + 1));
+        
+                                        for (let i = 0; i < employees.length; i++) {
+                                            newSchedule.push([]);
+                                            for (let j = 0; j < days; j++) {
+                                                newSchedule[i].push('')
                                             }
                                         }
-                                    });
-                                };
-                                setInitialSchedule(newSchedule);
-                                updateSchedule(newSchedule);
+                                        for (let i = 0; i < days; i++) {
+                                            employees.forEach((emp, j) => {
+                                                let findDayOff, findLicense, findjobDay;
+                                                
+                                                findLicense = lic.find((license) => license.dni === emp.dni
+                                                    && parseInt(license.date_init.slice(8, 10)) <= i + 1
+                                                    && parseInt(license.date_finish.slice(8, 10)) >= i + 1);
+                                                if (findLicense) {
+                                                    newSchedule[j][i] = 'X';
+                                                }
+                                                else{
+                                                    findDayOff = daysOff.find((dayOff) => dayOff.dni_employee === emp.dni
+                                                        && parseInt(dayOff.date.slice(8, 10)) === i + 1);
+                                                    if(findDayOff){
+                                                        newSchedule[j][i] = 'F';
+                                                    }
+                                                    else{
+                                                        findjobDay = jde.find((jd) => jd.employee_dni === emp.dni
+                                                            && jd.date.slice(0, 10) === `${year}-${month < 9 ? '0' + (month + 1) : (month + 1)}-${i < 9 ? '0' + (i + 1) : (i + 1)}`);
+                                                        if (findjobDay) {
+                                                            newSchedule[j][i] = findjobDay.abbreviation;
+                                                        }
+                                                    }
+
+                                                }
+                                            });
+                                        };
+                                        setInitialSchedule(newSchedule);
+                                        updateSchedule(newSchedule);
+                                    })
                             })
                     })
             })
@@ -152,24 +170,25 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
                 />
                 <h1 className="col-sm-2 offset-sm-2">{showMeMonth(monthYear.month)}</h1>
                 <button className='btn offset-sm-2' onClick={loadInfoTurns}><FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon></button>
-                <button className="btn" onClick={() => { setFirstHalfMonth(true) }}> 1er Quincena</button>
-                <button className="btn" onClick={() => { setFirstHalfMonth(false) }}> 2da Quincena</button>
+                <button className={firstHalfMonth?"btn btn-secondary":"btn"} onClick={() => { setFirstHalfMonth(true) }}> 1er Quincena</button>
+                <button className={(!firstHalfMonth)?"btn btn-secondary":"btn"} onClick={() => { setFirstHalfMonth(false) }}> 2da Quincena</button>
             </div>
             {schedule && nonworkingDaysMonth ? <>
                 <div className="formRow">
                     <div className="col-sm-10">
                         <TableScheduleEmployees employees={employees} firstHalfMonth={firstHalfMonth}
                             turns={turns} setEmployee={setEmployee} setEmployeeStats={setEmployeeStats}
-                            setDay={setDay} setDayStats={setDayStats} setInfoTurns={setInfoTurns} permissionsAccess={permissionsAccess} />
+                            setDay={setDay} setDayStats={setDayStats} setInfoTurns={setInfoTurns} 
+                            permissionsAccess={permissionsAccess} />
                     </div>
                     <Stats employee={employee} employeeStats={employeeStats} day={day} dayStats={dayStats}
                         month={monthYear.month} turns={turns} infoTurns={infoTurns} />
                 </div>
                 <div className='formRow'>
-                    <button className='sendNotOk col-sm-1 offset-sm-9' onClick={() => { setShowMonthView(false) }}>Volver</button>
                     <BeShowed show={permissionsAccess === 3}>
-                        <button className='sendOk col-sm-1 offset-sm-1' style={{ height: "20%" }} onClick={loadJDEmployees}>Grabar datos del mes</button>
+                        <button className='sendOk col-sm-1 offset-sm-9' style={{ height: "20%" }} onClick={loadJDEmployees}>Grabar datos del mes</button>
                     </BeShowed>
+                    <button className='sendNotOk col-sm-1 offset-sm-1' onClick={() => { setShowMonthView(false) }}>Volver</button>
                     <BeShowed show={permissionsAccess !== 3}>
                         <button className='sendOk col-sm-1 offset-sm-1 disabledSendBtn' style={{ height: "20%" }} disabled>Grabar datos del mes</button>
                     </BeShowed>
