@@ -16,6 +16,18 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
         dateFilter2.current.value = '';
         setDateSearch1('');
         setDateSearch2('');
+        dateFilter1.current.max = '';
+        dateFilter2.current.min = '';
+    }
+
+    const onClickDate1 = (e) => {
+        setDateSearch1(e.target.value);
+        dateFilter2.current.min = e.target.value;
+    }
+
+    const onClickDate2 = (e) => {
+        setDateSearch2(e.target.value);
+        dateFilter1.current.max = e.target.value;
     }
 
     return (
@@ -41,10 +53,10 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                 }
                 <div className="search-input">
                     <label className="lblDate">Fecha desde</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch1(e.target.value)} ref={dateFilter1} />
+                    <input id="inputSearchName" type="date" onChange={(e) => onClickDate1(e)} ref={dateFilter1} />
                     <label className="lblDate">Fecha hasta</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => setDateSearch2(e.target.value)} ref={dateFilter2} />
-                    <button id='filterProductionButton' type="button" onClick={onClickFilter} className="filterBtn">Limpiar filtros</button>
+                    <input id="inputSearchName" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
+                    <button id='filterAssistanceButton' type="button" onClick={onClickFilter} className="filterBtn">Limpiar filtros</button>
                 </div>
             </div>
 
