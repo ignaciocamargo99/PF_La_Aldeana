@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getCharges } from "../../../helpers/getCharges";
-import formattedDate from "../../../utils/formattedDate";
-import ChargeCheckbox from "./ChargeCheckbox";
+import { getCharges } from "helpers/getCharges";
+import formattedDate from "utils/formattedDate";
+import ChargeSelect from "./ChargeSelect";
 
 export default function ExtraDataEmployee({
     isReadingEmployeeData,
     data,
     load,
 }) {
+
     const [date, setDate] = useState();
     const [firstDayOffDate, setFirstDayOffDate] = useState();
     const [allCharges, setAllCharges] = useState([]);
@@ -105,34 +106,12 @@ export default function ExtraDataEmployee({
         <>
             <h2>Datos laborales</h2>
 
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="employeeCharge" >Cargos*</label>
-                </div>
-            </div>
-
-            {isReadingEmployeeData &&
-                <ul>
-                    {data.charges?.map((c) => {
-                        return (
-                            <li key={c.chargeId}>{c.chargeName}</li>
-                        )
-                    })}
-                </ul>
-            }
-
-            {!isReadingEmployeeData && allCharges.map((c) => {
-                return (
-                    <ChargeCheckbox
-                        key={c.id_charge}
-                        chargeId={c.id_charge}
-                        chargeName={c.name}
-                        checkedCheckbox={data.charges?.map(x => x.chargeId).includes(c.id_charge)}
-                        employeeData={data}
-                        updateEmployeeData={load}
-                    ></ChargeCheckbox>
-                )
-            })}
+            <ChargeSelect
+                formData={data}
+                allCharges={allCharges}
+                updateFormData={load}
+                disableSelect={isReadingEmployeeData}
+            />
 
             <div className="formRow">
                 <div className="form-control-label">
@@ -146,7 +125,7 @@ export default function ExtraDataEmployee({
                         max={maxDate}
                         min={"2001-01-01"}
                         onChange={onChangeDate}
-                        readOnly={isReadingEmployeeData}
+                        disabled={isReadingEmployeeData}
                         ref={inputDate}
                         type="date"
                     />
