@@ -61,7 +61,7 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
         const columnsHeaders = [
             {
                 name: 'Nombre',
-                width: '25%'
+                width: '21%'
             },
             {
                 name: 'Familia',
@@ -83,17 +83,17 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
                 name: 'Precio',
                 width: '10%'
             },
-            // {
-            //     name: 'Ver',
-            //     width: '10%'
-            // },
             {
-                name: 'Ver / Editar',
-                width: '10%'
+                name: 'Ver',
+                width: '8%'
+            },
+            {
+                name: 'Editar',
+                width: '8%'
             },
             {
                 name: 'Eliminar',
-                width: '10%'
+                width: '8%'
             }
         ];
 

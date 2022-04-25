@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import validateFloatNumbers from 'utils/validateFloatNumbers'
 import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
 
-const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSubmit }) => {
+const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSubmit, isReading = false }) => {
 
     // #region hooks
 
@@ -80,7 +80,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isNaN(price)) {
             return false;
         }
-        return (price > 0 && price.length <= 5);
+        return (price > 0 && price.toString().length <= 5);
     };
 
     const isFormPriceEmpty = () => {
@@ -102,7 +102,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isNaN(stock)) {
             return false;
         }
-        return (stock > 0 && stock.length <= 5);
+        return (stock > 0 && stock.toString().length <= 5);
     }
 
     const isFormStockEmpty = () => {
@@ -124,7 +124,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     };
 
     const isValidReorderStock = (reorderStock) => {
-        return (reorderStock > 0 && reorderStock.length <= 5);
+        return (reorderStock > 0 && reorderStock.toString().length <= 5);
     };
 
     // #endregion
@@ -363,6 +363,26 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
 
     const handleSubmitBtnClicked = () => onSubmit(formData);
 
+    const ActionButtons = () => {
+        if (isReading) {
+            return (
+                <div className='buttons'>
+                    <button className='sendOk' onClick={handleCancelBtnClicked}>Volver</button>
+                </div>
+            )
+        }
+
+        return (
+            <Buttons
+                actionCancel={handleCancelBtnClicked}
+                actionOK={handleSubmitBtnClicked}
+                actionNotOK={warnFormDataInvalid}
+                label={submitBtnText}
+                ready={formDataValid}
+            />
+        )
+    }
+
     // #endregion
 
     return (
@@ -388,6 +408,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             maxLength="80"
                             onChange={handleNameChange}
                             placeholder='Ingrese nombre del sabor...'
+                            disabled={isReading}
                             type='text'
                             value={formData.name}
                         >
@@ -402,9 +423,10 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     <div className="form-control-input">
                         <textarea
                             className="form-control"
-                            onChange={handleDescriptionChange}
                             maxLength="200"
+                            onChange={handleDescriptionChange}
                             placeholder='Ingrese descripción del sabor...'
+                            disabled={isReading}
                             type='text'
                             value={formData.description}
                         >
@@ -421,6 +443,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             onChange={handlePriceChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
                             placeholder="Ingrese precio del sabor..."
+                            disabled={isReading}
                             type="number"
                             value={formData.price}
                         />
@@ -437,6 +460,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             onChange={handleStockChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
                             placeholder="Ingrese stock actual..."
+                            disabled={isReading}
                             type="number"
                             value={formData.stock}
                         />
@@ -452,7 +476,8 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             className={reorderStockInputStyle}
                             onChange={handleReorderStockChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
-                            placeholder="Ingrese stock de reorden..."
+                            placeholder={isReading ? "" : "Ingrese stock de reorden..."}
+                            disabled={isReading}
                             type="number"
                             value={formData.reorderStock}
                         />
@@ -466,6 +491,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     <div className="form-control-input">
                         <select className="form-control"
                             value={formData.family_flavor}
+                            disabled={isReading}
                             onChange={handleFlavorFamilyChange}
                         >
                             <option disabled value=''>Seleccione familia de sabor...</option>
@@ -488,8 +514,9 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                     </div>
                     <div className="form-control-input">
                         <select className="form-control"
-                            value={formData.type_flavor}
                             onChange={handleFlavorTypeChange}
+                            disabled={isReading}
+                            value={formData.type_flavor}
                         >
                             <option disabled value=''>Seleccione tipo de sabor...</option>
                             {flavorTypes?.map((ft, i) => {
@@ -505,13 +532,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                         </select>
                     </div>
                 </div>
-                <Buttons
-                    actionCancel={handleCancelBtnClicked}
-                    actionOK={handleSubmitBtnClicked}
-                    actionNotOK={warnFormDataInvalid}
-                    label={submitBtnText}
-                    ready={formDataValid}
-                />
+                <ActionButtons />
             </div>
         </>
     )
