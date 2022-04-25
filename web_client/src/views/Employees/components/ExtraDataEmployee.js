@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getCharges } from "helpers/getCharges";
 import formattedDate from "utils/formattedDate";
-import ChargeSelect from "./ChargeSelect";
+import ChargeFormControl from "./ChargeFormControl";
 
 export default function ExtraDataEmployee({
     isReadingEmployeeData,
@@ -106,7 +106,7 @@ export default function ExtraDataEmployee({
         <>
             <h2>Datos laborales</h2>
 
-            <ChargeSelect
+            <ChargeFormControl
                 formData={data}
                 allCharges={allCharges}
                 updateFormData={load}
