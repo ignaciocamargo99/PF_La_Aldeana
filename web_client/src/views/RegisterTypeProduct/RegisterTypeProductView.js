@@ -89,7 +89,7 @@ export default function RegisterTypeProductView() {
         }
     }
 
-    const cancelTypeProduct = () => window.location.reload();
+    const cancelTypeProduct = () => window.location.replace('/app/productTypes');;
 
     return (
         <>
