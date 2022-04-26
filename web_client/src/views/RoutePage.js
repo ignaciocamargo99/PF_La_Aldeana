@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
-import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
 import RegisterSupplyView from './RegisterSupply/RegisterSupplyView';
 import ListProducts from './ListProducts/ListProducts';
 import RegisterFranchise from './Franchises/RegisterFranchise';
@@ -25,6 +24,7 @@ import RegisterUser from './Users/components/RegisterUser';
 import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
+import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
 
 export default function RouterPage(props) {
 
@@ -42,7 +42,9 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/products' render={() => <ListProducts permissionsAccess={permissionsAccessProducts} />}></Route>
                         <Route path='/app/registerProducts' component={RegisterProductView}></Route>
-                        <Route path='/app/typeProducts' component={RegisterTypeProductView}></Route>
+                        <Route path='/app/productTypes'>
+                            <ProductTypeRoutes permissionsAccess={permissionsAccessProducts} />
+                        </Route>
                         <Route path='/app/supplies' component={RegisterSupplyView}></Route>
                     </>
             }
@@ -57,7 +59,7 @@ export default function RouterPage(props) {
                         <Route path='/app/productions' render={() => <ListProductions permissionsAccess={permissionsAccessProductions} />}></Route>
                         <Route path='/app/production' component={RegisterProductionView}></Route>
                         <Route path='/app/flavors'>
-                            <FlavorRoutes permissionsAccess={permissionsAccessProductions}/>
+                            <FlavorRoutes permissionsAccess={permissionsAccessProductions} />
                         </Route>
                     </>
             }
