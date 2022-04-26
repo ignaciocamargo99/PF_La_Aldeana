@@ -94,7 +94,7 @@ export default function RegisterTypeProductView() {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar tipo de producto"}</div>
-            <Breadcrumb parentName="Tipos de producto" icon={faIceCream} parentLink="productTypes" currentName="Nuevo tipo de producto" />
+            <Breadcrumb parentName="Tipos de producto" icon={faIceCream} parentLink="/app/productTypes" currentName="Nuevo tipo de producto" />
             <div className="viewTitle">
                 <h1>Registrar tipo de producto</h1>
             </div>
