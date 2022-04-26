@@ -64,7 +64,7 @@ export default function Navbar(props) {
                                 <FontAwesomeIcon icon={faList} /> Ver tipos de producto
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/supplies">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Insumo
+                                <FontAwesomeIcon icon={faList} /> Ver insumos
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
