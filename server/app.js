@@ -11,6 +11,7 @@ const middleware = require('./middleware/index');
 
 const productsRouter = require('./api/routes/productRoute');
 const typeProductsRouter = require('./api/routes/typeProductRoute');
+const productTypeRouter = require('./api/routes/productTypeRouter');
 const suppliesRouter = require('./api/routes/suppliesRoute');
 const purchaseSuppliesRouter = require('./api/routes/purchaseSuppliesRoute');
 const logInRouter = require('./api/routes/logInRoute');
@@ -59,6 +60,7 @@ app.use('/api', logInRouter);
 app.use('/api', permissionsRouter);
 app.use('/api', productsRouter);
 app.use('/api', typeProductsRouter);
+app.use('/api/productTypes', productTypeRouter);
 app.use('/api', suppliesRouter);
 app.use('/api', purchaseSuppliesRouter);
 app.use('/api', flavorsRouter);
