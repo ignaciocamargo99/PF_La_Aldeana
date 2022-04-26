@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
-import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
-import { connect } from 'react-redux';
 import dataChartToURL from '../../../../utils/dataChartToURL';
 
 // Create styles
@@ -13,6 +10,11 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingBottom: 65,
     paddingHorizontal: 35,
+  },
+  sectionFace: {
+    margin: 10,
+    padding: 10,
+    marginTop: '35%'
   },
   section: {
     margin: 10,
@@ -75,13 +77,13 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const MyDocument = (props) => {
+export default function MyDocument (props) {
 
   return (
     <>
       <Document>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
-          <View style={styles.section}>
+          <View style={styles.sectionFace}>
             <Text style={styles.header}>{dateFormat(new Date())}</Text>
             <Text style={styles.mainTitle}>~ Venta De Productos ~</Text>
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
@@ -179,91 +181,3 @@ const MyDocument = (props) => {
     </>
   );
 }
-
-const Viewer = (props) => {
-  let [labels, setLabels] = useState([]);
-  let [dat, setDat] = useState([]);
-
-  useEffect(() => {
-    let l = []
-    let d = []
-    props.topTenProductSales?.forEach((e) => {
-      l = [...l, e.name]
-      d = [...d, e.quantity]
-    })
-
-    setLabels(l);
-    setDat(d);
-  }, [props.topTenProductSales])
-
-  const top = {
-    type: 'bar',
-    labels: labels,
-    datasets: [
-      {
-        label: 'número de unidades vendidas',
-        data: dat,
-      },
-    ],
-  };
-
-  let [labelsTypes, setLabelsTypes] = useState([]);
-  let [datTypes, setDatTypes] = useState([]);
-
-  useEffect(() => {
-    let l = []
-    let d = []
-    props.typeProductSales.types?.forEach((e) => {
-      l = [...l, e.id]
-      d = [...d, e.quantity]
-    })
-
-    setLabelsTypes(l);
-    setDatTypes(d);
-  }, [props.typeProductSales.types])
-
-  const types = {
-    type: 'pie',
-    labels: labelsTypes,
-    datasets: [
-      {
-        label: 'número de ventas',
-        data: datTypes,
-      },
-    ],
-    total: props.typeProductSales.total
-  };
-
-
-  return (
-    <Modal isOpen={props.showPdf}
-      size="xl"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered>
-      <ModalHeader>
-        <h2>Previsualización de reporte de venta de productos</h2>
-      </ModalHeader>
-      <ModalBody style={{ height: '50em' }}>
-        <PDFViewer style={{ width: '100%', height: '45em' }} showToolbar={false}>
-          <MyDocument title={props.title} description={props.description} topChart={top} sales={props.productSales} typesChart={types} top={props.topTenProductSales} types={props.typeProductSales.types} />
-        </PDFViewer>
-      </ModalBody>
-      <ModalFooter>
-        <PDFDownloadLink document={<MyDocument title={props.title} description={props.description} topChart={top} typesChart={types} sales={props.productSales} top={props.topTenProductSales} types={props.typeProductSales.types} />} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
-          <button className='sendOk' >Descargar</button>
-        </PDFDownloadLink>
-        <button className='cancel' onClick={props.cancel}>Cancelar</button>
-      </ModalFooter>
-    </Modal>
-  )
-}
-
-const mapStateToProps = state => {
-  return {
-    productSales: state.productSales,
-    topTenProductSales: state.topTenProductSales,
-    typeProductSales: state.typeProductSales
-  }
-}
-
-export default connect(mapStateToProps)(Viewer);
