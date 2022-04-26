@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
-import RegisterSupplyView from './RegisterSupply/RegisterSupplyView';
 import ListProducts from './ListProducts/ListProducts';
 import RegisterFranchise from './Franchises/RegisterFranchise';
 import Franchises from './Franchises/FranchiseTable';
@@ -25,6 +24,7 @@ import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
 import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
+import SupplyRoutes from './Supplies/SupplyRoutes';
 
 export default function RouterPage(props) {
 
@@ -45,7 +45,9 @@ export default function RouterPage(props) {
                         <Route path='/app/productTypes'>
                             <ProductTypeRoutes permissionsAccess={permissionsAccessProducts} />
                         </Route>
-                        <Route path='/app/supplies' component={RegisterSupplyView}></Route>
+                        <Route path='/app/supplies'>
+                            <SupplyRoutes permissionsAccess={permissionsAccessProducts} />
+                        </Route>
                     </>
             }
 
