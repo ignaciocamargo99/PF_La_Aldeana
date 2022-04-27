@@ -48,7 +48,7 @@ export default function EditFranchise(props) {
                 <hr />
                 <DataManager load={load} data={data} />
                 <Buttons
-                    label='Registrar' actionOK={registerFranchise}
+                    label='Aceptar' actionOK={registerFranchise}
                     actionNotOK={validationFranchiseRegister}
                     ready={ready}
                     data={data}

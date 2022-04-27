@@ -318,7 +318,7 @@ const FormLicense = (props) => {
             </BeShowed>
             <BeShowed show={props.action === 'Editar'}>   
                 <Buttons ready={(!errorDateInit && !errorDateFinish && !errorEmployee && !errorReason)}
-                    label='Confirmar' actionNotOK={actionNotOK} actionOK={editLicense} actionCancel={() => {comeBack(false)}}/>
+                    label='Aceptar' actionNotOK={actionNotOK} actionOK={editLicense} actionCancel={() => {comeBack(false)}}/>
             </BeShowed>
             <BeShowed show={props.action === 'Ver'}> 
                 <button className="sendOk offset-sm-11" onClick={() => {comeBack(false)}}>Volver</button>

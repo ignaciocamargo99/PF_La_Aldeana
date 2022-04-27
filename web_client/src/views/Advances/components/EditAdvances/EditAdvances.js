@@ -90,7 +90,7 @@ export default function EditAdvances(props) {
             <div className="viewBody">
                 <ExtraDataAdvances load={load} data={data} />
                 <Buttons
-                    label='Registrar' actionOK={updateAdvances}
+                    label='Aceptar' actionOK={updateAdvances}
                     actionNotOK={updateAdvances}
                     actionCancel={back}
                     ready={ready}

@@ -68,7 +68,7 @@ export default function EditEmployee({ goBack, employeeData }) {
                     actionNotOK={updateEmployee}
                     actionOK={updateEmployee}
                     data={newEmployeeData}
-                    label='Confirmar'
+                    label='Aceptar'
                     ready={readyForSubmit}
                 />
             </div>

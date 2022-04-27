@@ -93,7 +93,7 @@ export default function EditAssistance(props) {
             <div className="viewBody">
                 <DataAssistance load={load} data={data} />
                 <Buttons
-                    label='Registrar' ready={ready} actionOK={updateAssistanceEmployee} actionNotOK={updateAssistanceEmployee}
+                    label='Aceptar' ready={ready} actionOK={updateAssistanceEmployee} actionNotOK={updateAssistanceEmployee}
                     data={data} actionCancel={props.cancel}
                 />
             </div>

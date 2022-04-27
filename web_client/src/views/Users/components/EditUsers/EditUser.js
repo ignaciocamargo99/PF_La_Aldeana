@@ -85,7 +85,7 @@ export default function EditUser(props) {
                 <DataUser data={data} loadData={loadData} />
                 <ListPermissions data={data} loadMatrix={loadMatrix} valueSelect={valueSelect} />
                 <Buttons
-                    label='Registrar' actionOK={updateUser}
+                    label='Aceptar' actionOK={updateUser}
                     actionNotOK={updateUser}
                     ready={ready}
                     data={data}
