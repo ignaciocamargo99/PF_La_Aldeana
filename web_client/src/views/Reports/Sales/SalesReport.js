@@ -6,10 +6,10 @@ import TypeProductsSales from "./components/TypeProductsSales";
 import ListProductSales from "./components/ListProductSales";
 import BeShowed from "../../../common/BeShowed";
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'reactstrap';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import LoaderSpinner from 'common/LoaderSpinner';
 
 const SalesReport = (props) => {
     const [loaded, setLoaded] = useState(false);
@@ -36,9 +36,7 @@ const SalesReport = (props) => {
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load}>
-                    <div className="text-center">
-                        <Spinner size="sm" color="secondary" />
-                    </div>
+                    <LoaderSpinner color='secondary' loading='Cargando...'></LoaderSpinner>
                 </BeShowed>
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={props.productSales.length > 0}>
