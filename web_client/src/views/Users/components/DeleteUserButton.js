@@ -1,8 +1,8 @@
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import confirmDelete from '../../../utils/confirmDelete';
 import Axios from "axios";
 import swal from "sweetalert";
+import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import '../../../assets/Buttons.css';
 import BeShowed from '../../../common/BeShowed';
 
@@ -11,10 +11,15 @@ const PORT = require('../../../config');
 export default function DeleteUserButton(props) {
     let permissionsAccess = props.permissionsAccess;
 
-    const handleDelete = () => confirmDelete(deleteUser);
+    const handleDelete = async () => {
+        const warningTitle = `¿Seguro que desea eliminar ${props.data.nick_user}?`;
+        const warningText = 'El usuario ya no estará disponible.';
+        const deletionConfirmed = (await defaultQuestionSweetAlert2(warningTitle, warningText)).isConfirmed;
+        if (deletionConfirmed) deleteUser(props.data.id_user);
+    }
 
-    const deleteUser = () => {
-        Axios.put(PORT() + `/api/userPermission/${props.data.id_user}`)
+    const deleteUser = (id_user) => {
+        Axios.put(PORT() + `/api/userPermission/${id_user}`)
             .then(() => {
                 props.deleteUser(props.index);
                 swal("Elemento eliminado", {

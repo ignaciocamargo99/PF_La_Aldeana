@@ -1,17 +1,22 @@
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import confirmDelete from '../../../utils/confirmDelete';
 import Axios from "axios";
-import swal from "sweetalert";
-import '../../../assets/Buttons.css';
 import moment from 'moment';
+import swal from "sweetalert";
+import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
+import '../../../assets/Buttons.css';
 import BeShowed from '../../../common/BeShowed';
 
 const PORT = require('../../../config');
 
 export default function DeleteAssistancetButton(props) {
     let permissionsAccess = props.permissionsAccess;
-    const handleDelete = (e) => confirmDelete(deleteEmployeeAssistance, dontDeleteAssistance, e);
+    const handleDelete = async (e) => {
+        const warningTitle = `¿Seguro que desea eliminar la asistencia seleccionada?`;
+        const warningText = 'La asistencia ya no será visible para el personal de la empresa.';
+        const deletionConfirmed = (await defaultQuestionSweetAlert2(warningTitle, warningText)).isConfirmed;
+        if (deletionConfirmed) deleteEmployeeAssistance();
+    }
 
     const deleteEmployeeAssistance = () => {
         let date_entry;
@@ -33,8 +38,6 @@ export default function DeleteAssistancetButton(props) {
                 });
             });
     }
-
-    const dontDeleteAssistance = () => console.log('No se dio de baja la asistencia ' + props.assistance.employee);
 
     return (
         <>

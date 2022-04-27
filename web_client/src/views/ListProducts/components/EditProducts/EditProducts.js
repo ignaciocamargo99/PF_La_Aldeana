@@ -11,7 +11,7 @@ import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
 import './EditProductView.css';
 import displayError from "../../../../utils/ErrorMessages/displayError";
-import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../../config');

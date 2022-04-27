@@ -11,6 +11,7 @@ import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
 import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
 import getEmployees from '../getEmployees';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../../config');
 
@@ -42,42 +43,45 @@ export default function EditAssistance(props) {
             .then((response) => setEmployees(response.data))
     }, []);
 
-    const updateAssistanceEmployee = () => {
+    const updateAssistanceEmployee = async () => {
         if (!ready) warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
         else {
-            let validateHourEntryEgress;
-            if (data.date_egress === 'Invalid date') data.date_egress = null;
-            let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);
+            const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+            if (editionConfirmed) {
+                let validateHourEntryEgress;
+                if (data.date_egress === 'Invalid date') data.date_egress = null;
+                let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);
 
-            if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
-            else {
-                validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
-                if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
+                if (validateDateEntryEgressMessage) return warningMessage('Atención', validateDateEntryEgressMessage, 'warning');
+                else {
+                    validateHourEntryEgress = validateHoursEgressEntry(data.inputDateEntry, data.inputDateEgress, data.date_entry, data.dni, data.date_egress, assistance, data.id_assistance, data.editing, PORT());
+                    if (validateHourEntryEgress) return warningMessage('Atención', validateHourEntryEgress, 'warning');
 
-                let dateEntry, dateEgress;
+                    let dateEntry, dateEgress;
 
-                if (data.date_entry.length > 5) dateEntry = data.date_entry
-                else dateEntry = data.inputDateEntry + " " + data.date_entry;
+                    if (data.date_entry.length > 5) dateEntry = data.date_entry
+                    else dateEntry = data.inputDateEntry + " " + data.date_entry;
 
-                if (data.date_egress) {
-                    if (data.date_egress.length > 5) dateEgress = data.date_egress;
-                    else dateEgress = data.inputDateEgress + " " + data.date_egress;
+                    if (data.date_egress) {
+                        if (data.date_egress.length > 5) dateEgress = data.date_egress;
+                        else dateEgress = data.inputDateEgress + " " + data.date_egress;
+                    }
+                    else dateEgress = null;
+
+                    data.date_entry = dateEntry;
+                    data.date_egress = dateEgress;
+
+                    if (data.date_entry && ready) {
+                        loadingMessage('Guardando cambios...');
+                        Axios.put(`${PORT()}/api/employeeAssistance/${data.dni}`, data)
+                            .then((data) => {
+                                if (data.data.Ok) successMessage('Atención', 'Asistencia editada exitosamente', 'success');
+                                else displayError('No se ha podido realizar el registro.');
+                            })
+                            .catch((error) => console.error(error))
+                    }
+                    else warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
                 }
-                else dateEgress = null;
-
-                data.date_entry = dateEntry;
-                data.date_egress = dateEgress;
-
-                if (data.date_entry && ready) {
-                    loadingMessage('Modificando datos...');
-                    Axios.put(`${PORT()}/api/employeeAssistance/${data.dni}`, data)
-                        .then((data) => {
-                            if (data.data.Ok) successMessage('Atención', 'Datos modificados', 'success');
-                            else displayError('No se ha podido realizar el registro.');
-                        })
-                        .catch((error) => console.error(error))
-                }
-                else warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
             }
         }
     }

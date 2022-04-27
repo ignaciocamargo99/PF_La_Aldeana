@@ -2,21 +2,27 @@ import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from "axios";
 import swal from "sweetalert";
+import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import '../../../assets/Buttons.css';
-import confirmDelete from '../../../utils/confirmDelete';
 import BeShowed from '../../../common/BeShowed';
 
 const PORT = require('../../../config');
 
 export default function DeleteFranchiseButton(props) {
     let permissionsAccess = props.permissionsAccess;
-    const handleDelete = (e) => confirmDelete(deleteFranchise, e);
+    
+    const handleDelete = async () => {
+        const warningTitle = `¿Seguro que desea eliminar ${props.franchise.name}?`;
+        const warningText = 'La franquicia ya no será visible para el personal de la empresa.';
+        const deletionConfirmed = (await defaultQuestionSweetAlert2(warningTitle, warningText)).isConfirmed;
+        if(deletionConfirmed) deleteFranchise(props.franchise.id_franchise);
+    }
 
-    const deleteFranchise = () => {
-        Axios.put(PORT() + `/api/franchise/${props.franchise.id_franchise}`)
+    const deleteFranchise = (id_franchise) => {
+        Axios.put(PORT() + `/api/franchise/${id_franchise}`)
             .then(() => {
                 props.deleteFranchise(props.index);
-                swal("Franquicia dada de baja", {
+                swal("Franquicia dada de baja exitosamente", {
                     icon: "success",
                 });
             })
