@@ -43,9 +43,7 @@ export default function DeleteAdvancesButton(props) {
             });
     }
 
-    const dontDeleteProduct = () => console.log('No se pudo cancelar el adelanto para ' + props.advances.nroDNI + ' ' + props.advances.last_name + ', ' + props.advances.name + ' en la fecha ' + date);
-
     return (
-        <button id='deleteAdvancesButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+        <button id='deleteAdvancesButton' type="button" className="btn btn-danger btnDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
     );
 }

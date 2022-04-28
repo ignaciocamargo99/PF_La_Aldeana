@@ -1,0 +1,32 @@
+.cardEmployeeSelected {
+    background: #A5DEF9 !important;
+    border-radius: 20px !important;
+    color: #000000 !important;
+    width: 200px;
+    height: 200px;
+    margin: 5px
+}
+
+.cardEmployee {
+    background: #F68634 !important;
+    border-radius: 20px !important;
+    width: 200px;
+    height: 200px;
+    margin: 5px
+}
+
+.disabledCard {
+    background: #808080;
+    border-radius: 20px;
+    width: 200px;
+    height: 200px;
+    margin: 5px
+}
+
+.nextBtn {
+    height: 200px;
+    margin: 5px;
+    background-color: #434780;
+    color: white;
+    border-radius:6px;
+}

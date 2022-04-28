@@ -16,6 +16,8 @@ import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import formattedDate from "../../../utils/ConverterDate/formattedDate";
 import formattedDateWithDay from "../../../utils/formattedDate";
 import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PORT = require('../../../config');
 
@@ -302,8 +304,15 @@ const FormLicense = (props) => {
                             <label>Empleado*</label>
                         </div>
                     </div>
-                    <div className="formRow">
-                        <DynamicSearch placeholder={'Buscar empleados por nombre...'} setSearchState={setSearchState} searchState={searchState} />
+                    <div className="formRow title-searcher">
+                        <div className="search-input">
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                </div>
+                                <input type="text" className="form-control" placeholder="Buscar empleado..." value={searchState} onChange={(e) => setSearchState(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                            </div>
+                        </div>
                     </div>
                 </BeShowed>
                 <BeShowed show={showSpinner}>
@@ -332,7 +341,7 @@ const FormLicense = (props) => {
                         label='Aceptar' actionNotOK={actionNotOK} actionOK={editLicense} actionCancel={() => { comeBack(false) }} />
                 </BeShowed>
                 <BeShowed show={props.action === 'Ver'}>
-                    <button className="sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
+                    <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
                 </BeShowed>
             </div>
         </>

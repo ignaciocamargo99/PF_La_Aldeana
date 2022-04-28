@@ -42,7 +42,7 @@ export default function DeleteAssistancetButton(props) {
     return (
         <>
             <BeShowed show={permissionsAccess === 3}>
-                <button id='deleteAssistanceButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                <button id='deleteAssistanceButton' type="button" className="btn btn-danger btnDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
             </BeShowed>
             <BeShowed show={permissionsAccess !== 3}>
                 <button id='deleteAssistanceButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faMinus} /></button>

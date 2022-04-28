@@ -70,13 +70,13 @@ export default function LicensesTable(props) {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_finish, 'Es')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.last_name},{license.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <button className="sendAdd" onClick={() => { props.setActionLicense('Ver', license) }}>
+                                                <button className="btn btn-warning btnRead" onClick={() => { props.setActionLicense('Ver', license) }}>
                                                     <FontAwesomeIcon icon={faEye} />
                                                 </button>
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={permissionsAccess === 3} >
-                                                    <button className="sendEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    <button className="btn btn-info btnEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
                                                         disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
@@ -88,7 +88,7 @@ export default function LicensesTable(props) {
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={permissionsAccess === 3}>
-                                                    <button className="sendDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    <button className="btn btn-danger btnDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
                                                         disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
                                                         <FontAwesomeIcon icon={faMinus} />
                                                     </button>

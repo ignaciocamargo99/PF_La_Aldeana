@@ -33,7 +33,7 @@ const TableSuppliesDown = ({ supplies, download, data }) => {
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.number_supply}</td>
                                     <BeShowed show={data && !data.reading}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="sendDelete"
+                                            <button type="button" className="btn btn-danger btnDelete"
                                                 onClick={(e) => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
                                         </td>
                                     </BeShowed>

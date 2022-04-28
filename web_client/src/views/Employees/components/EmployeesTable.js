@@ -79,7 +79,7 @@ export default function EmployeesTable(props) {
                         <div className="viewTitleBtn">
                             <h1>Empleados</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
                                 <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
@@ -93,7 +93,7 @@ export default function EmployeesTable(props) {
                             <div className="viewTitleBtn">
                                 <h1>Empleados</h1>
                                 <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                    <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                 </BeShowed>
                                 <BeShowed show={permissionsAccess === 1}>
                                     <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>

@@ -39,7 +39,7 @@ export default function DeleteFranchiseButton(props) {
     return (
         <>
             <BeShowed show={permissionsAccess === 3}>
-                <button id='deleteFranchiseButton' type="button" className="sendDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                <button id='deleteFranchiseButton' type="button" className="btn btn-danger btnDelete" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
             </BeShowed>
             <BeShowed show={permissionsAccess !== 3}>
                 <button id='deleteFranchiseButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faMinus} /></button>

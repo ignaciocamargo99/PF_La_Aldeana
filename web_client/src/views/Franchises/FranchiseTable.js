@@ -112,7 +112,7 @@ const FranchiseTable = (props) => {
                         <div className="viewTitleBtn">
                             <h1>Franquicias</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
                                 <button id='newFranchiseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
@@ -127,7 +127,7 @@ const FranchiseTable = (props) => {
                                 <div className="viewTitleBtn">
                                     <h1>Franquicias</h1>
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                        <button id='newFranchiseButton' type="button" onClick={onClickNewFranchise} className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </BeShowed>
                                     <BeShowed show={permissionsAccess === 1}>
                                         <button id='newFranchiseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>

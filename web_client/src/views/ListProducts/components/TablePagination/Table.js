@@ -5,14 +5,18 @@ import DeleteProductButton from '../DeleteProductButton';
 import EditProductButton from '../EditProducts/EditProductButton';
 import ReadProductButton from "../ReadProducts/ReadProductButton";
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess}) => {
+const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
     return (
         <>
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Productos disponibles:</h4>
                 <div className="search-input">
-                    <FontAwesomeIcon icon={faSearch} />
-                    <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                        </div>
+                        <input type="text" className="form-control" placeholder="Buscar producto..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                    </div>
                 </div>
             </div>
             {(pageElements && pageElements.length > 0)
@@ -42,7 +46,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <EditProductButton product={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} permissionsAccess={permissionsAccess}/>
+                                            <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )
