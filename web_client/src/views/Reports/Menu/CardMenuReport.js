@@ -5,8 +5,10 @@ export default function CardMenuReport(props){
                 <h1>Reportes de {props.type}</h1>
             </div>
             <div className="viewBody">
-                <div className="formRow">
-                    {props.children}
+                <div className="schedules-cards-container">
+                    <div className="cards-container d-flex-col">
+                        {props.children}
+                    </div>
                 </div>
             </div>
     </>);

@@ -89,16 +89,15 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
                         <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
-                        <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
                     </>
             }
 
-            // const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
-            //let reportHumanResources;
-            // if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-            //     reportHumanResources = 
-            //        <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={'permissionReportsHumanResources'} />}></Route>
-            // }
+            const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
+            let reportHumanResources;
+            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
+                 reportHumanResources = 
+                    <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+            }
 
             // -------------------------------------- PURCHASES -------------------------------------
             const permissionPurchases = permissions.find(option => option === "Compras")
@@ -145,7 +144,7 @@ export default function RouterPage(props) {
 
             return (
                 <>
-                    {products} {productions} {franchises} {reportsSales} {purchases} {employees} {permissionsAdministrator}
+                    {products} {productions} {franchises} {reportsSales} {purchases} {employees} {permissionsAdministrator} {reportHumanResources}
                 </>
             )
         }
