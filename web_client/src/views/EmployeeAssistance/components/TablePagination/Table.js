@@ -76,7 +76,11 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                             {pageElements?.map((element, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{moment(element.date_entry).format('DD-MM-YYYY')}
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            {PORT() !== ''
+                                                ? moment(element.date_entry).add(1, 'days').format('DD-MM-YYYY')
+                                                : moment(element.date_entry).format('DD-MM-YYYY')
+                                            }
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.employee}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
