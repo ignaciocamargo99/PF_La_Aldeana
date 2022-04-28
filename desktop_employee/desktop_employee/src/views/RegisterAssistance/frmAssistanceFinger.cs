@@ -25,6 +25,9 @@ namespace desktop_employee.src.views.RegisterAssistance
         dynamic datosHuellas;
         DataTable ultimosRegistros;
         config config = new();
+        bool tenemosHuellas = true;
+        bool tenemosHorarios;
+        dynamic datosAsistencia;
 
         public frmAssistanceFinger()
         {
@@ -42,7 +45,6 @@ namespace desktop_employee.src.views.RegisterAssistance
             base.Init();
             Verificator = new DPFP.Verification.Verification();
             ultimosRegistros = crearTablaRegistros();
-            focusTxtDNI();
             var urlGet = config.getUrlPort() + "/api/fingerPrints";
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
@@ -65,8 +67,7 @@ namespace desktop_employee.src.views.RegisterAssistance
             }
             catch (WebException ex)
             {
-                // Handle error
-                //MessageBox.Show("No se recibió información del servidor. NO se puede capturar ninguna huella.");
+                tenemosHuellas = false;
             }
         }
 
@@ -80,152 +81,13 @@ namespace desktop_employee.src.views.RegisterAssistance
             return table;
         }
 
-        protected override async void ProcessDNIAsync(string dniEmpleado)
-        {
-            base.ProcessDNIAsync(dniEmpleado);
-            seVerifico = false;
-            esRepetido = false;
-            for (int i = 0; i < datosHuellas.Count; i++)
-            {
-                if (Convert.ToInt32(datosHuellas[i].dniEmployee) == Convert.ToInt32(dniEmpleado))
-                {
-                    borrarRegistrosViejos();
-                    if (empleadoRepetido(Convert.ToInt32(datosHuellas[i].dniEmployee)))
-                    {
-                        var urlGet = config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
-                        var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
-                        requestGet.Method = "GET";
-                        requestGet.ContentType = "application/json";
-                        requestGet.Accept = "application/json";
-                        try
-                        {
-                            using (WebResponse response = requestGet.GetResponse())
-                            {
-                                using (Stream strReader = response.GetResponseStream())
-                                {
-                                    if (strReader == null) return;
-                                    using (StreamReader objReader = new StreamReader(strReader))
-                                    {
-                                        string responseBody = objReader.ReadToEnd();
-                                        dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
-
-                                        DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                        if (config.getEnviroment() == "L")
-                                        {
-                                            horaEntrada = horaEntrada.AddHours(-3);
-                                        }
-                                        SetHoraEntrada(Convert.ToString(horaEntrada));
-
-                                        if (datosAsistencia[0].date_egress != null)
-                                        {
-                                            DateTime horaSalida = datosAsistencia[0].date_egress;
-                                            if (config.getEnviroment() == "L")
-                                            {
-                                                horaSalida = horaSalida.AddHours(-3);
-                                            }
-                                            SetHoraSalida(Convert.ToString(horaSalida));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (WebException ex)
-                        {
-                            // Handle error
-                        }
-                        mostrarNombre(Convert.ToString(datosHuellas[i].name), Convert.ToString(datosHuellas[i].last_name));
-                        errorHuella("El DNI fue ingresado en los últimos 5 minutos.");
-                        esRepetido = true;
-                        break;
-                    }
-                    else
-                    {
-                        seVerifico = true;
-                        mostrarNombre(Convert.ToString(datosHuellas[i].name), Convert.ToString(datosHuellas[i].last_name));
-                        DateTime timeInOut = DateTime.Now;
-                        string timeInOutFormated = convertDateTimeToString(timeInOut);
-
-                        CheckAsistencia checkAsistencia = new()
-                        {
-                            datetime = timeInOutFormated
-                        };
-                        oReply = await Consumer.Execute<CheckAsistencia>(config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
-
-                        var urlGet = config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
-                        var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
-                        requestGet.Method = "GET";
-                        requestGet.ContentType = "application/json";
-                        requestGet.Accept = "application/json";
-                        try
-                        {
-                            using (WebResponse response = requestGet.GetResponse())
-                            {
-                                using (Stream strReader = response.GetResponseStream())
-                                {
-                                    if (strReader == null) return;
-                                    using (StreamReader objReader = new StreamReader(strReader))
-                                    {
-                                        string responseBody = objReader.ReadToEnd();
-                                        dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
-
-                                        DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                        if (config.getEnviroment() == "L")
-                                        {
-                                            horaEntrada = horaEntrada.AddHours(-3);
-                                        }
-                                        SetHoraEntrada(Convert.ToString(horaEntrada));
-
-                                        if (datosAsistencia[0].date_egress != null)
-                                        {
-                                            DateTime horaSalida = datosAsistencia[0].date_egress;
-                                            if (config.getEnviroment() == "L")
-                                            {
-                                                horaSalida = horaSalida.AddHours(-3);
-                                            }
-                                            SetHoraSalida(Convert.ToString(horaSalida));
-                                        }
-
-                                        OcultarAzul();
-                                        MostrarVerde();
-
-                                        for (int j = 5; j >= 1; j--)
-                                        {
-                                            SetInfo("Espere " + j + " segundos para ingresar el siguiente DNI.");
-                                            Thread.Sleep(1000);
-                                        }
-                                        SetInfo("LISTO PARA INGRESAR EL DNI");
-
-                                        cargarRegistros(Convert.ToInt32(datosHuellas[i].dniEmployee), timeInOut);
-
-                                        OcultarVerde();
-                                        MostrarAzul();
-
-                                        SetHoraEntrada("--/--/---- --:--:--");
-                                        SetHoraSalida("--/--/---- --:--:--");
-                                        SetEmployee("");
-                                        MakeReport("Ingrese el siguiente DNI.");
-                                    }
-                                }
-                            }
-                        }
-                        catch (WebException ex)
-                        {
-                            // Handle error
-                        }
-
-                        break;
-                    }
-                }
-            }
-            if (!seVerifico && !esRepetido)
-            {
-                errorHuella("El DNI no coincidie con ningún empleado.");
-            }
-            cleanTxtDNI();
-        }
-
         protected override async void ProcessAsync(DPFP.Sample Sample)
         {
+            if (!tenemosHuellas)
+            {
+                MessageBox.Show("No se obtuvieron las huellas correctamente. Reinicie la aplicación.", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             base.ProcessAsync(Sample);
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
 
@@ -263,31 +125,39 @@ namespace desktop_employee.src.views.RegisterAssistance
                                             using (StreamReader objReader = new StreamReader(strReader))
                                             {
                                                 string responseBody = objReader.ReadToEnd();
-                                                dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
+                                                datosAsistencia = JsonConvert.DeserializeObject(responseBody);
 
-                                                DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                                if (config.getEnviroment() == "L")
-                                                {
-                                                    horaEntrada = horaEntrada.AddHours(-3);
-                                                }
-                                                SetHoraEntrada(Convert.ToString(horaEntrada));
-
-                                                if (datosAsistencia[0].date_egress != null)
-                                                {
-                                                    DateTime horaSalida = datosAsistencia[0].date_egress;
-                                                    if (config.getEnviroment() == "L")
-                                                    {
-                                                        horaSalida = horaSalida.AddHours(-3);
-                                                    }
-                                                    SetHoraSalida(Convert.ToString(horaSalida));
-                                                }
+                                                tenemosHorarios = true;
                                             }
                                         }
                                     }
                                 }
                                 catch (WebException ex)
                                 {
-                                    // Handle error
+                                    tenemosHorarios = false;
+                                }
+                                if (tenemosHorarios)
+                                {
+                                    DateTime horaEntrada = datosAsistencia[0].date_entry;
+                                    if (config.getEnviroment() == "L")
+                                    {
+                                        horaEntrada = horaEntrada.AddHours(-3);
+                                    }
+                                    SetHoraEntrada(Convert.ToString(horaEntrada));
+
+                                    if (datosAsistencia[0].date_egress != null)
+                                    {
+                                        DateTime horaSalida = datosAsistencia[0].date_egress;
+                                        if (config.getEnviroment() == "L")
+                                        {
+                                            horaSalida = horaSalida.AddHours(-3);
+                                        }
+                                        SetHoraSalida(Convert.ToString(horaSalida));
+                                    }
+                                }    
+                                else
+                                {
+                                    MakeReport("No se puede cargar la última asistencia.");
                                 }
                                 mostrarNombre(Convert.ToString(datosHuellas[i].name), Convert.ToString(datosHuellas[i].last_name));
                                 errorHuella("La huella fue ingresada en los últimos 5 minutos.");                               
@@ -307,6 +177,15 @@ namespace desktop_employee.src.views.RegisterAssistance
                                 };
                                 oReply = await Consumer.Execute<CheckAsistencia>(config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee), methodHttp.POST, checkAsistencia);
 
+                                if (oReply.StatusCode == "OK")
+                                {
+                                    MakeReport("La asistencia se registro correctamente.");
+                                }
+                                else
+                                {
+                                    MakeReport("Se produjo un error. Reintente de nuevo.");
+                                }
+
                                 var urlGet = config.getUrlPort() + "/api/assistenceFinger/" + Convert.ToString(datosHuellas[i].dniEmployee);
                                 var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
                                 requestGet.Method = "GET";
@@ -322,54 +201,78 @@ namespace desktop_employee.src.views.RegisterAssistance
                                             using (StreamReader objReader = new StreamReader(strReader))
                                             {
                                                 string responseBody = objReader.ReadToEnd();
-                                                dynamic datosAsistencia = JsonConvert.DeserializeObject(responseBody);
+                                                datosAsistencia = JsonConvert.DeserializeObject(responseBody);
 
-                                                DateTime horaEntrada = datosAsistencia[0].date_entry;
-                                                if (config.getEnviroment() == "L")
-                                                {
-                                                    horaEntrada = horaEntrada.AddHours(-3);
-                                                }
-                                                SetHoraEntrada(Convert.ToString(horaEntrada));
-
-                                                if (datosAsistencia[0].date_egress != null)
-                                                {
-                                                    DateTime horaSalida = datosAsistencia[0].date_egress;
-                                                    if (config.getEnviroment() == "L")
-                                                    {
-                                                        horaSalida = horaSalida.AddHours(-3);
-                                                    }
-                                                    SetHoraSalida(Convert.ToString(horaSalida));
-                                                }
-
-                                                MostrarVerde();
-                                                OcultarAzul();
-
-                                                for (int j = 5; j >= 1; j--)
-                                                {
-                                                    SetInfo("Espere " + j + " segundos para ingresar la siguiente huella.");
-                                                    Thread.Sleep(1000);
-                                                }
-                                                SetInfo("LISTO PARA COLOCAR DEDO");
-
-                                                cargarRegistros(Convert.ToInt32(datosHuellas[i].dniEmployee), timeInOut);
-
-                                                OcultarVerde();
-                                                MostrarAzul();
-
-                                                SetHoraEntrada("--/--/---- --:--:--");
-                                                SetHoraSalida("--/--/---- --:--:--");
-                                                SetEmployee("");
-                                                CleanPicture();
-                                                MakeReport("Ingrese la siguiente huella.");
+                                                tenemosHorarios = true;
                                             }
                                         }
                                     }
                                 }
                                 catch (WebException ex)
                                 {
-                                    // Handle error
+                                    tenemosHorarios = false;
                                 }
 
+                                if (tenemosHorarios)
+                                {
+                                    DateTime horaEntrada = datosAsistencia[0].date_entry;
+                                    if (config.getEnviroment() == "L")
+                                    {
+                                        horaEntrada = horaEntrada.AddHours(-3);
+                                    }
+                                    SetHoraEntrada(Convert.ToString(horaEntrada));
+
+                                    if (datosAsistencia[0].date_egress != null)
+                                    {
+                                        DateTime horaSalida = datosAsistencia[0].date_egress;
+                                        if (config.getEnviroment() == "L")
+                                        {
+                                            horaSalida = horaSalida.AddHours(-3);
+                                        }
+                                        SetHoraSalida(Convert.ToString(horaSalida));
+                                    }
+                                }
+                                else
+                                {
+                                    MakeReport("No se puede cargar los datos de la asistencia registrada.");
+                                }
+
+                                if (oReply.StatusCode == "OK")
+                                {
+                                    MostrarVerde();
+                                }
+                                else
+                                {
+                                    MostrarRojo();
+                                }
+                                
+                                OcultarAzul();
+
+                                for (int j = 5; j >= 1; j--)
+                                {
+                                    SetInfo("Espere " + j + " segundos para ingresar la siguiente huella.");
+                                    Thread.Sleep(1000);
+                                }
+                                SetInfo("LISTO PARA COLOCAR DEDO");
+
+                                
+
+                                if (oReply.StatusCode == "OK")
+                                {
+                                    OcultarVerde();
+                                    cargarRegistros(Convert.ToInt32(datosHuellas[i].dniEmployee), timeInOut);
+                                }
+                                else
+                                {
+                                    OcultarRojo();
+                                }
+                                MostrarAzul();
+
+                                SetHoraEntrada("--/--/---- --:--:--");
+                                SetHoraSalida("--/--/---- --:--:--");
+                                SetEmployee("");
+                                CleanPicture();
+                                MakeReport("Ingrese la siguiente huella.");
                                 break;
                             }
                         }

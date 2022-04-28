@@ -91,15 +91,18 @@ C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employ
 <<<<<<< HEAD
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmValidationFingerprint.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.frmMain.resources
-<<<<<<< HEAD
 =======
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceDNI.resources
 >>>>>>> US/721-Agregar-filtros-huella-empleados
+<<<<<<< HEAD
 =======
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmLogin.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmValidationFingerprint.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.frmMain.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceDNI.resources
+=======
+C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.Employees.frmLogin.resources
+>>>>>>> US/706-Registrar-asistencia-DNI
 >>>>>>> US/722-login-huella-empleados
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssistanceFinger.resources
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.csproj.GenerateResource.cache
@@ -113,3 +116,4 @@ C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employ
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.pdb
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.genruntimeconfig.cache
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\ref\desktop_employee.dll
+C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssitanceDni.resources

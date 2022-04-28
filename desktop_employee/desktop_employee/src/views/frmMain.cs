@@ -130,19 +130,40 @@ namespace desktop_employee
         {
             ibtnEmpleados.Enabled = true;
             ibtnAsistencia.Enabled = false;
+            ibtnAsistenciaDNI.Enabled = true;
             for (int i = 0; i < Application.OpenForms.Count; i++)
             {
                 var tag = Application.OpenForms[i].Tag;
-                if (tag == "Empl_Main" || tag == "Empl_Sub")
+                if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Dni")
                 {
                     Application.OpenForms[i].Close();
                     i--;
                 }
             }
             frmAssistanceFinger assistanceFinger = new();
-            assistanceFinger.Tag = "Asis";
+            assistanceFinger.Tag = "Asis_Hue";
             lblTitulo.Text = "ASISTENCIA con HUELLA";
             OpenForm(assistanceFinger);
+        }
+
+        private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
+        {
+            ibtnEmpleados.Enabled = true;
+            ibtnAsistencia.Enabled = true;
+            ibtnAsistenciaDNI.Enabled = false;
+            for (int i = 0; i < Application.OpenForms.Count; i++)
+            {
+                var tag = Application.OpenForms[i].Tag;
+                if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Hue")
+                {
+                    Application.OpenForms[i].Close();
+                    i--;
+                }
+            }
+            frmAssitanceDni assistanceDni = new();
+            assistanceDni.Tag = "Asis_Dni";
+            lblTitulo.Text = "ASISTENCIA con DNI";
+            OpenForm(assistanceDni);
         }
 
         private void OpenForm(Form form)

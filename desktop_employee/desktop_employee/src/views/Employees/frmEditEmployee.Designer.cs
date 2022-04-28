@@ -55,7 +55,6 @@ namespace desktop_employee.src.views.Employees
             this.lblID = new System.Windows.Forms.Label();
             this.lblPI = new System.Windows.Forms.Label();
             this.lblPD = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -166,7 +165,6 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Controls.Add(this.lblID);
             this.panel2.Controls.Add(this.lblPI);
             this.panel2.Controls.Add(this.lblPD);
-            this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.txtApellido);
             this.panel2.Controls.Add(this.txtNombre);
             this.panel2.Controls.Add(this.lblApellido);
@@ -436,17 +434,6 @@ namespace desktop_employee.src.views.Employees
             this.lblPD.TabIndex = 13;
             this.lblPD.Text = "Dedo Pulgar Derecho";
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Abel", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(620, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(208, 31);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "FOTO DEL EMPLEADO";
-            // 
             // frmEditEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -478,7 +465,6 @@ namespace desktop_employee.src.views.Employees
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblII;
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblPI;

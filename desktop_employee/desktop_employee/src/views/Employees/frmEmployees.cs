@@ -24,6 +24,7 @@ namespace desktop_employee.src.views.Employees
         private int permisos;
         config config = new();
         DataTable employeeFilteredTable = new DataTable();
+        bool tenemosDatos;
 
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
         public int Permisos { get => permisos; set => permisos = value; }
@@ -50,18 +51,12 @@ namespace desktop_employee.src.views.Employees
 
                 // Do something with responseBody
                 datosEmpleados = JsonConvert.DeserializeObject(responseBody);
-                this.dgvEmployees.DataSource = datosEmpleados;
+                tenemosDatos = true;
             }
             catch (WebException ex)
             {
-                // Handle error
+                tenemosDatos = false;
             }
-
-            foreach (DataGridViewTextBoxColumn column in dgvEmployees.Columns)
-            {
-                column.Width = 250;
-            }
-
             if (datosEmpleados != null && datosEmpleados.Count > 0)
             {
                 btnEditEmployee.BackgroundColor = ColorTranslator.FromHtml("#383C77");
@@ -72,6 +67,18 @@ namespace desktop_employee.src.views.Employees
             if (permisos == 1)
             {
                 btnEditEmployee.Visible = false;
+            }
+
+            if (!tenemosDatos)
+            {
+                MessageBox.Show("No se obuvieron los datos de los empleados. Reinicie la aplicación!", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.dgvEmployees.DataSource = datosEmpleados;
+            foreach (DataGridViewTextBoxColumn column in dgvEmployees.Columns)
+            {
+                column.Width = 250;
             }
         }
 
@@ -124,7 +131,7 @@ namespace desktop_employee.src.views.Employees
             }
             else
             {
-                MessageBox.Show("No se selecciono nungún empleado.");
+                MessageBox.Show("No se selecciono nungún empleado.", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -157,10 +164,6 @@ namespace desktop_employee.src.views.Employees
                 var nombreCompleto = "";
 
                 var nombreIngresado = "";
-                //var nombreEmpleado = "";
-
-                //var apellidoIngresado = "";
-                //var apellidoEmpleado = "";
 
                 var dniIngresado = "";
                 var dniEmpleado = "";
@@ -171,34 +174,23 @@ namespace desktop_employee.src.views.Employees
                     nombreIngresado = eliminarAcentos(nombreIngresado);
                 }
 
-                //if (txtApellido.Text != "")
-                //{
-                //    apellidoIngresado = txtApellido.Text.ToUpper();
-                //    apellidoIngresado = eliminarAcentos(apellidoIngresado);
-                //}
-
                 if (txtDNI.Text != "")
                 {
                     dniIngresado = txtDNI.Text;
                 }
+
+                if (!tenemosDatos) return;
 
                 for (int i = 0; i < datosEmpleados.Count; i++)
                 {
                     nombreCompleto = Convert.ToString((datosEmpleados[i].NOMBRE)).ToUpper() + " " + Convert.ToString((datosEmpleados[i].APELLIDO)).ToUpper();
                     nombreCompleto = eliminarAcentos(nombreCompleto);
 
-                    //nombreEmpleado = Convert.ToString((datosEmpleados[i].NOMBRE)).ToUpper();
-                    //nombreEmpleado = eliminarAcentos(nombreEmpleado);
-
-                    //apellidoEmpleado = Convert.ToString((datosEmpleados[i].APELLIDO)).ToUpper();
-                    //apellidoEmpleado = eliminarAcentos(apellidoEmpleado);
-
                     dniEmpleado = Convert.ToString((datosEmpleados[i].DNI));
 
                     if (cbxSinHuella.Checked)
                     {
                         if (nombreCompleto.Contains(nombreIngresado) &&
-                           // apellidoEmpleado.Contains(apellidoIngresado) &&
                             dniEmpleado.Contains(dniIngresado) &&
                             Convert.ToInt32(datosEmpleados[i].HUELLAS) == 0)
                         {
@@ -213,7 +205,6 @@ namespace desktop_employee.src.views.Employees
                     else
                     {
                         if (nombreCompleto.Contains(nombreIngresado) &&
-                            // apellidoEmpleado.Contains(apellidoIngresado) &&
                             dniEmpleado.Contains(dniIngresado))
                         {
                             DataRow row = employeeFilteredTable.NewRow();

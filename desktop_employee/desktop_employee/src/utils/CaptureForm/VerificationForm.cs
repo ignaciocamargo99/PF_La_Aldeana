@@ -39,9 +39,6 @@ namespace desktop_employee
 			DrawPicture(ConvertSampleToBitmap(Sample));
 		}
 
-		protected virtual void ProcessDNIAsync(string dni…mpleado)
-        {}
-
 		protected void Start()
 		{
             if (null != Capturer)
@@ -52,6 +49,7 @@ namespace desktop_employee
 					SetInfo("LISTO PARA COLOCAR DEDO");
                     SetPrompt("Coloca el dedo sobre el lector para marcar la asistencia.");
 					MostrarAzul();
+					lblEmployee.Text = "";
                 }
                 catch
                 {
@@ -159,7 +157,7 @@ namespace desktop_employee
 			if (activo)
             {
 				this.Invoke(new Function(delegate () {
-					StatusText.AppendText(message + "\r\n");
+					StatusText.AppendText(getHoraActual() + message + "\r\n");
 				}));
 			}
 		}
@@ -272,23 +270,6 @@ namespace desktop_employee
 			}
 		}
 		
-		protected void focusTxtDNI()
-		{
-			this.Invoke(new Function(delegate () {
-				txtDNI.Focus();
-			}));
-			
-		}
-
-		protected void cleanTxtDNI()
-		{
-			this.Invoke(new Function(delegate () {
-				txtDNI.Text = "";
-				txtDNI.Focus();
-			}));
-
-		}
-
 		private DPFP.Capture.Capture Capturer;
 
         private void VerificationForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -296,51 +277,11 @@ namespace desktop_employee
 			activo = false;
 		}
 
-        private void txtDNI_TextChanged(object sender, EventArgs e)
-        {
-			//controlamos la longitud del dni
-			var dniEmpleado = txtDNI.Text.Replace(" ", string.Empty);
-			if (dniEmpleado.Length == 8)
-			{
-				btnRegistrarAsistencia.Enabled = true;
-				btnRegistrarAsistencia.BackgroundColor = ColorTranslator.FromHtml("#383c77");
-				btnRegistrarAsistencia.TextColor = Color.White;
-			}
-			else
-			{
-				btnRegistrarAsistencia.Enabled = false;
-				btnRegistrarAsistencia.BackgroundColor = Color.White;
-				btnRegistrarAsistencia.TextColor = Color.Black;
-			}
+		private string getHoraActual()
+		{
+			var hora = DateTime.Now.ToString("hh:mm:ss tt");
+			hora = hora + "  --  ";
+			return hora;
 		}
-
-        private void btnRegistrarAsistencia_Click(object sender, EventArgs e)
-        {
-			ProcessDNIAsync(Convert.ToString(txtDNI.Text));
-        }
-
-        private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
-        {
-			if (Char.IsDigit(e.KeyChar))
-			{
-				e.Handled = false;
-			}
-			else if (Char.IsControl(e.KeyChar))
-			{
-				e.Handled = false;
-			}
-			else if (Char.IsSeparator(e.KeyChar))
-			{
-				e.Handled = false;
-			}
-			else if (e.KeyChar == (char)32)
-			{
-				e.Handled = false;
-			}
-			else
-			{
-				e.Handled = true;
-			}
-		}
-    }
+	}
 }

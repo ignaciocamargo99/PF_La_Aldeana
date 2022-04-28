@@ -1,16 +1,32 @@
-const { registerAssitance, getAssitance } = require('../services/assistenceFingerService');
+const {
+    registerAssitance,
+    getAssitance,
+    getAssitanceAll
+} = require('../services/assistenceFingerService');
 
 // HTTP: GET
 async function getAssistance(req, res) {
     try {
         const result = await getAssitance(req.params.dni);
         res.send(result);
-    }
-    catch (e) {
+    } catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
-        })
+            Message: e.message
+        });
+    }
+}
+
+// HTTP: GET
+async function getAssistanceAll(req, res) {
+    try {
+        const result = await getAssitanceAll();
+        res.send(result);
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
     }
 }
 
@@ -21,14 +37,13 @@ async function newAssistance(req, res) {
         res.json({
             Ok: true,
             Message: 'Asistencia registrada exitosamente.'
-        })
-    }
-    catch (e) {
+        });
+    } catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
-        })
+            Message: e.message
+        });
     }
 }
 
-module.exports = { newAssistance, getAssistance }
+module.exports = { newAssistance, getAssistance, getAssistanceAll };
