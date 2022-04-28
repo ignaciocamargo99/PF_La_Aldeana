@@ -74,7 +74,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
                 setFilteredElements(filteredNowDate);
             }
             else {
-                const filteredNowDate = currentElements.filter((elem) => (moment(elem.date_entry).subtract(3, 'hours').format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')));
+                const filteredNowDate = currentElements.filter((elem) => (moment(elem.date_entry).subtract(3, 'hours').format('YYYY-MM-DD') === moment().subtract(1, 'days').format('YYYY-MM-DD')));
                 setFilteredElements(filteredNowDate);
             }
             setCurrentPage(1);
