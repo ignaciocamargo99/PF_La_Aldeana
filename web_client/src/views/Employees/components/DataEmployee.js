@@ -84,7 +84,7 @@ export default function DataEmployee(props) {
                         maxLength="80"
                         onChange={handleName}
                         placeholder="Ingrese nombre..."
-                        readOnly={props.isReadingEmployeeData}
+                        disabled={props.isReadingEmployeeData}
                         ref={inputName}
                         type="text"
                     />
@@ -102,7 +102,7 @@ export default function DataEmployee(props) {
                         maxLength="80"
                         onChange={handleLastName}
                         placeholder="Ingrese apellido..."
-                        readOnly={props.isReadingEmployeeData}
+                        disabled={props.isReadingEmployeeData}
                         ref={inputLastName}
                         type="text"
                     />
@@ -122,7 +122,7 @@ export default function DataEmployee(props) {
                         onInput={(e) => validate(e)}
                         onKeyDown={(e) => validateFloatNumbers(e)}
                         placeholder="Ingrese DNI..."
-                        readOnly={props.isReadingEmployeeData || props.isEditingEmployeeData}
+                        disabled={props.isReadingEmployeeData || props.isEditingEmployeeData}
                         ref={inputDni}
                         type="number"
                     />

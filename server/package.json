@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint ./",
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "devStart": "nodemon",
     "testDelay": "npm run test"
   },

@@ -29,7 +29,7 @@ export default function FlavorsAmount(props) {
             <div className="form-control-input">
                 <BeShowed show={!props.data.reading}>
                     <input className="form-control" id="flavorsAmount"
-                        type="number" maxLength="80" placeholder="Ingrese cantidad de sabores de helado..."
+                        type="number" maxLength="80" placeholder="Ingrese cantidad máxima de sabores de helado..."
                         onInput={(e) => validate(e)}
                         onKeyDown={(e) => validateFloatNumbers(e)}
                         onChange={onChange}
