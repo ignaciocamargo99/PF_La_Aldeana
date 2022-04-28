@@ -5,9 +5,9 @@ import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import { FaAngleRight } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa';
-import Viewer from './PDFSalesReport';
 import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
+import Viewer from './PDFProductSalesReport';
 
 const PORT = require('../../../../config');
 

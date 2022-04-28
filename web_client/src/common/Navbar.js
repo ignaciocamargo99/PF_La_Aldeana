@@ -134,7 +134,7 @@ export default function Navbar(props) {
                                 </Dropdown.Item>
                             </BeShowed>
                             <BeShowed show={permissionReportsHumanResources === "Reportes Recursos Humanos"}>
-                                <Dropdown.Item href="#">
+                                <Dropdown.Item href="/app/RRHHReport">
                                     <FontAwesomeIcon icon={faFile} /> Informe de recursos humanos
                                 </Dropdown.Item>
                             </BeShowed>
