@@ -78,7 +78,7 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             {PORT() !== ''
-                                                ? moment(element.date_entry).add(3, 'hours').format('DD-MM-YYYY')
+                                                ? moment(element.date_entry).add(1, 'days').format('DD-MM-YYYY')
                                                 : moment(element.date_entry).format('DD-MM-YYYY')
                                             }
                                         </td>
