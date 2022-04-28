@@ -7,7 +7,9 @@ import RegisterFranchise from './Franchises/RegisterFranchise';
 import Franchises from './Franchises/FranchiseTable';
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
 import RegisterProductionView from './Productions/RegisterProduction';
-import SalesReport from './Reports/Sales/SalesReport';
+import SalesReports from './Reports/Menu/SalesReports';
+import RRHHReports from './Reports/Menu/RRHHReports';
+import ProductSalesReport from './Reports/ProductSales/ProductSalesReport';
 import ListEmployees from './Employees/ListEmployees';
 import RegisterEmployee from './Employees/components/RegisterEmployee';
 import Licenses from './Licenses/components/Licenses';
@@ -85,15 +87,18 @@ export default function RouterPage(props) {
             if (permissionReportsSales === 'Reportes Ventas') {
                 let permissionsAccessSalesReports = props.accesses[6];
                 reportsSales =
-                    <Route path='/app/salesReport' render={() => <SalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
+                    <>
+                        <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
+                        <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
+                    </>
             }
 
-            // const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
-            // let reportHumanResources;
-            // if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-            //     reportHumanResources = 
-
-            // }
+            const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
+            let reportHumanResources;
+            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
+                 reportHumanResources = 
+                    <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+            }
 
             // -------------------------------------- PURCHASES -------------------------------------
             const permissionPurchases = permissions.find(option => option === "Compras")
@@ -139,7 +144,7 @@ export default function RouterPage(props) {
 
             return (
                 <>
-                    {products} {productions} {franchises} {reportsSales} {purchases} {employees} {permissionsAdministrator}
+                    {products} {productions} {franchises} {reportsSales} {purchases} {employees} {permissionsAdministrator} {reportHumanResources}
                 </>
             )
         }
