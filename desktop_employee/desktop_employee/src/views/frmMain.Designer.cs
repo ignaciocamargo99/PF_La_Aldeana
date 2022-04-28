@@ -30,6 +30,7 @@ namespace desktop_employee
         private void InitializeComponent()
         {
             this.pnlMenu = new System.Windows.Forms.Panel();
+            this.ibtnAsistenciaDNI = new FontAwesome.Sharp.IconButton();
             this.ibtnEmpleados = new FontAwesome.Sharp.IconButton();
             this.ibtnAsistencia = new FontAwesome.Sharp.IconButton();
             this.pnlLogo = new System.Windows.Forms.Panel();
@@ -49,6 +50,7 @@ namespace desktop_employee
             // pnlMenu
             // 
             this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(222)))), ((int)(((byte)(249)))));
+            this.pnlMenu.Controls.Add(this.ibtnAsistenciaDNI);
             this.pnlMenu.Controls.Add(this.ibtnEmpleados);
             this.pnlMenu.Controls.Add(this.ibtnAsistencia);
             this.pnlMenu.Controls.Add(this.pnlLogo);
@@ -57,6 +59,29 @@ namespace desktop_employee
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(216, 514);
             this.pnlMenu.TabIndex = 2;
+            // 
+            // ibtnAsistenciaDNI
+            // 
+            this.ibtnAsistenciaDNI.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ibtnAsistenciaDNI.FlatAppearance.BorderSize = 0;
+            this.ibtnAsistenciaDNI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ibtnAsistenciaDNI.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ibtnAsistenciaDNI.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.ibtnAsistenciaDNI.IconChar = FontAwesome.Sharp.IconChar.AddressCard;
+            this.ibtnAsistenciaDNI.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
+            this.ibtnAsistenciaDNI.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.ibtnAsistenciaDNI.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ibtnAsistenciaDNI.Location = new System.Drawing.Point(0, 342);
+            this.ibtnAsistenciaDNI.Name = "ibtnAsistenciaDNI";
+            this.ibtnAsistenciaDNI.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.ibtnAsistenciaDNI.Size = new System.Drawing.Size(216, 127);
+            this.ibtnAsistenciaDNI.TabIndex = 6;
+            this.ibtnAsistenciaDNI.Tag = "ASISTENCIA DNI";
+            this.ibtnAsistenciaDNI.Text = "ASISTENCIA DNI";
+            this.ibtnAsistenciaDNI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ibtnAsistenciaDNI.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.ibtnAsistenciaDNI.UseVisualStyleBackColor = true;
+            this.ibtnAsistenciaDNI.Click += new System.EventHandler(this.ibtnAsistenciaDNI_Click);
             // 
             // ibtnEmpleados
             // 
@@ -98,7 +123,7 @@ namespace desktop_employee
             this.ibtnAsistencia.Size = new System.Drawing.Size(216, 127);
             this.ibtnAsistencia.TabIndex = 4;
             this.ibtnAsistencia.Tag = "ASISTENCIA HUELLA";
-            this.ibtnAsistencia.Text = "ASISTENCIA";
+            this.ibtnAsistencia.Text = "ASISTENCIA HUELLA";
             this.ibtnAsistencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ibtnAsistencia.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ibtnAsistencia.UseVisualStyleBackColor = true;
@@ -232,6 +257,7 @@ namespace desktop_employee
         private System.Windows.Forms.Label lblTitulo;
         private FontAwesome.Sharp.IconButton ibtnMinimizar;
         private FontAwesome.Sharp.IconButton ibtnClose;
+        private FontAwesome.Sharp.IconButton ibtnAsistenciaDNI;
     }
 }
 

@@ -36,7 +36,7 @@ namespace desktop_employee.src.views.Employees
             }
             else
             {
-                MessageBox.Show("Ingrese un usuario y una contraseña");
+                MessageBox.Show("Ingrese un usuario y una contraseña", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -69,7 +69,7 @@ namespace desktop_employee.src.views.Employees
             }
             if (isError)
             {
-                MessageBox.Show("Problema en el servidor. Reintente de nuevo !");
+                MessageBox.Show("Problema en el servidor. Reintente de nuevo !", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtPassword.Clear();
                 txtUser.Clear();
             }
@@ -79,7 +79,7 @@ namespace desktop_employee.src.views.Employees
                 {
                     if (responseLogin.data.permissions == 0 || responseLogin.data.permissions == -1)
                     {
-                        MessageBox.Show("El usuario no cuenta con los permisos necesarios...");
+                        MessageBox.Show("El usuario no cuenta con los permisos necesarios...", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         txtPassword.Clear();
                         txtUser.Clear();
                         lblInfo.Visible = false;
