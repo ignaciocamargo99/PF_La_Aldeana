@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import warningSizeImages from "../../../utils/WarningMessages/warningSizeImages";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 const ImageProduct = (props) => {
 
@@ -20,8 +22,7 @@ const ImageProduct = (props) => {
         else {
             setPreviewImg(false);
         }
-    }
-
+    };
 
     useEffect(() => {
         let data = props.data;
@@ -29,18 +30,31 @@ const ImageProduct = (props) => {
         props.load(data);
     }, [previewImg]);
 
+    const handleDeleteImg = () => {
+        if (inputImg && inputImg.current) {
+            inputImg.current.value = "";
+            setPreviewImg(false);
+        }
+    }
+
     return (
         <>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="productImage2" className="form-label">Imagen</label>
                 </div>
-                <div className="form-control-input">
+                <div className="form-control-input-img">
                     <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
                 </div>
+                <BeShowed show={inputImg.current && inputImg.current.value !== ''}>
+                    <button className="imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
+                </BeShowed>
+                <BeShowed show={inputImg.current && inputImg.current.value === ''}>
+                    <button className="disabledImgBtn" type="button" disabled><FontAwesomeIcon icon={faMinus} /></button>
+                </BeShowed>
             </div>
             <BeShowed show={previewImg}>
-                <img className="rounded mx-auto d-block img-thumbnail" id="imagenPrevisualizacion" src={previewImg}></img>
+                <img className="rounded mx-auto d-block img-thumbnail" id="imagenPrevisualizacion" src={previewImg} />
             </BeShowed>
         </>
     );

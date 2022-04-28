@@ -2,11 +2,11 @@
 export default function validationRouters(route, accesses) {
 
     // Products
-    let pathsToReadProducts = ['/app/products'];
-    let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/typeProducts', '/app/supplies'].concat(pathsToReadProducts);
+    let pathsToReadProducts = ['/app/products', '/app/productTypes', '/app/supplies'];
+    let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/productTypes/new', '/app/supplies/new'].concat(pathsToReadProducts);
 
     // Production
-    let pathsToReadProductions = ['/app/productions', '/app/flavors'];
+    let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view'];
     let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new'].concat(pathsToReadProductions);
 
     // Franchises
@@ -27,7 +27,7 @@ export default function validationRouters(route, accesses) {
     // Users
     let pathToReadUsers = ['/app/users'];
     let pathToReadRegisterUsers = ['/app/registerUser'].concat(pathToReadUsers);
-    
+
     const stringContainsNumber = (_string) => /\d/.test(_string);
 
     if (pathsToReadRegisterProducts.indexOf(route) !== -1) {
@@ -36,8 +36,18 @@ export default function validationRouters(route, accesses) {
         else if (!accesses[3]) return false;
         else return true;
     }
-    else if(pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)){
-        if(accesses[4] === 3) return true;
+    else if (pathsToReadRegisterProductions.includes(route.substring(0, 17)) && stringContainsNumber(route)) {
+        if (accesses[4] === 1 || accesses[4] === 2 || accesses[4] === 3) return true;
+        else return false;
+    }
+
+    else if (pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)) {
+        if (accesses[4] === 3) return true;
+        else return false;
+    }
+
+    else if (pathsToReadRegisterProductions.includes(route.substring(0, 17)) && stringContainsNumber(route)) {
+        if (accesses[4] === 1 || accesses[4] === 2 || accesses[4] === 3) return true;
         else return false;
     }
 

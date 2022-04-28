@@ -8,7 +8,25 @@ const PORT = require('../../../config');
 
 const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
 
-    const [flavors, setflavors] = useState(initialFlavors)
+    const orderFlavorsByFamilyFlavorName = (flavors) => {
+        return flavors.sort((a, b) => {
+            if (a.FlavorFamily.name < b.FlavorFamily.name) {
+                return -1;
+            }
+            if (a.FlavorFamily.name > b.FlavorFamily.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
+            }
+            if (a.name > b.name) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+
+    const [flavors, setflavors] = useState(orderFlavorsByFamilyFlavorName(initialFlavors))
 
     const thereAreNoFlavors = flavors.length === 0;
 
@@ -43,7 +61,7 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
         const columnsHeaders = [
             {
                 name: 'Nombre',
-                width: '25%'
+                width: '21%'
             },
             {
                 name: 'Familia',
@@ -65,17 +83,17 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
                 name: 'Precio',
                 width: '10%'
             },
-            // {
-            //     name: 'Ver',
-            //     width: '10%'
-            // },
             {
-                name: 'Ver / Editar',
-                width: '10%'
+                name: 'Ver',
+                width: '8%'
+            },
+            {
+                name: 'Editar',
+                width: '8%'
             },
             {
                 name: 'Eliminar',
-                width: '10%'
+                width: '8%'
             }
         ];
 

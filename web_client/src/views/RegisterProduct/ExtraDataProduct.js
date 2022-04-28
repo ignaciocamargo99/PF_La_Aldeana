@@ -17,7 +17,7 @@ const ExtraDataProduct = (props) => {
     return (
         <>
             <TypeProduct load={props.load} data={props.data} />
-            <BeShowed show={parseInt(props.data.id_product_type, 10) === 3}>
+            <BeShowed show={parseInt(props.data.id_product_type, 10) === 2}>
                 <FlavorsAmount load={props.load} data={props.data} />
             </BeShowed>
             <hr />

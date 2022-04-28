@@ -1,11 +1,11 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import React, { useState } from "react";
-import Breadcrumb from '../../../common/Breadcrumb';
-import Buttons from "../../../common/Buttons";
-import displayError from "../../../utils/ErrorMessages/displayError";
-import successMessage from '../../../utils/SuccessMessages/successMessage';
-import warningMessage from "../../../utils/WarningMessages/warningMessage";
+import Breadcrumb from 'common/Breadcrumb';
+import Buttons from "common/Buttons";
+import displayError from "utils/ErrorMessages/displayError";
+import successMessage from 'utils/SuccessMessages/successMessage';
+import warningMessage from "utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
@@ -15,6 +15,7 @@ const PORT = require('../../../config');
 export default function RegisterEmployee() {
     const [ready, setReady] = useState(false);
     const [data, setData] = useState({
+        charges: [],
         isCreatingNewEmployee: true
     });
     const cancelRegisterEmployee = () => window.location.replace('/app/employees');
@@ -56,9 +57,7 @@ export default function RegisterEmployee() {
                         displayRegisterError();
                     }
                 }
-                else {
-                    displayRegisterError();
-                }
+                else warningMessage('Error', 'El número de documento ingresado ya se encuentra en uso.', 'error');
             }
             catch {
                 displayRegisterError();
