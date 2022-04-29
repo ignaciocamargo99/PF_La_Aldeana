@@ -111,7 +111,7 @@ const ProductTable = (props) => {
                         <div className="viewTitleBtn">
                             <h1>Productos</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <button id='editProductButton' onClick={onClickNewProduct} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
                                 <button id='editProductButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
@@ -126,7 +126,7 @@ const ProductTable = (props) => {
                                 <div className="viewTitleBtn">
                                     <h1>Productos</h1>
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='editProductButton' onClick={onClickNewProduct} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                        <button id='editProductButton' onClick={onClickNewProduct} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </BeShowed>
                                     <BeShowed show={permissionsAccess === 1}>
                                         <button id='editProductButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>

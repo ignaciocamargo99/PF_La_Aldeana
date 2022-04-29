@@ -10,6 +10,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import DataUser from '../DataUsers/DataUser';
 import ListPermissions from '../Permissions/ListPermissions';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../../config');
 
@@ -61,15 +62,18 @@ export default function EditUser(props) {
     const stringContainsNumber = (_string) => /\d/.test(_string);
 
 
-    const updateUser = () => {
+    const updateUser = async () => {
         if (ready) {
-            loadingMessage('Actualizando datos...');
-            Axios.put(`${PORT()}/api/user/${data.id_user}`, [data, valueSelect])
-                .then((data) => {
-                    if (data.data.Ok) successMessage("Atención", "Datos modificados correctamente", "success");
-                    else displayError('Ha ocurrido un error...');
-                })
-                .catch(error => console.log(error))
+            const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+            if (editionConfirmed) {
+                loadingMessage('Guardando cambios...');
+                Axios.put(`${PORT()}/api/user/${data.id_user}`, [data, valueSelect])
+                    .then((data) => {
+                        if (data.data.Ok) successMessage("Atención", "Usuario editado exitosamente", "success");
+                        else displayError('Ha ocurrido un error...');
+                    })
+                    .catch(error => console.log(error))
+            }
         }
         else warningMessage('Atención', 'Recuerde que la contraseña debe tener 8 dígitos como mínimo incluído un número y todos los campos son obligatorios', 'warning');
     };
@@ -85,7 +89,7 @@ export default function EditUser(props) {
                 <DataUser data={data} loadData={loadData} />
                 <ListPermissions data={data} loadMatrix={loadMatrix} valueSelect={valueSelect} />
                 <Buttons
-                    label='Registrar' actionOK={updateUser}
+                    label='Aceptar' actionOK={updateUser}
                     actionNotOK={updateUser}
                     ready={ready}
                     data={data}

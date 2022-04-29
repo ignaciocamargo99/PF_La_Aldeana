@@ -34,6 +34,9 @@ const salesReportRouter = require('./api/routes/salesReportRoute');
 const licensesRouter = require('./api/routes/licenseRoute');
 const advancesRouter = require('./api/routes/advancesRoute');
 const serviceTestRoute = require('./api/routes/serviceTestRoute');
+const turnsRouter = require('./api/routes/turnsRoute');
+const jdEmployeeRouter = require('./api/routes/jdEmployeeRoute');
+const salariesRoute = require('./api/routes/salariesRoute');
 const dayOffRouter = require('./api/routes/dayOffRoute');
 const userRouter = require('./api/routes/userRoute');
 
@@ -74,10 +77,16 @@ app.use('/api', licensesRouter);
 app.use('/api', salesRouter);
 app.use('/api', franchiseRouter);
 app.use('/api', salesReportRouter);
+app.use('/api', licensesRouter);
+app.use('/api', advancesRouter);
+app.use('/api', serviceTestRoute);
+app.use('/api', turnsRouter);
+app.use('/api', jdEmployeeRouter);
 app.use('/api', assistanceFingerRouter);
 app.use('/api', employeeAssistanceRouter);
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
+app.use('/api', salariesRoute);
 app.use('/api', dayOffRouter);
 app.use('/api', userRouter);
 

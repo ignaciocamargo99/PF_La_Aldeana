@@ -26,7 +26,7 @@ const ProductTypesView = ({ permissionsAccess }) => {
                             <button
                                 onClick={handleNewProductTypeBtnClicked}
                                 type="button"
-                                className="newBtn"
+                                className="btn btn-light newBtn"
                             >
                                 <FontAwesomeIcon icon={faPlus} /> Nuevo
                             </button>

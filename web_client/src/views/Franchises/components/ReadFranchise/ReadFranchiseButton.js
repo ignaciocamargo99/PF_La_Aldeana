@@ -12,7 +12,7 @@ export default function ReadFranchiseButton(props) {
     }
 
     return (
-        <button id='readFranchisetButton' type="button" className="sendEdit" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
+        <button id='readFranchisetButton' type="button" className="btn btn-warning btnRead" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
     );
 
 }

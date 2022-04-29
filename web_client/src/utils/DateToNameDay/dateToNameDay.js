@@ -1,5 +1,7 @@
 export const dateToNameDay = (day) => {
     switch(day){
+        case 0:
+            return 'Domingo'
         case 1:
             return 'Lunes'
         case 2:
@@ -12,7 +14,5 @@ export const dateToNameDay = (day) => {
             return 'Viernes'
         case 6:
             return 'Sábado'
-        case 7:
-            return 'Domingo'
     }
 }

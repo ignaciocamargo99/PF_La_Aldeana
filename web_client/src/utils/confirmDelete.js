@@ -1,18 +1,15 @@
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
-export default function confirmDelete(actionTrue) {
+export default function confirmDelete(name) {
 
-  return swal({
-    title: "¿Seguro que desea eliminarlo?",
+  return Swal.fire({
+    title: `¿Seguro que desea eliminar ${name}?`,
     text: "El elemento seleccionado ya no será visible para el personal de la empresa.",
-    icon: "warning",
-    buttons: true,
-    dangerMode: true,
+    icon: "question",
+    confirmButtonText: 'Sí',
+    showCancelButton: true,
+    showConfirmButton: true,
+    reverseButtons: true,
   })
-    .then((willDelete) => {
-      if (willDelete) {
-        actionTrue();
-      }
-    });
-}
+};
 

@@ -69,8 +69,8 @@ const ModalLogin = (props) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter className="back-ligthblue">
-                    <button className='sendOk' onClick={init}>Iniciar sesión</button>
-                    <button className='cancel' onClick={props.close}>Cancelar</button>
+                    <button className='btn btn-light sendOk' onClick={init}>Iniciar sesión</button>
+                    <button className='btn btn-light cancel' onClick={props.close}>Cancelar</button>
                 </ModalFooter>
             </Modal>
         </>
