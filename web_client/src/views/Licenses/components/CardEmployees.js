@@ -17,22 +17,22 @@ const CardEmployees = (props) => {
 
     return (
         <>
-            <BeShowed show={props.searchState.trim().length <= 1}>
+            <BeShowed show={props.searchState.trim().length <= 2}>
                 <>
                     <button className="nextBtn" disabled={props.employeesStart === 0} onClick={() => { props.setEmployeesStart(props.employeesStart - 1) }}><FontAwesomeIcon icon={faArrowLeft} /></button>
                 </>
             </BeShowed>
-            <ShowEmployees employees={props.searchState.trim().length <= 1 ? props.employeesView : employeesFilter} employee={props.employee}
-                searchState={props.searchState.trim().length <= 1 ? '' : props.searchState.toUpperCase()}
+            <ShowEmployees employees={props.searchState.trim().length <= 2 ? props.employeesView : employeesFilter} employee={props.employee}
+                searchState={props.searchState.trim().length <= 2 ? '' : props.searchState.toUpperCase()}
                 onChangeEmployee={props.onChangeEmployee} licensedEmployees={props.licensedEmployees} />
-            <BeShowed show={employeesFilter?.length === 0 && props.searchState.trim().length > 1}>
+            <BeShowed show={employeesFilter?.length === 0 && props.searchState.trim().length >2}>
                 <div className="formRow">
                     <div style={{ height: '200px', alignItems: 'center', display: 'flex' }}>
                         <label><b style={{ color: '#383C77' }}>No hay empleados con ese nombre</b></label>
                     </div>
                 </div>
             </BeShowed>
-            <BeShowed show={props.searchState.trim().length <= 1}>
+            <BeShowed show={props.searchState.trim().length <= 2}>
                 <div>
                     <button className="nextBtn" disabled={props.employeesStart === (props.employees.length - 6)} onClick={() => { props.setEmployeesStart(props.employeesStart + 1) }}><FontAwesomeIcon icon={faArrowRight} /></button>
                 </div>

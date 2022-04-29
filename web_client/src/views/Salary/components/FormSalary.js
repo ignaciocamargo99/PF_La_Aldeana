@@ -525,7 +525,7 @@ const FormSalary = (props) => {
                                 </BeShowed>
                                 <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                     <div className="col-sm-1">
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="sendDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-warning btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherPlus"} n={n} default={i.name}
@@ -541,7 +541,7 @@ const FormSalary = (props) => {
                     })}
                     <BeShowed show={props.action !== "Ver"}>
                         <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <button id='addOtherPlusButton' type="button" className="sendAdd" onClick={addOtherPlus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <button id='addOtherPlusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherPlus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                         </div>
                     </BeShowed>
                     <div className="formRow justify-content-center">
@@ -575,7 +575,7 @@ const FormSalary = (props) => {
                                 </BeShowed>
                                 <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                     <div className="col-sm-1" >
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"sendDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-warning btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherMinus"} n={n} default={i.name}
@@ -591,7 +591,7 @@ const FormSalary = (props) => {
                     })}
                     <BeShowed show={props.action !== "Ver"}>
                         <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <button id='addOtherMinusButton' type="button" className="sendAdd" onClick={addOtherMinus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <button id='addOtherMinusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherMinus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                         </div>
                     </BeShowed>
                     <div className="formRow justify-content-center">

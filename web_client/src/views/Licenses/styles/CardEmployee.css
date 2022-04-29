@@ -2,31 +2,31 @@
     background: #A5DEF9 !important;
     border-radius: 20px !important;
     color: #000000 !important;
-    width: 200px;
-    height: 200px;
-    margin: 5px
+    width: 192px !important;
+    height: 192px !important;
+    margin: 5px !important
 }
 
 .cardEmployee {
     background: #F68634 !important;
     border-radius: 20px !important;
-    width: 200px;
-    height: 200px;
-    margin: 5px
+    width: 192px !important;
+    height:192px !important;
+    margin: 5px !important
 }
 
 .disabledCard {
     background: #808080;
-    border-radius: 20px;
-    width: 200px;
-    height: 200px;
-    margin: 5px
+    border-radius: 20px !important;
+    width: 192px !important;
+    height: 192px !important;
+    margin: 5px !important
 }
 
 .nextBtn {
-    height: 200px;
+    height: 192px;
     margin: 5px;
     background-color: #434780;
     color: white;
-    border-radius:6px;
+    border-radius:6px
 }
