@@ -27,7 +27,7 @@ const ListFlavors = (props) => {
                             <button
                                 onClick={handleNewFlavorBtnClicked}
                                 type="button"
-                                className="newBtn"
+                                className="btn btn-light newBtn"
                             >
                                 <FontAwesomeIcon icon={faPlus} /> Nuevo
                             </button>

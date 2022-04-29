@@ -10,40 +10,48 @@ const TableSuppliesDown = ({ supplies, download, data }) => {
     return (
         <>
             <h4 className="text-secondary">Insumos cargados: </h4>
-            <Table>
-                <HeaderTable
-                    th={
-                        <>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Nombre</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Descripción</th>
-                            <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>Cantidad ingresada</th>
-                            <BeShowed show={data && !data.reading}>
-                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acción</th>
-                            </BeShowed>
-                        </>
-                    }
-                />
-                <BodyTable
-                    tbody={supplies?.map((element, i) => {
-                        return (
-                            <tbody key={i}>
-                                <tr>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.number_supply}</td>
-                                    <BeShowed show={data && !data.reading}>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="btn btn-danger btnDelete"
-                                                onClick={(e) => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
-                                        </td>
-                                    </BeShowed>
+            {(supplies && supplies?.length > 0)
+                ?
+                <>
 
-                                </tr>
-                            </tbody>
-                        )
-                    })}
-                />
-            </Table>
+                    <Table>
+                        <HeaderTable
+                            th={
+                                <>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Nombre</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Descripción</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>Cantidad ingresada</th>
+                                    <BeShowed show={data && !data.reading}>
+                                        <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acción</th>
+                                    </BeShowed>
+                                </>
+                            }
+                        />
+                        <BodyTable
+                            tbody={supplies?.map((element, i) => {
+                                return (
+                                    <tbody key={i}>
+                                        <tr>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle', width: '130px' }}>{element.number_supply}</td>
+                                            <BeShowed show={data && !data.reading}>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <button type="button" className="btn btn-danger btnDelete"
+                                                        onClick={(e) => download(element)}><FontAwesomeIcon icon={faMinus} /></button>
+                                                </td>
+                                            </BeShowed>
+
+                                        </tr>
+                                    </tbody>
+                                )
+                            })}
+                        />
+                    </Table>
+                </>
+                :
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No hay insumos cargados para el producto aún...</h4>
+            }
         </>
     );
 };

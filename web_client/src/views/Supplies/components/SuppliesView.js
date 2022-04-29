@@ -26,7 +26,7 @@ const SuppliesView = ({ permissionsAccess }) => {
                             <button
                                 onClick={handleNewSupplyBtnClicked}
                                 type="button"
-                                className="newBtn"
+                                className="btn btn-light newBtn"
                             >
                                 <FontAwesomeIcon icon={faPlus} /> Nuevo
                             </button>

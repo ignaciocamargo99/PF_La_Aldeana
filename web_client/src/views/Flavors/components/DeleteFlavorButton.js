@@ -19,7 +19,7 @@ export default function DeleteFlavorButton({ flavorData, deleteFlavor, permissio
         <>
             <BeShowed show={permissionsAccess === 3}>
                 <button
-                    className="sendDelete"
+                    className="btn btn-danger btnDelete"
                     onClick={handleDeleteFlavorBtnClicked}
                     type="button"
                 >

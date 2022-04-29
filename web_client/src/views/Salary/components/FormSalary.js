@@ -525,7 +525,7 @@ const FormSalary = (props) => {
                                 </BeShowed>
                                 <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                     <div className="col-sm-1">
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-warning btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-danger btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherPlus"} n={n} default={i.name}
@@ -575,7 +575,7 @@ const FormSalary = (props) => {
                                 </BeShowed>
                                 <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
                                     <div className="col-sm-1" >
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-warning btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-danger btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherMinus"} n={n} default={i.name}
