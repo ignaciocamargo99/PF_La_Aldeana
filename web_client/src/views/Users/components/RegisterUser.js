@@ -10,6 +10,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import DataUser from './DataUsers/DataUser';
 import ListPermissions from './Permissions/ListPermissions';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../config');
 
@@ -49,15 +50,18 @@ export default function RegisterUser() {
 
     const loadMatrix = (matrix) => setValueSelect(matrix);
 
-    const registerUser = () => {
+    const registerUser = async () => {
         if (ready) {
-            loadingMessage('Registrando nuevo usuario...');
-            Axios.post(`${PORT()}/api/user`, [data, valueSelect])
-                .then((data) => {
-                    if (data.data.Ok) successMessage("Atención", "Usuario dado de alta", "success");
-                    else displayError('Ha ocurrido un error...');
-                })
-                .catch(error => console.log(error))
+            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.nick_user}"?`)).isConfirmed;
+            if (registrationConfirmed) {
+                loadingMessage('Registrando nuevo usuario...');
+                Axios.post(`${PORT()}/api/user`, [data, valueSelect])
+                    .then((data) => {
+                        if (data.data.Ok) successMessage("Atención", "Usuario dado de alta", "success");
+                        else displayError('Ha ocurrido un error...');
+                    })
+                    .catch(error => console.log(error))
+            }
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
     };

@@ -47,7 +47,7 @@ const ImageProduct = (props) => {
                     <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
                 </div>
                 <BeShowed show={inputImg.current && inputImg.current.value !== ''}>
-                    <button className="imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
+                    <button className="btn btn-danger imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
                 </BeShowed>
                 <BeShowed show={inputImg.current && inputImg.current.value === ''}>
                     <button className="disabledImgBtn" type="button" disabled><FontAwesomeIcon icon={faMinus} /></button>

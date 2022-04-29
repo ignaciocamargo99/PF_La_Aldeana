@@ -112,8 +112,12 @@ export default function SalariesTable(props) {
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                            </div>
+                            <input type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                        </div>
                     </div>
                 </div>
                 <div className="table-responsive-md">
@@ -143,21 +147,21 @@ export default function SalariesTable(props) {
                                                     <FontAwesomeIcon icon={faEdit} />
                                                 </button>
                                             </BeShowed>
-                                            <BeShowed show={permissionsAccess === 3 } >
+                                            <BeShowed show={permissionsAccess === 3} >
                                                 <BeShowed show={props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
                                                     <button className="disabledSendBtn" disabled >
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                                 </BeShowed>
                                                 <BeShowed show={props.filter !== 'Confirm' || (props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
-                                                    <button className="sendEdit" onClick={() => { props.setActionSalary('Editar', element) }}>
+                                                    <button className="btn btn-info btnEdit" onClick={() => { props.setActionSalary('Editar', element) }}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                                 </BeShowed>
                                             </BeShowed>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="sendAdd" onClick={() => { props.setActionSalary('Ver', element) }}>
+                                            <button className="btn btn-warning btnRead" onClick={() => { props.setActionSalary('Ver', element) }}>
                                                 <FontAwesomeIcon icon={faEye} />
                                             </button>
                                         </td>
@@ -173,8 +177,12 @@ export default function SalariesTable(props) {
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                            </div>
+                            <input type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                        </div>
                     </div>
                 </div>
                 <div className="table-responsive-md">

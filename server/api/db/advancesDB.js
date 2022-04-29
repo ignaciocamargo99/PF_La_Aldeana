@@ -85,7 +85,7 @@ const advancesCreateDB = (newAdvance) => {
     const sqlInsert = 'INSERT INTO ADVANCES  VALUES (?, ?, ?, ?)';
     const sqlInsertInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
     let { dniEmployee, date, amount, installments, months } = newAdvance;
-    
+
     if (dniEmployee && date && amount && installments && months && dniEmployee <= 99999999 && dniEmployee >= 10000000) {
         dniEmployee = newAdvance.dniEmployee;
         date = newAdvance.date;
@@ -103,13 +103,13 @@ const advancesCreateDB = (newAdvance) => {
                 if (error) reject(error);
                 db.query(sqlInsert, [dniEmployee, date, amount, 0], (error, result) => {
                     if (error) {
-                        db.rollback(()=> reject(error));
+                        db.rollback(() => reject(error));
                     }
                     else {
                         for (var i = 0; i < installments.length; i++) {
-                            db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount,  installments[i].label, 0], (error) => {
+                            db.query(sqlInsertInstallments, [dniEmployee, date, installments[i].month, installments[i].amount, installments[i].label, 0], (error) => {
                                 if (error) {
-                                    db.rollback(()=> reject(error));
+                                    db.rollback(() => reject(error));
                                 }
                                 db.commit((error) => {
                                     if (error) {
@@ -135,7 +135,7 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
     const sqlUpdateInstallments = "INSERT INTO INSTALLMENTS VALUES (?, ?, ?, ?, ?, ?)";
 
     let { dniEmployeeOld, date, amount, pay, name, last_name, title, dniEmployee, installments } = updateAdvances;
-    if (dniEmployee && amount && installments && date &&  dniEmployee <= 99999999 && dniEmployee >= 10000000) {
+    if (dniEmployee && amount && installments && date && dniEmployee <= 99999999 && dniEmployee >= 10000000) {
         dniEmployee = updateAdvances.dniEmployee;
         amount = updateAdvances.amount;
         installments = updateAdvances.installments;
@@ -163,10 +163,10 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
                 });
 
                 for (var i = 0; i < installments.length; i++) {
-                    db.query(sqlUpdateInstallments, [parseInt(nroDNI), date, installments[i].month, installments[i].amount,  installments[i].label, installments[i].pay], (error) => {
+                    db.query(sqlUpdateInstallments, [parseInt(nroDNI), date, installments[i].month, installments[i].amount, installments[i].label, installments[i].pay], (error) => {
                         if (error) {
                             console.log(error)
-                            db.rollback(()=> reject(error));
+                            db.rollback(() => reject(error));
                         }
                         db.commit((error) => {
                             if (error) {
@@ -244,26 +244,26 @@ const employeeGetDB = () => {
 
                     db.query(sqlSelect2, (error, result) => {
                         if (error) reject(error);
-                            else {
-                                let aux = [];
-                                res?.forEach((employee, i)=>{aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 0})});
-                                
-                                result?.forEach((employee, i)=>{
-                                    if (!aux.some(item => item.dni === employee.dni)){
-                                        aux.push({dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 1})
-                                    } else {
-                                        aux?.forEach(element => {
-                                            if (element.dni === employee.dni){
-                                                element.advance += 1;
-                                            }
-                                        });
-                                    }
-                                });
+                        else {
+                            let aux = [];
+                            res?.forEach((employee, i) => { aux.push({ dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 0 }) });
 
-                                resolve(aux);
-                            }
-                        });
-                    }
+                            result?.forEach((employee, i) => {
+                                if (!aux.some(item => item.dni === employee.dni)) {
+                                    aux.push({ dni: employee.dni, name: employee.name, last_name: employee.last_name, advance: 1 })
+                                } else {
+                                    aux?.forEach(element => {
+                                        if (element.dni === employee.dni) {
+                                            element.advance += 1;
+                                        }
+                                    });
+                                }
+                            });
+
+                            resolve(aux);
+                        }
+                    });
+                }
             });
             db.release();
         })

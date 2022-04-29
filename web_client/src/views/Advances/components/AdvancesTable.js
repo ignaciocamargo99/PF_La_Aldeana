@@ -32,13 +32,13 @@ export default function AdvancesTable(props) {
     useEffect(() => {
         Axios.get(PORT() + '/api/advances')
             .then((response) => {
-                handlerLoadingSpinner();
                 let auxAdvances = response.data;
                 auxAdvances.forEach((person) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
                 });
+                handlerLoadingSpinner();
                 setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
@@ -79,8 +79,6 @@ export default function AdvancesTable(props) {
         //window.location.replace('/app/advances');
     }
 
-    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
-
     const handleEdit = () => warningMessage('Atención', 'Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
     const handleDelete = () => warningMessage('Atención', 'Plazo de cancelación vencido. Solo podrá cancelar el adelanto antes del pago de la primer cuota.', 'warning');
 
@@ -93,7 +91,6 @@ export default function AdvancesTable(props) {
     useEffect(() => {
         if (advances) {
             handlerLoadingSpinner();
-
             setListTable(advances);
         }
     }, [advances]);
@@ -103,11 +100,9 @@ export default function AdvancesTable(props) {
             const filteredElementsList = listTable.filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
-
             setFilteredElements(filteredElementsList);
-        } else {
-            setFilteredElements(listTable);
         }
+        else setFilteredElements(listTable);
     }, [nameSearch, listTable]);
 
     const columnsHeaders = [
@@ -152,22 +147,21 @@ export default function AdvancesTable(props) {
     const indexOfFirstElement = indexOfLastElement - elementsPerPage;
     const currentElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
+    const onClickNewAdvances = () => window.location.replace('/app/registerAdvances');
 
-    const onClickNewAdvances = () => {
-        window.location.replace('/app/registerAdvances');
-    }
+    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
         <>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-                : advances && advances.length === 0
+                : advances.length === 0
                     ?
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Adelantos</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
-                                <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1} >
                                 <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
@@ -177,25 +171,29 @@ export default function AdvancesTable(props) {
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
                     </div>
                     : (
-                        <>
-                            <BeShowed show={!isEditing && !isReading}>
-                                <div className="viewTitleBtn">
-                                    <h1>Adelantos</h1>
-                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
-                                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                                    </BeShowed>
-                                    <BeShowed show={permissionsAccess === 1} >
-                                        <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                                    </BeShowed>
-                                </div>
-                                <div className="viewBody">
-                                    <div className="formRow title-searcher">
-                                        <h4 className="text-secondary">Adelantos</h4>
-                                        <div className="search-input">
-                                            <FontAwesomeIcon icon={faSearch} />
-                                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <BeShowed show={!isEditing && !isReading}>
+                            <div className="viewTitleBtn">
+                                <h1>Adelantos</h1>
+                                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
+                                    <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
+                                <BeShowed show={permissionsAccess === 1} >
+                                    <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
+                            </div>
+                            <div className="viewBody">
+                                <div className="formRow title-searcher">
+                                    <h4 className="text-secondary">Adelantos:</h4>
+                                    <div className="search-input">
+                                        <div className="input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                            </div>
+                                            <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
                                         </div>
                                     </div>
+                                </div>
+                                {currentElements.length > 0 && (
                                     <div className="table-responsive-md">
                                         <table className="table table-control table-hover" >
                                             <thead>
@@ -255,10 +253,13 @@ export default function AdvancesTable(props) {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-                                </div>
-                            </BeShowed>
-                        </>
+                                )}
+                                {currentElements.length === 0 && (
+                                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un adelanto correspondiente al empleado ingresado...</h4>
+                                )}
+                                <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                            </div>
+                        </BeShowed>
                     )}
             <BeShowed show={isEditing}>
                 <EditAdvances cancel={cancelEditAdvances} advances={editing} />

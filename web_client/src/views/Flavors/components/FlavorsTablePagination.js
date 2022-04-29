@@ -39,9 +39,9 @@ const FlavorsTablePagination = ({ columnsHeaders, currentElements, deleteFlavor,
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Sabores activos:</h4>
+                <h4 className="text-secondary">Sabores disponibles:</h4>
                 <div className="search-input">
-                    <SearchFilter onChange={onFilterInputChange} />
+                    <SearchFilter onChange={onFilterInputChange} placeholder="Buscar sabores..." />
                 </div>
             </div>
             <FlavorsTable

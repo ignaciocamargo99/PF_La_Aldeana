@@ -78,7 +78,7 @@ export default function ImageProduct(props) {
                         <input className="form-control" accept="image/png, .jpeg, .jpg" ref={inputImg} onChange={handleImg} type="file" id="productImage2"></input>
                     </div>
                     <BeShowed show={(image && image.length > 0) || previewImg}>
-                        <button className="imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
+                        <button className="btn btn-danger imgBtn" type="button" onClick={handleDeleteImg} ><FontAwesomeIcon icon={faMinus} /></button>
                     </BeShowed>
                     <BeShowed show={!previewImg && (image && image.length === 0)}>
                         <button className="disabledImgBtn" type="button" disabled><FontAwesomeIcon icon={faMinus} /></button>

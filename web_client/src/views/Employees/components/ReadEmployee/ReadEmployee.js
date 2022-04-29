@@ -26,7 +26,7 @@ const ReadEmployee = ({ employeeData, goBack }) => {
                     isReadingEmployeeData={isReadingEmployeeData}
                 />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={goBack}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={goBack}>Volver</button>
                 </div>
             </div>
         </>

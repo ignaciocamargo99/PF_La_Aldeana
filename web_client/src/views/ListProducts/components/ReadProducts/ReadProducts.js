@@ -23,7 +23,7 @@ const ReadProducts = ({ productToRead, onClickCancelRead }) => {
                 <GeneralDataProduct load={load} data={productToRead} />
                 <ExtraDataProduct load={load} data={productToRead} />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={onClickCancelRead}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={onClickCancelRead}>Volver</button>
                 </div>
             </div>
         </>

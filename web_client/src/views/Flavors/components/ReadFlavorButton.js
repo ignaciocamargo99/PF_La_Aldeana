@@ -9,7 +9,7 @@ export default function ReadFlavorButton({ flavorId }) {
 
     return (
         <button
-            className="sendEdit"
+            className="btn btn-warning btnRead"
             id='readFlavorButton'
             onClick={handleReadFlavorBtnClicked}
             type="button"

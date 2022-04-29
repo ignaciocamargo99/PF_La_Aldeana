@@ -14,7 +14,7 @@ export default function EditFranchiseButton(props) {
     return (
         <>
             <BeShowed show={permissionsAccess === 3} >
-                <button id='editFranchiseButton' type="button" onClick={handleEdit} className="sendEdit"><FontAwesomeIcon icon={faEdit} /></button>
+                <button id='editFranchiseButton' type="button" onClick={handleEdit} className="btn btn-info btnEdit"><FontAwesomeIcon icon={faEdit} /></button>
             </BeShowed>
             <BeShowed show={permissionsAccess !== 3} >
                 <button id='editFranchiseButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faEdit} /></button>

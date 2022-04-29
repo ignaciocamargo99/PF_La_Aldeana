@@ -129,7 +129,7 @@ const Salary = (props) => {
                                 </div>
                                 <div className="form-contorl-input">
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='addSalaryButton' disabled={errorDate} style={errorDate ? { backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
+                                        <button id='addSalaryButton' disabled={errorDate} style={errorDate ? { backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
                                     </BeShowed>
                                     <BeShowed show={permissionsAccess === 1}>
                                         <button id='addSalaryButton' disabled className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>

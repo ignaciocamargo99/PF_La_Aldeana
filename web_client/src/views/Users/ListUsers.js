@@ -13,7 +13,6 @@ import userData from './userData';
 const PORT = require('../../config');
 
 export default function ListUsers(props) {
-
     const [users, setUsers] = useState([]);
     const [userToRead, setUserToRead] = useState({});
     const [userToEdit, setUserToEdit] = useState({});
@@ -115,10 +114,10 @@ export default function ListUsers(props) {
                         <div className="viewTitleBtn">
                             <h1>Usuarios</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                <button id='newUsersButton' type="button" onClick={onClickNewUser} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                                <button id='newUsersButton' type="button" onClick={onClickNewUser} className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
-                                <button id='newUsersButton' disabled type="button"className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                                <button id='newUsersButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                             </BeShowed>
                         </div>
                         <br />
@@ -129,7 +128,12 @@ export default function ListUsers(props) {
                             <>
                                 <div className="viewTitleBtn">
                                     <h1>Usuarios</h1>
-                                    <button id='editUsersButton' onClick={onClickNewUser} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                        <button id='newUsersButton' type="button" onClick={onClickNewUser} className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
+                                    <BeShowed show={permissionsAccess === 1}>
+                                        <button id='newUsersButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </BeShowed>
                                 </div>
                                 <div className="viewBody">
                                     <TablePagination
