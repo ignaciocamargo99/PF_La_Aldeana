@@ -32,6 +32,26 @@ const installmentsGetDB = (dniEmployee, date) => {
     });
 };
 
+const installmentsToPayGetDB = (dniEmployee, date) => {
+    const sqlSelect = "SELECT a.nroDNI, a.`date`, i.`month`, i.amount, i.label, i.pay FROM INSTALLMENTS i LEFT JOIN ADVANCES a ON i.nroDNI = a.nroDNI AND i.`date` = a.`date` WHERE a.nroDNI = " + 
+    dniEmployee + " AND  `month` = '" + date + "' AND i.pay = 0";
+    
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (e, result) => {
+                if (e) {
+                    console.log(e);
+                    reject(e);
+                }
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+};
+
 const advancesDeleteDB = (dniEmployee, date) => {
     const sqlUpdate = 'DELETE FROM ADVANCES WHERE nroDNI = ? AND `date` = ?';
     const sqlDelete = "DELETE FROM INSTALLMENTS WHERE nroDNI = ? and `date` = ?";
@@ -109,7 +129,6 @@ const advancesCreateDB = (newAdvance) => {
     });
 };
 
-
 const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
     const sqlUpdate = "UPDATE ADVANCES a SET a.amount = ? WHERE a.nroDNI = ? and a.`date` = ?";
     const sqlDelete = "DELETE FROM INSTALLMENTS WHERE nroDNI = ? and `date` = ?";
@@ -163,6 +182,51 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
         });
     });
 };
+const installmentsPayDB = (nroDNI, date, installments) => {
+    const sqlUpdate = "UPDATE ADVANCES SET pay = pay + ? WHERE nroDNI = " + nroDNI + " AND  `date` = ?";
+    const sqlUpdateInstallments = "UPDATE INSTALLMENTS SET pay = 1 WHERE nroDNI = " + nroDNI + " AND  `month` = '" + date + "' AND `date` = ?";
+    const inst = installments.advances;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.beginTransaction((error) => {
+                if (error) {
+                    console.log(error);
+                    reject(error);
+                } else {
+                    for (var i = 0; i < inst.length; i++) {
+                        db.query(sqlUpdate, [inst[i].amount, inst[i].date], (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                reject(err);
+                            } else {
+                                resolve(result);
+                            }
+                        });
+
+                        db.query(sqlUpdateInstallments, [inst[i].date], (error) => {
+                            if (error) {
+                                console.log(error)
+                                db.rollback(()=> reject(error));
+                            } else {
+                                db.commit((e) => {
+                                    if (e) {
+                                        console.log(e)
+                                        return db.rollback(() => reject(e));
+                                    }
+                                    else resolve();
+                                });
+                            }
+                        });
+                    };
+                }
+                db.release();
+            });
+        });
+    });
+};
 
 const employeeGetDB = () => {
 
@@ -206,4 +270,4 @@ const employeeGetDB = () => {
     });
 };
 
-module.exports = { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB, employeeGetDB };
+module.exports = { advancesGetDB, installmentsGetDB, advancesDeleteDB, advancesCreateDB, advancesUpdateDB, employeeGetDB, installmentsToPayGetDB, installmentsPayDB };

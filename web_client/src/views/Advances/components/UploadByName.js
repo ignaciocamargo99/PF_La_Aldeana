@@ -1,7 +1,6 @@
 import React, { useState , useRef} from 'react';
 import BeShowed from '../../../common/BeShowed';
 
-
 const UploadByName = (props) => {
 
     const input = useRef(null);

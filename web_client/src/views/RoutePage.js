@@ -20,6 +20,7 @@ import ListProductions from './Productions/ListProductions';
 import FlavorRoutes from './Flavors/FlavorRoutes';
 import ListUsers from './Users/ListUsers';
 import RegisterUser from './Users/components/RegisterUser';
+import Salary from './Salary/components/Salary';
 import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
@@ -116,12 +117,11 @@ export default function RouterPage(props) {
                         <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees} />}></Route>
-
                         <Route path='/app/employeesSchedules' render={() => <EmployeesSchedulesView permissionsAccess={permissionAccessEmployees} />}></Route>
-
                         <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
                         <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>
                         <Route path='/app/registerAdvances' component={RegisterAdvances}></Route>
+                        <Route path='/app/salary' render={() => <Salary permissionsAccess={permissionAccessEmployees} />}></Route>
                     </>
             }
 
