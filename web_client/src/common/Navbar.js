@@ -60,11 +60,11 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/products">
                                 <FontAwesomeIcon icon={faList} /> Ver productos
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/typeProducts">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Tipo de producto
+                            <Dropdown.Item href="/app/productTypes">
+                                <FontAwesomeIcon icon={faList} /> Ver tipos de producto
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/supplies">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Insumo
+                                <FontAwesomeIcon icon={faList} /> Ver insumos
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -185,6 +185,9 @@ export default function Navbar(props) {
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/advances">
                                 <FontAwesomeIcon icon={faList} /> Ver adelantos
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/salary">
+                                <FontAwesomeIcon icon={faList} /> Ver salarios
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

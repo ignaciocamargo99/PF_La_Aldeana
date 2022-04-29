@@ -2,8 +2,8 @@
 export default function validationRouters(route, accesses) {
 
     // Products
-    let pathsToReadProducts = ['/app/products'];
-    let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/typeProducts', '/app/supplies'].concat(pathsToReadProducts);
+    let pathsToReadProducts = ['/app/products', '/app/productTypes', '/app/supplies'];
+    let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/productTypes/new', '/app/supplies/new'].concat(pathsToReadProducts);
 
     // Production
     let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view'];
@@ -21,7 +21,7 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterPurchases = ['/app/purchaseSupplies'];
 
     // Employees
-    let pathsToReadEmployees = ['/app/employees', '/app/licenses', '/app/assistanceEmployees', '/app/advances', '/app/employeesSchedules'];
+    let pathsToReadEmployees = ['/app/employees', '/app/licenses', '/app/assistanceEmployees', '/app/advances', '/app/employeesSchedules', '/app/salary'];
     let pathsToReadRegisterEmployees = ['/app/registerEmployees', '/app/registerAssistance', '/app/registerAdvances'].concat(pathsToReadEmployees);
 
     // Users
@@ -41,8 +41,8 @@ export default function validationRouters(route, accesses) {
         else return false;
     }
 
-    else if(pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)){
-        if(accesses[4] === 3) return true;
+    else if (pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)) {
+        if (accesses[4] === 3) return true;
         else return false;
     }
 

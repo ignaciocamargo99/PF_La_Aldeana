@@ -26,7 +26,7 @@ const RegisterPurchaseSupplies = (props) => {
 
     const cancel = () => {
         resetStates();
-        window.location.href = './supplies'
+        window.location.href = '/app/supplies'
     }
 
     const resetStates = (message) => {
@@ -105,7 +105,7 @@ const RegisterPurchaseSupplies = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar insumo"}</div>
-            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar insumo" />
+            <Breadcrumb parentName="Insumos" icon={faIceCream} parentLink="/app/supplies" currentName="Registrar insumo" />
             <div className="viewTitle">
                 <h1>Registrar Insumo</h1>
             </div>

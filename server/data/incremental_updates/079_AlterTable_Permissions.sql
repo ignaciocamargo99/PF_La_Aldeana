@@ -1,12 +1,11 @@
 INSERT INTO
-    `m6aacureuqp9xsmy`.`PERMISSIONS` (`id_permission`, `name`, `description`)
+    `PERMISSIONS` (`id_permission`, `name`, `description`)
 VALUES
     (
         '9',
         'Administración de Huellas',
         'Módulo de huellas'
     );
-
 
 INSERT INTO
     `DB_CHANGES`
