@@ -35,7 +35,7 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
             <div className="formRow title-searcher">
                 {dateFilter1.current && dateFilter1.current.value !== '' && dateFilter2.current && dateFilter2.current.value !== ''
                     ?
-                    <h4 className="text-secondary">Asistencias registradas desde el {moment(dateFilter1.current.value).format('DD/MM/YYYY')} hasta el {
+                    <h4 className="text-secondary">Asistencia desde el {moment(dateFilter1.current.value).format('DD/MM/YYYY')} hasta el {
                         moment(dateFilter2.current.value).format('DD/MM/YYYY')}
                     </h4>
                     :
@@ -46,20 +46,27 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                         :
                         dateFilter2.current && dateFilter2.current.value !== ''
                             ?
-                            <h4 className="text-secondary">Asistencias registradas hasta la fecha {moment(dateFilter2.current.value).format('DD/MM/YYYY')}
+                            <h4 className="text-secondary">Asistencias hasta la fecha {moment(dateFilter2.current.value).format('DD/MM/YYYY')}
                             </h4>
                             :
-                            <h4 className="text-secondary">Asistencias registradas en la fecha {dateNow}</h4>
+                            <h4 className="text-secondary">Asistencias del día corriente {dateNow}</h4>
                 }
                 <div className="search-input">
-                    <label className="lblDate">Fecha desde</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => onClickDate1(e)} ref={dateFilter1} />
-                    <label className="lblDate">Fecha hasta</label>
-                    <input id="inputSearchName" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
-                    <button id='filterAssistanceButton' type="button" onClick={onClickFilter} className="filterBtn">Limpiar filtros</button>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                        </div>
+                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate1(e)} ref={dateFilter1} />
+                    </div>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                        </div>
+                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
+                    </div>
+                    <button id='filterProductionButton' type="button" onClick={onClickFilter} className="btn btn-info filterBtn">Limpiar filtros</button>
                 </div>
             </div>
-
             {pageElements.length > 0 && (
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
