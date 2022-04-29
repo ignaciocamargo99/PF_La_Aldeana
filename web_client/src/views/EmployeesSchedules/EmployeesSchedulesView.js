@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import MonthView from './components/MonthView';
 import AutomatedSchedule from './components/AutomatedSchedule';
+import Breadcrumb from '../../common/Breadcrumb';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 const PORT = require('../../config');
 
@@ -84,6 +86,9 @@ const EmployeesSchedulesView = (props) => {
 
     return (
         <>
+            <BeShowed show={showMonthView || showAutomatedSchedule}>
+                <Breadcrumb parentName="Grilla de horarios" icon={faCalendar} parentLink="employeesSchedules" currentName={showMonthView ? 'Visualizar cronograma por mes' : 'Generar cronograma automatico'} />
+            </BeShowed>
             <div style={{ display: 'none' }}>{document.title = viewTitle}</div>
             <div className="viewTitle">
                 <h1>{viewTitle}</h1>
