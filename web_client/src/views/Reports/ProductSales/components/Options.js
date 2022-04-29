@@ -5,7 +5,7 @@ import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import { FaAngleRight } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa';
-import MyDocument from './PDFSalesReport';
+import MyDocument from './PDFProductSalesReport';
 import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
 import Viewer from './PDFModalViewer';
