@@ -108,7 +108,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
         let isFilledWithZeros = 0;
         params.forEach((param) => { if (filledWith(param, 0)) { isFilledWithZeros++ } });
         if (isFilledWithZeros === 3) {
-            swal("Advertencia", "No has modificado ningun dato", "warning");
+            swal("Atención", "No has modificado ningún dato", "warning");
             return;
         }
 
@@ -289,9 +289,9 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                     )
                 })}
                 <br />
-                <div className="formRow">
-                    <button className="sendOk col-sm-2 offset-sm-7" onClick={generateSchedule} >Generar grilla</button>
-                    <button className='sendNotOk col-sm-2 offset-sm-1' onClick={() => setShowAutomatedSchedule(false)}>Volver</button>
+                <div className='buttons'>
+                <button className="btn btn-light sendOk" onClick={generateSchedule} >Generar grilla</button>
+                    <button className='btn btn-light cancel' onClick={() => setShowAutomatedSchedule(false)}>Volver</button>
                 </div>
             </div>
             {priority ? <ModalPrioritySelection show={showCharge != null} charge={showCharge} setShowCharge={setShowCharge} employees={employees}
