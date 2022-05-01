@@ -1,5 +1,3 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from 'moment';
 import React, { useRef } from 'react';
 import DeleteProductionButton from '../DeleteProductionButton';

@@ -1,17 +1,16 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import Buttons from "../../../../common/Buttons";
 import displayError from "../../../../utils/ErrorMessages/displayError";
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import successMessage from '../../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../../utils/WarningMessages/warningMessage";
-import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 import validateDateEntryEgress from '../../validations/validateDateEntryEgress';
 import validateHoursEgressEntry from '../../validations/validateHoursEgressEntry';
-import getEmployees from '../getEmployees';
-import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import DataAssistance from '../RegisterAssistanceEmployee/DataAssistance';
 
 const PORT = require('../../../../config');
 
@@ -91,14 +90,14 @@ export default function EditAssistance(props) {
             <div style={{ display: 'none' }}>{document.title = "Editar asistencia"}</div>
             <Breadcrumb parentName="Asistencias" icon={faUserFriends} parentLink="assistanceEmployees" currentName="Editar asistencia" />
             <div className="viewTitleBtn">
-                <h1>Editar asistencia de {getEmployees(employees, data.dni)} / DNI: {data.dni}</h1>
+                <h1>Editar asistencia de {data.name + ' ' + data.last_name} / DNI: {data.dni}</h1>
             </div>
             <br />
             <div className="viewBody">
                 <DataAssistance load={load} data={data} />
                 <Buttons
                     label='Aceptar' ready={ready} actionOK={updateAssistanceEmployee} actionNotOK={updateAssistanceEmployee}
-                    data={data} actionCancel={props.cancel}
+                    data={data} actionCancel={props.onClickCancelEdit}
                 />
             </div>
         </>
