@@ -16,6 +16,7 @@ export default function ExtraDataEmployee({
     const inputFirstDayOff = useRef(null);
     const rb1 = useRef(null);
     const rb2 = useRef(null);
+    const rb3 = useRef(null);
     const maxDate = formattedDate(new Date(), 3);
     const startDate = formattedDate(new Date());
 
@@ -29,15 +30,23 @@ export default function ExtraDataEmployee({
     }, [data]);
 
     useEffect(() => {
+        console.log(data.employment_relationship )
         if (data.employment_relationship === 1) {
             rb1.current.checked = false;
-            rb2.current.checked = true;
+            rb2.current.checked = false;
+            rb3.current.checked = true;
         } else if (data.employment_relationship === 2) {
             rb1.current.checked = true;
             rb2.current.checked = false;
+            rb3.current.checked = false;
+        } else if (data.employment_relationship === 3) {
+            rb1.current.checked = false;
+            rb2.current.checked = true;
+            rb3.current.checked = false;
         } else {
             rb1.current.checked = false;
             rb2.current.checked = false;
+            rb3.current.checked = false;
         }
     })
 
@@ -91,6 +100,7 @@ export default function ExtraDataEmployee({
         if (isReadingEmployeeData) return;
 
         if (e.target.value === "black") data.employment_relationship = 2;
+        else if (e.target.value === "white4") data.employment_relationship = 3;
         else data.employment_relationship = 1;
         data.editing = false;
         load(data);
@@ -151,11 +161,11 @@ export default function ExtraDataEmployee({
             )}
 
             <div className="formRow">
-                <div className="form-control-label">
+                <div className="form-control-label col-sm-3">
                     <label>Relación laboral*</label>
                 </div>
-                <div className="d-flex form-radio-group">
-                    <div className="form-check form-radio">
+                <div className="form-radio-group col-sm-9">
+                    <div className="form-check form-radio formRow">
                         <input
                             className="form-check-input"
                             disabled={isReadingEmployeeData}
@@ -171,20 +181,36 @@ export default function ExtraDataEmployee({
                         <label className="form-check-label" htmlFor="black"> Monotributista </label>
                     </div>
 
-                    <div className="form-check">
+                    <div className="form-check formRow">
+                        <input
+                            className="form-check-input"
+                            disabled={isReadingEmployeeData}
+                            id="white4"
+                            name="flexRadioDefault"
+                            onChange={handlerOnChange}
+                            ref={rb2}
+                            type="radio"
+                            value="white4"
+                        >
+                        </input>
+
+                        <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
+                    </div>
+                    
+                    <div className="form-check formRow">
                         <input
                             className="form-check-input"
                             disabled={isReadingEmployeeData}
                             id="white"
                             name="flexRadioDefault"
                             onChange={handlerOnChange}
-                            ref={rb2}
+                            ref={rb3}
                             type="radio"
                             value="white"
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white"> Relación de dependencia </label>
+                        <label className="form-check-label" htmlFor="white"> Relación de dependencia 6 horas </label>
                     </div>
                 </div>
             </div>

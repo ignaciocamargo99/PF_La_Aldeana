@@ -19,6 +19,8 @@ import BeShowed from '../../common/BeShowed';
 import checkData from './checkData';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -29,7 +31,7 @@ const RegisterPurchaseSupplies = (props) => {
         window.location.href = '/app/supplies'
     }
 
-    const resetStates = (message) => {
+    const resetStates = () => {
         //successPurchaseSupplies(message)
         props.updateNameSupply(null)
         props.updateDescriptionSupply(null)
@@ -48,7 +50,6 @@ const RegisterPurchaseSupplies = (props) => {
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-
         let aux = {
             name: props.nameSupply,
             description: props.descriptionSupply,
@@ -61,36 +62,37 @@ const RegisterPurchaseSupplies = (props) => {
             franchiseSupply: props.franchiseSupply,
             deliverySupply: props.deliverySupply
         }
-
         setData(aux);
-
         setReady(checkData(aux));
-
     }, [props.franchiseSupply, props.deliverySupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
 
-    const registerPurchaseSupplies = () => {
-        let aux = {
-            name: data.name,
-            description: data.description === 'null' ? null : data.description,
-            id_supply_type: data.id_supply_type,
-            price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
-            price_retail: data.price_retail <= 0 ? null : data.price_retail,
-            stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
-            stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
-            unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
+    const registerPurchaseSupplies = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${props.nameSupply}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            let aux = {
+                name: data.name,
+                description: data.description === 'null' ? null : data.description,
+                id_supply_type: data.id_supply_type,
+                price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
+                price_retail: data.price_retail <= 0 ? null : data.price_retail,
+                stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
+                stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
+                unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
+            }
+            loadingMessage('Registrando nuevo insumo...');
+            Axios.post(PORT() + '/api/supplies', aux)
+                .then(({ data }) => {
+                    if (data.Ok) {
+                        resetStates('El insumo se registro correctamente');
+                        successMessage(`Atención`, 'Insumo registrado exitosamente', 'success');
+                    }
+                    else {
+                        displayError('Ha ocurrido un error al registrar un insumo.');
+                    }
+                })
+                .catch(() => displayError('Ha ocurrido un error en el servidor.'));
         }
 
-        Axios.post(PORT() + '/api/supplies', aux)
-            .then(({ data }) => {
-                if (data.Ok) {
-                    resetStates('El insumo se registro correctamente');
-                    successMessage(`Atención`, 'Insumo registrado exitosamente', 'success');
-                }
-                else {
-                    displayError('Ha ocurrido un error al registrar un insumo.');
-                }
-            })
-            .catch(() => displayError('Ha ocurrido un error en el servidor.'));
     }
 
 

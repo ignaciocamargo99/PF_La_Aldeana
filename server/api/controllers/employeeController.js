@@ -1,4 +1,5 @@
-const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee, readEmployeeForDesktop } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee, readEmployeeForDesktop,
+    modifyEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
@@ -94,4 +95,7 @@ async function updateEmployee(req, res) {
     }
 }
 
-module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee, getEmployeeForDesktop }
+
+module.exports = {
+    getEmployee, deleteEmployee, getCharges, newEmployee,
+    updateEmployee, getEmployeeForDesktop }

@@ -12,6 +12,7 @@ import Breadcrumb from '../../../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 function EditProduction(props) {
 
@@ -30,26 +31,29 @@ function EditProduction(props) {
             .catch((error) => console.log(error));
     }, []);
 
-    const registerProduction = () => {
+    const registerProduction = async () => {
         if (ready) {
-            let productionDateRegistered = []
-            if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
-            else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
-            
-            if (!productionDateRegistered) {
-                const flavorsValues = props.productionFlavors.filter(() => true);
-                let production = { "date_production": props.date, "id_production": data.id_production}
-                loadingMessage('Modificando datos de producción')
-                Axios.put(PORT() + '/api/productions', [production, flavorsValues])
-                    .then(production => {
-                        if (production.status === 200) successMessage("Atención", "Producción Registrada", "success");
-                        else displayError('Ha ocurrido un error...');
-                    })
-                    .catch(error => console.log(error))
+            const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+            if (editionConfirmed) {
+                let productionDateRegistered = []
+                if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
+                else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date && (data.id_production !== production.id_production));
 
-            }
-            else {
-                warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+                if (!productionDateRegistered) {
+                    const flavorsValues = props.productionFlavors.filter(() => true);
+                    let production = { "date_production": props.date, "id_production": data.id_production }
+                    loadingMessage('Guardando cambios...')
+                    Axios.put(PORT() + '/api/productions', [production, flavorsValues])
+                        .then(production => {
+                            if (production.status === 200) successMessage("Atención", "Producción editada exitosamente", "success");
+                            else displayError('Ha ocurrido un error...');
+                        })
+                        .catch(error => console.log(error))
+
+                }
+                else {
+                    warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+                }
             }
         }
         else {
@@ -73,7 +77,7 @@ function EditProduction(props) {
                 <DateProduction load={load} data={data} />
                 <br />
                 <FlavorsTable data={data}></FlavorsTable>
-                <Buttons label="Registrar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={props.onClickCancelEdit}></Buttons>
+                <Buttons label="Aceptar" ready={ready} actionOK={registerProduction} actionNotOK={registerProduction} actionCancel={props.onClickCancelEdit}></Buttons>
             </div>
         </>
     )

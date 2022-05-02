@@ -1,15 +1,15 @@
-import HeaderTable from "../../../common/Table/HeaderTable";
-import BodyTable from "../../../common/Table/BodyTable";
-import Table from '../../../common/Table/Table';
-import BeShowed from "../../../common/BeShowed";
+import { faEdit, faEye, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faMinus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import '../../../assets/Buttons.css';
 import Axios from "axios";
-import swal from 'sweetalert';
-import warningMessage from '../../../utils/WarningMessages/warningMessage';
-import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import { useState } from "react";
+import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
+import '../../../assets/Buttons.css';
+import BeShowed from "../../../common/BeShowed";
+import BodyTable from "../../../common/Table/BodyTable";
+import HeaderTable from "../../../common/Table/HeaderTable";
+import Table from '../../../common/Table/Table';
+import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
+import warningMessage from '../../../utils/WarningMessages/warningMessage';
 
 const PORT = require('../../../config');
 
@@ -22,7 +22,7 @@ export default function LicensesTable(props) {
         Axios.delete(`${PORT()}/api/licenses/${idLicense}`)
             .then((response) => {
                 if (response.data.Ok) {
-                    warningMessage('Correcto', 'Se ha cancelado la licencia correctamente.', 'success');
+                    warningMessage('Atención', 'Licencia cancelada exitosamente', 'success');
                     props.setReloadList(!props.reloadList);
                 }
                 else warningMessage("Error", `${response.data.Message}`, "error")
@@ -32,18 +32,11 @@ export default function LicensesTable(props) {
             .catch((error) => console.error(error))
     }
 
-    const confirmDeleteLicense = (idLicense) => {
-        return swal({
-            title: "¿Seguro que desea cancelar la licencia?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    deleteLicense(idLicense);
-                }
-            });
+    const confirmDeleteLicense = async (idLicense) => {
+        const warningTitle = `¿Seguro que desea cancelar la licencia seleccionada?`;
+        const warningText = 'La licencia ya no será visible para el personal de la empresa.';
+        const deletionConfirmed = (await defaultQuestionSweetAlert2(warningTitle, warningText)).isConfirmed;
+        if (deletionConfirmed) deleteLicense(idLicense);
     }
 
     return (
@@ -77,13 +70,13 @@ export default function LicensesTable(props) {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_finish, 'Es')}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.last_name},{license.name}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <button className="sendAdd" onClick={() => { props.setActionLicense('Ver', license) }}>
+                                                <button className="btn btn-warning btnRead" onClick={() => { props.setActionLicense('Ver', license) }}>
                                                     <FontAwesomeIcon icon={faEye} />
                                                 </button>
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={permissionsAccess === 3} >
-                                                    <button className="sendEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    <button className="btn btn-info btnEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
                                                         disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
@@ -95,7 +88,7 @@ export default function LicensesTable(props) {
                                             </td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={permissionsAccess === 3}>
-                                                    <button className="sendDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    <button className="btn btn-danger btnDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
                                                         disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
                                                         <FontAwesomeIcon icon={faMinus} />
                                                     </button>

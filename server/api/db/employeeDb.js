@@ -77,6 +77,9 @@ const employeeGetDB = (dni) => {
 };
 
 const employeeCreateDB = (newEmployee) => {
+
+    const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
+                    FROM EMPLOYEES WHERE active = 1`; 
     if (!(isEmployeeDataValid(newEmployee))) {
         throw Error('Faltan datos obligatorios');
     };
@@ -84,26 +87,31 @@ const employeeCreateDB = (newEmployee) => {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
-
-            db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
-                newEmployee.dni,
-                newEmployee.name,
-                newEmployee.last_name,
-                newEmployee.date,
-                newEmployee.employment_relationship,
-                1
-            ], (error) => {
+            db.query(sqlSelect, (error, result) => {
                 if (error) reject(error);
-            });
+                else {
+                    if (result.length > 0)result.map(employee => {if(employee.dni === newEmployee.dni) reject('El dni ingresado ya se encuentra en uso')});
+                    db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
+                        newEmployee.dni,
+                        newEmployee.name,
+                        newEmployee.last_name,
+                        newEmployee.date,
+                        newEmployee.employment_relationship,
+                        1
+                    ], (error) => {
+                        if (error) reject(error);
+                    });
 
-            newEmployee.charges.forEach(({ chargeId }) => {
-                db.query('INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)', [newEmployee.dni, chargeId], (error, result) => {
-                    if (error) reject(error);
-                    else resolve(result);
-                });
-            });
+                    newEmployee.charges.forEach(({ chargeId }) => {
+                        db.query('INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)', [newEmployee.dni, chargeId], (error, result) => {
+                            if (error) reject(error);
+                            else resolve(result);
+                        });
+                    });
 
-            db.release();
+                    db.release();
+                }
+            });
         })
     });
 };

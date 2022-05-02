@@ -12,7 +12,7 @@ export default function EditFlavorButton({ flavorId, permissionsAccess }) {
         <>
             <BeShowed show={permissionsAccess === 3}>
                 <button
-                    className="sendEdit"
+                    className="btn btn-info btnEdit"
                     id='editFlavorButton'
                     onClick={handleEditFlavorBtnClicked}
                     type="button"

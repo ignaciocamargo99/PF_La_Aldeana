@@ -24,7 +24,7 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterPurchases = ['/app/purchaseSupplies'];
 
     // Employees
-    let pathsToReadEmployees = ['/app/employees', '/app/licenses', '/app/assistanceEmployees', '/app/advances', '/app/employeesSchedules'];
+    let pathsToReadEmployees = ['/app/employees', '/app/licenses', '/app/assistanceEmployees', '/app/advances', '/app/employeesSchedules', '/app/salary'];
     let pathsToReadRegisterEmployees = ['/app/registerEmployees', '/app/registerAssistance', '/app/registerAdvances'].concat(pathsToReadEmployees);
 
     // Users
