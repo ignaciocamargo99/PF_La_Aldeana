@@ -16,8 +16,13 @@ const isDataValid = (data) => {
         data.date &&
         data.dni &&
         data.dni.toString().length === 8 &&
+        data.cuil &&
+        data.cuil.toString().length === 11 &&
+        data.phone &&
+        data.phone.toString().length === 10 &&
         data.employment_relationship &&
         data.last_name &&
+        data.birthday &&
         data.name
 };
 
