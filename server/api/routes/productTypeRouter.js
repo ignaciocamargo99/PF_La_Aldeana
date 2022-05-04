@@ -6,6 +6,8 @@ const productTypeController = require('../controllers/productTypeController');
 
 router.get('/:id', productTypeController.getProductTypeByID);
 
+router.get('/', productTypeController.getProductType);
+
 // #endregion
 
 module.exports = router;

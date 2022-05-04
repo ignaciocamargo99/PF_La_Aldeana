@@ -10,6 +10,12 @@ class ProductTypeRepository {
             include: [SectorModel]
         });
     };
+
+    getProductTypeDB = () => {
+        return ProductTypeModel.findAll({
+            include: [SectorModel]
+        });
+    };
 }
 
 module.exports = new ProductTypeRepository();

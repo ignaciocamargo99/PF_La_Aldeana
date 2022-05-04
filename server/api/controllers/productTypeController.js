@@ -1,4 +1,4 @@
-const { getProductTypeDBByID } = require('../db/productTypeRepository');
+const { getProductTypeDBByID, getProductTypeDB } = require('../db/productTypeRepository');
 const { genericServerError } = require('../shared/errorMessages');
 const {
     BAD_REQUEST,
@@ -19,6 +19,18 @@ class ProductTypeController {
 
             const result = await getProductTypeDBByID(id);
             res.status(OK).send(result);
+        }
+        catch (e) {
+            res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+        }
+    };
+
+    // HTTP: GET
+    getProductType = async (req, res) => {
+        try {
+            const result = await getProductTypeDB();
+            res.status(OK).send(result);
+
         }
         catch (e) {
             res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
