@@ -37,7 +37,6 @@ const ModalProduct = (props) => {
             else {
                 setReady(false);
             }
-            console.log(props.productSelected)
         }
         else if (props.actionModal == "M") {
             if (quantity > 0 && quantity <= props.productSelected.stock) {

@@ -14,6 +14,8 @@ import Buttons from "../../common/Buttons";
 import warningMessage from "../../utils/warningMessage";
 import dateTimeFormat from "../../utils/DateFormat/dateTimeFormat";
 import '../../assets/Buttons.css';
+import { printSaleTicket, printCafeteriaTicket, printHeladeriaTicket } from "../../ticket/print";
+import { formatDateToString, formatTimeToString } from "../../utils/DateFormat/dateTimeFormatV2";
 
 const PORT = require('../../config');
 
@@ -102,19 +104,110 @@ const Sales = (props) => {
         }
     }
 
+    const printSaleTickets = ({ date, details, time, total }) => {
+
+        // sale ticket
+        let items = [];
+        // heladeria ticket
+        let heladeriaItems = [];
+        // cafeteria ticket
+        let cafeteriaItems = [];
+
+        for (let i = 0; i < details.length; i++) {
+            const { name, price, quantity, subtotal, id_sector } = details[i];
+            console.log(details[i])
+
+            // sale ticket
+            items.push({
+                name: name,
+                unitPrice: `${+price},00`,
+                amount: `${+quantity},00`,
+                subtotal: `${+subtotal},00`,
+            })
+
+            // heladeria ticket
+            if (+id_sector === 1) {
+                heladeriaItems.push({
+                    name: name,
+                    amount: `${+quantity},00`,
+                });
+
+                continue;
+            }
+
+            // cafeteria ticket
+            if (+id_sector === 2) {
+                cafeteriaItems.push({
+                    name: name,
+                    amount: `${+quantity},00`,
+                });
+
+                continue;
+            }
+        }
+
+        const saleDataToPrint = {
+            date: date,
+            time: time,
+            items: items,
+            total: `${+total},00`,
+        }
+
+        const heladeriaDataToPrint = {
+            date: date,
+            time: time,
+            items: heladeriaItems,
+        }
+
+        const cafeteriaDataToPrint = {
+            date: date,
+            time: time,
+            items: cafeteriaItems,
+        }
+
+        printSaleTicket(saleDataToPrint);
+
+        if (heladeriaItems.length > 0) {
+            printHeladeriaTicket(heladeriaDataToPrint);
+        }
+
+        if (cafeteriaItems.length > 0) {
+            printCafeteriaTicket(cafeteriaDataToPrint)
+        }
+    }
+
+    const getSaleModels = () => {
+        const currentDate = new Date();
+
+        const salePayload = {
+            date_hour: dateTimeFormat(currentDate),
+            details: JSON.stringify(props.detailProducts),
+            id_pay_type: props.payType,
+            total_amount: props.totalAmount,
+        };
+
+        const saleData = {
+            date: formatDateToString(currentDate),
+            details: props.detailProducts,
+            time: formatTimeToString(currentDate),
+            total: props.totalAmount,
+        };
+
+        return [salePayload, saleData];
+    }
+
     const registerSale = () => {
         if (ready) {
             agg_suplies();
-            let sale = {
-                date_hour: dateTimeFormat(new Date()), total_amount: props.totalAmount,
-                id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
-            };
 
-            Axios.post(`${PORT()}/api/sales`, sale)
-                .then((sale) => {
-                    if (sale.data.Ok) {
+            const [salePayload, saleData] = getSaleModels();
+
+            Axios.post(`${PORT()}/api/sales`, salePayload)
+                .then((response) => {
+                    if (response.data.Ok) {
                         resetStates();
-                        warningMessage("Exito!", "Se registró la venta con exito", "success");
+                        warningMessage("Éxito!", "Se registró la venta con éxito", "success");
+                        printSaleTickets(saleData);
                     }
                     else warningMessage('¡Error!', 'Ha ocurrido un error al registrar la venta.', "error");
                 })
@@ -122,10 +215,10 @@ const Sales = (props) => {
         }
         else {
             if (props.detailProducts.length == 0) {
-                warningMessage("¡Error!", "No se cargo ningún producto", "error");
+                warningMessage("¡Error!", "No se cargó ningún producto", "error");
             }
             else if (props.payType != 1 && props.payType != 2) {
-                warningMessage("¡Error!", "No selecciono la forma de pago", "error");
+                warningMessage("¡Error!", "No seleccionó la forma de pago", "error");
             }
             else if (props.payType == 1 && props.paymentAmount <= props.totalAmount) {
                 warningMessage("¡Error!", "El monto ingresado es inferior al monto total", "error");
