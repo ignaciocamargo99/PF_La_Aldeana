@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import validateFloatNumbers from "../../../utils/validateFloatNumbers";
+import formattedDate from "utils/formattedDate";
 
 export default function DataEmployee(props) {
 
@@ -10,6 +11,7 @@ export default function DataEmployee(props) {
     const inputAlias = useRef(null);
     const inputBirthday = useRef(null);
     const inputPhone = useRef(null);
+    const maxDate = formattedDate(new Date(), 3);
 
     const [dni, setDni] = useState("null");
     const [cuil, setCuil] = useState("null");
@@ -19,7 +21,6 @@ export default function DataEmployee(props) {
     const [isValidClass, setIsValidClass] = useState("form-control");
     const [isValidClassAlias, setIsValidClassAlias] = useState("form-control");
     const [isValidClassPhone, setIsValidClassPhone] = useState("form-control");
-    const [isValidClassBirthday, setIsValidClassBirthday] = useState("form-control");
     const [isValidClassDNI, setIsValidClassDNI] = useState("form-control");
     const [isValidClassCuil, setIsValidClassCuil] = useState("form-control");
     const [isValidClassLastName, setIsValidClassLastName] = useState("form-control");
@@ -37,6 +38,20 @@ export default function DataEmployee(props) {
     const handlePhone = () => setPhone(inputPhone.current.value);
 
     const validateCuilDNI = (dni, cuil) => {return cuil.slice(2,-1) === dni;}
+
+    useEffect(() => {
+        if (props.isReadingEmployeeData) return;
+        const employeeBirthday = inputBirthday.current.value;
+
+        if (new Date() < employeeBirthday) {
+            data.birthday = employeeBirthday;
+            props.load(data);
+        }
+        else {
+            data.birthday = birthday;
+            props.load(data);
+        }
+    }, [birthday]);
 
     useEffect(() => {
         if (props.isReadingEmployeeData) return;
@@ -64,12 +79,8 @@ export default function DataEmployee(props) {
     useEffect(() => {
         if (props.isReadingEmployeeData) return;
 
-        if (lastName) {
-            setIsValidClassLastName("form-control is-valid");
-        }
-        else {
-            setIsValidClassLastName("form-control");
-        }
+        if (lastName) setIsValidClassLastName("form-control is-valid");
+        else setIsValidClassLastName("form-control");
 
         data.last_name = lastName;
         props.load(data);
@@ -215,12 +226,13 @@ export default function DataEmployee(props) {
                         onInput={(e) => validateCuil(e)}
                         onKeyDown={(e) => validateFloatNumbers(e)}
                         placeholder="Ingrese CUIL/CUIT..."
-                        disabled={props.isReadingEmployeeData || props.isEditingEmployeeData}
+                        disabled={props.isReadingEmployeeData}
                         ref={inputCuil}
                         type="number"
                     />
                 </div>
-            </div><div className="formRow">
+            </div>
+            <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="phoneEmployee" >Teléfono*</label>
                 </div>
@@ -234,9 +246,27 @@ export default function DataEmployee(props) {
                         onInput={(e) => validatePhone(e)}
                         onKeyDown={(e) => validateFloatNumbers(e)}
                         placeholder="Ingrese número de teléfono..."
-                        disabled={props.isReadingEmployeeData || props.isEditingEmployeeData}
+                        disabled={props.isReadingEmployeeData}
                         ref={inputPhone}
                         type="number"
+                    />
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="birthdayEmployee" >Fecha de nacimiento*</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className="form-control"
+                        defaultValue={data.birthday}
+                        id="birthdayEmployee"
+                        max={maxDate}
+                        min={"1900-01-01"}
+                        onChange={handleBirthday}
+                        disabled={props.isReadingEmployeeData}
+                        ref={inputBirthday}
+                        type="date"
                     />
                 </div>
             </div>

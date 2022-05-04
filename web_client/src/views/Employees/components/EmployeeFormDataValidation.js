@@ -12,6 +12,7 @@ const isNewEmployeeDataValid = (data) => {
 }
 
 const isDataValid = (data) => {
+    console.log(data)
     return data.charges?.length > 0 &&
         data.date &&
         data.dni &&
@@ -23,6 +24,10 @@ const isDataValid = (data) => {
         data.employment_relationship &&
         data.last_name &&
         data.birthday &&
+        data.city &&
+        data.street &&
+        data.number &&
+        data.number.toString().length <= 5 &&
         data.name
 };
 
