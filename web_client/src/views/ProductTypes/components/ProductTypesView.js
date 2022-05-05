@@ -2,17 +2,32 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BeShowed from 'common/BeShowed';
 import LoaderSpinner from 'common/LoaderSpinner';
-import React from 'react'
+import React, { useState } from 'react';
+import { assembleColumnHeaders } from '../customHooks/assembleColumnHeaders';
 import { useGetProductTypes } from '../customHooks/useGetProductTypes';
-import ProductTypesTable from './ProductTypesTable';
+import { useReadEditProductType } from '../customHooks/useReadEditProductType';
+import EditProductTypes from './EditProductTypes/EditProductTypes';
+import ReadProductTypes from './ReadProductTypes/ReadProductTypes';
+import TablePagination from './TablePagination/TablePagination';
 
 const ProductTypesView = ({ permissionsAccess }) => {
+    const columnsHeaders = assembleColumnHeaders();
+
     /* Destructuring the object returned by the useGetProductTypes() hook. */
     const { loadingProductTypes, productTypes } = useGetProductTypes();
     
+    /* A custom hook that is used to read and edit a product type. */
+    const [elementToDo, setElementToDo] = useState();
+    const [action, setAction] = useState('');
+    const { productTypeToDo } = useReadEditProductType(elementToDo, action);
+
     const handleNewProductTypeBtnClicked = () => window.location.replace('/app/productTypes/new');
 
-    
+    const goBackToTable = () => {
+        <div style={{ display: 'none' }}>{document.title = "Tipos de producto"}</div>
+        setAction('')
+        window.scrollTo(0, 0);
+    }
 
     return (
         <>
@@ -20,7 +35,7 @@ const ProductTypesView = ({ permissionsAccess }) => {
             {loadingProductTypes &&
                 <LoaderSpinner color="primary" loading="Cargando..." />
             }
-            {!loadingProductTypes &&
+            {(!loadingProductTypes && action === '') &&
                 <>
                     <div className="viewTitleBtn">
                         <h1>Tipos de producto</h1>
@@ -38,7 +53,14 @@ const ProductTypesView = ({ permissionsAccess }) => {
                     <div className="viewBody">
                         {productTypes && productTypes.length > 0
                             ?
-                            <ProductTypesTable productTypes={productTypes} permissionsAccess={permissionsAccess} />
+                            <TablePagination
+                                columnsHeaders={columnsHeaders}
+                                currentElements={productTypes}
+                                handleRead={(productType) => { setAction('R'); setElementToDo(productType) }}
+                                handleEdit={(productType) => { setAction('E'); setElementToDo(productType) }}
+                                // handleDelete={deleteUser}
+                                permissionsAccess={permissionsAccess}
+                            />
                             :
                             <h4 className="row justify-content-center" style={{ color: '#C16100', padding: '0 auto' }}>
                                 No se encontraron tipos de productos registrados...
@@ -47,6 +69,8 @@ const ProductTypesView = ({ permissionsAccess }) => {
                     </div>
                 </>
             }
+            {action === 'R' && <ReadProductTypes onClickCancelRead={goBackToTable} productTypeToRead={productTypeToDo} />}
+            {action === 'E' && <EditProductTypes onClickCancelEdit={goBackToTable} productTypeToEdit={productTypeToDo} />}
         </>
     )
 }

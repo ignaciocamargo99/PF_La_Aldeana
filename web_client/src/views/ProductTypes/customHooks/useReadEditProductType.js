@@ -3,50 +3,45 @@ import displayError from "utils/ErrorMessages/displayError";
 
 export const useReadEditProductType = (productType, action) => {
     const [state, setstate] = useState({
-        productTypeData: [],
-        actionTable: '',
+        productTypeToDo: []
     });
 
-    useEffect (() => {
-        if(action === 2){
+    useEffect(() => {
+        if (action !== '') {
+            /* Creating a new object with the same properties as the object passed as parameter. */
             let aux = {
                 id_product_type: productType.id_product_type,
                 name: productType.name,
                 description: productType.description,
+                send_delivery: productType.send_delivery,
                 id_sector: productType.SectorModel.id_sector,
                 name_sector: productType.SectorModel.name,
                 description_sector: productType.SectorModel.description
             }
-        
-            const readProductType = async (aux) => {
+            if (action === 'R') {
                 try {
                     aux.reading = true;
                     setstate({
-                        productTypeData: aux,
-                        actionTable: 'R'
+                        productTypeToDo: aux
                     })
                 }
                 catch {
                     displayError();
                 }
             }
-            const editProductType = async (aux) => {
+            else {
                 try {
                     aux.editing = true;
                     setstate({
-                        productTypeData: aux,
-                        actionTable: 'E'
+                        productTypeToDo: aux
                     })
                 }
                 catch {
                     displayError();
                 }
             }
-        
-            if (action === 1) readProductType(aux);
-            else editProductType(aux);
         }
-    })
+    }, [action, productType])
 
     return state;
 }
