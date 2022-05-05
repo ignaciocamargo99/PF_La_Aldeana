@@ -9,9 +9,9 @@ import React, { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import Breadcrumb from '../../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 
-const SalesReport = (props) => {
+const ProductSalesReport = (props) => {
     const [loaded, setLoaded] = useState(false);
     const [load, setLoad] = useState(false);
     const [from, setFrom] = useState(props.dateFrom);
@@ -26,7 +26,7 @@ const SalesReport = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Reporte de productos vendidos"}</div>
-            <Breadcrumb parentName="Ventas" icon={faIceCream} parentLink="salesReport" currentName="Reporte de productos vendidos" />
+            <Breadcrumb parentName="Reportes de ventas" icon={faClipboard} parentLink="salesReport" currentName="Reporte de productos vendidos" />
             <div className="viewTitle">
                 <h1>Reporte de productos vendidos</h1>
             </div>
@@ -86,4 +86,4 @@ const mapDispatchToProps = {
     updateTypeProductSales
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalesReport);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductSalesReport);
