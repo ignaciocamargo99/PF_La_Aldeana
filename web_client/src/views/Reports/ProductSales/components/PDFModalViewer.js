@@ -14,7 +14,6 @@ export default function Viewer(props) {
           <h2>Previsualización de reporte de venta de productos</h2>
         </ModalHeader>
         <ModalBody style={{ height: '50em' }}>
-{console.log(props.MyDoc)}
           <PDFViewer style={{ width: '100%', height: '45em' }} showToolbar={false}>
             {props.MyDoc}
           </PDFViewer>
