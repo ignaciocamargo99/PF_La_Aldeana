@@ -5,11 +5,10 @@ import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import { FaAngleRight } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa';
-import MyDocument from './PDFProductSalesReport';
 import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
 import Viewer from './PDFModalViewer';
-import LoaderSpinner from 'common/LoaderSpinner';
+import MyDocument from './PDFProductSalesReport';
 
 const PORT = require('../../../../config');
 
@@ -105,7 +104,7 @@ const Options = (props) => {
                         total: type[0].total
                     };
                     setMyDoc(<MyDocument title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type} />);
+                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })
                 .catch((error) => {

@@ -8,8 +8,8 @@ import BeShowed from "../../../common/BeShowed";
 import React, { useEffect, useState } from 'react';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import Breadcrumb from '../../../common/Breadcrumb';
-import LoaderSpinner from 'common/LoaderSpinner';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
+import LoaderSpinner from 'common/LoaderSpinner';
 
 const ProductSalesReport = (props) => {
     const [loaded, setLoaded] = useState(false);
