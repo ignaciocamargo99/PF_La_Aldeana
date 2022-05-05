@@ -5,7 +5,8 @@ import { useGetFlavor } from 'hooks/useGetFlavor';
 import FlavorForm from './FlavorForm';
 import Axios from 'axios';
 import displayError from 'utils/ErrorMessages/displayError';
-import swal from 'sweetalert';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import successMessage from 'utils/SuccessMessages/successMessage';
 import Breadcrumb from 'common/Breadcrumb';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
@@ -21,12 +22,12 @@ const EditFlavor = () => {
         const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
 
         if (editionConfirmed) {
+            loadingMessage('Guardando cambios...')
             Axios.put(`${PORT()}/api/flavors/${flavorId}`, formData)
                 .then(response => {
                     if (response.data.flavorUpdated) {
-                        swal("Sabor editado exitosamente", {
-                            icon: "success",
-                        }).then(() => {
+                        successMessage('Atención','Sabor editado exitosamente', 'success')
+                        .then(() => {
                             window.location.replace('/app/flavors');
                         });
                     } else {

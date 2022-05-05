@@ -11,6 +11,6 @@ export default function ReadEmployeeButton (props) {
     }
     
     return (
-        <button id='readAssistanceButton' type="button" className="sendEdit" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
+        <button id='readAssistanceButton' type="button" className="btn btn-warning btnRead" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
     );
 }

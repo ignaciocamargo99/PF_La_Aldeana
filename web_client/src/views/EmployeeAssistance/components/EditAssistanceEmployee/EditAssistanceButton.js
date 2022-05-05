@@ -14,7 +14,7 @@ export default function EditAssistanceButton(props) {
     return (
         <>
             <BeShowed show={permissionsAccess === 3}>
-                <button id='editAssistanceButton' type="button" className="sendEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                <button id='editAssistanceButton' type="button" className="btn btn-info btnEdit" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
             </BeShowed>
             <BeShowed show={permissionsAccess !== 3}>
                 <button id='editAssistanceButton' disabled type="button" className="disabledSendBtn"><FontAwesomeIcon icon={faEdit} /></button>

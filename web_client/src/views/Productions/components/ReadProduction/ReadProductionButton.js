@@ -12,7 +12,7 @@ export default function ReadProductionButton(props) {
     }
 
     return (
-        <button id='readProductionButton' type="button" className="sendEdit" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
+        <button id='readProductionButton' type="button" className="btn btn-warning btnRead" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
     );
 
 }

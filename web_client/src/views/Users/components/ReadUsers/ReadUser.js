@@ -22,7 +22,7 @@ const ReadUser = ({ userToRead, onClickCancelRead }) => {
                 <DataUser load={load} data={data} />
                 <ListPermissions data={data} />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={onClickCancelRead}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={onClickCancelRead}>Volver</button>
                 </div>
             </div>
         </>

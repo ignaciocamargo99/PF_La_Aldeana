@@ -48,7 +48,7 @@ const Licenses = (props) => {
                     <div className="viewTitleBtn">
                         <h1>Licencias Activas</h1>
                         <BeShowed show={props.permissionsAccess === 2 || props.permissionsAccess === 3}>
-                            <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
+                            <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
                         </BeShowed>
                         <BeShowed show={props.permissionsAccess === 1}>
                             <button id='editLicenseButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>

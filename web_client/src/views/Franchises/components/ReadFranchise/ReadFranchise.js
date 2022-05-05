@@ -23,7 +23,7 @@ export default function ReadFranchise(props) {
                 <hr />
                 <DataManager load={load} data={data} />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={props.onClickCancelRead}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={props.onClickCancelRead}>Volver</button>
                 </div>
             </div>
         </>
