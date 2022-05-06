@@ -2,7 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BeShowed from 'common/BeShowed';
 import LoaderSpinner from 'common/LoaderSpinner';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { assembleColumnHeaders } from '../customHooks/assembleColumnHeaders';
 import { useGetProductTypes } from '../customHooks/useGetProductTypes';
 import { useReadEditProductType } from '../customHooks/useReadEditProductType';
@@ -12,14 +12,25 @@ import TablePagination from './TablePagination/TablePagination';
 
 const ProductTypesView = ({ permissionsAccess }) => {
     const columnsHeaders = assembleColumnHeaders();
-
     /* Destructuring the object returned by the useGetProductTypes() hook. */
     const { loadingProductTypes, productTypes } = useGetProductTypes();
-    
     /* A custom hook that is used to read and edit a product type. */
     const [elementToDo, setElementToDo] = useState();
     const [action, setAction] = useState('');
     const { productTypeToDo } = useReadEditProductType(elementToDo, action);
+
+    const [listProductTypes, setListProductTypes] = useState();
+    useEffect(() => { setListProductTypes(productTypes) }, [productTypes])
+
+    const deleteProductType = (i) => {
+        let aux = [];
+        listProductTypes?.forEach((e, j) => {
+            if (j !== i) {
+                aux[j] = e;
+            }
+        });
+        setListProductTypes(aux);
+    };
 
     const handleNewProductTypeBtnClicked = () => window.location.replace('/app/productTypes/new');
 
@@ -51,14 +62,14 @@ const ProductTypesView = ({ permissionsAccess }) => {
                         </BeShowed>
                     </div>
                     <div className="viewBody">
-                        {productTypes && productTypes.length > 0
+                        {listProductTypes && listProductTypes?.length > 0
                             ?
                             <TablePagination
                                 columnsHeaders={columnsHeaders}
-                                currentElements={productTypes}
+                                currentElements={listProductTypes}
                                 handleRead={(productType) => { setAction('R'); setElementToDo(productType) }}
                                 handleEdit={(productType) => { setAction('E'); setElementToDo(productType) }}
-                                // handleDelete={deleteUser}
+                                handleDelete={deleteProductType}
                                 permissionsAccess={permissionsAccess}
                             />
                             :

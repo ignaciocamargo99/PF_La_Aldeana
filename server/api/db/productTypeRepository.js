@@ -16,6 +16,25 @@ class ProductTypeRepository {
             include: [SectorModel]
         });
     };
+
+    updateProductTypeDB = (id, productType) => {
+        var selectProductType = {
+            where: { id_product_type: id }
+        };
+
+        return ProductTypeModel.update({
+            name: productType.name,
+            description: productType.description,
+            id_sector: productType.id_sector,
+            send_delivery: productType.send_delivery,
+        }, selectProductType);
+    };
+
+    deleteProductTypeDB = (id) => {
+        return ProductTypeModel.destroy({
+            where: { id_product_type: id }
+        });
+    };
 }
 
 module.exports = new ProductTypeRepository();

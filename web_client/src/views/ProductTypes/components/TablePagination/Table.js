@@ -47,7 +47,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <EditProductTypeButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductTypeButton data={element} deleteUser={handleDelete} index={i} permissionsAccess={permissionsAccess} />
+                                            <DeleteProductTypeButton data={element} delete={handleDelete} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )

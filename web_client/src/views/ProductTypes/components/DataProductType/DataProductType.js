@@ -1,36 +1,30 @@
-import Axios from 'axios';
-import React, { useRef, useState, useEffect } from 'react';
-import Buttons from '../../../../common/Buttons';
-import success from '../../../../utils/SuccessMessages/successTypeProduct';
-import warningMessage from '../../../../utils/WarningMessages/warningMessage';
-// import './RegisterTypeProductView.css';
-// import './styles/TypeProductForm.css';
-import displayError from '../../../../utils/ErrorMessages/displayError';
-import SectorProduct from '../../../RegisterProduct/components/SectorProduct';
-import Breadcrumb from '../../../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import BeShowed from 'common/BeShowed';
+import React, { useEffect, useRef, useState } from 'react';
+import SectorProduct from '../../../RegisterProduct/components/SectorProduct';
 
 export default function DataProductType({ productType, loadData }) {
     const divNameValidation = useRef(null);
     const checkIsSendByDelivery = useRef(null);
+    const name = useRef(null);
+    const description = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
-    const [sectorTypeProductChild, setSectorTypeProductChild] = useState(-1);
+    const [isValidDescription, setIsValidDescription] = useState("form-control");
     const [nameTypeProduct, setNameTypeProduct] = useState();
-    const [descriptionTypeProduct, setDescriptionTypeProduct] = useState()
+    const [descriptionTypeProduct, setDescriptionTypeProduct] = useState();
 
     useEffect(() => {
-        setNameTypeProduct(productType.name);
-        setDescriptionTypeProduct(productType.description)
-    }, [productType])
-
-    const validate = () => {
-        if (nameTypeProduct === 'null') {
-            warningMessage('Atención', 'Ingrese un nombre valido para el tipo de producto', 'warning')
-        } else if (sectorTypeProductChild < 0) {
-            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')
+        if (!productType.reading) {
+            // Update states and refs
+            setNameTypeProduct(productType.name);
+            name.current.value = productType.name;
+            setDescriptionTypeProduct(productType.description)
+            description.current.value = productType.description;
+            setIsValidName("form-control is-valid");
+            setIsValidDescription("form-control is-valid");
+            if (productType.send_delivery === 1) checkIsSendByDelivery.current.checked = true;
+            else checkIsSendByDelivery.current.checked = false;
         }
-    }
+    }, [productType])
 
 
     const onChangeName = (e) => {
@@ -54,15 +48,27 @@ export default function DataProductType({ productType, loadData }) {
         setDescriptionTypeProduct(e.target.value);
         const description = e.target.value.trim();
         if (description.length > 0 && description.length < 50) {
-            productType.description = e.target.value
+            setIsValidDescription("form-control is-valid");
+            productType.description = e.target.value;
             loadData(productType);
         }
         else {
+            setIsValidDescription("form-control");
             productType.description = null
             loadData(productType);
         }
     }
 
+    const onChangeChkBox = (e) => {
+        if (!e.target.checked) {
+            productType.send_delivery = 0;
+            loadData(productType);
+        }
+        else {
+            productType.send_delivery = 1;
+            loadData(productType);
+        }
+    }
 
     return (
         <>
@@ -77,6 +83,7 @@ export default function DataProductType({ productType, loadData }) {
                     <BeShowed show={!productType.reading}>
                         <input type='text' className={isValidName} autoFocus
                             onChange={onChangeName}
+                            ref={name}
                             placeholder='Ingrese nombre del tipo de producto...'
                             defaultValue={nameTypeProduct}
                         />
@@ -95,15 +102,16 @@ export default function DataProductType({ productType, loadData }) {
                             value={productType.description} readOnly></textarea>
                     </BeShowed>
                     <BeShowed show={!productType.reading}>
-                        <textarea type='text' className="form-control"
+                        <textarea type='text' className={isValidDescription}
                             placeholder='Ingrese descripción del tipo de producto...' maxLength="150"
                             onChange={onChangeDescription}
+                            ref={description}
                             defaultValue={descriptionTypeProduct}
                         ></textarea>
                     </BeShowed>
                 </div>
             </div>
-            <SectorProduct /* load={load} */ data={productType} />
+            <SectorProduct load={loadData} data={productType} />
             <div className="formRow">
                 <div className="form-control-label">
                     <label className='lbTexttarea'>Acepta envío por delivery</label>
@@ -117,7 +125,12 @@ export default function DataProductType({ productType, loadData }) {
                             disabled />
                     </BeShowed>
                     <BeShowed show={!productType.reading}>
-                        <input type='checkbox' className="form-check-input" ref={checkIsSendByDelivery}></input>
+                        <input
+                            type='checkbox'
+                            className="form-check-input"
+                            ref={checkIsSendByDelivery}
+                            onChange={onChangeChkBox}
+                        ></input>
                     </BeShowed>
                 </div>
             </div>

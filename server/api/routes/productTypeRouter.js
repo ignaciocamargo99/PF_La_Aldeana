@@ -8,6 +8,10 @@ router.get('/:id', productTypeController.getProductTypeByID);
 
 router.get('/', productTypeController.getProductType);
 
+router.put('/:id', productTypeController.updateProductType);
+
+router.delete('/:id', productTypeController.deleteProductType);
+
 // #endregion
 
 module.exports = router;
