@@ -100,6 +100,7 @@ const allAssistanceDB = () => {
 
             db.query(sqlSelectAssistance, (error, result) => {
                 if (error) reject(error);
+                console.log(result);
                 resolve(result);
             });
             db.release();

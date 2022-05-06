@@ -69,6 +69,12 @@ namespace desktop_employee.src.views.RegisterAssistance
             {
                 tenemosHuellas = false;
             }
+            if (!tenemosHuellas)
+            {
+                MakeReport("No se puede ingresar la huella, porque no hay datos de las mismas. REINICIE LA APLICACIÓN.");
+                OcultarAzul();
+                MostrarRojo();
+            }
         }
 
         private DataTable crearTablaRegistros()
