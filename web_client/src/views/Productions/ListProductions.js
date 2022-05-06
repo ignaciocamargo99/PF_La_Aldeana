@@ -108,7 +108,7 @@ export default function ListProductions(props) {
                         <div className="viewTitleBtn">
                             <h1>Producciones</h1>
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
+                                <button id='newProductionButton' type="button" onClick={onClickNewProduction} className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
                                 <button id='newProductionButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>
@@ -123,7 +123,7 @@ export default function ListProductions(props) {
                                 <div className="viewTitleBtn">
                                     <h1>Producciones</h1>
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                        <button id='editProductionButton' onClick={onClickNewProduction} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </BeShowed>
                                     <BeShowed show={permissionsAccess === 1}>
                                         <button id='newProductionButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} />Nuevo</button>

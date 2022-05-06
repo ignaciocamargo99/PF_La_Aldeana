@@ -12,6 +12,7 @@ import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 function RegisterProductionView(props) {
 
@@ -31,26 +32,29 @@ function RegisterProductionView(props) {
 
     const cancelRegisterProduction = () => window.location.replace('/app/productions');
 
-    const registerProduction = () => {
+    const registerProduction = async () => {
         if (ready) {
-            let productionDateRegistered = []
-            if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
-            else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date);
-            
-            if (!productionDateRegistered) {
-                const flavorsValues = props.productionFlavors.filter(() => true);
-                let production = { "dateProduction": props.date, "flavors": flavorsValues };
-                loadingMessage('Registrando producción...')
-                Axios.post(PORT() + '/api/productions', production)
-                    .then((production) => {
-                        if (production.data.Ok) successMessage("Atención", "Producción registrada", "success");
-                        else displayError('Ha ocurrido un error...');
-                    })
-                    .catch(error => console.log(error))
+            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar producción?`)).isConfirmed;
+            if (registrationConfirmed) {
+                let productionDateRegistered = []
+                if (PORT() === '') productionDateRegistered = productions.find(production => moment(production.date_production).format('YYYY-MM-DD') === props.date);
+                else productionDateRegistered = productions.find(production => moment(production.date_production).add(1, 'days').format('YYYY-MM-DD') === props.date);
 
-            }
-            else {
-                warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+                if (!productionDateRegistered) {
+                    const flavorsValues = props.productionFlavors.filter(() => true);
+                    let production = { "dateProduction": props.date, "flavors": flavorsValues };
+                    loadingMessage('Registrando producción...')
+                    Axios.post(PORT() + '/api/productions', production)
+                        .then((production) => {
+                            if (production.data.Ok) successMessage("Atención", "Producción registrada exitosamente", "success");
+                            else displayError('Ha ocurrido un error...');
+                        })
+                        .catch(error => console.log(error))
+
+                }
+                else {
+                    warningMessage("Atención", "Ya existe una producción registrada en el día de la fecha", "warning");
+                }
             }
         }
         else {

@@ -11,6 +11,7 @@ import displayError from '../../utils/ErrorMessages/errorMesage';
 import Breadcrumb from '../../common/Breadcrumb';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../config');
 
@@ -43,19 +44,22 @@ export default function RegisterFranchise() {
         setDniManagerChild(childData.dni_manager);
     }
 
-    const registerFranchise = () => {
-        let urlApi = '/api/franchises';
-        loadingMessage('Registrando nueva franquicia...');
-        Axios.post(PORT() + urlApi, data)
-            .then(({ data }) => {
-                if (data.Ok) {
-                    successMessage('Atención', 'Franquicia registrada exitosamente', 'success');
-                }
-                else {
-                    displayError('Ha ocurrido un error al registrar la franquicia');
-                }
-            })
-            .catch(error => console.log(error))
+    const registerFranchise = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            let urlApi = '/api/franchises';
+            loadingMessage('Registrando nueva franquicia...');
+            Axios.post(PORT() + urlApi, data)
+                .then(({ data }) => {
+                    if (data.Ok) {
+                        successMessage('Atención', 'Franquicia registrada exitosamente', 'success');
+                    }
+                    else {
+                        displayError('Ha ocurrido un error al registrar la franquicia');
+                    }
+                })
+                .catch(error => console.log(error))
+        }
     };
 
     useEffect(() => {

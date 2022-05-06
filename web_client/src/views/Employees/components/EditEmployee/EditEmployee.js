@@ -9,6 +9,8 @@ import warningMessage from '../../../../utils/WarningMessages/warningMessage';
 import DataEmployee from '../DataEmployee';
 import isEmployeeFormDataValid from '../EmployeeFormDataValidation';
 import ExtraDataEmployee from '../ExtraDataEmployee';
+import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../../config');
 
@@ -27,16 +29,20 @@ export default function EditEmployee({ goBack, employeeData }) {
         else setReadyForSubmit(false);
     };
 
-    const updateEmployee = () => {
+    const updateEmployee = async () => {
         const formDataValid = isEmployeeFormDataValid(newEmployeeData, true);
 
         if (formDataValid && readyForSubmit) {
-            Axios.put(`${PORT()}/api/employees/${newEmployeeData.dni}`, newEmployeeData)
-                .then((data) => {
-                    if (data.data.Ok) successMessage('Atención', 'Se han modificado los datos del empleado', 'success')
-                    else displayError('El nuevo dni ya corresponde a otro empleado')
-                })
-                .catch(error => console.log(error));
+            const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+            if (editionConfirmed) {
+                loadingMessage('Guardando cambios...');
+                Axios.put(`${PORT()}/api/employees/${newEmployeeData.dni}`, newEmployeeData)
+                    .then((data) => {
+                        if (data.data.Ok) successMessage('Atención', 'Empleado editado exitosamente', 'success')
+                        else displayError('El nuevo dni ya corresponde a otro empleado')
+                    })
+                    .catch(error => console.log(error));
+            }
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
     };
@@ -68,7 +74,7 @@ export default function EditEmployee({ goBack, employeeData }) {
                     actionNotOK={updateEmployee}
                     actionOK={updateEmployee}
                     data={newEmployeeData}
-                    label='Confirmar'
+                    label='Aceptar'
                     ready={readyForSubmit}
                 />
             </div>

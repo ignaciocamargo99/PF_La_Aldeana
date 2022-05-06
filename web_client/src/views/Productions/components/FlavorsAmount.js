@@ -56,7 +56,7 @@ export default function FlavorsAmount({ flavor, addAmountOfFlavor }) {
                 <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountFlavorsValidation} />
             </td>
             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                <button className="sendAdd" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} />
+                <button className="btn btn-info btnAdd" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} />
                 </button>
             </td>
         </>

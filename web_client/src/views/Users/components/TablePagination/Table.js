@@ -1,12 +1,9 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import moment from 'moment';
-import React, { useRef } from 'react';
+import React from 'react';
 import DeleteUserButton from '../DeleteUserButton';
 import EditUserButton from '../EditUsers/EditUserButton';
 import ReadUserButton from "../ReadUsers/ReadUserButton";
-
-const PORT = require('../../../../config');
 
 const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
@@ -15,8 +12,12 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Usuarios activos:</h4>
                 <div className="search-input">
-                    <FontAwesomeIcon icon={faSearch} />
-                    <input id="inputSearchName" type="text" placeholder="Buscar por usuario..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                        </div>
+                        <input type="text" className="form-control" placeholder="Buscar usuario..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                    </div>
                 </div>
             </div>
             {pageElements.length > 0 && (
@@ -57,7 +58,6 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
             {pageElements.length === 0 && (
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un usuario con el nombre ingresado...</h4>
             )}
-
         </>
     )
 };

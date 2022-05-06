@@ -87,9 +87,6 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/flavors">
                                 <FontAwesomeIcon icon={faList} /> Ver sabores
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/production">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva producción
-                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
@@ -107,9 +104,6 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/franchises">
                                 <FontAwesomeIcon icon={faList} /> Ver franquicias
-                            </Dropdown.Item>
-                            <Dropdown.Item href="/app/newFranchise">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva franquicia
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -130,11 +124,11 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <BeShowed show={permissionReportsSales === "Reportes Ventas"}>
                                 <Dropdown.Item href="/app/salesReport">
-                                    <FontAwesomeIcon icon={faFile} /> Informe de productos vendidos
+                                    <FontAwesomeIcon icon={faFile} /> Informe de ventas
                                 </Dropdown.Item>
                             </BeShowed>
                             <BeShowed show={permissionReportsHumanResources === "Reportes Recursos Humanos"}>
-                                <Dropdown.Item href="#">
+                                <Dropdown.Item href="/app/RRHHReport">
                                     <FontAwesomeIcon icon={faFile} /> Informe de recursos humanos
                                 </Dropdown.Item>
                             </BeShowed>
@@ -185,6 +179,9 @@ export default function Navbar(props) {
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/advances">
                                 <FontAwesomeIcon icon={faList} /> Ver adelantos
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/salary">
+                                <FontAwesomeIcon icon={faList} /> Ver salarios
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

@@ -9,7 +9,7 @@ export default function ReadEmployeeButton({ employeeData, handleReadEmpoyeeClic
     }
 
     return (
-        <button id='readEmployeeButton' type="button" className="sendEdit" onClick={handleRead}>
+        <button id='readEmployeeButton' type="button" className="btn btn-warning btnRead" onClick={handleRead}>
             <FontAwesomeIcon icon={faEye} />
         </button>
     );

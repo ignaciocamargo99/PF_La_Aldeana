@@ -1,10 +1,10 @@
-const { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances, readEmployee } = require('../services/advancesService');
+const { readAdvances, readInstallments, deleteAdvance, createAdvances, modifyAdvances, readEmployee, readInstallmentsToPay, payInstallments } = require('../services/advancesService');
 
 // HTTP: GET
 async function getAdvances(req, res) {
     try {
         const result = await readAdvances();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
@@ -17,9 +17,9 @@ async function getAdvances(req, res) {
 // HTTP: GET
 async function getInstallments(req, res) {
     try {
-        var dniEmployee = req.query.dniEmployee
-        var date = req.query.date
-        const result = await readInstallments(dniEmployee, date)
+        var dniEmployee = req.query.dniEmployee;
+        var date = req.query.date;
+        const result = await readInstallments(dniEmployee, date);
         res.send(result)
     } catch (e) {
         res.json({
@@ -29,11 +29,26 @@ async function getInstallments(req, res) {
     };
 };
 
+// HTTP: GET
+async function getInstallmentsToPay(req, res) {
+    try {
+        var dniEmployee = req.query.dniEmployee;
+        var date = req.query.date;
+        const result = await readInstallmentsToPay(dniEmployee, date);
+        res.send(result)
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: 'No se pudo encontrar datos de cuotas de adelantos para el empleado y mes solicitado.'
+        });
+    };
+};
+
 // HTTP: PUT
 async function deleteAdvances(req, res) { 
     try {
-        var dniEmployee = req.query.dniEmployee
-        var date = req.query.date
+        var dniEmployee = req.query.dniEmployee;
+        var date = req.query.date;
         await deleteAdvance(dniEmployee, date);
         res.json({
             Ok: true,
@@ -68,9 +83,28 @@ async function newAdvances(req, res) {
 // HTTP: UPDATE
 async function updateAdvances(req, res) {
     try {
-        var dniEmployee = req.query.dniEmployee
-        var date = req.query.date
+        var dniEmployee = req.query.dniEmployee;
+        var date = req.query.date;
         await modifyAdvances(dniEmployee, date, req.body);
+        res.json({
+            Ok: true,
+            Message: 'Adelanto actualizado exitosamente.'
+        })
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
+
+// HTTP: UPDATE
+async function updateInstallmentsToPay(req, res) {
+    try {
+        var dniEmployee = req.query.dniEmployee;
+        var date = req.query.date;
+        await payInstallments(dniEmployee, date, req.body);
         res.json({
             Ok: true,
             Message: 'Adelanto actualizado exitosamente.'
@@ -88,7 +122,7 @@ async function updateAdvances(req, res) {
 async function getEmployee(req, res) {
     try {
         const result = await readEmployee();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
@@ -98,4 +132,4 @@ async function getEmployee(req, res) {
     }
 }
 
-module.exports = { getAdvances, getInstallments, deleteAdvances, newAdvances, updateAdvances, getEmployee }
+module.exports = { getAdvances, getInstallments, deleteAdvances, newAdvances, updateAdvances, getEmployee, getInstallmentsToPay, updateInstallmentsToPay }

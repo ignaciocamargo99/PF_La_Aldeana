@@ -9,6 +9,8 @@ import warningMessage from "utils/WarningMessages/warningMessage";
 import DataEmployee from './DataEmployee';
 import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../config');
 
@@ -47,19 +49,24 @@ export default function RegisterEmployee() {
     const registerNewEmployee = async () => {
         if (isEmployeeFormDataValid(data, false) && ready) {
             try {
-                let response = await registerEmployee(data);
-                if (response.data.Ok) {
-                    response = await registerDaysOff(data);
+                const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+                if (registrationConfirmed) {
+                    loadingMessage('Registrando nuevo empleado...');
+                    let response = await registerEmployee(data);
                     if (response.data.Ok) {
-                        successMessage('Atención', 'Nuevo empleado dado de alta exitosamente', 'success');
+                        response = await registerDaysOff(data);
+                        if (response.data.Ok) {
+                            successMessage('Atención', 'Empleado registrado exitosamente', 'success');
+                        }
+                        else {
+                            displayRegisterError();
+                        }
                     }
                     else {
                         displayRegisterError();
                     }
                 }
-                else {
-                    displayRegisterError();
-                }
+                else warningMessage('Error', 'El número de documento ingresado ya se encuentra en uso.', 'error');
             }
             catch {
                 displayRegisterError();

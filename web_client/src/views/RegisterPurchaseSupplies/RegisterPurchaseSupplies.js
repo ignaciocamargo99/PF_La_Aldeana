@@ -14,6 +14,8 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -46,7 +48,7 @@ const RegisterPurchaseSupplies = (props) => {
 
             if (props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null) errorInputSupplies()
             else {
-                if (props.purchaseTotal <= 0) swal("Atención", "Todos los insumos deben tener precio y cantidad validos", "warning")
+                if (props.purchaseTotal <= 0) swal("Atención", "Todos los insumos deben tener precio y cantidad válidos", "warning")
             }
         }
     }
@@ -58,6 +60,7 @@ const RegisterPurchaseSupplies = (props) => {
             let details = []
             if (props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null) isReady = false;
             else {
+                // eslint-disable-next-line array-callback-return
                 props.purchaseSupplies.map((supply, i) => {
                     let detail = {
                         "purchase_number": props.purchaseNumber,
@@ -76,19 +79,23 @@ const RegisterPurchaseSupplies = (props) => {
         setReady(isReady)
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 
-    const registerPurchaseSupplies = () => {
-        let purchase = {
-            "date_purchase": props.purchaseDate,
-            "supplier": props.purchaseSupplier,
-            "total": props.purchaseTotal,
-            "details": details
+    const registerPurchaseSupplies = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nueva compra de insumos?`)).isConfirmed;
+        if (registrationConfirmed) {
+            let purchase = {
+                "date_purchase": props.purchaseDate,
+                "supplier": props.purchaseSupplier,
+                "total": props.purchaseTotal,
+                "details": details
+            }
+            loadingMessage('Registrando nueva compra...');
+            axios.post(PORT() + `/api/purchases`, purchase)
+                .then((response) => {
+                    if (response.data.Ok) resetStates('Compra de insumos registrada exitosamente');
+                    else errorPurchaseSupplies(response.data.Message)
+                })
+                .catch((err) => { console.log(err) })
         }
-        axios.post(PORT() + `/api/purchases`, purchase)
-            .then((response) => {
-                if (response.data.Ok) resetStates(response.data.Message);
-                else errorPurchaseSupplies(response.data.Message)
-            })
-            .catch((err) => { console.log(err) })
     }
 
     return (
