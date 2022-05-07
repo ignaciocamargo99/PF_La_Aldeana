@@ -18,6 +18,8 @@ namespace desktop_employee
         //se define el ancho del borde del form
         private int borderSize = 2;
         bool isLoginOK = false;
+        bool isLoginAsistanceDNIOK = false;
+
         public frmMain()
         {
             InitializeComponent();
@@ -148,22 +150,33 @@ namespace desktop_employee
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
-            ibtnEmpleados.Enabled = true;
-            ibtnAsistencia.Enabled = true;
-            ibtnAsistenciaDNI.Enabled = false;
-            for (int i = 0; i < Application.OpenForms.Count; i++)
+            if (!isLoginAsistanceDNIOK)
             {
-                var tag = Application.OpenForms[i].Tag;
-                if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Hue")
-                {
-                    Application.OpenForms[i].Close();
-                    i--;
-                }
+                frmLoginAsistanceDNI loginDNI = new();
+                loginDNI.ShowDialog();
+                isLoginOK = loginDNI.isLogin();
+                if (isLoginOK) isLoginAsistanceDNIOK = true;
             }
-            frmAssitanceDni assistanceDni = new();
-            assistanceDni.Tag = "Asis_Dni";
-            lblTitulo.Text = "ASISTENCIA con DNI";
-            OpenForm(assistanceDni);
+
+            if (isLoginAsistanceDNIOK)
+            {
+                ibtnEmpleados.Enabled = true;
+                ibtnAsistencia.Enabled = true;
+                ibtnAsistenciaDNI.Enabled = false;
+                for (int i = 0; i < Application.OpenForms.Count; i++)
+                {
+                    var tag = Application.OpenForms[i].Tag;
+                    if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Hue")
+                    {
+                        Application.OpenForms[i].Close();
+                        i--;
+                    }
+                }
+                frmAssitanceDni assistanceDni = new();
+                assistanceDni.Tag = "Asis_Dni";
+                lblTitulo.Text = "ASISTENCIA con DNI";
+                OpenForm(assistanceDni);
+            }
         }
 
         private void OpenForm(Form form)
