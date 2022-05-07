@@ -95,7 +95,7 @@ namespace desktop_employee.src.views.RegisterAssistance
 			esRepetido = false;
 			for (int i = 0; i < datosEmpleados.Count; i++)
 			{
-				if (Convert.ToInt32(datosEmpleados[i].DNI) == Convert.ToInt32(txtDNI.Text))
+				if (Convert.ToInt32(datosEmpleados[i].DNI) == Convert.ToInt32(txtDNI.Text.Replace(" ", string.Empty)))
 				{
 					StatusText.AppendText(getHoraActual() + "El DNI ingresado es de " + datosEmpleados[i].NOMBRE + " " + datosEmpleados[i].APELLIDO + ".\r\n");
 					borrarRegistrosViejos();

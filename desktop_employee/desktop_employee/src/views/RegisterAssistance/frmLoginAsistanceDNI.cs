@@ -12,16 +12,16 @@ using System.Windows.Forms;
 using desktop_employee.src.entities;
 using Newtonsoft.Json;
 
-namespace desktop_employee.src.views.Employees
+namespace desktop_employee.src.views.RegisterAssistance
 {
-    public partial class frmLogin : Form
+    public partial class frmLoginAsistanceDNI : Form
     {
         config config = new();
         bool isLogIn = false;
         dynamic responseLogin;
         bool isError = false;
 
-        public frmLogin()
+        public frmLoginAsistanceDNI()
         {
             InitializeComponent();
         }
@@ -31,7 +31,7 @@ namespace desktop_employee.src.views.Employees
             if (txtUser.Text.Length > 0 && txtPassword.Text.Length > 0)
             {
                 login();
-                if (isLogIn && (responseLogin.data.permissions != 0 || responseLogin.data.permissions != -1)) this.Close();
+                if (isLogIn) this.Close();
             }
             else
             {
@@ -48,7 +48,7 @@ namespace desktop_employee.src.views.Employees
         {
             string userInput = txtUser.Text;
             string passwordInput = txtPassword.Text;
-            var urlGet = config.getUrlPort() + "/api/loginDesktop?user="+userInput+"&pass="+passwordInput;
+            var urlGet = config.getUrlPort() + "/api/loginDesktop?user=" + userInput + "&pass=" + passwordInput;
             var requestGet = (HttpWebRequest)WebRequest.Create(urlGet);
             requestGet.Method = "GET";
             requestGet.ContentType = "application/json";
@@ -60,7 +60,7 @@ namespace desktop_employee.src.views.Employees
                 if (strReader == null) return;
                 using StreamReader objReader = new StreamReader(strReader);
                 string responseBody = objReader.ReadToEnd();
-                responseLogin = JsonConvert.DeserializeObject(responseBody);             
+                responseLogin = JsonConvert.DeserializeObject(responseBody);
             }
             catch (WebException ex)
             {
@@ -73,17 +73,10 @@ namespace desktop_employee.src.views.Employees
                 txtUser.Clear();
             }
             else
-            {                
+            {
                 if (Convert.ToBoolean(responseLogin.data.isLoginOk))
                 {
-                    if (responseLogin.data.permissions == 0 || responseLogin.data.permissions == -1)
-                    {
-                        MessageBox.Show("El usuario no cuenta con los permisos necesarios...", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        txtPassword.Clear();
-                        txtUser.Clear();
-                        lblInfo.Visible = false;
-                    }
-                    else isLogIn = true;
+                    isLogIn = true;
                 }
                 else
                 {
@@ -96,16 +89,6 @@ namespace desktop_employee.src.views.Employees
         public bool isLogin()
         {
             return isLogIn;
-        }
-
-        public int permissions()
-        {
-            return responseLogin.data.permissions;
-        }
-
-        private void frmLogin_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

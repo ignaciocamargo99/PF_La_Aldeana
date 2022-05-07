@@ -117,3 +117,4 @@ C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employ
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.genruntimeconfig.cache
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\ref\desktop_employee.dll
 C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmAssitanceDni.resources
+C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\obj\Debug\net5.0-windows\desktop_employee.src.views.RegisterAssistance.frmLoginAsistanceDNI.resources
