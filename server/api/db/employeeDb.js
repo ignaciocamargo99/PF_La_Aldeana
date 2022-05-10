@@ -46,7 +46,15 @@ const employeeGetDB = (dni) => {
             c.id_charge as chargeId,
             c.name AS chargeName,
             e.employment_relationship,
-            er.name AS name_emp_relationship
+            er.name AS name_emp_relationship,
+            e.number,
+            e.street,
+            e.neighborhood,
+            e.birthday,
+            e.cuil,
+            e.nickname,
+            e.city,
+            e.phone
         FROM
             EMPLOYEES e
             JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
@@ -91,13 +99,21 @@ const employeeCreateDB = (newEmployee) => {
                 if (error) reject(error);
                 else {
                     if (result.length > 0)result.map(employee => {if(employee.dni === newEmployee.dni) reject('El dni ingresado ya se encuentra en uso')});
-                    db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?)', [
+                    db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                         newEmployee.dni,
                         newEmployee.name,
                         newEmployee.last_name,
                         newEmployee.date,
                         newEmployee.employment_relationship,
-                        1
+                        1,
+                        newEmployee.nickname,
+                        newEmployee.cuil,
+                        newEmployee.birthday,
+                        newEmployee.phone,
+                        newEmployee.street,
+                        newEmployee.number,
+                        newEmployee.neighborhood,
+                        newEmployee.city
                     ], (error) => {
                         if (error) reject(error);
                     });
@@ -149,36 +165,59 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
 
     const sqlInsertChargesOfemployee = 'INSERT INTO CHARGES_X_EMPLOYEES(dni_employee, id_charge) VALUES(?,?)';
 
-    const sqlUpdateEmployee =
-        `UPDATE EMPLOYEES SET dni = ?, name = ?, last_name = ?, date_admission = ?, 
-        employment_relationship = ?
-        WHERE dni = ${currentDniEmployee}`
-        ;
+    let sqlUpdateEmployee =
+        `UPDATE EMPLOYEES SET name = ?, last_name = ?, date_admission = ?, 
+        employment_relationship = ?,
+        cuil = ?,
+        birthday = ?,
+        phone = ?,
+        street = ?,
+        number = ?,
+        city = ?`;
+    if(updateEmployee.nickname)sqlUpdateEmployee += ", nickname = ?";
+    if(updateEmployee.neighborhood)sqlUpdateEmployee += ", neighborhood = ?";
+    sqlUpdateEmployee += `WHERE dni = ${currentDniEmployee}`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
             db.query(sqlDeleteCurrentChargesOfemployee, (error, result) => {
-                if (error) reject(error);
+                if (error) {
+                    console.log(error, sqlDeleteCurrentChargesOfemployee);
+                    reject(error);
+                }
             });
 
             updateEmployee.charges.forEach(({ chargeId }) => {
                 db.query(sqlInsertChargesOfemployee, [currentDniEmployee, chargeId], (error) => {
-                    if (error) reject(error);
+                    if (error) {
+                        console.log(error, sqlInsertChargesOfemployee);
+                        reject(error);
+                    }
                 });
             });
 
-            const updateEmpData = [
-                updateEmployee.dni,
+            let updateEmpData = [
                 updateEmployee.name,
                 updateEmployee.last_name,
                 updateEmployee.date,
-                updateEmployee.employment_relationship
+                updateEmployee.employment_relationship,
+                updateEmployee.cuil,
+                updateEmployee.birthday,
+                updateEmployee.phone,
+                updateEmployee.street,
+                updateEmployee.number,
+                updateEmployee.city
             ];
+            if(updateEmployee.nickname)updateEmpData.push(updateEmployee.nickname);
+            if(updateEmployee.neighborhood)updateEmpData.push(updateEmployee.neighborhood);
 
             db.query(sqlUpdateEmployee, updateEmpData, (error, result) => {
-                if (error) reject(error);
+                if (error) {
+                    console.log(error, sqlUpdateEmployee);
+                    reject(error);
+                }
                 else resolve(result);
             });
 

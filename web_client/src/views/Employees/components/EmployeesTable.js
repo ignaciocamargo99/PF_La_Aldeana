@@ -27,12 +27,11 @@ export default function EmployeesTable(props) {
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
-            .then(({ data }) => {
-                handlerLoadingSpinner();
-
-                setAllEmployees(data);
-            })
-            .catch((error) => console.log(error));
+        .then((response) => {
+            setAllEmployees(response.data);
+            setIsLoadingSpinner(false);
+        })
+        .catch((e) => console.log(e))
     }, []);
 
     const deleteEmployee = (i) => {

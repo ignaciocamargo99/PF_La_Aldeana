@@ -39,7 +39,7 @@ export default function EditEmployee({ goBack, employeeData }) {
                 Axios.put(`${PORT()}/api/employees/${newEmployeeData.dni}`, newEmployeeData)
                     .then((data) => {
                         if (data.data.Ok) successMessage('Atención', 'Empleado editado exitosamente', 'success')
-                        else displayError('El nuevo dni ya corresponde a otro empleado')
+                        else displayError('Ha ocurrido un error al intentar editar al empleado')
                     })
                     .catch(error => console.log(error));
             }

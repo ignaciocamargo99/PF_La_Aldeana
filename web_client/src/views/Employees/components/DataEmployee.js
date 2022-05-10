@@ -8,18 +8,18 @@ export default function DataEmployee(props) {
     const inputCuil = useRef(null);
     const inputLastName = useRef(props.data.last_name);
     const inputName = useRef(props.data.name);
-    const inputAlias = useRef(null);
+    const inputNickname = useRef(null);
     const inputBirthday = useRef(null);
     const inputPhone = useRef(null);
     const maxDate = formattedDate(new Date(), 3);
 
     const [dni, setDni] = useState("null");
     const [cuil, setCuil] = useState("null");
-    const [birthday, setBirthday] = useState("null");
+    const [birthday, setBirthday] = useState(props.data.birthday);
     const [phone, setPhone] = useState("null");
-    const [alias, setAlias] = useState(props.data.alias);
+    const [nickname, setNickname] = useState(props.data.nickname);
     const [isValidClass, setIsValidClass] = useState("form-control");
-    const [isValidClassAlias, setIsValidClassAlias] = useState("form-control");
+    const [isValidClassNickname, setIsValidClassNickname] = useState("form-control");
     const [isValidClassPhone, setIsValidClassPhone] = useState("form-control");
     const [isValidClassDNI, setIsValidClassDNI] = useState("form-control");
     const [isValidClassCuil, setIsValidClassCuil] = useState("form-control");
@@ -33,7 +33,7 @@ export default function DataEmployee(props) {
     const handleLastName = () => setLastName(inputLastName.current.value.trim());
     const handleDni = () => setDni(inputDni.current.value);
     const handleCuil = () => setCuil(inputCuil.current.value);
-    const handleAlias = () => setAlias(inputAlias.current.value);
+    const handleNickname = () => setNickname(inputNickname.current.value);
     const handleBirthday = () => setBirthday(inputBirthday.current.value);
     const handlePhone = () => setPhone(inputPhone.current.value);
 
@@ -99,12 +99,12 @@ export default function DataEmployee(props) {
     useEffect(() => {
         if (props.isReadingEmployeeData) return;
 
-        if (alias) setIsValidClassAlias("form-control is-valid");
-        else setIsValidClassAlias("form-control");
+        if (nickname) setIsValidClassNickname("form-control is-valid");
+        else setIsValidClassNickname("form-control");
 
-        props.data.alias = alias;
+        props.data.nickname = nickname;
         props.load(data);
-    }, [alias]);
+    }, [nickname]);
 
     useEffect(() => {
         if (props.isReadingEmployeeData) return;
@@ -136,6 +136,7 @@ export default function DataEmployee(props) {
     return (
         <>
             <h2>Datos del empleado/a</h2>
+            {console.log(props.data)}
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="nameEmployee" >Nombre*</label>
@@ -157,19 +158,19 @@ export default function DataEmployee(props) {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="aliasEmployee" >Alias</label>
+                    <label htmlFor="nicknameEmployee" >Apodo</label>
                 </div>
                 <div className="form-control-input">
                     <input
                         autoFocus={!props.isReadingEmployeeData}
-                        className={isValidClassAlias}
-                        defaultValue={props.data.alias}
-                        id="aliasEmployee"
+                        className={isValidClassNickname}
+                        defaultValue={props.data.nickname}
+                        id="nicknameEmployee"
                         maxLength="80"
-                        onChange={handleAlias}
-                        placeholder="Ingrese alias..."
+                        onChange={handleNickname}
+                        placeholder="Ingrese apodo..."
                         disabled={props.isReadingEmployeeData}
-                        ref={inputAlias}
+                        ref={inputNickname}
                         type="text"
                     />
                 </div>

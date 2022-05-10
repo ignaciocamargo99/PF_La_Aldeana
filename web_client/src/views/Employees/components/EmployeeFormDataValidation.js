@@ -12,7 +12,6 @@ const isNewEmployeeDataValid = (data) => {
 }
 
 const isDataValid = (data) => {
-    console.log(data)
     return data.charges?.length > 0 &&
         data.date &&
         data.dni &&
