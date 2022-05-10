@@ -32,7 +32,7 @@ const ProductTypesView = ({ permissionsAccess }) => {
         setListProductTypes(aux);
     };
 
-    const handleNewProductTypeBtnClicked = () => window.location.replace('/app/productTypes/new');
+    const handleNewProductTypeBtnClicked = () => window.location.replace('/app/registerProductTypes');
 
     const goBackToTable = () => {
         <div style={{ display: 'none' }}>{document.title = "Tipos de producto"}</div>
