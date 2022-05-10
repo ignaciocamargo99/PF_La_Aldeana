@@ -26,8 +26,9 @@ import Salary from './Salary/components/Salary';
 import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
-import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
+import ProductTypesView from './ProductTypes/components/ProductTypesView';
 import SupplyRoutes from './Supplies/SupplyRoutes';
+import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
 
 export default function RouterPage(props) {
 
@@ -45,9 +46,8 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/products' render={() => <ListProducts permissionsAccess={permissionsAccessProducts} />}></Route>
                         <Route path='/app/registerProducts' component={RegisterProductView}></Route>
-                        <Route path='/app/productTypes'>
-                            <ProductTypeRoutes permissionsAccess={permissionsAccessProducts} />
-                        </Route>
+                        <Route path='/app/productTypes' render={() => <ProductTypesView permissionsAccess={permissionsAccessProducts} />}></Route>
+                        <Route path={'/app/registerProductTypes'} component={RegisterTypeProductView}></Route>
                         <Route path='/app/supplies'>
                             <SupplyRoutes permissionsAccess={permissionsAccessProducts} />
                         </Route>
@@ -95,8 +95,8 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-                 reportHumanResources = 
+            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
+                reportHumanResources =
                     <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
             }
 
