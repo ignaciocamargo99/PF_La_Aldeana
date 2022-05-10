@@ -24,6 +24,10 @@ ProductTypeModel.init({
         type: DataTypes.TINYINT
         // allowNull defaults to true
     },
+    active: {
+        type: DataTypes.BOOLEAN
+        // allowNull defaults to true
+    },
 }, {
     // Other model options go here
     tableName: 'PRODUCT_TYPES',

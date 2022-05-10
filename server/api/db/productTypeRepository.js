@@ -13,6 +13,9 @@ class ProductTypeRepository {
 
     getProductTypeDB = () => {
         return ProductTypeModel.findAll({
+            where:{
+                active: true
+            },
             include: [SectorModel]
         });
     };
@@ -28,12 +31,6 @@ class ProductTypeRepository {
             id_sector: productType.id_sector,
             send_delivery: productType.send_delivery,
         }, selectProductType);
-    };
-
-    deleteProductTypeDB = (id) => {
-        return ProductTypeModel.destroy({
-            where: { id_product_type: id }
-        });
     };
 }
 

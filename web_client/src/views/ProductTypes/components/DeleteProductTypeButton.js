@@ -13,13 +13,13 @@ export default function DeleteProductTypeButton(props) {
 
     const handleDelete = async () => {
         const warningTitle = `¿Seguro que desea eliminar ${props.data.name}?`;
-        const warningText = 'El tipo de producto y TODOS los productos asociados ya no estarán disponibles.';
+        const warningText = 'Si existen productos asociados a este tipo de producto tampoco estarán disponibles para el personal de la empresa.';
         const deletionConfirmed = (await defaultQuestionSweetAlert2(warningTitle, warningText)).isConfirmed;
         if (deletionConfirmed) deleteProductType(props.data.id_product_type);
     }
 
     const deleteProductType = (id_product_type) => {
-        Axios.delete(PORT() + `/api/productTypes/${id_product_type}`)
+        Axios.put(PORT() + `/api/typeProducts/${id_product_type}`)
             .then(() => {
                 props.delete(props.index);
                 swal("Elemento eliminado", {
@@ -27,7 +27,6 @@ export default function DeleteProductTypeButton(props) {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 swal({
                     title: "Falla al eliminar elemento",
                     text: error,

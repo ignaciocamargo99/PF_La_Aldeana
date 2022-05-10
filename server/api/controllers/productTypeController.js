@@ -1,4 +1,4 @@
-const { getProductTypeDBByID, getProductTypeDB, updateProductTypeDB, deleteProductTypeDB } = require('../db/productTypeRepository');
+const { getProductTypeDBByID, getProductTypeDB, updateProductTypeDB } = require('../db/productTypeRepository');
 const { genericServerError } = require('../shared/errorMessages');
 const {
     BAD_REQUEST,
@@ -47,21 +47,6 @@ class ProductTypeController {
 
             const result = await updateProductTypeDB(id, req.body);
             res.status(OK).send(result);
-        }
-        catch (e) {
-            console.log(e.message);
-            res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
-        }
-    };
-
-    // HTTP: DELETE
-    deleteProductType = async (req, res) => {
-        try {
-            const { id } = req.params;
-            if (!isValidNumber(id)) res.status(BAD_REQUEST).send('ID inválido.');
-
-            const result = await deleteProductTypeDB(id);
-            res.status(OK).send('Producto eliminado');
         }
         catch (e) {
             console.log(e.message);
