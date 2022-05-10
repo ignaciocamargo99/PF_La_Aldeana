@@ -5,13 +5,13 @@ const { readEmployee, deleteEmployees, readCharges, createEmployee, readEmployee
 async function getEmployee(req, res) {
     try {
         const result = await readEmployee(req.params.dni);
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
             Ok: false,
             Message: e.message,
-        })
+        });
     }
 }
 
