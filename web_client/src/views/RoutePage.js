@@ -28,6 +28,7 @@ import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
 import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
 import SupplyRoutes from './Supplies/SupplyRoutes';
+import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 
 export default function RouterPage(props) {
 
@@ -65,6 +66,9 @@ export default function RouterPage(props) {
                         <Route path='/app/production' component={RegisterProductionView}></Route>
                         <Route path='/app/flavors'>
                             <FlavorRoutes permissionsAccess={permissionsAccessProductions} />
+                        </Route>
+                        <Route path='/app/flavorTypes'>
+                            <FlavorTypeRoutes permissionsAccess={permissionsAccessProductions} />
                         </Route>
                     </>
             }

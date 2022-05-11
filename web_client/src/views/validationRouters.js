@@ -6,8 +6,8 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/productTypes/new', '/app/supplies/new'].concat(pathsToReadProducts);
 
     // Production
-    let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view'];
-    let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new'].concat(pathsToReadProductions);
+    let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view', '/app/flavorTypes'];
+    let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new', '/app/flavorTypes/new'].concat(pathsToReadProductions);
 
     // Franchises
     let pathsToReadFranchises = ['/app/franchises'];
