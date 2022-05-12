@@ -1,7 +1,9 @@
+import EditButton from 'common/Table/EditButton';
 import ReadButton from 'common/Table/ReadButton'
+import DeleteButton from 'common/Table/DeleteButton'
 import React from 'react'
 
-const FlavorTypesTable = ({ pageElements, permissionsAccess }) => {
+const FlavorTypesTable = ({ pageElements, readOnly }) => {
 
     const columnsHeaders = [
         {
@@ -65,10 +67,18 @@ const FlavorTypesTable = ({ pageElements, permissionsAccess }) => {
                                         />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-
+                                        <EditButton
+                                            link='/app/flavorTypes'
+                                            disable={readOnly}
+                                        />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-
+                                        <DeleteButton
+                                            disable={readOnly}
+                                            onConfirm={() => { }}
+                                            warningTitle='¿Seguro que desea eliminar el tipo seleccionado?'
+                                            warningText='El tipo de sabor ya no estará disponible.'
+                                        />
                                     </td>
                                 </tr>
                             )

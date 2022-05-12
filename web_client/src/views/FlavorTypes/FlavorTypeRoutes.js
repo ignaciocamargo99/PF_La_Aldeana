@@ -12,12 +12,12 @@ const FlavorTypeRoutes = ({ permissionsAccess }) => {
   return (
     <div>
       <Switch>
-        <Route exact path={path} render={() => <FlavorTypesView permissionsAccess={permissionsAccess} />}></Route>
+        <Route exact path={path} render={() => <FlavorTypesView readOnly={readOnly} />}></Route>
         <Route path={`${path}/new`} render={() => {
           if (readOnly) {
             return <NotPermissionPage />
           } else {
-            return <NewFlavorType permissionsAccess={permissionsAccess} />
+            return <NewFlavorType />
           }
         }}></Route>
       </Switch>

@@ -3,7 +3,7 @@ import Pagination from 'common/TablePagination/Pagination';
 import SearchFilter from 'common/SearchFilter';
 import FlavorTypesTable from './FlavorTypesTable';
 
-const FlavorTypesList = ({ currentElements, permissionsAccess }) => {
+const FlavorTypesList = ({ currentElements, readOnly }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
     const [filteredElements, setFilteredElements] = useState([]);
@@ -45,7 +45,7 @@ const FlavorTypesList = ({ currentElements, permissionsAccess }) => {
             </div>
             <FlavorTypesTable
                 pageElements={pageElements}
-                permissionsAccess={permissionsAccess}
+                readOnly={readOnly}
             >
             </FlavorTypesTable>
             <Pagination

@@ -6,11 +6,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import FlavorTypesList from './components/FlavorTypesList';
 
-const FlavorTypesView = ({ permissionsAccess }) => {
+const FlavorTypesView = ({ readOnly }) => {
     // to do cambiar hook para que traiga solo activos
     const { loadingFlavorTypes, flavorTypes } = useGetFlavorTypes();
-
-    const readOnly = permissionsAccess === 1;
 
     let newButtonStyle = 'btn btn-light newBtn';
     if (readOnly) {
@@ -39,7 +37,10 @@ const FlavorTypesView = ({ permissionsAccess }) => {
                     </Link>
                 </div>
                 <div className="viewBody">
-                    <FlavorTypesList currentElements={flavorTypes} permissionsAccess={permissionsAccess} />
+                    <FlavorTypesList
+                        currentElements={flavorTypes}
+                        readOnly={readOnly}
+                    />
                 </div>
             </>
         )
