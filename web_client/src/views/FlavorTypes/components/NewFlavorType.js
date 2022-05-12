@@ -1,8 +1,12 @@
 import React from 'react'
+import FlavorTypeForm from './FlavorTypeForm'
 
 const NewFlavorType = () => {
   return (
-    <div>En desarrollo...</div>
+    <FlavorTypeForm
+      breadcrumbName='Nuevo tipo'
+      formTitle='Registrar tipo de sabor'
+    />
   )
 }
 
