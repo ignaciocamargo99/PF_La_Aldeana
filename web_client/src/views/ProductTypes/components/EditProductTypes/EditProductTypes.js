@@ -33,7 +33,7 @@ const EditProductType = ({ productTypeToEdit, onClickCancelEdit }) => {
         Axios.put(`${PORT()}/api/productTypes/${data.id_product_type}`, data)
           .then(response => {
             if (response.status === 200) {
-              successMessage('Atención', 'Sabor editado exitosamente', 'success')
+              successMessage('Atención', 'Tipo de producto editado exitosamente', 'success')
                 .then(() => window.location.replace('/app/productTypes'));
             }
             else displayError(response.data.message, 'Error al editar el tipo de producto');
