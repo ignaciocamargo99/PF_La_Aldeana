@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { updateNameSupply } from '../../../actions/SupplyActions';
 import { connect } from 'react-redux';
+import BeShowed from 'common/BeShowed';
 
 const NameSupply = (props) => {
-
     const inputSupplyName = useRef(null);
     const [prevSupplyName, setPrevSupplyName] = useState("null");
     const [isValidClass, setIsValidClass] = useState("form-control");
@@ -14,24 +14,30 @@ const NameSupply = (props) => {
     }
 
     useEffect(() => {
-        const supplyName = inputSupplyName.current.value.trim();
-        if (supplyName.length > 0 && supplyName.length <= 50) {
-            setIsValidClass("form-control is-valid");
-            props.updateNameSupply(supplyName);
-        } else if (prevSupplyName !== "null") {
-            setIsValidClass("form-control is-invalid");
-            props.updateNameSupply('null');
+        if (!props.data.reading) {
+            const supplyName = inputSupplyName.current.value.trim();
+            if (supplyName.length > 0 && supplyName.length <= 50) {
+                setIsValidClass("form-control is-valid");
+                props.updateNameSupply(supplyName);
+            } else if (prevSupplyName !== "null") {
+                setIsValidClass("form-control is-invalid");
+                props.updateNameSupply('null');
+            }
         }
-    }, [props.nameSupply]);
+    }, [prevSupplyName, props, props.nameSupply]);
 
-    return(
+    return (
         <div className="formRow">
             <div className="form-control-label">
                 <label htmlFor="supplyName" >Nombre*</label>
             </div>
             <div className="form-control-input">
-                <input className={isValidClass} id="supplyName"  maxLength="50" required type="text" ref={inputSupplyName} onChange={handleNameChange} placeholder="Ingrese nombre del insumo...">
-                </input>
+                <BeShowed show={!props.data.reading}>
+                    <input className={isValidClass} id="supplyName" maxLength="50" required type="text" ref={inputSupplyName} onChange={handleNameChange} placeholder="Ingrese nombre del insumo..." autoFocus />
+                </BeShowed>
+                <BeShowed show={props.data.reading}>
+                    <input className="form-control is-valid" id="supplyName" type="text" ref={inputSupplyName} value={props.data.name} readOnly />
+                </BeShowed>
             </div>
         </div>
     )

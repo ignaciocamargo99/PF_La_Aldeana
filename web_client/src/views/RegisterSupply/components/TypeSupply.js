@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { updateTypeSupply } from '../../../actions/SupplyActions';
 import { connect } from 'react-redux';
 import useHTTPGet from '../../../hooks/useHTTPGet';
+import BeShowed from 'common/BeShowed';
 
 const PORT = require('../../../config');
 
@@ -16,25 +17,30 @@ const TypeSupply = (props) => {
     }
 
     useEffect(() => {
-        if (selectSupplyType.current.value >= 0) {
-            props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
-        } 
+        if (!props.data.reading) {
+            if (selectSupplyType.current.value >= 0) props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
+        }
     }, [props.typeSupply]);
 
-    return(
-        
+    return (
+
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="supplyType">Tipo*</label>
+                <label htmlFor="supplyType">Tipo de insumo*</label>
             </div>
             <div className="form-control-input">
-                <select className="form-select" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{fontFamily: 'Abel, sans-serif'}}>
-                    <option disabled value="-1">Seleccione tipo de insumo...</option>
-                    {
-                        typeSupplies?.map((ts, i) => (
-                            <option key={i} value={ts.id_supply_type}>{ts.name}</option>
-                        ))
-                    }
+                <select className="form-control" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{ fontFamily: 'Abel, sans-serif' }}>
+                    <BeShowed show={!props.data.reading}>
+                        <option disabled value="-1">Seleccione tipo de insumo...</option>
+                        {
+                            typeSupplies?.map((ts, i) => (
+                                <option key={i} value={ts.id_supply_type}>{ts.name}</option>
+                            ))
+                        }
+                    </BeShowed>
+                    <BeShowed show={props.data.reading}>
+                        <option value="0">{props.data.name_type_supply}</option>
+                    </BeShowed>
                 </select>
             </div>
         </div>

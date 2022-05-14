@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import { updateSinglePrice } from '../../../actions/SupplyActions';
 import { connect } from 'react-redux';
+import BeShowed from 'common/BeShowed';
 
 const SinglePrice = (props) => {
 
@@ -24,13 +25,26 @@ const SinglePrice = (props) => {
         }
     }, [props.singlePrice]);
 
-    return(
-        <div className="price-type-container">
-            <label htmlFor="supplySinglePrice" className="price-type-label price-label">Minorista*</label>
-            <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..."  max="99999999"
-            onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleSinglePrice}>
-            </input>
-        </div>
+    return (
+        <>
+            <BeShowed show={!props.data.reading}>
+                <div className="price-type-container">
+                    <label htmlFor="supplySinglePrice" className="price-type-label price-label">Minorista*</label>
+                    <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..." max="99999999"
+                        onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleSinglePrice} />
+                </div>
+            </BeShowed>
+            <BeShowed show={props.data.reading}>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="supplySinglePrice">Precio minorista*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className="form-control is-valid" id="supplySinglePrice" type="number" readOnly value={props.data.price_wholesale} ref={inputSinglePrice} />
+                    </div>
+                </div>
+            </BeShowed>
+        </>
     )
 }
 
