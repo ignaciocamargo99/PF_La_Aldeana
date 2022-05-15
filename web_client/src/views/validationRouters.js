@@ -14,7 +14,10 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterFranchises = ['/app/newFranchise'].concat(pathsToReadFranchises);
 
     // Sales Report
-    let pathsToAllReportsSale = ['/app/salesReport'];
+    let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport'];
+
+    // RRHH Report
+    let pathsToAllReportsRRHH = ['/app/RRHHReport'];
 
     // Purchases
     // let pathsToReadPurchases;
@@ -67,6 +70,12 @@ export default function validationRouters(route, accesses) {
     else if (pathsToAllReportsSale.indexOf(route) !== -1) {
         if ((accesses[6] === 2 || accesses[6] === 3 || accesses[6] === 1) && pathsToAllReportsSale.indexOf(route) === -1) return false;
         else if (!accesses[6]) return false;
+        else return true;
+
+    }
+    else if (pathsToAllReportsRRHH.indexOf(route) !== -1) {
+        if ((accesses[1] === 2 || accesses[1] === 3 || accesses[1] === 1) && pathsToAllReportsRRHH.indexOf(route) === -1) return false;
+        else if (!accesses[1]) return false;
         else return true;
 
     }
