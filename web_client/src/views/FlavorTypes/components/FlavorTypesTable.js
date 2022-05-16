@@ -2,29 +2,34 @@ import EditButton from 'common/Table/EditButton';
 import ReadButton from 'common/Table/ReadButton'
 import DeleteButton from 'common/Table/DeleteButton'
 import React from 'react'
+import { FLAVOR_TYPES_LINK } from '../constants';
 
 const FlavorTypesTable = ({ pageElements, readOnly }) => {
 
     const columnsHeaders = [
         {
             name: 'Nombre',
-            width: '35%'
+            width: '30%'
         },
         {
             name: 'Descripción',
-            width: '35%'
+            width: '30%'
+        },
+        {
+            name: 'Precio',
+            width: '16%'
         },
         {
             name: 'Ver',
-            width: '10%'
+            width: '8%'
         },
         {
             name: 'Editar',
-            width: '10%'
+            width: '8%'
         },
         {
             name: 'Eliminar',
-            width: '10%'
+            width: '8%'
         }
     ];
 
@@ -62,13 +67,16 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                         {element.description}
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                        {element.price}
+                                    </td>
+                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <ReadButton
-                                            link='/app/flavorTypes'
+                                            link={FLAVOR_TYPES_LINK}
                                         />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditButton
-                                            link='/app/flavorTypes'
+                                            link={FLAVOR_TYPES_LINK}
                                             disable={readOnly}
                                         />
                                     </td>

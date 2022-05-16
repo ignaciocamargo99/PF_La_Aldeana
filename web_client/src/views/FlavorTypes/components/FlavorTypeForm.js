@@ -4,8 +4,8 @@ import ActionButtons from 'common/Form/ActionButtons'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
-
-const FLAVOR_TYPES_LINK = '/app/flavorTypes';
+import validateFloatNumbers from 'utils/validateFloatNumbers'
+import { FLAVOR_TYPES_LINK } from '../constants'
 
 const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnText, isReading, onSubmit }) => {
 
@@ -25,9 +25,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
 
     const [formData, setFormData] = useState(initializeForm());
 
-    const defaultInputStyle = 'form-control';
-    const validInputStyle = 'form-control is-valid';
-    const invalidInputStyle = 'form-control is-invalid';
+    // #region Handlers OnChange
 
     const handleNameChange = ({ target }) => {
         let newFormData = { ...formData };
@@ -35,7 +33,75 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
         setFormData(newFormData);
     };
 
-    const validateNameFormControl = () => {
+    const handleDescriptionChange = ({ target }) => {
+        let newFormData = { ...formData }
+        newFormData.description = target.value
+        setFormData(newFormData)
+    };
+
+    const handlePriceChange = ({ target }) => {
+        let newFormData = { ...formData }
+        newFormData.price = target.value
+        setFormData(newFormData);
+    };
+
+    // #endregion
+
+    // #region Validators
+
+    const isPriceValid = (price) => {
+        if (!(price)) {
+            return false;
+        }
+        if (isNaN(price)) {
+            return false;
+        }
+        return (price > 0 && price.toString().length <= 5);
+    };
+
+    const isFormNameValid = () => {
+        return formData?.name?.trim();
+    };
+
+    const isFormPriceEmpty = () => {
+        return (!(formData?.price));
+    };
+
+    const isFormPriceValid = () => {
+        return isPriceValid(formData?.price);
+    };
+
+    const isFormDataValid = (warn) => {
+        if (!(isFormNameValid())) {
+            if (warn) {
+                warnSweetAlert('Ingrese el nombre del tipo de sabor.');
+            }
+            return false;
+        }
+        if (!(isFormPriceValid())) {
+            if (warn) {
+                if (isFormPriceEmpty()) {
+                    warnSweetAlert('Ingrese el precio del sabor.');
+                } else {
+                    warnSweetAlert('Ingrese el precio del sabor correctamente.');
+                }
+            }
+            return false;
+        }
+        return true;
+    };
+
+    // #endregion
+
+    const formDataValid = isFormDataValid();
+
+    // #region Form Controls Styles and Errors
+
+    const defaultInputStyle = 'form-control';
+    const validInputStyle = 'form-control is-valid';
+    const invalidInputStyle = 'form-control is-invalid';
+
+    const getNameStyleAndErr = () => {
         if (!formData.name) {
             return [defaultInputStyle, ''];
         };
@@ -47,25 +113,24 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
         return [invalidInputStyle, 'Ingrese un nombre válido'];
     }
 
-    const [nameInputStyle, nameInputErrorText] = validateNameFormControl();
+    const getPriceStyleAndErr = () => {
+        if (!formData.price) {
+            return [defaultInputStyle, ''];
+        };
 
-    const isFormNameValid = () => {
-        return formData?.name?.trim();
-    };
+        if (isPriceValid(formData.price)) {
+            return [validInputStyle, ''];
+        };
 
-    const isFormDataValid = (warn) => {
-        if (!(isFormNameValid())) {
-            if (warn) {
-                warnSweetAlert('Ingrese el nombre del tipo de sabor.');
-            }
-            return false;
-        }
-        return true;
-    };
+        return [invalidInputStyle, 'Ingrese un precio válido'];
+    }
 
-    const formDataValid = isFormDataValid();
+    const [nameInputStyle, nameInputErrorText] = getNameStyleAndErr();
+    const [priceInputStyle, priceInputErrorText] = getPriceStyleAndErr();
 
-    // #region Action Buttons
+    // #endregion
+
+    // #region Action Buttons Config
 
     const goBackBtnConfig = {
         enable: isReading,
@@ -124,6 +189,35 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                 <div className="formRow">
                     <div className="form-control-label">
                         <label >Descripción (opcional)</label>
+                    </div>
+                    <div className="form-control-input">
+                        <textarea
+                            className="form-control"
+                            maxLength="200"
+                            onChange={handleDescriptionChange}
+                            placeholder='Ingrese descripción del tipo de sabor...'
+                            disabled={isReading}
+                            type='text'
+                            value={formData.description}
+                        >
+                        </textarea>
+                    </div>
+                </div>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label >Precio*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input
+                            className={priceInputStyle}
+                            onChange={handlePriceChange}
+                            onKeyDown={(e) => validateFloatNumbers(e)}
+                            placeholder="Ingrese precio del tipo de sabor..."
+                            disabled={isReading}
+                            type="number"
+                            value={formData.price}
+                        />
+                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{priceInputErrorText}</div>
                     </div>
                 </div>
                 <ActionButtons
