@@ -1,9 +1,13 @@
 import { faIceCream } from '@fortawesome/free-solid-svg-icons'
 import Breadcrumb from 'common/Breadcrumb'
+import ActionButtons from 'common/Form/ActionButtons'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
 
-const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, isReading }) => {
+const FLAVOR_TYPES_LINK = '/app/flavorTypes';
+
+const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnText, isReading, onSubmit }) => {
 
     const createFlavorTypeModel = (flavorTypeData) => {
         return {
@@ -45,12 +49,53 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, isReading }
 
     const [nameInputStyle, nameInputErrorText] = validateNameFormControl();
 
+    const isFormNameValid = () => {
+        return formData?.name?.trim();
+    };
+
+    const isFormDataValid = (warn) => {
+        if (!(isFormNameValid())) {
+            if (warn) {
+                warnSweetAlert('Ingrese el nombre del tipo de sabor.');
+            }
+            return false;
+        }
+        return true;
+    };
+
+    const formDataValid = isFormDataValid();
+
+    // #region Action Buttons
+
+    const goBackBtnConfig = {
+        enable: isReading,
+        link: FLAVOR_TYPES_LINK,
+    }
+
+    const handleSubmitBtnClicked = () => onSubmit(formData);
+    const warnFormDataInvalid = () => isFormDataValid(true);
+
+    const submitBtnConfig = {
+        ready: formDataValid,
+        onClickOk: handleSubmitBtnClicked,
+        onClickNotOk: warnFormDataInvalid,
+        label: submitBtnText,
+        enable: !isReading,
+    }
+
+    const cancelBtnConfig = {
+        enable: !isReading,
+        link: FLAVOR_TYPES_LINK,
+    }
+
+    // #endregion
+
     return (
         <>
             <Breadcrumb
                 currentName={breadcrumbName}
                 icon={faIceCream}
-                parentLink='/app/flavorTypes'
+                parentLink={FLAVOR_TYPES_LINK}
                 parentName="Tipos de sabores"
             />
             <div className="viewTitle">
@@ -81,6 +126,11 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, isReading }
                         <label >Descripción (opcional)</label>
                     </div>
                 </div>
+                <ActionButtons
+                    submit={submitBtnConfig}
+                    cancel={cancelBtnConfig}
+                    goBack={goBackBtnConfig}
+                />
             </div>
         </>
     )
