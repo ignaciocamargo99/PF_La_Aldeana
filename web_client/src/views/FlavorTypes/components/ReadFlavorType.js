@@ -1,11 +1,9 @@
-import { faBackward } from '@fortawesome/free-solid-svg-icons';
-import Breadcrumb from 'common/Breadcrumb';
 import LoaderSpinner from 'common/LoaderSpinner';
 import { useGetFlavorTypeByID } from 'hooks/useGetFlavorTypeByID';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { FLAVOR_TYPES_LINK } from '../constants';
 import FlavorTypeForm from './FlavorTypeForm';
+import FlavorTypeNotFound from './FlavorTypeNotFound';
 
 const ReadFlavorType = () => {
     const { idFlavorType } = useParams();
@@ -29,16 +27,7 @@ const ReadFlavorType = () => {
     }
 
     return (
-        <>
-            <Breadcrumb
-                parentLink={FLAVOR_TYPES_LINK}
-                parentName="Volver a Tipos de Sabores"
-                icon={faBackward}
-            />
-            <label>
-                No se ha encontrado un sabor para ese ID.
-            </label>
-        </>
+        < FlavorTypeNotFound />
     )
 }
 
