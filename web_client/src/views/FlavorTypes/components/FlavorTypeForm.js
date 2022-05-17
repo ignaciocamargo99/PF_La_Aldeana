@@ -102,7 +102,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
     const invalidInputStyle = 'form-control is-invalid';
 
     const getNameStyleAndErr = () => {
-        if (!formData.name) {
+        if (!formData.name || isReading) {
             return [defaultInputStyle, ''];
         };
 
@@ -114,7 +114,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
     }
 
     const getPriceStyleAndErr = () => {
-        if (!formData.price) {
+        if (!formData.price || isReading) {
             return [defaultInputStyle, ''];
         };
 
@@ -195,7 +195,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                             className="form-control"
                             maxLength="200"
                             onChange={handleDescriptionChange}
-                            placeholder='Ingrese descripción del tipo de sabor...'
+                            placeholder={isReading ? "" : 'Ingrese descripción del tipo de sabor...'}
                             disabled={isReading}
                             type='text'
                             value={formData.description}
@@ -212,7 +212,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                             className={priceInputStyle}
                             onChange={handlePriceChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
-                            placeholder="Ingrese precio del tipo de sabor..."
+                            placeholder={isReading ? "" : "Ingrese precio del tipo de sabor..."}
                             disabled={isReading}
                             type="number"
                             value={formData.price}

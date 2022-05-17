@@ -14,6 +14,15 @@ const saveFlavorTypeDB = (flavorTypeData) => {
     });
 };
 
+const getFlavorTypeDBById = (flavorTypeId) => {
+    return FlavorType.findOne({
+        where: {
+            idFlavorType: flavorTypeId
+        },
+    });
+};
+
 module.exports = {
     saveFlavorTypeDB,
+    getFlavorTypeDBById,
 };

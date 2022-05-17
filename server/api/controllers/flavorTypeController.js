@@ -1,14 +1,8 @@
-const {
-    BAD_REQUEST,
-    INTERNAL_SERVER_ERROR,
-    OK,
-} = require('../shared/httpStatusCodes');
-
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, } = require('../shared/httpStatusCodes');
 const { genericServerError } = require('../shared/errorMessages');
-const {
-    createNewFlavorType,
-    isNewFlavorTypeDataValid,
-} = require('../services/flavorTypeService');
+const { createNewFlavorType, isNewFlavorTypeDataValid, } = require('../services/flavorTypeService');
+const { isValidNumber } = require('../shared/numberValidations');
+const { getFlavorTypeDBById } = require('../db/flavorTypeDb');
 
 async function postFlavorTypes(req, res) {
     try {
@@ -34,6 +28,22 @@ async function postFlavorTypes(req, res) {
     }
 }
 
+const getFlavorTypeByID = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!isValidNumber(id)) {
+            res.status(BAD_REQUEST).send('ID inválido.');
+        }
+
+        const result = await getFlavorTypeDBById(id);
+        res.status(OK).send(result);
+    }
+    catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+    }
+};
+
 const createErrorToCreateFlavorTypesObj = (message) => {
     return {
         flavorTypesCreated: false,
@@ -52,4 +62,5 @@ const createSuccessToCreateFlavorTypesObj = (newFlavorType) => {
 
 module.exports = {
     postFlavorTypes,
+    getFlavorTypeByID,
 };
