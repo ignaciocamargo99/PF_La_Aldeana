@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import { updateUnitSupply, updateLotSupply, updateUnitPerLotSupply } from '../../../actions/SupplyActions';
 import { connect } from 'react-redux';
@@ -33,13 +33,13 @@ const Stock = (props) => {
     }
 
     useEffect(() => {
-        if (props.typeSupply === 2){
+        if (props.typeSupply === 2) {
             if (inputSupplyStockLot.current.value > 0 && inputSupplyStockLot.current.value <= 9999) {
                 setIsValidSupplyStockLotClass("form-control is-valid");
                 props.updateLotSupply(Math.trunc(inputSupplyStockLot.current.value));
 
-                if (inputSupplyStock.current.value <= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value || 
-                    inputSupplyStock.current.value > (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value ){
+                if (inputSupplyStock.current.value <= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value ||
+                    inputSupplyStock.current.value > (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value) {
                     props.updateUnitSupply(inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value);
                     inputSupplyStock.current.value = inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value;
                 }
@@ -52,13 +52,13 @@ const Stock = (props) => {
     }, [props.lotSupply]);
 
     useEffect(() => {
-        if (props.typeSupply === 2){
+        if (props.typeSupply === 2) {
             if (inputSupplyUnitsByLot.current.value > 0 && inputSupplyUnitsByLot.current.value <= 99999) {
                 setIsValidSupplyUnitsByLotClass("form-control is-valid");
                 props.updateUnitPerLotSupply(Math.trunc(inputSupplyUnitsByLot.current.value));
-                
-                if (inputSupplyStock.current.value <= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value || 
-                    inputSupplyStock.current.value > (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value ){
+
+                if (inputSupplyStock.current.value <= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value ||
+                    inputSupplyStock.current.value > (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value) {
                     props.updateUnitSupply(inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value);
                     inputSupplyStock.current.value = inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value;
                 }
@@ -71,9 +71,9 @@ const Stock = (props) => {
     }, [props.unitPerLotSupply]);
 
     useEffect(() => {
-        if (props.typeSupply === 2){
-            if (inputSupplyStock.current.value >= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value 
-                && inputSupplyStock.current.value < (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value ) {
+        if (props.typeSupply === 2) {
+            if (inputSupplyStock.current.value >= inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value
+                && inputSupplyStock.current.value < (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value) {
                 setIsValidSupplyStockClass("form-control is-valid");
                 props.updateUnitSupply(Math.trunc(inputSupplyStock.current.value));
                 setError('');
@@ -82,10 +82,10 @@ const Stock = (props) => {
                 setIsValidSupplyStockClass("form-control is-invalid");
                 props.updateUnitSupply(0);
                 setError('El stock por unidad debe ser un número mayor o igual a ' + inputSupplyStockLot.current.value * inputSupplyUnitsByLot.current.value
-                + ' y menor que ' + (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value);
+                    + ' y menor que ' + (Math.trunc(inputSupplyStockLot.current.value) + 1) * inputSupplyUnitsByLot.current.value);
             }
         } else {
-            if (inputSupplyStock.current.value > 0 
+            if (inputSupplyStock.current.value > 0
                 && inputSupplyStock.current.value <= 9999999) {
                 setIsValidSupplyStockClass("form-control is-valid");
                 props.updateUnitSupply(Math.trunc(inputSupplyStock.current.value));
@@ -99,33 +99,33 @@ const Stock = (props) => {
         }
     }, [props.unitSupply]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsValidSupplyStockClass("form-control");
         setIsValidSupplyUnitsByLotClass("form-control");
         setIsValidSupplyStockLotClass("form-control");
     }, [props.typeSupply])
 
-    return(
+    return (
         <>
             <BeShowed show={props.typeSupply !== 1}>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="lotStock">Stock lotes*</label>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="lotStock">Stock lotes*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot} onChange={handleSupplyStockLotChanged} type="number" min="1" placeholder="Ingrese stock de lotes..." defaultValue='0'
+                            onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                    </div>
                 </div>
-                <div className="form-control-input">
-                    <input className={isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot} onChange={handleSupplyStockLotChanged} type="number" min="1" placeholder="Ingrese stock de lotes..." defaultValue='0'
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input className={isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot} onChange={handleSupplyUnitsByLotChanged} type="number" min="1" placeholder="Ingrese cantidad de unidades por lote..." defaultValue='0'
+                            onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                    </div>
                 </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
-                    <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
-                </div>
-                <div className="form-control-input">
-                    <input className={isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot} onChange={handleSupplyUnitsByLotChanged} type="number" min="1" placeholder="Ingrese cantidad de unidades por lote..."  defaultValue='0'
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
-                </div>
-            </div>
             </BeShowed>
             <div className="formRow">
                 <div className="form-control-label">
@@ -133,7 +133,7 @@ const Stock = (props) => {
                 </div>
                 <div className="form-control-input">
                     <input className={isValidSupplyStockClass} id="supplyStock" ref={inputSupplyStock} onChange={handleSupplyStockChanged} type="number" min="1" placeholder="Ingrese stock actual del insumo..." defaultValue='0'
-                    onKeyDown={(e) => validateFloatNumbers(e)}></input>
+                        onKeyDown={(e) => validateFloatNumbers(e)}></input>
                 </div>
             </div>
             <BeShowed show={error !== ''}>
