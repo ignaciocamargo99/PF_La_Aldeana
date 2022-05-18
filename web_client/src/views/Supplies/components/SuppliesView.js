@@ -8,6 +8,7 @@ import { assembleColumnHeaders } from '../customHooks/assembleColumnHeaders';
 import { useReadEditSupplies } from '../customHooks/useReadEditSupplies';
 import TablePagination from './TablePagination/TablePagination';
 import ReadSupplies from './ReadSupplies/ReadSupplies';
+import EditSupplies from './EditSupplies/EditSupplies';
 
 const SuppliesView = ({ permissionsAccess }) => {
     const columnsHeaders = assembleColumnHeaders();
@@ -81,7 +82,7 @@ const SuppliesView = ({ permissionsAccess }) => {
                 </>
             }
             {action === 'R' && <ReadSupplies onClickCancelRead={goBackToTable} supplyToRead={supplyToDo} />}
-            {/* {action === 'E' && <EditProductTypes onClickCancelEdit={goBackToTable} productTypeToEdit={productTypeToDo} />} */}
+            {action === 'E' && <EditSupplies onClickCancelEdit={goBackToTable} supplyToEdit={supplyToDo} />}
         </>
     )
 }

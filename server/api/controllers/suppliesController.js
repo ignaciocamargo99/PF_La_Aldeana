@@ -1,33 +1,34 @@
-const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock } = require('../services/suppliesService')
-const db = require("../../config/connection");
+const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, modifySupply } = require('../services/suppliesService');
+const { isValidNumber } = require('../shared/numberValidations');
+const { BAD_REQUEST } = require('../shared/httpStatusCodes');
 
 // [HTTP:GET]
 async function getSupplies(req, res) {
     try {
         const result = await readSupplies();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
             Ok: false,
             Message: e.message,
-        })
+        });
     }
-};
+}
 
 // [HTTP:GET]
 async function getSuppliesWithStock(req, res) {
     try {
         const result = await readSuppliesWithStock();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
             Ok: false,
             Message: e.message,
-        })
+        });
     }
-};
+}
 
 // HTTP: POST
 async function postSupply(req, res) {
@@ -43,21 +44,43 @@ async function postSupply(req, res) {
             Ok: false,
             Message: e.message
         });
-    };
-};
+    }
+}
 
 // HTTP: GET
 async function getTypeSupplies(req, res) {
     try {
         const result = await readTypeSupply();
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
             Ok: false,
             Message: e.message,
-        })
+        });
     }
 }
 
-module.exports = { getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock };
+// HTTP: PUT
+async function updateSupply(req, res) {
+    try {
+        const { id } = req.params;
+
+        if (!isValidNumber(id)) {
+            res.status(BAD_REQUEST).send('ID inválido.');
+        }
+        await modifySupply(id, req.body);
+
+        res.json({
+            Ok: true,
+            Message: 'Insumo actualizado exitosamente.'
+        });
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
+
+module.exports = { getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock, updateSupply };
