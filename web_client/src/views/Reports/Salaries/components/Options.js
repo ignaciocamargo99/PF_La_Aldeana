@@ -43,7 +43,8 @@ console.log(props.dateFrom , props.dateTo , props.load)
                         props.setSalaries(data);
                         
                         data[1]?.forEach((e, i) => {
-                            if (i < 6){
+                            console.log(e,i)
+                            if (i < 3 || i === 4){
                                 labelsTotalised.push(e.id);
                                 datTotalised.push(e.quantity);
                                 totals.push(e);

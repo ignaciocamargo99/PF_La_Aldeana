@@ -11,7 +11,7 @@ const TotalsSalaries = (props) => {
     let l = []
     let d = []
     props.totals?.forEach((e, i) => {
-      if (i < 6){
+      if (i < 3 || i === 4){
         l = [...l, e.id]
         d = [...d, e.quantity]
       }

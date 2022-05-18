@@ -97,12 +97,12 @@ const ListSalaries = (props) => {
                                 return (
                                     <tr key={i}> {console.log(element)}
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.salary_hs}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.paycheck}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.plus}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.subtotal}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.minus}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>$ {element.total}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.salary_hs}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.paycheck}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.plus}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.subtotal}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.minus}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.total}</td>
                                     </tr>
                                 )
                             })}
@@ -119,12 +119,12 @@ const ListSalaries = (props) => {
                             }
                             <tr key='total'>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][0].quantity}</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][1].quantity}</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][2].quantity}</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][3].quantity}</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][4].quantity}</td>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${props.salaries[1][5].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][0].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][1].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][2].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][3].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][4].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][5].quantity}</td>
                             </tr>
                         </tbody>
                     </table>
