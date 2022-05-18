@@ -2,7 +2,7 @@ const { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, } = require('../shared/httpStatu
 const { genericServerError } = require('../shared/errorMessages');
 const { createNewFlavorType, isNewFlavorTypeDataValid, } = require('../services/flavorTypeService');
 const { isValidNumber } = require('../shared/numberValidations');
-const { getFlavorTypeDBById } = require('../db/flavorTypeDb');
+const { getFlavorTypeDBById, updateFlavorTypeDBById } = require('../db/flavorTypeDb');
 
 async function postFlavorTypes(req, res) {
     try {
@@ -59,8 +59,47 @@ const createSuccessToCreateFlavorTypesObj = (newFlavorType) => {
     };
 };
 
+const putFlavorTypeByID = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { body: flavorTypeData } = req;
+
+        if (!isValidNumber(id)) {
+            res.status(BAD_REQUEST).send('ID inválido.');
+        }
+
+        const result = await updateFlavorTypeDBById(+id, flavorTypeData);
+
+        if (result) {
+            res.status(OK).send(result);
+        } else {
+            res.status(BAD_REQUEST).send('No se ha encontrado un tipo de sabor para ese ID.');
+        }
+    }
+    catch (e) {
+        if (e.name === 'SequelizeValidationError') {
+            let error = '';
+
+            e.errors.forEach(({ message }) => {
+                if (error === '') {
+                    error += message;
+                }
+                else {
+                    error += '\n' + message;
+                }
+
+            });
+
+            res.status(BAD_REQUEST).send({ error: error });
+        }
+        else {
+            res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+        }
+    }
+};
 
 module.exports = {
     postFlavorTypes,
     getFlavorTypeByID,
+    putFlavorTypeByID,
 };

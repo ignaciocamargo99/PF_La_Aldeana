@@ -14,10 +14,15 @@ FlavorType.init({
     },
     name: {
         type: DataTypes.STRING,
+        validate: {
+            notNull: {
+                msg: 'El nombre no puede ser null.'
+            }
+        },
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
         // allowNull defaults to true
     },
 }, {
