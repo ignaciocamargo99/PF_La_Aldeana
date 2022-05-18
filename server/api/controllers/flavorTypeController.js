@@ -71,9 +71,13 @@ const putFlavorTypeByID = async (req, res) => {
         const result = await updateFlavorTypeDBById(+id, flavorTypeData);
 
         if (result) {
-            res.status(OK).send(result);
+            res.status(OK).send({
+                updatedFlavorType: result.dataValues,
+            });
         } else {
-            res.status(BAD_REQUEST).send('No se ha encontrado un tipo de sabor para ese ID.');
+            res.status(BAD_REQUEST).send({
+                message: 'No se ha encontrado un tipo de sabor para ese ID.',
+            });
         }
     }
     catch (e) {
@@ -90,10 +94,14 @@ const putFlavorTypeByID = async (req, res) => {
 
             });
 
-            res.status(BAD_REQUEST).send({ error: error });
+            res.status(BAD_REQUEST).send({
+                message: error,
+            });
         }
         else {
-            res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+            res.status(INTERNAL_SERVER_ERROR).send({
+                message: genericServerError
+            });
         }
     }
 };
