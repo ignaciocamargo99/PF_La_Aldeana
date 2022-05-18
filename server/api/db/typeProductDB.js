@@ -18,14 +18,14 @@ const productTypeGetDB = () => {
 
 const typeProductPostDB = (newTypeProduct) => {
 
-    const sqlInsert = "INSERT INTO PRODUCT_TYPES VALUES(null, ?, ?, ?)"
-    const { name, description, id_sector } = newTypeProduct;
+    const sqlInsert = "INSERT INTO PRODUCT_TYPES VALUES(null, ?, ?, ?, ?)"
+    const { name, description, id_sector, send_delivery } = newTypeProduct;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlInsert, [name, description, id_sector], (error) => {
+            db.query(sqlInsert, [name, description, id_sector, send_delivery], (error) => {
                 if (error) reject(error);
                 else resolve();
             });

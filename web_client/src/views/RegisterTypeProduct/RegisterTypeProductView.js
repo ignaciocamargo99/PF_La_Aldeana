@@ -18,6 +18,7 @@ export default function RegisterTypeProductView() {
     const inputName = useRef(null);
     const inputDescription = useRef(null);
     const divNameValidation = useRef(null);
+    const checkIsSendByDelivery = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
     const [sectorTypeProductChild, setSectorTypeProductChild] = useState(-1);
     const [nameTypeProductChild, setNameTypeProductChild] = useState('null');
@@ -39,11 +40,13 @@ export default function RegisterTypeProductView() {
 
     const registerTypeProduct = () => {
         const description = inputDescription.current.value.trim();
+        const isSendByDelivery = checkIsSendByDelivery.current.checked ? 1 : 0;
         if (ready) {
             Axios.post(PORT() + '/api/typeProducts', {
                 name: data.name,
                 description: description,
-                id_sector: data.id_sector
+                id_sector: data.id_sector,
+                send_delivery: isSendByDelivery
             })
                 .then(({ data }) => {
                     if (data.Ok) success();
@@ -117,6 +120,14 @@ export default function RegisterTypeProductView() {
                     </div>
                 </div>
                 <SectorProduct load={load} data={data} />
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label className='lbTexttarea'>Acepta envío por delivery</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input type='checkbox' className="form-check-input" ref={checkIsSendByDelivery}></input>
+                    </div>
+                </div>
                 <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={validate} actionCancel={cancelTypeProduct} />
             </div>
         </>
