@@ -1,4 +1,4 @@
-const { productTypeGetDB, typeProductPostDB } = require('../db/typeProductDB');
+const { productTypeGetDB, typeProductPostDB, productTypeDeleteDB } = require('../db/typeProductDB');
 
 const readTypeProduct = async () => {
     try {
@@ -6,8 +6,8 @@ const readTypeProduct = async () => {
         return res;
     }
     catch (error) {
-        throw Error(error)
-    };
+        throw Error(error);
+    }
 };
 
 const createTypeProduct = async (newTypeProduct) => {
@@ -16,8 +16,18 @@ const createTypeProduct = async (newTypeProduct) => {
         return res;
     }
     catch (error) {
-        throw Error(error)
+        throw Error(error);
     };
 };
 
-module.exports = { readTypeProduct, createTypeProduct };
+const deleteProductTypeByID = async (id) => {
+    try {
+        let res = await productTypeDeleteDB(id);
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    }
+};
+
+module.exports = { readTypeProduct, createTypeProduct, deleteProductTypeByID };
