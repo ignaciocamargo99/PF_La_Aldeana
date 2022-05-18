@@ -22,7 +22,14 @@ const getFlavorTypeDBById = (flavorTypeId) => {
     });
 };
 
+const updateFlavorTypeDBById = async (flavorTypeId, flavorTypeData) => {
+    const ft = await getFlavorTypeDBById(flavorTypeId);
+    ft?.set(flavorTypeData);
+    return await ft?.save();
+};
+
 module.exports = {
     saveFlavorTypeDB,
     getFlavorTypeDBById,
+    updateFlavorTypeDBById,
 };
