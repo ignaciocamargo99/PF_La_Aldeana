@@ -7,8 +7,7 @@ import {
     unlockMenu,
     toRegisterAttendance,
     toSalesDelivery,
-    toSalesLocal,
-    toSalesWhole
+    toSalesLocal
 } from '../../actions/MenuActions';
 import { GoTasklist, GoHome, GoBell } from 'react-icons/go';
 import { FaLock, FaLockOpen } from 'react-icons/fa';
@@ -53,9 +52,6 @@ const SideMenu = (props) => {
                             </MenuItem>
                             <MenuItem onClick={props.toSalesDelivery}>
                                 Venta por Delivery
-                            </MenuItem>
-                            <MenuItem onClick={props.toSalesWhole}>
-                                Venta Mayorista
                             </MenuItem>
                         </SubMenu>
 
@@ -106,8 +102,7 @@ const mapDispatchToProps = {
     lockMenu,
     unlockMenu,
     toSalesLocal,
-    toSalesDelivery,
-    toSalesWhole
+    toSalesDelivery
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);

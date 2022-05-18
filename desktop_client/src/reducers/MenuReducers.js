@@ -20,10 +20,6 @@ export const location = (state = 0, action) => {
         return action.payload;
     }
 
-    if (action.type === 'TO_SALES_WHOLE') {
-        return action.payload;
-    }
-
     return state;
 };
 

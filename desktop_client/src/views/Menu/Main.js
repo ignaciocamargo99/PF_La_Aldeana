@@ -9,15 +9,13 @@ import {
     lockMenu,
     unlockMenu,
     toSalesDelivery,
-    toSalesLocal,
-    toSalesWhole
+    toSalesLocal
 } from '../../actions/MenuActions';
 import logo from '../../images/logo_expandido.png';
 import '../../assets/logo.css';
 import SideMenu from './Menu';
 import Sales from '../Sales/Sales';
 import DeliverySales from '../DeliverySales/components/DeliverySales';
-import WholeSales from '../WholeSales/WholeSale';
 // import EmployeeAssistance from '../EmployeeAssistance/components/EmployeeAssistance';
 
 const Main = (props) => {
@@ -44,9 +42,6 @@ const Main = (props) => {
                         <BeShowed show={props.location === 4}>
                             <DeliverySales></DeliverySales>
                         </BeShowed>
-                        <BeShowed show={props.location === 5}>
-                            <WholeSales></WholeSales>
-                        </BeShowed>
                     </div>
                 </div>
             </BeShowed>
@@ -71,9 +66,6 @@ const Main = (props) => {
                         <BeShowed show={props.location === 4}>
                             <DeliverySales></DeliverySales>
                         </BeShowed>
-                        <BeShowed show={props.location === 5}>
-                            <WholeSales></WholeSales>
-                        </BeShowed>
                     </div>
                 </div>
             </BeShowed>
@@ -95,8 +87,7 @@ const mapDispatchToProps = {
     lockMenu,
     unlockMenu,
     toSalesLocal,
-    toSalesDelivery,
-    toSalesWhole
+    toSalesDelivery
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
