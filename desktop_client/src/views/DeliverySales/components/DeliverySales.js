@@ -41,7 +41,6 @@ const DeliverySales = (props) => {
                 for (let i = 0; i < response.data.length; i++) {
                     aux.push({ 'product': response.data[i], 'quantity': 0 });
                 }
-                console.log(aux)
                 axios.get(PORT() + `/api/productsStocks`)
                     .then((response) => {
                         props.updateDeliveryProductsStocks(response.data);
@@ -63,9 +62,7 @@ const DeliverySales = (props) => {
             axios.post(`${PORT()}/api/clients`, { "cellphone": props.cellphone, "names": props.names, "street_name": props.street, "street_number": props.streetNumber, "observation": clientObservation })
         }
         else {
-            if (props.client.street_name !== props.street || props.client.street_number !== props.streetNumber) {
-                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`, { "street_name": props.street, "street_number": props.streetNumber, "observation": clientObservation })
-            }
+            axios.put(`${PORT()}/api/clients/${props.client.cellphone}`, { "street_name": props.street, "street_number": props.streetNumber, "observation": clientObservation })
         }
         let details = []
         props.details.map((detail, i) => {
@@ -106,6 +103,7 @@ const DeliverySales = (props) => {
             succesMessageDeliverySale('Se ha registrado la venta correctamente');
         }
         props.updateDeliveryProductsQuantities([])
+        setClientObservation('');
         setReset(!reset)
     }
 

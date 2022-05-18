@@ -31,11 +31,14 @@ const Client = (props) => {
             axios.get(`${PORT()}/api/clients/${e.target.value}`)
                 .then((response) => {
                     if (response.data.length !== 0) {
-                        resetStates(response.data[0], false)
+                        const { observation, ...client } = response.data[0];
+                        resetStates(client, false);
+                        props.setClientObservation(observation);
                         swal.close()
                     }
                     else {
                         props.updateDeliveryClient({ cellphone: e.target.value, names: '', street_name: '', street_number: '' })
+                        props.setClientObservation('');
                         swal.close()
                     }
                 })
