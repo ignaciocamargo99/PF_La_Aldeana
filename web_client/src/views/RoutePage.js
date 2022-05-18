@@ -30,6 +30,7 @@ import ProductTypesView from './ProductTypes/components/ProductTypesView';
 import SupplyRoutes from './Supplies/SupplyRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
+import SalariesReport from './Reports/Salaries/SalariesReport';
 
 export default function RouterPage(props) {
 
@@ -99,9 +100,12 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
-                reportHumanResources =
-                    <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
+                 reportHumanResources = 
+                    <>
+                        <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} />}></Route>
+                    </>
             }
 
             // -------------------------------------- PURCHASES -------------------------------------

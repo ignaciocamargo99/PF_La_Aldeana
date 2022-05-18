@@ -1,7 +1,7 @@
 import CardMenuReport from "./CardMenuReport";
 import Card from "../../EmployeesSchedules/components/Card";
 
-export default function SalesReports(props) {
+export default function SalesReports() {
     const goToProductsSales = () => window.location.replace('/app/productSalesReport');
     
     return(
