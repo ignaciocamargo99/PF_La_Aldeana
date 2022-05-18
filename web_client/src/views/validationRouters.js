@@ -6,8 +6,9 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterProducts = ['/app/registerProducts', '/app/registerProductTypes', '/app/supplies/new'].concat(pathsToReadProducts);
 
     // Production
-    let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view'];
-    let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new'].concat(pathsToReadProductions);
+    let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view',];
+    let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new',].concat(pathsToReadProductions);
+    const FLAVOR_TYPES_LINK = '/app/flavorTypes';
 
     // Franchises
     let pathsToReadFranchises = ['/app/franchises'];
@@ -39,27 +40,23 @@ export default function validationRouters(route, accesses) {
         else if (!accesses[3]) return false;
         else return true;
     }
-    else if (pathsToReadRegisterProductions.includes(route.substring(0, 17)) && stringContainsNumber(route)) {
-        if (accesses[4] === 1 || accesses[4] === 2 || accesses[4] === 3) return true;
-        else return false;
-    }
 
-    else if (pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)) {
-        if (accesses[4] === 3) return true;
-        else return false;
+    if (pathsToReadRegisterProductions.includes(route.substring(0, 17)) && stringContainsNumber(route)) {
+        return (accesses[4] === 1 || accesses[4] === 2 || accesses[4] === 3);
     }
-
-    else if (pathsToReadRegisterProductions.includes(route.substring(0, 17)) && stringContainsNumber(route)) {
-        if (accesses[4] === 1 || accesses[4] === 2 || accesses[4] === 3) return true;
-        else return false;
+    if (pathsToReadRegisterProductions.includes(route.substring(0, 12)) && stringContainsNumber(route)) {
+        return (accesses[4] === 3);
     }
-
-    else if (pathsToReadRegisterProductions.indexOf(route) !== -1) {
+    if (pathsToReadRegisterProductions.indexOf(route) !== -1) {
         if (accesses[4] === 1 && pathsToReadProductions.indexOf(route) === -1) return false;
         else if ((accesses[4] === 2 || accesses[4] === 3) && pathsToReadRegisterProductions.indexOf(route) === -1) return false;
         else if (!accesses[4]) return false;
-        else return true;
+        return true;
     }
+    if (route.includes(FLAVOR_TYPES_LINK)) {
+        return true;
+    }
+
     else if (pathsToReadRegisterFranchises.indexOf(route) !== -1) {
         if (accesses[5] === 1 && pathsToReadFranchises.indexOf(route) === -1) return false;
         else if ((accesses[5] === 2 || accesses[5] === 3) && pathsToReadRegisterFranchises.indexOf(route) === -1) return false;
