@@ -20,9 +20,6 @@ const DataSupply = ({ load, supply }) => {
                 <MultiplePrice load={(childData) => load(childData)} data={supply} />
             </BeShowed>
             <TypeSupply load={(childData) => load(childData)} data={supply} />
-
-
-
             <BeShowed show={supply.reading}>
                 <BeShowed show={supply.stock_lot}>
                     <div className="formRow">
@@ -34,7 +31,6 @@ const DataSupply = ({ load, supply }) => {
                         </div>
                     </div>
                 </BeShowed>
-
                 <BeShowed show={supply.unit_x_lot}>
                     <div className="formRow">
                         <div className="form-control-label">
@@ -45,7 +41,6 @@ const DataSupply = ({ load, supply }) => {
                         </div>
                     </div>
                 </BeShowed>
-
                 <BeShowed show={supply.stock_unit}>
                     <div className="formRow">
                         <div className="form-control-label">

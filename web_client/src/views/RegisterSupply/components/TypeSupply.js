@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { updateTypeSupply } from '../../../actions/SupplyActions';
-import { connect } from 'react-redux';
-import useHTTPGet from '../../../hooks/useHTTPGet';
 import BeShowed from 'common/BeShowed';
+import React, { useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { updateTypeSupply } from '../../../actions/SupplyActions';
+import useHTTPGet from '../../../hooks/useHTTPGet';
 
 const PORT = require('../../../config');
 
