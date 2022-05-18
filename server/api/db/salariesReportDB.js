@@ -15,16 +15,25 @@ const salariesReportGetDB = (from, to) => {
                 if (error) reject(error);
                 else {
                     let res = [];
-                    let totals = [];
+                    let totals = [
+                        {id: 'Hs. trabajadas/extras', quantity: 0},
+                        {id: 'Recibo de sueldo', quantity: 0},
+                        {id: 'Adicional', quantity: 0},
+                        {id: 'Subtotal', quantity: 0},
+                        {id: 'Descuentos y anticipos', quantity: 0},
+                        {id: 'Total', quantity: 0}
+                    ];
                     
                     result?.forEach((salarie) => {
                         let aux = res.find(resul => {return resul.dni === salarie.dni;});
-                        if(aux !== undefined && aux !== null && aux !== false){
+                        if(aux === undefined){
                             aux = salarie;
                             aux.key = res.length;
                             aux.paycheck = 0;
                             aux.plus = 0;
                             aux.minus = 0;
+                            aux.fullName = salarie.last_name + ', ' + salarie.name;
+                            console.log(aux.fullName);
 
                             res[aux.key] = aux;
                         } else {
@@ -42,22 +51,21 @@ const salariesReportGetDB = (from, to) => {
                                     if (detail.id_concept === 6) {
                                         aux.salary_hs += detail.amount;
                                         aux.paycheck += detail.amount;
-                                        totals[1] += detail.amount;
-                                        totals[2] += detail.amount;
+                                        totals[0].quantity += detail.amount;
+                                        totals[1].quantity += detail.amount;
                                     } else if (detail.id_concept > 6 && detail.positive === 1) {
                                         aux.plus += detail.amount;
-                                        totals[3] += detail.amount;
+                                        totals[2].quantity += detail.amount;
                                     } else if (detail.id_concept > 6){
                                         aux.minus += detail.amount;
-                                        totals[5] += detail.amount;
+                                        totals[4].quantity += detail.amount;
                                     }
                                 });
                             }
                         });
-                        totals[0] += aux.salary_hs;
-                        totals[2] += aux.salary_hs;
-                        totals[4] += aux.subtotal;
-                        totals[6] += aux.total;
+                        totals[0].quantity += aux.salary_hs;
+                        totals[3].quantity += aux.subtotal;
+                        totals[5].quantity += aux.total;
                     });
                     
                     resolve({res, totals: totals});
