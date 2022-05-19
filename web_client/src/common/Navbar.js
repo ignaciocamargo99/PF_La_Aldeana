@@ -38,7 +38,7 @@ export default function Navbar(props) {
         cookies.remove('first_name', { path: '/' })
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
-        cookies.remove('accesses', { path: '/'})
+        cookies.remove('accesses', { path: '/' })
         window.location.href = '/app/index'
     };
 
@@ -104,6 +104,9 @@ export default function Navbar(props) {
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/franchises">
                                 <FontAwesomeIcon icon={faList} /> Ver franquicias
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/wholeSale">
+                                <FontAwesomeIcon icon={faPlus} /> Venta mayorista
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

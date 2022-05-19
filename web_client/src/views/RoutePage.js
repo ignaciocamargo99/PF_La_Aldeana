@@ -28,6 +28,7 @@ import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
 import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
 import SupplyRoutes from './Supplies/SupplyRoutes';
+import WholeSale from './WholeSale/WholeSale';
 
 export default function RouterPage(props) {
 
@@ -76,6 +77,7 @@ export default function RouterPage(props) {
                 let permissionsAccessFranchises = props.accesses[5]
                 franchises =
                     <>
+                        <Route path='/app/wholeSale' component={WholeSale}></Route>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>
@@ -95,8 +97,8 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-                 reportHumanResources = 
+            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
+                reportHumanResources =
                     <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
             }
 

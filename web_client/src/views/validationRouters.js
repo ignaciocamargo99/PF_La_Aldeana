@@ -11,7 +11,7 @@ export default function validationRouters(route, accesses) {
 
     // Franchises
     let pathsToReadFranchises = ['/app/franchises'];
-    let pathsToReadRegisterFranchises = ['/app/newFranchise'].concat(pathsToReadFranchises);
+    let pathsToReadRegisterFranchises = ['/app/newFranchise', '/app/wholeSale'].concat(pathsToReadFranchises);
 
     // Sales Report
     let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport'];
