@@ -39,6 +39,7 @@ const jdEmployeeRouter = require('./api/routes/jdEmployeeRoute');
 const salariesRoute = require('./api/routes/salariesRoute');
 const dayOffRouter = require('./api/routes/dayOffRoute');
 const userRouter = require('./api/routes/userRoute');
+const salesBranchesRoute = require('./api/routes/salesBranchesRoute');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -89,6 +90,7 @@ app.use('/api', serviceTestRoute);
 app.use('/api', salariesRoute);
 app.use('/api', dayOffRouter);
 app.use('/api', userRouter);
+app.use('/api', salesBranchesRoute);
 
 app.use(middleware.error404);
 app.use(middleware.error500);
