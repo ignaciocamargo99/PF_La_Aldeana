@@ -3,6 +3,7 @@ import ReadButton from 'common/Table/ReadButton'
 import DeleteButton from 'common/Table/DeleteButton'
 import React from 'react'
 import { FLAVOR_TYPES_LINK } from '../constants';
+import { handleDeleteClicked } from './flavorTypeDeletion';
 
 const FlavorTypesTable = ({ pageElements, readOnly }) => {
 
@@ -71,21 +72,21 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <ReadButton
-                                            link={`${FLAVOR_TYPES_LINK}/view/${element.id_type_flavor}`}
+                                            link={`${FLAVOR_TYPES_LINK}/view/${element.idFlavorType}`}
                                         />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditButton
-                                            link={`${FLAVOR_TYPES_LINK}/edit/${element.id_type_flavor}`}
+                                            link={`${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
                                             disable={readOnly}
                                         />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <DeleteButton
                                             disable={readOnly}
-                                            onConfirm={() => { }}
+                                            onConfirm={() => { handleDeleteClicked(element) }}
                                             warningTitle='¿Seguro que desea eliminar el tipo seleccionado?'
-                                            warningText='El tipo de sabor ya no estará disponible.'
+                                            warningText={`"${element.name}" ya no estará disponible.`}
                                         />
                                     </td>
                                 </tr>

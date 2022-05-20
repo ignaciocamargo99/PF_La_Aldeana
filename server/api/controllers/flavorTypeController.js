@@ -2,7 +2,7 @@ const { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, } = require('../shared/httpStatu
 const { genericServerError } = require('../shared/errorMessages');
 const { createNewFlavorType, isNewFlavorTypeDataValid, } = require('../services/flavorTypeService');
 const { isValidNumber } = require('../shared/numberValidations');
-const { getFlavorTypeDBById, updateFlavorTypeDBById } = require('../db/flavorTypeDb');
+const { getFlavorTypeDBById, updateFlavorTypeDBById, deleteFlavorTypeDBById, getFlavorTypesDBByActiveState } = require('../db/flavorTypeDb');
 
 async function postFlavorTypes(req, res) {
     try {
@@ -44,6 +44,18 @@ const getFlavorTypeByID = async (req, res) => {
     }
 };
 
+const getActiveFlavorTypes = async (req, res) => {
+    try {
+        const result = await getFlavorTypesDBByActiveState();
+        res.status(OK).send({
+            activeFlavorTypes: result,
+        });
+    }
+    catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+    }
+};
+
 const createErrorToCreateFlavorTypesObj = (message) => {
     return {
         flavorTypesCreated: false,
@@ -66,6 +78,7 @@ const putFlavorTypeByID = async (req, res) => {
 
         if (!isValidNumber(id)) {
             res.status(BAD_REQUEST).send('ID inválido.');
+            return;
         }
 
         const result = await updateFlavorTypeDBById(+id, flavorTypeData);
@@ -106,8 +119,37 @@ const putFlavorTypeByID = async (req, res) => {
     }
 };
 
+const deleteFlavorTypeByID = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!isValidNumber(id)) {
+            res.status(BAD_REQUEST).send('ID inválido.');
+            return;
+        }
+
+        const result = await deleteFlavorTypeDBById(+id);
+
+        if (result) {
+            res.status(OK).send({
+                deletedFlavorType: result.dataValues,
+            });
+        } else {
+            res.status(BAD_REQUEST).send({
+                message: 'No se ha encontrado un tipo de sabor para ese ID.',
+            });
+        }
+    }
+    catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send({
+            message: genericServerError
+        });
+    }
+};
+
 module.exports = {
     postFlavorTypes,
     getFlavorTypeByID,
     putFlavorTypeByID,
+    deleteFlavorTypeByID,
+    getActiveFlavorTypes,
 };

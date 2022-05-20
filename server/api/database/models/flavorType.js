@@ -22,8 +22,29 @@ FlavorType.init({
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         // allowNull defaults to true
+    },
+    price: {
+        type: DataTypes.NUMBER,
+        validate: {
+            notNull: {
+                msg: 'El precio no puede ser null.'
+            },
+            isInt: {
+                msg: 'El precio debe ser un valor entero.'
+            },
+            len: {
+                args: [1, 5],
+                msg: 'El precio debe tener entre 1 y 5 cifras.',
+            },
+        },
+        allowNull: false,
+    },
+    active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+        allowNull: false,
     },
 }, {
     // Other model options go here

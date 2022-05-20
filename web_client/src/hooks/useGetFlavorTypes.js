@@ -8,9 +8,9 @@ export const useGetFlavorTypes = () => {
     });
 
     useEffect(() => {
-        getFlavorTypes().then(({data: flavorTypesList}) => {
+        getFlavorTypes().then(({ activeFlavorTypes }) => {
             setstate({
-                flavorTypes: flavorTypesList,
+                flavorTypes: activeFlavorTypes,
                 loadingFlavorTypes: false,
             });
         })
