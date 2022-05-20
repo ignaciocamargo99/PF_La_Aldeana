@@ -13,6 +13,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
         return {
             name: flavorTypeData?.name || '',
             description: flavorTypeData?.description || '',
+            price: flavorTypeData?.price || '',
         }
     };
 
@@ -81,9 +82,9 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
         if (!(isFormPriceValid())) {
             if (warn) {
                 if (isFormPriceEmpty()) {
-                    warnSweetAlert('Ingrese el precio del sabor.');
+                    warnSweetAlert('Ingrese el precio del tipo de sabor.');
                 } else {
-                    warnSweetAlert('Ingrese el precio del sabor correctamente.');
+                    warnSweetAlert('Ingrese el precio del tipo de sabor correctamente.');
                 }
             }
             return false;

@@ -14,6 +14,14 @@ const saveFlavorTypeDB = (flavorTypeData) => {
     });
 };
 
+const getFlavorTypesDBByActiveState = (active = true) => {
+    return FlavorType.findAll({
+        where: {
+            active: active
+        },
+    });
+};
+
 const getFlavorTypeDBById = (flavorTypeId) => {
     return FlavorType.findOne({
         where: {
@@ -28,8 +36,19 @@ const updateFlavorTypeDBById = async (flavorTypeId, flavorTypeData) => {
     return await ft?.save();
 };
 
+const deleteFlavorTypeDBById = async (flavorTypeId) => {
+    const ft = await getFlavorTypeDBById(flavorTypeId);
+
+    if (ft) {
+        ft.active = 0;
+        return await ft?.save();
+    }
+};
+
 module.exports = {
     saveFlavorTypeDB,
     getFlavorTypeDBById,
     updateFlavorTypeDBById,
+    deleteFlavorTypeDBById,
+    getFlavorTypesDBByActiveState,
 };
