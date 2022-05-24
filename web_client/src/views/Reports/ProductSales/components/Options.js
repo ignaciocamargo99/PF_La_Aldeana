@@ -7,7 +7,8 @@ import { FaAngleRight } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa';
 import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
-import Viewer from './PDFProductSalesReport';
+import Viewer from './PDFModalViewer';
+import MyDocument from './PDFProductSalesReport';
 
 const PORT = require('../../../../config');
 
@@ -16,6 +17,12 @@ const Options = (props) => {
     const inputDateTo = useRef();
     const [showPdf, setShowPDF] = useState(false);
     let permissionsAccess = props.permissionsAccess;
+    const [MyDoc, setMyDoc] = useState('');
+
+    const inputDescriptionReport = useRef();
+    const [description, setDescription] = useState(null);
+
+    const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     useEffect(() => {
 
@@ -28,33 +35,76 @@ const Options = (props) => {
                     let data = res.data;
                     let sales = [];
                     let topTen = [];
+                    let type = [];
+                    let labels = [];
+                    let dat = [];
+                    let labelsTypes = [];
+                    let datTypes = [];
 
                     data?.forEach((e, i) => {
                         if (i < data.length - 1) {
                             sales = [...sales, e];
                         } else {
                             props.updateTypeProductSales(e);
+                            type.push(e);
                         }
                     });
 
                     sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
 
                     props.updateProductSales(sales);
+                    
+                    type[0].types?.forEach((e, i) => {
+                        labelsTypes.push(e.id);
+                        datTypes.push(e.quantity);
+                    });
 
                     if (sales.length < 10) {
                         props.updateTopTenProductSales(sales);
+                        topTen = sales;
+
+                        sales?.forEach((e, i) => {
+                                labels.push(e.name);
+                                dat.push(e.quantity);
+                        });
 
                         props.setLoaded(true);
                     } else {
                         sales?.forEach((e, i) => {
                             if (i < 10) {
                                 topTen = [...topTen, e];
+                                labels.push(e.name);
+                                dat.push(e.quantity);
                             }
                         });
                         props.updateTopTenProductSales(topTen);
 
                         props.setLoaded(true);
                     }
+                    
+                    const top = {
+                        type: 'bar',
+                        labels: labels,
+                        datasets: [
+                        {
+                            label: 'número de unidades vendidas',
+                            data: dat,
+                        },
+                        ],
+                    };
+                    const types = {
+                        type: 'pie',
+                        labels: labelsTypes,
+                        datasets: [
+                        {
+                            label: 'número de ventas',
+                            data: datTypes,
+                        },
+                        ],
+                        total: type[0].total
+                    };
+                    setMyDoc(<MyDocument title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
+                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })
                 .catch((error) => {
@@ -78,7 +128,7 @@ const Options = (props) => {
             props.updateReportDateTo(dateString);
         }
 
-    }, [props.load]);
+    }, [props.load, description]);
 
     const onChangeDateFrom = () => {
         props.setLoad(false);
@@ -117,11 +167,6 @@ const Options = (props) => {
 
     const handlerLoader = () => props.setLoad(true);
 
-    const inputDescriptionReport = useRef();
-    const [description, setDescription] = useState(null);
-
-    const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
-
     return (
         <>
             <div className="formRow">
@@ -159,7 +204,7 @@ const Options = (props) => {
                     </BeShowed>
                 </div>
             </div>
-            <Viewer showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
+            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }

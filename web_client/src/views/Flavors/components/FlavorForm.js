@@ -367,7 +367,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isReading) {
             return (
                 <div className='buttons'>
-                    <button className='sendOk' onClick={handleCancelBtnClicked}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={handleCancelBtnClicked}>Volver</button>
                 </div>
             )
         }

@@ -9,6 +9,8 @@ import displayError from '../../utils/ErrorMessages/displayError';
 import SectorProduct from '../RegisterProduct/components/SectorProduct';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -18,6 +20,7 @@ export default function RegisterTypeProductView() {
     const inputName = useRef(null);
     const inputDescription = useRef(null);
     const divNameValidation = useRef(null);
+    const checkIsSendByDelivery = useRef(null);
     const [isValidName, setIsValidName] = useState("form-control");
     const [sectorTypeProductChild, setSectorTypeProductChild] = useState(-1);
     const [nameTypeProductChild, setNameTypeProductChild] = useState('null');
@@ -37,27 +40,33 @@ export default function RegisterTypeProductView() {
         }
     }, [sectorTypeProductChild, nameTypeProductChild]);
 
-    const registerTypeProduct = () => {
-        const description = inputDescription.current.value.trim();
-        if (ready) {
-            Axios.post(PORT() + '/api/typeProducts', {
-                name: data.name,
-                description: description,
-                id_sector: data.id_sector
-            })
-                .then(({ data }) => {
-                    if (data.Ok) success();
-                    else displayError(data.Message);
+    const registerTypeProduct = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            const description = inputDescription.current.value.trim();
+            const isSendByDelivery = checkIsSendByDelivery.current.checked ? 1 : 0;
+            if (ready) {
+                loadingMessage('Registrando nuevo tipo de producto...');
+                Axios.post(PORT() + '/api/typeProducts', {
+                    name: data.name,
+                    description: description,
+                    id_sector: data.id_sector,
+                    send_delivery: isSendByDelivery
                 })
-                .catch(err => console.error(err))
+                    .then(({ data }) => {
+                        if (data.Ok) success();
+                        else displayError(data.Message);
+                    })
+                    .catch(err => console.error(err))
+            }
         }
     }
 
     const validate = () => {
         if (nameTypeProductChild === 'null') {
-            warningMessage('Atención', 'Ingrese un nombre valido para el tipo de producto', 'warning')
+            warningMessage('Atención', 'Ingrese un nombre válido para el tipo de producto', 'warning')
         } else if (sectorTypeProductChild < 0) {
-            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')
+            warningMessage('Atención', 'Ingrese un rubro válido para el tipo de producto', 'warning')
         }
     }
 
@@ -117,6 +126,14 @@ export default function RegisterTypeProductView() {
                     </div>
                 </div>
                 <SectorProduct load={load} data={data} />
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label className='lbTexttarea'>Acepta envío por delivery</label>
+                    </div>
+                    <div className="form-control-input">
+                        <input type='checkbox' className="form-check-input" ref={checkIsSendByDelivery}></input>
+                    </div>
+                </div>
                 <Buttons label='Registrar' ready={ready} actionOK={registerTypeProduct} actionNotOK={validate} actionCancel={cancelTypeProduct} />
             </div>
         </>
