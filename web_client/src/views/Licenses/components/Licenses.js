@@ -8,6 +8,9 @@ import BeShowed from '../../../common/BeShowed';
 import FormLicense from './FormLicense';
 import ListLicensesFilter from './ListLicensesFilter';
 import LoaderSpinner from "../../../common/LoaderSpinner";
+import { FaFile } from 'react-icons/fa';
+import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
+import MyDocument from './PDFLicensesReport';
 
 const PORT = require('../../../config');
 
@@ -19,6 +22,19 @@ const Licenses = (props) => {
     const [action, setAction] = useState('Listar');
     const [reloadList, setReloadList] = useState(false);
     const [filter, setFilter] = useState('All');
+    const [MyDoc, setMyDoc] = useState('');
+    const [showPdf, setShowPDF] = useState(false);
+
+    const showRenderPDF = () => setShowPDF(true);
+
+    const cancel = () => setShowPDF(false);
+
+    const title = (filter) => {
+        if (filter === "All") return "Todos";
+        if (filter === "Finish") return "Finalizadas";
+        if (filter === "Current") return "Actuales";
+        if (filter === "OnComing") return "Próximas";
+    }
 
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)
@@ -28,6 +44,10 @@ const Licenses = (props) => {
                 setFilter('All');
             })
     }, [reloadList])
+
+    useEffect(()=>{
+        setMyDoc(<MyDocument title={title(filter)} filter={filter} description={''} licenses={licenses} />);
+    }, [filter, licenses])
 
     const setActionLicense = (action, license) => {
         setAction(action);
@@ -47,6 +67,7 @@ const Licenses = (props) => {
                     <div style={{ display: 'none' }}>{document.title = "Licencias Activas"}</div>
                     <div className="viewTitleBtn">
                         <h1>Licencias Activas</h1>
+                        <button id='printLicensesButton' onClick={showRenderPDF} type="button" className="btn btn-light printBtn"><FaFile /> Imprimir informe</button>
                         <BeShowed show={props.permissionsAccess === 2 || props.permissionsAccess === 3}>
                             <button id='editLicenseButton' onClick={onClickNewLicense} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nueva</button>
                         </BeShowed>
@@ -64,6 +85,7 @@ const Licenses = (props) => {
                     <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
                         reloadList={reloadList} setReloadList={setReloadList} />
                 </BeShowed>
+                <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={filter} description={''} ></Viewer>
             </div>
         }
     </>)
