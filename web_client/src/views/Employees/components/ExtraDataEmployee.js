@@ -325,7 +325,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="black"> Monotributista </label>
+                        <label className="form-check-label" htmlFor="black" style={{paddingLeft:'0.4em'}}> Monotributista </label>
                     </div>
 
                     <div className="form-check formRow">
@@ -341,7 +341,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
+                        <label className="form-check-label" htmlFor="white4" style={{paddingLeft:'0.4em'}}> Relación de dependencia 4 horas </label>
                     </div>
 
                     <div className="form-check formRow">
@@ -357,7 +357,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white"> Relación de dependencia 6 horas </label>
+                        <label className="form-check-label" htmlFor="white" style={{paddingLeft:'0.4em'}}> Relación de dependencia 6 horas </label>
                     </div>
                 </div>
             </div>
