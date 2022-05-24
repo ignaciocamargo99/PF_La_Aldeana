@@ -136,7 +136,6 @@ export default function DataEmployee(props) {
     return (
         <>
             <h2>Datos del empleado/a</h2>
-            {console.log(props.data)}
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="nameEmployee" >Nombre*</label>
@@ -158,25 +157,6 @@ export default function DataEmployee(props) {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="nicknameEmployee" >Apodo</label>
-                </div>
-                <div className="form-control-input">
-                    <input
-                        autoFocus={!props.isReadingEmployeeData}
-                        className={isValidClassNickname}
-                        defaultValue={props.data.nickname}
-                        id="nicknameEmployee"
-                        maxLength="80"
-                        onChange={handleNickname}
-                        placeholder="Ingrese apodo..."
-                        disabled={props.isReadingEmployeeData}
-                        ref={inputNickname}
-                        type="text"
-                    />
-                </div>
-            </div>
-            <div className="formRow">
-                <div className="form-control-label">
                     <label htmlFor="lastNameEmployee" >Apellido*</label>
                 </div>
                 <div className="form-control-input">
@@ -189,6 +169,24 @@ export default function DataEmployee(props) {
                         placeholder="Ingrese apellido..."
                         disabled={props.isReadingEmployeeData}
                         ref={inputLastName}
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="nicknameEmployee" >Apodo</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className={isValidClassNickname}
+                        defaultValue={props.data.nickname}
+                        id="nicknameEmployee"
+                        maxLength="80"
+                        onChange={handleNickname}
+                        placeholder="Ingrese apodo..."
+                        disabled={props.isReadingEmployeeData}
+                        ref={inputNickname}
                         type="text"
                     />
                 </div>

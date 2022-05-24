@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const employeeController = require("../controllers/employeeController");
+const employeeController = require('../controllers/employeeController');
 
 //#region APIs
 router.get('/employeesDesktop', employeeController.getEmployeeForDesktop);
@@ -18,4 +18,5 @@ router.delete('/employees/:dni', employeeController.deleteEmployee);
 router.get('/charges', employeeController.getCharges);
 
 //#endregion
+
 module.exports = router;
