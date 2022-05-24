@@ -66,7 +66,7 @@ const employeeGetDB = (dni) => {
 
     if (dni) {
         sqlSelect += ` AND e.dni = ${dni}`;
-    };
+    }
 
     sqlSelect += ' ORDER BY last_name';
 

@@ -80,7 +80,7 @@ export default function RegisterEmployee() {
             <div style={{ display: 'none' }}>{document.title = "Registrar empleado"}</div>
             <Breadcrumb parentName="Empleados" icon={faUserFriends} parentLink="employees" currentName="Registrar empleado" />
             <div className="viewTitle">
-                <h1>Registrar empleado</h1>
+                <h1>Registrar empleado/a</h1>
             </div>
             <div className="viewBody">
                 <DataEmployee

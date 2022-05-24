@@ -51,10 +51,12 @@ export default function ExtraDataEmployee({
     useEffect(() => {
         if (isReadingEmployeeData) return;
 
-        if (street) setIsValidClass("form-control is-valid");
+        const streetName = inputStreet.current.value.trim();
+
+        if (streetName) setIsValidClass("form-control is-valid");
         else setIsValidClass("form-control");
 
-        data.street = street;
+        data.street = streetName;
         load(data);
     }, [street]);
 
@@ -87,11 +89,11 @@ export default function ExtraDataEmployee({
 
     useEffect(() => {
         if (isReadingEmployeeData) return;
-
-        if (city) setIsValidClassCity("form-control is-valid");
+        const nameCity = inputCity.current.value.trim();
+        if (nameCity) setIsValidClassCity("form-control is-valid");
         else setIsValidClassCity("form-control");
 
-        data.city = city;
+        data.city = nameCity;
         load(data);
     }, [city]);
 
@@ -306,10 +308,10 @@ export default function ExtraDataEmployee({
             )}
 
             <div className="formRow">
-                <div className="form-control-label col-sm-3">
+                <div className="form-control-label">
                     <label>Relación laboral*</label>
                 </div>
-                <div className="form-radio-group col-sm-9">
+                <div className="form-radio-group">
                     <div className="form-check form-radio formRow">
                         <input
                             className="form-check-input"
