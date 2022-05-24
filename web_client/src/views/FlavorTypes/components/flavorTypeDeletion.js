@@ -1,6 +1,11 @@
 import Swal from 'sweetalert2';
+import Axios from "axios";
+import displayError from 'utils/ErrorMessages/errorMessage';
+import displaySuccess from 'utils/SuccessMessages/sucessSweetAlert2';
 
-export const handleDeleteClicked = async ({ name }) => {
+const PORT = require('../../../config');
+
+export const handleDeleteClicked = async ({ name, idFlavorType, }) => {
 
     const warningText = `Si decide dar de baja el tipo '${name}' 
 se darán de baja todos los sabores correspondientes al mismo. Esto no se podrá revertir.
@@ -18,9 +23,15 @@ se darán de baja todos los sabores correspondientes al mismo. Esto no se podrá
     })
 
     if (result.isConfirmed) {
-        // to do
-    }
-    else {
-        // to do
+        Axios.delete(PORT() + `/api/flavorTypes/${idFlavorType}`)
+            .then(() => {
+                displaySuccess(`'${name}' dado de baja exitosamente.`).then(() => {
+                    window.location.reload(false);
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+                displayError();
+            });
     }
 }

@@ -156,7 +156,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
             return false;
         }
         if (flavorTypes) {
-            return flavorTypes.map((ft) => ft.id_type_flavor).includes(+formData.type_flavor);
+            return flavorTypes.map((ft) => ft.idFlavorType).includes(+formData.type_flavor);
         }
         return false;
     };
@@ -522,8 +522,8 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             {flavorTypes?.map((ft, i) => {
                                 return (
                                     <option
-                                        key={ft.id_type_flavor}
-                                        value={ft.id_type_flavor}
+                                        key={ft.idFlavorType}
+                                        value={ft.idFlavorType}
                                     >
                                         {ft.name}
                                     </option>
