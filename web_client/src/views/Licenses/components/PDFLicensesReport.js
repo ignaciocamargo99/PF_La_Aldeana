@@ -6,7 +6,7 @@ import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 
 // Create Document Component
 export default function MyDocument (props) {
-  const date = (new Date()).getTime();
+  const date = new Date().setHours(0, 0, 0, 0);
 
   return (
     <>
