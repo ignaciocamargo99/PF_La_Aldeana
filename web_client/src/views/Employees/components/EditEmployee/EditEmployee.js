@@ -11,7 +11,7 @@ import isEmployeeFormDataValid from '../EmployeeFormDataValidation';
 import ExtraDataEmployee from '../ExtraDataEmployee';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
-
+import { validationsMessage } from '../validationsMessage';
 const PORT = require('../../../../config');
 
 export default function EditEmployee({ goBack, employeeData }) {
@@ -31,7 +31,7 @@ export default function EditEmployee({ goBack, employeeData }) {
 
     const updateEmployee = async () => {
         const formDataValid = isEmployeeFormDataValid(newEmployeeData, true);
-
+        let message = validationsMessage(newEmployeeData);
         if (formDataValid && readyForSubmit) {
             const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
             if (editionConfirmed) {
@@ -44,7 +44,7 @@ export default function EditEmployee({ goBack, employeeData }) {
                     .catch(error => console.log(error));
             }
         }
-        else warningMessage('Atención', 'Todos los campos son obligatorios', 'warning');
+        else warningMessage('Atención', message, 'warning');
     };
 
     return (

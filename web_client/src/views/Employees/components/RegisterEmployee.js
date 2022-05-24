@@ -11,6 +11,7 @@ import isEmployeeFormDataValid from './EmployeeFormDataValidation';
 import ExtraDataEmployee from './ExtraDataEmployee';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import { validationsMessage } from './validationsMessage';
 
 const PORT = require('../../../config');
 
@@ -47,6 +48,7 @@ export default function RegisterEmployee() {
     }
 
     const registerNewEmployee = async () => {
+        let message = validationsMessage(data);
         if (isEmployeeFormDataValid(data, false) && ready) {
             try {
                 const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
@@ -72,7 +74,7 @@ export default function RegisterEmployee() {
                 displayRegisterError();
             }
         }
-        else warningMessage('Atención', 'Todos los campos son obligatorios.', 'warning');
+        else warningMessage('Atención', message, 'warning');
     };
 
     return (
