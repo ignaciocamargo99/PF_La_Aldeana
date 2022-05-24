@@ -24,6 +24,8 @@ const Licenses = (props) => {
     const [filter, setFilter] = useState('All');
     const [MyDoc, setMyDoc] = useState('');
     const [showPdf, setShowPDF] = useState(false);
+    const [filteredElements, setFilteredElements] = useState([]);
+    const [nameSearch, setNameSearch] = useState('');
 
     const showRenderPDF = () => setShowPDF(true);
 
@@ -39,6 +41,9 @@ const Licenses = (props) => {
     useEffect(() => {
         Axios.get(`${PORT()}/api/licenses`)
             .then((response) => {
+                response.data?.forEach(license => {
+                    license.fullName = license.last_name + ',' + license.name;
+                });
                 setLicenses(response.data);
                 setShowSpinner(false);
                 setFilter('All');
@@ -46,8 +51,8 @@ const Licenses = (props) => {
     }, [reloadList])
 
     useEffect(()=>{
-        setMyDoc(<MyDocument title={title(filter)} filter={filter} description={''} licenses={licenses} />);
-    }, [filter, licenses])
+        setMyDoc(<MyDocument title={title(filter)} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+    }, [filter, filteredElements])
 
     const setActionLicense = (action, license) => {
         setAction(action);
@@ -77,7 +82,7 @@ const Licenses = (props) => {
                     </div>
                     <div className="viewBody">
                         <ListLicensesFilter onClickRB={setFilter} filter={filter} />
-                        <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense}
+                        <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} setFilteredElements={setFilteredElements} setNameSearch={setNameSearch}
                             reloadList={reloadList} setReloadList={setReloadList} filter={filter} permissionsAccess={props.permissionsAccess} />
                     </div>
                 </BeShowed>
@@ -85,7 +90,7 @@ const Licenses = (props) => {
                     <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
                         reloadList={reloadList} setReloadList={setReloadList} />
                 </BeShowed>
-                <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={filter} description={''} ></Viewer>
+                <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={filter} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
             </div>
         }
     </>)

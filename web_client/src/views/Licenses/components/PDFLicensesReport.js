@@ -51,7 +51,7 @@ export default function MyDocument (props) {
                       <Text style={styles.text}>{dateBDToString(license.date_init, 'Es')}</Text>
                     </View>
                     <View style={styles.col3}>
-                      <Text style={styles.text}>{license.last_name},{license.name}</Text>
+                      <Text style={styles.text}>{license.fullName}</Text>
                     </View>
                     <View style={styles.col3}>
                       <Text style={styles.text}>{license.reason}</Text>
