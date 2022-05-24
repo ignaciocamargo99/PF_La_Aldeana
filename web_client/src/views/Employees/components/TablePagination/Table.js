@@ -45,11 +45,12 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
-                                            PORT() === ''
-                                                ?
-                                                moment(element.date).format('DD-MM-YYYY')
-                                                :
-                                                moment(element.date).add(1, 'days').format('DD-MM-YYYY')}</td>
+                                            // PORT() === ''
+                                            //     ?
+                                            moment(element.date).format('DD-MM-YYYY')
+                                            // :
+                                            // moment(element.date).add(1, 'days').format('DD-MM-YYYY')
+                                        }</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadEmployeeButton
                                                 employeeData={element}
