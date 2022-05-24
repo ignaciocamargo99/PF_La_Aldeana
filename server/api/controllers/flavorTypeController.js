@@ -130,9 +130,7 @@ const deleteFlavorTypeByID = async (req, res) => {
         const result = await deleteFlavorTypeDBById(+id);
 
         if (result) {
-            res.status(OK).send({
-                deletedFlavorType: result.dataValues,
-            });
+            res.status(OK).send(result);
         } else {
             res.status(BAD_REQUEST).send({
                 message: 'No se ha encontrado un tipo de sabor para ese ID.',

@@ -48,7 +48,6 @@ const saveFlavorDB = (flavorData) => {
         flavorFamilyId,
         flavorTypeId,
         name,
-        price,
         reorderStock,
         stock,
     } = flavorData;
@@ -57,7 +56,6 @@ const saveFlavorDB = (flavorData) => {
         description: description,
         family_flavor: flavorFamilyId,
         name: name,
-        price: price,
         reorderStock: reorderStock,
         stock: stock,
         type_flavor: flavorTypeId,

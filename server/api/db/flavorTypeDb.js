@@ -1,3 +1,4 @@
+const Flavor = require('../database/models/flavor');
 const FlavorType = require('../database/models/flavorType');
 
 const saveFlavorTypeDB = (flavorTypeData) => {
@@ -41,7 +42,22 @@ const deleteFlavorTypeDBById = async (flavorTypeId) => {
 
     if (ft) {
         ft.active = 0;
-        return await ft?.save();
+
+        const numberOfFlavorsDeletedArray = await Flavor.update(
+            { active: 0 },
+            {
+                where: {
+                    type_flavor: flavorTypeId,
+                },
+            }
+        );
+
+        const result = await ft?.save();
+
+        return {
+            numberOfFlavorsDeleted: numberOfFlavorsDeletedArray[0],
+            deletedFlavorType: result.dataValues,
+        };
     }
 };
 
