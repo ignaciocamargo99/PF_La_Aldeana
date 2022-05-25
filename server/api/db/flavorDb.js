@@ -62,26 +62,9 @@ const saveFlavorDB = (flavorData) => {
     });
 };
 
-const typeFlavorGetDB = () => {
-    const sqlSelect = 'SELECT id_type_flavor, name, description FROM FLAVOR_TYPES';
-
-    return new Promise((resolve, reject) => {
-        pool.getConnection((error, db) => {
-            if (error) reject(error);
-
-            db.query(sqlSelect, (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            });
-            db.release();
-        });
-    });
-};
-
 module.exports = {
     getFlavorsDBByActiveState,
     flavorsGetDB,
     getFlavorDBById,
     saveFlavorDB,
-    typeFlavorGetDB,
 };

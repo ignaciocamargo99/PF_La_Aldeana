@@ -2,7 +2,6 @@ const {
     createNewFlavors,
     deleteFlavorById,
     readFlavor,
-    readTypeFlavor,
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
@@ -95,26 +94,11 @@ async function deleteFlavor(req, res) {
     }
 }
 
-// HTTP: GET
-async function getTypeFlavor(req, res) {
-    try {
-        const result = await readTypeFlavor();
-        res.send(result);
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        });
-    }
-}
-
 module.exports = {
     deleteFlavor,
     getActiveFlavors,
     getFlavor,
     getSingleFlavor,
-    getTypeFlavor,
     postFlavors,
     updateFlavor,
 };
