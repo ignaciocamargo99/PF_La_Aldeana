@@ -48,7 +48,7 @@ export default function MyDocument (props) {
                       <Text style={styles.text}>{dateBDToString(license.date_init, 'Es')}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.text}>{dateBDToString(license.date_init, 'Es')}</Text>
+                      <Text style={styles.text}>{dateBDToString(license.date_finish, 'Es')}</Text>
                     </View>
                     <View style={styles.col3}>
                       <Text style={styles.text}>{license.fullName}</Text>
