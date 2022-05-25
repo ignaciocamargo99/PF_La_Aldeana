@@ -1,27 +1,12 @@
 const {
     createNewFlavors,
     deleteFlavorById,
-    readFlavor,
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
 } = require('../services/flavorService');
 
 const { genericServerError } = require('../shared/errorMessages');
-
-// HTTP: GET
-async function getFlavor(req, res) {
-    try {
-        const result = await readFlavor();
-        res.send(result);
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        });
-    }
-}
 
 // HTTP: GET /api/flavors
 async function getActiveFlavors(req, res) {
@@ -97,7 +82,6 @@ async function deleteFlavor(req, res) {
 module.exports = {
     deleteFlavor,
     getActiveFlavors,
-    getFlavor,
     getSingleFlavor,
     postFlavors,
     updateFlavor,
