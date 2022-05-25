@@ -1,20 +1,8 @@
 const {
-    flavorsGetDB,
     getFlavorDBById,
     getFlavorsDBByActiveState,
     saveFlavorDB,
-    typeFlavorGetDB,
 } = require('../db/flavorDb');
-
-const readFlavor = async () => {
-    try {
-        let res = await flavorsGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
 
 const searchFlavorsByActiveState = (onlyActiveFlavors) => {
     return getFlavorsDBByActiveState(onlyActiveFlavors);
@@ -181,21 +169,10 @@ const deleteFlavorById = async (idFlavor) => {
     };
 };
 
-const readTypeFlavor = async () => {
-    try {
-        let res = await typeFlavorGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
-
 module.exports = {
     createNewFlavors,
     deleteFlavorById,
-    readFlavor,
-    readTypeFlavor,
+
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
