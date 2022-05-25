@@ -32,7 +32,7 @@ const PurchaseSupplier = (props) => {
             <div className="form-control-label">
                 <label htmlFor="purchaseSupplier" >Proveedor*</label>
             </div>
-            <div className="form-control-input">
+            <div className="form-control-input-mw-50">
                 <input className={isValidClass} id="purchaseSupplier" type="text" ref={inputSupplier} placeholder="Ingrese el proveedor" maxLength="100" onChange={handleSupplier}>
                 </input>
                 <BeShowed show={errorMessage !== "null" && prevSupplier !== "null"}>
