@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import CardEmployees from './CardEmployees';
@@ -10,7 +11,6 @@ import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDi
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
-import DynamicSearch from '../../../common/DynamicSearch';
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
 import formattedDate from "../../../utils/ConverterDate/formattedDate";
@@ -160,7 +160,9 @@ const FormLicense = (props) => {
     }
 
     const findLicensedEmployees = (licenses, dateInit, dateFinish) => {
-        let employees = []
+        let empOnLicenseDNIs = []
+        let empOnLicenseData = []
+
         let dateInitNumber = new Date(dateBDToString(dateInit, 'En')).getTime();
         let dateFinishNumber = new Date(dateBDToString(dateFinish, 'En')).getTime();
         licenses.forEach((license) => {
@@ -169,14 +171,22 @@ const FormLicense = (props) => {
             if ((dateInitNumber <= licenseDateInitNumber && licenseDateInitNumber <= dateFinishNumber) ||
                 (dateInitNumber <= licenseDateFinishNumber && licenseDateFinishNumber <= dateFinishNumber) ||
                 (licenseDateInitNumber < dateInitNumber && licenseDateFinishNumber > dateFinishNumber)) {
-                employees.push(license.dni)
+
+                empOnLicenseData.push({
+                    dni: license.dni,
+                    start: moment(licenseDateInitNumber).format('DD/MM/YYYY'),
+                    end: moment(licenseDateFinishNumber).format('DD/MM/YYYY'),
+                    reason: license.reason,
+                })
+                empOnLicenseDNIs.push(license.dni)
             }
         })
-        return employees
+
+        return { empOnLicenseDNIs, empOnLicenseData }
     }
 
-    const validateSelectedEmployee = (licensedEmployees) => {
-        if (licensedEmployees.includes(employee?.dni)) {
+    const validateSelectedEmployee = (licensedEmp) => {
+        if (licensedEmp.includes(employee?.dni)) {
             setErrorEmployee(true)
             setEmployee(null)
         }
@@ -193,7 +203,7 @@ const FormLicense = (props) => {
         if (props.action === "Registrar") {
             let employeesAux = findLicensedEmployees(props.licenses, dateInit.current.value, dateFinish.current.value)
             setLicensedEmployees(employeesAux)
-            validateSelectedEmployee(employeesAux)
+            validateSelectedEmployee(employeesAux.empOnLicenseDNIs)
         }
     }
 
