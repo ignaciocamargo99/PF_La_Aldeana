@@ -20,6 +20,14 @@ ProductTypeModel.init({
         type: DataTypes.STRING
         // allowNull defaults to true
     },
+    send_delivery: {
+        type: DataTypes.TINYINT
+        // allowNull defaults to true
+    },
+    active: {
+        type: DataTypes.BOOLEAN
+        // allowNull defaults to true
+    },
 }, {
     // Other model options go here
     tableName: 'PRODUCT_TYPES',
