@@ -11,74 +11,80 @@ import BodyTable from '../../../common/Table/BodyTable';
 import errorSelectFlavor from '../../../utils/ErrorMessages/errorSelectFlavor';
 import UploadByName from '../../../common/UploadByName';
 import errorConfirmFlavors from '../../../utils/ErrorMessages/errorConfirmFlavors';
-import { addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery,deleteDetailDelivery,updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
+import { addFlavorsProduct, deleteFlavorsProduct, subtractTotalDelivery, deleteDetailDelivery, updateFlavorsProduct, updateDetailDelivery } from '../../../actions/DeliverySalesActions';
 
 const PORT = require('../../../config');
 
 const ModalFlavorSelect = (props) => {
-    
-    const [ready,setReady] = useState(false);
-    const [refresh,setRefresh] = useState(0);
-    const [allFlavors,setAllFlavors] = useState([]);
-    const [flavors,setFlavors] = useState([]);
-    const [I,setI] = useState(0);
 
-    useEffect(()=> {
-        axios.get( PORT() + `/api/flavors`)
-        .then((response) => {
-            setAllFlavors(response.data);
-            setFlavors(response.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    },[]);
+    const [ready, setReady] = useState(false);
+    const [refresh, setRefresh] = useState(0);
+    const [allFlavors, setAllFlavors] = useState([]);
+    const [flavors, setFlavors] = useState([]);
+    const [I, setI] = useState(0);
 
     useEffect(() => {
-        if(refresh > 0){
+        axios.get(PORT() + `/api/activeFlavors`)
+            .then((response) => {
+                let auxFlavor = [...response.data.Data];
+                auxFlavor.forEach(f => {
+                    f.id_flavor = f.idFlavor;
+                    delete f.idFlavor;
+                })
+
+                setAllFlavors(auxFlavor);
+                setFlavors(auxFlavor);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, []);
+
+    useEffect(() => {
+        if (refresh > 0) {
             let aux = true
             props.flavorsProduct.map((flavorsSelected) => {
-                if(flavorsSelected.length === 0){
+                if (flavorsSelected.length === 0) {
                     aux = false;
                 }
             })
             setReady(aux);
         }
-    },[refresh]);
+    }, [refresh]);
 
     const uploadFlavor = (id) => {
-        setRefresh(refresh+1);
-        if(id < 0){
+        setRefresh(refresh + 1);
+        if (id < 0) {
             errorSelectFlavor('Se debe seleccionar un sabor');
         }
-        else if(props.flavorsProduct[I].length >= props.quantityFlavor){
+        else if (props.flavorsProduct[I].length >= props.quantityFlavor) {
             errorSelectFlavor(`El máximo de sabores a elegir son ${props.quantityFlavor}`);
         }
-        else{
+        else {
             let flavorToAdd = flavors.find(flavor => flavor.id_flavor === parseInt(id));
             let newFlavors = flavors.filter(flavor => flavor.id_flavor !== parseInt(id));
             setFlavors(newFlavors);
-            props.addFlavorsProduct(flavorToAdd,I);
+            props.addFlavorsProduct(flavorToAdd, I);
         }
     }
 
-    const downloadFlavor = (id,i) => {
-        setRefresh(refresh+1);
+    const downloadFlavor = (id, i) => {
+        setRefresh(refresh + 1);
         let flavorToQuit = props.flavorsProduct[I].find(flavor => flavor.id_flavor === parseInt(id));
         let newFlavors = flavors;
         newFlavors.push(flavorToQuit);
         setFlavors(newFlavors);
-        props.deleteFlavorsProduct(I,i);
+        props.deleteFlavorsProduct(I, i);
     }
 
     const onClickRB = (i) => {
         let newFlavors;
-        if(props.flavorsProduct[i].length === 0){
+        if (props.flavorsProduct[i].length === 0) {
             newFlavors = allFlavors;
-        }else{
-            newFlavors = allFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][0].id_flavor);
-            for(let j = 1 ; j < props.flavorsProduct[i].length ; j++){
-                newFlavors = newFlavors.filter( flavor => flavor.id_flavor !== props.flavorsProduct[i][j].id_flavor);
+        } else {
+            newFlavors = allFlavors.filter(flavor => flavor.id_flavor !== props.flavorsProduct[i][0].id_flavor);
+            for (let j = 1; j < props.flavorsProduct[i].length; j++) {
+                newFlavors = newFlavors.filter(flavor => flavor.id_flavor !== props.flavorsProduct[i][j].id_flavor);
             }
         }
         setFlavors(newFlavors);
@@ -86,23 +92,23 @@ const ModalFlavorSelect = (props) => {
     }
 
     const cancel = () => {
-        props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length-1].subtotal);
-        props.deleteDetailDelivery(props.detailsDelivery.length-1);
+        props.subtractTotalDelivery(props.detailsDelivery[props.detailsDelivery.length - 1].subtotal);
+        props.deleteDetailDelivery(props.detailsDelivery.length - 1);
         props.updateFlavorsProduct([]);
         props.setShowModal(false);
         setRefresh(0);
     }
 
     const confirm = () => {
-        let i = props.detailsDelivery.length-1;
+        let i = props.detailsDelivery.length - 1;
         let detail = props.detailsDelivery[i];
-        if(detail.flavors === null){
+        if (detail.flavors === null) {
             detail.flavors = props.flavorsProduct;
         }
-        else{
+        else {
             detail.flavors = detail.flavors.concat(props.flavorsProduct);
         }
-        props.updateDetailDelivery(detail,i);
+        props.updateDetailDelivery(detail, i);
         setFlavors(allFlavors);
         setI(0);
         props.setShowModal(false);
@@ -110,7 +116,7 @@ const ModalFlavorSelect = (props) => {
         setRefresh(0);
     }
 
-    return(
+    return (
         <>
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader>
@@ -119,16 +125,16 @@ const ModalFlavorSelect = (props) => {
                 <ModalBody>
                     <FormGroup>
                         <div className="row">
-                            <UploadByName list={flavors} upload={uploadFlavor} itemName="Sabor" listName="flavorList" 
-                                placeholder="Ingrese el nombre del sabor que busca..." maxLength="50"/>
+                            <UploadByName list={flavors} upload={uploadFlavor} itemName="Sabor" listName="flavorList"
+                                placeholder="Ingrese el nombre del sabor que busca..." maxLength="50" />
                         </div>
                         <hr />
                         <div className="container">
-                            {props.flavorsProduct.map((f,i) => {
-                                return(
+                            {props.flavorsProduct.map((f, i) => {
+                                return (
                                     <div className="form-check form-check-inline" key={i}>
-                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i+1}`} value={i} defaultChecked={i===0?true:false} onClick={(e) => {onClickRB(e.target.value)}}></input>
-                                        <label className="form-check-label" htmlFor={`rb${i+1}`}>{i+1} Recipiente</label>
+                                        <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i + 1}`} value={i} defaultChecked={i === 0 ? true : false} onClick={(e) => { onClickRB(e.target.value) }}></input>
+                                        <label className="form-check-label" htmlFor={`rb${i + 1}`}>{i + 1} Recipiente</label>
                                     </div>
                                 )
                             })}
@@ -142,28 +148,28 @@ const ModalFlavorSelect = (props) => {
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
                                     </>
-                                    }/>
+                                } />
                                 <BodyTable tbody={
-                                    props.flavorsProduct[I]?.map((flavor,i) => {
-                                        return(
+                                    props.flavorsProduct[I]?.map((flavor, i) => {
+                                        return (
                                             <tbody key={i}>
                                                 <tr>
-                                                    <td style={{ textAlign: 'center', width: '10%'}}><label>{flavor.id_flavor}</label></td>
-                                                    <td style={{ textAlign: 'center', width: '70%'}}><label>{flavor.name}</label></td>
-                                                    <td style={{ textAlign: 'center', width: '20%'}}>
-                                                        <button type="button" className="btn btn-danger" onClick={() => {downloadFlavor(flavor.id_flavor,i)}}><FontAwesomeIcon icon={faMinus} /></button>
+                                                    <td style={{ textAlign: 'center', width: '10%' }}><label>{flavor.id_flavor}</label></td>
+                                                    <td style={{ textAlign: 'center', width: '70%' }}><label>{flavor.name}</label></td>
+                                                    <td style={{ textAlign: 'center', width: '20%' }}>
+                                                        <button type="button" className="btn btn-danger" onClick={() => { downloadFlavor(flavor.id_flavor, i) }}><FontAwesomeIcon icon={faMinus} /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         )
                                     })
-                                    }/>
+                                } />
                             </Table>
                         </div>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter className="back-ligthblue">
-                    <Buttons label='Confirmar' ready={ready} actionOK={confirm} actionNotOK={() => {errorConfirmFlavors()}} actionCancel={cancel}/>
+                    <Buttons label='Confirmar' ready={ready} actionOK={confirm} actionNotOK={() => { errorConfirmFlavors() }} actionCancel={cancel} />
                 </ModalFooter>
             </Modal>
         </>
