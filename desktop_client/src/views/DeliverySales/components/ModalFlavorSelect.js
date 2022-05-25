@@ -120,7 +120,7 @@ const ModalFlavorSelect = (props) => {
         <>
             <Modal isOpen={props.show} className="modal-sale modal-lg" >
                 <ModalHeader>
-                    <label className="font-weight-bold text-align-center">Seleccion de sabores de helados</label>
+                    <label className="font-weight-bold text-align-center">Selección de sabores de helados</label>
                 </ModalHeader>
                 <ModalBody>
                     <FormGroup>
