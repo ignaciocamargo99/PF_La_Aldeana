@@ -26,11 +26,17 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/flavors')
+        Axios.get(PORT() + '/api/activeFlavors')
             .then((response) => {
                 handlerLoadingSpinner();
-                let auxFlavor = response.data;
-                auxFlavor?.map((e, i) => e.quantity = 0);
+
+                let auxFlavor = [...response.data.Data];
+                auxFlavor.forEach(f => {
+                    f.quantity = 0;
+                    f.id_flavor = f.idFlavor;
+                    delete f.idFlavor;
+                })
+
                 setListTable(auxFlavor);
             })
             .catch((err) => {
