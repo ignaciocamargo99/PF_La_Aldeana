@@ -5,26 +5,25 @@ import dateFormat from '../../../../utils/DateFormat/dateFormat';
 
 export default function Viewer(props) {
 
-    return (
-      <Modal isOpen={props.showPdf}
-        size="xl"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered>
-        <ModalHeader>
-          <h2>Previsualización de reporte de {props.reportOf}</h2>
-        </ModalHeader>
-        <ModalBody style={{ height: '50em' }}>
-          <PDFViewer style={{ width: '100%', height: '45em' }} showToolbar={false}>
-            {props.MyDoc}
-          </PDFViewer>
-          
-        </ModalBody>
-        <ModalFooter>
-          <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-'+props.reportOf+'-' + props.description + '.pdf'}>
-            <button className='sendOk' >Descargar</button>
-          </PDFDownloadLink>
-          <button className='cancel' onClick={props.cancel}>Cancelar</button>
-        </ModalFooter>
-      </Modal>
-    )
-  }
+  return (
+    <Modal isOpen={props.showPdf}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered>
+      <ModalHeader>
+        <h2>Previsualización de reporte de {props.reportOf}</h2>
+      </ModalHeader>
+      <ModalBody style={{ height: '50em' }}>
+        <PDFViewer style={{ width: '100%', height: '45em' }} showToolbar={false}>
+          {props.MyDoc}
+        </PDFViewer>
+      </ModalBody>
+      <ModalFooter>
+        <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-' + props.reportOf + '-' + props.description + '.pdf'}>
+          <button className='btn btn-light sendOk' >Descargar</button>
+        </PDFDownloadLink>
+        <button className='btn btn-light cancel' onClick={props.cancel}>Cancelar</button>
+      </ModalFooter>
+    </Modal>
+  )
+}

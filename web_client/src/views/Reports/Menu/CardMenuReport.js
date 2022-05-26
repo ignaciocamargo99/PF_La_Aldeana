@@ -6,7 +6,7 @@ export default function CardMenuReport(props){
             </div>
             <div className="viewBody">
                 <div className="schedules-cards-container">
-                    <div className="cards-container d-flex-col">
+                    <div className="cards-container">
                         {props.children}
                     </div>
                 </div>

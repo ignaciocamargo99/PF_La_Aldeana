@@ -90,7 +90,7 @@ const Licenses = (props) => {
                     <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
                         reloadList={reloadList} setReloadList={setReloadList} />
                 </BeShowed>
-                <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={filter} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                <Viewer MyDoc={MyDoc} reportOf="licencias" showPdf={showPdf} cancel={cancel} title={filter} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
             </div>
         }
     </>)
