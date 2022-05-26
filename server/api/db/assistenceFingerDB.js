@@ -81,9 +81,12 @@ const allAssistanceDB = () => {
     //     date.setDate(dateCurrentDay - 1);
     //     date.setHours(12);
     // }
+    console.log('dia actual: ', date);
 
     let fecha =
         date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+    console.log('fecha tomada: ', fecha);
 
     const dayInf = `${fecha} 06:30:00`;
     const daySup = `${fecha} 23:59:59`;
