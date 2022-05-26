@@ -11,7 +11,7 @@ export default function Viewer(props) {
         aria-labelledby="contained-modal-title-vcenter"
         centered>
         <ModalHeader>
-          <h2>Previsualización de reporte de venta de productos</h2>
+          <h2>Previsualización de reporte de {props.reportOf}</h2>
         </ModalHeader>
         <ModalBody style={{ height: '50em' }}>
           <PDFViewer style={{ width: '100%', height: '45em' }} showToolbar={false}>
@@ -20,7 +20,7 @@ export default function Viewer(props) {
           
         </ModalBody>
         <ModalFooter>
-          <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
+          <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-'+props.reportOf+'-' + props.description + '.pdf'}>
             <button className='sendOk' >Descargar</button>
           </PDFDownloadLink>
           <button className='cancel' onClick={props.cancel}>Cancelar</button>

@@ -273,7 +273,7 @@ export default function AdvancesTable(props) {
                                 )}
                                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                             </div>
-                            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={''} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title='' reportOf='adelantos' description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
                         </BeShowed>
                     )}
             <BeShowed show={isEditing}>
