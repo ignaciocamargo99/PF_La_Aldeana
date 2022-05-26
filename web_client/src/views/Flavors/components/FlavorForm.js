@@ -22,7 +22,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         return {
             name: flavorData?.name || '',
             description: flavorData?.description || '',
-            price: flavorData?.price || '',
             stock: flavorData?.stock || '',
             reorderStock: flavorData?.reorderStock || '',
             family_flavor: flavorData?.family_flavor || '',
@@ -46,9 +45,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     const [nameInputStyle, setNameInputStyle] = useState(defaultInputStyle);
     const [nameInputErrorText, setNameInputErrorText] = useState('');
 
-    const [priceInputStyle, setPriceInputStyle] = useState(defaultInputStyle);
-    const [priceInputErrorText, setPriceInputErrorText] = useState('');
-
     const [stockInputStyle, setStockInputStyle] = useState(defaultInputStyle);
     const [stockInputErrorText, setStockInputErrorText] = useState('');
 
@@ -63,28 +59,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
 
     const isFormNameValid = () => {
         return formData?.name?.trim();
-    };
-
-    // #endregion
-
-    // #region Price Validators
-
-    const isFormPriceValid = () => {
-        return isPriceValid(formData?.price);
-    };
-
-    const isPriceValid = (price) => {
-        if (!(price)) {
-            return false;
-        }
-        if (isNaN(price)) {
-            return false;
-        }
-        return (price > 0 && price.toString().length <= 5);
-    };
-
-    const isFormPriceEmpty = () => {
-        return (!(formData?.price));
     };
 
     // #endregion
@@ -156,7 +130,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
             return false;
         }
         if (flavorTypes) {
-            return flavorTypes.map((ft) => ft.id_type_flavor).includes(+formData.type_flavor);
+            return flavorTypes.map((ft) => ft.idFlavorType).includes(+formData.type_flavor);
         }
         return false;
     };
@@ -167,16 +141,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (!(isFormNameValid())) {
             if (warn) {
                 warnSweetAlert('Ingrese el nombre del sabor.');
-            }
-            return false;
-        }
-        if (!(isFormPriceValid())) {
-            if (warn) {
-                if (isFormPriceEmpty()) {
-                    warnSweetAlert('Ingrese el precio del sabor.');
-                } else {
-                    warnSweetAlert('Ingrese el precio del sabor correctamente.');
-                }
             }
             return false;
         }
@@ -253,33 +217,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         let newFormData = { ...formData }
         newFormData.description = target.value
         setFormData(newFormData)
-    };
-
-    // #endregion
-
-    // #region OnPriceChange
-
-    const handlePriceChange = ({ target }) => {
-        let newFormData = { ...formData }
-        newFormData.price = target.value
-        setFormData(newFormData);
-        checkPriceInputError(target.value)
-    };
-
-    const checkPriceInputError = (priceInputValue) => {
-        if (!priceInputValue) {
-            setPriceInputStyle(defaultInputStyle);
-            setPriceInputErrorText('');
-            return;
-        }
-        if (isPriceValid(priceInputValue)) {
-            setPriceInputStyle(validInputStyle);
-            setPriceInputErrorText('');
-            return;
-        }
-
-        setPriceInputStyle(invalidInputStyle);
-        setPriceInputErrorText(genericNumberInputErrorText);
     };
 
     // #endregion
@@ -367,7 +304,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         if (isReading) {
             return (
                 <div className='buttons'>
-                    <button className='sendOk' onClick={handleCancelBtnClicked}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={handleCancelBtnClicked}>Volver</button>
                 </div>
             )
         }
@@ -431,23 +368,6 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             value={formData.description}
                         >
                         </textarea>
-                    </div>
-                </div>
-                <div className="formRow">
-                    <div className="form-control-label">
-                        <label >Precio*</label>
-                    </div>
-                    <div className="form-control-input">
-                        <input
-                            className={priceInputStyle}
-                            onChange={handlePriceChange}
-                            onKeyDown={(e) => validateFloatNumbers(e)}
-                            placeholder="Ingrese precio del sabor..."
-                            disabled={isReading}
-                            type="number"
-                            value={formData.price}
-                        />
-                        <div style={{ color: 'red', fontFamily: 'Abel', fontWeight: 'bold' }} >{priceInputErrorText}</div>
                     </div>
                 </div>
                 <div className="formRow">
@@ -522,8 +442,8 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             {flavorTypes?.map((ft, i) => {
                                 return (
                                     <option
-                                        key={ft.id_type_flavor}
-                                        value={ft.id_type_flavor}
+                                        key={ft.idFlavorType}
+                                        value={ft.idFlavorType}
                                     >
                                         {ft.name}
                                     </option>

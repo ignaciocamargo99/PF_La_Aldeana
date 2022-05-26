@@ -40,9 +40,6 @@ const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsA
                                             {element.reorderStock}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.price}
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadFlavorButton flavorId={element.idFlavor} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
