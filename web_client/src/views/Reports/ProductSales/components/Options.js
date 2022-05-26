@@ -204,7 +204,7 @@ const Options = (props) => {
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
+            <Viewer MyDoc={MyDoc} reportOf='venta de productos' showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }
