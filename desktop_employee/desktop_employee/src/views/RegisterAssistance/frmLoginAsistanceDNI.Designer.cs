@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoginAsistanceDNI));
             this.label3 = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnCancelar = new desktop_employee.src.utils.Botones.CustomButton();
@@ -154,6 +155,7 @@
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUser);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmLoginAsistanceDNI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmLoginAsistanceDNI";

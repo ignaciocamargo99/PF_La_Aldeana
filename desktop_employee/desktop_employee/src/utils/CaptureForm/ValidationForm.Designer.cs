@@ -28,6 +28,7 @@ namespace desktop_employee.src.views.Employees
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ValidationForm));
             this.Picture = new System.Windows.Forms.PictureBox();
             this.Prompt = new System.Windows.Forms.TextBox();
             this.StatusText = new System.Windows.Forms.TextBox();
@@ -175,6 +176,7 @@ namespace desktop_employee.src.views.Employees
             this.Controls.Add(this.Prompt);
             this.Controls.Add(this.Picture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

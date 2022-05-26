@@ -29,6 +29,7 @@ namespace desktop_employee
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.ibtnAsistenciaDNI = new FontAwesome.Sharp.IconButton();
             this.ibtnEmpleados = new FontAwesome.Sharp.IconButton();
@@ -232,8 +233,8 @@ namespace desktop_employee
             this.Controls.Add(this.pnlDesktop);
             this.Controls.Add(this.pnlTitle);
             this.Controls.Add(this.pnlMenu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
-            this.Text = "Form1";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.pnlMenu.ResumeLayout(false);
