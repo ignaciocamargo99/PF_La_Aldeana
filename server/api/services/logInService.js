@@ -1,4 +1,4 @@
-const { logInDB, getUserDB } = require('../db/logInDB');
+const { logInDB, getUserDB, loginDesktop } = require('../db/logInDB');
 
 const logIn = async (user) => {
     try {
@@ -22,5 +22,15 @@ const getUser = async (user) => {
     };
 };
 
+const logInDesktop = async (user) => {
+    try {
+        let res = await loginDesktop(user);
+        return res;
+    }
+    catch(error) {
+        throw Error(error);
+    };
+};
 
-module.exports = { logIn, getUser }
+
+module.exports = { logIn, getUser, logInDesktop }

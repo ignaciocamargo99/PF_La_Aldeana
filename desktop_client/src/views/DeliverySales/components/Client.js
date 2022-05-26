@@ -84,7 +84,7 @@ const Client = (props) => {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label>Numero de celular*</label>
+                    <label>Número de celular*</label>
                 </div>
                 <div className="form-control-input">
                     <input type="number" className={props.errorCellphone?"form-control":"form-control is-valid"} min="0" max="9999999999" maxLength="10" onChange={(e) => {onChangeCellphone(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el celular del cliente..." value={props.cellphone}></input>
@@ -115,7 +115,7 @@ const Client = (props) => {
                     </BeShowed>
                 </div>
                 <div className="form-label-no-margin offset-sm-1 col-sm-1">
-                    <label>Numero*</label>
+                    <label>Número*</label>
                 </div>
                 <div className="form-input col-sm-3">
                    <input type="number" className={props.errorStreetNumber?"form-control":"form-control is-valid"} min="1" max="9999" maxLength="4" onChange={(e) => {onChangeStreetNumber(e)}} onKeyDown={(e) => {validateFloatNumbers(e)}} placeholder="Ingrese el nro..." value={props.streetNumber}></input>
