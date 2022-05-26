@@ -21,9 +21,9 @@ export default function Viewer(props) {
         </ModalBody>
         <ModalFooter>
           <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-VentaDeProductos-' + props.description + '.pdf'}>
-            <button className='sendOk' >Descargar</button>
+            <button className='btn btn-light sendOk' >Descargar</button>
           </PDFDownloadLink>
-          <button className='cancel' onClick={props.cancel}>Cancelar</button>
+          <button className='btn btn-light cancel' onClick={props.cancel}>Cancelar</button>
         </ModalFooter>
       </Modal>
     )

@@ -611,7 +611,7 @@ const FormSalary = (props) => {
                             label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => { comeBack(false) }} />
                     </BeShowed>
                     <BeShowed show={props.action === 'Ver'}>
-                        <button className="sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
+                        <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
                     </BeShowed>
                 </BeShowed>
             </div>

@@ -27,7 +27,7 @@ export default function LicensesTable(props) {
     const [nameSearch, setNameSearch] = useState('');
 
     useEffect(() => {
-        if (props.licenses.length > 0){
+        if (props.licenses.length > 0) {
 
             setListTable(props.licenses);
         }
@@ -113,8 +113,12 @@ export default function LicensesTable(props) {
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Licencias:</h4>
                     <div className="search-input">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                            </div>
+                            <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                        </div>
                     </div>
                 </div>
                 <div className="table-responsive-md">
