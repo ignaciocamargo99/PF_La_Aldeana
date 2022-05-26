@@ -20,7 +20,7 @@ SalesBranches.init(
             type: DataTypes.INTEGER
         },
         amount: {
-            type: DataTypes.BIGINT
+            type: DataTypes.FLOAT
         },
         status: {
             type: DataTypes.STRING,

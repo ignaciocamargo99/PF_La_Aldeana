@@ -3,6 +3,9 @@ const { Op } = require('sequelize');
 const SalesBranches = require('../database/models/salesBranchesModel');
 const Franchise = require('../database/models/franchiseModel');
 const DetailSalesBranchFlavor = require('../database/models/detailSalesBranchFlavorsModel');
+const DetailSalesBranchTypeFlavor = require('../database/models/detailSalesBranchTypeFlavorsModel');
+const Flavor = require('../database/models/flavor');
+const Supplies = require('../database/models/suppliesModel');
 
 const readSalesBranchDB = async (params) => {
     const { startDate, endDate } = params;
@@ -14,15 +17,37 @@ const readSalesBranchDB = async (params) => {
                 [Op.gte]: startDate,
                 [Op.lte]: endDate
             }
-        }
+        },
+        attributes: ['id_sale_branch', 'date', 'status', 'amount']
     });
 
     return sale;
 };
 
+const readSalesBranchByIdDB = async (id) => {
+    const sale = await SalesBranches.findOne({
+        include: [
+            Franchise,
+            DetailSalesBranchFlavor,
+            DetailSalesBranchTypeFlavor
+        ],
+        where: { id_sale_branch: id }
+    });
+    if (!sale) throw 'La venta no existe';
+    return sale;
+};
+
 const saveSalesBranchDB = async (salesData) => {
-    const { date, amount, charter, status, id_franchise, flavors } = salesData;
-    console.log(flavors);
+    const {
+        date,
+        amount,
+        charter,
+        status,
+        id_franchise,
+        flavors,
+        type_flavors,
+        supplies
+    } = salesData;
 
     let transaction;
     try {
@@ -41,7 +66,16 @@ const saveSalesBranchDB = async (salesData) => {
 
         const { id_sale_branch } = sale.dataValues;
 
-        await asyncForeach(flavors, id_sale_branch, transaction);
+        await asyncForeachFlavors(flavors, id_sale_branch, status, transaction);
+
+        await asyncForeachTypeFlavors(
+            type_flavors,
+            id_sale_branch,
+            transaction
+        );
+
+        // falta esta funcion
+        await asyncForeachSupplies(supplies, id_sale_branch, transaction);
 
         console.log('success');
         await transaction.commit();
@@ -55,7 +89,41 @@ const saveSalesBranchDB = async (salesData) => {
     }
 };
 
-const asyncForeach = async (flavors, id_sale_branch, transaction) => {
+const putSalesBranchDB = async (id_sale_branch, body) => {
+    const { amount, charter, status, flavors, type_flavors, supplies } = body;
+    let transaction;
+
+    try {
+        transaction = await sequelize.transaction();
+
+        await SalesBranches.update(
+            {
+                amount,
+                charter,
+                status
+            },
+            { where: { id_sale_branch } },
+            { transaction }
+        );
+
+        console.log('success');
+        await transaction.commit();
+    } catch (error) {
+        console.log('error');
+        console.log(error);
+        if (transaction) {
+            await transaction.rollback();
+        }
+        throw 'Se produjo un error al realizar la transacción.';
+    }
+};
+
+const asyncForeachFlavors = async (
+    flavors,
+    id_sale_branch,
+    status,
+    transaction
+) => {
     for (let i = 0; i < flavors.length; i++) {
         const { id_flavor, quantity } = flavors[i];
         await DetailSalesBranchFlavor.create(
@@ -63,9 +131,48 @@ const asyncForeach = async (flavors, id_sale_branch, transaction) => {
             { transaction }
         );
     }
+    if (status === 'READY') {
+        for (let i = 0; i < flavors.length; i++) {
+            const { id_flavor, quantity } = flavors[i];
+            const flavor = await Flavor.findOne({
+                where: { id_flavor }
+            });
+            console.log(flavor);
+            const newStock = flavor.stock - quantity;
+            console.log('nuevo stock: ', newStock);
+            await Flavor.update(
+                { stock: newStock },
+                { where: { id_flavor } },
+                { transaction }
+            );
+        }
+    }
 };
+
+const asyncForeachTypeFlavors = async (
+    type_flavors,
+    id_sale_branch,
+    transaction
+) => {
+    for (let i = 0; i < type_flavors.length; i++) {
+        const { id_type_flavor, weight, subtotal } = type_flavors[i];
+        await DetailSalesBranchTypeFlavor.create(
+            { id_sale_branch, id_type_flavor, weight, subtotal },
+            { transaction }
+        );
+    }
+};
+
+// falta definir esta funcion
+const asyncForeachSupplies = async (
+    supplies,
+    id_sale_branch,
+    transaction
+) => {};
 
 module.exports = {
     readSalesBranchDB,
-    saveSalesBranchDB
+    readSalesBranchByIdDB,
+    saveSalesBranchDB,
+    putSalesBranchDB
 };
