@@ -31,10 +31,6 @@ Flavor.init({
         field: 'reorder_stock'
         // allowNull defaults to true
     },
-    price: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-    },
     active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

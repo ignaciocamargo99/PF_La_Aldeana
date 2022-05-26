@@ -33,8 +33,8 @@ namespace desktop_employee
                     SetPrompt("No se pudo iniciar la operación de captura");
             }
             catch
-            {               
-                MessageBox.Show("No se pudo iniciar la operación de captura", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            
+            {
+				MessageBox.Show("No se pudo iniciar la operación de captura. Reinicie la aplicación.", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);      
             }
 		}
 
@@ -195,7 +195,7 @@ namespace desktop_employee
 			}
 			else
             {
-				MessageBox.Show("La huella no pudo ser capturada o faltan muestras...");
+				MessageBox.Show("La huella no pudo ser capturada o faltan muestras...", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 		}
     }
