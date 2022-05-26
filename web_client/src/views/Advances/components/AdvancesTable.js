@@ -16,6 +16,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FaFile } from 'react-icons/fa';
+import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
+import MyDocument from './PDFAdvancesReport';
 
 const PORT = require('../../../config');
 
@@ -28,6 +31,8 @@ export default function AdvancesTable(props) {
     const [editing, setEditing] = useState({});
     const [reading, setReading] = useState({});
     let permissionsAccess = props.permissionsAccess;
+    const [MyDoc, setMyDoc] = useState('');
+    const [showPdf, setShowPDF] = useState(false);
 
     useEffect(() => {
         Axios.get(PORT() + '/api/advances')
@@ -87,6 +92,10 @@ export default function AdvancesTable(props) {
     const [filteredElements, setFilteredElements] = useState([]);
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
+
+    const showRenderPDF = () => setShowPDF(true);
+
+    const cancel = () => setShowPDF(false);
 
     useEffect(() => {
         if (advances) {
@@ -151,6 +160,10 @@ export default function AdvancesTable(props) {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
+    useEffect(()=>{
+        setMyDoc(<MyDocument title={''} advances={currentElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+    }, [nameSearch, currentElements])
+
     return (
         <>
             {isLoadingSpinner ?
@@ -174,6 +187,7 @@ export default function AdvancesTable(props) {
                         <BeShowed show={!isEditing && !isReading}>
                             <div className="viewTitleBtn">
                                 <h1>Adelantos</h1>
+                                <button id='printAdvancesButton' onClick={showRenderPDF} type="button" className="btn btn-light printBtn"><FaFile /> Imprimir informe</button>
                                 <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
                                     <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                 </BeShowed>
@@ -259,6 +273,7 @@ export default function AdvancesTable(props) {
                                 )}
                                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
                             </div>
+                            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={''} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
                         </BeShowed>
                     )}
             <BeShowed show={isEditing}>
