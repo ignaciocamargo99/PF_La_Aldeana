@@ -79,7 +79,6 @@ const allAssistanceDB = () => {
     if (dateCurrentHours >= 0 && dateCurrentHours <= 8) {
         // cambiamos el horario en horas o el dia para que sea el que corresponde
         date.setDate(dateCurrentDay - 1);
-        date.setHours(12);
     }
 
     console.log('dia actual: ', date);
@@ -104,7 +103,6 @@ const allAssistanceDB = () => {
 
             db.query(sqlSelectAssistance, (error, result) => {
                 if (error) reject(error);
-                console.log(result);
                 resolve(result);
             });
             db.release();
