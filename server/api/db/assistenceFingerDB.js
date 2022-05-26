@@ -73,14 +73,15 @@ const allAssistanceDB = () => {
     let date = new Date();
 
     // validacion
-    // let dateCurrentHours = new Date().getHours();
-    // let dateCurrentDay = new Date().getDate();
+    let dateCurrentHours = new Date().getHours();
+    let dateCurrentDay = new Date().getDate();
 
-    // if (dateCurrentHours >= 21) {
-    //     // cambiamos el horario en horas o el dia para que sea el que corresponde
-    //     date.setDate(dateCurrentDay - 1);
-    //     date.setHours(12);
-    // }
+    if (dateCurrentHours >= 0 && dateCurrentHours <= 8) {
+        // cambiamos el horario en horas o el dia para que sea el que corresponde
+        date.setDate(dateCurrentDay - 1);
+        date.setHours(12);
+    }
+
     console.log('dia actual: ', date);
 
     let fecha =
