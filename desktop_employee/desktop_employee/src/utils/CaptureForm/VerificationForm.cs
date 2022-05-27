@@ -49,6 +49,7 @@ namespace desktop_employee
 					SetInfo("LISTO PARA COLOCAR DEDO");
                     SetPrompt("Coloca el dedo sobre el lector para marcar la asistencia.");
 					MostrarAzul();
+					lblEmployee.Text = "";
                 }
                 catch
                 {
@@ -105,6 +106,7 @@ namespace desktop_employee
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
 			SetInfo("LISTO PARA COLOCAR DEDO");
+			MakeReport("El Lector de huellas ha sido conectado");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
@@ -155,7 +157,7 @@ namespace desktop_employee
 			if (activo)
             {
 				this.Invoke(new Function(delegate () {
-					StatusText.AppendText(message + "\r\n");
+					StatusText.AppendText(getHoraActual() + message + "\r\n");
 				}));
 			}
 		}
@@ -267,12 +269,19 @@ namespace desktop_employee
 				}));
 			}
 		}
-
+		
 		private DPFP.Capture.Capture Capturer;
 
         private void VerificationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 			activo = false;
 		}
-    }
+
+		private string getHoraActual()
+		{
+			var hora = DateTime.Now.ToString("hh:mm:ss tt");
+			hora = hora + "  --  ";
+			return hora;
+		}
+	}
 }

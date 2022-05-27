@@ -1,20 +1,8 @@
 const {
-    flavorsGetDB,
     getFlavorDBById,
     getFlavorsDBByActiveState,
     saveFlavorDB,
-    typeFlavorGetDB,
 } = require('../db/flavorDb');
-
-const readFlavor = async () => {
-    try {
-        let res = await flavorsGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
 
 const searchFlavorsByActiveState = (onlyActiveFlavors) => {
     return getFlavorsDBByActiveState(onlyActiveFlavors);
@@ -63,17 +51,14 @@ const mapFlavorData = (flavorData) => {
     return flavorDataMapped;
 };
 
-const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, price, reorderStock, stock }) => {
+const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, reorderStock, stock }) => {
     if (!name || (name.trim() === '')) {
         return false;
     }
     if (!stock) {
         return false;
     }
-    if (!price || isNaN(price)) {
-        return false;
-    }
-    if (!flavorFamilyId || isNaN(price)) {
+    if (!flavorFamilyId || isNaN(flavorFamilyId)) {
         return false;
     }
     if (!flavorTypeId || isNaN(flavorTypeId)) {
@@ -126,9 +111,6 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
     if (flavorData.name) {
         flavor.name = flavorData.name;
     }
-    if (flavorData.price) {
-        flavor.price = flavorData.price;
-    }
     if (flavorData.stock) {
         flavor.stock = flavorData.stock;
     }
@@ -142,11 +124,8 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
     };
 };
 
-const isFlavorDataValid = ({ flavorFamilyId, flavorTypeId, price, reorderStock, stock }) => {
+const isFlavorDataValid = ({ flavorFamilyId, flavorTypeId, reorderStock, stock }) => {
     if (stock && isNaN(stock)) {
-        return false;
-    }
-    if (price && isNaN(price)) {
         return false;
     }
     if (flavorFamilyId && isNaN(flavorFamilyId)) {
@@ -190,21 +169,10 @@ const deleteFlavorById = async (idFlavor) => {
     };
 };
 
-const readTypeFlavor = async () => {
-    try {
-        let res = await typeFlavorGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
-
 module.exports = {
     createNewFlavors,
     deleteFlavorById,
-    readFlavor,
-    readTypeFlavor,
+
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,

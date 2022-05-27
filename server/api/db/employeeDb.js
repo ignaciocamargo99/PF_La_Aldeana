@@ -13,13 +13,15 @@ const chargeGetDB = () => {
             });
 
             db.release();
-        })
+        });
     });
 };
 
 const employeeForDesktopGetDB = () => {
-    const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
-                    FROM EMPLOYEES WHERE active = 1`;
+    const sqlSelect = `SELECT e.dni AS DNI, e.name AS NOMBRE, e.last_name AS APELLIDO, 
+                        (SELECT COUNT(fp.dniEmployee) FROM FINGER_PRINTS fp WHERE e.dni = fp.dniEmployee) AS "HUELLAS"
+                    FROM EMPLOYEES e
+                    WHERE e.active = 1`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -30,7 +32,7 @@ const employeeForDesktopGetDB = () => {
                 else resolve(result);
             });
             db.release();
-        })
+        });
     });
 };
 
@@ -80,17 +82,16 @@ const employeeGetDB = (dni) => {
             });
 
             db.release();
-        })
+        });
     });
 };
 
 const employeeCreateDB = (newEmployee) => {
-
     const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
                     FROM EMPLOYEES WHERE active = 1`;
     if (!(isEmployeeDataValid(newEmployee))) {
         throw Error('Faltan datos obligatorios');
-    };
+    }
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -119,23 +120,27 @@ const employeeCreateDB = (newEmployee) => {
                     });
 
                     newEmployee.charges.forEach(({ chargeId }) => {
-                        db.query('INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)', [newEmployee.dni, chargeId], (error, result) => {
-                            if (error) reject(error);
-                            else resolve(result);
-                        });
+                        db.query(
+                            'INSERT INTO CHARGES_X_EMPLOYEES VALUES(?,?)',
+                            [newEmployee.dni, chargeId],
+                            (error, result) => {
+                                if (error) reject(error);
+                                else resolve(result);
+                            }
+                        );
                     });
 
                     db.release();
                 }
             });
-        })
+        });
     });
 };
 
 const employeeDeleteDB = (dniEmployee) => {
-    if (!(dniEmployee)) {
+    if (!dniEmployee) {
         throw Error('El dni es null');
-    };
+    }
 
     const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ? ';
 
@@ -149,21 +154,19 @@ const employeeDeleteDB = (dniEmployee) => {
             });
 
             db.release();
-        })
+        });
     });
 };
 
 const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
-    if (!(isEmployeeDataValid(updateEmployee))) {
+    if (!isEmployeeDataValid(updateEmployee)) {
         throw Error('Faltan datos obligatorios');
-    };
+    }
 
-    const sqlDeleteCurrentChargesOfemployee =
-        `DELETE FROM CHARGES_X_EMPLOYEES
-        WHERE dni_employee = ${currentDniEmployee}`
-        ;
-
-    const sqlInsertChargesOfemployee = 'INSERT INTO CHARGES_X_EMPLOYEES(dni_employee, id_charge) VALUES(?,?)';
+    const sqlDeleteCurrentChargesOfemployee = `DELETE FROM CHARGES_X_EMPLOYEES
+        WHERE dni_employee = ${currentDniEmployee}`;
+    const sqlInsertChargesOfemployee =
+        'INSERT INTO CHARGES_X_EMPLOYEES(dni_employee, id_charge) VALUES(?,?)';
 
     let sqlUpdateEmployee =
         `UPDATE EMPLOYEES SET name = ?, last_name = ?, date_admission = ?, 
@@ -241,6 +244,10 @@ const isEmployeeDataValid = (empDataToValidate) => {
 // #endregion
 
 module.exports = {
-    employeeGetDB, employeeDeleteDB, chargeGetDB, employeeCreateDB,
-    employeeUpdateDB, employeeForDesktopGetDB
+    employeeGetDB,
+    employeeDeleteDB,
+    chargeGetDB,
+    employeeCreateDB,
+    employeeUpdateDB,
+    employeeForDesktopGetDB
 };

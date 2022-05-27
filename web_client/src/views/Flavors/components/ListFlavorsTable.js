@@ -80,10 +80,6 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
                 width: '10%'
             },
             {
-                name: 'Precio',
-                width: '10%'
-            },
-            {
                 name: 'Ver',
                 width: '8%'
             },

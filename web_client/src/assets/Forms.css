@@ -29,6 +29,12 @@
         width: 70%;
     }
 
+    .form-control-input-mw-50 {
+        padding-left: 1em;
+        width: 70%;
+        max-width: 50em;
+    }
+
     .form-control-input-img {
         padding-left: 1em;
         width: 70%;

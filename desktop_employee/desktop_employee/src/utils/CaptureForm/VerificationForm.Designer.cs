@@ -77,7 +77,7 @@ namespace desktop_employee
             this.StatusText.Name = "StatusText";
             this.StatusText.ReadOnly = true;
             this.StatusText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.StatusText.Size = new System.Drawing.Size(602, 95);
+            this.StatusText.Size = new System.Drawing.Size(549, 175);
             this.StatusText.TabIndex = 4;
             // 
             // iconEsperando
@@ -89,7 +89,7 @@ namespace desktop_employee
             this.iconEsperando.IconColor = System.Drawing.Color.Blue;
             this.iconEsperando.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconEsperando.IconSize = 200;
-            this.iconEsperando.Location = new System.Drawing.Point(219, 78);
+            this.iconEsperando.Location = new System.Drawing.Point(192, 51);
             this.iconEsperando.Name = "iconEsperando";
             this.iconEsperando.Size = new System.Drawing.Size(229, 200);
             this.iconEsperando.TabIndex = 5;
@@ -105,7 +105,7 @@ namespace desktop_employee
             this.iconAceptado.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconAceptado.IconSize = 200;
-            this.iconAceptado.Location = new System.Drawing.Point(218, 78);
+            this.iconAceptado.Location = new System.Drawing.Point(191, 51);
             this.iconAceptado.Name = "iconAceptado";
             this.iconAceptado.Size = new System.Drawing.Size(230, 200);
             this.iconAceptado.TabIndex = 6;
@@ -121,7 +121,7 @@ namespace desktop_employee
             this.iconError.IconColor = System.Drawing.Color.Red;
             this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconError.IconSize = 200;
-            this.iconError.Location = new System.Drawing.Point(219, 78);
+            this.iconError.Location = new System.Drawing.Point(192, 51);
             this.iconError.Name = "iconError";
             this.iconError.Size = new System.Drawing.Size(225, 200);
             this.iconError.TabIndex = 7;
@@ -133,7 +133,7 @@ namespace desktop_employee
             this.lblEmployee.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblEmployee.AutoSize = true;
             this.lblEmployee.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblEmployee.Location = new System.Drawing.Point(204, 311);
+            this.lblEmployee.Location = new System.Drawing.Point(178, 244);
             this.lblEmployee.Name = "lblEmployee";
             this.lblEmployee.Size = new System.Drawing.Size(260, 44);
             this.lblEmployee.TabIndex = 8;
@@ -144,7 +144,7 @@ namespace desktop_employee
             this.lblHoraE.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblHoraE.AutoSize = true;
             this.lblHoraE.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraE.Location = new System.Drawing.Point(49, 413);
+            this.lblHoraE.Location = new System.Drawing.Point(22, 345);
             this.lblHoraE.Name = "lblHoraE";
             this.lblHoraE.Size = new System.Drawing.Size(192, 44);
             this.lblHoraE.TabIndex = 9;
@@ -155,7 +155,7 @@ namespace desktop_employee
             this.lblHoraS.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblHoraS.AutoSize = true;
             this.lblHoraS.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraS.Location = new System.Drawing.Point(465, 413);
+            this.lblHoraS.Location = new System.Drawing.Point(438, 345);
             this.lblHoraS.Name = "lblHoraS";
             this.lblHoraS.Size = new System.Drawing.Size(170, 44);
             this.lblHoraS.TabIndex = 10;
@@ -166,7 +166,7 @@ namespace desktop_employee
             this.lblHoraEntrada.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblHoraEntrada.AutoSize = true;
             this.lblHoraEntrada.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraEntrada.Location = new System.Drawing.Point(32, 488);
+            this.lblHoraEntrada.Location = new System.Drawing.Point(5, 420);
             this.lblHoraEntrada.Name = "lblHoraEntrada";
             this.lblHoraEntrada.Size = new System.Drawing.Size(209, 44);
             this.lblHoraEntrada.TabIndex = 11;
@@ -177,7 +177,7 @@ namespace desktop_employee
             this.lblHoraSalida.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblHoraSalida.AutoSize = true;
             this.lblHoraSalida.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraSalida.Location = new System.Drawing.Point(465, 488);
+            this.lblHoraSalida.Location = new System.Drawing.Point(438, 420);
             this.lblHoraSalida.Name = "lblHoraSalida";
             this.lblHoraSalida.Size = new System.Drawing.Size(209, 44);
             this.lblHoraSalida.TabIndex = 12;
@@ -226,7 +226,7 @@ namespace desktop_employee
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(378, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(673, 192);
+            this.panel2.Size = new System.Drawing.Size(673, 273);
             this.panel2.TabIndex = 16;
             // 
             // panel3
@@ -240,9 +240,9 @@ namespace desktop_employee
             this.panel3.Controls.Add(this.iconAceptado);
             this.panel3.Controls.Add(this.lblHoraEntrada);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(378, 192);
+            this.panel3.Location = new System.Drawing.Point(378, 273);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(673, 614);
+            this.panel3.Size = new System.Drawing.Size(673, 533);
             this.panel3.TabIndex = 17;
             // 
             // VerificationForm
