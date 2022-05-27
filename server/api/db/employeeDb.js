@@ -89,7 +89,7 @@ const employeeGetDB = (dni) => {
 const employeeCreateDB = (newEmployee) => {
     const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
                     FROM EMPLOYEES WHERE active = 1`;
-    if (!isEmployeeDataValid(newEmployee)) {
+    if (!(isEmployeeDataValid(newEmployee))) {
         throw Error('Faltan datos obligatorios');
     }
 
@@ -99,7 +99,7 @@ const employeeCreateDB = (newEmployee) => {
             db.query(sqlSelect, (error, result) => {
                 if (error) reject(error);
                 else {
-                    if (result.length > 0)result.map(employee => {if(employee.dni === newEmployee.dni) reject('El dni ingresado ya se encuentra en uso')});
+                    if (result.length > 0) result.map(employee => { if (employee.dni === newEmployee.dni) reject('El dni ingresado ya se encuentra en uso') });
                     db.query('INSERT INTO EMPLOYEES VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                         newEmployee.dni,
                         newEmployee.name,
@@ -142,7 +142,7 @@ const employeeDeleteDB = (dniEmployee) => {
         throw Error('El dni es null');
     }
 
-    const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ?';
+    const sqlUpdate = 'UPDATE EMPLOYEES SET active = 0 WHERE dni = ? ';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -177,9 +177,9 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
         street = ?,
         number = ?,
         city = ?`;
-    if(updateEmployee.nickname)sqlUpdateEmployee += ", nickname = ?";
-    if(updateEmployee.neighborhood)sqlUpdateEmployee += ", neighborhood = ?";
-    sqlUpdateEmployee += `WHERE dni = ${currentDniEmployee}`;
+    if (updateEmployee.nickname || updateEmployee.nickname === '') sqlUpdateEmployee += ', nickname = ?';
+    if (updateEmployee.neighborhood || updateEmployee.neighborhood === '') sqlUpdateEmployee += ', neighborhood = ?';
+    sqlUpdateEmployee += ` WHERE dni = ${currentDniEmployee}`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -213,8 +213,8 @@ const employeeUpdateDB = (currentDniEmployee, updateEmployee) => {
                 updateEmployee.number,
                 updateEmployee.city
             ];
-            if(updateEmployee.nickname)updateEmpData.push(updateEmployee.nickname);
-            if(updateEmployee.neighborhood)updateEmpData.push(updateEmployee.neighborhood);
+            if (updateEmployee.nickname || updateEmployee.nickname === '') updateEmpData.push(updateEmployee.nickname);
+            if (updateEmployee.neighborhood || updateEmployee.neighborhood === '') updateEmpData.push(updateEmployee.neighborhood);
 
             db.query(sqlUpdateEmployee, updateEmpData, (error, result) => {
                 if (error) {
