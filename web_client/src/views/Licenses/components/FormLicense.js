@@ -36,14 +36,14 @@ const FormLicense = (props) => {
     const [errorReason, setErrorReason] = useState(true);
     const [searchState, setSearchState] = useState('');
 
-    const dateInit = useRef();
-    const dateFinish = useRef();
+    const dateInitRef = useRef();
+    const dateFinishRef = useRef();
     const reason = useRef();
 
     useEffect(() => {
         if (props.action !== "Registrar") {
-            dateInit.current.value = props.license.date_init.slice(0, 10);
-            dateFinish.current.value = props.license.date_finish.slice(0, 10);
+            dateInitRef.current.value = props.license.date_init.slice(0, 10);
+            dateFinishRef.current.value = props.license.date_finish.slice(0, 10);
             Axios.get(`${PORT()}/api/employees/${props.license.dni}`)
                 .then((response) => {
                     setEmployee(response.data[0]);
@@ -52,8 +52,8 @@ const FormLicense = (props) => {
             reason.current.value = props.license.reason;
             onChangeDates();
             if (props.action === 'Ver') {
-                dateInit.current.disabled = true;
-                dateFinish.current.disabled = true;
+                dateInitRef.current.disabled = true;
+                dateFinishRef.current.disabled = true;
                 reason.current.disabled = true;
             }
             else {
@@ -78,10 +78,10 @@ const FormLicense = (props) => {
                         dateInitFutureLicense = dateInit;
                     }
                 });
-                dateInit.current.min = dateFinishLastLicense !== '' ? formattedDate(dateFinishLastLicense) : formattedDateWithDay(new Date(dateInit.current.value), 0, -15);
-                dateInit.current.max = dateInitFutureLicense !== '' ? formattedDate(dateInitFutureLicense) : dateInitFutureLicense;
-                dateFinish.current.min = dateFinishLastLicense !== '' ? formattedDate(dateFinishLastLicense) : formattedDateWithDay(new Date(dateInit.current.value), 0, -15);
-                dateFinish.current.max = dateInitFutureLicense !== '' ? formattedDate(dateInitFutureLicense) : dateInitFutureLicense;
+                dateInitRef.current.min = dateFinishLastLicense !== '' ? formattedDate(dateFinishLastLicense) : formattedDateWithDay(new Date(dateInitRef.current.value), 0, -15);
+                dateInitRef.current.max = dateInitFutureLicense !== '' ? formattedDate(dateInitFutureLicense) : dateInitFutureLicense;
+                dateFinishRef.current.min = dateFinishLastLicense !== '' ? formattedDate(dateFinishLastLicense) : formattedDateWithDay(new Date(dateInitRef.current.value), 0, -15);
+                dateFinishRef.current.max = dateInitFutureLicense !== '' ? formattedDate(dateInitFutureLicense) : dateInitFutureLicense;
             }
         }
         else {
@@ -108,8 +108,8 @@ const FormLicense = (props) => {
 
     const dateMinsUpload = () => {
         let date = formatedDate(new Date());
-        dateInit.current.min = formattedDateWithDay(new Date(), 0, -5);
-        dateFinish.current.min = date;
+        dateInitRef.current.min = formattedDateWithDay(new Date(), 0, -5);
+        dateFinishRef.current.min = date;
     }
 
     const employeesViewUpload = () => {
@@ -132,10 +132,10 @@ const FormLicense = (props) => {
     }
 
     const onChangeDateInit = (e) => {
-        if (dateInit.current.value !== "") {
+        if (dateInitRef.current.value !== "") {
             setErrorDateInit(false);
-            dateFinish.current.min = e.target.value;
-            if (dateFinish.current.value !== "") {
+            dateFinishRef.current.min = e.target.value;
+            if (dateFinishRef.current.value !== "") {
                 onChangeDates();
             }
         } else {
@@ -146,10 +146,10 @@ const FormLicense = (props) => {
     }
 
     const onChangeDateFinish = (e) => {
-        if (dateFinish.current.value !== "") {
+        if (dateFinishRef.current.value !== "") {
             setErrorDateFinish(false);
-            dateFinish.current.max = e.target.value;
-            if (dateInit.current.value !== "") {
+
+            if (dateInitRef.current.value !== "") {
                 onChangeDates();
             }
         } else {
@@ -193,15 +193,15 @@ const FormLicense = (props) => {
     }
 
     const onChangeDates = () => {
-        let aux = calculateDiferenceDays(dateInit.current.value, dateFinish.current.value);
+        let aux = calculateDiferenceDays(dateInitRef.current.value, dateFinishRef.current.value);
         aux++;
         if (aux <= 0) {
-            dateFinish.current.value = dateInit.current.value;
+            dateFinishRef.current.value = dateInitRef.current.value;
             aux = 1;
         }
         setDays(aux);
         if (props.action === "Registrar") {
-            let employeesAux = findLicensedEmployees(props.licenses, dateInit.current.value, dateFinish.current.value)
+            let employeesAux = findLicensedEmployees(props.licenses, dateInitRef.current.value, dateFinishRef.current.value)
             setLicensedEmployees(employeesAux)
             validateSelectedEmployee(employeesAux.empOnLicenseDNIs)
         }
@@ -212,7 +212,7 @@ const FormLicense = (props) => {
         if (registrationConfirmed) {
             loadingMessage("Registrando nueva licencia")
             Axios.post(`${PORT()}/api/licenses`, {
-                "date_init": dateInit.current.value, "date_finish": dateFinish.current.value,
+                "date_init": dateInitRef.current.value, "date_finish": dateFinishRef.current.value,
                 "dni_employee": employee.dni, "reason": reason.current.value, "active": 1
             })
                 .then((response) => {
@@ -228,8 +228,8 @@ const FormLicense = (props) => {
         if (editionConfirmed) {
             loadingMessage("Guardando cambios...")
             Axios.put(`${PORT()}/api/licenses/${props.license.id_license}`, {
-                "date_init": dateInit.current.value,
-                "date_finish": dateFinish.current.value, "dni_employee": employee.dni, "reason": reason.current.value
+                "date_init": dateInitRef.current.value,
+                "date_finish": dateFinishRef.current.value, "dni_employee": employee.dni, "reason": reason.current.value
             })
                 .then((response) => {
                     if (response.data.Ok) comeBack(true)
@@ -252,8 +252,8 @@ const FormLicense = (props) => {
         setErrorEmployee(true);
         setErrorReason(true);
         setSearchState('');
-        dateInit.current.value = "";
-        dateFinish.current.value = "";
+        dateInitRef.current.value = "";
+        dateFinishRef.current.value = "";
         reason.current.value = "";
 
         props.setActionLicense('Listar', null);
@@ -296,13 +296,13 @@ const FormLicense = (props) => {
                         <label >Fecha de inicio* </label>
                     </div>
                     <div style={{ minWidth: "175px" }}>
-                        <input type="date" className="form-control" ref={dateInit} onChange={(e) => { onChangeDateInit(e) }}></input>
+                        <input type="date" className="form-control" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }}></input>
                     </div>
                     <div className="col-sm-2 offset-1" style={{ paddingTop: "0.375rem" }}>
                         <label>Fecha de fin* </label>
                     </div>
                     <div style={{ minWidth: "175px" }}>
-                        <input type="date" className="form-control" ref={dateFinish} onChange={(e) => { onChangeDateFinish(e) }}></input>
+                        <input type="date" className="form-control" ref={dateFinishRef} onChange={(e) => { onChangeDateFinish(e) }}></input>
                     </div>
                 </div>
                 <div className="formRow">
