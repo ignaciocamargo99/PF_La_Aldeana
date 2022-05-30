@@ -22,18 +22,18 @@ export default function ExtraDataAdvances(props) {
 
     const realTotal = () => {
         let acu = 0;
-        option.map(op => {acu += op.amount})
+        option.map(op => { acu += op.amount })
         return acu;
     }
     //Data
 
     const maxDate = formattedDate(new Date(), 2);
-    const minDate = formattedDate(new Date(), 0,-14);
+    const minDate = formattedDate(new Date(), 0, -14);
     const minTotal = data.pay;
     const [payedCuotes, setPayedCuotes] = useState(0);
     const [minCuotes, setMinCuotes] = useState(1);
     const startDate = formattedDate(new Date());
-    let startFirstMonth = formattedDate(new Date(),2);
+    let startFirstMonth = formattedDate(new Date(), 2);
     const [maxFirstMonth, setMaxFirstMonth] = useState(formattedDate(new Date(), 6));
     const inputEmployee = useRef(null);
     const inputDate = useRef(null);
@@ -57,44 +57,44 @@ export default function ExtraDataAdvances(props) {
         if (inputFirstMonth) {
             data.firstMonth = inputFirstMonth.current.value + '-01';
             setFirstMonth(inputFirstMonth.current.value + '-01');
-            data.installments[0].month =  inputFirstMonth.current.value + '-01';
+            data.installments[0].month = inputFirstMonth.current.value + '-01';
             props.load(data);
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         if (props.data.reading || props.data.editing) {
             Axios.get(PORT() + `/api/installments?dniEmployee=${props.data.nroDNI}&date=${props.data.date}`)
-            .then((response) => {
-                setOption(response.data);
+                .then((response) => {
+                    setOption(response.data);
 
-                let aux = 0;
-                response?.data.map(installments => {if (installments.pay) aux += 1});
-                setPayedCuotes(aux);
+                    let aux = 0;
+                    response?.data.map(installments => { if (installments.pay) aux += 1 });
+                    setPayedCuotes(aux);
 
-                inputFirstMonth.current.value = response.data[0].month.slice(0,-17);
-                setFirstMonth(inputFirstMonth.current.value + '-01');
-                data.firstMonth = inputFirstMonth.current.value + '-01';
-                props.load(data);
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+                    inputFirstMonth.current.value = response.data[0].month.slice(0, -17);
+                    setFirstMonth(inputFirstMonth.current.value + '-01');
+                    data.firstMonth = inputFirstMonth.current.value + '-01';
+                    props.load(data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
     }, []);
 
     //find employees with amount of advances
-    useEffect(()=>{
+    useEffect(() => {
         Axios.get(PORT() + `/api/employeesadvances`)
-        .then((response) => {
-            response.data.forEach((person)=>{
-                person.name += ' ';
-                person.name += person.last_name;
-            });
-            setEmployees(response.data);
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+            .then((response) => {
+                response.data.forEach((person) => {
+                    person.name += ' ';
+                    person.name += person.last_name;
+                });
+                setEmployees(response.data);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }, [startFirstMonth]);
 
     //employee
@@ -109,8 +109,8 @@ export default function ExtraDataAdvances(props) {
         }
         else {
             setIsValidClass("form-control is-valid");
-            if (data.dniEmployee !== employee){
-                employees?.forEach((e)=>{
+            if (data.dniEmployee !== employee) {
+                employees?.forEach((e) => {
                     if (e.dni === employee && e.advance > 3) warningMessage('Atención', 'El empleado seleccionado ya posee más de 3 adelantos registrados.', 'warning');
                 });
             }
@@ -122,7 +122,7 @@ export default function ExtraDataAdvances(props) {
     //DateAdvances
     useEffect(() => {
 
-        if (data.date !== inputDate.current.value){
+        if (data.date !== inputDate.current.value) {
             data.date = inputDate.current.value;
             props.load(data);
             if (parseInt(firstMonth.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
@@ -131,7 +131,7 @@ export default function ExtraDataAdvances(props) {
                     data.firstMonth = null;
                 }
             }
-            else if (parseInt(firstMonth.slice(0, -5)) < parseInt(data.date.slice(0, -5)))  {
+            else if (parseInt(firstMonth.slice(0, -5)) < parseInt(data.date.slice(0, -5))) {
                 inputFirstMonth.current.value = null;
                 data.firstMonth = null;
             }
@@ -169,7 +169,7 @@ export default function ExtraDataAdvances(props) {
             setIsValidClassMonths("form-control");
             setIsValidClassAmountTotal("form-control");
             if (!data.nroDNI && month > 0 && !props.data.editing && !props.data.reading) {
-                data.installments = [{month: first, amount: 0, label: "", pay: 0}];
+                data.installments = [{ month: first, amount: 0, label: "", pay: 0 }];
             }
         }
         data.months = month;
@@ -198,7 +198,7 @@ export default function ExtraDataAdvances(props) {
                 </BeShowed>
                 <BeShowed show={!props.data.reading && !props.data.editing}>
                     <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" class={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
-                                    placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
+                        placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
                 </BeShowed>
             </div>
             <div className="formRow">
@@ -206,10 +206,10 @@ export default function ExtraDataAdvances(props) {
                     <label htmlFor="date" >Fecha de adelanto*</label>
                 </div>
                 <div className="form-control-input">
-                    <BeShowed show={props.data.reading  || props.data.editing}>
+                    <BeShowed show={props.data.reading || props.data.editing}>
                         <input className="form-control" id="date" readOnly type="date" min={minDate} max={maxDate} ref={inputDate} defaultValue={props.data.date} />
                     </BeShowed>
-                    <BeShowed show={!props.data.reading  && !props.data.editing}>
+                    <BeShowed show={!props.data.reading && !props.data.editing}>
                         <input className="form-control" id="date" type="date" ref={inputDate} onChange={onChangeDate} min={minDate} max={maxDate} defaultValue={props.data.date} />
                     </BeShowed>
                 </div>
@@ -220,14 +220,13 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <div className="form-control-input">
                     <BeShowed show={props.data.reading}>
-                        <input className="form-control" id="firstMonth" readOnly type="month" min={date !== "null" ? date : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} ref={inputFirstMonth} />
+                        <input className="form-control" id="firstMonth" readOnly type="month" min={date !== "null" ? date : startDate.slice(0, -3)} max={maxFirstMonth.slice(0, -3)} ref={inputFirstMonth} />
                     </BeShowed>
                     <BeShowed show={!props.data.reading}>
-                        <input className="form-control" id="firstMonth" type="month" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date.slice(0,-3) : startDate.slice(0,-3)} max={maxFirstMonth.slice(0,-3)} />
+                        <input className="form-control" id="firstMonth" type="month" ref={inputFirstMonth} onChange={onChangeFirstMonth} min={date !== "null" ? date.slice(0, -3) : startDate.slice(0, -3)} max={maxFirstMonth.slice(0, -3)} />
                     </BeShowed>
                 </div>
             </div>
-            <h2>Plan de devolución</h2>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="amountTotal" >Monto total*</label>
@@ -241,12 +240,17 @@ export default function ExtraDataAdvances(props) {
                     </BeShowed>
                 </div>
             </div>
+            <h2>Plan de devolución</h2>
             <BeShowed show={props.data.reading || props.data.editing}>
                 <div className="formRow">
                     <label>Monto pagado hasta la fecha ${props.data.pay}</label>
                 </div>
             </BeShowed>
-            <label>Monto restante a pagar: {amountTotal - data.pay > 0 ? amountTotal - data.pay : data.amount - data.pay > 0 ? data.amount - data.pay : 0}</label>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label>Monto restante a pagar: {amountTotal - data.pay > 0 ? amountTotal - data.pay : data.amount - data.pay > 0 ? data.amount - data.pay : 0}</label>
+                </div>
+            </div>
             <div className="formRow">
                 <div className="form-control-label">
                     <label htmlFor="months" >Cantidad de cutas* </label>
