@@ -18,18 +18,31 @@ const EditFlavor = () => {
     const { idFlavor: flavorId } = useParams();
     const { loadingFlavor, flavor } = useGetFlavor(flavorId);
 
+    const mapPayloadForUpdate = (formData) => {
+        let payload = { ...formData };
+        payload.flavorFamilyId = payload.family_flavor;
+        payload.flavorTypeId = payload.type_flavor;
+        delete payload.family_flavor;
+        delete payload.type_flavor;
+
+        return payload;
+    }
+
     const onSubmitEditFlavor = async (formData) => {
         const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
 
         if (editionConfirmed) {
             loadingMessage('Guardando cambios...')
-            Axios.put(`${PORT()}/api/flavors/${flavorId}`, formData)
+
+            const payload = mapPayloadForUpdate(formData);
+
+            Axios.put(`${PORT()}/api/flavors/${flavorId}`, payload)
                 .then(response => {
                     if (response.data.flavorUpdated) {
-                        successMessage('Atención','Sabor editado exitosamente', 'success')
-                        .then(() => {
-                            window.location.replace('/app/flavors');
-                        });
+                        successMessage('Atención', 'Sabor editado exitosamente', 'success')
+                            .then(() => {
+                                window.location.replace('/app/flavors');
+                            });
                     } else {
                         displayError(response.data.message, 'Error al editar el sabor');
                     };
