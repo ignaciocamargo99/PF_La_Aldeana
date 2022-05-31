@@ -25,7 +25,8 @@ const EmployeesSchedulesView = (props) => {
     useEffect(() => {
         axios.get(`${PORT()}/api/employees`)
             .then((response) => {
-                setEmployees(response.data);
+                const employeesData = response.data.sort((employeeA, employeeB) => employeeB.charges[0].chargeId - employeeA.charges[0].chargeId)
+                setEmployees(employeesData);
             })
     }, [])
 
@@ -125,7 +126,7 @@ const EmployeesSchedulesView = (props) => {
                         <MonthView employees={employees} turns={turns} setShowMonthView={setShowMonthView} permissionsAccess={permissionsAccess} />
                     </div>
                 </BeShowed>
-                <BeShowed show={showAutomatedSchedule}>
+                <BeShowed show={showAutomatedSchedule && charges && licenses}>
                     <AutomatedSchedule today={today} nonworkingDays={nonworkingDays} employees={employees} turns={turns}
                         charges={charges} setShowAutomatedSchedule={setShowAutomatedSchedule} licenses={licenses} />
                 </BeShowed>

@@ -16,7 +16,7 @@ const readEmployeeForDesktop = async () => {
         let res = await employeeForDesktopGetDB();
         return res;
     }
-    catch(error) {
+    catch (error) {
         throw Error(error)
     };
 };
@@ -38,6 +38,7 @@ const mapEmployeesData = (employeesDataDB) => {
                 dni: empDB.dni,
                 name: empDB.name,
                 last_name: empDB.last_name,
+                nickname: empDB.nickname,
                 date: empDB.date_admission.toISOString().split('T')[0],
                 employment_relationship: empDB.employment_relationship,
                 name_emp_relationship: empDB.name_emp_relationship,
