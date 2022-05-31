@@ -88,7 +88,7 @@ const EmployeesSchedulesView = (props) => {
     return (
         <>
             <BeShowed show={showMonthView || showAutomatedSchedule}>
-                <Breadcrumb parentName="Grilla de horarios" icon={faCalendar} parentLink="employeesSchedules" currentName={showMonthView ? 'Visualizar cronograma por mes' : 'Generar cronograma automatico'} />
+                <Breadcrumb parentName="Grilla de horarios" icon={faCalendar} parentLink="employeesSchedules" currentName={showMonthView ? 'Visualizar cronograma por mes' : 'Generar cronograma automático'} />
             </BeShowed>
             <div style={{ display: 'none' }}>{document.title = viewTitle}</div>
             <div className="viewTitle">
@@ -100,20 +100,20 @@ const EmployeesSchedulesView = (props) => {
                         <div className="cards-container d-flex-col">
                             <Card
                                 title='Visualizar cronograma por mes'
-                                text='Visualiza los turnos asignados de tus empleados con estadisticas incluidas.'
+                                text='Visualiza los turnos asignados de tus empleados con estadísticas incluidas.'
                                 handleCardClicked={() => { setShowMonthView(true) }}
                             />
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
                                 <Card
-                                    title='Generar cronograma automatico'
-                                    text='Al seleccionar los parametros el cronograma se generará automaticamente.'
+                                    title='Generar cronograma automático'
+                                    text='Al seleccionar los parámetros el cronograma se generará automáticamente.'
                                     handleCardClicked={() => { setShowAutomatedSchedule(true) }}
                                 />
                             </BeShowed>
                             <BeShowed show={permissionsAccess === 1}>
                                 <Card
-                                    title='Generar cronograma automatico'
-                                    text='Al seleccionar los parametros el cronograma se generará automaticamente.'
+                                    title='Generar cronograma automático'
+                                    text='Al seleccionar los parámetros el cronograma se generará automáticamente.'
                                     handleCardClicked={() => { setShowAutomatedSchedule(false) }}
                                     style={{ color: 'gray' }}
                                 />

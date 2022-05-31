@@ -164,7 +164,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
             if (typeof quantity === 'string') { isWrongParams = true }
         })
         if (isWrongParams) {
-            swal("Error", "No se puede generar el cronograma con esos parametros", "error");
+            swal("Error", "No se puede generar el cronograma con esos parámetros", "error");
             return;
         }
         let isFilledWithZeros = 0;
@@ -176,7 +176,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
 
         Swal.fire({
             title: "Atención",
-            text: "Si existiese un cronograma ya generado entre los dias seleccionados, ¿Desea sobreescribir los datos con los nuevos parametros?",
+            text: "Si existiese un cronograma ya generado entre los dias seleccionados, ¿Desea sobreescribir los datos con los nuevos parámetros?",
             icon: "warning",
             showDenyButton: true,
             showCancelButton: true,
@@ -206,7 +206,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                     let constraints = buildConstraints(typeDay);
                     let results = generateAutomatedDay(constraints, variables);
                     if (results.feasible === false) {
-                        swal("Error", "No se puede generar la grilla con los parametros elegidos", "error");
+                        swal("Error", "No se puede generar la grilla con los parámetros elegidos", "error");
                         return;
                     } else {
                         for (let i = 0; i < employees.length; i++) {
@@ -269,9 +269,9 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
     return (
         <>
             <div className="container">
-                <h3 style={{ textAlign: 'center' }}><b>Generación Automatica del Cronograma</b></h3>
+                <h3 style={{ textAlign: 'center' }}><b>Generación Automática del Cronograma</b></h3>
                 <br />
-                <h4><b>Parametros</b></h4>
+                <h4><b>Parámetros</b></h4>
                 <div className="formRow">
                     <div className="col-sm-4">
                         <label className="col-sm-6">Fecha desde: &nbsp;</label>
