@@ -72,11 +72,11 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
                 width: '10%'
             },
             {
-                name: 'Stock',
+                name: 'Stock (baldes)',
                 width: '10%'
             },
             {
-                name: 'Stock de Reorden',
+                name: 'Stock de reorden',
                 width: '10%'
             },
             {
