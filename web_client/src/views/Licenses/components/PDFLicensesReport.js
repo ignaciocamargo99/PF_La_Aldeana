@@ -3,6 +3,7 @@ import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
 import dateFormat from '../../../utils/DateFormat/dateFormat';
 import styles from '../../Reports/styles';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
+import dateText from 'utils/DateFormat/dateText';
 
 // Create Document Component
 export default function MyDocument (props) {
@@ -11,16 +12,16 @@ export default function MyDocument (props) {
   return (
     <>
       <Document>
-        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Licencias - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
-          <View style={styles.sectionFace}>
-            <Text style={styles.header}>{dateFormat(new Date())}</Text>
-            <Text style={styles.mainTitle}>~ Licencias ~</Text>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Licencias - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'} wrap>
+          <View style={styles.sectionFace} fixed>
+            <Text style={{textAlign: 'left', width: '400px'}}>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Licencias ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
-            <Text style={styles.detail}>{props.description}</Text>
-            <Text style={styles.header}>{props.title}</Text>
           </View>
-        </Page>
-        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Licencias - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
             <Text style={styles.title}>Licencias</Text>
             <View style={styles.row}>
               <View style={styles.col7}>
@@ -60,6 +61,9 @@ export default function MyDocument (props) {
                 </>
               )}
             })}
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+              `${pageNumber} / ${totalPages}`
+            )} fixed />
         </Page>
       </Document>
     </>

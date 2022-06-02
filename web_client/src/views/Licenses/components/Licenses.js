@@ -2,7 +2,7 @@ import '../../../assets/Buttons.css';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LicensesTable from './LicensesTable';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Axios from "axios";
 import BeShowed from '../../../common/BeShowed';
 import FormLicense from './FormLicense';
@@ -11,6 +11,8 @@ import LoaderSpinner from "../../../common/LoaderSpinner";
 import { FaFile } from 'react-icons/fa';
 import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFLicensesReport';
+import dateText from 'utils/DateFormat/dateText';
+import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
 
 const PORT = require('../../../config');
 
@@ -26,6 +28,11 @@ const Licenses = (props) => {
     const [showPdf, setShowPDF] = useState(false);
     const [filteredElements, setFilteredElements] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
+
+    const dateInitRef = useRef();
+    const dateFinishRef = useRef();
+    const [dateInit, setDateInit] = useState(null);
+    const [dateFinish, setDateFinish] = useState(null);
 
     const showRenderPDF = () => setShowPDF(true);
 
@@ -47,12 +54,14 @@ const Licenses = (props) => {
                 setLicenses(response.data);
                 setShowSpinner(false);
                 setFilter('All');
+                dateInitRef.current.value = null;
+                dateFinishRef.current.value = null;
             })
     }, [reloadList])
 
     useEffect(()=>{
-        setMyDoc(<MyDocument title={title(filter)} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
-    }, [filter, filteredElements])
+        setMyDoc(<MyDocument title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+    }, [filter, filteredElements, dateInit, dateFinish, nameSearch])
 
     const setActionLicense = (action, license) => {
         setAction(action);
@@ -61,6 +70,34 @@ const Licenses = (props) => {
 
     const onClickNewLicense = () => {
         setAction('Registrar');
+    }
+
+    const onChangeDateInit = (e) => {
+        if (dateInitRef.current.value !== "") {
+            setDateInit(dateInitRef.current.value);
+            dateFinishRef.current.min = e.target.value;
+            if (dateFinishRef.current.value !== "") {
+                onChangeDates();
+            }
+        } 
+    }
+
+    const onChangeDateFinish = (e) => {
+        if (dateFinishRef.current.value !== "") {
+            setDateFinish(dateFinishRef.current.value);
+
+            if (dateInitRef.current.value !== "") {
+                onChangeDates();
+            }
+        } 
+    }
+    const onChangeDates = () => {
+        let aux = calculateDiferenceDays(dateInitRef.current.value, dateFinishRef.current.value);
+        aux++;
+        if (aux <= 0) {
+            dateFinishRef.current.value = dateInitRef.current.value;
+            aux = 1;
+        }
     }
 
     return (<>
@@ -81,8 +118,21 @@ const Licenses = (props) => {
                         </BeShowed>
                     </div>
                     <div className="viewBody">
+                        <div className="formRow">
+                            <label>Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                        </div>
+                        <div className="formRow d-flex justify-content-between">
+                            <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
+                            <div className="col-sm-3" style={{ textAlign: 'right' }} >
+                                <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateFrom' ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }}></input>
+                            </div>
+                            <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
+                            <div className="col-sm-3" style={{ textAlign: 'right' }} >
+                                <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateTo' ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }}></input>
+                            </div>
+                        </div>
                         <ListLicensesFilter onClickRB={setFilter} filter={filter} />
-                        <LicensesTable licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} setFilteredElements={setFilteredElements} setNameSearch={setNameSearch}
+                        <LicensesTable dateInit={dateInitRef.current?.value} dateFinish={dateFinishRef.current?.value} licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} setFilteredElements={setFilteredElements} setNameSearch={setNameSearch}
                             reloadList={reloadList} setReloadList={setReloadList} filter={filter} permissionsAccess={props.permissionsAccess} />
                     </div>
                 </BeShowed>
@@ -90,7 +140,7 @@ const Licenses = (props) => {
                     <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
                         reloadList={reloadList} setReloadList={setReloadList} />
                 </BeShowed>
-                <Viewer MyDoc={MyDoc} reportOf="licencias" showPdf={showPdf} cancel={cancel} title={filter} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                <Viewer MyDoc={MyDoc} reportOf="licencias" showPdf={showPdf} cancel={cancel} title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
             </div>
         }
     </>)

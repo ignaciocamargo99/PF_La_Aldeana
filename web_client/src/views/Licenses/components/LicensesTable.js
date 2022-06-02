@@ -5,9 +5,6 @@ import { useState, useEffect } from "react";
 import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import '../../../assets/Buttons.css';
 import BeShowed from "../../../common/BeShowed";
-import BodyTable from "../../../common/Table/BodyTable";
-import HeaderTable from "../../../common/Table/HeaderTable";
-import Table from '../../../common/Table/Table';
 import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import warningMessage from '../../../utils/WarningMessages/warningMessage';
 import Pagination from '../../../common/TablePagination/Pagination';
@@ -28,10 +25,16 @@ export default function LicensesTable(props) {
 
     useEffect(() => {
         if (props.licenses.length > 0) {
-
-            setListTable(props.licenses);
+            let aux = props.licenses;
+            if (props.dateInit) aux = aux.filter((elem) => {
+                return elem.date_init >= props.dateInit;
+            });
+            if (props.dateFinish) aux = aux.filter((elem) => {
+                return elem.date_finish <= props.dateFinish;
+            });
+            setListTable(aux);
         }
-    }, [props.licenses]);
+    }, [props.licenses, props.dateInit, props.dateFinish]);
 
     useEffect(() => {
         props.setNameSearch(nameSearch);
