@@ -99,7 +99,7 @@ export default function DataEmployee(props) {
     useEffect(() => {
         if (props.isReadingEmployeeData) return;
 
-        if (nickname) setIsValidClassNickname("form-control is-valid");
+        if (nickname.trim()) setIsValidClassNickname("form-control is-valid");
         else setIsValidClassNickname("form-control");
 
         props.data.nickname = nickname;

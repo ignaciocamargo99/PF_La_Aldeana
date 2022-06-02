@@ -80,7 +80,7 @@ export default function ExtraDataEmployee({
     useEffect(() => {
         if (isReadingEmployeeData) return;
 
-        if (neighborhood) setIsValidClassNeighborhood("form-control is-valid");
+        if (neighborhood && neighborhood.trim()) setIsValidClassNeighborhood("form-control is-valid");
         else setIsValidClassNeighborhood("form-control");
 
         data.neighborhood = neighborhood;
