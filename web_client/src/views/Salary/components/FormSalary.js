@@ -118,9 +118,15 @@ const FormSalary = (props) => {
                                 nroRef.current.focus();
                             }
                         })
-                        .catch((err) => { console.log(err) });
+                        .catch((err) => { console.log(err)
+                            setShowSpinner(false);
+                            warningMessage("Error", "El servidor no pudo procesar las horas trabajadas del empleado solicitado", "error");
+                         });
                 })
-                .catch((err) => { console.log(err) });
+                .catch((err) => { console.log(err) 
+                    setShowSpinner(false);
+                    warningMessage("Error", "No se pudieron buscar los días feriados", "error");
+                 });
 
             if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar' && employee.employment_relationship === 2) {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
@@ -611,7 +617,7 @@ const FormSalary = (props) => {
                             label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => { comeBack(false) }} />
                     </BeShowed>
                     <BeShowed show={props.action === 'Ver'}>
-                        <button className="sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
+                        <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
                     </BeShowed>
                 </BeShowed>
             </div>

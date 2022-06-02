@@ -87,6 +87,9 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/flavors">
                                 <FontAwesomeIcon icon={faList} /> Ver sabores
                             </Dropdown.Item>
+                            <Dropdown.Item href="/app/flavorTypes">
+                                <FontAwesomeIcon icon={faList} /> Ver tipos de sabores
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>

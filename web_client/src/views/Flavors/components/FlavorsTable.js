@@ -1,6 +1,7 @@
 import DeleteFlavorButton from "./DeleteFlavorButton";
 import EditFlavorButton from './EditFlavorButton';
 import ReadFlavorButton from "./ReadFlavorButton";
+import StockFlavorTable from "./StockFlavorTable";
 
 const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsAccess }) => {
     return (
@@ -33,14 +34,9 @@ const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsA
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             {element.FlavorType.name}
                                         </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.stock}
-                                        </td>
+                                        <StockFlavorTable flavor={element}></StockFlavorTable>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             {element.reorderStock}
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.price}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadFlavorButton flavorId={element.idFlavor} />
