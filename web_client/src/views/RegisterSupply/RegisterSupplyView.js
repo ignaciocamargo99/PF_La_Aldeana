@@ -119,10 +119,10 @@ const RegisterPurchaseSupplies = (props) => {
                     <div className="price-title">
                         <label >Precio</label>
                     </div>
-                    <div className="price-container">
+                    <div className="price-container" style={{marginBottom:'12px'}}>
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isDeliverySupply" value="isDeliverySupply" ref={inputIsDeliverySupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">Se envía por delivery?</label>
+                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">¿Se envía por delivery?</label>
                         </div>
                         <BeShowed show={props.deliverySupply}>
                             <SinglePrice data={data} />
@@ -132,7 +132,7 @@ const RegisterPurchaseSupplies = (props) => {
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isFranchiseSupply" value="isFranchiseSupply" ref={inputIsFranchiseSupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">Se envía a franquicias?</label>
+                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">¿Se envía a franquicias?</label>
                         </div>
                         <BeShowed show={props.franchiseSupply}>
                             <MultiplePrice data={data} />

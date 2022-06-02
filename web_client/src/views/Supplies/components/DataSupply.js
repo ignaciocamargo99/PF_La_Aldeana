@@ -1,26 +1,26 @@
 import BeShowed from "common/BeShowed";
 import React from "react";
 import DescriptionSupply from "views/RegisterSupply/components/DescriptionSupply";
+import MultiplePrice from "views/RegisterSupply/components/MultiplePrice";
 import NameSupply from "views/RegisterSupply/components/NameSupply";
 import SinglePrice from "views/RegisterSupply/components/SinglePrice";
-import MultiplePrice from "views/RegisterSupply/components/MultiplePrice";
 import TypeSupply from "views/RegisterSupply/components/TypeSupply";
-import Stock from "views/RegisterSupply/components/Stock";
+import DataEditSupplies from "./DataEditSupplies";
 
 const DataSupply = ({ load, supply }) => {
 
     return (
         <>
-            <NameSupply load={(childData) => load(childData)} data={supply} />
-            <DescriptionSupply load={(childData) => load(childData)} data={supply} />
-            <BeShowed show={supply.price_wholesale && supply.reading}>
-                <SinglePrice load={(childData) => load(childData)} data={supply} />
-            </BeShowed>
-            <BeShowed show={supply.price_retail && supply.reading}>
-                <MultiplePrice load={(childData) => load(childData)} data={supply} />
-            </BeShowed>
-            <TypeSupply load={(childData) => load(childData)} data={supply} />
             <BeShowed show={supply.reading}>
+                <NameSupply load={(childData) => load(childData)} data={supply} />
+                <DescriptionSupply load={(childData) => load(childData)} data={supply} />
+                <BeShowed show={supply.price_retail && supply.reading}>
+                    <SinglePrice load={(childData) => load(childData)} data={supply} />
+                </BeShowed>
+                <BeShowed show={supply.price_wholesale && supply.reading}>
+                    <MultiplePrice load={(childData) => load(childData)} data={supply} />
+                </BeShowed>
+                <TypeSupply load={(childData) => load(childData)} data={supply} />
                 <BeShowed show={supply.stock_lot}>
                     <div className="formRow">
                         <div className="form-control-label">
@@ -52,9 +52,10 @@ const DataSupply = ({ load, supply }) => {
                     </div>
                 </BeShowed>
             </BeShowed>
-            <BeShowed show={!supply.reading}>
-                <Stock load={(childData) => load(childData)} data={supply} />
+            <BeShowed show={supply.editing}>
+                <DataEditSupplies data={supply} load={(childData) => load(childData)} />
             </BeShowed>
+
         </>
     );
 }

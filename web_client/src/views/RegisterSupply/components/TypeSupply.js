@@ -14,10 +14,17 @@ const TypeSupply = (props) => {
 
     const handleSupplyTypeChange = () => {
         props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
+        if (props.data.editing) {
+            props.data.id_supply_type = selectSupplyType.current.value
+            props.load(props.data)
+        }
     }
 
     useEffect(() => {
         if (!props.data.reading) {
+            if (props.data.id_supply_type){
+                if(props.data.id_supply_type >= 0) props.updateTypeSupply(Math.trunc(props.data.id_supply_type));
+            }
             if (selectSupplyType.current.value >= 0) props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
         }
     }, [props.typeSupply]);
@@ -30,7 +37,7 @@ const TypeSupply = (props) => {
             </div>
             <div className="form-control-input">
                 <select className="form-control" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{ fontFamily: 'Abel, sans-serif' }}>
-                    <BeShowed show={!props.data.reading}>
+                    <BeShowed show={!props.data.reading && !props.data.editing}>
                         <option disabled value="-1">Seleccione tipo de insumo...</option>
                         {
                             typeSupplies?.map((ts, i) => (
@@ -40,6 +47,14 @@ const TypeSupply = (props) => {
                     </BeShowed>
                     <BeShowed show={props.data.reading}>
                         <option value="0">{props.data.name_type_supply}</option>
+                    </BeShowed>
+                    <BeShowed show={props.data.editing}>
+                        <option disabled value="-1">{props.data.name_type_supply}</option>
+                        {
+                            typeSupplies?.map((ts, i) => (
+                                <option key={i} value={ts.id_supply_type}>{ts.name}</option>
+                            ))
+                        }
                     </BeShowed>
                 </select>
             </div>

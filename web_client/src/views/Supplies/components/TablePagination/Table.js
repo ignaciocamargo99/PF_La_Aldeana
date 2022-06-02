@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 // import DeleteProductTypeButton from "../DeleteProductTypeButton";
 // import DeleteUserButton from '../DeleteProductTypeButton';
-// import EditProductTypeButton from '../EditProductTypes/EditProductTypeButton';
+import EditSupplyButton from '../EditSupplies/EditSupplyButton';
 import ReadSupplyButton from "../ReadSupplies/ReadSupplyButton";
 
 const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
@@ -45,6 +45,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             <ReadSupplyButton data={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <EditSupplyButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess}  />
                                             {/* <EditProductTypeButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} /> */}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>

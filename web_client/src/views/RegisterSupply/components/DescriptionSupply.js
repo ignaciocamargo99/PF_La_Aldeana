@@ -7,11 +7,23 @@ const DescriptionSupply = (props) => {
 
     const inputSupplyDescription = useRef(null);
     const [prevDescriptionSupply, setPrevDescriptionSupply] = useState("null");
+    const [descriptionSupply, setDescriptionSupply] = useState();
     const [isValidClass, setIsValidClass] = useState("form-control");
+
+    useEffect(() => {
+        if (props.data.description && props.data.description !== 'null') {
+            setDescriptionSupply(props.data.description);
+            inputSupplyDescription.current.value = props.data.description;
+        }
+    }, [])
 
     const handleDescriptionChange = () => {
         setPrevDescriptionSupply(props.descriptionSupply);
-        props.updateDescriptionSupply(Math.trunc(inputSupplyDescription.current.value));
+        props.updateDescriptionSupply(Math.trunc(inputSupplyDescription.current.value.trim()));
+        if (props.data.editing) {
+            props.data.description = inputSupplyDescription.current.value.trim();
+            props.load(props.data)
+        }
     }
 
     useEffect(() => {
@@ -32,12 +44,16 @@ const DescriptionSupply = (props) => {
                 <label htmlFor="supplyDescription">Descripción</label>
             </div>
             <div className="form-control-input">
-                <BeShowed show={!props.data.reading}>
+                <BeShowed show={!props.data.reading && !props.data.editing}>
                     <textarea className={isValidClass} id="supplyDescription" maxLength="200" ref={inputSupplyDescription} onChange={handleDescriptionChange} placeholder="Ingrese descripción del insumo..." rows="3"></textarea>
 
                 </BeShowed>
                 <BeShowed show={props.data.reading}>
                     <textarea className={props.data.description ? 'form-control is-valid' : 'form-control'} id="supplyDescription" ref={inputSupplyDescription} rows="3" value={props.data.description ? props.data.description : ''} readOnly></textarea>
+                </BeShowed>
+                <BeShowed show={props.data.editing}>
+                    <textarea className={props.data.description ? 'form-control is-valid' : 'form-control'} id="supplyDescription" ref={inputSupplyDescription} rows="3"
+                        defaultValue={descriptionSupply} onChange={handleDescriptionChange}></textarea>
                 </BeShowed>
             </div>
         </div>

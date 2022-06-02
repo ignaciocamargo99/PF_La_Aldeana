@@ -19,6 +19,7 @@ const SuppliesView = ({ permissionsAccess }) => {
     const [action, setAction] = useState('');
     const { supplyToDo } = useReadEditSupplies(elementToDo, action);
 
+
     const [listSupplies, setListSupplies] = useState();
     useEffect(() => { setListSupplies(supplies) }, [supplies])
 
@@ -36,8 +37,9 @@ const SuppliesView = ({ permissionsAccess }) => {
 
     const goBackToTable = () => {
         <div style={{ display: 'none' }}>{document.title = "Insumos"}</div>
-        setAction('')
+        setAction('');
         window.scrollTo(0, 0);
+        supplyToDo.editing = false;
     }
 
     return (
