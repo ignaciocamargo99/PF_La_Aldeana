@@ -4,19 +4,15 @@ import Axios from 'axios';
 import React, { useEffect, useState } from "react";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
-import BodyTable from "../../../common/Table/BodyTable";
-import HeaderTable from "../../../common/Table/HeaderTable";
-import Table from '../../../common/Table/Table';
-import DeleteEmployeeButton from './DeleteEmployeeButton';
 import EditEmployee from "./EditEmployee/EditEmployee";
-import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
-import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
+import { assembleColumnHeaders } from './TablePagination/assembleColumnHeaders';
+import TablePagination from './TablePagination/TablePagination';
 
 const PORT = require('../../../config');
 
 export default function EmployeesTable(props) {
-
+    const columnsHeaders = assembleColumnHeaders();
     const [allEmployees, setAllEmployees] = useState([]);
     const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
     const [employeeDataToRead, setEmployeeDataToRead] = useState({});
@@ -27,12 +23,11 @@ export default function EmployeesTable(props) {
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
-            .then(({ data }) => {
-                handlerLoadingSpinner();
-
-                setAllEmployees(data);
+            .then((response) => {
+                setAllEmployees(response.data);
+                setIsLoadingSpinner(false);
             })
-            .catch((error) => console.log(error));
+            .catch((e) => console.log(e))
     }, []);
 
     const deleteEmployee = (i) => {
@@ -61,8 +56,6 @@ export default function EmployeesTable(props) {
         setIsReading(false);
         window.scrollTo(0, 0);
     };
-
-    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     const onClickNewEmployee = () => {
         window.location.replace('/app/registerEmployees');
@@ -101,54 +94,14 @@ export default function EmployeesTable(props) {
                             </div>
 
                             <div className="viewBody">
-                                <Table>
-                                    <HeaderTable
-                                        th={
-                                            <>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                            </>
-                                        }
-                                    />
-                                    <BodyTable
-                                        tbody={allEmployees?.map((element, i) => {
-                                            return (
-                                                <tbody key={i}>
-                                                    <tr>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <ReadEmployeeButton
-                                                                employeeData={element}
-                                                                handleReadEmpoyeeClicked={handleReadEmpoyee}
-                                                            />
-                                                        </td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <EditEmployeeButton
-                                                                employeeData={element}
-                                                                handleEditEmpoyeeClicked={handleEditEmpoyee}
-                                                                permissionsAccess={permissionsAccess}
-                                                            />
-                                                        </td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <DeleteEmployeeButton employee={element} index={i}
-                                                                deleteEmployee={deleteEmployee}
-                                                                permissionsAccess={permissionsAccess}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            )
-                                        })}
-                                    />
-                                </Table>
+                                <TablePagination
+                                    columnsHeaders={columnsHeaders}
+                                    currentElements={allEmployees}
+                                    handleRead={handleReadEmpoyee}
+                                    handleEdit={handleEditEmpoyee}
+                                    handleDelete={deleteEmployee}
+                                    permissionsAccess={permissionsAccess}
+                                />
                             </div>
                         </BeShowed>
                     )}

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getCharges } from "helpers/getCharges";
 import formattedDate from "utils/formattedDate";
 import ChargeFormControl from "./ChargeFormControl";
+import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 
 export default function ExtraDataEmployee({
     isReadingEmployeeData,
@@ -20,6 +21,24 @@ export default function ExtraDataEmployee({
     const maxDate = formattedDate(new Date(), 3);
     const startDate = formattedDate(new Date());
 
+    const inputStreet = useRef(null);
+    const inputNumber = useRef(null);
+    const inputNeighborhood = useRef(null);
+    const inputCity = useRef(null);
+    const [street, setStreet] = useState(null);
+    const [number, setNumber] = useState(null);
+    const [neighborhood, setNeighborhood] = useState(data.neighborhood);
+    const [city, setCity] = useState(null);
+    const [isValidClass, setIsValidClass] = useState("form-control");
+    const [isValidClassNumber, setIsValidClassNumber] = useState("form-control");
+    const [isValidClassNeighborhood, setIsValidClassNeighborhood] = useState("form-control");
+    const [isValidClassCity, setIsValidClassCity] = useState("form-control");
+
+    const handleStreet = () => setStreet(inputStreet.current.value.trim());
+    const handleNumber = () => setNumber(inputNumber.current.value.trim());
+    const handleNeighborhood = () => setNeighborhood(inputNeighborhood.current.value);
+    const handleCity = () => setCity(inputCity.current.value);
+
     useEffect(() => {
         if (isReadingEmployeeData) return;
 
@@ -30,7 +49,55 @@ export default function ExtraDataEmployee({
     }, [data]);
 
     useEffect(() => {
-        console.log(data.employment_relationship )
+        if (isReadingEmployeeData) return;
+
+        const streetName = inputStreet.current.value.trim();
+
+        if (streetName) setIsValidClass("form-control is-valid");
+        else setIsValidClass("form-control");
+
+        data.street = streetName;
+        load(data);
+    }, [street]);
+
+    useEffect(() => {
+        if (isReadingEmployeeData) return;
+
+        const number = inputNumber.current.value.trim();
+
+        if (number.length <= 5 && number.length > 0) {
+            setIsValidClassNumber("form-control is-valid");
+            data.number = +number;
+            load(data);
+        }
+        else {
+            setIsValidClassNumber("form-control");
+            data.number = number;
+            load(data);
+        }
+    }, [number]);
+
+    useEffect(() => {
+        if (isReadingEmployeeData) return;
+
+        if (neighborhood && neighborhood.trim()) setIsValidClassNeighborhood("form-control is-valid");
+        else setIsValidClassNeighborhood("form-control");
+
+        data.neighborhood = neighborhood;
+        load(data);
+    }, [neighborhood]);
+
+    useEffect(() => {
+        if (isReadingEmployeeData) return;
+        const nameCity = inputCity.current.value.trim();
+        if (nameCity) setIsValidClassCity("form-control is-valid");
+        else setIsValidClassCity("form-control");
+
+        data.city = nameCity;
+        load(data);
+    }, [city]);
+
+    useEffect(() => {
         if (data.employment_relationship === 1) {
             rb1.current.checked = false;
             rb2.current.checked = false;
@@ -112,8 +179,88 @@ export default function ExtraDataEmployee({
         })
     }, []);
 
+    const validate = (e) => {
+        if (e.target.value.length > 5) e.target.value = e.target.value.slice(0, 5);
+    }
+
     return (
         <>
+            <h2>Datos del domicilio</h2>
+
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="streetEmployee" >Calle*</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className={isValidClass}
+                        defaultValue={data.street}
+                        id="streetEmployee"
+                        maxLength="80"
+                        onChange={handleStreet}
+                        placeholder="Ingrese calle..."
+                        disabled={isReadingEmployeeData}
+                        ref={inputStreet}
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="numberEmployee" >Número*</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className={isValidClassNumber}
+                        defaultValue={data.number}
+                        id="numberEmployee"
+                        min="1"
+                        onChange={handleNumber}
+                        onInput={(e) => validate(e)}
+                        onKeyDown={(e) => validateFloatNumbers(e)}
+                        placeholder="Ingrese número de domicilio..."
+                        disabled={isReadingEmployeeData}
+                        ref={inputNumber}
+                        type="number"
+                    />
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="neighborhoodEmployee" >Barrio</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className={isValidClassNeighborhood}
+                        defaultValue={data.neighborhood}
+                        id="neighborhoodEmployee"
+                        maxLength="80"
+                        onChange={handleNeighborhood}
+                        placeholder="Ingrese barrio..."
+                        disabled={isReadingEmployeeData}
+                        ref={inputNeighborhood}
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div className="formRow">
+                <div className="form-control-label">
+                    <label htmlFor="lastNameEmployee" >Localidad*</label>
+                </div>
+                <div className="form-control-input">
+                    <input
+                        className={isValidClassCity}
+                        defaultValue={data.city}
+                        id="cityEmployee"
+                        maxLength="80"
+                        onChange={handleCity}
+                        placeholder="Ingrese ciudad..."
+                        disabled={isReadingEmployeeData}
+                        ref={inputCity}
+                        type="text"
+                    />
+                </div>
+            </div>
             <h2>Datos laborales</h2>
 
             <ChargeFormControl
@@ -161,10 +308,10 @@ export default function ExtraDataEmployee({
             )}
 
             <div className="formRow">
-                <div className="form-control-label col-sm-3">
+                <div className="form-control-label">
                     <label>Relación laboral*</label>
                 </div>
-                <div className="form-radio-group col-sm-9">
+                <div className="form-radio-group">
                     <div className="form-check form-radio formRow">
                         <input
                             className="form-check-input"
@@ -178,7 +325,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="black"> Monotributista </label>
+                        <label className="form-check-label" htmlFor="black" style={{paddingLeft:'0.4em'}}> Monotributista </label>
                     </div>
 
                     <div className="form-check formRow">
@@ -194,7 +341,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white4"> Relación de dependencia 4 horas </label>
+                        <label className="form-check-label" htmlFor="white4" style={{paddingLeft:'0.4em'}}> Relación de dependencia 4 horas </label>
                     </div>
                     
                     <div className="form-check formRow">
@@ -210,7 +357,7 @@ export default function ExtraDataEmployee({
                         >
                         </input>
 
-                        <label className="form-check-label" htmlFor="white"> Relación de dependencia 6 horas </label>
+                        <label className="form-check-label" htmlFor="white" style={{paddingLeft:'0.4em'}}> Relación de dependencia 6 horas </label>
                     </div>
                 </div>
             </div>
