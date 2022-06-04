@@ -26,7 +26,7 @@ const createNewFlavors = async ({ flavors }) => {
 
     if (flavors.length === 1) {
         if (isNewFlavorDataValid(flavors[0])) {
-            const flavorDataMapped = mapFlavorData(flavors[0]);
+            const flavorDataMapped = mapFlavorDataForCreation(flavors[0]);
             const { dataValues: newFlavor } = await saveFlavorDB(flavorDataMapped);
 
             return {
@@ -44,10 +44,11 @@ const createNewFlavors = async ({ flavors }) => {
     }
 };
 
-const mapFlavorData = (flavorData) => {
+const mapFlavorDataForCreation = (flavorData) => {
     const flavorDataMapped = { ...flavorData };
-    flavorDataMapped.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
     flavorDataMapped.name = flavorData.name.trim();
+    flavorDataMapped.description = flavorData.description?.trim();
+    flavorDataMapped.stock = flavorDataMapped.stock ? flavorDataMapped.stock : 0;
     return flavorDataMapped;
 };
 
@@ -55,20 +56,24 @@ const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, reorderStock
     if (!name || (name.trim() === '')) {
         return false;
     }
-    if (!stock) {
+    if (isInvalidNumber(flavorFamilyId)) {
         return false;
     }
-    if (!flavorFamilyId || isNaN(flavorFamilyId)) {
+    if (isInvalidNumber(flavorTypeId)) {
         return false;
     }
-    if (!flavorTypeId || isNaN(flavorTypeId)) {
+    if (stock && isNaN(stock)) {
         return false;
     }
-    if (reorderStock && isNaN(reorderStock)) {
+    if (isInvalidNumber(reorderStock)) {
         return false;
     }
 
     return true;
+};
+
+const isInvalidNumber = (n) => {
+    return !n || isNaN(n);
 };
 
 const createErrorToUpdateFlavorObj = (message) => {
@@ -97,10 +102,10 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
     }
 
     if (flavorData.hasOwnProperty('description')) {
-        flavor.description = flavorData.description;
+        flavor.description =  flavorData.description?.trim();
     }
-    if (flavorData.hasOwnProperty('reorderStock')) {
-        flavor.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
+    if (flavorData.hasOwnProperty('stock')) {
+        flavor.stock = flavorData.stock ? flavorData.stock : 0;
     }
     if (flavorData.flavorFamilyId) {
         flavor.family_flavor = flavorData.flavorFamilyId;
@@ -109,10 +114,10 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
         flavor.type_flavor = flavorData.flavorTypeId;
     }
     if (flavorData.name) {
-        flavor.name = flavorData.name;
+        flavor.name = flavorData.name.trim();
     }
-    if (flavorData.stock) {
-        flavor.stock = flavorData.stock;
+    if (flavorData.reorderStock) {
+        flavor.reorderStock = flavorData.reorderStock;
     }
 
     const { dataValues: flavorNewData } = await flavor.save();

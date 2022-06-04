@@ -1,3 +1,4 @@
+import CleanFilters from 'common/CleanFilters';
 import moment from 'moment';
 import React, { useRef } from 'react';
 import DeleteProductionButton from '../DeleteProductionButton';
@@ -34,7 +35,7 @@ const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, h
                         </div>
                         <input id="inputSearchName" className="form-control" type="date" onChange={(e) => setDateSearch2(e.target.value)} ref={dateFilter2} />
                     </div>
-                    <button id='filterProductionButton' type="button" onClick={onClickFilter} className="btn btn-info filterBtn">Limpiar filtros</button>
+                    <CleanFilters onClick={onClickFilter} />
                 </div>
             </div>
             {pageElements.length > 0 && (

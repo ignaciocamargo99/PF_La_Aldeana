@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from 'common/TablePagination/Pagination';
-import FlavorsTable from './FlavorsTable';
+import FlavorTypesTable from './FlavorTypesTable';
 
 const elementsPerPage = 10;
 
-const FlavorsTablePagination = ({ deleteFlavor, permissionsAccess, filteredElements }) => {
+const FlavorTypesTablePagination = ({ readOnly, filteredElements }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
@@ -20,12 +20,11 @@ const FlavorsTablePagination = ({ deleteFlavor, permissionsAccess, filteredEleme
 
     return (
         <>
-            <FlavorsTable
+            <FlavorTypesTable
                 pageElements={pageElements}
-                deleteFlavor={deleteFlavor}
-                permissionsAccess={permissionsAccess}
-            >
-            </FlavorsTable>
+                readOnly={readOnly}
+            >   
+            </FlavorTypesTable>
             <Pagination
                 elementsperpage={elementsPerPage}
                 paginate={paginate}
@@ -35,4 +34,4 @@ const FlavorsTablePagination = ({ deleteFlavor, permissionsAccess, filteredEleme
     )
 }
 
-export default FlavorsTablePagination
+export default FlavorTypesTablePagination

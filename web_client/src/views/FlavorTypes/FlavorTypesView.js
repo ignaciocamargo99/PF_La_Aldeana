@@ -4,7 +4,7 @@ import LoaderSpinner from 'common/LoaderSpinner';
 import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FlavorTypesList from './components/FlavorTypesList';
+import FlavorTypesSearch from './components/FlavorTypesSearch';
 
 const FlavorTypesView = ({ readOnly }) => {
     // to do cambiar hook para que traiga solo activos
@@ -26,7 +26,7 @@ const FlavorTypesView = ({ readOnly }) => {
             <>
                 <div className="viewTitleBtn">
                     <h1>Tipos de Sabores</h1>
-                    <Link to='/app/flavorTypes/new'>
+                    <Link to={readOnly ? '#' : '/app/flavorTypes/new'}>
                         <button
                             disabled={readOnly}
                             type="button"
@@ -37,7 +37,7 @@ const FlavorTypesView = ({ readOnly }) => {
                     </Link>
                 </div>
                 <div className="viewBody">
-                    <FlavorTypesList
+                    <FlavorTypesSearch
                         currentElements={flavorTypes}
                         readOnly={readOnly}
                     />
