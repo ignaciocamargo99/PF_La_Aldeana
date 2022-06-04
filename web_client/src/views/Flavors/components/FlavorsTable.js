@@ -2,8 +2,11 @@ import DeleteFlavorButton from "./DeleteFlavorButton";
 import EditFlavorButton from './EditFlavorButton';
 import ReadFlavorButton from "./ReadFlavorButton";
 import StockFlavorTable from "./StockFlavorTable";
+import getFlavorsTableColumnHeaders from "./getFlavorsTableColumnHeaders";
 
-const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsAccess }) => {
+const FlavorsTable = ({ pageElements, deleteFlavor, permissionsAccess }) => {
+    const columnsHeaders = getFlavorsTableColumnHeaders();
+
     return (
         <>
             {(pageElements && pageElements.length > 0)
@@ -54,7 +57,7 @@ const FlavorsTable = ({ pageElements, columnsHeaders, deleteFlavor, permissionsA
                     </table>
                 </div>
                 :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores con el nombre ingresado...</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores para los filtros ingresados...</h4>
             }
         </>
     )
