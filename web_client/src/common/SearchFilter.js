@@ -28,7 +28,7 @@ const SearchFilter = ({ value, setValue, placeholder }) => {
                     aria-describedby="inputGroup-sizing-default"
                 />
             </div>
-            <WindowClose onNClick={clearClicked} />
+            <WindowClose onClick={clearClicked} />
         </div>
     )
 }
