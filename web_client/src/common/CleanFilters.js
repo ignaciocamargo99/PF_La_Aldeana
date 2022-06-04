@@ -5,7 +5,7 @@ const CleanFilters = ({ onClick }) => {
         <button
             type="button"
             onClick={onClick}
-            className="btn btn-info filterBtn"
+            className="btn btn-info filter-btn"
         >
             Limpiar filtros
         </button>

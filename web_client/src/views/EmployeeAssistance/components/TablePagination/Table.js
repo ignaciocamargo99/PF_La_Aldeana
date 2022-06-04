@@ -53,17 +53,21 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                             <h4 className="text-secondary">Asistencias del día corriente {dateNow}</h4>
                 }
                 <div className="search-input">
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                    <div className="me-3">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                            </div>
+                            <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate1(e)} ref={dateFilter1} />
                         </div>
-                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate1(e)} ref={dateFilter1} />
                     </div>
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                    <div className="me-3">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                            </div>
+                            <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
                         </div>
-                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
                     </div>
                     <CleanFilters onClick={onClickFilter} />
                 </div>
