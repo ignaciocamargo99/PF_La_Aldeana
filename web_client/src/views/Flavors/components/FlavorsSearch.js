@@ -51,7 +51,6 @@ const FlavorsSearch = ({ currentElements, deleteFlavor, permissionsAccess, flavo
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Sabores disponibles:</h4>
                 <div className="search-input" >
-                    <CleanFilters onClick={cleanFilters} />
                     <ComboFilter
                         elements={flavorFamilies}
                         value={idFlavorFamilyFilterApplied}
@@ -73,6 +72,7 @@ const FlavorsSearch = ({ currentElements, deleteFlavor, permissionsAccess, flavo
                         setValue={setNameFilterApplied}
                         placeholder="Buscar sabores..."
                     />
+                    <CleanFilters onClick={cleanFilters} />
                 </div>
             </div>
             <FlavorsTablePagination

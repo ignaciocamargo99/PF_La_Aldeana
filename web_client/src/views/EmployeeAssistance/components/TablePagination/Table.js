@@ -1,3 +1,4 @@
+import CleanFilters from 'common/CleanFilters';
 import moment from 'moment';
 import React, { useRef } from 'react';
 import DeleteAssistanceButton from '../DeleteAssistanceButton';
@@ -64,7 +65,7 @@ export default function Table({ setDateSearch1, setDateSearch2, pageElements, co
                         </div>
                         <input id="inputSearchName" className="form-control" type="date" onChange={(e) => onClickDate2(e)} ref={dateFilter2} />
                     </div>
-                    <button id='filterProductionButton' type="button" onClick={onClickFilter} className="btn btn-info filterBtn">Limpiar filtros</button>
+                    <CleanFilters onClick={onClickFilter} />
                 </div>
             </div>
             {pageElements.length > 0 && (
