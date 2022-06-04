@@ -14,7 +14,7 @@ const SearchFilter = ({ value, setValue, placeholder }) => {
     }
 
     return (
-        <>
+        <div className='d-flex flex-row align-items-center'>
             <div className="input-group">
                 <div className="input-group-prepend">
                     <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
@@ -28,8 +28,8 @@ const SearchFilter = ({ value, setValue, placeholder }) => {
                     aria-describedby="inputGroup-sizing-default"
                 />
             </div>
-            <WindowClose onClick={clearClicked} />
-        </>
+            <WindowClose onNClick={clearClicked} />
+        </div>
     )
 }
 
