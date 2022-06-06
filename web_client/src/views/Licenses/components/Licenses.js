@@ -13,6 +13,8 @@ import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFLicensesReport';
 import dateText from 'utils/DateFormat/dateText';
 import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
+import dateFormat from 'utils/DateFormat/dateFormat';
+import getLastWeeksDate from '../../../utils/DateFormat/getLastWeeksDate';
 
 const PORT = require('../../../config');
 
@@ -31,8 +33,8 @@ const Licenses = (props) => {
 
     const dateInitRef = useRef();
     const dateFinishRef = useRef();
-    const [dateInit, setDateInit] = useState(null);
-    const [dateFinish, setDateFinish] = useState(null);
+    const [dateInit, setDateInit] = useState(dateFormat(getLastWeeksDate()));
+    const [dateFinish, setDateFinish] = useState(dateFormat(new Date()));
 
     const showRenderPDF = () => setShowPDF(true);
 
@@ -54,8 +56,6 @@ const Licenses = (props) => {
                 setLicenses(response.data);
                 setShowSpinner(false);
                 setFilter('All');
-                dateInitRef.current.value = null;
-                dateFinishRef.current.value = null;
             })
     }, [reloadList])
 
@@ -118,17 +118,23 @@ const Licenses = (props) => {
                         </BeShowed>
                     </div>
                     <div className="viewBody">
-                        <div className="formRow">
-                            <label>Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                        </div>
                         <div className="formRow d-flex justify-content-between">
-                            <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
-                            <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                                <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateFrom' ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }}></input>
+                            <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                            <div className="input-group" style={{marginLeft: 'auto'}}>
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                </div>
+                                <div  style={{ textAlign: 'right' }} >
+                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                </div>
                             </div>
-                            <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
-                            <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                                <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateTo' ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }}></input>
+                            <div className="input-group">
+                                <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                </div>
+                                <div style={{ textAlign: 'right' }} >
+                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                </div>
                             </div>
                         </div>
                         <ListLicensesFilter onClickRB={setFilter} filter={filter} />

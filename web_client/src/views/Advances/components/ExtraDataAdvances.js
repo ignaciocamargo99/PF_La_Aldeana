@@ -27,7 +27,7 @@ export default function ExtraDataAdvances(props) {
     }
     //Data
 
-    const maxDate = formattedDate(new Date(), 2);
+    const maxDate = formattedDate(new Date());
     const minDate = formattedDate(new Date(), 0, -14);
     const minTotal = data.pay;
     const [payedCuotes, setPayedCuotes] = useState(0);
