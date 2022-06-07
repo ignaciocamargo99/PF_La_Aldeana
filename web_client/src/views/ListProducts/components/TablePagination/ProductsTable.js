@@ -5,7 +5,7 @@ import DeleteProductButton from '../DeleteProductButton';
 import EditProductButton from '../EditProducts/EditProductButton';
 import ReadProductButton from "../ReadProducts/ReadProductButton";
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const ProductsTable = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
     return (
         <>
             <div className="formRow title-searcher">
@@ -62,4 +62,4 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
     )
 };
 
-export default Table;
+export default ProductsTable;

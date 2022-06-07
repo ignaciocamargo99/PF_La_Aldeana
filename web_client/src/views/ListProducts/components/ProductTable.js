@@ -1,8 +1,8 @@
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
-import BeShowed from '../../../common/BeShowed';
-import LoaderSpinner from '../../../common/LoaderSpinner';
-import displayError from '../../../utils/ErrorMessages/errorMesage';
+import BeShowed from 'common/BeShowed';
+import LoaderSpinner from 'common/LoaderSpinner';
+import displayError from 'utils/ErrorMessages/errorMesage';
 import EditProducts from './EditProducts/EditProducts';
 import TablePagination from './TablePagination/TablePagination';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

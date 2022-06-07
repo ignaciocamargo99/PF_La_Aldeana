@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '../../../../common/TablePagination/Pagination';
-import Table from './Table';
+import Pagination from 'common/TablePagination/Pagination';
+import ProductsTable from './ProductsTable';
 
 const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
@@ -34,7 +34,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
 
     return (
         <>
-            <Table
+            <ProductsTable
                 columnsHeaders={columnsHeaders}
                 pageElements={pageElements}
                 setNameSearch={setNameSearch}
@@ -43,7 +43,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
                 handleDelete={handleDelete}
                 permissionsAccess={permissionsAccess}
             >
-            </Table>
+            </ProductsTable>
             <Pagination
                 elementsperpage={elementsPerPage}
                 paginate={paginate}
