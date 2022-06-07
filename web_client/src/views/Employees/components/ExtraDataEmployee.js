@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getCharges } from "helpers/getCharges";
 import formattedDate from "utils/formattedDate";
 import ChargeFormControl from "./ChargeFormControl";
-import validateFloatNumbers from "../../../utils/validateFloatNumbers";
+import validateFloatNumbers from "utils/validateFloatNumbers";
 
 export default function ExtraDataEmployee({
     isReadingEmployeeData,

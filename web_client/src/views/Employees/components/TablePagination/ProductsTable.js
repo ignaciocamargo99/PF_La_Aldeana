@@ -5,10 +5,11 @@ import React from 'react';
 import ReadEmployeeButton from "../ReadEmployee/ReadEmployeeButton";
 import DeleteEmployeeButton from "../DeleteEmployeeButton";
 import EditEmployeeButton from "../EditEmployee/EditEmployeeButton";
+import getProductsTableColumnHeaders from './getProductsTableColumnHeaders'
 
-const PORT = require('../../../../config');
+const columnsHeaders = getProductsTableColumnHeaders();
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const ProductsTable = ({ setNameSearch, pageElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
     return (
         <>
             <div className="formRow title-searcher">
@@ -84,4 +85,4 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
     )
 };
 
-export default Table;
+export default ProductsTable;

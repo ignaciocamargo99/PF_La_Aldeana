@@ -1,6 +1,6 @@
 
-export const assembleColumnHeaders = () => {
-    let columnsHeaders = [
+const getProductsTableColumnHeaders = () => {
+    return [
         {
             name: 'DNI',
             width: '15%'
@@ -30,5 +30,6 @@ export const assembleColumnHeaders = () => {
             width: '10%'
         }
     ];
-    return columnsHeaders
-}
+};
+
+export default getProductsTableColumnHeaders;
