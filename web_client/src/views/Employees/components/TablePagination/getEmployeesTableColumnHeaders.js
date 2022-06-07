@@ -1,6 +1,5 @@
 
-export const assembleColumnHeaders = () => {
-    let columnsHeaders = [
+export const employeesTableColumnHeaders = [
         {
             name: 'DNI',
             width: '15%'
@@ -30,5 +29,3 @@ export const assembleColumnHeaders = () => {
             width: '10%'
         }
     ];
-    return columnsHeaders
-}

@@ -10,7 +10,7 @@ import RegisterProductionView from './Productions/RegisterProduction';
 import SalesReports from './Reports/Menu/SalesReports';
 import RRHHReports from './Reports/Menu/RRHHReports';
 import ProductSalesReport from './Reports/ProductSales/ProductSalesReport';
-import ListEmployees from './Employees/ListEmployees';
+import EmployeesView from './Employees/EmployeesView';
 import RegisterEmployee from './Employees/components/RegisterEmployee';
 import Licenses from './Licenses/components/Licenses';
 import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
@@ -126,7 +126,7 @@ export default function RouterPage(props) {
                 let permissionAccessEmployees = props.accesses[7];
                 employees =
                     <>
-                        <Route path='/app/employees' render={() => <ListEmployees permissionsAccess={permissionAccessEmployees} />}></Route>
+                        <Route path='/app/employees' render={() => <EmployeesView permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees} />}></Route>

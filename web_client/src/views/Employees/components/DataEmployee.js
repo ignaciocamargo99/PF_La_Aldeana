@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import validateFloatNumbers from "../../../utils/validateFloatNumbers";
+import validateFloatNumbers from "utils/validateFloatNumbers";
 import formattedDate from "utils/formattedDate";
 
 export default function DataEmployee(props) {

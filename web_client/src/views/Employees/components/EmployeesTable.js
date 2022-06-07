@@ -2,17 +2,15 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
-import LoaderSpinner from "../../../common/LoaderSpinner";
+import BeShowed from "common/BeShowed";
+import LoaderSpinner from "common/LoaderSpinner";
 import EditEmployee from "./EditEmployee/EditEmployee";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
-import { assembleColumnHeaders } from './TablePagination/assembleColumnHeaders';
-import TablePagination from './TablePagination/TablePagination';
+import EmployeesSearch from './TablePagination/EmployeesSearch';
 
 const PORT = require('../../../config');
 
 export default function EmployeesTable(props) {
-    const columnsHeaders = assembleColumnHeaders();
     const [allEmployees, setAllEmployees] = useState([]);
     const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
     const [employeeDataToRead, setEmployeeDataToRead] = useState({});
@@ -29,16 +27,6 @@ export default function EmployeesTable(props) {
             })
             .catch((e) => console.log(e))
     }, []);
-
-    const deleteEmployee = (i) => {
-        let aux = [];
-        allEmployees?.forEach((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
-        });
-        setAllEmployees(aux);
-    };
 
     const handleEditEmpoyee = (selectedEmployeeForEdit) => {
         setEmployeeDataToEdit(selectedEmployeeForEdit);
@@ -94,12 +82,10 @@ export default function EmployeesTable(props) {
                             </div>
 
                             <div className="viewBody">
-                                <TablePagination
-                                    columnsHeaders={columnsHeaders}
+                                <EmployeesSearch
                                     currentElements={allEmployees}
                                     handleRead={handleReadEmpoyee}
                                     handleEdit={handleEditEmpoyee}
-                                    handleDelete={deleteEmployee}
                                     permissionsAccess={permissionsAccess}
                                 />
                             </div>

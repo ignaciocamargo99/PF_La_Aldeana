@@ -1,34 +1,44 @@
+import Axios from "axios";
+import DeleteButton from "common/Table/DeleteButton";
 import moment from "moment";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
-import ReadEmployeeButton from "../ReadEmployee/ReadEmployeeButton";
-import DeleteEmployeeButton from "../DeleteEmployeeButton";
+import displayError from 'utils/ErrorMessages/errorMessage';
+import displaySuccess from 'utils/SuccessMessages/sucessSweetAlert2';
 import EditEmployeeButton from "../EditEmployee/EditEmployeeButton";
+import ReadEmployeeButton from "../ReadEmployee/ReadEmployeeButton";
+import { employeesTableColumnHeaders } from './getEmployeesTableColumnHeaders';
 
 const PORT = require('../../../../config');
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const EmployeesRealTable = ({ pageElements, handleRead, handleEdit, permissionsAccess }) => {
+
+    const thereAreEmployeesToShow = pageElements && pageElements.length > 0;
+
+    const deleteEmployee = ({ name, dni }) => {
+        Axios.delete(PORT() + `/api/employees/${dni}`)
+            .then(() => {
+                displaySuccess(`'${name}' dado de baja exitosamente.`).then(() => {
+                    window.location.reload();
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+                displayError();
+            });
+    }
+
     return (
         <>
-            <div className="formRow title-searcher">
-                <h4 className="text-secondary">Empleados activos:</h4>
-                <div className="search-input">
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
-                        </div>
-                        <input type="text" className="form-control" placeholder="Buscar empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
-                    </div>
-                </div>
-            </div>
-            {(pageElements && pageElements.length > 0)
-                ?
+            {(!thereAreEmployeesToShow) && (
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen empleados activos con el nombre ingresado...</h4>
+            )}
+
+            {(thereAreEmployeesToShow) && (
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
                         <thead>
                             <tr>
-                                {columnsHeaders?.map((element, i) => {
+                                {employeesTableColumnHeaders?.map((element, i) => {
                                     return (
                                         <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
                                             {element.name}
@@ -45,11 +55,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
-                                            // PORT() === ''
-                                            //     ?
                                             moment(element.date).format('DD-MM-YYYY')
-                                            // :
-                                            // moment(element.date).add(1, 'days').format('DD-MM-YYYY')
                                         }</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadEmployeeButton
@@ -65,9 +71,11 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                             />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteEmployeeButton employee={element} index={i}
-                                                deleteEmployee={handleDelete}
-                                                permissionsAccess={permissionsAccess}
+                                            <DeleteButton
+                                                disable={+permissionsAccess === 1}
+                                                onConfirm={() => { deleteEmployee(element) }}
+                                                warningTitle={`¿Seguro que desea eliminar a ${element.name}?`}
+                                                warningText={'El empleado ya no será visible para el personal de la empresa.'}
                                             />
                                         </td>
                                     </tr>
@@ -76,12 +84,9 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                         </tbody>
                     </table>
                 </div>
-                :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen empleados activos con el nombre ingresado...</h4>
-            }
-
+            )}
         </>
     )
 };
 
-export default Table;
+export default EmployeesRealTable;
