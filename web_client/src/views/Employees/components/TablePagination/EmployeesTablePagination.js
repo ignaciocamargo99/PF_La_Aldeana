@@ -4,7 +4,7 @@ import EmployeesRealTable from './EmployeesRealTable';
 
 const elementsPerPage = 10;
 
-const EmployeesTablePagination = ({ readOnly, filteredElements, permissionsAccess, handleRead, handleEdit, handleDelete, }) => {
+const EmployeesTablePagination = ({ readOnly, filteredElements, permissionsAccess, handleRead, handleEdit, }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
@@ -26,7 +26,6 @@ const EmployeesTablePagination = ({ readOnly, filteredElements, permissionsAcces
                 permissionsAccess={permissionsAccess}
                 handleRead={handleRead}
                 handleEdit={handleEdit}
-                handleDelete={handleDelete}
             >
             </EmployeesRealTable>
             <Pagination

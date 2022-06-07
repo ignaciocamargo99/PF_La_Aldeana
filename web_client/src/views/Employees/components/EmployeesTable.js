@@ -28,16 +28,6 @@ export default function EmployeesTable(props) {
             .catch((e) => console.log(e))
     }, []);
 
-    const deleteEmployee = (i) => {
-        let aux = [];
-        allEmployees?.forEach((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
-        });
-        setAllEmployees(aux);
-    };
-
     const handleEditEmpoyee = (selectedEmployeeForEdit) => {
         setEmployeeDataToEdit(selectedEmployeeForEdit);
         setIsEditing(true);
@@ -96,7 +86,6 @@ export default function EmployeesTable(props) {
                                     currentElements={allEmployees}
                                     handleRead={handleReadEmpoyee}
                                     handleEdit={handleEditEmpoyee}
-                                    handleDelete={deleteEmployee}
                                     permissionsAccess={permissionsAccess}
                                 />
                             </div>

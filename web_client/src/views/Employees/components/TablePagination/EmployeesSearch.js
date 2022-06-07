@@ -2,7 +2,7 @@ import SearchFilter from 'common/SearchFilter';
 import React, { useEffect, useState } from 'react';
 import EmployeesTablePagination from './EmployeesTablePagination';
 
-const EmployeesSearch = ({ currentElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const EmployeesSearch = ({ currentElements, handleRead, handleEdit, permissionsAccess }) => {
 
     const readOnly = +permissionsAccess === 1;
 
@@ -43,7 +43,6 @@ const EmployeesSearch = ({ currentElements, handleRead, handleEdit, handleDelete
                 permissionsAccess={permissionsAccess}
                 handleRead={handleRead}
                 handleEdit={handleEdit}
-                handleDelete={handleDelete}
                 filteredElements={filteredElements}
             />
         </>

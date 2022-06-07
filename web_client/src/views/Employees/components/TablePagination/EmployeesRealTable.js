@@ -1,13 +1,31 @@
+import Axios from "axios";
+import DeleteButton from "common/Table/DeleteButton";
 import moment from "moment";
 import React from 'react';
-import DeleteEmployeeButton from "../DeleteEmployeeButton";
+import displayError from 'utils/ErrorMessages/errorMessage';
+import displaySuccess from 'utils/SuccessMessages/sucessSweetAlert2';
 import EditEmployeeButton from "../EditEmployee/EditEmployeeButton";
 import ReadEmployeeButton from "../ReadEmployee/ReadEmployeeButton";
 import { employeesTableColumnHeaders } from './getEmployeesTableColumnHeaders';
 
-const EmployeesRealTable = ({ pageElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const PORT = require('../../../../config');
+
+const EmployeesRealTable = ({ pageElements, handleRead, handleEdit, permissionsAccess }) => {
 
     const thereAreEmployeesToShow = pageElements && pageElements.length > 0;
+
+    const deleteEmployee = ({ name, dni }) => {
+        Axios.delete(PORT() + `/api/employees/${dni}`)
+            .then(() => {
+                displaySuccess(`'${name}' dado de baja exitosamente.`).then(() => {
+                    window.location.reload();
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+                displayError();
+            });
+    }
 
     return (
         <>
@@ -53,9 +71,11 @@ const EmployeesRealTable = ({ pageElements, handleRead, handleEdit, handleDelete
                                             />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteEmployeeButton employee={element} index={i}
-                                                deleteEmployee={handleDelete}
-                                                permissionsAccess={permissionsAccess}
+                                            <DeleteButton
+                                                disable={+permissionsAccess === 1}
+                                                onConfirm={() => { deleteEmployee(element) }}
+                                                warningTitle={`¿Seguro que desea eliminar a ${element.name}?`}
+                                                warningText={'El empleado ya no será visible para el personal de la empresa.'}
                                             />
                                         </td>
                                     </tr>
