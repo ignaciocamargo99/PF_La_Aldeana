@@ -6,7 +6,7 @@ import BeShowed from "common/BeShowed";
 import LoaderSpinner from "common/LoaderSpinner";
 import EditEmployee from "./EditEmployee/EditEmployee";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
-import TablePagination from './TablePagination/TablePagination';
+import EmployeesSearch from './TablePagination/EmployeesSearch';
 
 const PORT = require('../../../config');
 
@@ -92,7 +92,7 @@ export default function EmployeesTable(props) {
                             </div>
 
                             <div className="viewBody">
-                                <TablePagination
+                                <EmployeesSearch
                                     currentElements={allEmployees}
                                     handleRead={handleReadEmpoyee}
                                     handleEdit={handleEditEmpoyee}

@@ -1,6 +1,5 @@
 
-const getProductsTableColumnHeaders = () => {
-    return [
+export const employeesTableColumnHeaders = [
         {
             name: 'DNI',
             width: '15%'
@@ -30,6 +29,3 @@ const getProductsTableColumnHeaders = () => {
             width: '10%'
         }
     ];
-};
-
-export default getProductsTableColumnHeaders;
