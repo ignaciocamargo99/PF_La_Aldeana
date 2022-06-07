@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
-import ListProducts from './ListProducts/ListProducts';
+import ProductsView from './ListProducts/ProductsView';
 import RegisterFranchise from './Franchises/RegisterFranchise';
 import Franchises from './Franchises/FranchiseTable';
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
@@ -45,7 +45,7 @@ export default function RouterPage(props) {
                 let permissionsAccessProducts = props.accesses[3]
                 products =
                     <>
-                        <Route path='/app/products' render={() => <ListProducts permissionsAccess={permissionsAccessProducts} />}></Route>
+                        <Route path='/app/products' render={() => <ProductsView permissionsAccess={permissionsAccessProducts} />}></Route>
                         <Route path='/app/registerProducts' component={RegisterProductView}></Route>
                         <Route path='/app/productTypes' render={() => <ProductTypesView permissionsAccess={permissionsAccessProducts} />}></Route>
                         <Route path={'/app/registerProductTypes'} component={RegisterTypeProductView}></Route>

@@ -2,31 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Pagination from 'common/TablePagination/Pagination';
 import ProductsTable from './ProductsTable';
 
-const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const elementsPerPage = 10;
+
+const ProductsTablePagination = ({ filteredElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [elementsPerPage] = useState(10);
-    const [filteredElements, setFilteredElements] = useState([]);
-    const [nameSearch, setNameSearch] = useState('');
+    const indexOfLastElement = currentPage * elementsPerPage;
+    const indexOfFirstElement = indexOfLastElement - elementsPerPage;
 
     useEffect(() => {
-        if (nameSearch !== "") {
-            const filteredElementsList = currentElements.filter((elem) => {
-                return elem.name.toUpperCase().includes(nameSearch.toUpperCase());
-            });
-
-            setFilteredElements(filteredElementsList);
-            setCurrentPage(1);
-        } else {
-            setFilteredElements(currentElements);
-            setCurrentPage(1);
-        }
-    }, [nameSearch, currentElements]);
-
-
-    const indexOfLastElement = currentPage * elementsPerPage;
-
-    const indexOfFirstElement = indexOfLastElement - elementsPerPage;
+        setCurrentPage(1);
+    }, [filteredElements]);
 
     const pageElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
@@ -35,9 +21,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
     return (
         <>
             <ProductsTable
-                columnsHeaders={columnsHeaders}
                 pageElements={pageElements}
-                setNameSearch={setNameSearch}
                 handleRead={handleRead}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
@@ -53,4 +37,4 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
     )
 };
 
-export default TablePagination;
+export default ProductsTablePagination;
