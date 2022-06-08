@@ -87,7 +87,7 @@ const ListProductSales = (props) => {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.product_type}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity} uds.</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.quantity} uds.</td>
                                     </tr>
                                 )
                             })}

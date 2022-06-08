@@ -61,9 +61,9 @@ const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, h
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
                                             PORT() === ''
                                                 ?
-                                                moment(element.date_production).format('DD-MM-YYYY')
+                                                moment(element.date_production).format('DD/MM/YYYY')
                                                 :
-                                                moment(element.date_production).add(1, 'days').format('DD-MM-YYYY')}
+                                                moment(element.date_production).add(1, 'days').format('DD/MM/YYYY')}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.total_quantity}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
