@@ -1,5 +1,5 @@
 import React from 'react';
-import useHTTPGet from '../../../../../hooks/useHTTPGet';
+import useHTTPGet from 'hooks/useHTTPGet';
 import SelectPermission from "../SelectPermission";
 
 const PORT = require('../../../../../config');

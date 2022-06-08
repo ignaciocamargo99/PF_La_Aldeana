@@ -1,7 +1,7 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../../../../assets/Buttons.css';
-import BeShowed from "../../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 
 export default function EditProductButton(props) {
     let permissionsAccess = props.permissionsAccess;
