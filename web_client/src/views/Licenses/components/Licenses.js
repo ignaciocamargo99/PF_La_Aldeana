@@ -60,7 +60,7 @@ const Licenses = (props) => {
     }, [reloadList])
 
     useEffect(()=>{
-        setMyDoc(<MyDocument title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        setMyDoc(<MyDocument user={props.user} title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [filter, filteredElements, dateInit, dateFinish, nameSearch])
 
     const setActionLicense = (action, license) => {

@@ -191,7 +191,7 @@ export default function AdvancesTable(props) {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(()=>{
-        setMyDoc(<MyDocument title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [dateInit, dateFinish, filteredElements, nameSearch])
 
     const onChangeDateInit = (e) => {

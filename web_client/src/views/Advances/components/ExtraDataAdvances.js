@@ -64,15 +64,17 @@ export default function ExtraDataAdvances(props) {
         if (props.data.reading || props.data.editing) {
             Axios.get(PORT() + `/api/installments?dniEmployee=${props.data.nroDNI}&date=${props.data.date}`)
                 .then((response) => {
-                    setOption(response.data);
-
                     let aux = 0;
                     response?.data.map(installments => { if (installments.pay) aux += 1 });
                     setPayedCuotes(aux);
+                    setMonths(props.data.months);
+                    data.months = props.data.months;
 
                     inputFirstMonth.current.value = response.data[0].month.slice(0, -17);
                     setFirstMonth(inputFirstMonth.current.value + '-01');
                     data.firstMonth = inputFirstMonth.current.value + '-01';
+                    setOption(response.data);
+                    data.installments = response.data;
                     props.load(data);
                 })
                 .catch((err) => {
