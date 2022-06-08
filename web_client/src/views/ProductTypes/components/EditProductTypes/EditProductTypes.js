@@ -1,9 +1,9 @@
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import DataProductType from '../DataProductType/DataProductType';
-import Buttons from '../../../../common/Buttons';
+import Buttons from 'common/Buttons';
 import Axios from 'axios';
 import displayError from 'utils/ErrorMessages/displayError';
 import loadingMessage from 'utils/LoadingMessages/loadingMessage';
