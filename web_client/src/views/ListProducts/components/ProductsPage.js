@@ -1,25 +1,24 @@
-import Axios from 'axios';
-import { useEffect, useState } from 'react';
-import BeShowed from '../../../common/BeShowed';
-import LoaderSpinner from '../../../common/LoaderSpinner';
-import displayError from '../../../utils/ErrorMessages/errorMesage';
-import EditProducts from './EditProducts/EditProducts';
-import TablePagination from './TablePagination/TablePagination';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Axios from 'axios';
+import BeShowed from 'common/BeShowed';
+import LoaderSpinner from 'common/LoaderSpinner';
+import { useEffect, useState } from 'react';
+import displayError from 'utils/ErrorMessages/errorMesage';
+import EditProducts from './EditProducts/EditProducts';
 import productData from './productData';
+import ProductsSearch from './ProductsSearch';
 import ReadProducts from './ReadProducts/ReadProducts';
 
 const PORT = require('../../../config');
 
-const ProductTable = (props) => {
+const ProductsPage = ({ permissionsAccess, }) => {
     const [products, setProducts] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [isReading, setIsReading] = useState(false);
     const [productToEdit, setProductToEdit] = useState({});
     const [productToRead, setProductToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
-    let permissionsAccess = props.permissionsAccess;
 
     const getProducts = () => {
         Axios.get(PORT() + '/api/products')
@@ -80,25 +79,6 @@ const ProductTable = (props) => {
 
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
-    const columnsHeaders = [
-        {
-            name: 'Nombre',
-            width: '70%'
-        },
-        {
-            name: 'Ver',
-            width: '10%'
-        },
-        {
-            name: 'Editar',
-            width: '10%'
-        },
-        {
-            name: 'Eliminar',
-            width: '10%'
-        }
-    ];
-
     const onClickNewProduct = () => window.location.replace('/app/registerProducts');
 
     return (
@@ -133,14 +113,13 @@ const ProductTable = (props) => {
                                     </BeShowed>
                                 </div>
                                 <div className="viewBody">
-                                    <TablePagination
-                                        columnsHeaders={columnsHeaders}
+                                    <ProductsSearch
                                         currentElements={products}
                                         handleRead={readProduct}
                                         handleEdit={editProduct}
                                         handleDelete={productWasSuccessfullyDeleted}
                                         permissionsAccess={permissionsAccess}
-                                    ></TablePagination>
+                                    ></ProductsSearch>
                                 </div>
                             </BeShowed>
                             <BeShowed show={isEditing}>
@@ -155,4 +134,4 @@ const ProductTable = (props) => {
     );
 };
 
-export default ProductTable;
+export default ProductsPage;

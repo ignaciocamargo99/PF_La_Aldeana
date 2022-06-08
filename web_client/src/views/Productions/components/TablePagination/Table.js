@@ -1,3 +1,4 @@
+import CleanFilters from 'common/CleanFilters';
 import moment from 'moment';
 import React, { useRef } from 'react';
 import DeleteProductionButton from '../DeleteProductionButton';
@@ -22,19 +23,23 @@ const Table = ({ setDateSearch1, setDateSearch2, pageElements, columnsHeaders, h
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Producciones registradas:</h4>
                 <div className="search-input">
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                    <div className="me-3">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                            </div>
+                            <input id="inputSearchName" className="form-control" type="date" onChange={(e) => setDateSearch1(e.target.value)} ref={dateFilter1} />
                         </div>
-                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => setDateSearch1(e.target.value)} ref={dateFilter1} />
                     </div>
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                    <div className="me-3">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                            </div>
+                            <input id="inputSearchName" className="form-control" type="date" onChange={(e) => setDateSearch2(e.target.value)} ref={dateFilter2} />
                         </div>
-                        <input id="inputSearchName" className="form-control" type="date" onChange={(e) => setDateSearch2(e.target.value)} ref={dateFilter2} />
                     </div>
-                    <button id='filterProductionButton' type="button" onClick={onClickFilter} className="btn btn-info filterBtn">Limpiar filtros</button>
+                    <CleanFilters onClick={onClickFilter} />
                 </div>
             </div>
             {pageElements.length > 0 && (

@@ -77,7 +77,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditButton
-                                            link={`${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
+                                            link={readOnly ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
                                             disable={readOnly}
                                         />
                                     </td>

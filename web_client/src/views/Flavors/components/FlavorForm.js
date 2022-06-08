@@ -66,39 +66,39 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     // #region Stock Validators
 
     const isFormStockValid = () => {
-        return isStockValid(formData?.stock);
+        return isStockValid(formData.stock);
     };
 
     const isStockValid = (stock) => {
         if (!(stock)) {
-            return false;
+            return true;
         }
         if (isNaN(stock)) {
             return false;
         }
-        return (stock > 0 && stock.toString().length <= 5);
+        return (stock >= 0 && stock.toString().length <= 5);
     }
-
-    const isFormStockEmpty = () => {
-        return (!(formData?.stock));
-    };
 
     // #endregion
 
     // #region ReorderStock Validators
 
-    const isReorderStockValid = () => {
-        if (formData?.reorderStock) {
-            if (isNaN(formData.reorderStock)) {
-                return false;
-            }
-            return isValidReorderStock(formData.reorderStock);
-        }
-        return true;
+    const isFormReorderStockValid = () => {
+        return isValidReorderStock(formData.reorderStock);
     };
 
     const isValidReorderStock = (reorderStock) => {
+        if (!(reorderStock)) {
+            return false;
+        }
+        if (isNaN(reorderStock)) {
+            return false;
+        }
         return (reorderStock > 0 && reorderStock.toString().length <= 5);
+    };
+
+    const isFormReorderStockEmpty = () => {
+        return (!(formData?.reorderStock));
     };
 
     // #endregion
@@ -146,17 +146,17 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         }
         if (!(isFormStockValid())) {
             if (warn) {
-                if (isFormStockEmpty()) {
-                    warnSweetAlert('Ingrese el stock del sabor.');
-                } else {
-                    warnSweetAlert('Ingrese el stock del sabor correctamente.');
-                }
+                warnSweetAlert('Ingrese el stock del sabor correctamente.');
             }
             return false;
         }
-        if (!(isReorderStockValid())) {
+        if (!(isFormReorderStockValid())) {
             if (warn) {
-                warnSweetAlert('Stock de reorden inválido.');
+                if (isFormReorderStockEmpty()) {
+                    warnSweetAlert('Ingrese el stock de reorden.');
+                } else {
+                    warnSweetAlert('Stock de reorden inválido.');
+                }
             }
             return false;
         }
@@ -182,6 +182,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     // #region OnInputChange
 
     const genericNumberInputErrorText = 'Ingrese un valor mayor a 0 y de hasta 5 cifras';
+    const genericNumberInputErrorText2 = 'Ingrese un valor mayor o igual a 0 y de hasta 5 cifras';
 
     // #region OnNameChange
 
@@ -243,7 +244,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         }
 
         setStockInputStyle(invalidInputStyle);
-        setStockInputErrorText(genericNumberInputErrorText);
+        setStockInputErrorText(genericNumberInputErrorText2);
     };
 
     // #endregion
@@ -258,11 +259,16 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
     };
 
     const checkReorderStockInputError = (reorderStockInputValue) => {
-        if ((!reorderStockInputValue) || (isValidReorderStock(reorderStockInputValue))) {
+        if (!reorderStockInputValue) {
             setReorderStockInputStyle(defaultInputStyle);
             setReorderStockInputErrorText('');
             return;
-        };
+        }
+        if (isValidReorderStock(reorderStockInputValue)) {
+            setReorderStockInputStyle(validInputStyle);
+            setReorderStockInputErrorText('');
+            return;
+        }
 
         setReorderStockInputStyle(invalidInputStyle)
         setReorderStockInputErrorText(genericNumberInputErrorText);
@@ -372,14 +378,14 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Stock actual*</label>
+                        <label >Stock actual en baldes (opcional)</label>
                     </div>
                     <div className="form-control-input">
                         <input
                             className={stockInputStyle}
                             onChange={handleStockChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
-                            placeholder="Ingrese stock actual..."
+                            placeholder={isReading ? "" : "Ingrese stock actual..."}
                             disabled={isReading}
                             type="number"
                             value={formData.stock}
@@ -389,7 +395,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Stock de Reorden (opcional)</label>
+                        <label >Stock de reorden*</label>
                     </div>
                     <div className="form-control-input">
                         <input
