@@ -62,10 +62,24 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         textAlign: 'left',
+        padding: '1mm',
     },
     money: {
         fontSize: 10,
         textAlign: 'right',
+        padding: '1mm',
+    },
+    total: {
+        fontSize: 10,
+        textAlign: 'right',
+        backgroundColor: '#2284B6',
+        color: 'white',
+        padding: '1mm',
+    },
+    division: {
+        flexDirection: 'row',
+        backgroundColor: '#808080',
+        color: 'white',
     },
     header: {
         fontSize: 12,
