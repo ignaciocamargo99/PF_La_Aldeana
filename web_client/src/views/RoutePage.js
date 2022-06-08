@@ -94,7 +94,7 @@ export default function RouterPage(props) {
                 reportsSales =
                     <>
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
-                        <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
+                        <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports}  user={props.user}/>}></Route>
                     </>
             }
 
@@ -127,9 +127,9 @@ export default function RouterPage(props) {
                 employees =
                     <>
                         <Route path='/app/employees' render={() => <EmployeesView permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees} />}></Route>
+                        <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees}  user={props.user} />}></Route>
+                        <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees}  user={props.user} />}></Route>
+                        <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees}  user={props.user}/>}></Route>
                         <Route path='/app/employeesSchedules' render={() => <EmployeesSchedulesView permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
                         <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>

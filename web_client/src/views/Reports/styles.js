@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: '-1px',
     },
+    col4: {
+        borderWidth: '2px',
+        textAlign: 'center',
+        margin: '-1px',
+        width: '17.4cm',
+    },
     col3: {
         borderWidth: '2px',
         textAlign: 'center',
