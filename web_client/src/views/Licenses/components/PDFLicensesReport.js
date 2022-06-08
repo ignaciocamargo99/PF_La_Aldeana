@@ -18,10 +18,12 @@ export default function MyDocument (props) {
               <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
               <Text style={styles.mainTitle}>~ Licencias ~{'\n'}</Text>
               <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
               <Text style={styles.header}>{props.title}</Text>
             </Text>
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
           </View>
+          <View style={styles.section}>
             <Text style={styles.title}>Licencias</Text>
             <View style={styles.row}>
               <View style={styles.col7}>
@@ -61,6 +63,7 @@ export default function MyDocument (props) {
                 </>
               )}
             })}
+            </View>
             <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
               `${pageNumber} / ${totalPages}`
             )} fixed />

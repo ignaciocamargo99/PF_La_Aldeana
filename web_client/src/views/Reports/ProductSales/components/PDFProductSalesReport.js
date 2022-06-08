@@ -13,13 +13,14 @@ export default function MyDocument (props) {
       <Document>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
         <View style={styles.sectionFace} fixed>
-            <Text style={{textAlign: 'left', width: '400px'}}>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
               <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
               <Text style={styles.mainTitle}>~ Ventas de productos ~{'\n'}</Text>
               <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
               <Text style={styles.header}>{props.title}</Text>
             </Text>
-            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
           </View>
           <View style={styles.section}>
             <Text style={styles.title}>Top 10 productos con más unidades vendidas</Text>
@@ -47,8 +48,22 @@ export default function MyDocument (props) {
               )
             })}
           </View>
+<Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+              `${pageNumber} / ${totalPages}`
+            )} fixed />
         </Page>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
+        <View style={styles.sectionFace} fixed>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Ventas de productos  ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
+          <View style={styles.section}>
             <Text style={styles.title}>Total de ventas de tipos productos por unidad</Text>
             <Image style={styles.image} src={dataChartToURL(props.typesChart)}></Image>
             <Text style={styles.detail}>Total de ventas: {props.typesChart.total} uds.</Text>
@@ -74,9 +89,24 @@ export default function MyDocument (props) {
                 </>
               )
             })}
+            </View>
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
         </Page>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
-            <Text style={styles.title}>Total de ventas de productos por unidad</Text>
+        <View style={styles.sectionFace} fixed>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Ventas de productos ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
+          <View style={styles.section}>
+          <Text style={styles.title}>Total de ventas de productos por unidad</Text>
             <View style={styles.row}>
               <View style={styles.col3}>
                 <Text style={styles.subtitle}>Nombre del producto</Text>
@@ -105,6 +135,10 @@ export default function MyDocument (props) {
                 </>
               )
             })}
+            </View>
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
         </Page>
       </Document>
     </>

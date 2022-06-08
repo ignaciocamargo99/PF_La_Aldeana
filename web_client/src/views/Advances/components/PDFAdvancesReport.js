@@ -7,6 +7,8 @@ import dateText from 'utils/DateFormat/dateText';
 
 // Create Document Component
 export default function MyDocument (props) {
+  let total = 0;
+  let pay = 0;
   return (
     <>
       <Document>
@@ -16,10 +18,12 @@ export default function MyDocument (props) {
               <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
               <Text style={styles.mainTitle}>~ Adelantos ~{'\n'}</Text>
               <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
               <Text style={styles.header}>{props.title}</Text>
             </Text>
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
           </View>
+          <View style={styles.section}>
             <Text style={styles.title}>Adelantos</Text>
             <View style={styles.row}>
               <View style={styles.col8}>
@@ -38,29 +42,43 @@ export default function MyDocument (props) {
                 <Text style={styles.subtitle}>Pagado hasta la fecha</Text>
               </View>
             </View>
-            {props.advances?.map(license => {
+            {props.advances?.map(advance => {
+              total += advance.amount;
+              pay += advance.pay;
               return (
                 <>
                   <View style={styles.row}>
                     <View style={styles.col8}>
-                      <Text style={styles.text}>{license.nroDNI}</Text>
+                      <Text style={styles.text}>{advance.nroDNI}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.text}>{license.fullName}</Text>
+                      <Text style={styles.text}>{advance.fullName}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.text}>{dateBDToString(license.date, 'Es')}</Text>
+                      <Text style={styles.text}>{dateBDToString(advance.date, 'Es')}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{license.amount}</Text>
+                      <Text style={styles.money}>{advance.amount}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{license.pay}</Text>
+                      <Text style={styles.money}>{advance.pay}</Text>
                     </View>
                   </View>
                 </>
               )
             })}
+            <View style={styles.row}>
+              <View style={styles.col4}>
+                <Text style={styles.text}>Total</Text>
+              </View>
+              <View style={styles.col7}>
+                <Text style={styles.money}>{total}</Text>
+              </View>
+              <View style={styles.col7}>
+                <Text style={styles.money}>{pay}</Text>
+              </View>
+            </View>
+            </View>
             <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
               `${pageNumber} / ${totalPages}`
             )} fixed />

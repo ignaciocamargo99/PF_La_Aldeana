@@ -21,6 +21,8 @@ import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFAdvancesReport';
 import dateText from 'utils/DateFormat/dateText';
 import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
+import dateFormat from 'utils/DateFormat/dateFormat';
+import getLastWeeksDate from '../../../utils/DateFormat/getLastWeeksDate';
 
 const PORT = require('../../../config');
 
@@ -38,8 +40,10 @@ export default function AdvancesTable(props) {
 
     const dateInitRef = useRef();
     const dateFinishRef = useRef();
-    const [dateInit, setDateInit] = useState(null);
-    const [dateFinish, setDateFinish] = useState(null);
+    const [dateInit, setDateInit] = useState(dateFormat(getLastWeeksDate()));
+    const [dateFinish, setDateFinish] = useState(dateFormat(new Date()));
+    const [total, setTotal] = useState(0);
+    const [pay, setPay] = useState(0);
 
     useEffect(() => {
         Axios.get(PORT() + '/api/advances')
@@ -113,14 +117,22 @@ export default function AdvancesTable(props) {
 
     useEffect(() => {
         let auxAdvances = advances;
+        let auxTotal = 0;
+        let auxPay = 0;
         if (dateInit) auxAdvances = auxAdvances.filter((elem) => {
             return elem.date >= dateInit;
         });
         if (dateFinish) auxAdvances = auxAdvances.filter((elem) => {
             return elem.date <= dateFinish;
         });
+        auxAdvances.map(person => {
+            auxTotal += person.amount;
+            auxPay += person.pay;
+        });
+        setTotal(auxTotal);
+        setPay(auxPay);
         setListTable(auxAdvances);
-    }, [dateFinish, dateInit]);
+    }, [dateFinish, dateInit, advances]);
 
     useEffect(() => {
         if (nameSearch !== "") {
@@ -179,7 +191,7 @@ export default function AdvancesTable(props) {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(()=>{
-        setMyDoc(<MyDocument title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [dateInit, dateFinish, filteredElements, nameSearch])
 
     const onChangeDateInit = (e) => {
@@ -222,19 +234,6 @@ export default function AdvancesTable(props) {
                     <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                 </BeShowed>
             </div>
-            <div className="formRow">
-                <label>Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-            </div>
-            <div className="formRow d-flex justify-content-between">
-                <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateFrom' ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }}></input>
-                </div>
-                <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateTo' ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }}></input>
-                </div>
-            </div>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
                 : advances.length === 0
@@ -246,6 +245,27 @@ export default function AdvancesTable(props) {
                     : (
                         <BeShowed show={!isEditing && !isReading}>
                             <div className="viewBody">
+                                <label className="col-sm-6">Dinero total prestado: ${total}</label>
+                                <label className="col-sm-6">Dinero total pagado: ${pay}</label>
+                                <div className="formRow d-flex justify-content-between">
+                                    <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                                    <div className="input-group" style={{marginLeft: 'auto'}}>
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                        </div>
+                                        <div  style={{ textAlign: 'right' }} >
+                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                            </div>
+                                        </div>
+                                        <div className="input-group">
+                                            <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                            </div>
+                                            <div style={{ textAlign: 'right' }} >
+                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="formRow title-searcher">
                                     <h4 className="text-secondary">Adelantos:</h4>
                                     <div className="search-input">
@@ -278,8 +298,8 @@ export default function AdvancesTable(props) {
                                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
                                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
                                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
-                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.amount}</td>
-                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.pay}</td>
+                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.amount}</td>
+                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.pay}</td>
                                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                                 <ReadAdvancesButton advances={element} read={readAdvances} />
                                                             </td>
