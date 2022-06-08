@@ -2,14 +2,14 @@ import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
-import Buttons from '../../../../common/Buttons';
-import successMessage from '../../../../utils/SuccessMessages/successMessage';
-import validationProductRegister from '../../../../utils/Validations/validationProductRegister';
+import Breadcrumb from 'common/Breadcrumb';
+import Buttons from 'common/Buttons';
+import successMessage from 'utils/SuccessMessages/successMessage';
+import validationProductRegister from 'utils/Validations/validationProductRegister';
 import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
-import displayError from "../../../../utils/ErrorMessages/displayError";
+import displayError from "utils/ErrorMessages/displayError";
 import loadingMessage from 'utils/LoadingMessages/loadingMessage';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
@@ -17,19 +17,9 @@ const PORT = require('../../../../config');
 
 const EditProducts = (props) => {
     const [data, setData] = useState(props.productToEdit);
-    const [nameProductChild, setNameProductChild] = useState(props.productToEdit.name);
-    const [priceProductChild, setPriceProductChild] = useState(props.productToEdit.price);
-    const [sectorProductChild, setSectorProductChild] = useState(props.productToEdit.id_sector);
-    const [typeProductChild, setTypeProductChild] = useState(props.productToEdit.id_product_type);
-    const [imgProductChild, setImgProductChild] = useState(props.productToEdit.image);
     const [ready, setReady] = useState(true);
 
     const load = (childData) => {
-        setNameProductChild(childData.name);
-        setPriceProductChild(childData.price);
-        setSectorProductChild(childData.id_sector);
-        setTypeProductChild(childData.id_product_type);
-        setImgProductChild(childData.img);
         setData(childData);
     }
 
