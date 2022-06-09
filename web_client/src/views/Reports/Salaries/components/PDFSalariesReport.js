@@ -3,6 +3,7 @@ import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import dataChartToURL from '../../../../utils/dataChartToURL';
 import styles from '../../styles';
+import dateText from 'utils/DateFormat/dateText';
 
 // Create Document Component
 export default function MyDocument (props) {
@@ -12,14 +13,15 @@ export default function MyDocument (props) {
       <Document>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Salarios - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
           <View style={styles.sectionFace}>
-            <Text style={styles.header}>{dateFormat(new Date())}</Text>
-            <Text style={styles.mainTitle}>~ Salarios ~</Text>
-            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" />
-            <Text style={styles.detail}>{props.description}</Text>
-            <Text style={styles.header}>{props.title}</Text>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Salarios ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
           </View>
-        </Page>
-        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Salarios - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
             <Text style={styles.title}>Análisis de salarios</Text>
             <Image style={styles.image} src={dataChartToURL(props.totalisedChart)}></Image>
             <Text style={styles.detail}>Total de dinero pagado: $ {props.totalisedChart.total}</Text>
@@ -45,9 +47,22 @@ export default function MyDocument (props) {
                 </>
               )
             })}
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
         </Page>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Salarios - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
-            <Text style={styles.title}>Salarios</Text>
+        <View style={styles.sectionFace}>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),true, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Salarios ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
+          <Text style={styles.title}>Salarios</Text>
             <View style={styles.row}>
               <View style={styles.col7}>
                 <Text style={styles.subtitle}>Nombre</Text>
@@ -100,6 +115,9 @@ export default function MyDocument (props) {
                 </>
               )
             })}
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
         </Page>
       </Document>
     </>

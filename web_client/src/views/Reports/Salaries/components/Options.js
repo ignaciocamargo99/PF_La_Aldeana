@@ -9,7 +9,13 @@ import Viewer from '../../ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFSalariesReport';
 
 const PORT = require('../../../../config');
-
+function trunc (x, posiciones = 0) {
+    var s = x.toString()
+    var l = s.length
+    var decimalLength = s.indexOf('.') + 1
+    var numStr = s.substr(0, decimalLength + posiciones)
+    return Number(numStr)
+  }
 const Options = (props) => {
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
@@ -50,19 +56,21 @@ console.log(props.dateFrom , props.dateTo , props.load)
                                 totals.push(e);
                             }
                         });
+                        datTotalised.forEach((e,i)=>{datTotalised[i]=trunc((e/data[1][5].quantity*100), 2)});
+                        console.log(datTotalised)
 
                         const totalised = {
                             type: 'pie',
                             labels: labelsTotalised,
                             datasets: [
                             {
-                                label: '$',
+                                label: '%',
                                 data: datTotalised,
                             },
                             ],
                             total: data[1][5].quantity
                         };
-                        setMyDoc(<MyDocument title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
+                        setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
                         salaries={salaries} totalisedChart={totalised} totals={totals} />);
                     }
 
@@ -74,10 +82,11 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     props.setLoaded(false);
                 })
         } else {
-            let date = new Date();
+            let dat = new Date();
+            let date = new Date(dat.getFullYear(), dat.getMonth() -1, 1);
             let dateString = dateFormat(date);
 
-            let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            let startDate = new Date(date.getFullYear(), date.getMonth() -1, 1);
             let prevMounth = dateFormat(startDate);
 
             inputDateFrom.current.max = dateString;
@@ -166,7 +175,7 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
+            <Viewer MyDoc={MyDoc}reportOf='salarios' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
             " a " + !props.dateTo?new Date().toLocaleDateString():dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );

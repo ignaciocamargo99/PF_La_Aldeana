@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     sectionFace: {
         alignContent: 'center',
         flexDirection: 'row',   
+        marginBottom: '5mm',
     },
     section: {
         margin: 10,

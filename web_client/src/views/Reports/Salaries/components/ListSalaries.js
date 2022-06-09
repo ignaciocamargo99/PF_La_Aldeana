@@ -3,6 +3,7 @@ import Pagination from '../../../../common/TablePagination/Pagination'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import dateText from 'utils/DateFormat/dateText';
 
 const ListSalaries = (props) => {
 
@@ -130,6 +131,13 @@ const ListSalaries = (props) => {
                     </table>
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+            </BeShowed>
+
+            <BeShowed show={props.salaries.length === 0}>
+                <br />
+                <div className="text-center">
+                    <h2>No se encontraron salarios para el período ({dateText(props.from, true, true)} - {dateText(props.to, true, true)})</h2>
+                </div>
             </BeShowed>
         </>
     )

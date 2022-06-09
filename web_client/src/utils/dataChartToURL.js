@@ -16,7 +16,7 @@ export default function dataChartToURL (dataChart) {
         else url += data;
     });
     
-    url += "]}]}}";
+    url += ']}]}}';
 
     return url
 
