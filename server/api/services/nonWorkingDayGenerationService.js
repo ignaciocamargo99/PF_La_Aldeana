@@ -1,12 +1,13 @@
-const { nonWorkingDayGenerationDB } = require('../db/nonWorkingDayGenerationDB'); 
+const {
+    nonWorkingDayGenerationDB
+} = require('../db/nonWorkingDayGenerationDB');
 
-const generateNonWorkingDays = async (newSale) => {
+const generateNonWorkingDays = async () => {
     try {
-        await nonWorkingDayGenerationDB(newSale);
-    }
-    catch (error) {
+        await nonWorkingDayGenerationDB();
+    } catch (error) {
         throw Error(error);
-    };
+    }
 };
 
-module.exports = { generateNonWorkingDays }
+module.exports = { generateNonWorkingDays };
