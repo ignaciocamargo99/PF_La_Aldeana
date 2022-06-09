@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '../../../../common/TablePagination/Pagination';
+import Pagination from 'common/TablePagination/Pagination';
 import Table from './Table';
 
 const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
@@ -12,7 +12,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = currentElements.filter((elem) => {
-                return elem.name.toUpperCase().includes(nameSearch.toUpperCase());
+                return (elem.name).toUpperCase().includes(nameSearch.toUpperCase());
             });
 
             setFilteredElements(filteredElementsList);
@@ -22,7 +22,6 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
             setCurrentPage(1);
         }
     }, [nameSearch, currentElements]);
-
 
     const indexOfLastElement = currentPage * elementsPerPage;
 

@@ -17,6 +17,9 @@ namespace desktop_employee
     {
         //se define el ancho del borde del form
         private int borderSize = 2;
+        bool isLoginOK = false;
+        bool isLoginAsistanceDNIOK = false;
+
         public frmMain()
         {
             InitializeComponent();
@@ -94,23 +97,35 @@ namespace desktop_employee
 
         private void ibtnEmpleados_Click(object sender, EventArgs e)
         {
-            ibtnEmpleados.Enabled = false;
-            ibtnAsistencia.Enabled = true;
-            ibtnAsistenciaDNI.Enabled = true;
-            for (int i = 0; i < Application.OpenForms.Count; i++)
+            frmLogin login = new();
+            login.ShowDialog();
+            isLoginOK = login.isLogin();
+            
+            if (isLoginOK)
             {
-                var tag = Application.OpenForms[i].Tag;
-                if (tag == "Asis_Dni" || tag == "Asis_Hue")
+                int perm = login.permissions();
+                if (perm != 0)
                 {
-                    Application.OpenForms[i].Close();
-                    i--;
-                }
+                    ibtnEmpleados.Enabled = false;
+                    ibtnAsistencia.Enabled = true;
+                    ibtnAsistenciaDNI.Enabled = true;
+                    for (int i = 0; i < Application.OpenForms.Count; i++)
+                    {
+                        var tag = Application.OpenForms[i].Tag;
+                        if (tag == "Asis_Dni" || tag == "Asis_Hue")
+                        {
+                            Application.OpenForms[i].Close();
+                            i--;
+                        }
+                    }
+                    frmEmployees employees = new();
+                    employees.Tag = "Empl_Main";
+                    employees.Permisos = perm;
+                    lblTitulo.Text = "EMPLEADOS";
+                    employees.PnlPadre = pnlDesktop;
+                    OpenForm(employees);
+                }                             
             }
-            frmEmployees employees = new();
-            employees.Tag = "Empl_Main";
-            lblTitulo.Text = "EMPLEADOS";
-            employees.PnlPadre = pnlDesktop;
-            OpenForm(employees);
         }
 
         private void ibtnAsistencia_Click(object sender, EventArgs e)
@@ -121,7 +136,7 @@ namespace desktop_employee
             for (int i = 0; i < Application.OpenForms.Count; i++)
             {
                 var tag = Application.OpenForms[i].Tag;
-                if (tag == "Asis_Dni" || tag == "Empl_Main" || tag == "Empl_Sub")
+                if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Dni")
                 {
                     Application.OpenForms[i].Close();
                     i--;
@@ -135,22 +150,33 @@ namespace desktop_employee
 
         private void ibtnAsistenciaDNI_Click(object sender, EventArgs e)
         {
-            ibtnEmpleados.Enabled = true;
-            ibtnAsistencia.Enabled = true;
-            ibtnAsistenciaDNI.Enabled = false;
-            for (int i = 0; i < Application.OpenForms.Count; i++)
+            if (!isLoginAsistanceDNIOK)
             {
-                var tag = Application.OpenForms[i].Tag;
-                if (tag == "Asis_Hue" || tag == "Empl_Main" || tag == "Empl_Sub")
-                {
-                    Application.OpenForms[i].Close();
-                    i--;
-                }
+                frmLoginAsistanceDNI loginDNI = new();
+                loginDNI.ShowDialog();
+                isLoginOK = loginDNI.isLogin();
+                if (isLoginOK) isLoginAsistanceDNIOK = true;
             }
-            frmAssistanceDNI assitenceDNI = new();
-            assitenceDNI.Tag = "Asis_Dni";
-            lblTitulo.Text = "ASISTENCIA con DNI";
-            OpenForm(assitenceDNI);
+
+            if (isLoginAsistanceDNIOK)
+            {
+                ibtnEmpleados.Enabled = true;
+                ibtnAsistencia.Enabled = true;
+                ibtnAsistenciaDNI.Enabled = false;
+                for (int i = 0; i < Application.OpenForms.Count; i++)
+                {
+                    var tag = Application.OpenForms[i].Tag;
+                    if (tag == "Empl_Main" || tag == "Empl_Sub" || tag == "Asis_Hue")
+                    {
+                        Application.OpenForms[i].Close();
+                        i--;
+                    }
+                }
+                frmAssitanceDni assistanceDni = new();
+                assistanceDni.Tag = "Asis_Dni";
+                lblTitulo.Text = "ASISTENCIA con DNI";
+                OpenForm(assistanceDni);
+            }
         }
 
         private void OpenForm(Form form)

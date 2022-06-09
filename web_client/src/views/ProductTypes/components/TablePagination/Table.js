@@ -1,35 +1,34 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
-import DeleteProductButton from '../DeleteProductButton';
-import EditProductButton from '../EditProducts/EditProductButton';
-import ReadProductButton from "../ReadProducts/ReadProductButton";
+import DeleteProductTypeButton from "../DeleteProductTypeButton";
+// import DeleteUserButton from '../DeleteProductTypeButton';
+import EditProductTypeButton from '../EditProductTypes/EditProductTypeButton';
+import ReadProductTypeButton from "../ReadProductTypes/ReadProductTypeButton";
 
 const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Productos disponibles:</h4>
+                <h4 className="text-secondary">Tipos de producto disponibles:</h4>
                 <div className="search-input">
                     <div className="input-group">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
                         </div>
-                        <input type="text" className="form-control" placeholder="Buscar producto..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                        <input type="text" className="form-control" placeholder="Buscar por nombre..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
                     </div>
                 </div>
             </div>
-            {(pageElements && pageElements.length > 0)
-                ?
+            {pageElements.length > 0 && (
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
                         <thead>
                             <tr>
                                 {columnsHeaders?.map((element, i) => {
                                     return (
-                                        <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                            {element.name}
-                                        </th>
+                                        <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>{element.name}</th>
                                     )
                                 })}
                             </tr>
@@ -39,14 +38,16 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                 return (
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.SectorModel.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <ReadProductButton product={element} read={handleRead} />
+                                            <ReadProductTypeButton data={element} read={handleRead} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditProductButton product={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
+                                            <EditProductTypeButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} />
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <DeleteProductButton deleteProduct={handleDelete} product={element} index={i} permissionsAccess={permissionsAccess} />
+                                            <DeleteProductTypeButton data={element} delete={handleDelete} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )
@@ -54,10 +55,10 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                         </tbody>
                     </table>
                 </div>
-                :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
-            }
-
+            )}
+            {pageElements.length === 0 && (
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un tipo de producto con el nombre ingresado...</h4>
+            )}
         </>
     )
 };

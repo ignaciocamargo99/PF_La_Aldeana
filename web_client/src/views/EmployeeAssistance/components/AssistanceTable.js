@@ -141,7 +141,7 @@ export default function EmployeesTable(props) {
                             </div>
 
                             <div className="viewBody">
-                                <TablePagination
+                                <TablePagination user={props.user}
                                     columnsHeaders={columnsHeaders}
                                     currentElements={assistance}
                                     handleRead={readAssistance}

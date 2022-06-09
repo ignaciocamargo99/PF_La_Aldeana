@@ -34,7 +34,7 @@ const ShowSelectedEmployee = (props) => {
                                 <label>Cargo: </label>
                             </div>
                             <div className="col">
-                                <label>{props.selectedEmployee.name_charge}</label>
+                                <label>{props.selectedEmployee.charges[0].chargeName}</label>
                             </div>
                         </div>
                         <div className="row">

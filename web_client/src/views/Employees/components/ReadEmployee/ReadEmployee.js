@@ -1,6 +1,6 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import DataEmployee from '../DataEmployee';
 import ExtraDataEmployee from '../ExtraDataEmployee';
 

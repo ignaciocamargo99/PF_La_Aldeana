@@ -1,12 +1,12 @@
 import Axios from 'axios';
 import React, { useState } from 'react';
 import swal from 'sweetalert';
-import FlavorsTablePagination from './FlavorsTablePagination';
+import FlavorsSearch from './FlavorsSearch';
 import displayError from 'utils/ErrorMessages/displayError';
 
 const PORT = require('../../../config');
 
-const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
+const FlavorsViewBody = ({ initialFlavors, permissionsAccess, flavorFamilies, flavorTypes, }) => {
 
     const orderFlavorsByFamilyFlavorName = (flavors) => {
         return flavors.sort((a, b) => {
@@ -58,50 +58,12 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
         )
     }
     else {
-        const columnsHeaders = [
-            {
-                name: 'Nombre',
-                width: '21%'
-            },
-            {
-                name: 'Familia',
-                width: '15%'
-            },
-            {
-                name: 'Tipo',
-                width: '10%'
-            },
-            {
-                name: 'Stock',
-                width: '10%'
-            },
-            {
-                name: 'Stock de Reorden',
-                width: '10%'
-            },
-            {
-                name: 'Precio',
-                width: '10%'
-            },
-            {
-                name: 'Ver',
-                width: '8%'
-            },
-            {
-                name: 'Editar',
-                width: '8%'
-            },
-            {
-                name: 'Eliminar',
-                width: '8%'
-            }
-        ];
-
         return (
             <>
                 <div style={{ display: 'none' }}>{document.title = "Sabores"}</div>
-                <FlavorsTablePagination
-                    columnsHeaders={columnsHeaders}
+                <FlavorsSearch
+                    flavorFamilies={flavorFamilies}
+                    flavorTypes={flavorTypes}
                     currentElements={flavors}
                     deleteFlavor={deleteFlavor}
                     permissionsAccess={permissionsAccess}
@@ -111,4 +73,4 @@ const ListFlavorsTable = ({ initialFlavors, permissionsAccess }) => {
     }
 };
 
-export default ListFlavorsTable;
+export default FlavorsViewBody;

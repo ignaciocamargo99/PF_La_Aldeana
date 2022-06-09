@@ -354,7 +354,6 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                                 let minutesTo = new Date(assistance.date_egress).getMinutes();
                                                 let yearTo = new Date(assistance.date_egress).getFullYear();
                                                 let isNonWorked = false;
-                                                let isNonWorkedTo = false;
                                                 let isWeekend = (date === 0 || (date === 6 && hours >= 13 ? true : (hours === 13 && minutes > 0)));
                                                 let isWeekendTo = (dateTo === 0 || (dateTo === 6 && hoursTo >= 13 ? true : (hoursTo === 13 && minutesTo > 0)));
                                                 let absHs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
@@ -364,7 +363,7 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                                                     if (holiday.day === dayTo && holiday.month === monthTo) isNonWorkedTo = true;
                                                 });
                                                 
-                                                if (isDayOff(day, daysOff)) aux[4].hs_number += hs;
+                                                if (isDayOff(day, daysOff)) aux[4].hs_number += absHs;
                                                 else if (isNonWorked) {
                                                     if (isWeekend === isWeekendTo) {
                                                         let hs = (new Date(assistance.date_egress).getTime() - new Date(assistance.date_entry).getTime())/1000/60/60;
