@@ -87,8 +87,12 @@ export default function InstallmentTable ({ installments, reading }) {
                     <div className="formRow title-searcher">
                         <h4 className="text-secondary">Cuotas de plan de pago:</h4>
                         <div className="search-input">
-                            <FontAwesomeIcon icon={faSearch} />
-                            <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                </div>
+                                <input id="inputSearchName" className="form-control"  type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                            </div>
                         </div>
                     </div>
                     <div className="table-responsive-md">
@@ -105,20 +109,21 @@ export default function InstallmentTable ({ installments, reading }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {console.log(currentElements)}
                                 {currentElements?.map((element, i) => {
                                     return (
                                         <tr key={i}>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.label}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={reading}>
-                                                    <div className="form-control-input">
-                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
+                                                    <div className="form-control-input input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input style={{ textAlign: 'right'}} className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>
                                                 <BeShowed show={!reading}>
-                                                    <div className="form-control-input">
-                                                        <input className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
+                                                    <div className="form-control-input input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input style={{ textAlign: 'right'}} className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>
                                             </td>

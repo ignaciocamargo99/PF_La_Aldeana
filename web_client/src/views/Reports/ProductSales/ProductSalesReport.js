@@ -32,7 +32,7 @@ const ProductSalesReport = (props) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} permissionsAccess={permissionsAccess} />
+                    <Options loaded={loaded} setLoaded={setLoaded} load={load} setLoad={setLoad} user={props.user} permissionsAccess={permissionsAccess} />
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load}>

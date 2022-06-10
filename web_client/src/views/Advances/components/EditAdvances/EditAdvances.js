@@ -49,18 +49,28 @@ export default function EditAdvances(props) {
 
         if (data.installments[0].month) {
             if (parseInt(data.installments[0].month.slice(0, -5)) === parseInt(data.date.slice(0, -5))) {
-                if (parseInt(data.installments[0].month.slice(5, -3)) > parseInt(data.date.slice(5, -3))) {
-                    if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
-                    else setReady(false);
+                if (parseInt(data.installments[0].month.slice(5, -3)) >= parseInt(data.date.slice(5, -3))) {
+                    if (data.dniEmployee && data.date && data.amount && data.installments && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
+                    else {
+                        setReady(false);
+                    }
                 }
-                else setReady(false);
+                else {
+                    setReady(false);
+                }
             } else if (parseInt(data.installments[0].month.slice(0, -5)) > parseInt(data.date.slice(0, -5))) {
                 if (data.dniEmployee && data.date && data.amount && data.installments && data.months && (dataBack.amount !== data.amount || dataBack.months !== data.months || aux)) setReady(true);
-                else setReady(false);
+                else {
+                    setReady(false);
+                }
             }
-            else setReady(false);
+            else {
+                setReady(false);
+            }
         }
-        else setReady(false);
+        else {
+            setReady(false);
+        }
 
     }
 

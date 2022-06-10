@@ -26,7 +26,7 @@ se darán de baja todos los sabores correspondientes al mismo. Esto no se podrá
         Axios.delete(PORT() + `/api/flavorTypes/${idFlavorType}`)
             .then(() => {
                 displaySuccess(`'${name}' dado de baja exitosamente.`).then(() => {
-                    window.location.reload(false);
+                    window.location.reload();
                 })
             })
             .catch((error) => {
