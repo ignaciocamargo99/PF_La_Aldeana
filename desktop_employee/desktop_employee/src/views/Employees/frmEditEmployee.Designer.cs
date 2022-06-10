@@ -180,6 +180,7 @@ namespace desktop_employee.src.views.Employees
             // btnAceptar
             // 
             this.btnAceptar.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnAceptar.AutoSize = true;
             this.btnAceptar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.btnAceptar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.btnAceptar.BorderColor = System.Drawing.Color.Black;
@@ -207,9 +208,9 @@ namespace desktop_employee.src.views.Employees
             this.btnComprobarII.IconChar = FontAwesome.Sharp.IconChar.Question;
             this.btnComprobarII.IconColor = System.Drawing.Color.Blue;
             this.btnComprobarII.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnComprobarII.Location = new System.Drawing.Point(436, 380);
+            this.btnComprobarII.Location = new System.Drawing.Point(494, 380);
             this.btnComprobarII.Name = "btnComprobarII";
-            this.btnComprobarII.Size = new System.Drawing.Size(70, 69);
+            this.btnComprobarII.Size = new System.Drawing.Size(72, 69);
             this.btnComprobarII.TabIndex = 29;
             this.btnComprobarII.UseVisualStyleBackColor = true;
             this.btnComprobarII.Click += new System.EventHandler(this.btnComprobarII_Click);
@@ -223,9 +224,9 @@ namespace desktop_employee.src.views.Employees
             this.btnComprobarPI.IconChar = FontAwesome.Sharp.IconChar.Question;
             this.btnComprobarPI.IconColor = System.Drawing.Color.Blue;
             this.btnComprobarPI.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnComprobarPI.Location = new System.Drawing.Point(437, 314);
+            this.btnComprobarPI.Location = new System.Drawing.Point(495, 314);
             this.btnComprobarPI.Name = "btnComprobarPI";
-            this.btnComprobarPI.Size = new System.Drawing.Size(70, 69);
+            this.btnComprobarPI.Size = new System.Drawing.Size(72, 69);
             this.btnComprobarPI.TabIndex = 28;
             this.btnComprobarPI.UseVisualStyleBackColor = true;
             this.btnComprobarPI.Click += new System.EventHandler(this.btnComprobarPI_Click);
@@ -239,9 +240,9 @@ namespace desktop_employee.src.views.Employees
             this.btnComprobarID.IconChar = FontAwesome.Sharp.IconChar.Question;
             this.btnComprobarID.IconColor = System.Drawing.Color.Blue;
             this.btnComprobarID.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnComprobarID.Location = new System.Drawing.Point(434, 253);
+            this.btnComprobarID.Location = new System.Drawing.Point(492, 253);
             this.btnComprobarID.Name = "btnComprobarID";
-            this.btnComprobarID.Size = new System.Drawing.Size(70, 69);
+            this.btnComprobarID.Size = new System.Drawing.Size(72, 69);
             this.btnComprobarID.TabIndex = 27;
             this.btnComprobarID.UseVisualStyleBackColor = true;
             this.btnComprobarID.Click += new System.EventHandler(this.btnComprobarID_Click);
@@ -255,9 +256,9 @@ namespace desktop_employee.src.views.Employees
             this.btnComprobarPD.IconChar = FontAwesome.Sharp.IconChar.Question;
             this.btnComprobarPD.IconColor = System.Drawing.Color.Blue;
             this.btnComprobarPD.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnComprobarPD.Location = new System.Drawing.Point(434, 188);
+            this.btnComprobarPD.Location = new System.Drawing.Point(492, 188);
             this.btnComprobarPD.Name = "btnComprobarPD";
-            this.btnComprobarPD.Size = new System.Drawing.Size(70, 69);
+            this.btnComprobarPD.Size = new System.Drawing.Size(72, 69);
             this.btnComprobarPD.TabIndex = 26;
             this.btnComprobarPD.UseVisualStyleBackColor = true;
             this.btnComprobarPD.Click += new System.EventHandler(this.btnComprobarPD_Click);
@@ -271,9 +272,9 @@ namespace desktop_employee.src.views.Employees
             this.btnEliminarII.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.btnEliminarII.IconColor = System.Drawing.Color.Red;
             this.btnEliminarII.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnEliminarII.Location = new System.Drawing.Point(365, 380);
+            this.btnEliminarII.Location = new System.Drawing.Point(423, 380);
             this.btnEliminarII.Name = "btnEliminarII";
-            this.btnEliminarII.Size = new System.Drawing.Size(70, 69);
+            this.btnEliminarII.Size = new System.Drawing.Size(72, 69);
             this.btnEliminarII.TabIndex = 25;
             this.btnEliminarII.UseVisualStyleBackColor = true;
             this.btnEliminarII.Click += new System.EventHandler(this.btnEliminarII_Click);
@@ -287,9 +288,9 @@ namespace desktop_employee.src.views.Employees
             this.btnEliminarPI.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.btnEliminarPI.IconColor = System.Drawing.Color.Red;
             this.btnEliminarPI.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnEliminarPI.Location = new System.Drawing.Point(366, 314);
+            this.btnEliminarPI.Location = new System.Drawing.Point(424, 314);
             this.btnEliminarPI.Name = "btnEliminarPI";
-            this.btnEliminarPI.Size = new System.Drawing.Size(70, 69);
+            this.btnEliminarPI.Size = new System.Drawing.Size(72, 69);
             this.btnEliminarPI.TabIndex = 24;
             this.btnEliminarPI.UseVisualStyleBackColor = true;
             this.btnEliminarPI.Click += new System.EventHandler(this.btnEliminarPI_Click);
@@ -303,9 +304,9 @@ namespace desktop_employee.src.views.Employees
             this.btnEliminarID.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.btnEliminarID.IconColor = System.Drawing.Color.Red;
             this.btnEliminarID.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnEliminarID.Location = new System.Drawing.Point(363, 253);
+            this.btnEliminarID.Location = new System.Drawing.Point(421, 253);
             this.btnEliminarID.Name = "btnEliminarID";
-            this.btnEliminarID.Size = new System.Drawing.Size(70, 69);
+            this.btnEliminarID.Size = new System.Drawing.Size(72, 69);
             this.btnEliminarID.TabIndex = 23;
             this.btnEliminarID.UseVisualStyleBackColor = true;
             this.btnEliminarID.Click += new System.EventHandler(this.btnEliminarID_Click);
@@ -319,9 +320,9 @@ namespace desktop_employee.src.views.Employees
             this.btnEliminarPD.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.btnEliminarPD.IconColor = System.Drawing.Color.Red;
             this.btnEliminarPD.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnEliminarPD.Location = new System.Drawing.Point(363, 188);
+            this.btnEliminarPD.Location = new System.Drawing.Point(421, 188);
             this.btnEliminarPD.Name = "btnEliminarPD";
-            this.btnEliminarPD.Size = new System.Drawing.Size(70, 69);
+            this.btnEliminarPD.Size = new System.Drawing.Size(72, 69);
             this.btnEliminarPD.TabIndex = 22;
             this.btnEliminarPD.UseVisualStyleBackColor = true;
             this.btnEliminarPD.Click += new System.EventHandler(this.btnEliminarPD_Click);
@@ -335,9 +336,9 @@ namespace desktop_employee.src.views.Employees
             this.btnCapturarPI.IconChar = FontAwesome.Sharp.IconChar.Plus;
             this.btnCapturarPI.IconColor = System.Drawing.Color.Green;
             this.btnCapturarPI.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnCapturarPI.Location = new System.Drawing.Point(289, 314);
+            this.btnCapturarPI.Location = new System.Drawing.Point(347, 314);
             this.btnCapturarPI.Name = "btnCapturarPI";
-            this.btnCapturarPI.Size = new System.Drawing.Size(70, 69);
+            this.btnCapturarPI.Size = new System.Drawing.Size(72, 69);
             this.btnCapturarPI.TabIndex = 21;
             this.btnCapturarPI.UseVisualStyleBackColor = true;
             this.btnCapturarPI.Click += new System.EventHandler(this.btnCapturarPI_Click);
@@ -351,9 +352,9 @@ namespace desktop_employee.src.views.Employees
             this.btnCapturarII.IconChar = FontAwesome.Sharp.IconChar.Plus;
             this.btnCapturarII.IconColor = System.Drawing.Color.Green;
             this.btnCapturarII.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnCapturarII.Location = new System.Drawing.Point(288, 380);
+            this.btnCapturarII.Location = new System.Drawing.Point(346, 380);
             this.btnCapturarII.Name = "btnCapturarII";
-            this.btnCapturarII.Size = new System.Drawing.Size(70, 69);
+            this.btnCapturarII.Size = new System.Drawing.Size(72, 69);
             this.btnCapturarII.TabIndex = 20;
             this.btnCapturarII.UseVisualStyleBackColor = true;
             this.btnCapturarII.Click += new System.EventHandler(this.btnCapturarII_Click);
@@ -367,9 +368,9 @@ namespace desktop_employee.src.views.Employees
             this.btnCapturarID.IconChar = FontAwesome.Sharp.IconChar.Plus;
             this.btnCapturarID.IconColor = System.Drawing.Color.Green;
             this.btnCapturarID.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnCapturarID.Location = new System.Drawing.Point(286, 253);
+            this.btnCapturarID.Location = new System.Drawing.Point(344, 253);
             this.btnCapturarID.Name = "btnCapturarID";
-            this.btnCapturarID.Size = new System.Drawing.Size(70, 69);
+            this.btnCapturarID.Size = new System.Drawing.Size(72, 69);
             this.btnCapturarID.TabIndex = 19;
             this.btnCapturarID.UseVisualStyleBackColor = true;
             this.btnCapturarID.Click += new System.EventHandler(this.btnCapturarID_Click);
@@ -383,9 +384,9 @@ namespace desktop_employee.src.views.Employees
             this.btnCapturarPD.IconChar = FontAwesome.Sharp.IconChar.Plus;
             this.btnCapturarPD.IconColor = System.Drawing.Color.Green;
             this.btnCapturarPD.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnCapturarPD.Location = new System.Drawing.Point(286, 188);
+            this.btnCapturarPD.Location = new System.Drawing.Point(344, 188);
             this.btnCapturarPD.Name = "btnCapturarPD";
-            this.btnCapturarPD.Size = new System.Drawing.Size(70, 69);
+            this.btnCapturarPD.Size = new System.Drawing.Size(72, 69);
             this.btnCapturarPD.TabIndex = 18;
             this.btnCapturarPD.UseVisualStyleBackColor = true;
             this.btnCapturarPD.Click += new System.EventHandler(this.btnCapturarPD_Click);

@@ -109,8 +109,8 @@ namespace desktop_employee.src.views.Employees
             this.panel2.Controls.Add(this.btnLimpiarCampos);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.txtDNI);
-            this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.txtNombre);
+            this.panel2.Controls.Add(this.label2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
@@ -132,6 +132,7 @@ namespace desktop_employee.src.views.Employees
             // btnLimpiarCampos
             // 
             this.btnLimpiarCampos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLimpiarCampos.AutoSize = true;
             this.btnLimpiarCampos.BackColor = System.Drawing.Color.White;
             this.btnLimpiarCampos.BackgroundColor = System.Drawing.Color.White;
             this.btnLimpiarCampos.BorderColor = System.Drawing.Color.Black;
@@ -184,10 +185,10 @@ namespace desktop_employee.src.views.Employees
             // txtNombre
             // 
             this.txtNombre.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtNombre.Location = new System.Drawing.Point(227, 18);
+            this.txtNombre.Location = new System.Drawing.Point(237, 18);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(399, 32);
-            this.txtNombre.TabIndex = 6;
+            this.txtNombre.TabIndex = 10;
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
             // 
