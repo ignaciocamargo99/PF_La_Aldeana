@@ -11,6 +11,21 @@ const getFlavorsDBByActiveState = (onlyActiveFlavors) => {
     });
 };
 
+const getFlavorsDBByProperties = ({ active, idFlavorType }) => {
+    let whereCondition = {};
+
+    if (active !== undefined) {
+        whereCondition.active = active === 'true' ? true : false;
+    }
+    if (idFlavorType !== undefined) {
+        whereCondition.type_flavor = +idFlavorType;
+    }
+
+    return Flavor.findAll({
+        where: whereCondition
+    });
+};
+
 const getFlavorDBById = (flavorId) => {
     return Flavor.findOne({
         where: {
@@ -44,4 +59,5 @@ module.exports = {
     getFlavorsDBByActiveState,
     getFlavorDBById,
     saveFlavorDB,
+    getFlavorsDBByProperties,
 };
