@@ -63,7 +63,7 @@ const FlavorsSearch = ({ currentElements, deleteFlavor, permissionsAccess, flavo
                         elements={flavorTypes}
                         value={idFlavorTypeFilterApplied}
                         setValue={setidFlavorTypeFilterApplied}
-                        placeholder='Tipo...'
+                        placeholder='Categoría...'
                         width='9'
                     >
                     </ComboFilter>
