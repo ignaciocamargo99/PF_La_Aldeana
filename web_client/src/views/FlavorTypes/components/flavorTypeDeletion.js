@@ -7,31 +7,49 @@ const PORT = require('../../../config');
 
 export const handleDeleteClicked = async ({ name, idFlavorType, }) => {
 
-    const warningText = `Si decide dar de baja la categoría '${name}' 
-se darán de baja todos los sabores correspondientes a la misma. Esto no se podrá revertir.
-\n¿Desea continuar de todas formas?
-`;
+    Swal.fire({
+        title: 'Verificando...',
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-    const result = await Swal.fire({
-        title: "Atención",
-        text: warningText,
-        icon: "warning",
-        showCancelButton: true,
-        showConfirmButton: true,
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-    })
+    Axios.get(PORT() + `/api/flavors`, { params: { active: true, idFlavorType: idFlavorType, } })
+        .then((response) => {
+            const flavorsAssociated = response.data.flavors;
 
-    if (result.isConfirmed) {
-        Axios.delete(PORT() + `/api/flavorTypes/${idFlavorType}`)
-            .then(() => {
-                displaySuccess(`'${name}' dada de baja exitosamente.`).then(() => {
-                    window.location.reload();
+            if (flavorsAssociated?.length > 0) {
+                const reason = flavorsAssociated.length === 1 ?
+                    `existe 1 sabor correspondiente` :
+                    `existen ${flavorsAssociated.length} sabores correspondientes`;
+
+                const amount = flavorsAssociated.length === 1 ? `el sabor` : `ellos`;
+
+                const warningText = `No podrá dar de baja la categoría '${name}' 
+debido a que ${reason} a la misma. Deberá elegir una nueva categoría para ${amount}.`;
+
+                Swal.fire({
+                    title: "Atención",
+                    text: warningText,
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonText: 'Aceptar',
                 })
-            })
-            .catch((error) => {
-                console.log(error);
-                displayError();
-            });
-    }
+            } else {
+                Axios.delete(PORT() + `/api/flavorTypes/${idFlavorType}`)
+                    .then(() => {
+                        displaySuccess(`'${name}' dada de baja exitosamente.`).then(() => {
+                            window.location.reload();
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        displayError();
+                    });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            displayError();
+        });
 }

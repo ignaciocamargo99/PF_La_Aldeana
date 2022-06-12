@@ -17,7 +17,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
             width: '30%'
         },
         {
-            name: 'Precio',
+            name: 'Precio (kg)',
             width: '16%'
         },
         {
@@ -85,7 +85,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                         <DeleteButton
                                             disable={readOnly}
                                             onConfirm={() => { handleDeleteClicked(element) }}
-                                            warningTitle='¿Seguro que desea eliminar la categoría seleccionado?'
+                                            warningTitle='¿Seguro que desea eliminar la categoría seleccionada?'
                                             warningText={`"${element.name}" ya no estará disponible.`}
                                         />
                                     </td>
