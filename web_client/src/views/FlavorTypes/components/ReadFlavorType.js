@@ -19,7 +19,7 @@ const ReadFlavorType = () => {
         return (
             <FlavorTypeForm
                 breadcrumbName={flavorType.name}
-                formTitle={'Ver tipo de sabor'}
+                formTitle={'Ver categoría de sabor'}
                 flavorTypeData={flavorType}
                 isReading={true}
             ></FlavorTypeForm>

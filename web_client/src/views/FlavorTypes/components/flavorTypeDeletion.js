@@ -7,8 +7,8 @@ const PORT = require('../../../config');
 
 export const handleDeleteClicked = async ({ name, idFlavorType, }) => {
 
-    const warningText = `Si decide dar de baja el tipo '${name}' 
-se darán de baja todos los sabores correspondientes al mismo. Esto no se podrá revertir.
+    const warningText = `Si decide dar de baja la categoría '${name}' 
+se darán de baja todos los sabores correspondientes a la misma. Esto no se podrá revertir.
 \n¿Desea continuar de todas formas?
 `;
 
@@ -25,7 +25,7 @@ se darán de baja todos los sabores correspondientes al mismo. Esto no se podrá
     if (result.isConfirmed) {
         Axios.delete(PORT() + `/api/flavorTypes/${idFlavorType}`)
             .then(() => {
-                displaySuccess(`'${name}' dado de baja exitosamente.`).then(() => {
+                displaySuccess(`'${name}' dada de baja exitosamente.`).then(() => {
                     window.location.reload();
                 })
             })

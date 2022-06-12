@@ -21,17 +21,17 @@ const NewFlavorType = () => {
     if (registrationConfirmed) {
       const payload = { flavorTypes: [formData] };
       
-      loadingMessage('Registrando nuevo tipo de sabor...');
+      loadingMessage('Registrando nueva categoría...');
       Axios.post(`${PORT()}/api/flavorTypes`, payload)
         .then(response => {
 
           if (response.data.flavorTypesCreated) {
-            successSweetAlert('Tipo de sabor registrado exitosamente.')
+            successSweetAlert('Categoría registrada exitosamente.')
               .then(() => {
                 history.push(FLAVOR_TYPES_LINK);
               });
           } else {
-            displayError(response.data.message, 'Error al registrar el tipo de sabor');
+            displayError(response.data.message, 'Error al registrar la categoría.');
           };
 
         })
@@ -51,8 +51,8 @@ const NewFlavorType = () => {
     <FlavorTypeForm
       onSubmit={onSubmitRegisterFlavorType}
       submitBtnText='Registrar'
-      breadcrumbName='Nuevo tipo'
-      formTitle='Registrar tipo de sabor'
+      breadcrumbName='Nueva categoría'
+      formTitle='Registrar categoría de sabor'
     />
   )
 }

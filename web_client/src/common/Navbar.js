@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
+import { FLAVOR_TYPES_VIEW_TITLE } from 'views/FlavorTypes/constants';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
@@ -38,7 +39,7 @@ export default function Navbar(props) {
         cookies.remove('first_name', { path: '/' })
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
-        cookies.remove('accesses', { path: '/'})
+        cookies.remove('accesses', { path: '/' })
         window.location.href = '/app/index'
     };
 
@@ -88,7 +89,7 @@ export default function Navbar(props) {
                                 <FontAwesomeIcon icon={faList} /> Ver sabores
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/flavorTypes">
-                                <FontAwesomeIcon icon={faList} /> Ver tipos de sabores
+                                <FontAwesomeIcon icon={faList} /> {`Ver ${FLAVOR_TYPES_VIEW_TITLE.toLowerCase()}`}
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
