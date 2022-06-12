@@ -26,12 +26,12 @@ const FlavorTypesSearch = ({ currentElements, readOnly }) => {
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Tipos de sabores disponibles:</h4>
+                <h4 className="text-secondary">Categorías disponibles:</h4>
                 <div className="search-input">
                     <SearchFilter
                         value={nameFilterApplied}
                         setValue={setNameFilterApplied}
-                        placeholder="Buscar tipos de sabores..."
+                        placeholder="Buscar categorías..."
                     />
                 </div>
             </div>

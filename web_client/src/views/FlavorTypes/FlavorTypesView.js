@@ -5,6 +5,7 @@ import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import FlavorTypesSearch from './components/FlavorTypesSearch';
+import { FLAVOR_TYPES_VIEW_TITLE } from './constants';
 
 const FlavorTypesView = ({ readOnly }) => {
     // to do cambiar hook para que traiga solo activos
@@ -25,7 +26,7 @@ const FlavorTypesView = ({ readOnly }) => {
         return (
             <>
                 <div className="viewTitleBtn">
-                    <h1>Tipos de Sabores</h1>
+                    <h1>{FLAVOR_TYPES_VIEW_TITLE}</h1>
                     <Link to={readOnly ? '#' : '/app/flavorTypes/new'}>
                         <button
                             disabled={readOnly}
