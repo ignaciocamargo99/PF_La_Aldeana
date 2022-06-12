@@ -29,12 +29,12 @@ const EditFlavorType = () => {
             Axios.put(`${PORT()}/api/flavorTypes/${idFlavorType}`, formData)
                 .then(response => {
                     if (response.data.updatedFlavorType) {
-                        successSweetAlert('Tipo de sabor editado exitosamente.')
+                        successSweetAlert('Categoría editada exitosamente.')
                             .then(() => {
                                 history.push(FLAVOR_TYPES_LINK);
                             });
                     } else {
-                        displayError(response.data.message, 'Error al editar el tipo de sabor');
+                        displayError(response.data.message, 'Error al editar la categoría.');
                     };
                 })
                 .catch(error => {
@@ -59,7 +59,7 @@ const EditFlavorType = () => {
         return (
             <FlavorTypeForm
                 breadcrumbName={flavorType.name}
-                formTitle={'Editar tipo de sabor'}
+                formTitle={'Editar categoría de sabor'}
                 submitBtnText='Guardar'
                 flavorTypeData={flavorType}
                 onSubmit={onSubmitEditFlavorType}
