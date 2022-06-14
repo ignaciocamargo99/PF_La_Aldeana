@@ -104,7 +104,7 @@ export default function RouterPage(props) {
                  reportHumanResources = 
                     <>
                         <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
-                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} />}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user}/>}></Route>
                     </>
             }
 

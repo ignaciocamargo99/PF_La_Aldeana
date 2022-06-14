@@ -9,7 +9,13 @@ import Viewer from '../../ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFSalariesReport';
 
 const PORT = require('../../../../config');
-
+function trunc (x, posiciones = 0) {
+    var s = x.toString()
+    var l = s.length
+    var decimalLength = s.indexOf('.') + 1
+    var numStr = s.substr(0, decimalLength + posiciones)
+    return Number(numStr)
+  }
 const Options = (props) => {
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
@@ -23,7 +29,6 @@ const Options = (props) => {
     const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     useEffect(() => {
-console.log(props.dateFrom , props.dateTo , props.load)
         if (props.dateFrom <= props.dateTo && props.load > 0) {
             let from = props.dateFrom;
             let to = props.dateTo;
@@ -33,7 +38,7 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     let data = [[],[]];
                     data[0] = res.data.res;
                     data[1] = res.data.totals;
-                    console.log(data[0].length )
+                    
                     if (data[0].length > 0){
                         let salaries = data[0];
                         let labelsTotalised = [];
@@ -43,26 +48,26 @@ console.log(props.dateFrom , props.dateTo , props.load)
                         props.setSalaries(data);
                         
                         data[1]?.forEach((e, i) => {
-                            console.log(e,i)
                             if (i < 3 || i === 4){
                                 labelsTotalised.push(e.id);
                                 datTotalised.push(e.quantity);
                                 totals.push(e);
                             }
                         });
+                        datTotalised.forEach((e,i)=>{datTotalised[i]=trunc((e/data[1][5].quantity*100), 2)});
 
                         const totalised = {
                             type: 'pie',
                             labels: labelsTotalised,
                             datasets: [
                             {
-                                label: '$',
+                                label: 'porcentaje',
                                 data: datTotalised,
                             },
                             ],
                             total: data[1][5].quantity
                         };
-                        setMyDoc(<MyDocument title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
+                        setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
                         salaries={salaries} totalisedChart={totalised} totals={totals} />);
                     }
 
@@ -74,10 +79,11 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     props.setLoaded(false);
                 })
         } else {
-            let date = new Date();
+            let dat = new Date();
+            let date = new Date(dat.getFullYear(), dat.getMonth() -1, 1);
             let dateString = dateFormat(date);
 
-            let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            let startDate = new Date(date.getFullYear(), date.getMonth() -1, 1);
             let prevMounth = dateFormat(startDate);
 
             inputDateFrom.current.max = dateString;
@@ -166,7 +172,7 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
+            <Viewer MyDoc={MyDoc}reportOf='salarios' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
             " a " + !props.dateTo?new Date().toLocaleDateString():dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );

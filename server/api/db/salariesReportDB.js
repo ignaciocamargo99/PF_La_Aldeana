@@ -2,9 +2,9 @@ const pool = require('../../config/connection');
 
 const salariesReportGetDB = (from, to) => {
 
-    const sqlSelect = "SELECT s.id_salary, e.dni, e.name, e.last_name, s.month_year, s.salary_hs , s.subtotal, s.total FROM SALARIES s " +
+    const sqlSelect = "SELECT s.id_salary, e.dni, e.name, e.last_name, s.month_year, s.salary_hs, s.id_state , s.subtotal, s.total FROM SALARIES s " +
                 "LEFT JOIN EMPLOYEES e ON s.dni_employee = e.dni " +
-                "WHERE s.month_year >= '" + (from.length > 7 ? from : (from + '-01')) + "' AND s.month_year <= '" + (to.length > 7 ? to : (to + '-01')) + "'";
+                "WHERE s.month_year >= '" + (from.length > 7 ? from : (from + '-01')) + "' AND s.month_year <= '" + (to.length > 7 ? to : (to + '-01')) + "' AND s.id_state = 2";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -24,6 +24,7 @@ const salariesReportGetDB = (from, to) => {
                             {id: 'Descuentos y anticipos', quantity: 0},
                             {id: 'Total', quantity: 0}
                         ];
+                        if (result.length === 0) resolve({res, totals: totals});
                         
                         result?.forEach((salarie) => {
                             let aux = res.find(resul => {return resul.dni === salarie.dni;});

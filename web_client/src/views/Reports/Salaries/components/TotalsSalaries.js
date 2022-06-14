@@ -51,6 +51,7 @@ const TotalsSalaries = (props) => {
   return (
     <>
       <h2>Análisis de salarios</h2>
+      <br/>
       <Pie data={data} />
     </>
   );

@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     sectionFace: {
         alignContent: 'center',
         flexDirection: 'row',   
+        marginBottom: '5mm',
     },
     section: {
         margin: 10,
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         textAlign: 'left',
-        padding: '1mm',
     },
     money: {
         fontSize: 10,

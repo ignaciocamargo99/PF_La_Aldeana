@@ -3,6 +3,7 @@ import Pagination from '../../../../common/TablePagination/Pagination'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import dateText from 'utils/DateFormat/dateText';
 
 const ListSalaries = (props) => {
 
@@ -95,7 +96,7 @@ const ListSalaries = (props) => {
                         <tbody>
                             {currentElements?.map((element, i) => {
                                 return (
-                                    <tr key={i}> {console.log(element)}
+                                    <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
                                         <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.salary_hs}</td>
                                         <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.paycheck}</td>

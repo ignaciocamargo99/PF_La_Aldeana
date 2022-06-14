@@ -7,6 +7,7 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
 import TotalsSalaries from './components/TotalsSalaries';
+import dateText from '../../../utils/DateFormat/dateText';
 
 const SalariesReport = (props) => {
     const [loaded, setLoaded] = useState(false);
@@ -25,7 +26,7 @@ const SalariesReport = (props) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} dateTo={to} dateFrom={from} setTo={setTo} setFrom={setFrom} setSalaries={setSalaries} setLoad={setLoad} permissionsAccess={permissionsAccess} />
+                    <Options loaded={loaded} setLoaded={setLoaded} load={load} dateTo={to} dateFrom={from} setTo={setTo} setFrom={setFrom} user={props.user} setSalaries={setSalaries} setLoad={setLoad} permissionsAccess={permissionsAccess} />
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load}>
@@ -38,10 +39,10 @@ const SalariesReport = (props) => {
                         </div>
                         <hr />
                         <div className="formRow">
-                            <div className="col-sm-10" style={{ paddingRight: '1em' }}>
-                                <ListSalaries salaries={salaries}/>
+                            <div className="col-sm-9" style={{ paddingRight: '1em' }}>
+                                <ListSalaries salaries={salaries} from={from} to={to}/>
                             </div>
-                            <div className="col-sm-2" style={{ paddingLeft: '1em' }}>
+                            <div className="col-sm-3" style={{ paddingLeft: '1em' }}>
                                 <TotalsSalaries totals={salaries[1]}/>
                             </div>
                         </div>
@@ -49,7 +50,7 @@ const SalariesReport = (props) => {
                     <BeShowed show={salaries.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron ventas para el período ({from} - {to})</h2>
+                            <h2>No se encontraron salarios para el período ({from} - {to})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>
