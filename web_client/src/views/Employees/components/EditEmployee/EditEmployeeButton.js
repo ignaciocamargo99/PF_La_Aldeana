@@ -2,7 +2,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import '../../../../assets/Buttons.css';
-import BeShowed from '../../../../common/BeShowed';
+import BeShowed from 'common/BeShowed';
 
 const EditEmployeeButton = ({ employeeData, handleEditEmpoyeeClicked, permissionsAccess }) => {
 

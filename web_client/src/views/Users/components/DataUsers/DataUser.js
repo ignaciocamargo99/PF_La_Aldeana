@@ -3,7 +3,7 @@ import NickUser from "./NickUser";
 import FirstName from './FirstName';
 import LastName from './LastName';
 import Password from './Password';
-import BeShowed from "../../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 
 const DataUser = (props) => {
     return (

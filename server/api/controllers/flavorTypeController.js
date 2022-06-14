@@ -9,15 +9,15 @@ async function postFlavorTypes(req, res) {
         const { flavorTypes } = req.body;
 
         if (!(flavorTypes) || flavorTypes.length === 0) {
-            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('No se recibieron tipos de sabores para registrar.'));
+            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('No se recibieron categorías de sabores para registrar.'));
         }
 
         if (flavorTypes.length > 1) {
-            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('Aún no se encuentra implementado el registro de múltiples tipos de sabores.'));
+            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('Aún no se encuentra implementado el registro de múltiples categorías de sabores.'));
         }
 
         if (!isNewFlavorTypeDataValid(flavorTypes[0])) {
-            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('El nuevo tipo de sabor posee datos inválidos.'));
+            res.status(BAD_REQUEST).send(createErrorToCreateFlavorTypesObj('La nueva categoría de sabor posee datos inválidos.'));
         }
 
         const result = await createNewFlavorType(flavorTypes[0]);
@@ -67,7 +67,7 @@ const createSuccessToCreateFlavorTypesObj = (newFlavorType) => {
     return {
         flavorTypesCreated: true,
         flavorTypes: [newFlavorType],
-        message: 'Tipo de sabor registrado correctamente.'
+        message: 'Categoría  de sabor registrada correctamente.'
     };
 };
 
@@ -89,7 +89,7 @@ const putFlavorTypeByID = async (req, res) => {
             });
         } else {
             res.status(BAD_REQUEST).send({
-                message: 'No se ha encontrado un tipo de sabor para ese ID.',
+                message: 'No se ha encontrado una categoría para ese ID.',
             });
         }
     }
@@ -133,7 +133,7 @@ const deleteFlavorTypeByID = async (req, res) => {
             res.status(OK).send(result);
         } else {
             res.status(BAD_REQUEST).send({
-                message: 'No se ha encontrado un tipo de sabor para ese ID.',
+                message: 'No se ha encontrado una categoría para ese ID.',
             });
         }
     }

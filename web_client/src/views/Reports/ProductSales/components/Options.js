@@ -103,7 +103,7 @@ const Options = (props) => {
                         ],
                         total: type[0].total
                     };
-                    setMyDoc(<MyDocument title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
+                    setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
                     topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })

@@ -1,31 +1,25 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import DeleteProductButton from '../DeleteProductButton';
 import EditProductButton from '../EditProducts/EditProductButton';
 import ReadProductButton from "../ReadProducts/ReadProductButton";
+import { productsTableColumnHeaders } from './productsTableColumnHeaders';
 
-const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const ProductsTable = ({ setNameSearch, pageElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+
+    const thereAreProductsToShow = pageElements && pageElements.length > 0;
+
     return (
         <>
-            <div className="formRow title-searcher">
-                <h4 className="text-secondary">Productos disponibles:</h4>
-                <div className="search-input">
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
-                        </div>
-                        <input type="text" className="form-control" placeholder="Buscar producto..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
-                    </div>
-                </div>
-            </div>
-            {(pageElements && pageElements.length > 0)
-                ?
+            {(!thereAreProductsToShow) && (
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
+            )}
+
+            {(thereAreProductsToShow) && (
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
                         <thead>
                             <tr>
-                                {columnsHeaders?.map((element, i) => {
+                                {productsTableColumnHeaders?.map((element, i) => {
                                     return (
                                         <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
                                             {element.name}
@@ -54,12 +48,9 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                         </tbody>
                     </table>
                 </div>
-                :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
-            }
-
+            )}
         </>
     )
 };
 
-export default Table;
+export default ProductsTable;

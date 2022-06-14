@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 
 const StockFlavorTable = ({ flavor }) => {
 
+    let labelClass = '';
     let stockClass = '';
     let showWarnOrErrorStock;
     let tooltipWarnOrErrorStock;
@@ -13,27 +14,27 @@ const StockFlavorTable = ({ flavor }) => {
         if (!(flavor.stock) || +flavor.stock === 0) {
             showWarnOrErrorStock = true;
             tooltipWarnOrErrorStock = 'No hay stock';
-            stockClass = 'text-danger';
+            [labelClass, stockClass] = ['fw-bold', 'text-danger'];
             return;
         }
 
         if ((flavor.reorderStock) && (+flavor.stock < +flavor.reorderStock)) {
             showWarnOrErrorStock = true;
             tooltipWarnOrErrorStock = 'Stock menor al reorden';
-            stockClass = 'text-warning';
+            [labelClass, stockClass] = ['fw-bold', 'text-warning'];
         }
     }
 
     getStockLabelStyle();
 
     return (
-        <td className={stockClass} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+        <td className={labelClass} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
             <>
                 {flavor.stock ? flavor.stock : '0'}
                 {showWarnOrErrorStock && (
                     <>
                         &nbsp;
-                        <FontAwesomeIcon data-tip={tooltipWarnOrErrorStock} icon={faExclamationTriangle} />
+                        <FontAwesomeIcon className={stockClass} data-tip={tooltipWarnOrErrorStock} icon={faExclamationTriangle} />
                         <ReactTooltip />
                     </>
                 )}

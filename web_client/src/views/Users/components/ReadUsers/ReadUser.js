@@ -1,7 +1,7 @@
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import DataUser from '../DataUsers/DataUser';
 import ListPermissions from '../Permissions/ListPermissions';
 
