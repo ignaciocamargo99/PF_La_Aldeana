@@ -25,7 +25,7 @@ const EmployeesSchedulesView = (props) => {
     useEffect(() => {
         axios.get(`${PORT()}/api/employees`)
             .then((response) => {
-                const employeesData = response.data.sort((employeeA, employeeB) => employeeB.charges[0].chargeId - employeeA.charges[0].chargeId)
+                const employeesData = response.data.sort((employeeA, employeeB) => employeeA.charges[0].chargeId - employeeB.charges[0].chargeId)
                 setEmployees(employeesData);
             })
     }, [])
