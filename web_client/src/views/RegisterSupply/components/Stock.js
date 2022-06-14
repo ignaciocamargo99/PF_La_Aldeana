@@ -67,7 +67,7 @@ const Stock = (props) => {
                 props.data.stock_lot = inputSupplyStockLot.current.value;
                 props.data.stock_unit = inputSupplyStock.current.value;
                 props.data.unit_x_lot = inputSupplyUnitsByLot.current.value;
-                props.load(props.data)
+                if(props.data.editing) props.load(props.data)
             }
             else if (prevSupplyStockLot !== "null") {
                 setIsValidSupplyStockLotClass("form-control is-invalid");
@@ -90,7 +90,7 @@ const Stock = (props) => {
                 props.data.stock_lot = inputSupplyStockLot.current.value;
                 props.data.stock_unit = inputSupplyStock.current.value;
                 props.data.unit_x_lot = inputSupplyUnitsByLot.current.value;
-                props.load(props.data)
+                if(props.data.editing) props.load(props.data)
             }
             else if (prevSupplyUnitsByLot !== "null") {
                 setIsValidSupplyUnitsByLotClass("form-control is-invalid");

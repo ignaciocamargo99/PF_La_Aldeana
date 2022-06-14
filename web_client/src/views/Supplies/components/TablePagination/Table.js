@@ -1,6 +1,7 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
+import DeleteSupplyButton from "../DeleteSupplyButton";
 // import DeleteProductTypeButton from "../DeleteProductTypeButton";
 // import DeleteUserButton from '../DeleteProductTypeButton';
 import EditSupplyButton from '../EditSupplies/EditSupplyButton';
@@ -46,10 +47,9 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <EditSupplyButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess}  />
-                                            {/* <EditProductTypeButton data={element} edit={handleEdit} permissionsAccess={permissionsAccess} /> */}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {/* <DeleteProductTypeButton data={element} delete={handleDelete} index={i} permissionsAccess={permissionsAccess} /> */}
+                                            <DeleteSupplyButton data={element} delete={handleDelete} index={i} permissionsAccess={permissionsAccess} />
                                         </td>
                                     </tr>
                                 )

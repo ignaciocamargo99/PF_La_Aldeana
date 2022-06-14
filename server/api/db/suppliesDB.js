@@ -94,4 +94,32 @@ const supplyUpdateDB = (id, supply) => {
     });
 };
 
-module.exports = { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB };
+const supplyDeleteDB = (id) => {
+    const sqlDeleteProduct_X_Supply = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_supply = ?';
+    const sqlDeleteSupply = 'UPDATE SUPPLIES SET active = 0 WHERE id_supply = ?';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+
+                db.query(sqlDeleteSupply, [id], (error) => {
+                    if (error) db.rollback(() => reject(error));
+                    
+                    db.query(sqlDeleteProduct_X_Supply, [id], (error) => {
+                        if (error) db.rollback(() => reject(error));
+                        db.commit((error) => {
+                            if (error) db.rollback(() => reject(error));
+                            else resolve();
+                        });
+                    });
+                });
+                db.release();
+            });
+        });
+    });
+};
+
+
+module.exports = { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB };

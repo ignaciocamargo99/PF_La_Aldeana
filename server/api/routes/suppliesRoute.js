@@ -10,9 +10,11 @@ router.get('/supplies-with-stock', suppliesController.getSuppliesWithStock);
 
 router.post('/supplies', suppliesController.postSupply);
 
-router.get('/typeSupplies', suppliesController.getTypeSupplies); 
+router.get('/typeSupplies', suppliesController.getTypeSupplies);
 
 router.put('/supplies/:id', suppliesController.updateSupply);
+
+router.put('/supply/:id', suppliesController.deleteSupply);
 
 //#endregion
 module.exports = router;

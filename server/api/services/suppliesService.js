@@ -1,4 +1,4 @@
-const { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB } = require('../db/suppliesDB');
+const { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB } = require('../db/suppliesDB');
 const { getSupplyTypesRepository } = require('../db/supplyTypeRepository.js');
 
 const readSupplies = async () => {
@@ -50,4 +50,13 @@ const modifySupply = async (id, supply) => {
     }
 };
 
-module.exports = { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, modifySupply };
+const supplyDelete = async (id) => {
+    try {
+        await supplyDeleteDB(id);
+    }
+    catch (error) {
+        throw Error(error);
+    }
+};
+
+module.exports = { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, modifySupply, supplyDelete };

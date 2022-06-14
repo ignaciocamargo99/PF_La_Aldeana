@@ -27,22 +27,22 @@ const EditProductType = ({ supplyToEdit, onClickCancelEdit }) => {
 
   const updateSupply = async () => {
     console.log(data)
-    // if (ready) {
-    //   const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
-    //   if (editionConfirmed) {
-    //     loadingMessage('Guardando cambios...')
-    //     Axios.put(`${PORT()}/api/supplies/${data.id_supply}`, data)
-    //       .then(response => {
-    //         if (response.status === 200) {
-    //           successMessage('Atención', 'Insumo editado exitosamente', 'success')
-    //             .then(() => window.location.replace('/app/supplies'));
-    //         }
-    //         else displayError(response.data.message, 'Error al editar el insumo');
-    //       })
-    //       .catch(() => { displayError(); });
-    //   }
-    // }
-    // else warningMessage('Atención', 'Debe ingresar un nombre para el tipo de producto', 'warning');
+    if (ready) {
+      const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+      if (editionConfirmed) {
+        loadingMessage('Guardando cambios...')
+        Axios.put(`${PORT()}/api/supplies/${data.id_supply}`, data)
+          .then(response => {
+            if (response.status === 200) {
+              successMessage('Atención', 'Insumo editado exitosamente', 'success')
+                .then(() => window.location.replace('/app/supplies'));
+            }
+            else displayError(response.data.message, 'Error al editar el insumo');
+          })
+          .catch(() => { displayError(); });
+      }
+    }
+    else warningMessage('Atención', 'Debe ingresar un nombre para el tipo de producto', 'warning');
   }
 
   return (

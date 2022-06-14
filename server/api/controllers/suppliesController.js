@@ -1,4 +1,5 @@
-const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, modifySupply } = require('../services/suppliesService');
+const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, 
+    modifySupply, supplyDelete } = require('../services/suppliesService');
 const { isValidNumber } = require('../shared/numberValidations');
 const { BAD_REQUEST } = require('../shared/httpStatusCodes');
 
@@ -83,4 +84,26 @@ async function updateSupply(req, res) {
     }
 }
 
-module.exports = { getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock, updateSupply };
+// HTTP: PUT - LOGICAL DELETE
+async function deleteSupply(req, res) {
+    try {
+        const { id } = req.params;
+
+        if (!isValidNumber(id)) {
+            res.status(BAD_REQUEST).send('ID inválido.');
+        }
+        await supplyDelete(id);
+
+        res.json({
+            Ok: true,
+            Message: 'Insumo eliminado exitosamente.'
+        });
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
+
+module.exports = { getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock, updateSupply, deleteSupply };
