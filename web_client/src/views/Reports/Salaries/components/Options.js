@@ -29,7 +29,6 @@ const Options = (props) => {
     const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     useEffect(() => {
-console.log(props.dateFrom , props.dateTo , props.load)
         if (props.dateFrom <= props.dateTo && props.load > 0) {
             let from = props.dateFrom;
             let to = props.dateTo;
@@ -39,7 +38,7 @@ console.log(props.dateFrom , props.dateTo , props.load)
                     let data = [[],[]];
                     data[0] = res.data.res;
                     data[1] = res.data.totals;
-                    console.log(data[0].length )
+                    
                     if (data[0].length > 0){
                         let salaries = data[0];
                         let labelsTotalised = [];
@@ -49,7 +48,6 @@ console.log(props.dateFrom , props.dateTo , props.load)
                         props.setSalaries(data);
                         
                         data[1]?.forEach((e, i) => {
-                            console.log(e,i)
                             if (i < 3 || i === 4){
                                 labelsTotalised.push(e.id);
                                 datTotalised.push(e.quantity);
@@ -57,14 +55,13 @@ console.log(props.dateFrom , props.dateTo , props.load)
                             }
                         });
                         datTotalised.forEach((e,i)=>{datTotalised[i]=trunc((e/data[1][5].quantity*100), 2)});
-                        console.log(datTotalised)
 
                         const totalised = {
                             type: 'pie',
                             labels: labelsTotalised,
                             datasets: [
                             {
-                                label: '%',
+                                label: 'porcentaje',
                                 data: datTotalised,
                             },
                             ],

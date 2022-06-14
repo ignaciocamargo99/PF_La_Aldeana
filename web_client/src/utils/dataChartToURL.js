@@ -1,4 +1,5 @@
 export default function dataChartToURL (dataChart) {
+    
     let url = `https://quickchart.io/chart?c={type:"${dataChart.type}",data:{labels:[`;
     
     dataChart.labels?.map((label, i) => {
@@ -17,7 +18,6 @@ export default function dataChartToURL (dataChart) {
     });
     
     url += ']}]}}';
-
-    return url
+    return url;
 
 }

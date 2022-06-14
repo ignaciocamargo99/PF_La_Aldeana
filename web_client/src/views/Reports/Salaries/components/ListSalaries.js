@@ -96,7 +96,7 @@ const ListSalaries = (props) => {
                         <tbody>
                             {currentElements?.map((element, i) => {
                                 return (
-                                    <tr key={i}> {console.log(element)}
+                                    <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
                                         <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.salary_hs}</td>
                                         <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.paycheck}</td>
@@ -131,13 +131,6 @@ const ListSalaries = (props) => {
                     </table>
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-            </BeShowed>
-
-            <BeShowed show={props.salaries.length === 0}>
-                <br />
-                <div className="text-center">
-                    <h2>No se encontraron salarios para el período ({dateText(props.from, true, true)} - {dateText(props.to, true, true)})</h2>
-                </div>
             </BeShowed>
         </>
     )

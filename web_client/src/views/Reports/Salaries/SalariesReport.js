@@ -7,6 +7,7 @@ import Breadcrumb from '../../../common/Breadcrumb';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
 import TotalsSalaries from './components/TotalsSalaries';
+import dateText from '../../../utils/DateFormat/dateText';
 
 const SalariesReport = (props) => {
     const [loaded, setLoaded] = useState(false);
@@ -49,7 +50,7 @@ const SalariesReport = (props) => {
                     <BeShowed show={salaries.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron ventas para el período ({from} - {to})</h2>
+                            <h2>No se encontraron salarios para el período ({from} - {to})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>
