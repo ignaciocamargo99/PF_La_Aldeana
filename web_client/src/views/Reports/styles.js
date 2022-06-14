@@ -8,9 +8,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 35,
     },
     sectionFace: {
-        margin: 10,
-        padding: 10,
-        marginTop: '35%'
+        alignContent: 'center',
+        flexDirection: 'row',   
     },
     section: {
         margin: 10,
@@ -24,6 +23,12 @@ const styles = StyleSheet.create({
         width: '1000em',
         textAlign: 'center',
         margin: '-1px',
+    },
+    col4: {
+        borderWidth: '2px',
+        textAlign: 'center',
+        margin: '-1px',
+        width: '17.4cm',
     },
     col3: {
         borderWidth: '2px',
@@ -46,16 +51,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         textAlign: 'center',
-        paddingBottom: 15,
-        paddingTop: 15,
         color: 'grey',
+        marginBottom: 10,
     },
     mainTitle: {
         fontSize: 20,
-        textAlign: 'center',
+        marginBottom: 10,
+        marginLeft: 'auto',
     },
     text: {
         fontSize: 10,
+        textAlign: 'left',
     },
     money: {
         fontSize: 10,
@@ -63,8 +69,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 12,
-        marginBottom: 20,
-        textAlign: 'center',
+        marginLeft: 'auto',
         color: 'grey',
     },
     subtitle: {
@@ -75,16 +80,24 @@ const styles = StyleSheet.create({
     },
     detail: {
         fontSize: 12,
-        textAlign: 'center',
-        marginBottom: 10,
+        marginLeft: 'auto',
     },
     image: {
         marginVertical: 30,
         marginHorizontal: 50,
     },
     logo: {
-        marginVertical: 10,
-        marginHorizontal: 150,
+        width: '150px',
+        height: '70px',
+        marginLeft: 'auto'
+    },
+    pageNumbers: {
+      position: 'absolute',
+      bottom: 20,
+      fontSize: 12,
+      left: 0,
+      right: 0,
+      textAlign: 'center'
     },
 });
 

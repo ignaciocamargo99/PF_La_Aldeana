@@ -51,7 +51,7 @@ namespace desktop_employee.src.views.Employees
             this.Picture.Location = new System.Drawing.Point(12, 16);
             this.Picture.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Picture.Name = "Picture";
-            this.Picture.Size = new System.Drawing.Size(247, 364);
+            this.Picture.Size = new System.Drawing.Size(247, 409);
             this.Picture.TabIndex = 0;
             this.Picture.TabStop = false;
             // 
@@ -65,7 +65,7 @@ namespace desktop_employee.src.views.Employees
             this.Prompt.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Prompt.Name = "Prompt";
             this.Prompt.ReadOnly = true;
-            this.Prompt.Size = new System.Drawing.Size(342, 32);
+            this.Prompt.Size = new System.Drawing.Size(370, 32);
             this.Prompt.TabIndex = 2;
             // 
             // StatusText
@@ -80,12 +80,13 @@ namespace desktop_employee.src.views.Employees
             this.StatusText.Name = "StatusText";
             this.StatusText.ReadOnly = true;
             this.StatusText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.StatusText.Size = new System.Drawing.Size(348, 93);
+            this.StatusText.Size = new System.Drawing.Size(376, 93);
             this.StatusText.TabIndex = 4;
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnAceptar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAceptar.AutoSize = true;
             this.btnAceptar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.btnAceptar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(60)))), ((int)(((byte)(119)))));
             this.btnAceptar.BorderColor = System.Drawing.Color.Black;
@@ -95,7 +96,7 @@ namespace desktop_employee.src.views.Employees
             this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAceptar.Font = new System.Drawing.Font("Abel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnAceptar.ForeColor = System.Drawing.Color.White;
-            this.btnAceptar.Location = new System.Drawing.Point(352, 332);
+            this.btnAceptar.Location = new System.Drawing.Point(380, 377);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(173, 48);
             this.btnAceptar.TabIndex = 33;
@@ -106,9 +107,6 @@ namespace desktop_employee.src.views.Employees
             // 
             // lblInfo
             // 
-            this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblInfo.Location = new System.Drawing.Point(271, 202);
@@ -119,34 +117,32 @@ namespace desktop_employee.src.views.Employees
             // 
             // iconAceptado
             // 
-            this.iconAceptado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iconAceptado.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.iconAceptado.BackColor = System.Drawing.Color.White;
             this.iconAceptado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconChar = FontAwesome.Sharp.IconChar.CheckCircle;
             this.iconAceptado.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconAceptado.IconSize = 77;
-            this.iconAceptado.Location = new System.Drawing.Point(399, 249);
+            this.iconAceptado.Location = new System.Drawing.Point(421, 264);
             this.iconAceptado.Name = "iconAceptado";
-            this.iconAceptado.Size = new System.Drawing.Size(97, 77);
+            this.iconAceptado.Size = new System.Drawing.Size(125, 77);
             this.iconAceptado.TabIndex = 35;
             this.iconAceptado.TabStop = false;
             this.iconAceptado.Visible = false;
             // 
             // iconError
             // 
-            this.iconError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iconError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.iconError.BackColor = System.Drawing.Color.White;
             this.iconError.ForeColor = System.Drawing.Color.Red;
             this.iconError.IconChar = FontAwesome.Sharp.IconChar.TimesCircle;
             this.iconError.IconColor = System.Drawing.Color.Red;
             this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconError.IconSize = 77;
-            this.iconError.Location = new System.Drawing.Point(399, 249);
+            this.iconError.Location = new System.Drawing.Point(421, 264);
             this.iconError.Name = "iconError";
-            this.iconError.Size = new System.Drawing.Size(79, 77);
+            this.iconError.Size = new System.Drawing.Size(107, 77);
             this.iconError.TabIndex = 36;
             this.iconError.TabStop = false;
             this.iconError.Visible = false;
@@ -154,7 +150,7 @@ namespace desktop_employee.src.views.Employees
             // StatusLabel
             // 
             this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.StatusLabel.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
             this.StatusLabel.Location = new System.Drawing.Point(271, 58);
             this.StatusLabel.Name = "StatusLabel";
             this.StatusLabel.Size = new System.Drawing.Size(67, 25);
@@ -165,8 +161,9 @@ namespace desktop_employee.src.views.Employees
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(639, 391);
+            this.ClientSize = new System.Drawing.Size(667, 436);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.iconError);
             this.Controls.Add(this.iconAceptado);

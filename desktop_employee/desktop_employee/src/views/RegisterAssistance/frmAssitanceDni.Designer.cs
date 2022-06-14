@@ -41,6 +41,7 @@
             // btnRegistrarAsistencia
             // 
             this.btnRegistrarAsistencia.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnRegistrarAsistencia.AutoSize = true;
             this.btnRegistrarAsistencia.BackColor = System.Drawing.Color.White;
             this.btnRegistrarAsistencia.BackgroundColor = System.Drawing.Color.White;
             this.btnRegistrarAsistencia.BorderColor = System.Drawing.Color.Black;
@@ -76,7 +77,7 @@
             this.lblDNI.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblDNI.AutoSize = true;
             this.lblDNI.Font = new System.Drawing.Font("Abel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblDNI.Location = new System.Drawing.Point(291, 55);
+            this.lblDNI.Location = new System.Drawing.Point(283, 54);
             this.lblDNI.Name = "lblDNI";
             this.lblDNI.Size = new System.Drawing.Size(37, 25);
             this.lblDNI.TabIndex = 57;
@@ -88,7 +89,8 @@
             this.dgvAssistance.AllowUserToDeleteRows = false;
             this.dgvAssistance.AllowUserToResizeColumns = false;
             this.dgvAssistance.AllowUserToResizeRows = false;
-            this.dgvAssistance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvAssistance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -118,7 +120,8 @@
             // 
             // StatusText
             // 
-            this.StatusText.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.StatusText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.StatusText.BackColor = System.Drawing.SystemColors.Window;
             this.StatusText.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.StatusText.Location = new System.Drawing.Point(30, 124);

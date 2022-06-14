@@ -17,7 +17,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
             width: '30%'
         },
         {
-            name: 'Precio',
+            name: 'Precio (kg)',
             width: '16%'
         },
         {
@@ -38,7 +38,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
 
     if (!(thereAreElements)) {
         return (
-            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen tipos de sabores con el nombre ingresado...</h4>
+            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen categorías con el nombre ingresado...</h4>
         )
     }
 
@@ -77,7 +77,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditButton
-                                            link={`${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
+                                            link={readOnly ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
                                             disable={readOnly}
                                         />
                                     </td>
@@ -85,7 +85,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                         <DeleteButton
                                             disable={readOnly}
                                             onConfirm={() => { handleDeleteClicked(element) }}
-                                            warningTitle='¿Seguro que desea eliminar el tipo seleccionado?'
+                                            warningTitle='¿Seguro que desea eliminar la categoría seleccionada?'
                                             warningText={`"${element.name}" ya no estará disponible.`}
                                         />
                                     </td>

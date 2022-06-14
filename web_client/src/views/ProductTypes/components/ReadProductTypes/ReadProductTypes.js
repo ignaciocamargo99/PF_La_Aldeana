@@ -1,6 +1,6 @@
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import DataProductType from '../DataProductType/DataProductType';
 
 const ReadProductTypes = ({ productTypeToRead, onClickCancelRead }) => {

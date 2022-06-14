@@ -1,7 +1,7 @@
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';

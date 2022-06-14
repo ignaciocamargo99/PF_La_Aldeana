@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import warnSweetAlert from 'utils/WarningMessages/warnSweetAlert'
 import validateFloatNumbers from 'utils/validateFloatNumbers'
-import { FLAVOR_TYPES_LINK } from '../constants'
+import { FLAVOR_TYPES_LINK, FLAVOR_TYPES_VIEW_TITLE } from '../constants'
 
 const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnText, isReading, onSubmit }) => {
 
@@ -75,16 +75,16 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
     const isFormDataValid = (warn) => {
         if (!(isFormNameValid())) {
             if (warn) {
-                warnSweetAlert('Ingrese el nombre del tipo de sabor.');
+                warnSweetAlert('Ingrese el nombre de la categoría.');
             }
             return false;
         }
         if (!(isFormPriceValid())) {
             if (warn) {
                 if (isFormPriceEmpty()) {
-                    warnSweetAlert('Ingrese el precio del tipo de sabor.');
+                    warnSweetAlert('Ingrese el precio de la categoría.');
                 } else {
-                    warnSweetAlert('Ingrese el precio del tipo de sabor correctamente.');
+                    warnSweetAlert('Ingrese el precio de la categoría correctamente.');
                 }
             }
             return false;
@@ -162,7 +162,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                 currentName={breadcrumbName}
                 icon={faIceCream}
                 parentLink={FLAVOR_TYPES_LINK}
-                parentName="Tipos de sabores"
+                parentName={FLAVOR_TYPES_VIEW_TITLE}
             />
             <div className="viewTitle">
                 <h1>{formTitle}</h1>
@@ -178,7 +178,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                             className={nameInputStyle}
                             maxLength="80"
                             onChange={handleNameChange}
-                            placeholder='Ingrese nombre del tipo de sabor...'
+                            placeholder='Ingrese nombre de la categoría...'
                             disabled={isReading}
                             type='text'
                             value={formData.name}
@@ -196,7 +196,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                             className="form-control"
                             maxLength="200"
                             onChange={handleDescriptionChange}
-                            placeholder={isReading ? "" : 'Ingrese descripción del tipo de sabor...'}
+                            placeholder={isReading ? "" : 'Ingrese descripción de la categoría...'}
                             disabled={isReading}
                             type='text'
                             value={formData.description}
@@ -206,14 +206,14 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Precio*</label>
+                        <label >Precio por kilo*</label>
                     </div>
                     <div className="form-control-input">
                         <input
                             className={priceInputStyle}
                             onChange={handlePriceChange}
                             onKeyDown={(e) => validateFloatNumbers(e)}
-                            placeholder={isReading ? "" : "Ingrese precio del tipo de sabor..."}
+                            placeholder={isReading ? "" : "Ingrese precio de la categoría..."}
                             disabled={isReading}
                             type="number"
                             value={formData.price}
