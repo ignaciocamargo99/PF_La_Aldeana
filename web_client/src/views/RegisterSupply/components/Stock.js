@@ -127,7 +127,7 @@ const Stock = (props) => {
             } else if (prevSupplyStock !== "null") {
                 setIsValidSupplyStockClass("form-control is-invalid");
                 props.updateUnitSupply(0);
-                setError('El stock por unidad debe ser un número mayor a ' + 0 + ' y menor que ' + 10000000);
+                setError('');
             }
         }
     }, [props.unitSupply]);
