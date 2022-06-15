@@ -1,5 +1,5 @@
 import React from 'react';
-import LoaderSpinner from '../../../../common/LoaderSpinner';
+import LoaderSpinner from 'common/LoaderSpinner';
 
 const SpinnerTableSupplies = () => {
     return (

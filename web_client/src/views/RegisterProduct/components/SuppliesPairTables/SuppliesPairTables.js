@@ -2,10 +2,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import BeShowed from '../../../../common/BeShowed';
-import Pagination from '../../../../common/TablePagination/Pagination';
-import displayError from '../../../../utils/ErrorMessages/displayError';
-import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
+import BeShowed from 'common/BeShowed';
+import Pagination from 'common/TablePagination/Pagination';
+import displayError from 'utils/ErrorMessages/displayError';
+import warningCountProduct from 'utils/WarningMessages/warningCountProduct';
+import { SUPPLIES_QUANTITY_LABEL } from './constants';
 import SpinnerTableSupplies from './SpinnerTableSupplies';
 import SuppliesAmount from "./SuppliesAmount";
 import TableSuppliesDown from "./TableSuppliesDown";
@@ -122,7 +123,7 @@ export default function SuppliesPairTables({ load, data }) {
             width: '30%'
         },
         {
-            name: 'Cantidad',
+            name: SUPPLIES_QUANTITY_LABEL,
             width: '20%'
         },
         {
