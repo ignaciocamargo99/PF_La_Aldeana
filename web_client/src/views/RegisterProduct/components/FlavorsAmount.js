@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import BeShowed from "../../../common/BeShowed";
-import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
+import BeShowed from "common/BeShowed";
+import validateFloatNumbers from 'utils/Validations/validateFloatNumbers';
 
 export default function FlavorsAmount(props) {
     const inputFlavorAmount = useRef(null);

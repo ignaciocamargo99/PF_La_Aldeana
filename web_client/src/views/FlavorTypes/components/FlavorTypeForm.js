@@ -206,7 +206,7 @@ const FlavorTypeForm = ({ breadcrumbName, formTitle, flavorTypeData, submitBtnTe
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Precio por kilo*</label>
+                        <label >Precio por kilo ($)*</label>
                     </div>
                     <div className="form-control-input">
                         <input
