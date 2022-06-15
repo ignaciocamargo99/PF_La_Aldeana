@@ -139,15 +139,15 @@ const Stock = (props) => {
     }, [props.typeSupply])
 
     const validateStockLot = (e) => {
-        if (e.target.value.length > 6) e.target.value = e.target.value.slice(0, 6);
+        if (e.target.value.length > 4) e.target.value = e.target.value.slice(0, 4);
     }
 
     const validateUnitLot = (e) => {
-        if (e.target.value.length > 6) e.target.value = e.target.value.slice(0, 6);
+        if (e.target.value.length > 5) e.target.value = e.target.value.slice(0, 5);
     }
 
     const validateStockUnit = (e) => {
-        if (e.target.value.length > 6) e.target.value = e.target.value.slice(0, 6);
+        if (e.target.value.length > 10) e.target.value = e.target.value.slice(0, 10);
     }
 
     return (
