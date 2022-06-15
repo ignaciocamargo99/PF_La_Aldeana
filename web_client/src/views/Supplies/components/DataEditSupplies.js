@@ -20,18 +20,28 @@ const DataEditSupplies = ({ data, load, ...props }) => {
         if (!e.target.checked) {
             setIsDelivery(false);
             data.price_retail = null;
+            data.chkb_price_retail = false;
             load(data);
         }
-        else setIsDelivery(true);
+        else {
+            setIsDelivery(true);
+            data.chkb_price_retail = true;
+            load(data)
+        }
     }
 
     const onChangeChkBoxFranchise = (e) => {
         if (!e.target.checked) {
             setIsFranchise(false);
             data.price_wholesale = null;
+            data.chkb_price_wholesale = false
             load(data);
         }
-        else setIsFranchise(true);
+        else {
+            setIsFranchise(true);
+            data.chkb_price_wholesale = true;
+            load(data);
+        }
     }
 
     useEffect(() => {
@@ -40,12 +50,16 @@ const DataEditSupplies = ({ data, load, ...props }) => {
         if (data.price_retail && data.price_wholesale) {
             inputIsFranchiseSupply.current.checked = true;
             inputIsDeliverySupply.current.checked = true;
+            data.chkb_price_retail = true
+            data.chkb_price_wholesale = true
             setIsDelivery(true);
             setIsFranchise(true);
         }
         else if (data.price_retail) {
             inputIsFranchiseSupply.current.checked = false;
             inputIsDeliverySupply.current.checked = true;
+            data.chkb_price_retail = true
+            data.chkb_price_wholesale = false
             setIsDelivery(true);
             setIsFranchise(false);
         }
@@ -53,12 +67,16 @@ const DataEditSupplies = ({ data, load, ...props }) => {
         else if (data.price_wholesale) {
             inputIsFranchiseSupply.current.checked = true;
             inputIsDeliverySupply.current.checked = false;
+            data.chkb_price_retail = false
+            data.chkb_price_wholesale = true
             setIsDelivery(false);
             setIsFranchise(true);
         }
         else {
             inputIsFranchiseSupply.current.checked = false;
             inputIsDeliverySupply.current.checked = false;
+            data.chkb_price_retail = false
+            data.chkb_price_wholesale = false
             setIsDelivery(false);
             setIsFranchise(false);
         }

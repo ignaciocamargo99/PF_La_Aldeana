@@ -44,9 +44,16 @@ const MultiplePrice = (props) => {
             <BeShowed show={!props.data.reading && !props.data.editing}>
                 <div className="price-type-container">
                     <label htmlFor="supplyMultiplePrice" className="price-type-label price-label">Mayorista*</label>
-                    <input className={isValidClass} id="supplyMultiplePrice" type="number" min='0' ref={inputMultiplePrice} placeholder="Ingrese precio por mayor..." max="99999999"
-                        onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleMultiplePrice}>
-                    </input>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">$</span>
+                        </div>
+                        <input className={isValidClass} id="supplyMultiplePrice" type="number" min='0' ref={inputMultiplePrice} placeholder="Ingrese precio por mayor..." max="99999999"
+                            onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleMultiplePrice} />
+                        <div className="input-group-append">
+                            <span className="input-group-text">.00</span>
+                        </div>
+                    </div>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>
@@ -55,16 +62,31 @@ const MultiplePrice = (props) => {
                         <label htmlFor="supplyMultiplePrice">Precio mayorista*</label>
                     </div>
                     <div className="form-control-input">
-                        <input className="form-control is-valid" id="supplyMultiplePrice" type="number" readOnly value={props.data.price_wholesale} ref={inputMultiplePrice}/>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">$</span>
+                            </div>
+                            <input className="form-control is-valid" id="supplyMultiplePrice" type="number" readOnly value={props.data.price_wholesale} ref={inputMultiplePrice} />
+                            <div className="input-group-append">
+                                <span className="input-group-text">.00</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.editing}>
                 <div className="price-type-container">
                     <label htmlFor="supplyMultiplePrice" className="price-type-label price-label">Mayorista*</label>
-                    <input className={isValidClass} id="supplyMultiplePrice" type="number" min='0' ref={inputMultiplePrice} placeholder="Ingrese precio por mayor..." max="99999999"
-                        onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={multiplePriceSupply} onChange={handleMultiplePrice}>
-                    </input>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">$</span>
+                        </div>
+                        <input className={isValidClass} id="supplyMultiplePrice" type="number" min='0' ref={inputMultiplePrice} placeholder="Ingrese precio por mayor..." max="99999999"
+                            onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={multiplePriceSupply} onChange={handleMultiplePrice} />
+                        <div className="input-group-append">
+                            <span className="input-group-text">.00</span>
+                        </div>
+                    </div>
                 </div>
             </BeShowed>
         </>

@@ -41,8 +41,16 @@ const SinglePrice = (props) => {
             <BeShowed show={!props.data.reading && !props.data.editing}>
                 <div className="price-type-container">
                     <label htmlFor="supplySinglePrice" className="price-type-label price-label">Minorista*</label>
-                    <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..." max="99999999"
-                        onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleSinglePrice} />
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">$</span>
+                        </div>
+                        <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..." max="99999999"
+                            onKeyDown={(e) => validateFloatNumbers(e)} onChange={handleSinglePrice} />
+                        <div className="input-group-append">
+                            <span className="input-group-text">.00</span>
+                        </div>
+                    </div>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.reading}>
@@ -51,15 +59,31 @@ const SinglePrice = (props) => {
                         <label htmlFor="supplySinglePrice">Precio minorista*</label>
                     </div>
                     <div className="form-control-input">
-                        <input className="form-control is-valid" id="supplySinglePrice" type="number" readOnly value={props.data.price_retail} ref={inputSinglePrice} />
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">$</span>
+                            </div>
+                            <input className="form-control is-valid" id="supplySinglePrice" type="number" readOnly value={props.data.price_retail} ref={inputSinglePrice} />
+                            <div className="input-group-append">
+                                <span className="input-group-text">.00</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </BeShowed>
             <BeShowed show={props.data.editing}>
                 <div className="price-type-container">
                     <label htmlFor="supplySinglePrice" className="price-type-label price-label">Minorista*</label>
-                    <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..." max="99999999"
-                        onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={singlePriceSupply} onChange={handleSinglePrice} />
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">$</span>
+                        </div>
+                        <input className={isValidClass} id="supplySinglePrice" type="number" min='0' ref={inputSinglePrice} placeholder="Ingrese precio por menor..." max="99999999"
+                            onKeyDown={(e) => validateFloatNumbers(e)} defaultValue={singlePriceSupply} onChange={handleSinglePrice} />
+                        <div className="input-group-append">
+                            <span className="input-group-text">.00</span>
+                        </div>
+                    </div>
                 </div>
             </BeShowed>
         </>

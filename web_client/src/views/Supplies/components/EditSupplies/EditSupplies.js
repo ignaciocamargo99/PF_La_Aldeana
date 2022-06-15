@@ -26,13 +26,16 @@ const EditProductType = ({ supplyToEdit, onClickCancelEdit }) => {
     if (parseInt(data.id_supply_type) === 2 && (parseInt(data.stock_lot) === 0 || !data.stock_lot)) return setReady(false);
     if (parseInt(data.id_supply_type) === 2 && (parseInt(data.stock_unit) === 0 || !data.stock_unit)) return setReady(false);
     if (parseInt(data.id_supply_type) === 2 && (parseInt(data.unit_x_lot) === 0 || !data.unit_x_lot)) return setReady(false);
+    if (data.chkb_price_retail && (!data.price_retail || parseInt(data.price_retail) === 0)) return setReady(false);
+    if (data.chkb_price_wholesale && (!data.price_wholesale || parseInt(data.price_wholesale) === 0)) return setReady(false);
     else setReady(true);
     setData(childData);
   }
 
   const updateSupply = async () => {
     console.log(data)
-    if (ready) {
+    const messageValidated = validations(data);
+    if (ready && !messageValidated) {
       const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
       if (editionConfirmed) {
         loadingMessage('Guardando cambios...')
@@ -47,7 +50,7 @@ const EditProductType = ({ supplyToEdit, onClickCancelEdit }) => {
           .catch(() => { displayError(); });
       }
     }
-    else warningMessage('Atención', 'Debe ingresar un nombre para el tipo de producto', 'warning');
+    else warningMessage('Atención', messageValidated, 'warning');
   }
 
   return (

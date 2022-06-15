@@ -1,14 +1,19 @@
+import Axios from 'axios';
 import BeShowed from 'common/BeShowed';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateTypeSupply } from '../../../actions/SupplyActions';
-import useHTTPGet from '../../../hooks/useHTTPGet';
 
 const PORT = require('../../../config');
 
 const TypeSupply = (props) => {
+    const [typeSupplies, setTypeSupplies] = useState();
 
-    const typeSupplies = useHTTPGet(PORT() + '/api/typeSupplies');
+    useEffect(() => {
+        Axios.get((PORT() + '/api/typeSupplies'))
+            .then((response) => setTypeSupplies(response.data))
+            .catch((error) => console.log(error));
+    }, [])
 
     const selectSupplyType = useRef(null);
 
@@ -26,8 +31,8 @@ const TypeSupply = (props) => {
 
     useEffect(() => {
         if (!props.data.reading) {
-            if (props.data.id_supply_type){
-                if(props.data.id_supply_type >= 0) props.updateTypeSupply(Math.trunc(props.data.id_supply_type));
+            if (props.data.id_supply_type) {
+                if (props.data.id_supply_type >= 0) props.updateTypeSupply(Math.trunc(props.data.id_supply_type));
             }
             if (selectSupplyType.current.value >= 0) props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
         }
