@@ -37,20 +37,20 @@ const DataEditSupplies = ({ data, load, ...props }) => {
     useEffect(() => {
         setPriceRetail(data.price_retail);
         setPriceWholesale(data.price_wholesale)
-        if (priceRetail && priceWholesale) {
+        if (data.price_retail && data.price_wholesale) {
             inputIsFranchiseSupply.current.checked = true;
             inputIsDeliverySupply.current.checked = true;
             setIsDelivery(true);
             setIsFranchise(true);
         }
-        else if (priceRetail) {
+        else if (data.price_retail) {
             inputIsFranchiseSupply.current.checked = false;
             inputIsDeliverySupply.current.checked = true;
             setIsDelivery(true);
             setIsFranchise(false);
         }
 
-        else if (priceWholesale) {
+        else if (data.price_wholesale) {
             inputIsFranchiseSupply.current.checked = true;
             inputIsDeliverySupply.current.checked = false;
             setIsDelivery(false);
@@ -62,7 +62,7 @@ const DataEditSupplies = ({ data, load, ...props }) => {
             setIsDelivery(false);
             setIsFranchise(false);
         }
-    }, [data.price_retail, data.price_wholesale, priceRetail, priceWholesale])
+    }, [])
 
     return (
         <>

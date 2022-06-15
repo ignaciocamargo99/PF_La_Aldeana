@@ -67,7 +67,7 @@ const Stock = (props) => {
                 props.data.stock_lot = inputSupplyStockLot.current.value;
                 props.data.stock_unit = inputSupplyStock.current.value;
                 props.data.unit_x_lot = inputSupplyUnitsByLot.current.value;
-                if(props.data.editing) props.load(props.data)
+                if (props.data.editing) props.load(props.data)
             }
             else if (prevSupplyStockLot !== "null") {
                 setIsValidSupplyStockLotClass("form-control is-invalid");
@@ -90,7 +90,7 @@ const Stock = (props) => {
                 props.data.stock_lot = inputSupplyStockLot.current.value;
                 props.data.stock_unit = inputSupplyStock.current.value;
                 props.data.unit_x_lot = inputSupplyUnitsByLot.current.value;
-                if(props.data.editing) props.load(props.data)
+                if (props.data.editing) props.load(props.data)
             }
             else if (prevSupplyUnitsByLot !== "null") {
                 setIsValidSupplyUnitsByLotClass("form-control is-invalid");
@@ -129,10 +129,6 @@ const Stock = (props) => {
                 props.updateUnitSupply(0);
                 setError('El stock por unidad debe ser un número mayor a ' + 0 + ' y menor que ' + 10000000);
             }
-            // props.data.stock_lot = inputSupplyStockLot.current.value;
-            // props.data.stock_unit = inputSupplyStock.current.value;
-            // props.data.unit_x_lot = inputSupplyUnitsByLot.current.value;
-            // props.load(props.data);
         }
     }, [props.unitSupply]);
 
@@ -150,9 +146,9 @@ const Stock = (props) => {
                         <label htmlFor="lotStock">Stock lotes*</label>
                     </div>
                     <div className="form-control-input">
-                        <input className={supplyStockLot ? "form-control is-valid" : isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot}
+                        <input className={props.data.stock_lot ? "form-control is-valid" : isValidSupplyStockLotClass} id="lotStock" ref={inputSupplyStockLot}
                             onChange={handleSupplyStockLotChanged} type="number" min="1"
-                            placeholder="Ingrese stock de lotes..." defaultValue={supplyStockLot}
+                            placeholder="Ingrese stock de lotes..." defaultValue={props.data.stock_lot}
                             onKeyDown={(e) => validateFloatNumbers(e)}></input>
                     </div>
                 </div>
@@ -161,9 +157,9 @@ const Stock = (props) => {
                         <label htmlFor="unitsPerLot">Cant. unidades por lote*</label>
                     </div>
                     <div className="form-control-input">
-                        <input className={supplyUnitsByLot ? "form-control is-valid" : isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot}
+                        <input className={props.data.unit_x_lot ? "form-control is-valid" : isValidSupplyUnitsByLotClass} id="unitsPerLot" ref={inputSupplyUnitsByLot}
                             onChange={handleSupplyUnitsByLotChanged} type="number" min="1"
-                            placeholder="Ingrese cantidad de unidades por lote..." defaultValue={supplyUnitsByLot}
+                            placeholder="Ingrese cantidad de unidades por lote..." defaultValue={props.data.unit_x_lot}
                             onKeyDown={(e) => validateFloatNumbers(e)}></input>
                     </div>
                 </div>
@@ -173,9 +169,9 @@ const Stock = (props) => {
                     <label htmlFor="supplyStock">Stock actual en unidades del insumo*</label>
                 </div>
                 <div className="form-control-input">
-                    <input className={supplyStock ? "form-control is-valid" : isValidSupplyStockClass} id="supplyStock" ref={inputSupplyStock}
+                    <input className={props.data.stock_unit ? "form-control is-valid" : isValidSupplyStockClass} id="supplyStock" ref={inputSupplyStock}
                         onChange={handleSupplyStockChanged} type="number" min="1"
-                        placeholder="Ingrese stock actual del insumo..." defaultValue={supplyStock}
+                        placeholder="Ingrese stock actual del insumo..." defaultValue={props.data.stock_unit}
                         onKeyDown={(e) => validateFloatNumbers(e)}></input>
                 </div>
             </div>

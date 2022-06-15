@@ -10,6 +10,7 @@ import successMessage from 'utils/SuccessMessages/successMessage';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import warningMessage from 'utils/WarningMessages/warningMessage';
 import DataSupply from '../DataSupply';
+import validations from 'views/Supplies/customHooks/validations';
 
 const PORT = require('../../../../config');
 
@@ -20,7 +21,11 @@ const EditProductType = ({ supplyToEdit, onClickCancelEdit }) => {
   useEffect(() => setData(supplyToEdit), [supplyToEdit]);
 
   const loadData = (childData) => {
-    if (!data.name) setReady(false);
+    if (!data.name) return setReady(false);
+    if (parseInt(data.id_supply_type) === 1 && (parseInt(data.stock_unit) === 0 || !data.stock_unit)) return setReady(false);
+    if (parseInt(data.id_supply_type) === 2 && (parseInt(data.stock_lot) === 0 || !data.stock_lot)) return setReady(false);
+    if (parseInt(data.id_supply_type) === 2 && (parseInt(data.stock_unit) === 0 || !data.stock_unit)) return setReady(false);
+    if (parseInt(data.id_supply_type) === 2 && (parseInt(data.unit_x_lot) === 0 || !data.unit_x_lot)) return setReady(false);
     else setReady(true);
     setData(childData);
   }

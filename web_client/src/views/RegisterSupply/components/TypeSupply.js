@@ -16,6 +16,10 @@ const TypeSupply = (props) => {
         props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
         if (props.data.editing) {
             props.data.id_supply_type = selectSupplyType.current.value
+            console.log(props.data)
+            props.data.stock_lot = null;
+            // props.data.stock_unit = 0;
+            props.data.unit_x_lot = null;
             props.load(props.data)
         }
     }
