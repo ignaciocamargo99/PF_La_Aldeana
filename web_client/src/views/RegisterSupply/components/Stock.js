@@ -128,7 +128,7 @@ const Stock = (props) => {
                 setIsValidSupplyStockClass("form-control is-invalid");
                 props.updateUnitSupply(0);
                 setError('');
-            }
+            } 
         }
     }, [props.unitSupply]);
 
