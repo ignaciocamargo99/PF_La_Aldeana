@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const productTypeGetDB = () => {
-    const sqlSelect = 'SELECT * FROM PRODUCT_TYPES';
+    const sqlSelect = 'SELECT * FROM PRODUCT_TYPES WHERE active = 1';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

@@ -1,7 +1,9 @@
 const pool = require('../../config/connection');
 
 const suppliesGetDB = () => {
-    const sqlSelect = 'SELECT * FROM SUPPLIES';
+    const sqlSelect = `SELECT s.*, st.name AS name_type_supply FROM SUPPLIES  s
+                        JOIN SUPPLY_TYPES st ON st.id_supply_type = s.id_supply_type
+                        WHERE s.active = 1`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -12,7 +14,7 @@ const suppliesGetDB = () => {
                 else resolve(result);
             });
             db.release();
-        })
+        });
     });
 };
 
@@ -28,7 +30,7 @@ const suppliesWithStockGetDB = () => {
                 else resolve(result);
             });
             db.release();
-        })
+        });
     });
 };
 
@@ -39,6 +41,7 @@ const supplyPostDB = (newSupply) => {
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
+            if (error) reject(error);
             db.query(sqlInsert, [
                 null,
                 name,
@@ -68,6 +71,7 @@ const suppliesStocksGetDB = () => {
                         WHERE s.active = 1 AND p.active = 1
                         ORDER BY p.name`
 
+
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
@@ -81,4 +85,63 @@ const suppliesStocksGetDB = () => {
     });
 };
 
-module.exports = { supplyPostDB, suppliesGetDB, suppliesStocksGetDB, suppliesWithStockGetDB }
+
+const supplyUpdateDB = (id, supply) => {
+    const { name, description, id_supply_type, price_wholesale, price_retail, stock_lot, stock_unit, unit_x_lot } = supply;
+
+    const sqlUpdateSupply =
+        `UPDATE SUPPLIES s SET s.name = ?, s.description = ?, s.id_supply_type = ?, s.price_wholesale = ?, s.price_retail = ?,
+    s.stock_lot = ?, s.stock_unit = ?, s.unit_x_lot = ?
+    WHERE s.id_supply = ?`;
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlUpdateSupply, [
+                name,
+                description,
+                id_supply_type,
+                price_wholesale,
+                price_retail,
+                stock_lot,
+                stock_unit,
+                unit_x_lot,
+                id
+            ], (error) => {
+                if (error) reject();
+                resolve();
+            });
+            db.release();
+        });
+    });
+};
+
+const supplyDeleteDB = (id) => {
+    const sqlDeleteProduct_X_Supply = 'DELETE FROM PRODUCT_X_SUPPLY WHERE id_supply = ?';
+    const sqlDeleteSupply = 'UPDATE SUPPLIES SET active = 0 WHERE id_supply = ?';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+
+                db.query(sqlDeleteSupply, [id], (error) => {
+                    if (error) db.rollback(() => reject(error));
+
+                    db.query(sqlDeleteProduct_X_Supply, [id], (error) => {
+                        if (error) db.rollback(() => reject(error));
+                        db.commit((error) => {
+                            if (error) db.rollback(() => reject(error));
+                            else resolve();
+                        });
+                    });
+                });
+                db.release();
+            });
+        });
+    });
+};
+
+
+module.exports = { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB, suppliesStocksGetDB };
