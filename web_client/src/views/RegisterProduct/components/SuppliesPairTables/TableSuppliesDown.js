@@ -1,10 +1,11 @@
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BodyTable from '../../../../common/Table/BodyTable';
-import HeaderTable from '../../../../common/Table/HeaderTable';
-import Table from '../../../../common/Table/Table';
+import BodyTable from 'common/Table/BodyTable';
+import HeaderTable from 'common/Table/HeaderTable';
+import Table from 'common/Table/Table';
 import '../../../../assets/Buttons.css';
-import BeShowed from "../../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
+import { SUPPLIES_QUANTITY_LABEL } from "./constants";
 
 const TableSuppliesDown = ({ supplies, download, data }) => {
     return (
@@ -20,7 +21,7 @@ const TableSuppliesDown = ({ supplies, download, data }) => {
                                 <>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Nombre</th>
                                     <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '200px', verticalAlign: 'middle' }}>Descripción</th>
-                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>Cantidad ingresada</th>
+                                    <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '100px', verticalAlign: 'middle' }}>{SUPPLIES_QUANTITY_LABEL}</th>
                                     <BeShowed show={data && !data.reading}>
                                         <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acción</th>
                                     </BeShowed>

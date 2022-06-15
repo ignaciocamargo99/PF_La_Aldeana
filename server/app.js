@@ -41,6 +41,7 @@ const jdEmployeeRouter = require('./api/routes/jdEmployeeRoute');
 const dayOffRouter = require('./api/routes/dayOffRoute');
 const userRouter = require('./api/routes/userRoute');
 const rrhhReportsRoute = require('./api/routes/rrhhReportsRoute.js');
+const sectorRouter = require('./api/routes/sectorRouter');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -89,6 +90,7 @@ app.use('/api', assistanceFingerRouter);
 app.use('/api', employeeAssistanceRouter);
 app.use('/api', advancesRouter);
 app.use('/api', serviceTestRoute);
+app.use('/api/sectors', sectorRouter);
 app.use('/api', salariesRoute);
 app.use('/api', dayOffRouter);
 app.use('/api', userRouter);

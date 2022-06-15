@@ -1,8 +1,8 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from "react";
-import validateFloatNumbers from "../../../../utils/validateFloatNumbers";
-import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
+import validateFloatNumbers from "utils/validateFloatNumbers";
+import warningCountProduct from 'utils/WarningMessages/warningCountProduct';
 
 const SuppliesAmount = ({ supply, addAmountOfSupply }) => {
 

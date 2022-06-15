@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import BeShowed from 'common/BeShowed';
 import LoaderSpinner from 'common/LoaderSpinner';
+import { useGetSectors } from "hooks/useGetSectors";
+import { useProductTypes } from "hooks/useProductTypes";
 import { useEffect, useState } from 'react';
 import displayError from 'utils/ErrorMessages/errorMesage';
 import EditProducts from './EditProducts/EditProducts';
@@ -19,6 +21,32 @@ const ProductsPage = ({ permissionsAccess, }) => {
     const [productToEdit, setProductToEdit] = useState({});
     const [productToRead, setProductToRead] = useState({});
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
+
+    const mapSectors = ({ sectors }) => {
+        if (sectors && sectors.length > 0) {
+            sectors?.map((e) => {
+                e.id = e.id_sector;
+                e.value = e.name;
+                return e;
+            });
+            return sectors;
+        }
+        return [];
+    }
+    const sectors = mapSectors(useGetSectors());
+
+    const mapProductTypes = ({ productTypes }) => {
+        if (productTypes && productTypes.length > 0) {
+            productTypes?.map((e) => {
+                e.id = e.id_product_type;
+                e.value = e.name;
+                return e;
+            });
+            return productTypes;
+        }
+        return [];
+    }
+    const productTypes = mapProductTypes(useProductTypes());
 
     const getProducts = () => {
         Axios.get(PORT() + '/api/products')
@@ -114,6 +142,8 @@ const ProductsPage = ({ permissionsAccess, }) => {
                                 </div>
                                 <div className="viewBody">
                                     <ProductsSearch
+                                        allSectors={sectors}
+                                        allProductTypes={productTypes}
                                         currentElements={products}
                                         handleRead={readProduct}
                                         handleEdit={editProduct}

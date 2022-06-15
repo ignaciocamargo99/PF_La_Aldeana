@@ -17,7 +17,7 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
             width: '30%'
         },
         {
-            name: 'Precio (kg)',
+            name: 'Precio por kilo ($)',
             width: '16%'
         },
         {
