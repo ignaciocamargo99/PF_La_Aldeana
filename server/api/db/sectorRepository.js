@@ -1,4 +1,4 @@
-const SectorModel = require('../database/models/SectorModel');
+const SectorModel = require('../database/models/sectorModel');
 
 const getSectorsDB = () => {
     return SectorModel.findAll();
