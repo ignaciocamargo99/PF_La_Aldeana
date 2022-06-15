@@ -11,7 +11,7 @@ const ProductsTable = ({ setNameSearch, pageElements, handleRead, handleEdit, ha
     return (
         <>
             {(!thereAreProductsToShow) && (
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con los filtros ingresados...</h4>
             )}
 
             {(thereAreProductsToShow) && (

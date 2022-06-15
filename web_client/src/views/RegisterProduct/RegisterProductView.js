@@ -39,10 +39,7 @@ export default function RegisterProductView() {
     const registerProduct = async () => {
         const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
         if (registrationConfirmed) {
-            let urlApi = '';
             const formData = new FormData();
-
-            urlApi = '/api/products';
 
             const jsonArrSupplies = JSON.stringify(data.supplies);
 
@@ -56,7 +53,7 @@ export default function RegisterProductView() {
             formData.append('flavor', data.flavor);
 
             loadingMessage('Registrando nuevo producto...');
-            Axios.post(PORT() + urlApi, formData)
+            Axios.post(PORT() + '/api/products', formData)
                 .then((formData) => {
                     if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
                     else displayError('Ha ocurrido un error al registrar el producto.');
