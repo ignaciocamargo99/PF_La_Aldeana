@@ -57,7 +57,7 @@ const Options = (props) => {
                         datTotalised.forEach((e,i)=>{datTotalised[i]=trunc((e/data[1][5].quantity*100), 2)});
 
                         const totalised = {
-                            type: 'pie',
+                            type: 'outlabeledPie',
                             labels: labelsTotalised,
                             datasets: [
                             {

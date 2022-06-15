@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
-import dataChartToURL from '../../../../utils/dataChartToURL';
+import dataChartToURL from 'utils/dataChartToURL';
 import styles from '../../styles';
 import dateText from 'utils/DateFormat/dateText';
 
