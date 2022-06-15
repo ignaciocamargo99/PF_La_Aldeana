@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
-import validateFloatNumbers from '../../../utils/validateFloatNumbers';
+import BeShowed from "common/BeShowed";
+import validateFloatNumbers from 'utils/validateFloatNumbers';
 
 const PriceProduct = (props) => {
     const inputPrice = useRef(null);
@@ -27,7 +27,7 @@ const PriceProduct = (props) => {
     return (
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="productPrice" >Precio*</label>
+                <label htmlFor="productPrice" >Precio ($)*</label>
             </div>
             <div className="form-control-input">
                 <BeShowed show={!props.data.reading}>

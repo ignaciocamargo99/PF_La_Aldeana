@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 import useHTTPGet from '../../../hooks/useHTTPGet';
-import validateTypeProduct from '../../../utils/Validations/validateTypeProduct';
+import validateTypeProduct from 'utils/Validations/validateTypeProduct';
 import getNameTypeProduct from './getNameTypeProduct';
 
 const PORT = require('../../../config');
