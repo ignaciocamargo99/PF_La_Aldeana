@@ -2,7 +2,6 @@ import Options from "./components/Options";
 import ListSalaries from "./components/ListSalaries";
 import BeShowed from "../../../common/BeShowed";
 import React, { useState } from 'react';
-import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
@@ -33,9 +32,9 @@ const SalariesReport = (props) => {
                     <LoaderSpinner color='secondary' loading='Cargando...'></LoaderSpinner>
                 </BeShowed>
                 <BeShowed show={loaded === true && load}>
-                    <BeShowed show={salaries.length > 0}>
+                    <BeShowed show={salaries[0]?.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Salarios desde {from?dateBDToString(from, 'Es'):new Date().toLocaleDateString()} hasta {to?dateBDToString(to, 'Es'):new Date().toLocaleDateString()}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Salarios desde {from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()}</h5>
                         </div>
                         <hr />
                         <div className="formRow">
@@ -47,10 +46,10 @@ const SalariesReport = (props) => {
                             </div>
                         </div>
                     </BeShowed>
-                    <BeShowed show={salaries.length < 1 && load}>
+                    <BeShowed show={salaries[0]?.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron salarios para el período ({from} - {to})</h2>
+                            <h2>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>

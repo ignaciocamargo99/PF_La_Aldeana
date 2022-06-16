@@ -74,10 +74,14 @@ const ListSalaries = (props) => {
         <>
             <BeShowed show={props.salaries.length > 0}>
                 <div className="formRow title-searcher">
-                    <h4 className="text-secondary">Productos vendidos:</h4>
+                    <h4 className="text-secondary">Empleados:</h4>
                     <div className="search-input">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                            </div>
+                            <input id="inputSearchName" aria-describedby="inputGroup-sizing-default"  className="form-control" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        </div>
                     </div>
                 </div>
                 <div className="table-responsive-md">
