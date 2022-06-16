@@ -65,8 +65,10 @@ export default function MyDocument (props) {
           </View>
           <View style={styles.section}>
             <Text style={styles.title}>Total de ventas de tipos productos por unidad</Text>
+            <Text style={styles.subtitle}>Análisis proporcional (% sin decimales)</Text>
             <Image style={styles.image} src={dataChartToURL(props.typesChart)}></Image>
             <Text style={styles.detail}>Total de ventas: {props.typesChart.total} uds.</Text>
+            <Text style={styles.subtitle}>Análisis nominal</Text>
             <View style={styles.row}>
               <View style={styles.col}>
                 <Text style={styles.subtitle}>Tipo de producto</Text>

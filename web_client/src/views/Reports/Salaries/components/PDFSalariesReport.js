@@ -23,7 +23,7 @@ export default function MyDocument (props) {
             <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
           </View>
             <Text style={styles.title}>Análisis de salarios</Text>
-            <Text style={styles.subtitle}>Análisis proporcional (%)</Text>
+            <Text style={styles.subtitle}>Análisis proporcional (% sin decimales)</Text>
             <Image style={styles.image} src={dataChartToURL(props.totalisedChart)}></Image>
             <Text style={styles.detail}>Total de dinero pagado: $ {props.totalisedChart.total}</Text>
             <Text style={styles.subtitle}>Análisis nominal</Text>

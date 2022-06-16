@@ -93,7 +93,7 @@ const Options = (props) => {
                         ],
                     };
                     const types = {
-                        type: 'pie',
+                        type: 'outlabeledPie',
                         labels: labelsTypes,
                         datasets: [
                         {
@@ -169,18 +169,23 @@ const Options = (props) => {
 
     return (
         <>
-            <div className="formRow">
-                <label>Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-            </div>
             <div className="formRow d-flex justify-content-between">
-                <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateFrom' defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
-                </div>
-
-                <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                <div className="input-group" style={{marginLeft: 'auto'}}>
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                    </div>
+                    <div  style={{ textAlign: 'right' }} >
+                    <input  className="form-control" type="date" style={{ maxWidth: "9em"}} id='dateFrom' defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
+                        </div>
+                    </div>
+                    <div className="input-group">
+                        <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                        </div>
+                        <div style={{ textAlign: 'right' }} >
+                        <input type="date"  className="form-control" style={{ maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                    </div>
                 </div>
             </div>
             <div className="formRow">
@@ -199,7 +204,7 @@ const Options = (props) => {
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className="btn btn-light newBtn" id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={props.dateFrom > props.dateTo || props.load <= 0?"disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>
