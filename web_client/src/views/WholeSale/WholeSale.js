@@ -32,7 +32,6 @@ const WholeSale = () => {
     const getFlavors = () => {
         axios.get(`${PORT()}/api/flavors`)
             .then((res) => {
-                console.log(res.data)
                 setFlavors(res.data);
             })
             .catch((e) => {
@@ -64,7 +63,7 @@ const WholeSale = () => {
                         <label className="form-control-label">Franquicia:</label>
                     </div>
                     <div className="col-xl-9">
-                        <select class="form-control" onChange={(e) => { setSelectedFranchise(JSON.parse(e.target.selectedOptions[0].value)) }}>
+                        <select className="form-control" onChange={(e) => { setSelectedFranchise(JSON.parse(e.target.selectedOptions[0].value)) }}>
                             {franchises?.map((franchise) => {
                                 return (<option key={franchise.id_franchise} value={JSON.stringify(franchise)} >{franchise.name}</option>)
                             })}
