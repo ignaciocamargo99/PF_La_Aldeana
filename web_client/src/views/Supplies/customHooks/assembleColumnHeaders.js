@@ -6,15 +6,15 @@ export const assembleColumnHeaders = () => {
         },
         {
             name: 'Descripción',
-            width: '33%'
+            width: '27%'
         },
         {
-            name: 'Precio al por mayor',
-            width: '7%'
+            name: 'Precio al por mayor ($)',
+            width: '10%'
         },
         {
-            name: 'Precio al por menor',
-            width: '7%'
+            name: 'Precio al por menor ($)',
+            width: '10%'
         },
         {
             name: 'Ver',
