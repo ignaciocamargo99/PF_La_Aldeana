@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import BeShowed from '../../../../common/BeShowed';
+import BeShowed from 'common/BeShowed';
 
 const Password = (props) => {
     const pass = useRef(null);

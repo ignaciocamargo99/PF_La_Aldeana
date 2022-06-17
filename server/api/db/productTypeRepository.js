@@ -10,6 +10,28 @@ class ProductTypeRepository {
             include: [SectorModel]
         });
     };
+
+    getProductTypeDB = () => {
+        return ProductTypeModel.findAll({
+            where:{
+                active: true
+            },
+            include: [SectorModel]
+        });
+    };
+
+    updateProductTypeDB = (id, productType) => {
+        var selectProductType = {
+            where: { id_product_type: id }
+        };
+
+        return ProductTypeModel.update({
+            name: productType.name,
+            description: productType.description,
+            id_sector: productType.id_sector,
+            send_delivery: productType.send_delivery,
+        }, selectProductType);
+    };
 }
 
 module.exports = new ProductTypeRepository();

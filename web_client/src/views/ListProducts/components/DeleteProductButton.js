@@ -4,7 +4,7 @@ import Axios from "axios";
 import swal from "sweetalert";
 import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import '../../../assets/Buttons.css';
-import BeShowed from "../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 
 const PORT = require('../../../config');
 

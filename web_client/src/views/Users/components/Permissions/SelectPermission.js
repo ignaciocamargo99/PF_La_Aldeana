@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import BeShowed from "../../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 import getPermission from "./getPermission";
 
 export default function CheckBoxEnabled(props) {

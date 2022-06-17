@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const PORT = require('../../../../config');
 
-const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
+const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEdit, handleDelete, permissionsAccess,user }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
@@ -90,7 +90,7 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
 
     return (
         <>
-            <Table
+            <Table user={user}
                 columnsHeaders={columnsHeaders}
                 pageElements={pageElements}
                 setDateSearch1={setDateSearch1}

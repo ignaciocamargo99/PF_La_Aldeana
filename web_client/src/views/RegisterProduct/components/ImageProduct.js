@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
-import warningSizeImages from "../../../utils/WarningMessages/warningSizeImages";
+import BeShowed from "common/BeShowed";
+import warningSizeImages from "utils/WarningMessages/warningSizeImages";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 

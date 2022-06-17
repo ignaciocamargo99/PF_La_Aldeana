@@ -1,20 +1,8 @@
 const {
-    flavorsGetDB,
     getFlavorDBById,
     getFlavorsDBByActiveState,
     saveFlavorDB,
-    typeFlavorGetDB,
 } = require('../db/flavorDb');
-
-const readFlavor = async () => {
-    try {
-        let res = await flavorsGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
 
 const searchFlavorsByActiveState = (onlyActiveFlavors) => {
     return getFlavorsDBByActiveState(onlyActiveFlavors);
@@ -38,7 +26,7 @@ const createNewFlavors = async ({ flavors }) => {
 
     if (flavors.length === 1) {
         if (isNewFlavorDataValid(flavors[0])) {
-            const flavorDataMapped = mapFlavorData(flavors[0]);
+            const flavorDataMapped = mapFlavorDataForCreation(flavors[0]);
             const { dataValues: newFlavor } = await saveFlavorDB(flavorDataMapped);
 
             return {
@@ -56,34 +44,36 @@ const createNewFlavors = async ({ flavors }) => {
     }
 };
 
-const mapFlavorData = (flavorData) => {
+const mapFlavorDataForCreation = (flavorData) => {
     const flavorDataMapped = { ...flavorData };
-    flavorDataMapped.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
     flavorDataMapped.name = flavorData.name.trim();
+    flavorDataMapped.description = flavorData.description?.trim();
+    flavorDataMapped.stock = flavorDataMapped.stock ? flavorDataMapped.stock : 0;
     return flavorDataMapped;
 };
 
-const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, price, reorderStock, stock }) => {
+const isNewFlavorDataValid = ({ flavorFamilyId, flavorTypeId, name, reorderStock, stock }) => {
     if (!name || (name.trim() === '')) {
         return false;
     }
-    if (!stock) {
+    if (isInvalidNumber(flavorFamilyId)) {
         return false;
     }
-    if (!price || isNaN(price)) {
+    if (isInvalidNumber(flavorTypeId)) {
         return false;
     }
-    if (!flavorFamilyId || isNaN(price)) {
+    if (stock && isNaN(stock)) {
         return false;
     }
-    if (!flavorTypeId || isNaN(flavorTypeId)) {
-        return false;
-    }
-    if (reorderStock && isNaN(reorderStock)) {
+    if (isInvalidNumber(reorderStock)) {
         return false;
     }
 
     return true;
+};
+
+const isInvalidNumber = (n) => {
+    return !n || isNaN(n);
 };
 
 const createErrorToUpdateFlavorObj = (message) => {
@@ -112,10 +102,10 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
     }
 
     if (flavorData.hasOwnProperty('description')) {
-        flavor.description = flavorData.description;
+        flavor.description =  flavorData.description?.trim();
     }
-    if (flavorData.hasOwnProperty('reorderStock')) {
-        flavor.reorderStock = flavorData.reorderStock ? flavorData.reorderStock : null;
+    if (flavorData.hasOwnProperty('stock')) {
+        flavor.stock = flavorData.stock ? flavorData.stock : 0;
     }
     if (flavorData.flavorFamilyId) {
         flavor.family_flavor = flavorData.flavorFamilyId;
@@ -124,13 +114,10 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
         flavor.type_flavor = flavorData.flavorTypeId;
     }
     if (flavorData.name) {
-        flavor.name = flavorData.name;
+        flavor.name = flavorData.name.trim();
     }
-    if (flavorData.price) {
-        flavor.price = flavorData.price;
-    }
-    if (flavorData.stock) {
-        flavor.stock = flavorData.stock;
+    if (flavorData.reorderStock) {
+        flavor.reorderStock = flavorData.reorderStock;
     }
 
     const { dataValues: flavorNewData } = await flavor.save();
@@ -142,11 +129,8 @@ const saveChangesToFlavor = async (idFlavor, flavorData) => {
     };
 };
 
-const isFlavorDataValid = ({ flavorFamilyId, flavorTypeId, price, reorderStock, stock }) => {
+const isFlavorDataValid = ({ flavorFamilyId, flavorTypeId, reorderStock, stock }) => {
     if (stock && isNaN(stock)) {
-        return false;
-    }
-    if (price && isNaN(price)) {
         return false;
     }
     if (flavorFamilyId && isNaN(flavorFamilyId)) {
@@ -190,21 +174,10 @@ const deleteFlavorById = async (idFlavor) => {
     };
 };
 
-const readTypeFlavor = async () => {
-    try {
-        let res = await typeFlavorGetDB();
-        return res;
-    }
-    catch (error) {
-        throw Error(error);
-    }
-};
-
 module.exports = {
     createNewFlavors,
     deleteFlavorById,
-    readFlavor,
-    readTypeFlavor,
+
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
