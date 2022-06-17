@@ -152,10 +152,10 @@ const Sales = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-7">
                         <ListProducts />
                     </div>
-                    <div className="col-4">
+                    <div className="col-5">
                         <h3><b>Detalle de venta</b></h3>
                         <DetailSale />
                         <PaymentSale />

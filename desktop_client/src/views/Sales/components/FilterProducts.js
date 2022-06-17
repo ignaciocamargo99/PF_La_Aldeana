@@ -18,6 +18,7 @@ const FilterProducts = (props) => {
     useEffect(() => {
         Axios.get(`${PORT()}/api/typeProducts`)
             .then(response => {
+                console.log(response.data)
                 setTypesProduct(response.data);
             })
             .catch(error => console.error(error))
@@ -62,10 +63,10 @@ const FilterProducts = (props) => {
     return (
         <>
             <div className="formRow">
-                <h4>Filtrar por:</h4>
-                <button id="btn_iceCream" className='sendNew' onClick={onClickHeladeria}>Heladería</button>
-                <button id="btn_coffe" className='sendNew' onClick={onClickCafeteria}>Cafetería</button>
-                <button id="btn_all" className='sendNew' onClick={onClickCancel}>Todos</button>
+                <h4 style={{ padding: '6px 0px 0px'}}>Filtrar por:</h4>
+                <button id="btn_iceCream" className='btn btn-light sendNew' onClick={onClickHeladeria}>Heladería</button>
+                <button id="btn_coffe" className='btn btn-light sendNew' onClick={onClickCafeteria}>Cafetería</button>
+                <button id="btn_all" className='btn btn-light sendNew' onClick={onClickCancel}>Todos</button>
             </div>
             <BeShowed show={boolTypeProduct}>
                 <select className="form-control" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>

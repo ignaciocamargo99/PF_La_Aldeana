@@ -120,7 +120,7 @@ const ModalProduct = (props) => {
 
     return (
         <>
-            <Modal isOpen={props.show} className="modal-sale modal-lg" >
+            <Modal isOpen={props.show} className="modal-sale modal-lg">
                 <ModalHeader>
                     <h2>{props.productSelected?.name}</h2>
                 </ModalHeader>
