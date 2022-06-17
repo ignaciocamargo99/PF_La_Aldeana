@@ -116,13 +116,13 @@ export default function InstallmentTable ({ installments, reading }) {
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 <BeShowed show={reading}>
                                                     <div className="form-control-input input-group">
-                                                        <span class="input-group-text">$</span>
+                                                        <span className="input-group-text">$</span>
                                                         <input style={{ textAlign: 'right'}} className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>
                                                 <BeShowed show={!reading}>
                                                     <div className="form-control-input input-group">
-                                                        <span class="input-group-text">$</span>
+                                                        <span className="input-group-text">$</span>
                                                         <input style={{ textAlign: 'right'}} className={isValidClassAmountInstallments} id="amountInstallments" readOnly type="number" onChange={() => handleAmountInstallments(element, i)} min="1" placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} value={element.amount} />
                                                     </div>
                                                 </BeShowed>

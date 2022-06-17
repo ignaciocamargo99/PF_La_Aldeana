@@ -63,6 +63,7 @@ namespace desktop_employee
             // 
             // ibtnAsistenciaDNI
             // 
+            this.ibtnAsistenciaDNI.AutoSize = true;
             this.ibtnAsistenciaDNI.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnAsistenciaDNI.FlatAppearance.BorderSize = 0;
             this.ibtnAsistenciaDNI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -86,6 +87,7 @@ namespace desktop_employee
             // 
             // ibtnEmpleados
             // 
+            this.ibtnEmpleados.AutoSize = true;
             this.ibtnEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnEmpleados.FlatAppearance.BorderSize = 0;
             this.ibtnEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -109,6 +111,7 @@ namespace desktop_employee
             // 
             // ibtnAsistencia
             // 
+            this.ibtnAsistencia.AutoSize = true;
             this.ibtnAsistencia.Dock = System.Windows.Forms.DockStyle.Top;
             this.ibtnAsistencia.FlatAppearance.BorderSize = 0;
             this.ibtnAsistencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -142,7 +145,8 @@ namespace desktop_employee
             // 
             // ibtnMenu
             // 
-            this.ibtnMenu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.ibtnMenu.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ibtnMenu.FlatAppearance.BorderSize = 0;
             this.ibtnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ibtnMenu.IconChar = FontAwesome.Sharp.IconChar.Bars;
@@ -238,6 +242,7 @@ namespace desktop_employee
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.pnlMenu.ResumeLayout(false);
+            this.pnlMenu.PerformLayout();
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).EndInit();
             this.pnlTitle.ResumeLayout(false);

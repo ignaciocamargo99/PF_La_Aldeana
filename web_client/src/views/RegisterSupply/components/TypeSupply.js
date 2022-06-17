@@ -1,40 +1,70 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { updateTypeSupply } from '../../../actions/SupplyActions';
+import Axios from 'axios';
+import BeShowed from 'common/BeShowed';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import useHTTPGet from '../../../hooks/useHTTPGet';
+import { updateTypeSupply } from '../../../actions/SupplyActions';
 
 const PORT = require('../../../config');
 
 const TypeSupply = (props) => {
+    const [typeSupplies, setTypeSupplies] = useState();
 
-    const typeSupplies = useHTTPGet(PORT() + '/api/typeSupplies');
+    useEffect(() => {
+        Axios.get((PORT() + '/api/typeSupplies'))
+            .then((response) => setTypeSupplies(response.data))
+            .catch((error) => console.log(error));
+    }, [])
 
     const selectSupplyType = useRef(null);
 
     const handleSupplyTypeChange = () => {
         props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
+        if (props.data.editing) {
+            props.data.id_supply_type = selectSupplyType.current.value
+            console.log(props.data)
+            props.data.stock_lot = null;
+            // props.data.stock_unit = 0;
+            props.data.unit_x_lot = null;
+            props.load(props.data)
+        }
     }
 
     useEffect(() => {
-        if (selectSupplyType.current.value >= 0) {
-            props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
-        } 
+        if (!props.data.reading) {
+            if (props.data.id_supply_type) {
+                if (props.data.id_supply_type >= 0) props.updateTypeSupply(Math.trunc(props.data.id_supply_type));
+            }
+            if (selectSupplyType.current.value >= 0) props.updateTypeSupply(Math.trunc(selectSupplyType.current.value));
+        }
     }, [props.typeSupply]);
 
-    return(
-        
+    return (
+
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="supplyType">Tipo*</label>
+                <label htmlFor="supplyType">Tipo de insumo*</label>
             </div>
             <div className="form-control-input">
-                <select className="form-select" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{fontFamily: 'Abel, sans-serif'}}>
-                    <option disabled value="-1">Seleccione tipo de insumo...</option>
-                    {
-                        typeSupplies?.map((ts, i) => (
-                            <option key={i} value={ts.id_supply_type}>{ts.name}</option>
-                        ))
-                    }
+                <select className="form-control" id="supplyType" defaultValue="-1" ref={selectSupplyType} onChange={handleSupplyTypeChange} style={{ fontFamily: 'Abel, sans-serif' }}>
+                    <BeShowed show={!props.data.reading && !props.data.editing}>
+                        <option disabled value="-1">Seleccione tipo de insumo...</option>
+                        {
+                            typeSupplies?.map((ts, i) => (
+                                <option key={i} value={ts.id_supply_type}>{ts.name}</option>
+                            ))
+                        }
+                    </BeShowed>
+                    <BeShowed show={props.data.reading}>
+                        <option value="0">{props.data.name_type_supply}</option>
+                    </BeShowed>
+                    <BeShowed show={props.data.editing}>
+                        <option disabled value="-1">{props.data.name_type_supply}</option>
+                        {
+                            typeSupplies?.map((ts, i) => (
+                                <option key={i} value={ts.id_supply_type}>{ts.name}</option>
+                            ))
+                        }
+                    </BeShowed>
                 </select>
             </div>
         </div>

@@ -1,17 +1,17 @@
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
-import Buttons from '../../common/Buttons';
-import successMessage from '../../utils/SuccessMessages/successMessage';
-import validationProductRegister from '../../utils/Validations/validationProductRegister';
+import Buttons from 'common/Buttons';
+import successMessage from 'utils/SuccessMessages/successMessage';
+import validationProductRegister from 'utils/Validations/validationProductRegister';
 import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
-import displayError from '../../utils/ErrorMessages/displayError';
-import Breadcrumb from '../../common/Breadcrumb';
+import displayError from 'utils/ErrorMessages/displayError';
+import Breadcrumb from 'common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
-import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../config');
@@ -39,10 +39,7 @@ export default function RegisterProductView() {
     const registerProduct = async () => {
         const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
         if (registrationConfirmed) {
-            let urlApi = '';
             const formData = new FormData();
-
-            urlApi = '/api/products';
 
             const jsonArrSupplies = JSON.stringify(data.supplies);
 
@@ -56,7 +53,7 @@ export default function RegisterProductView() {
             formData.append('flavor', data.flavor);
 
             loadingMessage('Registrando nuevo producto...');
-            Axios.post(PORT() + urlApi, formData)
+            Axios.post(PORT() + '/api/products', formData)
                 .then((formData) => {
                     if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
                     else displayError('Ha ocurrido un error al registrar el producto.');

@@ -11,7 +11,7 @@ const ProductsTable = ({ setNameSearch, pageElements, handleRead, handleEdit, ha
     return (
         <>
             {(!thereAreProductsToShow) && (
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con el nombre ingresado...</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen productos con los filtros ingresados...</h4>
             )}
 
             {(thereAreProductsToShow) && (
@@ -33,6 +33,9 @@ const ProductsTable = ({ setNameSearch, pageElements, handleRead, handleEdit, ha
                                 return (
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_sector}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_product_type}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.price}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadProductButton product={element} read={handleRead} />
                                         </td>
