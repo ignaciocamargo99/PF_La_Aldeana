@@ -18,7 +18,6 @@ const FilterProducts = (props) => {
     useEffect(() => {
         Axios.get(`${PORT()}/api/typeProducts`)
             .then(response => {
-                console.log(response.data)
                 setTypesProduct(response.data);
             })
             .catch(error => console.error(error))
@@ -63,7 +62,7 @@ const FilterProducts = (props) => {
     return (
         <>
             <div className="formRow">
-                <h4 style={{ padding: '6px 0px 0px'}}>Filtrar por:</h4>
+                <h4 style={{ padding: '10px 0px 0px', margin:'0px 10px 0px 0px'}}>Filtrar:</h4>
                 <button id="btn_iceCream" className='btn btn-light sendNew' onClick={onClickHeladeria}>Heladería</button>
                 <button id="btn_coffe" className='btn btn-light sendNew' onClick={onClickCafeteria}>Cafetería</button>
                 <button id="btn_all" className='btn btn-light sendNew' onClick={onClickCancel}>Todos</button>

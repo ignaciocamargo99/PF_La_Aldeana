@@ -9,6 +9,7 @@ import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from "../../../common/Table/Table";
 import '../styles/detailSale.css';
 import ModalProduct from "./ModalProduct";
+import '../styles/table.css'; 
 
 const DetailSale = (props) => {
 
@@ -60,7 +61,7 @@ const DetailSale = (props) => {
                                     <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Nombre</th>
                                     <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
                                     <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
-                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}></th>
+                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acciones</th>
                                 </>} />
                         <BeShowed show={ready}>
                             <BodyTable
@@ -72,10 +73,10 @@ const DetailSale = (props) => {
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${element.subtotal}</td>
                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
+                                                    <button type="button" className="btn btn-light sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
                                                         <FontAwesomeIcon icon={faPen} />
                                                     </button>
-                                                    <button type="button" className="sendDelete" id='btn_delete' value={element.id_product} onClick={() => changePrintModalDelete(element.id_product)} >
+                                                    <button type="button" className="btn btn-light sendDelete" id='btn_delete' value={element.id_product} onClick={() => changePrintModalDelete(element.id_product)} >
                                                         <FontAwesomeIcon icon={faMinus} />
                                                     </button>
                                                 </td>
@@ -92,7 +93,7 @@ const DetailSale = (props) => {
 
                 </>
                 :
-                <h4 style={{color:'#383C77', fontWeight: 'bold' }}> ¡No hay productos cargados en el detalle! </h4>
+                <h4 style={{ color: '#383C77', fontWeight: 'bold' }}> ¡No hay productos cargados en el detalle! </h4>
             }
 
             <ModalProduct show={printModal} setShowModal={setPrintModal} actionModal={actionModal}></ModalProduct>

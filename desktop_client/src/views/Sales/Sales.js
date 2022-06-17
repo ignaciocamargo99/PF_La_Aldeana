@@ -106,8 +106,10 @@ const Sales = (props) => {
         if (ready) {
             agg_suplies();
             let sale = {
-                date_hour: dateTimeFormat(new Date()), total_amount: props.totalAmount,
-                id_pay_type: props.payType, details: JSON.stringify(props.detailProducts)
+                date_hour: dateTimeFormat(new Date()),
+                total_amount: props.totalAmount,
+                id_pay_type: props.payType,
+                details: JSON.stringify(props.detailProducts)
             };
 
             Axios.post(`${PORT()}/api/sales`, sale)
@@ -148,14 +150,16 @@ const Sales = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-6">
-                        <FilterProducts />
+                        <div className="row">
+                            <div className="col-6">
+                                <FilterProducts />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <ListProducts />
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-7">
-                        <ListProducts />
-                    </div>
-                    <div className="col-5">
+                    <div className="col-6">
                         <h3><b>Detalle de venta</b></h3>
                         <DetailSale />
                         <PaymentSale />
