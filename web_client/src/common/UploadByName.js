@@ -1,6 +1,6 @@
-import React, { useState , useRef} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import BeShowed from './BeShowed';
 
 
@@ -8,13 +8,13 @@ const UploadByName = (props) => {
 
     const input = useRef(null)
     const [showOptions, setShowOptions] = useState(false)
-    const [errorMessage,setErrorMessage] = useState(null)    
-    
+    const [errorMessage, setErrorMessage] = useState(null)
+
     const upload = () => {
         let x = -1
         props.list.forEach((item) => {
             if (item.name.toUpperCase() === input.current.value.toUpperCase()) {
-                x = item.id_supply
+                x = item[`${props.id}`]
             }
         })
         if (x !== -1) {
@@ -37,7 +37,7 @@ const UploadByName = (props) => {
         }
     }
 
-    return(
+    return (
         <div className="col-sm-8">
             <BeShowed show={showOptions}>
                 <datalist id={props.listName}>
@@ -48,10 +48,10 @@ const UploadByName = (props) => {
             </BeShowed>
             <div className="formRow">
                 <div className="form-control-input">
-                    <input className={errorMessage?'form-control is-invalid':'form-control'} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions}/>    
-                <BeShowed show={errorMessage !== "null"}>
-                    <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
-                </BeShowed>
+                    <input className={errorMessage ? 'form-control is-invalid' : 'form-control'} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions} />
+                    <BeShowed show={errorMessage !== "null"}>
+                        <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
+                    </BeShowed>
                 </div>
                 <div className="form-control-button">
                     <button className="btn btn-primary" onClick={upload}><FontAwesomeIcon icon={faPlus} /></button>
