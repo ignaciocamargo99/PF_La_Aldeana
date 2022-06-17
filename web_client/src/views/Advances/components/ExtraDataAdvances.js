@@ -195,7 +195,7 @@ export default function ExtraDataAdvances(props) {
                     </div>
                 </BeShowed>
                 <BeShowed show={!props.data.reading && !props.data.editing}>
-                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" class={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
+                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" className={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
                         placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
                 </BeShowed>
             </div>
@@ -220,7 +220,7 @@ export default function ExtraDataAdvances(props) {
                     <label htmlFor="amountTotal" >Monto total*</label>
                 </div>
                 <div className="form-control-input d-flex">
-                    <span class="input-group-text" style={{width: '2em', marginLeft: 'auto'}}>$</span>
+                    <span className="input-group-text" style={{width: '2em', marginLeft: 'auto'}}>$</span>
                     <input className={isValidClassAmountTotal} readOnly={props.data.reading || !inputFirstMonth.current?.value} style={{width: '98em'}} id="amountTotal" type="number" ref={inputAmountTotal} onChange={handleAmountTotal} min={months > minTotal ? months : minTotal} placeholder="Ingrese monto..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} defaultValue={props.data.amount ? props.data.amount : null} />
                 </div>
             </div>

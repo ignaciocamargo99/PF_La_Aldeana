@@ -47,10 +47,3 @@ export const toSalesDelivery = () => {
         payload: 4
     };
 };
-
-export const toSalesWhole = () => {
-    return {
-        type: 'TO_SALES_WHOLE',
-        payload: 5
-    };
-};
