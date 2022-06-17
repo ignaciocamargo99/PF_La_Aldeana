@@ -63,18 +63,19 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         textAlign: 'left',
+        padding: '2mm',
     },
     money: {
         fontSize: 10,
         textAlign: 'right',
-        padding: '1mm',
+        padding: '2mm',
     },
     total: {
         fontSize: 10,
         textAlign: 'right',
         backgroundColor: '#2284B6',
         color: 'white',
-        padding: '1mm',
+        padding: '2mm',
     },
     division: {
         flexDirection: 'row',
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
         paddingLeft: '3px',
         paddingRight: '3px',
         color: 'grey',
+        padding: '2mm',
     },
     detail: {
         fontSize: 12,

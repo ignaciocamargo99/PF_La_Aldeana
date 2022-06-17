@@ -25,7 +25,7 @@ const SalariesReport = (props) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options loaded={loaded} setLoaded={setLoaded} load={load} dateTo={to} dateFrom={from} setTo={setTo} setFrom={setFrom} user={props.user} setSalaries={setSalaries} setLoad={setLoad} permissionsAccess={permissionsAccess} />
+                    <Options salaries={salaries[0]} loaded={loaded} setLoaded={setLoaded} load={load} dateTo={to} dateFrom={from} setTo={setTo} setFrom={setFrom} user={props.user} setSalaries={setSalaries} setLoad={setLoad} permissionsAccess={permissionsAccess} />
                 </div>
                 <br />
                 <BeShowed show={loaded === false && load}>

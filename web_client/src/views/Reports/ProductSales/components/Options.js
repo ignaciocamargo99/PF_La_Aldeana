@@ -18,6 +18,7 @@ const Options = (props) => {
     const [showPdf, setShowPDF] = useState(false);
     let permissionsAccess = props.permissionsAccess;
     const [MyDoc, setMyDoc] = useState('');
+    const [allSales, setAllSales] = useState('');
 
     const inputDescriptionReport = useRef();
     const [description, setDescription] = useState(null);
@@ -51,6 +52,7 @@ const Options = (props) => {
                     });
 
                     sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
+                    setAllSales(sales)
 
                     props.updateProductSales(sales);
                     
@@ -204,7 +206,7 @@ const Options = (props) => {
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className={props.dateFrom > props.dateTo || props.load <= 0?"disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1?"disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>
