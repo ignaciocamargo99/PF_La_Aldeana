@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         textAlign: 'left',
+        padding: '2mm',
     },
     money: {
         fontSize: 10,
         textAlign: 'right',
+        padding: '2mm',
     },
     header: {
         fontSize: 12,
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
         paddingLeft: '3px',
         paddingRight: '3px',
         color: 'grey',
+        padding: '2mm',
     },
     detail: {
         fontSize: 12,

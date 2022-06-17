@@ -9,13 +9,6 @@ import Viewer from '../../ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFSalariesReport';
 
 const PORT = require('../../../../config');
-function trunc (x, posiciones = 0) {
-    var s = x.toString()
-    var l = s.length
-    var decimalLength = s.indexOf('.') + 1
-    var numStr = s.substr(0, decimalLength + posiciones)
-    return Number(numStr)
-  }
 const Options = (props) => {
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
@@ -171,7 +164,7 @@ const Options = (props) => {
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3 || permissionsAccess === 'Reportes Recursos Humanos'}>
                         <button className="newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className={props.dateFrom > props.dateTo || !props.load?"disabledNewBtn":"newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || !props.load} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={props.dateFrom > props.dateTo || !props.load  || props.salaries?.length < 1 ?"disabledNewBtn":"newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || !props.load || props.salaries?.length < 1 } style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>
