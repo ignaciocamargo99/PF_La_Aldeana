@@ -9,10 +9,11 @@ import validateWarning from '../../../utils/WarningMessages/validateWarning';
 import '../styles/ChamberFlavorsDispatch.css';
 import FilterFlavors from './FilterFlavors';
 import PairListFlavors from './PairListFlavors';
-import {updateRefresh } from '../../../actions/SalesActions';
+import { updateRefresh } from '../../../actions/SalesActions';
 import { updateChamberFlavorsDate, updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp, updateAllElements, updateTableDown } from '../../../actions/TableUpDownActions';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from '../../../utils/sweetAlert2Questions';
 
 const PORT = require('../../../config');
 
@@ -54,21 +55,24 @@ const ChamberFlavorsDispatch = (props) => {
         props.updateRefresh(true);
     }
 
-    const registerProduct = () => {
+    const registerProduct = async () => {
         if (ready) {
-            loadingMessage('Registrando salida de cámara...')
-            let flavorsToDispatch = [];
-            props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
-            flavorsToDispatch = props.elementsTableDown;
-            Axios.post(`${PORT()}/api/chamberFlavorsDispatch`, flavorsToDispatch)
-                .then((flavorsToDispatch) => {
-                    if (flavorsToDispatch.data.Ok) {
-                        resetStates();
-                        successMessage('Atención', 'Salida de helados de cámara registrado exitosamente.');
-                    }
-                    else errorMessage('Error', 'Ha ocurrido un problema al registrar la salida de helados')
-                })
-                .catch((error) => console.log(error));
+            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar salida de helados?`)).isConfirmed;
+            if (registrationConfirmed) {
+                loadingMessage('Registrando salida de cámara...')
+                let flavorsToDispatch = [];
+                props.elementsTableDown.forEach((flavor) => flavor.date_dispatch = props.flavorsDispatchDate);
+                flavorsToDispatch = props.elementsTableDown;
+                Axios.post(`${PORT()}/api/chamberFlavorsDispatch`, flavorsToDispatch)
+                    .then((flavorsToDispatch) => {
+                        if (flavorsToDispatch.data.Ok) {
+                            resetStates();
+                            successMessage('Atención', 'Salida de helados de cámara registrado exitosamente.');
+                        }
+                        else errorMessage('Error', 'Ha ocurrido un problema al registrar la salida de helados')
+                    })
+                    .catch((error) => console.log(error));
+            }
         }
     }
 
@@ -86,7 +90,7 @@ const ChamberFlavorsDispatch = (props) => {
                     </div>
                 </div>
                 <FilterFlavors />
-                <br/>
+                <br />
                 <PairListFlavors />
                 <Buttons label='Registrar' ready={ready} actionOK={registerProduct} actionNotOK={validateWarning} data={ready} actionCancel={resetStates} />
             </div>

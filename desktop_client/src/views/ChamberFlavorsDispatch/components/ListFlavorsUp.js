@@ -46,6 +46,7 @@ const ListFlavorsUp = (props) => {
         }
     }, [props.flavorsDispatchFilters, props.refresh]);
 
+
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
@@ -56,7 +57,7 @@ const ListFlavorsUp = (props) => {
             {(flavorValues = props.elementsTableUp.filter(() => true),
                 flavorValues.length === 0 && !isLoadingSpinner
                     ?
-                    <h4 className="row justify-content-center" style={{ color: '#C16100', width:'80%', textAlign: 'center' }}>No existen sabores con los filtros cargados o ya cargó todos los disponibles...</h4>
+                    <h4 className="row justify-content-center" style={{ color: '#C16100', width: '80%', textAlign: 'center' }}>No existen sabores con los filtros cargados o ya cargó todos los disponibles...</h4>
                     : !isLoadingSpinner && (
                         <div className="table-responsive">
                             <table className="table" style={{ display: 'block', height: '350px', overflow: 'auto' }}>
@@ -72,7 +73,7 @@ const ListFlavorsUp = (props) => {
                                     <tbody key={i}>
                                         <tr>
                                             <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                            <StockFlavorTable flavor={element}/>
+                                            <StockFlavorTable flavor={element} />
                                             {/* <td style={{ textAlign: 'center' }}>{element.stock}</td> */}
                                             <FlavorDispatchAmount keyElement={i} />
                                             <td style={{ textAlign: 'center' }}>
@@ -86,7 +87,7 @@ const ListFlavorsUp = (props) => {
                                         <tbody key={i}>
                                             <tr>
                                                 <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                                <StockFlavorTable flavor={element}/>
+                                                <StockFlavorTable flavor={element} />
                                                 {/* <td style={{ textAlign: 'center' }}>{element.stock}</td> */}
                                                 <FlavorDispatchAmount keyElement={i} />
                                                 <td style={{ textAlign: 'center' }}>
@@ -109,7 +110,7 @@ const mapStateToProps = (state) => {
         elementsTableUp: state.elementsTableUp,
         allElements: state.allElements,
         elementsTableDown: state.elementsTableDown,
-        refresh: state.refresh
+        refresh: state.refresh,
     }
 }
 
