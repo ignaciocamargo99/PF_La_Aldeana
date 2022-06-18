@@ -52,7 +52,7 @@ export const NumericKeyboard = (props) => {
     
 
     return (
-        <div style={{ display: 'inline-block' }}>
+        <div style={{ display: 'inline-block'}}>
             {/* {console.log(keyboardNumber)} */}
             <div className='formRow'>
                 <div className='col'>

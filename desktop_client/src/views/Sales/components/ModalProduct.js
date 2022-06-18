@@ -20,7 +20,10 @@ const ModalProduct = (props) => {
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
-    const [keyboardNumber, setKeyboardNumber] = useState()
+    const [keyboardNumber, setKeyboardNumber] = useState();
+    const [descriptionProduct, setDescriptionProduct] = useState();
+
+    const handleObs = (e) => setDescriptionProduct(e.target.value);
 
     const cancel = () => {
         props.setShowModal(false);
@@ -87,6 +90,7 @@ const ModalProduct = (props) => {
                 let aux = props.productSelected;
                 aux.quantity = quantity;
                 aux.subtotal = subtotal;
+                aux.descriptionProduct = descriptionProduct;
                 if (aux.stock) {
                     aux.stock_current = aux.stock - parseFloat(quantity);
                 }
@@ -96,6 +100,7 @@ const ModalProduct = (props) => {
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
+                props.productSelected.descriptionProduct = descriptionProduct;
                 if (props.productSelected.stock) {
                     props.productSelected.stock_current = props.productSelected.stock - parseFloat(quantity);
                 }
@@ -104,6 +109,7 @@ const ModalProduct = (props) => {
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
+                props.productSelected.descriptionProduct = descriptionProduct;
                 if (props.productSelected.stock) {
                     props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
                 }
@@ -112,14 +118,15 @@ const ModalProduct = (props) => {
             props.updateRefresh(!props.refresh);
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
+            setDescriptionProduct('');
         }
         else {
             if (quantity == 0) {
                 warningMessage("¡Atención!", "Debe ingresar un cantidad mayor a 0", "warning");
             }
             if (quantity > props.productSelected.stock || quantity > props.productSelected.stock_current)
-                warningMessage("¡Error!", "No hay stock suficiente \n Stock aún disponible: " + props.productSelected.stock_current + 
-                "\n Stock máximo que puede ingresar en el detalle: " + props.productSelected.stock, "error");
+                warningMessage("¡Error!", "No hay stock suficiente \n Stock aún disponible: " + props.productSelected.stock_current +
+                    "\n Stock máximo que puede ingresar en el detalle: " + props.productSelected.stock, "error");
         }
     }
 
@@ -164,6 +171,14 @@ const ModalProduct = (props) => {
                                 <label className='label-modal'>Subtotal:&nbsp;$ </label>
                                 <label className='label-modal'>{subtotal}</label>
                             </div>
+                            <div className='formRow'>
+                                <label className='label-modal'>Observación: </label>
+                            </div>
+                            <div className='formRow'>
+                                <textarea maxLength="200" id="productDescription"
+                                    placeholder="Ingrese una observación..."
+                                    style={{ width: '100%', height: '74px' }} onChange={(e) => handleObs(e)}></textarea>
+                            </div>
                         </div>
                         <div className='col-6' style={{ padding: '0px 0px 0px 0px' }}>
                             <NumericKeyboard load={loadQunatityChange} keyboardNumber={keyboardNumber} />
@@ -174,8 +189,6 @@ const ModalProduct = (props) => {
             </Modal>
         </>
     )
-
-
 }
 
 const mapStateToProps = state => {
