@@ -486,7 +486,7 @@ const FormSalary = (props) => {
                                         <label style={{ paddingLeft: '1em' }}>{floatToHour(i.hs, true)}</label>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <div class="input-group has-validation">
+                                        <div className="input-group has-validation">
                                             <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
                                                 onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
                                             <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
@@ -534,7 +534,7 @@ const FormSalary = (props) => {
                                         <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-danger btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherPlus"} n={n} default={i.name}
+                                        <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherPlus"} n={n} default={i.name}
                                             placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersPlus} otherDestiny={othersMinus} />
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
@@ -584,7 +584,7 @@ const FormSalary = (props) => {
                                         <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-danger btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                     </div>
                                     <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" class={" nameOtherMinus"} n={n} default={i.name}
+                                        <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherMinus"} n={n} default={i.name}
                                             placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersMinus} otherDestiny={othersPlus} />
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>

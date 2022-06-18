@@ -1,10 +1,8 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { updateTableDown, updateTableUp } from '../../../actions/TableUpDownActions';
 import warningMessage from '../../../utils/WarningMessages/warningMessage';
 import ListFlavorsDown from './ListFlavorsDown';
 import ListFlavorsUp from './ListFlavorsUp';
-import Buttons from '../../../common/Buttons';
 
 const PairListFlavors = (props) => {
 
