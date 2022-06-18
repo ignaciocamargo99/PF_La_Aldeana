@@ -44,7 +44,7 @@ export default function RegisterEmployee() {
     }
 
     const displayRegisterError = () => {
-        displayError('Ya existe un empleado axistente con ese número de documento.');
+        displayError('Ya existe un empleado existente con ese número de documento.');
     }
 
     const registerNewEmployee = async () => {
