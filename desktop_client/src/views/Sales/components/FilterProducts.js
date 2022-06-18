@@ -62,21 +62,24 @@ const FilterProducts = (props) => {
     return (
         <>
             <div className="formRow">
-                <h4 style={{ padding: '10px 0px 0px', margin:'0px 10px 0px 0px'}}>Filtrar:</h4>
+                <h4 style={{ padding: '10px 0px 0px', margin: '0px 10px 0px 0px' }}>Filtrar:</h4>
                 <button id="btn_iceCream" className='btn btn-light sendNew' onClick={onClickHeladeria}>Heladería</button>
                 <button id="btn_coffe" className='btn btn-light sendNew' onClick={onClickCafeteria}>Cafetería</button>
                 <button id="btn_all" className='btn btn-light sendNew' onClick={onClickCancel}>Todos</button>
             </div>
             <BeShowed show={boolTypeProduct}>
-                <select className="form-control" id="id_selectTypeProduct" defaultValue={valueSelect} value={valueSelect} onChange={e => onChangeTypeProduct(e)}>
-                    <option disabled value="-1">Seleccione el tipo de producto</option>
-                    {
-                        typesProductSelected?.map((element, i) => (
-                            <option key={i} value={element.id_product_type}>{element.name}</option>
-                        ))
-                    }
-                </select>
-                <br />
+                {typesProductSelected?.map((type, i) => {
+                    return (
+                        <button key={i}
+                            className="btn btn-light filterButton"
+                            type="button"
+                            value={type.id_product_type}
+                            onClick={e => onChangeTypeProduct(e)}
+                        >
+                            {type.name}
+                        </button>
+                    )
+                })}
             </BeShowed>
         </>
     );
