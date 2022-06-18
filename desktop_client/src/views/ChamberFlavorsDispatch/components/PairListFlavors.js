@@ -4,6 +4,7 @@ import { updateTableDown, updateTableUp } from '../../../actions/TableUpDownActi
 import warningMessage from '../../../utils/WarningMessages/warningMessage';
 import ListFlavorsDown from './ListFlavorsDown';
 import ListFlavorsUp from './ListFlavorsUp';
+import Buttons from '../../../common/Buttons';
 
 const PairListFlavors = (props) => {
 
@@ -39,9 +40,23 @@ const PairListFlavors = (props) => {
 
     return (
         <>
-            <ListFlavorsUp upload={upload} />
-            <br />
-            <ListFlavorsDown download={download} />
+        <div className="row">
+            <div className="col-6">
+            <h4 className="text-secondary">Helados disponibles:</h4>
+            </div>
+            <div className="col-6">
+            <h4 className="text-secondary">Helados que salen de cámara:</h4>
+            </div>
+        </div>
+        <div className="row">
+            <div className="col-6">
+                <ListFlavorsUp upload={upload} />
+            </div>
+            <div className="col-6">
+                <ListFlavorsDown download={download} />
+            </div>
+        </div>
+
         </>
     );
 

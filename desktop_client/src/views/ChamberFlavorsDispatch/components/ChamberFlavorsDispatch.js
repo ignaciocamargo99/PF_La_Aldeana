@@ -86,6 +86,7 @@ const ChamberFlavorsDispatch = (props) => {
                     </div>
                 </div>
                 <FilterFlavors />
+                <br/>
                 <PairListFlavors />
                 <Buttons label='Registrar' ready={ready} actionOK={registerProduct} actionNotOK={validateWarning} data={ready} actionCancel={resetStates} />
             </div>

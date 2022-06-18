@@ -27,7 +27,7 @@ const SideMenu = (props) => {
               <MenuItem onClick={props.toSalesDelivery}>Venta por Delivery</MenuItem>
             </SubMenu>
 
-            <MenuItem onClick={props.toRegisterAttendance} icon={<IoFingerPrint/>}>Registrar Asistencia</MenuItem>
+            
           </Menu>
         </SidebarContent>
         <SidebarFooter>

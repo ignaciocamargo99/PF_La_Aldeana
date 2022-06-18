@@ -26,9 +26,6 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            {/* <BeShowed show={props.location === 2}>
-              <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
@@ -51,9 +48,6 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            {/* <BeShowed show={props.location === 2}>
-              <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
