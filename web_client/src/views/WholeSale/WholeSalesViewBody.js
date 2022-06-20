@@ -1,28 +1,66 @@
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
-import { useGetFranchises } from 'hooks/useGetFranchises';
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react';
 import DateInput from './components/DateInput';
-import FlavorsTabs from './components/FlavorsTabs';
 import FranchiseDetails from './components/FranchiseDetails';
 import FranchiseInput from './components/FranchiseInput';
-import SelectedFlavorsDetails from './components/SelectedFlavorsDetails';
+import WholeSaleTables from './components/WholeSaleTables';
 
 const WholeSalesViewBody = () => {
-    const { franchises } = useGetFranchises();
-    const { activeFlavors: flavors, loadingFlavors } = useGetActiveFlavors();
+
+    const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
 
     const [inputDate, setInputDate] = useState('');
     const [selectedFranchise, setSelectedFranchise] = useState(null);
+    const [allFlavors, setAllFlavors] = useState();
+
+    useEffect(() => {
+        if (activeFlavors?.length > 0) {
+            setAllFlavors(activeFlavors)
+        } else {
+            setAllFlavors([])
+        }
+    }, [activeFlavors])
+
+    const handleAddFlavor = (flavorData) => {
+        const auxFlavors = [...allFlavors].map(flavor => {
+            if (+flavor.idFlavor === +flavorData.idFlavor) {
+                flavor.toSell = true;
+            }
+            return flavor;
+        })
+
+        setAllFlavors(auxFlavors)
+    }
+
+    const handleRemoveFlavor = (flavorData) => {
+        const auxFlavors = [...allFlavors].map(flavor => {
+            if (+flavor.idFlavor === +flavorData.idFlavor) {
+                flavor.toSell = false;
+                flavor.amountToSell = undefined;
+            }
+            return flavor;
+        })
+
+        setAllFlavors(auxFlavors)
+    }
 
     return (
         <>
-            <DateInput value={inputDate} setValue={setInputDate} />
-            <FranchiseInput franchises={franchises} setSelectedFranchise={setSelectedFranchise} />
-            <FranchiseDetails franchise={selectedFranchise} />
-            <br />
-            <FlavorsTabs flavors={flavors} loading={loadingFlavors} />
-            <br />
-            <SelectedFlavorsDetails />
+            <div style={{ maxWidth: '60em' }}>
+                <DateInput value={inputDate} setValue={setInputDate} />
+                <FranchiseInput setSelectedFranchise={setSelectedFranchise} />
+                <FranchiseDetails franchise={selectedFranchise} />
+            </div>
+            <WholeSaleTables
+                allFlavors={allFlavors}
+                handleAddFlavor={handleAddFlavor}
+                handleRemoveFlavor={handleRemoveFlavor}
+                loadingFlavors={loadingFlavors}
+            />
+            <div className='buttons'>
+                <button className='btn btn-light sendOk' onClick={() => alert('En desarrollo...')}>Registrar</button>
+                <button className='btn btn-light cancel' onClick={() => window.location.reload()}>Cancelar</button>
+            </div>
         </>
     )
 }
