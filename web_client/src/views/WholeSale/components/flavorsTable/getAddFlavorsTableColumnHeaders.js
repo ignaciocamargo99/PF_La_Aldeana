@@ -18,7 +18,7 @@ const getAddFlavorsTableColumnHeaders = () => {
             width: '18%'
         },
         {
-            name: 'Stock de reorden',
+            name: 'Cantidad (baldes)',
             width: '18%'
         },
         {

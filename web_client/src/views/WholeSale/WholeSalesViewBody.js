@@ -1,66 +1,49 @@
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
 import { useEffect, useState } from 'react';
 import DateInput from './components/DateInput';
-import FranchiseDetails from './components/FranchiseDetails';
 import FranchiseInput from './components/FranchiseInput';
-import WholeSaleTables from './components/WholeSaleTables';
+import TabFlavors from './components/TabFlavors';
+import Tabs from './components/Tabs';
+import TabSummary from './components/TabSummary';
+import TabSupplies from './components/TabSupplies';
+import TabTransport from './components/TabTransport';
 
 const WholeSalesViewBody = () => {
 
+    console.log('WholeSalesViewBody');
+
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
 
-    const [inputDate, setInputDate] = useState('');
-    const [selectedFranchise, setSelectedFranchise] = useState(null);
+    // wholesale date
+    const [wholesaleDate, setWholesaleDate] = useState('');
+    // wholesale franchise
+    const [wholesaleFranchise, setWholesaleFranchise] = useState(null);
+    // wholesale flavors (only when flavor.toSell === true)
     const [allFlavors, setAllFlavors] = useState();
+
+    const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
 
     useEffect(() => {
         if (activeFlavors?.length > 0) {
+            console.log('hola');
             setAllFlavors(activeFlavors)
         } else {
+            console.log('hola');
             setAllFlavors([])
         }
     }, [activeFlavors])
 
-    const handleAddFlavor = (flavorData) => {
-        const auxFlavors = [...allFlavors].map(flavor => {
-            if (+flavor.idFlavor === +flavorData.idFlavor) {
-                flavor.toSell = true;
-            }
-            return flavor;
-        })
-
-        setAllFlavors(auxFlavors)
-    }
-
-    const handleRemoveFlavor = (flavorData) => {
-        const auxFlavors = [...allFlavors].map(flavor => {
-            if (+flavor.idFlavor === +flavorData.idFlavor) {
-                flavor.toSell = false;
-                flavor.amountToSell = undefined;
-            }
-            return flavor;
-        })
-
-        setAllFlavors(auxFlavors)
-    }
-
     return (
         <>
-            <div style={{ maxWidth: '60em' }}>
-                <DateInput value={inputDate} setValue={setInputDate} />
-                <FranchiseInput setSelectedFranchise={setSelectedFranchise} />
-                <FranchiseDetails franchise={selectedFranchise} />
+            <div style={{ maxWidth: '40em' }}>
+                <DateInput wholesaleDate={wholesaleDate} setWholesaleDate={setWholesaleDate} />
+                <FranchiseInput wholesaleFranchise={wholesaleFranchise} setWholesaleFranchise={setWholesaleFranchise} />
             </div>
-            <WholeSaleTables
-                allFlavors={allFlavors}
-                handleAddFlavor={handleAddFlavor}
-                handleRemoveFlavor={handleRemoveFlavor}
-                loadingFlavors={loadingFlavors}
-            />
-            <div className='buttons'>
-                <button className='btn btn-light sendOk' onClick={() => alert('En desarrollo...')}>Registrar</button>
-                <button className='btn btn-light cancel' onClick={() => window.location.reload()}>Cancelar</button>
-            </div>
+            <Tabs tabs={tabs} setTabs={setTabs} />
+            <TabFlavors allFlavors={allFlavors} loadingFlavors={loadingFlavors} showTab={tabs.showFlavorsTab} />
+            <TabSupplies showTab={tabs.showSuppliesTab} />
+            <TabTransport showTab={tabs.showTransportTab} />
+            <TabSummary showTab={tabs.showSummaryTab} />
         </>
     )
 }

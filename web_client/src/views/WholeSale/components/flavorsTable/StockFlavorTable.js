@@ -5,6 +5,8 @@ import ReactTooltip from 'react-tooltip';
 
 const StockFlavorTable = ({ flavor }) => {
 
+    console.log('StockFlavorTable');
+
     let labelClass = '';
     let stockClass = '';
     let showWarnOrErrorStock;
