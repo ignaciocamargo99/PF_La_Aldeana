@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import FlavorsSearch from './FlavorsSearch';
 
 const FlavorsTableFilter = ({
@@ -29,15 +30,15 @@ const FlavorsTableFilter = ({
         return [];
     }
 
-    const flavors = orderFlavorsByFamilyFlavorName(initialFlavors);
+    const flavors = orderFlavorsByFamilyFlavorName(initialFlavors)
 
     const thereAreNoFlavors = flavors?.length === 0;
 
     if (thereAreNoFlavors) {
         return (
-            < h4 className="row justify-content-center">
+            < label className="row justify-content-center fs-6">
                 Actualmente no hay ningún sabor disponible.
-            </h4 >
+            </label >
         )
     }
 

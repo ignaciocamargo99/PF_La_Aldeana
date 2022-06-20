@@ -6,14 +6,16 @@ const elementsPerPage = 5;
 
 const FlavorsTablePagination = ({ filteredElements, handleAddFlavor }) => {
 
+    console.log('FlavorsTablePagination')
+
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
     const indexOfFirstElement = indexOfLastElement - elementsPerPage;
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [filteredElements]);
-
+    // useEffect(() => {
+    //     setCurrentPage(1);
+    // }, [filteredElements]);
+    
     const pageElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);

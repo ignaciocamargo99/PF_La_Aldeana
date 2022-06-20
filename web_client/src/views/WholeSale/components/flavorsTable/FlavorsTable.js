@@ -11,7 +11,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
             {(pageElements && pageElements.length > 0)
                 ?
                 <div className="table-responsive-md">
-                    <table className="table table-control table-hover" >
+                    <table className="table table-control table-hover fs-6" >
                         <thead>
                             <tr>
                                 {columnsHeaders.map((element, i) => {
@@ -39,7 +39,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                                         </td>
                                         <StockFlavorTable flavor={element}></StockFlavorTable>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.reorderStock}
+                                            <input type="number"/>
                                         </td>
                                         <td style={{ textAlign: 'center' }}>
                                             <button

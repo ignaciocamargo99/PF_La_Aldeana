@@ -9,16 +9,18 @@ const AddFlavorsTable = ({
 }) => {
 
     return (
-        <div className='mt-4'>
-            <label htmlFor="date" >Agregue los sabores a vender:</label>
+        <div className='mt-4 pe-5'>
+            <label className="fs-6" htmlFor="date" >Agregue los sabores a vender:</label>
             <div>
                 {(loadingFlavors) && (
-                    <div className="mt-3 mb-5">
-                        <div className="spinner-border spinner-border-sm" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                    <div className="mt-3 mb-5 d-flex justify-content-center">
+                        <div>
+                            <div className="spinner-border spinner-border-sm" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            &nbsp;
+                            <label className="text-black-50 fs-6">Cargando tabla de sabores...</label>
                         </div>
-                        &nbsp;
-                        <label className="text-black-50">Cargando tabla de sabores...</label>
                     </div>
                 )}
                 {(!loadingFlavors) && (
