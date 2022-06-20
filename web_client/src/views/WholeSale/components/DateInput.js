@@ -6,20 +6,16 @@ const DateInput = ({ value, setValue }) => {
     }
 
     return (
-        <div className="formRow">
-            <div className="form-control-label">
-                <label htmlFor="date" >Fecha*</label>
-            </div>
-            <div className="form-control-input-mw-50">
-                <input
-                    id="date"
-                    type="date"
-                    className="form-control"
-                    value={value}
-                    onChange={onChangeInputDate}
-                >
-                </input>
-            </div>
+        <div className="d-flex justify-content-between mb-2">
+            <label className="align-self-center w-25" htmlFor="date" >Fecha</label>
+            <input
+                id="date"
+                type="date"
+                className="form-control align-self-center w-50"
+                value={value}
+                onChange={onChangeInputDate}
+            >
+            </input>
         </div>
     )
 }
