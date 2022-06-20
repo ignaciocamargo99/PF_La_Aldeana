@@ -1,18 +1,18 @@
 import React from 'react'
 
-const DateInput = ({ value, setValue }) => {
+const DateInput = ({ wholesaleDate, setWholesaleDate }) => {
     const onChangeInputDate = ({ target }) => {
-        setValue(target.value);
+        setWholesaleDate(target.value);
     }
 
     return (
-        <div className="d-flex justify-content-between mb-2">
-            <label className="align-self-center w-25" htmlFor="date" >Fecha</label>
+        <div className="d-flex justify-content-between mb-2 ">
+            <label className="align-self-center w-25 fs-6" htmlFor="date" >Fecha</label>
             <input
                 id="date"
+                value={wholesaleDate}
                 type="date"
-                className="form-control align-self-center w-50"
-                value={value}
+                className="form-control align-self-center w-50 fs-6"
                 onChange={onChangeInputDate}
             >
             </input>
