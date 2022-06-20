@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import '../assets/Footer.css';
 import '../assets/Forms.css';
+import '../assets/LaAldeanaPaleta.css';
 import '../assets/Views.css';
 import BeShowed from '../common/BeShowed';
 import Footer from '../common/Footer';
