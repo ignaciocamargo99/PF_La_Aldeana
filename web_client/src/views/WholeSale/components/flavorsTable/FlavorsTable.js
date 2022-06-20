@@ -6,6 +6,8 @@ const columnsHeaders = getAddFlavorsTableColumnHeaders();
 
 const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
 
+    console.log('FlavorsTable');
+
     return (
         <>
             {(pageElements && pageElements.length > 0)

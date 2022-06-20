@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import FlavorsSearch from './FlavorsSearch';
 
 const FlavorsTableFilter = ({
@@ -7,6 +6,8 @@ const FlavorsTableFilter = ({
     handleAddFlavor,
     initialFlavors,
 }) => {
+
+    console.log('FlavorsTableFilter');
 
     const orderFlavorsByFamilyFlavorName = (flavors) => {
         if (flavors?.length > 0) {

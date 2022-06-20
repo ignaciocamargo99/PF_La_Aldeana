@@ -10,12 +10,18 @@ import TabTransport from './components/TabTransport';
 
 const WholeSalesViewBody = () => {
 
+    console.log('WholeSalesViewBody');
+
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
 
+    // wholesale date
     const [wholesaleDate, setWholesaleDate] = useState('');
+    // wholesale franchise
     const [wholesaleFranchise, setWholesaleFranchise] = useState(null);
-    const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
+    // wholesale flavors (only when flavor.toSell === true)
     const [allFlavors, setAllFlavors] = useState();
+
+    const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
 
     useEffect(() => {
         if (activeFlavors?.length > 0) {

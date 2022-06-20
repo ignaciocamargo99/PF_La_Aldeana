@@ -2,6 +2,9 @@ import { useGetFranchises } from 'hooks/useGetFranchises';
 import React from 'react'
 
 const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise }) => {
+
+    console.log('FranchiseInput');
+
     const { franchises } = useGetFranchises();
 
     const onChangeFranchiseSelection = ({ target }) => {
