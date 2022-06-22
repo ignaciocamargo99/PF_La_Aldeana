@@ -72,10 +72,10 @@ const Options = (props) => {
                 })
         } else {
             let dat = new Date();
-            let date = new Date(dat.getFullYear(), dat.getMonth() -1, 1);
+            let date = new Date(dat.getFullYear(), dat.getMonth() , -1);
             let dateString = dateFormat(date);
 
-            let startDate = new Date(date.getFullYear(), date.getMonth() -1, 1);
+            let startDate = new Date(date.getFullYear(), date.getMonth(), 0);
             let prevMounth = dateFormat(startDate);
 
             inputDateFrom.current.max = dateString;
@@ -159,12 +159,12 @@ const Options = (props) => {
             <div className="formRow d-flex justify-content-between">
                 <div className="mx-auto">
                     <BeShowed show={permissionsAccess === 1 || permissionsAccess === 2}>
-                        <button className="newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className="disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
+                        <button className="btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
+                        <button className="btn-light disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3 || permissionsAccess === 'Reportes Recursos Humanos'}>
-                        <button className="newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className={props.dateFrom > props.dateTo || !props.load  || props.salaries?.length < 1 ?"disabledNewBtn":"newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || !props.load || props.salaries?.length < 1 } style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className="btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
+                        <button className={"btn-light " + (props.dateFrom > props.dateTo || !props.load  || props.salaries?.length < 1 ?"disabledNewBtn":"newBtn")} id='printButon' disabled={props.dateFrom > props.dateTo || !props.load || props.salaries?.length < 1 } style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>

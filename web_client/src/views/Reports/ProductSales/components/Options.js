@@ -202,11 +202,11 @@ const Options = (props) => {
                 <div className="mx-auto">
                     <BeShowed show={permissionsAccess === 1 || permissionsAccess === 2}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className="disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
+                        <button className="btn btn-light disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1?"disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1?"btn btn-light disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>
