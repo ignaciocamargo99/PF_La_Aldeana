@@ -89,7 +89,7 @@ const ListProducts = (props) => {
                     <HeaderTable
                         th={<>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Precio</label></th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Precio ($)</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Cantidad</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
                         </>
