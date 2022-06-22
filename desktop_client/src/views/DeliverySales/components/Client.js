@@ -25,6 +25,7 @@ const Client = (props) => {
         props.updateCellphoneDelivery(e.target.value);
         if (!validateInput(e.target.value.trim(), 10, 10)) {
             props.updateErrorCellphoneDelivery(true)
+            get = false
         }
         if (e.target.value.length === 10 && get) {
             loadingMessage('Cargando cliente')
@@ -42,6 +43,11 @@ const Client = (props) => {
                         swal.close()
                     }
                 })
+        }
+        else if (e.target.value.length < 10 && !get) {
+            props.updateDeliveryClient({ cellphone: e.target.value, names: '', street_name: '', street_number: '' })
+            resetStates({ cellphone: e.target.value, names: '', street_name: '', street_number: '' }, true)
+            // swal.close() 
         }
     }
 
@@ -103,7 +109,7 @@ const Client = (props) => {
                     <label>Nombre y Apellido*</label>
                 </div>
                 <div className="form-control-input">
-                    <input type="text" className={props.errorNames ? "form-control" : "form-control is-valid"} minLength="0" maxLength="50" onChange={(e) => onChangeNames(e)} placeholder="Ingrese el nombre completo del cliente..." value={props.names}></input>
+                    <input type="text" className={(props.errorNames) ? "form-control" : "form-control is-valid"} minLength="0" maxLength="50" onChange={(e) => onChangeNames(e)} placeholder="Ingrese el nombre completo del cliente..." value={props.names}></input>
                     <BeShowed show={props.errorNames}>
                         <small className="text-muted">Texto de 1 a 50 caractéres</small>
                     </BeShowed>
