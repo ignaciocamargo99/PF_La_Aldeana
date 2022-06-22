@@ -27,7 +27,8 @@ const isDataValid = (data) => {
         data.street &&
         data.number &&
         data.number.toString().length <= 5 &&
-        data.name
+        data.name &&
+        data.nickname
 };
 
 export default isEmployeeFormDataValid;
