@@ -175,7 +175,7 @@ export default function DataEmployee(props) {
             </div>
             <div className="formRow">
                 <div className="form-control-label">
-                    <label htmlFor="nicknameEmployee" >Apodo</label>
+                    <label htmlFor="nicknameEmployee" >Apodo*</label>
                 </div>
                 <div className="form-control-input">
                     <input
