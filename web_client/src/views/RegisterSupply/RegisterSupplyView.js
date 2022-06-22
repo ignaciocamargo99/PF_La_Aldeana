@@ -45,7 +45,8 @@ const RegisterPurchaseSupplies = (props) => {
 
     const [data, setData] = useState({
         name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
-        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false
+        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false,
+        reading: false
     });
     const [ready, setReady] = useState(false);
 
@@ -112,38 +113,38 @@ const RegisterPurchaseSupplies = (props) => {
                 <h1>Registrar Insumo</h1>
             </div>
             <div className="viewBody">
-                <NameSupply />
-                <DescriptionSupply />
+                <NameSupply data={data} />
+                <DescriptionSupply data={data} />
                 <div className="price-form-body ">
                     <div className="price-title">
                         <label >Precio</label>
                     </div>
-                    <div className="price-container">
+                    <div className="price-container" style={{marginBottom:'12px'}}>
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isDeliverySupply" value="isDeliverySupply" ref={inputIsDeliverySupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">Se envía por delivery?</label>
+                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">¿Se envía por delivery?</label>
                         </div>
                         <BeShowed show={props.deliverySupply}>
-                            <SinglePrice />
+                            <SinglePrice data={data} />
                         </BeShowed>
 
                     </div>
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isFranchiseSupply" value="isFranchiseSupply" ref={inputIsFranchiseSupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">Se envía a franquicias?</label>
+                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">¿Se envía a franquicias?</label>
                         </div>
                         <BeShowed show={props.franchiseSupply}>
-                            <MultiplePrice />
+                            <MultiplePrice data={data} />
                         </BeShowed>
                     </div>
                 </div>
                 <div className="price-title">
                     <label >Stock*</label>
                 </div>
-                <TypeSupply />
+                <TypeSupply data={data} />
                 <BeShowed show={props.typeSupply < 3 && props.typeSupply > 0}>
-                    <Stock />
+                    <Stock data={data} />
                 </BeShowed>
                 <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data} />
             </div>

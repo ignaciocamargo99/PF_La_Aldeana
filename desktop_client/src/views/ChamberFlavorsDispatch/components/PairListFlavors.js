@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { updateTableDown, updateTableUp } from '../../../actions/TableUpDownActions';
 import warningMessage from '../../../utils/WarningMessages/warningMessage';
@@ -39,9 +38,23 @@ const PairListFlavors = (props) => {
 
     return (
         <>
-            <ListFlavorsUp upload={upload} />
-            <br />
-            <ListFlavorsDown download={download} />
+        <div className="row">
+            <div className="col-6">
+            <h4 className="text-secondary">Helados disponibles:</h4>
+            </div>
+            <div className="col-6">
+            <h4 className="text-secondary">Helados que salen de cámara:</h4>
+            </div>
+        </div>
+        <div className="row">
+            <div className="col-6">
+                <ListFlavorsUp upload={upload} />
+            </div>
+            <div className="col-6">
+                <ListFlavorsDown download={download} />
+            </div>
+        </div>
+
         </>
     );
 

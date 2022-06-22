@@ -8,12 +8,12 @@ const Buttons = (props) => {
     return (
         <div className='buttons'>
             <BeShowed show={props.ready}>
-                <button className='sendOk' onClick={props.actionOK}>{props.label}</button>
+                <button className='btn btn-light sendOk' onClick={props.actionOK}>{props.label}</button>
             </BeShowed>
             <BeShowed show={!props.ready}>
-                <button className='sendNotOk' onClick={actionNotOK}>{props.label}</button>
+                <button className='btn btn-light sendNotOk' onClick={actionNotOK}>{props.label}</button>
             </BeShowed>
-            <button className='cancel' onClick={props.actionCancel}>{props.cancel ? props.cancel :'Cancelar'}</button>
+            <button className='btn btn-light cancel' onClick={props.actionCancel}>{props.cancel ? props.cancel :'Cancelar'}</button>
         </div>
     );
 }

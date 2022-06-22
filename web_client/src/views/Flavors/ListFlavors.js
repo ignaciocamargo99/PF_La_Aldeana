@@ -3,11 +3,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import LoaderSpinner from 'common/LoaderSpinner';
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
-import ListFlavorsTable from './components/ListFlavorsTable';
+import { useGetFlavorFamilies } from 'hooks/useGetFlavorFamilies'
+import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes'
+import FlavorsViewBody from './components/FlavorsViewBody';
 import BeShowed from 'common/BeShowed';
 
 const ListFlavors = (props) => {
     const { loadingFlavors, activeFlavors } = useGetActiveFlavors();
+    const { flavorTypes } = useGetFlavorTypes();
+    const { flavorFamilies } = useGetFlavorFamilies();
+
+    const flavorTypesMapped = [...flavorTypes];
+    flavorTypesMapped?.map((e) => {
+        e.id = e.idFlavorType;
+        e.value = e.name;
+        return e;
+    })
+
+    const flavorFamiliesMapped = [...flavorFamilies];
+    flavorFamiliesMapped?.map((e) => {
+        e.id = e.id_family_flavor;
+        e.value = e.name;
+        return e;
+    })
+
     let permissionsAccess = props.permissionsAccess;
 
     const handleNewFlavorBtnClicked = () => {
@@ -43,7 +62,12 @@ const ListFlavors = (props) => {
                         </BeShowed>
                     </div>
                     <div className="viewBody">
-                        <ListFlavorsTable initialFlavors={activeFlavors} permissionsAccess={permissionsAccess} />
+                        <FlavorsViewBody
+                            flavorFamilies={flavorFamiliesMapped}
+                            flavorTypes={flavorTypesMapped}
+                            initialFlavors={activeFlavors}
+                            permissionsAccess={permissionsAccess}
+                        />
                     </div>
                 </>
             }

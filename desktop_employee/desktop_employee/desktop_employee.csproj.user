@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\joaqu\OneDrive\Escritorio\PF_La_Aldeana\desktop_employee\desktop_employee\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Update="src\utils\Botones\CustomButton.cs">
       <SubType>Component</SubType>
@@ -19,16 +22,22 @@
     <Compile Update="src\views\Employees\frmEmployees.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="src\views\Employees\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="src\views\Employees\frmValidationFingerprint.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="src\views\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="src\views\RegisterAssistance\frmAssistanceDNI.cs">
+    <Compile Update="src\views\RegisterAssistance\frmAssistanceFinger.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="src\views\RegisterAssistance\frmAssistanceFinger.cs">
+    <Compile Update="src\views\RegisterAssistance\frmAssitanceDni.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="src\views\RegisterAssistance\frmLoginAsistanceDNI.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

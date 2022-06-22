@@ -9,6 +9,8 @@ import displayError from '../../utils/ErrorMessages/displayError';
 import SectorProduct from '../RegisterProduct/components/SectorProduct';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -38,29 +40,33 @@ export default function RegisterTypeProductView() {
         }
     }, [sectorTypeProductChild, nameTypeProductChild]);
 
-    const registerTypeProduct = () => {
-        const description = inputDescription.current.value.trim();
-        const isSendByDelivery = checkIsSendByDelivery.current.checked ? 1 : 0;
-        if (ready) {
-            Axios.post(PORT() + '/api/typeProducts', {
-                name: data.name,
-                description: description,
-                id_sector: data.id_sector,
-                send_delivery: isSendByDelivery
-            })
-                .then(({ data }) => {
-                    if (data.Ok) success();
-                    else displayError(data.Message);
+    const registerTypeProduct = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            const description = inputDescription.current.value.trim();
+            const isSendByDelivery = checkIsSendByDelivery.current.checked ? 1 : 0;
+            if (ready) {
+                loadingMessage('Registrando nuevo tipo de producto...');
+                Axios.post(PORT() + '/api/typeProducts', {
+                    name: data.name,
+                    description: description,
+                    id_sector: data.id_sector,
+                    send_delivery: isSendByDelivery
                 })
-                .catch(err => console.error(err))
+                    .then(({ data }) => {
+                        if (data.Ok) success();
+                        else displayError(data.Message);
+                    })
+                    .catch(err => console.error(err))
+            }
         }
     }
 
     const validate = () => {
         if (nameTypeProductChild === 'null') {
-            warningMessage('Atención', 'Ingrese un nombre valido para el tipo de producto', 'warning')
+            warningMessage('Atención', 'Ingrese un nombre válido para el tipo de producto', 'warning')
         } else if (sectorTypeProductChild < 0) {
-            warningMessage('Atención', 'Ingrese un rubro valido para el tipo de producto', 'warning')
+            warningMessage('Atención', 'Ingrese un rubro válido para el tipo de producto', 'warning')
         }
     }
 

@@ -1,0 +1,1 @@
+export const WHOLESALE_PAGE = '/app/wholesales';

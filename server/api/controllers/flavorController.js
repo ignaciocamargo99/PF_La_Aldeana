@@ -1,28 +1,14 @@
+const { getFlavorsDBByProperties } = require('../db/flavorDb');
 const {
     createNewFlavors,
     deleteFlavorById,
-    readFlavor,
-    readTypeFlavor,
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
 } = require('../services/flavorService');
 
 const { genericServerError } = require('../shared/errorMessages');
-
-// HTTP: GET
-async function getFlavor(req, res) {
-    try {
-        const result = await readFlavor();
-        res.send(result);
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        });
-    }
-}
+const { INTERNAL_SERVER_ERROR, OK } = require('../shared/httpStatusCodes');
 
 // HTTP: GET /api/flavors
 async function getActiveFlavors(req, res) {
@@ -38,6 +24,19 @@ async function getActiveFlavors(req, res) {
             Ok: false,
             Message: genericServerError,
         });
+    }
+}
+
+async function getFlavors(req, res) {
+    try {
+        const flavors = await getFlavorsDBByProperties(req.query);
+        const result = {
+            amount: flavors.length,
+            flavors: flavors,
+        };
+        res.status(OK).send(result);
+    } catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
     }
 }
 
@@ -95,26 +94,11 @@ async function deleteFlavor(req, res) {
     }
 }
 
-// HTTP: GET
-async function getTypeFlavor(req, res) {
-    try {
-        const result = await readTypeFlavor();
-        res.send(result);
-    }
-    catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message,
-        });
-    }
-}
-
 module.exports = {
     deleteFlavor,
     getActiveFlavors,
-    getFlavor,
     getSingleFlavor,
-    getTypeFlavor,
     postFlavors,
     updateFlavor,
+    getFlavors,
 };
