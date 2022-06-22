@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BeShowed from '../../common/BeShowed';
+import BeShowed from 'common/BeShowed';
 import FlavorsAmount from './components/FlavorsAmount';
 import ImageProduct from './components/ImageProduct';
 import ImageEditProduct from '../ListProducts/components/EditProducts/components/ImageProduct';
@@ -17,7 +17,7 @@ const ExtraDataProduct = (props) => {
     return (
         <>
             <TypeProduct load={props.load} data={props.data} />
-            <BeShowed show={parseInt(props.data.id_product_type, 10) === 3}>
+            <BeShowed show={parseInt(props.data.id_product_type, 10) === 2}>
                 <FlavorsAmount load={props.load} data={props.data} />
             </BeShowed>
             <hr />

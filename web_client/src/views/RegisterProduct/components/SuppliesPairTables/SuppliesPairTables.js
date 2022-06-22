@@ -2,10 +2,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import BeShowed from '../../../../common/BeShowed';
-import Pagination from '../../../../common/TablePagination/Pagination';
-import displayError from '../../../../utils/ErrorMessages/displayError';
-import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
+import BeShowed from 'common/BeShowed';
+import Pagination from 'common/TablePagination/Pagination';
+import displayError from 'utils/ErrorMessages/displayError';
+import warningCountProduct from 'utils/WarningMessages/warningCountProduct';
+import { SUPPLIES_QUANTITY_LABEL } from './constants';
 import SpinnerTableSupplies from './SpinnerTableSupplies';
 import SuppliesAmount from "./SuppliesAmount";
 import TableSuppliesDown from "./TableSuppliesDown";
@@ -122,7 +123,7 @@ export default function SuppliesPairTables({ load, data }) {
             width: '30%'
         },
         {
-            name: 'Cantidad',
+            name: SUPPLIES_QUANTITY_LABEL,
             width: '20%'
         },
         {
@@ -149,37 +150,48 @@ export default function SuppliesPairTables({ load, data }) {
                         <div className="formRow title-searcher">
                             <h4 className="text-secondary">Insumos disponibles:</h4>
                             <div className="search-input">
-                                <FontAwesomeIcon icon={faSearch} />
-                                <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                                <div className="input-group">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                    </div>
+                                    <input type="text" className="form-control" placeholder="Buscar insumos..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                                </div>
                             </div>
                         </div>
-                        <div className="table-responsive-md">
-                            <table className="table table-control table-hover" >
-                                <thead>
-                                    <tr>
-                                        {columnsHeaders?.map((element, i) => {
-                                            return (
-                                                <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                    {element.name}
-                                                </th>
-                                            )
-                                        })}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentElements?.map((element, i) => {
-                                        return (
-                                            <tr key={i}>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
-                                                <SuppliesAmount supply={element} addAmountOfSupply={upload} />
+                        {(currentElements && currentElements?.length > 0)
+                            ?
+                            <>
+                                <div className="table-responsive-md">
+                                    <table className="table table-control table-hover" >
+                                        <thead>
+                                            <tr>
+                                                {columnsHeaders?.map((element, i) => {
+                                                    return (
+                                                        <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                            {element.name}
+                                                        </th>
+                                                    )
+                                                })}
                                             </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                        <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                                        </thead>
+                                        <tbody>
+                                            {currentElements?.map((element, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.description}</td>
+                                                        <SuppliesAmount supply={element} addAmountOfSupply={upload} />
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                            </>
+                            :
+                            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen insumos con el nombre ingresado...</h4>
+                        }
                         <TableSuppliesDown download={download} supplies={destinyTable} data={data} />
                     </>
                 )}

@@ -397,9 +397,9 @@
         }
       }
     },  
-    "/permissions/filter/{rol}": {
+    "/permissions/filter/{nick_user}": {
       "get": {
-        "summary":"Trae los permisos que posee un rol en particular",
+        "summary":"Trae los permisos que posee un usuario en particular",
         "tags": ["Permisos de usuario"],
         "parameters": [
           {
@@ -807,6 +807,18 @@
         "responses": {
           "200": {
             "description": "Un array (JSON) con los cargos de los empleados."
+          }
+        }
+      }
+    },
+    "/relationships": {
+      "get": {
+        "summary":"Lista los posibles tipos de realcones laborales de los empleados",
+        "tags": ["Empleados"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Un array (JSON) con los tipos de relaciones laborales de los empleados."
           }
         }
       }

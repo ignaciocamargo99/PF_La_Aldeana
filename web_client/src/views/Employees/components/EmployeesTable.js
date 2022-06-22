@@ -2,47 +2,31 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
 import React, { useEffect, useState } from "react";
-import BeShowed from "../../../common/BeShowed";
-import LoaderSpinner from "../../../common/LoaderSpinner";
-import BodyTable from "../../../common/Table/BodyTable";
-import HeaderTable from "../../../common/Table/HeaderTable";
-import Table from '../../../common/Table/Table';
-import DeleteEmployeeButton from './DeleteEmployeeButton';
+import BeShowed from "common/BeShowed";
+import LoaderSpinner from "common/LoaderSpinner";
 import EditEmployee from "./EditEmployee/EditEmployee";
-import EditEmployeeButton from "./EditEmployee/EditEmployeeButton";
 import ReadEmployee from './ReadEmployee/ReadEmployee';
-import ReadEmployeeButton from "./ReadEmployee/ReadEmployeeButton";
+import EmployeesSearch from './TablePagination/EmployeesSearch';
 
 const PORT = require('../../../config');
 
-export default function EmployeesTable() {
-
+export default function EmployeesTable(props) {
     const [allEmployees, setAllEmployees] = useState([]);
     const [employeeDataToEdit, setEmployeeDataToEdit] = useState({});
     const [employeeDataToRead, setEmployeeDataToRead] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isReading, setIsReading] = useState(false);
+    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
-            .then(({ data }) => {
-                handlerLoadingSpinner();
-
-                setAllEmployees(data);
+            .then((response) => {
+                setAllEmployees(response.data);
+                setIsLoadingSpinner(false);
             })
-            .catch((error) => console.log(error));
+            .catch((e) => console.log(e))
     }, []);
-
-    const deleteEmployee = (i) => {
-        let aux = [];
-        allEmployees?.forEach((e, j) => {
-            if (j !== i) {
-                aux[j] = e;
-            }
-        });
-        setAllEmployees(aux);
-    };
 
     const handleEditEmpoyee = (selectedEmployeeForEdit) => {
         setEmployeeDataToEdit(selectedEmployeeForEdit);
@@ -61,8 +45,6 @@ export default function EmployeesTable() {
         window.scrollTo(0, 0);
     };
 
-    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
-
     const onClickNewEmployee = () => {
         window.location.replace('/app/registerEmployees');
     };
@@ -77,7 +59,12 @@ export default function EmployeesTable() {
                     <div>
                         <div className="viewTitleBtn">
                             <h1>Empleados</h1>
-                            <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
+                            <BeShowed show={permissionsAccess === 1}>
+                                <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                            </BeShowed>
                         </div>
                         <br />
                         <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron empleados registrados hasta el momento.</h4>
@@ -86,54 +73,21 @@ export default function EmployeesTable() {
                         <BeShowed show={!isEditing && !isReading}>
                             <div className="viewTitleBtn">
                                 <h1>Empleados</h1>
-                                <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
+                                    <button id='editEmployeeButton' onClick={onClickNewEmployee} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
+                                <BeShowed show={permissionsAccess === 1}>
+                                    <button id='editEmployeeButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                </BeShowed>
                             </div>
 
                             <div className="viewBody">
-                                <Table>
-                                    <HeaderTable
-                                        th={
-                                            <>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>DNI</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Nombre</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Apellido</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Fecha de ingreso</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Ver</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Editar</th>
-                                                <th scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', verticalAlign: 'middle' }}>Eliminar</th>
-                                            </>
-                                        }
-                                    />
-                                    <BodyTable
-                                        tbody={allEmployees?.map((element, i) => {
-                                            return (
-                                                <tbody key={i}>
-                                                    <tr>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.last_name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.date}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <ReadEmployeeButton
-                                                                employeeData={element}
-                                                                handleReadEmpoyeeClicked={handleReadEmpoyee}
-                                                            />
-                                                        </td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <EditEmployeeButton
-                                                                employeeData={element}
-                                                                handleEditEmpoyeeClicked={handleEditEmpoyee}
-                                                            />
-                                                        </td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                            <DeleteEmployeeButton employee={element} index={i} deleteEmployee={deleteEmployee} />
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            )
-                                        })}
-                                    />
-                                </Table>
+                                <EmployeesSearch
+                                    currentElements={allEmployees}
+                                    handleRead={handleReadEmpoyee}
+                                    handleEdit={handleEditEmpoyee}
+                                    permissionsAccess={permissionsAccess}
+                                />
                             </div>
                         </BeShowed>
                     )}

@@ -74,7 +74,7 @@ const ListSupplies = (props) => {
             </div>
             <BeShowed show={typeOfUpload === "text"}>
                 <UploadByName list={supplies} upload={upload} itemName="Insumo" listName="suppliesList"
-                    placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" />
+                    placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" id='id_supply' />
             </BeShowed>
             <BeShowed show={typeOfUpload === "list"}>
                 <div className="viewBody">

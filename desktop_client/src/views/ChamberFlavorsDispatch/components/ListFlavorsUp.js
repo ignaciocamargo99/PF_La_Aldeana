@@ -27,11 +27,18 @@ const ListFlavorsUp = (props) => {
             props.updateTableUp(filterFamilyFlavors);
         }
         else if ((props.refresh && props.flavorsDispatchFilters[0]) || (!props.flavorsDispatchFilters[0] && props.elementsTableDown.length === 0)) {
-            Axios.get(`${PORT()}/api/flavors`)
+            Axios.get(`${PORT()}/api/activeFlavors`)
                 .then(response => {
                     handlerLoadingSpinner();
-                    props.updateTableUp(response.data);
-                    props.updateAllElements(response.data);
+
+                    let auxFlavors = [...response.data.Data];
+                    auxFlavors.forEach(f => {
+                        f.id_flavor = f.idFlavor;
+                        delete f.idFlavor;
+                    })
+
+                    props.updateTableUp(auxFlavors);
+                    props.updateAllElements(auxFlavors);
                     props.updateRefresh(false);
                 })
                 .catch(error => console.log(error))

@@ -26,11 +26,17 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(() => {
-        Axios.get(PORT() + '/api/flavors')
+        Axios.get(PORT() + '/api/activeFlavors')
             .then((response) => {
                 handlerLoadingSpinner();
-                let auxFlavor = response.data;
-                auxFlavor?.map((e, i) => e.quantity = 0);
+
+                let auxFlavor = [...response.data.Data];
+                auxFlavor.forEach(f => {
+                    f.quantity = 0;
+                    f.id_flavor = f.idFlavor;
+                    delete f.idFlavor;
+                })
+
                 setListTable(auxFlavor);
             })
             .catch((err) => {
@@ -96,7 +102,7 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
             .then((response) => {
                 handlerLoadingSpinner();
                 setFlavorsToRead(response.data);
-                if(data.editing) {
+                if (data.editing) {
                     setDestinyTable(response.data);
                     updateProductionFlavors(response.data);
                 }
@@ -126,36 +132,47 @@ const FlavorsTable = ({ updateProductionFlavors, data }) => {
                             <div className="formRow title-searcher">
                                 <h4 className="text-secondary">Sabores disponibles:</h4>
                                 <div className="search-input">
-                                    <FontAwesomeIcon icon={faSearch} />
-                                    <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                                    <div className="input-group">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                        </div>
+                                        <input type="text" className="form-control" placeholder="Buscar sabores..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="table-responsive-md">
-                                <table className="table table-control table-hover" >
-                                    <thead>
-                                        <tr>
-                                            {columnsHeaders?.map((element, i) => {
-                                                return (
-                                                    <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                        {element.name}
-                                                    </th>
-                                                )
-                                            })}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {currentElements?.map((element, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                                    <FlavorsAmount flavor={element} addAmountOfFlavor={upload} />
+                            {(currentElements && currentElements?.length > 0)
+                                ?
+                                <>
+                                    <div className="table-responsive-md">
+                                        <table className="table table-control table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    {columnsHeaders?.map((element, i) => {
+                                                        return (
+                                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                                {element.name}
+                                                            </th>
+                                                        )
+                                                    })}
                                                 </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                                            </thead>
+                                            <tbody>
+                                                {currentElements?.map((element, i) => {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                            <FlavorsAmount flavor={element} addAmountOfFlavor={upload} />
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                                </>
+                                :
+                                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores con el nombre ingresado...</h4>
+                            }
                             <TableFlavorsDown flavors={destinyTable} download={download} data={data}></TableFlavorsDown>
                         </>
                     )}

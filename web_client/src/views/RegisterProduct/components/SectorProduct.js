@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import BeShowed from "../../../common/BeShowed";
+import BeShowed from "common/BeShowed";
 
 const SectorProduct = (props) => {
     const rb1 = useRef(null);

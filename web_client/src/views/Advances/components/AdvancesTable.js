@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import BeShowed from "../../../common/BeShowed";
 import LoaderSpinner from "../../../common/LoaderSpinner";
 import DeleteAdvancesButton from './DeleteAdvancesButton';
@@ -16,10 +16,17 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { dateBDToString } from "../../../utils/ConverterDate/dateBDToString";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FaFile } from 'react-icons/fa';
+import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
+import MyDocument from './PDFAdvancesReport';
+import dateText from 'utils/DateFormat/dateText';
+import { calculateDiferenceDays } from "../../../utils/DiferenceDate/calculateDiferenceDays";
+import dateFormat from 'utils/DateFormat/dateFormat';
+import getLastWeeksDate from '../../../utils/DateFormat/getLastWeeksDate';
 
 const PORT = require('../../../config');
 
-export default function AdvancesTable() {
+export default function AdvancesTable(props) {
 
     const [isLoadingSpinner, setIsLoadingSpinner] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -27,17 +34,27 @@ export default function AdvancesTable() {
     const [advances, setAdvances] = useState([]);
     const [editing, setEditing] = useState({});
     const [reading, setReading] = useState({});
+    let permissionsAccess = props.permissionsAccess;
+    const [MyDoc, setMyDoc] = useState('');
+    const [showPdf, setShowPDF] = useState(false);
+
+    const dateInitRef = useRef();
+    const dateFinishRef = useRef();
+    const [dateInit, setDateInit] = useState(dateFormat(getLastWeeksDate()));
+    const [dateFinish, setDateFinish] = useState(dateFormat(new Date()));
+    const [total, setTotal] = useState(0);
+    const [pay, setPay] = useState(0);
 
     useEffect(() => {
         Axios.get(PORT() + '/api/advances')
             .then((response) => {
-                handlerLoadingSpinner();
                 let auxAdvances = response.data;
-                auxAdvances.forEach((person)=>{
+                auxAdvances.forEach((person) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
                 });
+                handlerLoadingSpinner();
                 setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
@@ -78,10 +95,8 @@ export default function AdvancesTable() {
         //window.location.replace('/app/advances');
     }
 
-    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
-
-    const handleEdit = () => warningMessage('Atención','Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
-    const handleDelete = () => warningMessage('Atención','Plazo de cancelación vencido. Solo podrá cancelar el adelanto antes del pago de la primer cuota.', 'warning');
+    const handleEdit = () => warningMessage('Atención', 'Plazo de edición vencido. Solo podrá editar el adelanto antes del pago de la primer cuota.', 'warning');
+    const handleDelete = () => warningMessage('Atención', 'Plazo de cancelación vencido. Solo podrá cancelar el adelanto antes del pago de la primer cuota.', 'warning');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage] = useState(10);
@@ -89,24 +104,44 @@ export default function AdvancesTable() {
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
 
-    useEffect(() => {
-        if (advances){
-            handlerLoadingSpinner();
+    const showRenderPDF = () => setShowPDF(true);
 
+    const cancel = () => setShowPDF(false);
+
+    useEffect(() => {
+        if (advances) {
+            handlerLoadingSpinner();
             setListTable(advances);
         }
     }, [advances]);
+
+    useEffect(() => {
+        let auxAdvances = advances;
+        let auxTotal = 0;
+        let auxPay = 0;
+        if (dateInit) auxAdvances = auxAdvances.filter((elem) => {
+            return elem.date >= dateInit;
+        });
+        if (dateFinish) auxAdvances = auxAdvances.filter((elem) => {
+            return elem.date <= dateFinish;
+        });
+        auxAdvances.map(person => {
+            auxTotal += person.amount;
+            auxPay += person.pay;
+        });
+        setTotal(auxTotal);
+        setPay(auxPay);
+        setListTable(auxAdvances);
+    }, [dateFinish, dateInit, advances]);
 
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
-
             setFilteredElements(filteredElementsList);
-        } else {
-            setFilteredElements(listTable);
         }
+        else setFilteredElements(listTable);
     }, [nameSearch, listTable]);
 
     const columnsHeaders = [
@@ -151,93 +186,166 @@ export default function AdvancesTable() {
     const indexOfFirstElement = indexOfLastElement - elementsPerPage;
     const currentElements = filteredElements.slice(indexOfFirstElement, indexOfLastElement);
 
+    const onClickNewAdvances = () => window.location.replace('/app/registerAdvances');
 
-    const onClickNewAdvances = () => {
-        window.location.replace('/app/registerAdvances');
+    const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
+
+    useEffect(()=>{
+        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+    }, [dateInit, dateFinish, filteredElements, nameSearch])
+
+    const onChangeDateInit = (e) => {
+        if (dateInitRef.current.value !== "") {
+            setDateInit(dateInitRef.current.value);
+            dateFinishRef.current.min = e.target.value;
+            if (dateFinishRef.current.value !== "") {
+                onChangeDates();
+            }
+        } 
+    }
+
+    const onChangeDateFinish = (e) => {
+        if (dateFinishRef.current.value !== "") {
+            setDateFinish(dateFinishRef.current.value);
+
+            if (dateInitRef.current.value !== "") {
+                onChangeDates();
+            }
+        } 
+    }
+    const onChangeDates = () => {
+        let aux = calculateDiferenceDays(dateInitRef.current.value, dateFinishRef.current.value);
+        aux++;
+        if (aux <= 0) {
+            dateFinishRef.current.value = dateInitRef.current.value;
+            aux = 1;
+        }
     }
 
     return (
         <>
+            <div className="viewTitleBtn">
+                <h1>Adelantos</h1>
+                <button id='printAdvancesButton' onClick={showRenderPDF} type="button" className="btn btn-light printBtn"><FaFile /> Imprimir informe</button>
+                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
+                    <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                </BeShowed>
+                <BeShowed show={permissionsAccess === 1} >
+                    <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                </BeShowed>
+            </div>
             {isLoadingSpinner ?
                 <LoaderSpinner color="primary" loading="Cargando..." />
-            : advances && advances.length === 0
-                ? 
-                <div>
-                    <div className="viewTitleBtn">
-                        <h1>Adelantos</h1>
-                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                : advances.length === 0
+                    ?
+                    <div>
+                        <br />
+                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
                     </div>
-                    <br/>
-                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
-                </div>
-                : (
-                <>
-                <BeShowed show={!isEditing && !isReading}>
-                    <div className="viewTitleBtn">
-                        <h1>Adelantos</h1>
-                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                    </div>
-                    <div className="viewBody">
-                        <div className="formRow title-searcher">
-                            <h4 className="text-secondary">Adelantos</h4>
-                            <div className="search-input">
-                                <FontAwesomeIcon icon={faSearch} />
-                                <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
-                            </div>
-                        </div>
-                        <div className="table-responsive-md">
-                            <table className="table table-control table-hover" >
-                                <thead>
-                                    <tr>
-                                        {columnsHeaders?.map((element, i) => {
-                                            return (
-                                                <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                    {element.name}
-                                                </th>
-                                            )
-                                        })}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentElements?.map((element, i) => {
-                                        return (
-                                            <tr key={i}>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.amount}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.pay}</td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <ReadAdvancesButton advances={element} read={readAdvances} />
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                        <EditAdvancesButton advances={element} edit={editAdvances} />
-                                                    </BeShowed>
-                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                        <button id='editAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
-                                                    </BeShowed>
-                                                </td>
-                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                    : (
+                        <BeShowed show={!isEditing && !isReading}>
+                            <div className="viewBody">
+                                <label className="col-sm-6">Dinero total prestado: ${total}</label>
+                                <label className="col-sm-6">Dinero total pagado: ${pay}</label>
+                                <div className="formRow d-flex justify-content-between">
+                                    <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                                    <div className="input-group" style={{marginLeft: 'auto'}}>
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                        </div>
+                                        <div  style={{ textAlign: 'right' }} >
+                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                            </div>
+                                        </div>
+                                        <div className="input-group">
+                                            <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                            </div>
+                                            <div style={{ textAlign: 'right' }} >
+                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="formRow title-searcher">
+                                    <h4 className="text-secondary">Adelantos:</h4>
+                                    <div className="search-input">
+                                        <div className="input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                            </div>
+                                            <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {currentElements.length > 0 && (
+                                    <div className="table-responsive-md">
+                                        <table className="table table-control table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    {columnsHeaders?.map((element, i) => {
+                                                        return (
+                                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                                {element.name}
+                                                            </th>
+                                                        )
+                                                    })}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {currentElements?.map((element, i) => {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
+                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.amount}</td>
+                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.pay}</td>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                <ReadAdvancesButton advances={element} read={readAdvances} />
+                                                            </td>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                <BeShowed show={permissionsAccess === 3}>
+                                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                        <EditAdvancesButton advances={element} edit={editAdvances} permissionsAccess />
+                                                                    </BeShowed>
+                                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                        <button id='editAdvancesButton' type="button" className="disabledSendBtn" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                                                                    </BeShowed>
+                                                                </BeShowed>
+                                                                <BeShowed show={permissionsAccess !== 3}>
+                                                                    <button id='editAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faEdit} /></button>
+                                                                </BeShowed>
 
-                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                        <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
-                                                    </BeShowed>
-                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                        <button id='deleteAdvancesButton' type="button" className="sendDelete" style={{backgroundColor: 'grey'}} onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
-                                                    </BeShowed>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                        <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-                    </div>
-                </BeShowed>
-                </>
-            )}
+                                                            </td>
+                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                <BeShowed show={permissionsAccess === 3}>
+                                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                        <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+                                                                    </BeShowed>
+                                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                        <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                                                                    </BeShowed>
+                                                                </BeShowed>
+                                                                <BeShowed show={permissionsAccess !== 3}>
+                                                                    <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faMinus} /></button>
+                                                                </BeShowed>
+
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                {currentElements.length === 0 && (
+                                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un adelanto correspondiente al empleado ingresado...</h4>
+                                )}
+                                <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                            </div>
+                            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={(dateInit?(dateFinish? "(":'')  +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} reportOf='adelantos' description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                        </BeShowed>
+                    )}
             <BeShowed show={isEditing}>
                 <EditAdvances cancel={cancelEditAdvances} advances={editing} />
             </BeShowed>

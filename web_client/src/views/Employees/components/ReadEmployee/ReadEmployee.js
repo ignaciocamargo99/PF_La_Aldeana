@@ -1,6 +1,6 @@
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import DataEmployee from '../DataEmployee';
 import ExtraDataEmployee from '../ExtraDataEmployee';
 
@@ -26,7 +26,7 @@ const ReadEmployee = ({ employeeData, goBack }) => {
                     isReadingEmployeeData={isReadingEmployeeData}
                 />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={goBack}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={goBack}>Volver</button>
                 </div>
             </div>
         </>

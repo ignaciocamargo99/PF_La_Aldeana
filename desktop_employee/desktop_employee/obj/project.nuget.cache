@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "ZbCWFbS7gVDT6oHOE+fSKnWADXFXvAgaHMjH4C0dkhqM2tXZA4Zv/PAWlc2LM5joAt4JiIsW2VVciF0KxWtfhw==",
+  "dgSpecHash": "d36xeOE0DEZi3u2mldkQdKNaFSCFInwdZhPVxj8+bZ92uo9FeXFri0Ggi5ShaOxHQPZ857KvADvV3I80Urs8Hw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\joaqu\\Desktop\\PF\\PF_La_Aldeana\\desktop_employee\\desktop_employee\\desktop_employee.csproj",
+  "projectFilePath": "C:\\Users\\joaqu\\OneDrive\\Escritorio\\PF_La_Aldeana\\desktop_employee\\desktop_employee\\desktop_employee.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joaqu\\.nuget\\packages\\fontawesome.sharp\\5.15.3\\fontawesome.sharp.5.15.3.nupkg.sha512",
-    "C:\\Users\\joaqu\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\joaqu\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\joaqu\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512",
+    "C:\\Users\\joaqu\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\joaqu\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\joaqu\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

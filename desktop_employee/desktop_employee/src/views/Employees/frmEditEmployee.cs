@@ -22,11 +22,15 @@ namespace desktop_employee.src.views.Employees
         Reply oReply = new Reply();
         string txtLblCurrent;
         config config = new();
+        private int permisos;
+        bool tenemosHuellas;
+        bool registroOk;
 
         private Panel pnlPadre;
 
         public Panel PnlPadre { get => pnlPadre; set => pnlPadre = value; }
         public DataTable EmployeeSelected { get => employeeSelected; set => employeeSelected = value; }
+        public int Permisos { get => permisos; set => permisos = value; }
 
         public frmEditEmployee()
         {
@@ -39,6 +43,14 @@ namespace desktop_employee.src.views.Employees
             txtNombre.Text = Convert.ToString(EmployeeSelected.Rows[0][1]);
             txtApellido.Text = Convert.ToString(EmployeeSelected.Rows[0][2]);
             getFingers();
+
+            if (permisos == 2)
+            {
+                btnEliminarPD.Visible = false;
+                btnEliminarID.Visible = false;
+                btnEliminarPI.Visible = false;
+                btnEliminarII.Visible = false;
+            }
         }
 
 
@@ -59,12 +71,18 @@ namespace desktop_employee.src.views.Employees
 
                 // Do something with responseBody
                 fingerEmployee = JsonConvert.DeserializeObject(responseBody);
-                onOffButtons();
+                tenemosHuellas = true;
             }
             catch (WebException ex)
             {
-                // Handle error
-            }            
+                tenemosHuellas = false;
+            }
+            if (!tenemosHuellas)
+            {
+                MessageBox.Show("No se obuvieron los datos de las huelas del empleado. Reinicie la aplicación!", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            onOffButtons();
         }
 
 
@@ -166,7 +184,7 @@ namespace desktop_employee.src.views.Employees
                 }
                 else
                 {
-                    MessageBox.Show("La huella no es valida. Repita el proceso de captura.", "Captura de la Huella");
+                    MessageBox.Show("La huella no es valida. Repita el proceso de captura.", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }));
         }
@@ -220,6 +238,11 @@ namespace desktop_employee.src.views.Employees
 
         private void OpenFormCaptureAsync(Label lblFinger)
         {
+            if (!tenemosHuellas)
+            {
+                MessageBox.Show("No se obuvieron los datos de las huelas del empleado. Reinicie la aplicación!", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             frmCaptureFingerPrint captureFingerPrint = new();
             txtLblCurrent = lblFinger.Text;
             captureFingerPrint.OnTemplate += this.OnTemplate;
@@ -238,12 +261,16 @@ namespace desktop_employee.src.views.Employees
                     fingerPrint = streamFingerPrint
                 };
                 oReply = await Consumer.Execute<FingerPrint>(config.getUrlPort() + "/api/fingerPrints", methodHttp.POST, fingerPrint);
-                getFingers();
             }
             catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+            {   
             }
+            if (oReply.StatusCode != "OK")
+            {
+                MessageBox.Show("No se pudo registrar la huella. Intente de nuevo !", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            getFingers();
         }
 
         private void btnEliminarPD_Click(object sender, EventArgs e)
@@ -272,8 +299,13 @@ namespace desktop_employee.src.views.Employees
 
         private async void deleteFingers()
         {
+            if (!tenemosHuellas)
+            {
+                MessageBox.Show("No se obuvieron los datos de las huelas del empleado. Reinicie la aplicación!", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             string message = "Esta seguro que desea eliminar la huella del " + txtLblCurrent + "?";
-            DialogResult result = MessageBox.Show(message, "Confirmación", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show(message, "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 try
@@ -286,13 +318,13 @@ namespace desktop_employee.src.views.Employees
                     oReply = await Consumer.Execute<FingerXEmployee>(config.getUrlPort() + "/api/fingerPrints", methodHttp.PUT, fingerPrint);
                     if (oReply.StatusCode == "OK")
                     {
-                        MessageBox.Show("Huella eliminada correctamente.");
+                        MessageBox.Show("Huella eliminada correctamente.", "Información !!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         getFingers();
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -323,6 +355,11 @@ namespace desktop_employee.src.views.Employees
 
         private void comprobarHuella()
         {
+            if (!tenemosHuellas)
+            {
+                MessageBox.Show("No se obuvieron los datos de las huelas del empleado. Reinicie la aplicación!", "ERROR !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             frmValidationFingerprint validationForm = new();
             validationForm.HuellasEmpleado = fingerEmployee;
             validationForm.HuellaAcomparar = txtLblCurrent;
@@ -330,7 +367,6 @@ namespace desktop_employee.src.views.Employees
             validationForm.NombreEmpleado = cadena; 
             validationForm.Show();
         }
-
 
     }
 }

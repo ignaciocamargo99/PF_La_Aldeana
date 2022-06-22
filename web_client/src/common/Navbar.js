@@ -1,12 +1,14 @@
+import { faCalendarAlt, faFile, faList, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { WHOLESALE_PAGE } from 'routes/routes';
 import Cookies from 'universal-cookie';
+import { FLAVOR_TYPES_VIEW_TITLE } from 'views/FlavorTypes/constants';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
-import BeShowed from './BeShowed';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faPlus, faSignInAlt, faList, faFile, faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
+import BeShowed from './BeShowed';
 
 const cookies = new Cookies();
 
@@ -38,10 +40,7 @@ export default function Navbar(props) {
         cookies.remove('first_name', { path: '/' })
         cookies.remove('last_name', { path: '/' })
         cookies.remove('permissions', { path: '/' })
-        window.location.href = '/app/index'
-    };
-
-    const signIn = () => {
+        cookies.remove('accesses', { path: '/' })
         window.location.href = '/app/index'
     };
 
@@ -63,11 +62,11 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/products">
                                 <FontAwesomeIcon icon={faList} /> Ver productos
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/typeProducts">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Tipo de producto
+                            <Dropdown.Item href="/app/productTypes">
+                                <FontAwesomeIcon icon={faList} /> Ver tipos de producto
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/supplies">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Insumo
+                                <FontAwesomeIcon icon={faList} /> Ver insumos
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -87,8 +86,11 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/productions">
                                 <FontAwesomeIcon icon={faList} /> Ver producciones
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/production">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva producción
+                            <Dropdown.Item href="/app/flavors">
+                                <FontAwesomeIcon icon={faList} /> Ver sabores
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/flavorTypes">
+                                <FontAwesomeIcon icon={faList} /> {`Ver ${FLAVOR_TYPES_VIEW_TITLE.toLowerCase()}`}
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -108,31 +110,37 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/franchises">
                                 <FontAwesomeIcon icon={faList} /> Ver franquicias
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/newFranchise">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Nueva franquicia
+                            <Dropdown.Item href={WHOLESALE_PAGE}>
+                                <FontAwesomeIcon icon={faPlus} /> Venta mayorista
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
         };
 
-        const permissionSales = permissions.find(option => option === "Ventas")
-        let sales;
-        const permissionReports = permissions.find(option => option === "Reportes");
-        if (permissionSales === "Ventas") {
-            sales =
+        let reports;
+        const permissionReports = permissions.find(option => option === "Reportes Ventas" || option === "Reportes Recursos Humanos");
+        const permissionReportsSales = permissions.find(option => option === "Reportes Ventas");
+        const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
+        if (permissionReports) {
+            reports =
                 <li>
                     <Dropdown>
                         <Dropdown.Toggle className="nav-dropdown">
-                            Ventas
+                            Reportes
                         </Dropdown.Toggle>
-                        <BeShowed show={permissionReports === "Reportes"}>
-                            <Dropdown.Menu>
+                        <Dropdown.Menu>
+                            <BeShowed show={permissionReportsSales === "Reportes Ventas"}>
                                 <Dropdown.Item href="/app/salesReport">
-                                    <FontAwesomeIcon icon={faFile} /> Ver informe de productos vendidos
+                                    <FontAwesomeIcon icon={faFile} /> Informe de ventas
                                 </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </BeShowed>
+                            </BeShowed>
+                            <BeShowed show={permissionReportsHumanResources === "Reportes Recursos Humanos"}>
+                                <Dropdown.Item href="/app/RRHHReport">
+                                    <FontAwesomeIcon icon={faFile} /> Informe de recursos humanos
+                                </Dropdown.Item>
+                            </BeShowed>
+                        </Dropdown.Menu>
                     </Dropdown>
                 </li>
         };
@@ -172,13 +180,34 @@ export default function Navbar(props) {
                                 <FontAwesomeIcon icon={faList} /> Ver licencias
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/assistanceEmployees">
-                                <FontAwesomeIcon icon={faList} /> Ver asistencias 
+                                <FontAwesomeIcon icon={faList} /> Ver asistencias
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/employeesSchedules">
                                 <FontAwesomeIcon icon={faCalendarAlt} /> Grilla de horarios
                             </Dropdown.Item>
                             <Dropdown.Item href="/app/advances">
                                 <FontAwesomeIcon icon={faList} /> Ver adelantos
+                            </Dropdown.Item>
+                            <Dropdown.Item href="/app/salary">
+                                <FontAwesomeIcon icon={faList} /> Ver salarios
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </li>
+        };
+
+        const permission = permissions.find(option => option === "Usuarios")
+        let permissionsAdministrator;
+        if (permission === "Usuarios") {
+            permissionsAdministrator =
+                <li>
+                    <Dropdown>
+                        <Dropdown.Toggle className="nav-dropdown">
+                            Usuarios
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/app/users">
+                                <FontAwesomeIcon icon={faList} /> Ver usuarios
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -190,9 +219,10 @@ export default function Navbar(props) {
                 {products}
                 {productions}
                 {franchises}
-                {sales}
+                {reports}
                 {purchases}
                 {employees}
+                {permissionsAdministrator}
             </>
         )
     };
@@ -206,12 +236,13 @@ export default function Navbar(props) {
                 </a>
                 <ul className="navbar-list">
                     {showOptionsWithPermissions()}
-
-                    <div className="li-btn-close-session">
-                        <li>
-                            <a className="navbar-ref" href="#"><button className="navbar-btn" onClick={signOut}>Cerrar sesión</button></a>
-                        </li>
-                    </div>
+                    <BeShowed show={cookies.get('nick_user')}>
+                        <div className="li-btn-close-session">
+                            <li>
+                                <a className="navbar-ref" href="#"><button className="navbar-btn" onClick={signOut}>Cerrar sesión</button></a>
+                            </li>
+                        </div>
+                    </BeShowed>
                 </ul>
             </div>
 
@@ -220,10 +251,6 @@ export default function Navbar(props) {
                     <BeShowed show={cookies.get('nick_user')}>
                         <label><b className='color-blue signed-user'>{`Usuario: ${cookies.get('first_name')} ${cookies.get('last_name')}`}&nbsp;</b></label>
                         <button className="btn" onClick={signOut}><FontAwesomeIcon icon={faSignOutAlt} /></button>
-                    </BeShowed>
-                    <BeShowed show={!cookies.get('nick_user')}>
-                        <label><b className='color-blue'>Iniciar sesion&nbsp;</b></label>
-                        <button className="btn" onClick={signIn}><FontAwesomeIcon icon={faSignInAlt} /></button>
                     </BeShowed>
                 </ul>
             </div>

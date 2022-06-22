@@ -1,7 +1,7 @@
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import '../../../../assets/Buttons.css';
-import Breadcrumb from '../../../../common/Breadcrumb';
+import Breadcrumb from 'common/Breadcrumb';
 import ExtraDataProduct from '../../../RegisterProduct/ExtraDataProduct';
 import GeneralDataProduct from '../../../RegisterProduct/GeneralDataProduct';
 import '../../styles/ProductForm.css';
@@ -23,7 +23,7 @@ const ReadProducts = ({ productToRead, onClickCancelRead }) => {
                 <GeneralDataProduct load={load} data={productToRead} />
                 <ExtraDataProduct load={load} data={productToRead} />
                 <div className='buttons'>
-                    <button className='sendOk' onClick={onClickCancelRead}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={onClickCancelRead}>Volver</button>
                 </div>
             </div>
         </>

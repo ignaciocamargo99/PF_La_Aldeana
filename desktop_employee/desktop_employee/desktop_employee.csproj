@@ -43,6 +43,9 @@
     <Compile Update="src\utils\CaptureForm\VerificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="src\views\RegisterAssistance\frmLoginDNI.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

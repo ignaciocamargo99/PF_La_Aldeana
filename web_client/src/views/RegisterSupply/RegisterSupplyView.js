@@ -19,6 +19,8 @@ import BeShowed from '../../common/BeShowed';
 import checkData from './checkData';
 import Breadcrumb from '../../common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -26,10 +28,10 @@ const RegisterPurchaseSupplies = (props) => {
 
     const cancel = () => {
         resetStates();
-        window.location.href = './supplies'
+        window.location.href = '/app/supplies'
     }
 
-    const resetStates = (message) => {
+    const resetStates = () => {
         //successPurchaseSupplies(message)
         props.updateNameSupply(null)
         props.updateDescriptionSupply(null)
@@ -43,12 +45,12 @@ const RegisterPurchaseSupplies = (props) => {
 
     const [data, setData] = useState({
         name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
-        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false
+        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false,
+        reading: false
     });
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-
         let aux = {
             name: props.nameSupply,
             description: props.descriptionSupply,
@@ -61,36 +63,37 @@ const RegisterPurchaseSupplies = (props) => {
             franchiseSupply: props.franchiseSupply,
             deliverySupply: props.deliverySupply
         }
-
         setData(aux);
-
         setReady(checkData(aux));
-
     }, [props.franchiseSupply, props.deliverySupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
 
-    const registerPurchaseSupplies = () => {
-        let aux = {
-            name: data.name,
-            description: data.description === 'null' ? null : data.description,
-            id_supply_type: data.id_supply_type,
-            price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
-            price_retail: data.price_retail <= 0 ? null : data.price_retail,
-            stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
-            stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
-            unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
+    const registerPurchaseSupplies = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${props.nameSupply}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            let aux = {
+                name: data.name,
+                description: data.description === 'null' ? null : data.description,
+                id_supply_type: data.id_supply_type,
+                price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
+                price_retail: data.price_retail <= 0 ? null : data.price_retail,
+                stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
+                stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
+                unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
+            }
+            loadingMessage('Registrando nuevo insumo...');
+            Axios.post(PORT() + '/api/supplies', aux)
+                .then(({ data }) => {
+                    if (data.Ok) {
+                        resetStates('El insumo se registro correctamente');
+                        successMessage(`Atención`, 'Insumo registrado exitosamente', 'success');
+                    }
+                    else {
+                        displayError('Ha ocurrido un error al registrar un insumo.');
+                    }
+                })
+                .catch(() => displayError('Ha ocurrido un error en el servidor.'));
         }
 
-        Axios.post(PORT() + '/api/supplies', aux)
-            .then(({ data }) => {
-                if (data.Ok) {
-                    resetStates('El insumo se registro correctamente');
-                    successMessage(`Atención`, 'Insumo registrado exitosamente', 'success');
-                }
-                else {
-                    displayError('Ha ocurrido un error al registrar un insumo.');
-                }
-            })
-            .catch(() => displayError('Ha ocurrido un error en el servidor.'));
     }
 
 
@@ -105,43 +108,43 @@ const RegisterPurchaseSupplies = (props) => {
     return (
         <>
             <div style={{ display: 'none' }}>{document.title = "Registrar insumo"}</div>
-            <Breadcrumb parentName="Productos" icon={faIceCream} parentLink="products" currentName="Registrar insumo" />
+            <Breadcrumb parentName="Insumos" icon={faIceCream} parentLink="/app/supplies" currentName="Registrar insumo" />
             <div className="viewTitle">
                 <h1>Registrar Insumo</h1>
             </div>
             <div className="viewBody">
-                <NameSupply />
-                <DescriptionSupply />
+                <NameSupply data={data} />
+                <DescriptionSupply data={data} />
                 <div className="price-form-body ">
                     <div className="price-title">
                         <label >Precio</label>
                     </div>
-                    <div className="price-container">
+                    <div className="price-container" style={{marginBottom:'12px'}}>
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isDeliverySupply" value="isDeliverySupply" ref={inputIsDeliverySupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">Se envía por delivery?</label>
+                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">¿Se envía por delivery?</label>
                         </div>
                         <BeShowed show={props.deliverySupply}>
-                            <SinglePrice />
+                            <SinglePrice data={data} />
                         </BeShowed>
 
                     </div>
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
                             <input className="form-check-input" type="checkbox" id="isFranchiseSupply" value="isFranchiseSupply" ref={inputIsFranchiseSupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">Se envía a franquicias?</label>
+                            <label className="price-type-label price-label" htmlFor="isFranchiseSupply">¿Se envía a franquicias?</label>
                         </div>
                         <BeShowed show={props.franchiseSupply}>
-                            <MultiplePrice />
+                            <MultiplePrice data={data} />
                         </BeShowed>
                     </div>
                 </div>
                 <div className="price-title">
                     <label >Stock*</label>
                 </div>
-                <TypeSupply />
+                <TypeSupply data={data} />
                 <BeShowed show={props.typeSupply < 3 && props.typeSupply > 0}>
-                    <Stock />
+                    <Stock data={data} />
                 </BeShowed>
                 <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validateSupplyRegister} data={data} />
             </div>

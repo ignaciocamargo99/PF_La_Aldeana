@@ -7,7 +7,7 @@ const readEmployee = async (dni) => {
         return mapEmployeesData(res);
     }
     catch (error) {
-        throw Error(error)
+        throw Error(error);
     };
 };
 
@@ -44,7 +44,15 @@ const mapEmployeesData = (employeesDataDB) => {
                 charges: [{
                     chargeId: empDB.chargeId,
                     chargeName: empDB.chargeName
-                }]
+                }],
+                number: empDB.number,
+                street: empDB.street,
+                neighborhood: empDB.neighborhood,
+                birthday: empDB.birthday.toISOString().split('T')[0],
+                cuil: empDB.cuil,
+                nickname: empDB.nickname,
+                city: empDB.city,
+                phone: empDB.phone,
             };
 
             allEmployeesMapped.push(employeeToAdd);

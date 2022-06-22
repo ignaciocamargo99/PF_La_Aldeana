@@ -1,17 +1,18 @@
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../../assets/Buttons.css';
-import Buttons from '../../common/Buttons';
-import successMessage from '../../utils/SuccessMessages/successMessage';
-import validationProductRegister from '../../utils/Validations/validationProductRegister';
+import Buttons from 'common/Buttons';
+import successMessage from 'utils/SuccessMessages/successMessage';
+import validationProductRegister from 'utils/Validations/validationProductRegister';
 import ExtraDataProduct from './ExtraDataProduct';
 import GeneralDataProduct from './GeneralDataProduct';
 import './RegisterProductView.css';
 import './styles/ProductForm.css';
-import displayError from '../../utils/ErrorMessages/displayError';
-import Breadcrumb from '../../common/Breadcrumb';
+import displayError from 'utils/ErrorMessages/displayError';
+import Breadcrumb from 'common/Breadcrumb';
 import { faIceCream } from '@fortawesome/free-solid-svg-icons';
-import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../config');
 
@@ -35,30 +36,30 @@ export default function RegisterProductView() {
         setSupplyProductChild(childData.supplies);
     }
 
-    const registerProduct = () => {
-        let urlApi = '';
-        const formData = new FormData();
+    const registerProduct = async () => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+        if (registrationConfirmed) {
+            const formData = new FormData();
 
-        urlApi = '/api/products';
+            const jsonArrSupplies = JSON.stringify(data.supplies);
 
-        const jsonArrSupplies = JSON.stringify(data.supplies);
+            formData.append('name', data.name);
+            formData.append('description', data.description);
+            formData.append('image', data.img)
+            formData.append('price', data.price);
+            formData.append('id_sector', data.id_sector);
+            formData.append('id_product_type', data.id_product_type);
+            formData.append('supplies', jsonArrSupplies);
+            formData.append('flavor', data.flavor);
 
-        formData.append('name', data.name);
-        formData.append('description', data.description);
-        formData.append('image', data.img)
-        formData.append('price', data.price);
-        formData.append('id_sector', data.id_sector);
-        formData.append('id_product_type', data.id_product_type);
-        formData.append('supplies', jsonArrSupplies);
-        formData.append('flavor', data.flavor);
-        
-        loadingMessage('Registrando nuevo producto...');
-        Axios.post(PORT() + urlApi, formData)
-            .then((formData) => {
-                if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
-                else displayError('Ha ocurrido un error al registrar el producto.');
-            })
-            .catch(error => console.log(error))
+            loadingMessage('Registrando nuevo producto...');
+            Axios.post(PORT() + '/api/products', formData)
+                .then((formData) => {
+                    if (formData.data.Ok) successMessage('Atención', 'Producto registrado exitosamente', 'success');
+                    else displayError('Ha ocurrido un error al registrar el producto.');
+                })
+                .catch(error => console.log(error))
+        }
     };
 
     useEffect(() => {

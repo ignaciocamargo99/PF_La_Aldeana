@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import BeShowed from "../../../common/BeShowed";
-import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
+import BeShowed from "common/BeShowed";
+import validateFloatNumbers from 'utils/Validations/validateFloatNumbers';
 
 export default function FlavorsAmount(props) {
     const inputFlavorAmount = useRef(null);
@@ -29,7 +29,7 @@ export default function FlavorsAmount(props) {
             <div className="form-control-input">
                 <BeShowed show={!props.data.reading}>
                     <input className="form-control" id="flavorsAmount"
-                        type="number" maxLength="80" placeholder="Ingrese cantidad de sabores de helado..."
+                        type="number" maxLength="80" placeholder="Ingrese cantidad máxima de sabores de helado..."
                         onInput={(e) => validate(e)}
                         onKeyDown={(e) => validateFloatNumbers(e)}
                         onChange={onChange}

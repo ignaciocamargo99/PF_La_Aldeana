@@ -1,14 +1,13 @@
 const db = require("../../config/connection");
 const bcryptjs = require('bcryptjs');
 
-const { logIn, getUser } = require('../services/logInService')
+const { logIn, getUser, logInDesktop } = require('../services/logInService')
 
 // [HTTP:GET]
 async function getUsers(req, res) {
 
-    const sqlSelect = "SELECT u.nick_user, u.first_name, u.last_name, u.password, r.name as Rol " + 
-    "FROM USERS u " + 
-    "INNER JOIN ROLES r ON u.id_rol = r.id_rol";
+    const sqlSelect = "SELECT u.id_user, u.nick_user, u.first_name, u.last_name, u.password, u.active " + 
+    "FROM USERS u  WHERE u.active = 1";
 
     await db.query(sqlSelect, (err, result) => {
         if (err) throw err;
@@ -25,14 +24,12 @@ async function getUsersByNick(req, res) {
             res.json({
                 Ok: true,
                 Message: 'Validando usuario.',
-                token: rest[0].password
+                token: rest[0].password,
+                
             });
         } else {
             let random = Math.round(Math.random()* (1000 - 1) + 1).toString();
-            console.log(random)
             let notIsAToken = await bcryptjs.hash(random, 8);
-
-            console.log(notIsAToken)
             res.json({
                 Ok: true,
                 Message: 'Validando usuario.',
@@ -50,20 +47,25 @@ async function getUsersByNick(req, res) {
 async function getDataUsersByNick(req, res) {
     try {
         let rest = await getUser(req.params.nick);
-        
-        if(rest.length > 0){
+        if(rest.length > 0 && rest[0].active[0] === 0){
+            res.json({
+                Ok:false,
+                Message: 'Usuario dado de baja, comuníquese con el administrador...'
+            });
+        }
+        else if(rest.length > 0 && rest[0].active[0] === 1){
             res.json({
                 Ok: true,
                 Message: 'Validando usuario.',
                 nick_user: rest[0].nick_user,
                 first_name: rest[0].first_name,
                 last_name: rest[0].last_name,
-                rol_ID: rest[0].rol_ID
             });
         } else {
             res.json({
                 Ok: true,
-                Message: 'Validando usuario.'
+                Message: 'Validando usuario.',
+                Data: rest[0].active[0]
             });
         }
     } catch (e) {
@@ -79,12 +81,11 @@ async function postUser(req, res) {
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const password = req.body.password;
-    const id_rol = req.body.id_rol;
     let passwordHash = await bcryptjs.hash(password, 8)
 
     const sqlInsert =
         "INSERT INTO USERS (nick_user, first_name, last_name, password, id_rol) " +
-        "VALUES ('"+ nick +"','"+ first_name +"','"+ last_name +"','"+ passwordHash +"',"+ id_rol + ")";
+        "VALUES ('"+ nick +"','"+ first_name +"','"+ last_name +"','"+ passwordHash + ")";
         //"VALUES (?)";
 
     await db.query(sqlInsert, [req.body], (err, result) => {
@@ -103,9 +104,26 @@ async function getLogin(req, res) {
 
 }
 
+async function logDesktop(req, res) {
+    try {
+        const data = await logInDesktop(req.query);
+        res.json({
+            Ok: true,
+            Message: 'Sesion iniciada correctamente',
+            data
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message,
+        })
+    }
+}
 
 
-module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick };
+
+module.exports = { getUsers, getUsersByNick, postUser, getDataUsersByNick, logDesktop };
 
 
 

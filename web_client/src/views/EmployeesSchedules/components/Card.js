@@ -1,10 +1,10 @@
 import React from 'react';
 import './Card.css';
 
-const Card = ({ title, text, handleCardClicked }) => {
+const Card = ({ title, text, handleCardClicked, style }) => {
     return (
-        <div onClick={handleCardClicked} className="card">
-            <div className="card-header bg-light-blue">
+        <div onClick={handleCardClicked} className="card" style={style}>
+            <div className="card-header bg-light-blue ">
             </div>
             <div className="card-body">
                 <h4 className="card-title">{title}</h4>

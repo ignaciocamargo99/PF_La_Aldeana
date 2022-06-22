@@ -8,12 +8,14 @@ import formattedDate from '../../../utils/formattedDate';
 import successMessage from '../../../utils/SuccessMessages/successMessage';
 import warningMessage from "../../../utils/WarningMessages/warningMessage";
 import ExtraDataAdvances from './ExtraDataAdvances';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../../config');
 
 export default function RegisterAdvances() {
     const [ready, setReady] = useState(false);
-    const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{month: formattedDate(new Date()), amount: 0, label: "", pay: 0}], months: null, pay: null, firstMonth: formattedDate(new Date()), editing: false, reading: false });
+    const [data, setData] = useState({ dniEmployee: null, date: formattedDate(new Date()), amount: null, installments: [{ month: formattedDate(new Date()), amount: 0, label: "", pay: 0 }], months: null, pay: null, firstMonth: formattedDate(new Date()), editing: false, reading: false });
     const cancelRegisterAdvances = () => window.location.replace('/app/advances');
 
     const load = (childData) => {
@@ -31,14 +33,18 @@ export default function RegisterAdvances() {
         else setReady(false);
     }
 
-    const registerNewAdvances = () => {
+    const registerNewAdvances = async () => {
         if (data.dniEmployee && data.date && data.amount && data.installments[0].amount > 0 && data.months && ready) {
-            Axios.post(`${PORT()}/api/advances`, data)
-                .then((data) => {
-                    if (data.data.Ok) successMessage('Atención', 'Nuevo adelanto dado de alta exitosamente', 'success');
-                    else displayError('Ya existe un adelanto registrado para ese empleado en esa fecha.');
-                })
-                .catch((error) => console.error(error))
+            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nuevo adelanto?`)).isConfirmed;
+            if (registrationConfirmed) {
+                loadingMessage('Registrando nuevo adelanto...');
+                Axios.post(`${PORT()}/api/advances`, data)
+                    .then((data) => {
+                        if (data.data.Ok) successMessage('Atención', 'Adelanto registrado exitosamente', 'success');
+                        else displayError('Ya existe un adelanto registrado para ese empleado en esa fecha.');
+                    })
+                    .catch((error) => console.error(error))
+            }
         }
         else warningMessage('Atención', 'Todos los campos son obligatorios.', 'warning');
     }
@@ -51,7 +57,7 @@ export default function RegisterAdvances() {
                 <h1>Registrar adelanto</h1>
             </div>
             <div className="viewBody">
-                <ExtraDataAdvances load={load} data={data}/>
+                <ExtraDataAdvances load={load} data={data} />
                 <Buttons
                     label='Registrar' ready={ready} actionOK={registerNewAdvances} actionNotOK={registerNewAdvances}
                     data={data} actionCancel={cancelRegisterAdvances}

@@ -1,16 +1,17 @@
-const { readEmployee, deleteEmployees, readCharges, createEmployee, modifyEmployee, readEmployeeForDesktop } = require('../services/employeeService');
+const { readEmployee, deleteEmployees, readCharges, createEmployee, readEmployeeForDesktop,
+    modifyEmployee } = require('../services/employeeService');
 
 // HTTP: GET
 async function getEmployee(req, res) {
     try {
         const result = await readEmployee(req.params.dni);
-        res.send(result)
+        res.send(result);
     }
     catch (e) {
         res.json({
             Ok: false,
             Message: e.message,
-        })
+        });
     }
 }
 
@@ -94,4 +95,7 @@ async function updateEmployee(req, res) {
     }
 }
 
-module.exports = { getEmployee, deleteEmployee, getCharges, newEmployee, updateEmployee, getEmployeeForDesktop }
+
+module.exports = {
+    getEmployee, deleteEmployee, getCharges, newEmployee,
+    updateEmployee, getEmployeeForDesktop }

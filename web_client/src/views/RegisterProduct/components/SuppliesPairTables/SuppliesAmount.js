@@ -1,8 +1,8 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from "react";
-import validateFloatNumbers from "../../../../utils/validateFloatNumbers";
-import warningCountProduct from '../../../../utils/WarningMessages/warningCountProduct';
+import validateFloatNumbers from "utils/validateFloatNumbers";
+import warningCountProduct from 'utils/WarningMessages/warningCountProduct';
 
 const SuppliesAmount = ({ supply, addAmountOfSupply }) => {
 
@@ -57,7 +57,7 @@ const SuppliesAmount = ({ supply, addAmountOfSupply }) => {
                 <div style={{ color: 'red', fontWeight: 'bold' }} ref={divAmountSuppliesValidation} />
             </td>
             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                <button className="sendAdd" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} /></button>
+                <button className="btnAdd btn btn-info" type="button" onClick={addButtonClicked}><FontAwesomeIcon icon={faPlus} /></button>
             </td>
         </>
     );

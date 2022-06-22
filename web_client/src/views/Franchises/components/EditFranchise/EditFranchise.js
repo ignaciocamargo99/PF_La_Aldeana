@@ -11,6 +11,7 @@ import displayError from '../../../../utils/ErrorMessages/errorMesage';
 import Breadcrumb from '../../../../common/Breadcrumb';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
 import loadingMessage from '../../../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 
 const PORT = require('../../../../config');
 
@@ -25,15 +26,18 @@ export default function EditFranchise(props) {
         else setReady(false);
     }
 
-    const registerFranchise = () => {
-        loadingMessage('Guardando cambios...');
-        let urlApi = `/api/franchises/${data.id_franchise}`;
-        Axios.put(PORT() + urlApi, data)
-            .then(({ data }) => {
-                if (data.Ok) successMessage('Atención', 'Datos guardados exitosamente', 'success');
-                else displayError('Ha ocurrido un error al guardar los cambios');
-            })
-            .catch(error => console.log(error))
+    const registerFranchise = async () => {
+        const editionConfirmed = (await defaultQuestionSweetAlert2('¿Confirmar cambios?')).isConfirmed;
+        if (editionConfirmed) {
+            loadingMessage('Guardando cambios...');
+            let urlApi = `/api/franchises/${data.id_franchise}`;
+            Axios.put(PORT() + urlApi, data)
+                .then(({ data }) => {
+                    if (data.Ok) successMessage('Atención', 'Franquicia editada exitosamente', 'success');
+                    else displayError('Ha ocurrido un error al guardar los cambios');
+                })
+                .catch(error => console.log(error))
+        }
     };
 
     return (
@@ -48,7 +52,7 @@ export default function EditFranchise(props) {
                 <hr />
                 <DataManager load={load} data={data} />
                 <Buttons
-                    label='Registrar' actionOK={registerFranchise}
+                    label='Aceptar' actionOK={registerFranchise}
                     actionNotOK={validationFranchiseRegister}
                     ready={ready}
                     data={data}
