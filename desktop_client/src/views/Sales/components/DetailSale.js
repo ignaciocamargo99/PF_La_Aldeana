@@ -9,12 +9,13 @@ import HeaderTable from "../../../common/Table/HeaderTable";
 import Table from "../../../common/Table/Table";
 import '../styles/detailSale.css';
 import ModalProduct from "./ModalProduct";
+import '../styles/table.css'; 
 
 const DetailSale = (props) => {
 
     const [ready, setReady] = useState(false);
     const [printModal, setPrintModal] = useState(false);
-    
+
     // "N":new -- "M":modify -- "A":add -- "D":delete
     const [actionModal, setActionModal] = useState();
 
@@ -23,7 +24,7 @@ const DetailSale = (props) => {
     const changePrintModalModify = (id) => {
         let product = props.detailProducts?.find(n => n.id_product == id)
         props.updateProductSelected(product);
-        setActionModal("M");      
+        setActionModal("M");
         setPrintModal(true);
         props.updateRefresh(!props.refresh);
     }
@@ -43,53 +44,62 @@ const DetailSale = (props) => {
         else setReady(false);
 
         for (let i = 0; i < props.detailProducts.length; i++) {
-            aux = aux + parseFloat(props.detailProducts[i].subtotal,2);
+            aux = aux + parseFloat(props.detailProducts[i].subtotal, 2);
         }
 
         props.updateTotalAmount(aux);
-    },[props.detailProducts, props.refresh])
+    }, [props.detailProducts, props.refresh])
 
     return (
         <>
-            <Table>
-                <HeaderTable
-                    th={
-                        <>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Nombre</th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}></th>
-                        </>}/>
-                <BeShowed show={ready}>
-                    <BodyTable
-                        tbody={props.detailProducts?.map((element, i) => {
-                            return (
-                                <tbody key={i}>
-                                    <tr>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${element.subtotal}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button type="button" className="sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
-                                                <FontAwesomeIcon icon={faPen} />
-                                            </button>
-                                            <button type="button" className="sendDelete" id='btn_delete' value={element.id_product} onClick={() =>changePrintModalDelete(element.id_product)} >
-                                                <FontAwesomeIcon icon={faMinus} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody> 
-                            )})}/>
-                </BeShowed>
-            </Table>
-            <div className='formRow'>
-                <label>TOTAL:  $  </label>
-                <label>{props.totalAmount}</label>
-            </div>
+            {props.detailProducts?.length > 0 ?
+                <>
+                    <Table>
+                        <HeaderTable
+                            th={
+                                <>
+                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '250px', verticalAlign: 'middle' }}>Nombre</th>
+                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '80px', verticalAlign: 'middle' }}>Cantidad</th>
+                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Subtotal</th>
+                                    <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '150px', verticalAlign: 'middle' }}>Acciones</th>
+                                </>} />
+                        <BeShowed show={ready}>
+                            <BodyTable
+                                tbody={props.detailProducts?.map((element, i) => {
+                                    return (
+                                        <tbody key={i}>
+                                            <tr>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{parseInt(element.quantity)}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>${element.subtotal}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                    <button type="button" className="btn btn-light sendAdd" id='btn_edit' value={element.id_product} onClick={() => changePrintModalModify(element.id_product)} >
+                                                        <FontAwesomeIcon icon={faPen} />
+                                                    </button>
+                                                    <button type="button" className="btn btn-light sendDelete" id='btn_delete' value={element.id_product} onClick={() => changePrintModalDelete(element.id_product)} >
+                                                        <FontAwesomeIcon icon={faMinus} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    )
+                                })} />
+                        </BeShowed>
+                    </Table>
+                    <div className='formRow'>
+                        <label>TOTAL:  $  </label>
+                        <label>{props.totalAmount}</label>
+                    </div>
+
+                </>
+                :
+                <h4 style={{ color: '#383C77', fontWeight: 'bold' }}> ¡No hay productos cargados en el detalle! </h4>
+            }
+
             <ModalProduct show={printModal} setShowModal={setPrintModal} actionModal={actionModal}></ModalProduct>
         </>
     )
-} 
+}
 
 const mapStateToProps = state => {
     return {
