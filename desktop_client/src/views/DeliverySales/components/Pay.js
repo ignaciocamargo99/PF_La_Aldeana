@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import BeShowed from '../../../common/BeShowed';
+import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateAmountDelivery, updateErrorAmountDelivery } from '../../../actions/DeliverySalesActions';
+import '../../../assets/Buttons.css';
+import BeShowed from '../../../common/BeShowed';
+import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import ModalFlavorShow from './ModalFlavorShow';
 import SaleDetails from './SaleDetails';
-import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfo, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import '../../../assets/Buttons.css'
 
 const Pay = (props) => {
 
@@ -68,7 +68,7 @@ const Pay = (props) => {
             </div>
             <div className="formRow">
                 <label>Mostrar detalle de la venta</label>&nbsp;
-                <button style={{ width: '7%', height: '5%' }} className="sendNew" onClick={() => { setShowDeatil(!showDetail) }}>
+                <button style={{ width: '7%', height: '5%' }} className="btn btn-light sendNew" onClick={() => { setShowDeatil(!showDetail) }}>
                     <FontAwesomeIcon icon={faInfo} />
                 </button>
             </div>

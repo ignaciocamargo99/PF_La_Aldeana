@@ -25,7 +25,7 @@ const DeliverySales = (props) => {
     const [step, setStep] = useState(1);
     const [date, setDate] = useState('');
     const [reset, setReset] = useState(false);
-
+    const [loadSpinner, setLoadSpinner] = useState(true)
     const [clientObservation, setClientObservation] = useState('');
 
     useEffect(() => {
@@ -40,11 +40,11 @@ const DeliverySales = (props) => {
                 for (let i = 0; i < response.data.length; i++) {
                     aux.push({ 'product': response.data[i], 'quantity': 0 });
                 }
-                console.log(aux)
                 axios.get(PORT() + `/api/productsStocks`)
                     .then((response) => {
                         props.updateDeliveryProductsStocks(response.data);
                         props.updateDeliveryProductsQuantities(aux);
+                        setLoadSpinner(false)
                     })
                     .catch((err) => {
                         console.log(err);
@@ -102,7 +102,7 @@ const DeliverySales = (props) => {
         props.updateAmountDelivery('');
         props.subtractTotalDelivery(props.total);
         if (!cancel) {
-            succesMessageDeliverySale('Se ha registrado la venta correctamente');
+            succesMessageDeliverySale('Venta registrada exitosamente');
         }
         props.updateDeliveryProductsQuantities([])
         setReset(!reset)
@@ -123,7 +123,7 @@ const DeliverySales = (props) => {
                 </div>
 
                 <BeShowed show={step === 1}>
-                    <Products setStep={setStep} resetStates={resetStates} />
+                    <Products setStep={setStep} resetStates={resetStates} loadSpinner={loadSpinner}/>
                 </BeShowed>
 
                 <BeShowed show={step === 2}>
