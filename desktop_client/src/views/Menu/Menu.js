@@ -54,32 +54,15 @@ const SideMenu = (props) => {
                                 Venta por Delivery
                             </MenuItem>
                         </SubMenu>
-
-                        <MenuItem
-                            onClick={props.toRegisterAttendance}
-                            icon={<IoFingerPrint />}
-                        >
-                            Registrar Asistencia
-                        </MenuItem>
                     </Menu>
                 </SidebarContent>
                 <SidebarFooter>
-                    <Menu iconShape='square' className='sidebar-btn-wrapper'>
+                    <Menu iconShape="square" className="sidebar-btn-wrapper">
                         <BeShowed show={props.menu}>
-                            <MenuItem
-                                onClick={props.unlockMenu}
-                                icon={<FaLockOpen />}
-                            >
-                                Bloquear menú
-                            </MenuItem>
+                            <MenuItem onClick={props.unlockMenu} icon={<FaLockOpen />}>Bloquear menú</MenuItem>
                         </BeShowed>
                         <BeShowed show={!props.menu}>
-                            <MenuItem
-                                onClick={props.lockMenu}
-                                icon={<FaLock />}
-                            >
-                                Desbloquear menú
-                            </MenuItem>
+                            <MenuItem onClick={props.lockMenu} icon={<FaLock />}>Desbloquear menú</MenuItem>
                         </BeShowed>
                     </Menu>
                 </SidebarFooter>

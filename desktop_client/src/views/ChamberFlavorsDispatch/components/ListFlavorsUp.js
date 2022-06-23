@@ -9,6 +9,7 @@ import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchAct
 import { updateAllElements, updateTableUp } from '../../../actions/TableUpDownActions';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 import FlavorDispatchAmount from "./FlavorDispatchAmount";
+import StockFlavorTable from "./StockFlavorTable";
 
 const PORT = require('../../../config');
 
@@ -45,6 +46,7 @@ const ListFlavorsUp = (props) => {
         }
     }, [props.flavorsDispatchFilters, props.refresh]);
 
+
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     return (
@@ -54,14 +56,15 @@ const ListFlavorsUp = (props) => {
             )}
             {(flavorValues = props.elementsTableUp.filter(() => true),
                 flavorValues.length === 0 && !isLoadingSpinner
-                    ? <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores con los filtros cargados o ya cargó todos los disponibles...</h4>
+                    ?
+                    <h4 className="row justify-content-center" style={{ color: '#C16100', width: '80%', textAlign: 'center' }}>No existen sabores con los filtros cargados o ya cargó todos los disponibles...</h4>
                     : !isLoadingSpinner && (
                         <div className="table-responsive">
-                            <table className="table">
+                            <table className="table" style={{ display: 'block', height: '350px', overflow: 'auto' }}>
                                 <thead>
                                     <tr>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Sabor</th>
-                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}>Stock disponible</th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Stock disponible</th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '300px' }}>Cantidad (baldes)</th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center', width: '200px' }}>Añadir</th>
                                     </tr>
@@ -70,7 +73,8 @@ const ListFlavorsUp = (props) => {
                                     <tbody key={i}>
                                         <tr>
                                             <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                            <td style={{ textAlign: 'center' }}>{element.stock}</td>
+                                            <StockFlavorTable flavor={element} />
+                                            {/* <td style={{ textAlign: 'center' }}>{element.stock}</td> */}
                                             <FlavorDispatchAmount keyElement={i} />
                                             <td style={{ textAlign: 'center' }}>
                                                 <button type="button" className="sendAdd" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
@@ -83,10 +87,11 @@ const ListFlavorsUp = (props) => {
                                         <tbody key={i}>
                                             <tr>
                                                 <td style={{ textAlign: 'center' }}>{element.name}</td>
-                                                <td style={{ textAlign: 'center' }}>{element.stock}</td>
+                                                <StockFlavorTable flavor={element} />
+                                                {/* <td style={{ textAlign: 'center' }}>{element.stock}</td> */}
                                                 <FlavorDispatchAmount keyElement={i} />
                                                 <td style={{ textAlign: 'center' }}>
-                                                    <button type="button" className="sendAdd" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
+                                                    <button type="button" className="btn btn-light sendAdd" onClick={(e) => props.upload(element)}><FontAwesomeIcon icon={faPlus} /></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -105,7 +110,7 @@ const mapStateToProps = (state) => {
         elementsTableUp: state.elementsTableUp,
         allElements: state.allElements,
         elementsTableDown: state.elementsTableDown,
-        refresh: state.refresh
+        refresh: state.refresh,
     }
 }
 

@@ -1,11 +1,12 @@
 
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateFiltersFlavors } from '../../../actions/ChamberFlavorsDispatchActions';
 import { updateTableUp } from '../../../actions/TableUpDownActions';
 import BeShowed from '../../../common/BeShowed';
-import DynamicSearch from '../../../common/DynamicSearch';
 import toFilterFlavors from './toFilterFlavors';
 
 const PORT = require('../../../config');
@@ -84,10 +85,10 @@ const ListFlavors = (props) => {
         }
     }, [selectFamilyFlavor]);
 
+    const handleChangeName = (e) => setNameSearch(e.target.value);
+
     return (
         <>
-            <h2>Helados</h2>
-            <br />
             <h4>Filtrar por:</h4>
             <div className="form-radio-group formRow">
                 <div className="form-check form-check-inline">
@@ -100,7 +101,27 @@ const ListFlavors = (props) => {
                 </div>
             </div>
             <BeShowed show={boolSearchNameFlavor}>
-                <div className="formRow"><DynamicSearch placeholder="Nombre helado..." setSearchState={setNameSearch} /></div>
+                <div className="formRow title-searcher">
+                    <div className="search-input">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text"
+                                    id="inputGroup-sizing-default"
+                                    style={{ height: '100%' }}
+                                >
+                                    <FontAwesomeIcon icon={faSearch} />
+                                </span>
+                            </div>
+                            <input type="text"
+                                className="form-control"
+                                placeholder="Buscar por nombre..."
+                                onChange={(e) => handleChangeName(e)}
+                                aria-describedby="inputGroup-sizing-default"
+                                style={{ width: '490px' }}
+                            />
+                        </div>
+                    </div>
+                </div>
             </BeShowed>
             <BeShowed show={boolFamilyFlavor}>
                 <select className="form-combo-btn" id="selectTypeProduct" onChange={e => onChangeFamilyProduct(e)}>
@@ -111,6 +132,7 @@ const ListFlavors = (props) => {
                         ))
                     }
                 </select>
+                <br />
             </BeShowed>
         </>
     );

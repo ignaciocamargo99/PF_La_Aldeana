@@ -1,0 +1,13 @@
+@keyframes trAnim{
+    0% {background-color: #F68634;} 
+    25% {background-color: rgb(255, 209, 130);} 
+    50% {background-color: rgb(255, 233, 184);} 
+    75% {background-color: rgb(253, 240, 201);} 
+   100% {background-color: rgb(255, 249, 237);} 
+}
+
+tr {
+    animation-name: trAnim;
+    animation-duration: 2s;
+    animation-iteration-count: initial;
+}
