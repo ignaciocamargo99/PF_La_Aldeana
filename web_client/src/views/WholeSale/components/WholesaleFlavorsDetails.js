@@ -1,13 +1,23 @@
 import React from 'react'
+import Categories from './Categories';
 
-const WholesaleFlavorsDetails = () => {
+const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor }) => {
+
+    const thereAreFlavorsToSell = flavors?.length > 0;
+
     return (
-        <div>
+        <>
             <h3>Detalle de Sabores</h3>
-            {!false && (
-                <label >Aún no ha seleccionado ningún sabor para la venta.</label>
+            {!thereAreFlavorsToSell && (
+                <label className='fs-6'>Aún no ha seleccionado ningún sabor para la venta.</label>
             )}
-        </div>
+            {thereAreFlavorsToSell && (
+                <Categories
+                    flavors={flavors}
+                    handleRemoveFlavor={handleRemoveFlavor}
+                />
+            )}
+        </>
     )
 }
 

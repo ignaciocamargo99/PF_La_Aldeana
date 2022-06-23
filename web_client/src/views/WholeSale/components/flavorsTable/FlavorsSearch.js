@@ -6,8 +6,6 @@ import CleanFilters from 'common/CleanFilters';
 
 const FlavorsSearch = ({ currentElements, flavorTypes, flavorFamilies, handleAddFlavor }) => {
 
-    console.log('FlavorsSearch')
-
     const [filteredElements, setFilteredElements] = useState(currentElements);
     const ID_FOR_RESET = -1;
 
