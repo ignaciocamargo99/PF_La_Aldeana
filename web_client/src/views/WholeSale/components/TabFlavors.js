@@ -4,7 +4,7 @@ import { useGetFlavorFamilies } from 'hooks/useGetFlavorFamilies';
 import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes';
 import WholesaleFlavorsDetails from './WholesaleFlavorsDetails';
 
-const TabFlavors = ({ allFlavors, loadingFlavors, showTab }) => {
+const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
 
     console.log('TabFlavors');
 
@@ -25,6 +25,32 @@ const TabFlavors = ({ allFlavors, loadingFlavors, showTab }) => {
         return e;
     })
 
+    const handleAddFlavor = (flavor) => {
+        let auxFlavors = [...allFlavors];
+        for (let i = 0; i < auxFlavors.length; i++) {
+            if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
+                auxFlavors[i].toSell = true;
+                auxFlavors[i].amountToSell = 5;
+                break;
+            }
+        }
+
+        setAllFlavors(auxFlavors);
+    }
+
+    const handleRemoveFlavor = (flavor) => {
+        let auxFlavors = [...allFlavors];
+        for (let i = 0; i < auxFlavors.length; i++) {
+            if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
+                auxFlavors[i].toSell = false;
+                delete auxFlavors[i].amountToSell;
+                break;
+            }
+        }
+
+        setAllFlavors(auxFlavors);
+    }
+
     return (
         <>
             {showTab && (
@@ -34,10 +60,13 @@ const TabFlavors = ({ allFlavors, loadingFlavors, showTab }) => {
                         flavorFamiliesMapped={flavorTypesMapped}
                         flavorTypesMapped={flavorTypes}
                         flavors={allFlavors?.filter(f => !f.toSell)}
-                        handleAddFlavor={() => { }}
+                        handleAddFlavor={handleAddFlavor}
                         loadingFlavors={loadingFlavors}
                     />
-                    <WholesaleFlavorsDetails />
+                    <WholesaleFlavorsDetails
+                        flavors={allFlavors?.filter(f => f.toSell)}
+                        handleRemoveFlavor={handleRemoveFlavor}
+                    />
                 </>
             )}
         </>

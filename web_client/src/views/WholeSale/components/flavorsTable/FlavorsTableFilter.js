@@ -7,8 +7,6 @@ const FlavorsTableFilter = ({
     initialFlavors,
 }) => {
 
-    console.log('FlavorsTableFilter');
-
     const orderFlavorsByFamilyFlavorName = (flavors) => {
         if (flavors?.length > 0) {
             return flavors.sort((a, b) => {

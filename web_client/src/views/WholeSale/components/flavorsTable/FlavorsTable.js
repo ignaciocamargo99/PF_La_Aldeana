@@ -6,8 +6,6 @@ const columnsHeaders = getAddFlavorsTableColumnHeaders();
 
 const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
 
-    console.log('FlavorsTable');
-
     return (
         <>
             {(pageElements && pageElements.length > 0)
@@ -41,7 +39,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                                         </td>
                                         <StockFlavorTable flavor={element}></StockFlavorTable>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="number"/>
+                                            <input type="number" defaultValue={5}/>
                                         </td>
                                         <td style={{ textAlign: 'center' }}>
                                             <button

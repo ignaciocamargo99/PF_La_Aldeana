@@ -2,8 +2,6 @@ import React from 'react'
 
 const DateInput = ({ wholesaleDate, setWholesaleDate }) => {
 
-    console.log('DateInput');
-
     const onChangeInputDate = ({ target }) => {
         setWholesaleDate(target.value);
     }

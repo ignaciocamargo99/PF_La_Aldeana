@@ -10,8 +10,6 @@ import TabTransport from './components/TabTransport';
 
 const WholeSalesViewBody = () => {
 
-    console.log('WholeSalesViewBody');
-
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
 
     // wholesale date
@@ -20,15 +18,17 @@ const WholeSalesViewBody = () => {
     const [wholesaleFranchise, setWholesaleFranchise] = useState(null);
     // wholesale flavors (only when flavor.toSell === true)
     const [allFlavors, setAllFlavors] = useState();
+    // wholesale supplies (only when supply.toSell === true)
+    // to do
+    // wholesale transport
+    // to do
 
     const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
 
     useEffect(() => {
         if (activeFlavors?.length > 0) {
-            console.log('hola');
             setAllFlavors(activeFlavors)
         } else {
-            console.log('hola');
             setAllFlavors([])
         }
     }, [activeFlavors])
@@ -40,7 +40,7 @@ const WholeSalesViewBody = () => {
                 <FranchiseInput wholesaleFranchise={wholesaleFranchise} setWholesaleFranchise={setWholesaleFranchise} />
             </div>
             <Tabs tabs={tabs} setTabs={setTabs} />
-            <TabFlavors allFlavors={allFlavors} loadingFlavors={loadingFlavors} showTab={tabs.showFlavorsTab} />
+            <TabFlavors allFlavors={allFlavors} setAllFlavors={setAllFlavors} loadingFlavors={loadingFlavors} showTab={tabs.showFlavorsTab} />
             <TabSupplies showTab={tabs.showSuppliesTab} />
             <TabTransport showTab={tabs.showTransportTab} />
             <TabSummary showTab={tabs.showSummaryTab} />
