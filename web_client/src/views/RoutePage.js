@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
 import RegisterProductView from './RegisterProduct/RegisterProductView';
-import ListProducts from './ListProducts/ListProducts';
+import ProductsView from './ListProducts/ProductsView';
 import RegisterFranchise from './Franchises/RegisterFranchise';
 import Franchises from './Franchises/FranchiseTable';
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
@@ -10,7 +10,7 @@ import RegisterProductionView from './Productions/RegisterProduction';
 import SalesReports from './Reports/Menu/SalesReports';
 import RRHHReports from './Reports/Menu/RRHHReports';
 import ProductSalesReport from './Reports/ProductSales/ProductSalesReport';
-import ListEmployees from './Employees/ListEmployees';
+import EmployeesView from './Employees/EmployeesView';
 import RegisterEmployee from './Employees/components/RegisterEmployee';
 import Licenses from './Licenses/components/Licenses';
 import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
@@ -26,9 +26,12 @@ import Salary from './Salary/components/Salary';
 import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
-import ProductTypeRoutes from './ProductTypes/ProductTypeRoutes';
+import ProductTypesView from './ProductTypes/components/ProductTypesView';
 import SupplyRoutes from './Supplies/SupplyRoutes';
-import WholeSale from './WholeSale/WholeSale';
+import WholeSalesView from './WholeSale/WholeSalesView';
+import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
+import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
+import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 
 export default function RouterPage(props) {
 
@@ -44,11 +47,10 @@ export default function RouterPage(props) {
                 let permissionsAccessProducts = props.accesses[3]
                 products =
                     <>
-                        <Route path='/app/products' render={() => <ListProducts permissionsAccess={permissionsAccessProducts} />}></Route>
+                        <Route path='/app/products' render={() => <ProductsView permissionsAccess={permissionsAccessProducts} />}></Route>
                         <Route path='/app/registerProducts' component={RegisterProductView}></Route>
-                        <Route path='/app/productTypes'>
-                            <ProductTypeRoutes permissionsAccess={permissionsAccessProducts} />
-                        </Route>
+                        <Route path='/app/productTypes' render={() => <ProductTypesView permissionsAccess={permissionsAccessProducts} />}></Route>
+                        <Route path={'/app/registerProductTypes'} component={RegisterTypeProductView}></Route>
                         <Route path='/app/supplies'>
                             <SupplyRoutes permissionsAccess={permissionsAccessProducts} />
                         </Route>
@@ -67,6 +69,9 @@ export default function RouterPage(props) {
                         <Route path='/app/flavors'>
                             <FlavorRoutes permissionsAccess={permissionsAccessProductions} />
                         </Route>
+                        <Route path='/app/flavorTypes'>
+                            <FlavorTypeRoutes permissionsAccess={permissionsAccessProductions} />
+                        </Route>
                     </>
             }
 
@@ -77,7 +82,7 @@ export default function RouterPage(props) {
                 let permissionsAccessFranchises = props.accesses[5]
                 franchises =
                     <>
-                        <Route path='/app/wholeSale' component={WholeSale}></Route>
+                        <Route path={WHOLESALE_NEW_PAGE} component={WholeSalesView}></Route>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>
@@ -91,7 +96,7 @@ export default function RouterPage(props) {
                 reportsSales =
                     <>
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
-                        <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} />}></Route>
+                        <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
                     </>
             }
 
@@ -120,10 +125,10 @@ export default function RouterPage(props) {
                 let permissionAccessEmployees = props.accesses[7];
                 employees =
                     <>
-                        <Route path='/app/employees' render={() => <ListEmployees permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees} />}></Route>
-                        <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees} />}></Route>
+                        <Route path='/app/advances' render={() => <ListAdvances permissionsAccess={permissionAccessEmployees} user={props.user} />}></Route>
+                        <Route path='/app/assistanceEmployees' render={() => <ListEmployeesAssistance permissionsAccess={permissionAccessEmployees} user={props.user} />}></Route>
+                        <Route path='/app/employees' render={() => <EmployeesView permissionsAccess={permissionAccessEmployees} />}></Route>
+                        <Route path='/app/licenses' render={() => <Licenses permissionsAccess={permissionAccessEmployees} user={props.user} />}></Route>
                         <Route path='/app/employeesSchedules' render={() => <EmployeesSchedulesView permissionsAccess={permissionAccessEmployees} />}></Route>
                         <Route path='/app/registerEmployees' component={RegisterEmployee}></Route>
                         <Route path='/app/registerAssistance' component={RegisterAssistance}></Route>

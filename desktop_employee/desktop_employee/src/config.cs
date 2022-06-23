@@ -9,7 +9,7 @@ namespace desktop_employee.src
     class config
     {
         //------------ 'L': localhost  ;  'D': development  ;  'PP': pre-production  ;  'P': production ------------
-        readonly string enviroment = "D";
+        readonly string enviroment = "PP";
         public string getUrlPort()
         {
             string url = "http://localhost:3001";

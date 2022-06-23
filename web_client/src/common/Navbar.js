@@ -2,7 +2,9 @@ import { faCalendarAlt, faFile, faList, faPlus, faSignOutAlt } from '@fortawesom
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 import Cookies from 'universal-cookie';
+import { FLAVOR_TYPES_VIEW_TITLE } from 'views/FlavorTypes/constants';
 import '../assets/Navbar.css';
 import logo from '../images/logo.png';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
@@ -87,6 +89,9 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/flavors">
                                 <FontAwesomeIcon icon={faList} /> Ver sabores
                             </Dropdown.Item>
+                            <Dropdown.Item href="/app/flavorTypes">
+                                <FontAwesomeIcon icon={faList} /> {`Ver ${FLAVOR_TYPES_VIEW_TITLE.toLowerCase()}`}
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
@@ -105,7 +110,7 @@ export default function Navbar(props) {
                             <Dropdown.Item href="/app/franchises">
                                 <FontAwesomeIcon icon={faList} /> Ver franquicias
                             </Dropdown.Item>
-                            <Dropdown.Item href="/app/wholeSale">
+                            <Dropdown.Item href={WHOLESALE_NEW_PAGE}>
                                 <FontAwesomeIcon icon={faPlus} /> Venta mayorista
                             </Dropdown.Item>
                         </Dropdown.Menu>

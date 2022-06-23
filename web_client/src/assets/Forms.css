@@ -4,6 +4,12 @@
     flex-direction: column;
 }
 
+.form-row-margin-down {
+    margin: 0 0 0.25em 0;
+    display: flex;
+    flex-direction: column;
+}
+
 .form-radio-group {
     flex-direction: column;
     padding-left: 1.25em;
@@ -27,6 +33,12 @@
     .form-control-input {
         padding-left: 1em;
         width: 70%;
+    }
+
+    .form-control-input-mw-50 {
+        padding-left: 1em;
+        width: 70%;
+        max-width: 50em;
     }
 
     .form-control-input-img {

@@ -19,9 +19,9 @@ const PaginationNumber = ({ paginate, number, isNumberActive }) => {
 
     return (
         <li className={numberStyle}>
-            <a href='#/' onClick={handleNumberClicked} className='page-link'>
+            <label onClick={handleNumberClicked} className='page-link fs-6'>
                 {number}
-            </a>
+            </label>
         </li>
     )
 };

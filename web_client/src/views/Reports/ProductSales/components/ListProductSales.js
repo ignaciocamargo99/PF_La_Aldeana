@@ -14,7 +14,7 @@ const ListProductSales = (props) => {
     const [nameSearch, setNameSearch] = useState('');
 
     useEffect(() => {
-        if (props.productSales.length > 0){
+        if (props.productSales.length > 0) {
 
             setListTable(props.productSales);
         }
@@ -60,8 +60,12 @@ const ListProductSales = (props) => {
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Productos vendidos:</h4>
                     <div className="search-input">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <input id="inputSearchName" type="text" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                            </div>
+                            <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por producto..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                        </div>
                     </div>
                 </div>
                 <div className="table-responsive-md">
@@ -83,7 +87,7 @@ const ListProductSales = (props) => {
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.product_type}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.quantity} uds.</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.quantity} uds.</td>
                                     </tr>
                                 )
                             })}
