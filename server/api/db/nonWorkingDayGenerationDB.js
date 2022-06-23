@@ -1,40 +1,19 @@
 const pool = require('../../config/connection');
 
-const nonWorkingDayGenerationDB = () => {
+const nonWorkingDayGenerationDB = async () => {
     const today = new Date();
-    let initMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    let initMonthString = `${initMonth.getFullYear()}${
-        initMonth.getMonth() > 8
-            ? initMonth.getMonth() + 1
-            : '0' + (initMonth.getMonth() + 1)
-    }01`;
-    let finishMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    let finishMonthString = `${finishMonth.getFullYear()}${
-        finishMonth.getMonth() > 8
-            ? finishMonth.getMonth() + 1
-            : '0' + (finishMonth.getMonth() + 1)
-    }${
-        finishMonth.getDate() > 9
-            ? finishMonth.getDate()
-            : '0' + finishMonth.getDate()
-    }`;
+    let finishMonth = new Date(today.getFullYear(), today.getMonth() + 1, 20);
 
-    // console.log('initMonth ', initMonth);
-    // console.log('initMonthString ', initMonthString);
-    // console.log('finishMonth ', finishMonth);
-    // console.log('finishMonthString ', finishMonthString);
-
-    const sqlSelectLastNonWorkingDays = `SELECT id_day_off, dni_employee, date
+    const sqlSelectLastNonWorkingDays = `SELECT d.id_day_off, d.dni_employee, d.date, ce.id_charge
             FROM DAYS_OFF d
-            WHERE id_day_off = (SELECT MAX(id_day_off) 
-                FROM DAYS_OFF o WHERE d.dni_employee = o.dni_employee)`;
-
-    // const sqlSelectLastNonWorkingDays = `
-    //     SELECT d.id_day_off, d.dni_employee, MAX(d.date) AS date , cXe.id_charge AS charge
-    //         FROM DAYS_OFF d INNER JOIN CHARGES_X_EMPLOYEES cXe ON d.dni_employee = cXe.dni_employee
-    //         WHERE date BETWEEN '${initMonthString}' AND '${finishMonthString}'
-    //         GROUP BY dni_employee
-    //         ORDER BY date DESC`;
+            INNER JOIN CHARGES_X_EMPLOYEES ce ON d.dni_employee = ce.dni_employee
+            INNER JOIN EMPLOYEES e ON d.dni_employee = e.dni
+            WHERE id_day_off = 
+                (SELECT MAX(id_day_off) 
+                FROM DAYS_OFF o 
+                WHERE d.dni_employee = o.dni_employee) 
+            AND DATE < ${convertString(finishMonth)}
+            AND e.active = 1`;
 
     let employees;
 
@@ -46,74 +25,86 @@ const nonWorkingDayGenerationDB = () => {
                 if (error) reject('1:' + error);
                 else {
                     employees = rows;
-                    console.log(employees);
-                }
-            });
+                    if (employees.length === 0) resolve();
+                    else {
+                        db.beginTransaction((error) => {
+                            if (error) reject('1,5:' + error);
 
-            db.beginTransaction((error) => {
-                if (error) reject('1,5:' + error);
+                            let gap;
 
-                let gap;
+                            for (let i = 0; i < employees.length; i++) {
+                                console.log(i);
+                                gap = employees[i].id_charge === 4 ? 6 : 7;
 
-                for (let i = 0; i < employees.length; i++) {
-                    gap = employees[i].charge === 4 ? 6 : 7;
-                    let date = new Date(employees[i].date);
-                    let finishDate = new Date(
-                        date.getFullYear(),
-                        date.getMonth() + 2,
-                        0
-                    );
-                    let dateString;
-                    let sqlInsertNonworkingDays;
-                    date.setDate(date.getDate() + gap);
-                    while (date.getTime() >= finishDate.getTime()) {
-                        console.log('pasa por el while', employees[i].charge);
-                        let postDate = new Date(date.getTime());
-                        postDate.setDate(postDate.getDate() + 1);
-                        dateString = `${date.getFullYear()}${
-                            date.getMonth() > 8
-                                ? date.getMonth() + 1
-                                : '0' + (date.getMonth() + 1)
-                        }${
-                            date.getDate() > 9
-                                ? date.getDate()
-                                : '0' + date.getDate()
-                        }`;
-                        let postDateString = `${postDate.getFullYear()}${
-                            postDate.getMonth() > 8
-                                ? postDate.getMonth() + 1
-                                : '0' + (postDate.getMonth() + 1)
-                        }${
-                            postDate.getDate() > 9
-                                ? postDate.getDate()
-                                : '0' + postDate.getDate()
-                        }`;
-                        sqlInsertNonworkingDays = `INSERT INTO DAYS_OFF (dni_employee, date) VALUES(${employees[i].dni_employee},${dateString})`;
+                                let date = new Date(employees[i].date);
 
-                        db.query(sqlInsertNonworkingDays, (error) => {
-                            if (error) {
-                                return db.rollback(() => reject('2:' + error));
+                                let finishDate = new Date(
+                                    today.getFullYear(),
+                                    today.getMonth() + 3,
+                                    0
+                                );
+
+                                date.setDate(date.getDate() + gap);
+
+                                let sqlInsertNonworkingDays;
+
+                                while (date.getTime() <= finishDate.getTime()) {
+                                    sqlInsertNonworkingDays = `INSERT INTO DAYS_OFF (dni_employee, date) VALUES(${
+                                        employees[i].dni_employee
+                                    },${convertString(date)})`;
+
+                                    db.query(
+                                        sqlInsertNonworkingDays,
+                                        (error) => {
+                                            if (error) {
+                                                return db.rollback(() =>
+                                                    reject('2:' + error)
+                                                );
+                                            }
+                                        }
+                                    );
+
+                                    date.setDate(date.getDate() + 1);
+
+                                    sqlInsertNonworkingDays = `INSERT INTO DAYS_OFF (dni_employee, date) VALUES (${
+                                        employees[i].dni_employee
+                                    },${convertString(date)})`;
+
+                                    db.query(
+                                        sqlInsertNonworkingDays,
+                                        (error) => {
+                                            if (error) {
+                                                return db.rollback(() =>
+                                                    reject('3:' + error)
+                                                );
+                                            }
+                                        }
+                                    );
+                                    date.setDate(date.getDate() + gap);
+                                }
                             }
+
+                            db.commit((error) => {
+                                if (error) {
+                                    return db.rollback(() =>
+                                        reject('4:' + error)
+                                    );
+                                } else resolve();
+                            });
                         });
-                        sqlInsertNonworkingDays = `INSERT INTO DAYS_OFF (dni_employee, date) VALUES (${employees[i].dni_employee},${postDateString})`;
-                        db.query(sqlInsertNonworkingDays, (error) => {
-                            if (error) {
-                                return db.rollback(() => reject('3:' + error));
-                            }
-                        });
-                        date.setDate(date.getDate() + (gap + 1));
                     }
                 }
-
-                db.commit((error) => {
-                    if (error) {
-                        return db.rollback(() => reject('4:' + error));
-                    } else resolve();
-                });
             });
+
             db.release();
         });
     });
+};
+
+const convertString = (date) => {
+    return `'${date.getFullYear()}-${
+        date.getMonth() > 8 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    }-${date.getDate() > 9 ? date.getDate() : '0' + date.getDate()}'`;
 };
 
 module.exports = { nonWorkingDayGenerationDB };
