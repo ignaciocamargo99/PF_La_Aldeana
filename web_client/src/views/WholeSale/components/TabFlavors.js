@@ -6,8 +6,6 @@ import WholesaleFlavorsDetails from './WholesaleFlavorsDetails';
 
 const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
 
-    console.log('TabFlavors');
-
     const { flavorTypes } = useGetFlavorTypes();
     const { flavorFamilies } = useGetFlavorFamilies();
 
@@ -51,6 +49,36 @@ const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
         setAllFlavors(auxFlavors);
     }
 
+    const modifyFlavorAmountToSell = (flavor, amount) => {
+        let enableUpdate = false;
+        let auxFlavors = [...allFlavors];
+
+        for (let i = 0; i < auxFlavors.length; i++) {
+            if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
+                // +1 -1
+                const aux = +auxFlavors[i].amountToSell + amount;
+                // remove flavor from wholesale
+                if (aux <= 0) {
+                    auxFlavors[i].toSell = false;
+                    delete auxFlavors[i].amountToSell;
+                    enableUpdate = true;
+                }
+                // update flavor amountToSell +1 -1
+                if ((aux > 0) && (aux <= auxFlavors[i].stock)) {
+                    auxFlavors[i].amountToSell = aux;
+                    enableUpdate = true;
+                }
+
+                break;
+            }
+        }
+
+        if (enableUpdate) {
+            setAllFlavors(auxFlavors);
+        }
+
+    }
+
     return (
         <>
             {showTab && (
@@ -66,6 +94,7 @@ const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
                     <WholesaleFlavorsDetails
                         flavors={allFlavors?.filter(f => f.toSell)}
                         handleRemoveFlavor={handleRemoveFlavor}
+                        modifyFlavorAmountToSell={modifyFlavorAmountToSell}
                     />
                 </>
             )}
