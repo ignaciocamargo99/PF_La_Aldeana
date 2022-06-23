@@ -5,6 +5,7 @@ import '../assets/Footer.css';
 import '../assets/Forms.css';
 import '../assets/Background.css';
 import '../assets/Icons.css';
+import '../assets/Colors.css';
 import '../assets/Views.css';
 import BeShowed from '../common/BeShowed';
 import Footer from '../common/Footer';

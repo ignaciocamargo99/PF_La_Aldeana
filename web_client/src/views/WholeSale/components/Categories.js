@@ -1,7 +1,7 @@
 import React from 'react'
 import CategoryDetail from './CategoryDetail';
 
-const Categories = ({ flavors, handleRemoveFlavor }) => {
+const Categories = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell }) => {
 
     const categories = [...new Set(flavors.map(f => f.FlavorType.name))];
 
@@ -13,6 +13,7 @@ const Categories = ({ flavors, handleRemoveFlavor }) => {
                         key={categoryName}
                         flavors={flavors.filter(f => f.FlavorType.name === categoryName)}
                         handleRemoveFlavor={handleRemoveFlavor}
+                        modifyFlavorAmountToSell={modifyFlavorAmountToSell}
                     />
                 )
             })}
