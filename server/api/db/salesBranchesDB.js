@@ -8,16 +8,23 @@ const Flavor = require('../database/models/flavor');
 const Supplies = require('../database/models/suppliesModel');
 
 const readSalesBranchDB = async (params) => {
-    const { startDate, endDate } = params;
+    const { startDate, endDate, status: statusSale } = params;
+
+    let whereExpresion = {
+        status: {
+            [Op.eq]: statusSale
+        }
+    };
+    if (statusSale === 'FINISH') {
+        whereExpresion.date = {
+            [Op.gte]: startDate,
+            [Op.lte]: endDate
+        };
+    }
 
     const sale = await SalesBranches.findAll({
         include: Franchise,
-        where: {
-            date: {
-                [Op.gte]: startDate,
-                [Op.lte]: endDate
-            }
-        },
+        where: whereExpresion,
         attributes: ['id_sale_branch', 'date', 'status', 'amount']
     });
 
@@ -118,6 +125,7 @@ const putSalesBranchDB = async (id_sale_branch, body) => {
     }
 };
 
+// funciones usadas por los endpoints
 const asyncForeachFlavors = async (
     flavors,
     id_sale_branch,
