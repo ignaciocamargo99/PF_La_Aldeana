@@ -1,7 +1,7 @@
 import React from 'react'
 import Categories from './Categories';
 
-const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor }) => {
+const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell }) => {
 
     const thereAreFlavorsToSell = flavors?.length > 0;
 
@@ -15,6 +15,7 @@ const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor }) => {
                 <Categories
                     flavors={flavors}
                     handleRemoveFlavor={handleRemoveFlavor}
+                    modifyFlavorAmountToSell={modifyFlavorAmountToSell}
                 />
             )}
         </>

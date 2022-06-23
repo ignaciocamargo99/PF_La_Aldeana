@@ -1,8 +1,8 @@
-import { faTrashRestore } from '@fortawesome/free-solid-svg-icons'
+import { faMinusCircle, faPlusCircle, faTrashRestore } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 
-const BucketsTable = ({ flavors, handleRemoveFlavor }) => {
+const BucketsTable = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell }) => {
 
     return (
         <div className='me-4 mb-4'>
@@ -26,8 +26,18 @@ const BucketsTable = ({ flavors, handleRemoveFlavor }) => {
                                     <FontAwesomeIcon className='icon-fa-pointer' icon={faTrashRestore} onClick={() => handleRemoveFlavor(f)} />
                                 </TableCell>
                                 <TableCell >{f.name}</TableCell>
-                                <TableCell align="right">{f.stock}</TableCell>
-                                <TableCell align="right">{f.amountToSell}</TableCell>
+                                <TableCell align="center">
+                                    {f.stock}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <div className='ps-2 pe-2 d-flex justify-content-between'>
+                                        <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faMinusCircle} onClick={() => modifyFlavorAmountToSell(f, -1)} />
+                                        &nbsp;
+                                        {f.amountToSell}
+                                        &nbsp;
+                                        <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faPlusCircle} shake='true' onClick={() => modifyFlavorAmountToSell(f, 1)} />
+                                    </div>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
