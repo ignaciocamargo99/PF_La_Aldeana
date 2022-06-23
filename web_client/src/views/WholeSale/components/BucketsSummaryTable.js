@@ -3,7 +3,7 @@ import React from 'react'
 
 const BucketsSummaryTable = ({ category, flavors }) => {
 
-    const amountOfBuckets = flavors.map(f => f.amountToSell).reduce((aux, n) => aux + n, 0); 
+    const amountOfBuckets = flavors.map(f => +f.amountToSell).reduce((aux, n) => aux + n, 0); 
 
     return (
         <div className='me-4'>

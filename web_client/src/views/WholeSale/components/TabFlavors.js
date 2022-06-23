@@ -23,12 +23,12 @@ const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
         return e;
     })
 
-    const handleAddFlavor = (flavor) => {
+    const handleAddFlavor = (flavor, amount) => {
         let auxFlavors = [...allFlavors];
         for (let i = 0; i < auxFlavors.length; i++) {
             if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
                 auxFlavors[i].toSell = true;
-                auxFlavors[i].amountToSell = 5;
+                auxFlavors[i].amountToSell = +amount;
                 break;
             }
         }

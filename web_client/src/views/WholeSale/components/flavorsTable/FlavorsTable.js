@@ -1,5 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AmountCell from "./AmountCell";
 import getAddFlavorsTableColumnHeaders from "./getAddFlavorsTableColumnHeaders";
 import StockFlavorTable from "./StockFlavorTable";
 const columnsHeaders = getAddFlavorsTableColumnHeaders();
@@ -38,19 +37,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                                             {element.FlavorType.name}
                                         </td>
                                         <StockFlavorTable flavor={element}></StockFlavorTable>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <input type="number" defaultValue={5}/>
-                                        </td>
-                                        <td style={{ textAlign: 'center' }}>
-                                            <button
-                                                type="button"
-                                                className="btnAdd btn btn-info"
-                                                onClick={() => handleAddFlavor(element)}
-                                                disabled={+element.stock <= 0}
-                                            >
-                                                <FontAwesomeIcon icon={faPlus} />
-                                            </button>
-                                        </td>
+                                        <AmountCell flavor={element} maxValue={element.stock} handleAddFlavor={handleAddFlavor}></AmountCell>
                                     </tr>
                                 )
                             })}

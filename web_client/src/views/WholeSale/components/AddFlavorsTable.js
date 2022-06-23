@@ -8,8 +8,6 @@ const AddFlavorsTable = ({
     loadingFlavors,
 }) => {
 
-    console.log('AddFlavorsTable');
-
     return (
         <>
             <label className="fs-6" htmlFor="date" >Agregue los sabores a vender:</label>

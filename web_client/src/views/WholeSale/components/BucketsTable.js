@@ -30,11 +30,13 @@ const BucketsTable = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell })
                                     {f.stock}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faMinusCircle} onClick={() => modifyFlavorAmountToSell(f, -1)} />
-                                    &nbsp;
-                                    {f.amountToSell}
-                                    &nbsp;
-                                    <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faPlusCircle} shake='true' onClick={() => modifyFlavorAmountToSell(f, 1)} />
+                                    <div className='ps-2 pe-2 d-flex justify-content-between'>
+                                        <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faMinusCircle} onClick={() => modifyFlavorAmountToSell(f, -1)} />
+                                        &nbsp;
+                                        {f.amountToSell}
+                                        &nbsp;
+                                        <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faPlusCircle} shake='true' onClick={() => modifyFlavorAmountToSell(f, 1)} />
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
