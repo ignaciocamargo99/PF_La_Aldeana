@@ -1,19 +1,20 @@
-const { generateNonWorkingDays } = require('../services/nonWorkingDayGenerationService');
+const {
+    generateNonWorkingDays
+} = require('../services/nonWorkingDayGenerationService');
 
 async function postGenerateNonWorkingDays(req, res) {
     try {
-        await generateNonWorkingDays(req.body);
+        await generateNonWorkingDays();
         res.json({
             Ok: true,
             Message: 'Francos generados exitosamente.'
         });
-    }
-    catch (e) {
+    } catch (e) {
         res.json({
             Ok: false,
-            Message: e.message,
-        })
+            Message: e.message
+        });
     }
 }
 
-module.exports = { postGenerateNonWorkingDays }
+module.exports = { postGenerateNonWorkingDays };
