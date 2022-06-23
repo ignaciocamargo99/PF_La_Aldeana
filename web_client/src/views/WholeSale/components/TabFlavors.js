@@ -1,0 +1,76 @@
+import React from 'react';
+import AddFlavorsTable from './AddFlavorsTable';
+import { useGetFlavorFamilies } from 'hooks/useGetFlavorFamilies';
+import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes';
+import WholesaleFlavorsDetails from './WholesaleFlavorsDetails';
+
+const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
+
+    console.log('TabFlavors');
+
+    const { flavorTypes } = useGetFlavorTypes();
+    const { flavorFamilies } = useGetFlavorFamilies();
+
+    const flavorTypesMapped = flavorTypes?.length > 0 ? [...flavorTypes] : [];
+    flavorTypesMapped?.map((e) => {
+        e.id = e.idFlavorType;
+        e.value = e.name;
+        return e;
+    })
+
+    const flavorFamiliesMapped = flavorFamilies?.length > 0 ? [...flavorFamilies] : [];
+    flavorFamiliesMapped?.map((e) => {
+        e.id = e.id_family_flavor;
+        e.value = e.name;
+        return e;
+    })
+
+    const handleAddFlavor = (flavor) => {
+        let auxFlavors = [...allFlavors];
+        for (let i = 0; i < auxFlavors.length; i++) {
+            if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
+                auxFlavors[i].toSell = true;
+                auxFlavors[i].amountToSell = 5;
+                break;
+            }
+        }
+
+        setAllFlavors(auxFlavors);
+    }
+
+    const handleRemoveFlavor = (flavor) => {
+        let auxFlavors = [...allFlavors];
+        for (let i = 0; i < auxFlavors.length; i++) {
+            if (+auxFlavors[i].idFlavor === +flavor.idFlavor) {
+                auxFlavors[i].toSell = false;
+                delete auxFlavors[i].amountToSell;
+                break;
+            }
+        }
+
+        setAllFlavors(auxFlavors);
+    }
+
+    return (
+        <>
+            {showTab && (
+                <>
+                    <h3 className="mt-2 ">Sabores</h3>
+                    <AddFlavorsTable
+                        flavorFamiliesMapped={flavorTypesMapped}
+                        flavorTypesMapped={flavorTypes}
+                        flavors={allFlavors?.filter(f => !f.toSell)}
+                        handleAddFlavor={handleAddFlavor}
+                        loadingFlavors={loadingFlavors}
+                    />
+                    <WholesaleFlavorsDetails
+                        flavors={allFlavors?.filter(f => f.toSell)}
+                        handleRemoveFlavor={handleRemoveFlavor}
+                    />
+                </>
+            )}
+        </>
+    )
+}
+
+export default TabFlavors

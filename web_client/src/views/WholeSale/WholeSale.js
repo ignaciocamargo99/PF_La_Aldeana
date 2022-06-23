@@ -136,7 +136,7 @@ const WholeSale = () => {
                                                                 <div className="row align-items-center">
                                                                     <label className="col-6">Cantidad (baldes):</label>
                                                                     <div className="col-6">
-                                                                        <input type="number" className="form-control" />
+                                                                        <input type="number" className="form-control"/>
                                                                     </div>
                                                                 </div>
                                                             </div>

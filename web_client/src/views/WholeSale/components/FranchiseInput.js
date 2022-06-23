@@ -1,17 +1,20 @@
+import { useGetFranchises } from 'hooks/useGetFranchises';
 import React from 'react'
 
-const FranchiseInput = ({ franchises, setSelectedFranchise }) => {
+const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise }) => {
+
+    const { franchises } = useGetFranchises();
+
     const onChangeFranchiseSelection = ({ target }) => {
-        setSelectedFranchise(franchises?.find(element => +element.id_franchise === +target.value));
+        const franchiseSelected = franchises?.find(element => +element.id_franchise === +target.value);
+        setWholesaleFranchise(franchiseSelected);
     }
 
     return (
-        <div className="formRow">
-            <div className="form-control-label">
-                <label htmlFor="date" >Franquicia*</label>
-            </div>
-            <div className="form-control-input-mw-50">
-                <select defaultValue={-1} className="form-control" onChange={onChangeFranchiseSelection}>
+        <>
+            <div className="d-flex justify-content-between mb-2">
+                <label className="align-self-center w-25 fs-6" htmlFor="date" >Franquicia</label>
+                <select defaultValue={-1} className="form-control align-self-center w-50 fs-6" onChange={onChangeFranchiseSelection}>
                     <option disabled value='-1'>Seleccione una franquicia...</option>
                     {franchises?.map((f) => {
                         return (
@@ -25,7 +28,25 @@ const FranchiseInput = ({ franchises, setSelectedFranchise }) => {
                     })}
                 </select>
             </div>
-        </div>
+            <div className="d-flex justify-content-between mb-2">
+                <label className="align-self-center w-25 fs-6" htmlFor="date" >Ciudad</label>
+                <input
+                    className="form-control align-self-center w-50 fs-6"
+                    defaultValue={wholesaleFranchise?.city}
+                    disabled
+                >
+                </input>
+            </div>
+            <div className="d-flex justify-content-between mb-2">
+                <label className="align-self-center w-25 fs-6" htmlFor="date" >Franquiciado</label>
+                <input
+                    className="form-control align-self-center w-50 fs-6"
+                    defaultValue={wholesaleFranchise ? `${wholesaleFranchise.name_manager}, ${wholesaleFranchise.last_name_manager}` : ''}
+                    disabled
+                >
+                </input>
+            </div>
+        </>
     )
 }
 
