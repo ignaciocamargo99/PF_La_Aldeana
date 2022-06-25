@@ -102,6 +102,7 @@ const ModalProduct = (props) => {
                 props.productSelected.subtotal = subtotal;
                 props.productSelected.descriptionProduct = descriptionProduct;
                 if (props.productSelected.stock) {
+                    console.log(props.productSelected)
                     props.productSelected.stock_current = props.productSelected.stock - parseFloat(quantity);
                 }
                 props.updateDetailsProductsModify(props.productSelected);

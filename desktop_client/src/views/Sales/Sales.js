@@ -12,6 +12,7 @@ import ListProducts from "./components/ListProducts";
 import PaymentSale from "./components/PaymentSale";
 import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import { calculateStock } from "./components/calculateStock";
 
 const PORT = require("../../config");
 
@@ -22,11 +23,11 @@ const Sales = (props) => {
 
     useEffect(() => initialCalls(), []);
 
-
     const initialCalls = () => {
         Axios.get(`${PORT()}/api/products`)
             .then((response) => {
                 let aux = response.data;
+                console.log(response.data)
                 aux?.map((element, i) => {
                     element.listSupplies = [];
                     element.disabled = false;
@@ -44,6 +45,7 @@ const Sales = (props) => {
         Axios.get(`${PORT()}/api/supplies`)
             .then((response) => props.updateSupplies(response.data))
             .catch((error) => console.error(error));
+        calculateStock(props.products, props.supplies, props.productsXsupplies)
     };
 
     useEffect(() => {
