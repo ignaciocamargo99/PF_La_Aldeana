@@ -36,7 +36,6 @@ export default function SalariesTable(props) {
                     } else display.push(person);
                 });
                 setEmployees(display);
-                if (response.data?.length === props.allSalaries?.length && response.data?.length > 0) props.emptyNonGenerate();
                 setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
