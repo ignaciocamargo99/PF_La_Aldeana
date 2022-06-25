@@ -17,7 +17,7 @@ const readSalesBranchDB = async (params) => {
     };
     if (statusSale === 'FINISH') {
         whereExpresion.date = {
-            [Op.gte]: startDate,
+            [Op.gte]: decrease1dayToDate(startDate),
             [Op.lte]: endDate
         };
     }
@@ -178,6 +178,21 @@ const asyncForeachSupplies = async (
     transaction
 ) => {};
 // -------------------------------------- Funciones usadas por los endpoints --------------------------------------
+
+const decrease1dayToDate = (dateToFormat) => {
+    let dateFormat = new Date(dateToFormat);
+    dateFormat.setDate(dateFormat.getDate() - 1);
+    if (dateFormat.getMonth() <= 9)
+        dateFormat = `${dateFormat.getFullYear()}/0${
+            dateFormat.getMonth() + 1
+        }/${dateFormat.getDate()}`;
+    else
+        dateFormat = `${dateFormat.getFullYear()}/${
+            dateFormat.getMonth() + 1
+        }/${dateFormat.getDate()}`;
+
+    return dateFormat;
+};
 
 module.exports = {
     readSalesBranchDB,
