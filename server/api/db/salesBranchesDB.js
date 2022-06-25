@@ -125,7 +125,7 @@ const putSalesBranchDB = async (id_sale_branch, body) => {
     }
 };
 
-// funciones usadas por los endpoints
+// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 const asyncForeachFlavors = async (
     flavors,
     id_sale_branch,
@@ -177,6 +177,7 @@ const asyncForeachSupplies = async (
     id_sale_branch,
     transaction
 ) => {};
+// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 
 module.exports = {
     readSalesBranchDB,
