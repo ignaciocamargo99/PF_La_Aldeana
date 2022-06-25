@@ -34,7 +34,7 @@ const ModalProduct = (props) => {
 
     useEffect(() => setKeyboardNumber(0), [])
 
-    const loadQunatityChange = (e) => {
+    const loadQuantityChange = (e) => {
         let numberKeyboard = parseInt(e)
         setKeyboardNumber(numberKeyboard);
         const sub = parseFloat(Math.round((props.productSelected.price * numberKeyboard) * 100) / 100).toFixed(2);
@@ -159,8 +159,9 @@ const ModalProduct = (props) => {
                                     style={styles.labelQuantity}
                                     id="id_quantity"
                                     ref={inputQuantity}
-                                    value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}>
-                                    {keyboardNumber}
+                                // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
+                                >
+                                    {quantity}
                                 </label>
                             </div>
                             <div className='formRow'>
@@ -181,7 +182,7 @@ const ModalProduct = (props) => {
                             </div>
                         </div>
                         <div className='col-6' style={{ padding: '0px 0px 0px 0px' }}>
-                            <NumericKeyboard load={loadQunatityChange} keyboardNumber={keyboardNumber} />
+                            <NumericKeyboard load={loadQuantityChange} keyboardNumber={keyboardNumber} quantity={quantity} />
                         </div>
                     </div>
                     <Buttons label="Confirmar" ready={ready} actionOK={registerProduct} actionNotOK={registerProduct} actionCancel={cancel}></Buttons>

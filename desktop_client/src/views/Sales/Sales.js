@@ -66,6 +66,7 @@ const Sales = (props) => {
 
     const resetStates = () => {
         props.updateDetailsProductsClear([]);
+        setNameClient('');
         initialCalls();
         setSaleCompleted(!saleCompleted);
         props.updateSalesRegister(!props.salesRegister);
@@ -108,6 +109,7 @@ const Sales = (props) => {
                     .then((sale) => {
                         if (sale.data.Ok) {
                             resetStates();
+
                             warningMessage("¡Éxito!", "Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!", "success");
                         }
                         else warningMessage("¡Error!", "Ha ocurrido un error al registrar la venta", "error");
@@ -148,7 +150,10 @@ const Sales = (props) => {
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{ height: '100%' }}>Nombre</span>
                                 </div>
-                                <input id="clientName" type="text" className="form-control" onChange={(e) => handleClientName(e)} />
+                                <input id="clientName" type="text"
+                                    className="form-control" onChange={(e) => handleClientName(e)}
+                                    value={nameClient}
+                                />
                             </div>
                         </h3>
                         <PaymentSale />
