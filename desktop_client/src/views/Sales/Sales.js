@@ -45,7 +45,6 @@ const Sales = (props) => {
         Axios.get(`${PORT()}/api/supplies`)
             .then((response) => props.updateSupplies(response.data))
             .catch((error) => console.error(error));
-        calculateStock(props.products, props.supplies, props.productsXsupplies)
     };
 
     useEffect(() => {

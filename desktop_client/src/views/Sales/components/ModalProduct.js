@@ -6,6 +6,7 @@ import Buttons from "../../../common/Buttons";
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/filterProducts.css';
 import '../styles/modalProduct.css';
+import { calculateStock } from "./calculateStock";
 import { NumericKeyboard } from "./NumericKeyboard";
 
 const styles = {
@@ -129,6 +130,7 @@ const ModalProduct = (props) => {
                 warningMessage("¡Error!", "No hay stock suficiente \n Stock aún disponible: " + props.productSelected.stock_current +
                     "\n Stock máximo que puede ingresar en el detalle: " + props.productSelected.stock, "error");
         }
+        calculateStock(props.products, props.supplies, props.productsXsupplies, props.productSelected, quantity);
     }
 
     return (
@@ -199,7 +201,9 @@ const mapStateToProps = state => {
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
         productSelected: state.productSelected,
-        refresh: state.refresh
+        refresh: state.refresh,
+        supplies: state.supplies,
+        productsXsupplies: state.productsXsupplies
     }
 }
 
