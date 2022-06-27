@@ -32,7 +32,7 @@ import SalariesReport from './Reports/Salaries/SalariesReport';
 import WholeSalesView from './WholeSale/WholeSalesView';
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
-import { WHOLESALE_PAGE } from 'routes/routes';
+import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 
 export default function RouterPage(props) {
 
@@ -83,7 +83,7 @@ export default function RouterPage(props) {
                 let permissionsAccessFranchises = props.accesses[5]
                 franchises =
                     <>
-                        <Route path={WHOLESALE_PAGE} component={WholeSalesView}></Route>
+                        <Route path={WHOLESALE_NEW_PAGE} component={WholeSalesView}></Route>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>

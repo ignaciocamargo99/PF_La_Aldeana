@@ -17,11 +17,11 @@ const SearchFilter = ({ value, setValue, placeholder }) => {
         <div className='d-flex flex-row align-items-center'>
             <div className="input-group">
                 <div className="input-group-prepend">
-                    <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                    <span className="input-group-text " id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
                 </div>
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control fs-6"
                     placeholder={placeholder}
                     value={value}
                     onChange={handleOnChange}
