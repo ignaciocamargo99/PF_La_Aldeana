@@ -25,7 +25,7 @@ const Licenses = (props) => {
     const [showSpinner, setShowSpinner] = useState(true);
     const [action, setAction] = useState('Listar');
     const [reloadList, setReloadList] = useState(false);
-    const [filter, setFilter] = useState('All');
+    const [filter, setFilter] = useState('OnComing');
     const [MyDoc, setMyDoc] = useState('');
     const [showPdf, setShowPDF] = useState(false);
     const [filteredElements, setFilteredElements] = useState([]);
@@ -55,12 +55,12 @@ const Licenses = (props) => {
                 });
                 setLicenses(response.data);
                 setShowSpinner(false);
-                setFilter('All');
+                setFilter('OnComing');
             })
     }, [reloadList])
 
     useEffect(()=>{
-        setMyDoc(<MyDocument user={props.user} title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        setMyDoc(<MyDocument user={props.user} title={title(filter) +(filter === "All" || filter === "Finish"? (dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":''):"")} filter={filter} licenses={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [filter, filteredElements, dateInit, dateFinish, nameSearch])
 
     const setActionLicense = (action, license) => {
@@ -118,26 +118,28 @@ const Licenses = (props) => {
                         </BeShowed>
                     </div>
                     <div className="viewBody">
-                        <div className="formRow d-flex justify-content-between">
-                            <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                            <div className="input-group" style={{marginLeft: 'auto'}}>
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
-                                </div>
-                                <div  style={{ textAlign: 'right' }} >
-                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
-                                </div>
-                            </div>
-                            <div className="input-group">
-                                <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
-                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
-                                </div>
-                                <div style={{ textAlign: 'right' }} >
-                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
-                                </div>
-                            </div>
-                        </div>
                         <ListLicensesFilter onClickRB={setFilter} filter={filter} />
+                        <BeShowed show={filter === "All" || filter === "Finish"}>
+                            <div className="formRow d-flex justify-content-between">
+                                <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                                <div className="input-group" style={{marginLeft: 'auto'}}>
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                    </div>
+                                    <div  style={{ textAlign: 'right' }} >
+                                        <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                    </div>
+                                </div>
+                                <div className="input-group">
+                                    <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                        <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }} >
+                                        <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                    </div>
+                                </div>
+                            </div>
+                        </BeShowed>
                         <LicensesTable dateInit={dateInitRef.current?.value} dateFinish={dateFinishRef.current?.value} licenses={licenses} showSpinner={showSpinner} setActionLicense={setActionLicense} setFilteredElements={setFilteredElements} setNameSearch={setNameSearch}
                             reloadList={reloadList} setReloadList={setReloadList} filter={filter} permissionsAccess={props.permissionsAccess} />
                     </div>
@@ -146,7 +148,7 @@ const Licenses = (props) => {
                     <FormLicense setActionLicense={setActionLicense} action={action} license={license} licenses={licenses}
                         reloadList={reloadList} setReloadList={setReloadList} />
                 </BeShowed>
-                <Viewer MyDoc={MyDoc} reportOf="licencias" showPdf={showPdf} cancel={cancel} title={title(filter) +(dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":'')} description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                <Viewer MyDoc={MyDoc} reportOf="licencias" showPdf={showPdf} cancel={cancel} title={title(filter) +(filter === "All" || filter === "Finish"? (dateInit?  " - (" +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":dateFinish?' - (':'')  + (dateFinish?dateText(dateFinish, true, true):'')+(dateFinish||dateInit?")":''):"")} ></Viewer>
             </div>
         }
     </>)
