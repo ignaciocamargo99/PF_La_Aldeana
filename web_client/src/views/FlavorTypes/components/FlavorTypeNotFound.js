@@ -1,18 +1,18 @@
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import Breadcrumb from 'common/Breadcrumb';
 import React from 'react';
-import { FLAVOR_TYPES_LINK } from '../constants';
+import { FLAVOR_TYPES_LINK, FLAVOR_TYPES_VIEW_TITLE } from '../constants';
 
 const FlavorTypeNotFound = () => {
     return (
         <>
             <Breadcrumb
                 parentLink={FLAVOR_TYPES_LINK}
-                parentName="Volver a Tipos de Sabores"
+                parentName={`Volver a ${FLAVOR_TYPES_VIEW_TITLE}`}
                 icon={faBackward}
             />
             <label>
-                No se ha encontrado un tipo de sabor para ese ID.
+                No se ha encontrado una categoría para ese ID.
             </label>
         </>
     )

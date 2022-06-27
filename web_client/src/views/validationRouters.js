@@ -1,3 +1,4 @@
+import { WHOLESALE_NEW_PAGE } from "routes/routes";
 
 export default function validationRouters(route, accesses) {
 
@@ -12,13 +13,13 @@ export default function validationRouters(route, accesses) {
 
     // Franchises
     let pathsToReadFranchises = ['/app/franchises'];
-    let pathsToReadRegisterFranchises = ['/app/newFranchise'].concat(pathsToReadFranchises);
+    let pathsToReadRegisterFranchises = ['/app/newFranchise', WHOLESALE_NEW_PAGE].concat(pathsToReadFranchises);
 
     // Sales Report
     let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport'];
 
     // RRHH Report
-    let pathsToAllReportsRRHH = ['/app/RRHHReport'];
+    let pathsToAllReportsRRHH = ['/app/RRHHReport', '/app/salariesReport'];
 
     // Purchases
     // let pathsToReadPurchases;

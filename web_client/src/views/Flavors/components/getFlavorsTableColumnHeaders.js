@@ -10,7 +10,7 @@ const getFlavorsTableColumnHeaders = () => {
             width: '15%'
         },
         {
-            name: 'Tipo',
+            name: 'Categoría',
             width: '10%'
         },
         {

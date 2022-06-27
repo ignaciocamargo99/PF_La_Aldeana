@@ -1,0 +1,1 @@
+export const SUPPLIES_QUANTITY_LABEL = 'Cantidad (Unidades)';

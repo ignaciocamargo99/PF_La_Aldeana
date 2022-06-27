@@ -168,7 +168,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
         }
         if (!(isTypeFlavorValid())) {
             if (warn) {
-                warnSweetAlert('Ingrese el tipo del sabor.')
+                warnSweetAlert('Ingrese la categoría del sabor.')
             }
             return false;
         }
@@ -436,7 +436,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                 </div>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label >Tipo*</label>
+                        <label >Categoría*</label>
                     </div>
                     <div className="form-control-input">
                         <select className="form-control"
@@ -444,7 +444,7 @@ const FlavorForm = ({ breadcrumbName, formTitle, flavorData, submitBtnText, onSu
                             disabled={isReading}
                             value={formData.type_flavor}
                         >
-                            <option disabled value=''>Seleccione tipo de sabor...</option>
+                            <option disabled value=''>Seleccione categoría de sabor...</option>
                             {flavorTypes?.map((ft, i) => {
                                 return (
                                     <option

@@ -25,6 +25,7 @@
     "javascript-lp-solver": "^0.4.24",
     "moment": "^2.29.1",
     "mui": "^0.0.1",
+    "quickchart-js": "^3.0.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^1.6.1",

@@ -82,58 +82,58 @@ namespace desktop_employee
             // 
             // iconEsperando
             // 
-            this.iconEsperando.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.iconEsperando.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.iconEsperando.BackColor = System.Drawing.Color.White;
             this.iconEsperando.ForeColor = System.Drawing.Color.Blue;
             this.iconEsperando.IconChar = FontAwesome.Sharp.IconChar.Clock;
             this.iconEsperando.IconColor = System.Drawing.Color.Blue;
             this.iconEsperando.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconEsperando.IconSize = 200;
-            this.iconEsperando.Location = new System.Drawing.Point(192, 51);
+            this.iconEsperando.Location = new System.Drawing.Point(192, 30);
             this.iconEsperando.Name = "iconEsperando";
-            this.iconEsperando.Size = new System.Drawing.Size(229, 200);
+            this.iconEsperando.Size = new System.Drawing.Size(200, 200);
             this.iconEsperando.TabIndex = 5;
             this.iconEsperando.TabStop = false;
             this.iconEsperando.Visible = false;
             // 
             // iconAceptado
             // 
-            this.iconAceptado.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.iconAceptado.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.iconAceptado.BackColor = System.Drawing.Color.White;
             this.iconAceptado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconChar = FontAwesome.Sharp.IconChar.CheckCircle;
             this.iconAceptado.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.iconAceptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconAceptado.IconSize = 200;
-            this.iconAceptado.Location = new System.Drawing.Point(191, 51);
+            this.iconAceptado.Location = new System.Drawing.Point(191, 30);
             this.iconAceptado.Name = "iconAceptado";
-            this.iconAceptado.Size = new System.Drawing.Size(230, 200);
+            this.iconAceptado.Size = new System.Drawing.Size(200, 200);
             this.iconAceptado.TabIndex = 6;
             this.iconAceptado.TabStop = false;
             this.iconAceptado.Visible = false;
             // 
             // iconError
             // 
-            this.iconError.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.iconError.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.iconError.BackColor = System.Drawing.Color.White;
             this.iconError.ForeColor = System.Drawing.Color.Red;
             this.iconError.IconChar = FontAwesome.Sharp.IconChar.TimesCircle;
             this.iconError.IconColor = System.Drawing.Color.Red;
             this.iconError.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconError.IconSize = 200;
-            this.iconError.Location = new System.Drawing.Point(192, 51);
+            this.iconError.Location = new System.Drawing.Point(192, 30);
             this.iconError.Name = "iconError";
-            this.iconError.Size = new System.Drawing.Size(225, 200);
+            this.iconError.Size = new System.Drawing.Size(200, 200);
             this.iconError.TabIndex = 7;
             this.iconError.TabStop = false;
             this.iconError.Visible = false;
             // 
             // lblEmployee
             // 
-            this.lblEmployee.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblEmployee.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblEmployee.AutoSize = true;
             this.lblEmployee.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblEmployee.Location = new System.Drawing.Point(178, 244);
+            this.lblEmployee.Location = new System.Drawing.Point(178, 223);
             this.lblEmployee.Name = "lblEmployee";
             this.lblEmployee.Size = new System.Drawing.Size(260, 44);
             this.lblEmployee.TabIndex = 8;
@@ -141,10 +141,10 @@ namespace desktop_employee
             // 
             // lblHoraE
             // 
-            this.lblHoraE.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHoraE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblHoraE.AutoSize = true;
             this.lblHoraE.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraE.Location = new System.Drawing.Point(22, 345);
+            this.lblHoraE.Location = new System.Drawing.Point(36, 345);
             this.lblHoraE.Name = "lblHoraE";
             this.lblHoraE.Size = new System.Drawing.Size(192, 44);
             this.lblHoraE.TabIndex = 9;
@@ -152,10 +152,10 @@ namespace desktop_employee
             // 
             // lblHoraS
             // 
-            this.lblHoraS.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHoraS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHoraS.AutoSize = true;
             this.lblHoraS.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraS.Location = new System.Drawing.Point(438, 345);
+            this.lblHoraS.Location = new System.Drawing.Point(392, 345);
             this.lblHoraS.Name = "lblHoraS";
             this.lblHoraS.Size = new System.Drawing.Size(170, 44);
             this.lblHoraS.TabIndex = 10;
@@ -163,10 +163,10 @@ namespace desktop_employee
             // 
             // lblHoraEntrada
             // 
-            this.lblHoraEntrada.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHoraEntrada.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblHoraEntrada.AutoSize = true;
             this.lblHoraEntrada.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraEntrada.Location = new System.Drawing.Point(5, 420);
+            this.lblHoraEntrada.Location = new System.Drawing.Point(19, 420);
             this.lblHoraEntrada.Name = "lblHoraEntrada";
             this.lblHoraEntrada.Size = new System.Drawing.Size(209, 44);
             this.lblHoraEntrada.TabIndex = 11;
@@ -174,10 +174,10 @@ namespace desktop_employee
             // 
             // lblHoraSalida
             // 
-            this.lblHoraSalida.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHoraSalida.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHoraSalida.AutoSize = true;
             this.lblHoraSalida.Font = new System.Drawing.Font("Abel", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblHoraSalida.Location = new System.Drawing.Point(438, 420);
+            this.lblHoraSalida.Location = new System.Drawing.Point(372, 420);
             this.lblHoraSalida.Name = "lblHoraSalida";
             this.lblHoraSalida.Size = new System.Drawing.Size(209, 44);
             this.lblHoraSalida.TabIndex = 12;
@@ -185,8 +185,6 @@ namespace desktop_employee
             // 
             // lblPromt
             // 
-            this.lblPromt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPromt.AutoSize = true;
             this.lblPromt.Font = new System.Drawing.Font("Abel", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblPromt.Location = new System.Drawing.Point(33, 14);
@@ -197,8 +195,6 @@ namespace desktop_employee
             // 
             // lblInfo
             // 
-            this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Abel", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblInfo.Location = new System.Drawing.Point(33, 50);
@@ -231,6 +227,7 @@ namespace desktop_employee
             // 
             // panel3
             // 
+            this.panel3.AutoSize = true;
             this.panel3.Controls.Add(this.lblHoraSalida);
             this.panel3.Controls.Add(this.lblEmployee);
             this.panel3.Controls.Add(this.lblHoraE);
@@ -275,6 +272,7 @@ namespace desktop_employee
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

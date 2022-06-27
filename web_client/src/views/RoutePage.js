@@ -28,8 +28,11 @@ import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
 import ProductTypesView from './ProductTypes/components/ProductTypesView';
 import SupplyRoutes from './Supplies/SupplyRoutes';
+import SalariesReport from './Reports/Salaries/SalariesReport';
+import WholeSalesView from './WholeSale/WholeSalesView';
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
+import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 
 export default function RouterPage(props) {
 
@@ -80,6 +83,7 @@ export default function RouterPage(props) {
                 let permissionsAccessFranchises = props.accesses[5]
                 franchises =
                     <>
+                        <Route path={WHOLESALE_NEW_PAGE} component={WholeSalesView}></Route>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>
@@ -99,9 +103,12 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
-                reportHumanResources =
-                    <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
+                 reportHumanResources = 
+                    <>
+                        <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user}/>}></Route>
+                    </>
             }
 
             // -------------------------------------- PURCHASES -------------------------------------
