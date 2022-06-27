@@ -172,7 +172,8 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length !== 0 && props.filter === 'NonGenerate'}>
+            {console.log(!props.showSpinner , currentElements.length !== 0 , props.filter === 'NonGenerate')}
+            <BeShowed show={!props.showSpinner && props.filter === 'NonGenerate'}>
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">

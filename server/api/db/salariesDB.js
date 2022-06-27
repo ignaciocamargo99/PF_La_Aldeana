@@ -310,7 +310,7 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                     reject("1:" + error);
                 }
                 else if (result.length < 5) {
-                    console.log(result)
+                    console.log(result.length)
                     const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s LEFT JOIN EMPLOYEES e ON e.dni = s.employee WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
                     formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
