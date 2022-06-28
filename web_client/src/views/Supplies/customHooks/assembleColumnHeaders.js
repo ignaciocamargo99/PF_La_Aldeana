@@ -10,11 +10,7 @@ export const assembleColumnHeaders = () => {
         },
         {
             name: 'Precio al por mayor ($)',
-            width: '10%'
-        },
-        {
-            name: 'Precio al por menor ($)',
-            width: '10%'
+            width: '20%'
         },
         {
             name: 'Ver',
