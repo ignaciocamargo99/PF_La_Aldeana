@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ReadButton = ({ link }) => {
     return (
-        <Link to="#">
+        <Link to={link}>
             <button
                 className="btn btn-warning btnRead"
                 type="button"

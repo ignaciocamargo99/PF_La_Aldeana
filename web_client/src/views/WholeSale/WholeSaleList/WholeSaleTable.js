@@ -1,11 +1,8 @@
-// import EditButton from 'common/Table/EditButton';
-// import ReadButton from 'common/Table/ReadButton'
-// import DeleteButton from 'common/Table/DeleteButton'
-import React, { useState, useEffect } from 'react'
-// import { handleDeleteClicked } from './flavorTypeDeletion';
 import moment from 'moment';
-import EditButton from './buttonsTable/EditButton';
-import ReadButton from './buttonsTable/ReadButton';
+import { WHOLESALE_EDIT_PAGE, WHOLESALE_VIEW_PAGE } from 'routes/routes';
+import EditButton from './EditWholeSale/EditButton';
+import ReadButton from './ReadWholeSale/ReadButton';
+
 const WholeSaleTable = ({ pageElements, readOnly }) => {
     const columnsHeaders = [
         {
@@ -67,8 +64,6 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
                     </thead>
                     <tbody>
                         {pageElements?.map((element, i) => {
-                            console.log(pageElements[0].status)
-
                             return (
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
@@ -88,16 +83,13 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     {pageElements[0].status === 'PENDING' && (
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditButton link={readOnly ? '#' : '#'} disable={readOnly} />
-                                            {/* <EditButton
-                                            link={readOnly ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
-                                            disable={readOnly}
-                                        /> */}
+                                            <EditButton link={readOnly ? '#' : `${WHOLESALE_EDIT_PAGE}/${element.id_sale_branch}`}
+                                                disable={readOnly} />
                                         </td>
                                     )}
                                     {pageElements[0].status === 'FINISH' && (
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <ReadButton link={'#'} />
+                                            <ReadButton link={readOnly ? '#' : `${WHOLESALE_VIEW_PAGE}/${element.id_sale_branch}`}/>
                                             {/*    <ReadButton
                                             link={`${FLAVOR_TYPES_LINK}/view/${element.idFlavorType}`}
                                         /> */}

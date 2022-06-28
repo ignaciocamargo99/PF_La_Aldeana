@@ -10,6 +10,7 @@ export default function validationRouters(route, accesses) {
     let pathsToReadProductions = ['/app/productions', '/app/flavors', '/app/flavors/view',];
     let pathsToReadRegisterProductions = ['/app/production', '/app/flavors/new',].concat(pathsToReadProductions);
     const FLAVOR_TYPES_LINK = '/app/flavorTypes';
+    const WHOLESALES_LINK = '/app/wholesales'
 
     // Franchises
     let pathsToReadFranchises = ['/app/franchises', WHOLESALE_PAGE];
@@ -55,6 +56,9 @@ export default function validationRouters(route, accesses) {
         return true;
     }
     if (route.includes(FLAVOR_TYPES_LINK)) {
+        return true;
+    }
+    if (route.includes(WHOLESALES_LINK)) {
         return true;
     }
 
