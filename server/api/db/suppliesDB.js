@@ -35,9 +35,9 @@ const suppliesWithStockGetDB = () => {
 };
 
 const supplyPostDB = (newSupply) => {
-    const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?,?,?,?)';
+    const sqlInsert = 'INSERT INTO SUPPLIES VALUES(?,?,?,?,?,?,?)';
 
-    const { name, description, id_supply_type, price_wholesale, price_retail, stock_lot, stock_unit, unit_x_lot } = newSupply;
+    const { name, description, id_supply_type, price_wholesale, stock_unit } = newSupply;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -48,10 +48,7 @@ const supplyPostDB = (newSupply) => {
                 description,
                 id_supply_type,
                 price_wholesale,
-                price_retail,
-                stock_lot,
                 stock_unit,
-                unit_x_lot,
                 1
             ], (error) => {
                 if (error) reject();
@@ -87,11 +84,11 @@ const suppliesStocksGetDB = () => {
 
 
 const supplyUpdateDB = (id, supply) => {
-    const { name, description, id_supply_type, price_wholesale, price_retail, stock_lot, stock_unit, unit_x_lot } = supply;
+    const { name, description, id_supply_type, price_wholesale, stock_unit } = supply;
 
     const sqlUpdateSupply =
-        `UPDATE SUPPLIES s SET s.name = ?, s.description = ?, s.id_supply_type = ?, s.price_wholesale = ?, s.price_retail = ?,
-    s.stock_lot = ?, s.stock_unit = ?, s.unit_x_lot = ?
+        `UPDATE SUPPLIES s SET s.name = ?, s.description = ?, s.id_supply_type = ?, s.price_wholesale = ?,
+    s.stock_unit = ?
     WHERE s.id_supply = ?`;
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -102,10 +99,7 @@ const supplyUpdateDB = (id, supply) => {
                 description,
                 id_supply_type,
                 price_wholesale,
-                price_retail,
-                stock_lot,
                 stock_unit,
-                unit_x_lot,
                 id
             ], (error) => {
                 if (error) reject();
