@@ -28,6 +28,7 @@ import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
 import ProductTypesView from './ProductTypes/components/ProductTypesView';
 import SupplyRoutes from './Supplies/SupplyRoutes';
+import SalariesReport from './Reports/Salaries/SalariesReport';
 import WholeSalesView from './WholeSale/WholeSalesView';
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
@@ -102,9 +103,12 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
-                reportHumanResources =
-                    <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
+                 reportHumanResources = 
+                    <>
+                        <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user}/>}></Route>
+                    </>
             }
 
             // -------------------------------------- PURCHASES -------------------------------------

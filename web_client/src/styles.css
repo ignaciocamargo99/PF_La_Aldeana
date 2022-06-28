@@ -1,7 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
-label, input, textarea {
-    font-size: 1.2rem;
-}
 
 * {
     font-family: 'Abel', sans-serif !important;
