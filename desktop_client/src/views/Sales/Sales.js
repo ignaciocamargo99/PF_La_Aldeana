@@ -110,8 +110,8 @@ const Sales = (props) => {
                     .then((sale) => {
                         if (sale.data.Ok) {
                             resetStates();
-
-                            warningMessage("¡Éxito!", "Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!", "success");
+                            if (props.totalAmount < props.paymentAmount) warningMessage("¡Éxito!", "Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!", "success");
+                            else warningMessage("¡Éxito!", "Se registró la venta con éxito", "success");
                         }
                         else warningMessage("¡Error!", "Ha ocurrido un error al registrar la venta", "error");
                     })

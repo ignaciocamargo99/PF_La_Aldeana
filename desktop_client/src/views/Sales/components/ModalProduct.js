@@ -124,11 +124,11 @@ const ModalProduct = (props) => {
         }
         else {
             if (quantity == 0) {
-                warningMessage("¡Atención!", "Debe ingresar un cantidad mayor a 0", "warning");
+                warningMessage("Atención", "Debe ingresar un cantidad mayor a 0", "warning");
             }
             if (quantity > props.productSelected.stock || quantity > props.productSelected.stock_current)
-                warningMessage("¡Error!", "No hay stock suficiente \n Stock aún disponible: " + props.productSelected.stock_current +
-                    "\n Stock máximo que puede ingresar en el detalle: " + props.productSelected.stock, "error");
+                warningMessage("Atención!", "La cantidad ingresada supera el stock disponible \n Stock disponible: " + props.productSelected.stock_current +
+                    "\n Cantidad cargada: " + quantity, "error");
         }
         calculateStock(props.products, props.supplies, props.productsXsupplies, props.productSelected, quantity);
     }
