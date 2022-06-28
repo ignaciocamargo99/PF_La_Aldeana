@@ -46,8 +46,8 @@ export default function MyDocument (props) {
               total += advance.amount;
               pay += advance.pay;
               return (
-                <>
-                  <View style={styles.row}>
+                <>{advance.title === true ?
+                  <View style={styles.division}>
                     <View style={styles.col8}>
                       <Text style={styles.text}>{advance.nroDNI}</Text>
                     </View>
@@ -58,12 +58,24 @@ export default function MyDocument (props) {
                       <Text style={styles.text}>{dateBDToString(advance.date, 'Es')}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{advance.amount}</Text>
+                      <Text style={styles.money}>$ {advance.amount}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{advance.pay}</Text>
+                      <Text style={styles.money}>$ {advance.pay}</Text>
+                    </View>
+                  </View>:
+                  <View style={styles.row}>
+                    <View style={styles.col4}>
+                      <Text style={styles.text}> </Text>
+                    </View>
+                    <View style={styles.col7}>
+                      <Text style={styles.money}>$ {advance.amount}</Text>
+                    </View>
+                    <View style={styles.col7}>
+                      <Text style={styles.money}>$ {advance.pay}</Text>
                     </View>
                   </View>
+                  }
                 </>
               )
             })}
@@ -72,10 +84,10 @@ export default function MyDocument (props) {
                 <Text style={styles.text}>Total</Text>
               </View>
               <View style={styles.col7}>
-                <Text style={styles.money}>{total}</Text>
+                <Text style={styles.total}>$ {total}</Text>
               </View>
               <View style={styles.col7}>
-                <Text style={styles.money}>{pay}</Text>
+                <Text style={styles.total}>$ {pay}</Text>
               </View>
             </View>
             </View>
