@@ -41,10 +41,6 @@ export const WholeSalesList = ({ readOnly }) => {
                         currentElements={wholeSales}
                         readOnly={readOnly}
                     />
-                    {/* <FlavorTypesSearch
-                        currentElements={flavorTypes}
-                        readOnly={readOnly}
-                    /> */}
                 </div>
             </>
         )

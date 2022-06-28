@@ -9,7 +9,7 @@ const Supplies = require('../database/models/suppliesModel');
 
 const readSalesBranchDB = async (params) => {
     const { startDate, endDate, status: statusSale } = params;
-
+    console.log(startDate, endDate)
     let whereExpresion = {
         status: {
             [Op.eq]: statusSale
@@ -17,7 +17,7 @@ const readSalesBranchDB = async (params) => {
     };
     if (statusSale === 'FINISH') {
         whereExpresion.date = {
-            [Op.gte]: decrease1dayToDate(startDate),
+            [Op.gte]: startDate,
             [Op.lte]: endDate
         };
     }

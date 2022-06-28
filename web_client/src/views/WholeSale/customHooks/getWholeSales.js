@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { parseStartDate } from '../customHooks/parseStartDate'
 
 const PORT = require('../../../config');
 
@@ -13,7 +14,8 @@ const getWholeSales = async (status, startDate, endDate) => {
             .catch((error) => console.log(error));
     }
     else {
-        await Axios.get(`${PORT()}/api/salesBranches?startDate=${startDate}&endDate=${endDate}&status=FINISH`)
+        let parseNewStartDate = parseStartDate(startDate)
+        await Axios.get(`${PORT()}/api/salesBranches?startDate=${parseNewStartDate}&endDate=${endDate}&status=FINISH`)
             .then(response => {
                 wholeSalesResponse = response.data
             })

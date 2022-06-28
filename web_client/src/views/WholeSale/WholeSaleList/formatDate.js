@@ -2,12 +2,12 @@ export const formatDateStart = (dateStart = null) => {
     let startDate;
     if (dateStart === null) {
         dateStart = new Date();
-        let day = dateStart.getDate() - 1;
+        let day = dateStart.getDate();
         let monthStart = dateStart.getMonth();
         let year = dateStart.getFullYear();
 
         if (monthStart <= 9) startDate = `${year}-0${monthStart}-${day}`;
-        else startDate = `${year}0${monthStart}-${day}`;
+        else startDate = `${year}-${monthStart}-${day}`;
     }
     else startDate = dateStart
 
@@ -23,7 +23,7 @@ export const formatDateEnd = (dateEnd = null) => {
         let year = dateEnd.getFullYear();
 
         if (monthEnd <= 9) endDate = `${year}-0${monthEnd}-${day}`;
-        else endDate = `${year}-0${monthEnd}-${day}`;
+        else endDate = `${year}-${monthEnd}-${day}`;
     }
     else endDate = dateEnd;
 

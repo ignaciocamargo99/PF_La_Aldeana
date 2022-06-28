@@ -16,11 +16,13 @@ export const WholeSaleFilter = ({ currentElements, readOnly }) => {
         localStorage.setItem('PENDING_SALES', JSON.stringify(currentElements))
     }, []);
 
-    useEffect(() =>{
-        getWholeSales('FINISH', startDate, endDate).then((result) => {
-            setFilteredElements(result);
-        })
-    },[startDate, endDate]);
+    useEffect(() => {
+        if (chkFinalSale) {
+            getWholeSales('FINISH', startDate, endDate).then((result) => {
+                setFilteredElements(result);
+            })
+        }
+    }, [startDate, endDate, chkFinalSale]);
 
     const handleChangePending = (e) => {
         e.target.checked = true;
@@ -71,7 +73,7 @@ export const WholeSaleFilter = ({ currentElements, readOnly }) => {
                     </label>
                 </div>
             </div>
-            {(chkFinalSale && startDate && endDate) && 
+            {(chkFinalSale && startDate && endDate) &&
                 (
                     <div className="formRow">
                         <div className="col-3 me-3">
