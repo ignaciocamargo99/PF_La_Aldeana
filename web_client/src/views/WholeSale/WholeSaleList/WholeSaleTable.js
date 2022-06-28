@@ -3,9 +3,10 @@
 // import DeleteButton from 'common/Table/DeleteButton'
 import React, { useState, useEffect } from 'react'
 // import { handleDeleteClicked } from './flavorTypeDeletion';
-
+import moment from 'moment';
+import EditButton from './buttonsTable/EditButton';
+import ReadButton from './buttonsTable/ReadButton';
 const WholeSaleTable = ({ pageElements, readOnly }) => {
-    // const [loadingSales, setLoadingSales] = useState(true)
     const columnsHeaders = [
         {
             name: 'Nro. de venta',
@@ -26,18 +27,12 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
         {
             name: 'Monto ($)',
             width: '10%'
-        },
-        {
-            name: 'Ver',
-            width: '10%'
-        },
-        {
-            name: 'Editar',
-            width: '10%'
         }
     ];
-
-    // useEffect(() => { setLoadingSales(false) }, [pageElements])
+    const columnsHeadersPending = [...columnsHeaders]
+    columnsHeadersPending.push({ name: 'Editar', width: '10%' })
+    const columnsHeadersFinish = [...columnsHeaders]
+    columnsHeadersFinish.push({ name: 'Ver', width: '10%' })
 
     const thereAreElements = pageElements && pageElements.length > 0;
 
@@ -52,24 +47,35 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
                 <table className="table table-control table-hover" >
                     <thead>
                         <tr>
-                            {columnsHeaders.map((element, i) => {
-                                return (
-                                    <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                        {element.name}
-                                    </th>
-                                )
-                            })}
+                            {pageElements[0].status === 'PENDING' &&
+                                (columnsHeadersPending.map((element, i) => {
+                                    return (
+                                        <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                            {element.name}
+                                        </th>
+                                    )
+                                }))}
+                            {pageElements[0].status === 'FINISH' &&
+                                (columnsHeadersFinish.map((element, i) => {
+                                    return (
+                                        <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                            {element.name}
+                                        </th>
+                                    )
+                                }))}
                         </tr>
                     </thead>
                     <tbody>
                         {pageElements?.map((element, i) => {
+                            console.log(pageElements[0].status)
+
                             return (
                                 <tr key={i}>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         {element.id_sale_branch}
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        {element.date}
+                                        {moment(element.date).format('DD-MM-YYYY')}
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         {element.franchise.name}
@@ -80,20 +86,23 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         {element.amount}
                                     </td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        {/* <EditButton
+                                    {pageElements[0].status === 'PENDING' && (
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <EditButton link={readOnly ? '#' : '#'} disable={readOnly} />
+                                            {/* <EditButton
                                             link={readOnly ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
                                             disable={readOnly}
                                         /> */}
-                                    </td>
-                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        {/* <DeleteButton
-                                            disable={readOnly}
-                                            onConfirm={() => { handleDeleteClicked(element) }}
-                                            warningTitle='¿Seguro que desea eliminar la categoría seleccionada?'
-                                            warningText={`"${element.name}" ya no estará disponible.`}
+                                        </td>
+                                    )}
+                                    {pageElements[0].status === 'FINISH' && (
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <ReadButton link={'#'} />
+                                            {/*    <ReadButton
+                                            link={`${FLAVOR_TYPES_LINK}/view/${element.idFlavorType}`}
                                         /> */}
-                                    </td>
+                                        </td>
+                                    )}
                                 </tr>
                             )
                         })}

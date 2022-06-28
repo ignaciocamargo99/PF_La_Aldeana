@@ -81,7 +81,7 @@ export const WholeSaleFilter = ({ currentElements, readOnly }) => {
                                 <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                                 <input type="date" className="form-control"
                                     aria-label="Sizing example input"
-                                    // min={startDate} max={endDate}
+                                    max={endDate}
                                     onChange={handleStartDate}
                                     aria-describedby="inputGroup-sizing-default" value={startDate} />
                             </div>
@@ -91,7 +91,7 @@ export const WholeSaleFilter = ({ currentElements, readOnly }) => {
                                 <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                                 <input type="date" className="form-control"
                                     aria-label="Sizing example input"
-                                    // min={startDate}
+                                    min={startDate}
                                     onChange={handleFinalDate}
                                     aria-describedby="inputGroup-sizing-default" value={endDate} />
                             </div>
