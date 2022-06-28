@@ -35,7 +35,7 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
 
     if (!(thereAreElements)) {
         return (
-            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen ventas los filtros ingresados...</h4>
+            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen ventas con los filtros ingresados...</h4>
         )
     }
     if (thereAreElements) {

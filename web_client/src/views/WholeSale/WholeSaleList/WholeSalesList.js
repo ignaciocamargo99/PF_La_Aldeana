@@ -24,6 +24,7 @@ export const WholeSalesList = ({ readOnly }) => {
     if (!loadingSpinner) {
         return (
             <>
+                <div style={{ display: 'none' }}>{document.title = "Ventas mayoristas"}</div>
                 <div className="viewTitleBtn">
                     <h1>Ventas mayoristas</h1>
                     <Link to={readOnly ? '#' : '/app/wholesales/new'}>
