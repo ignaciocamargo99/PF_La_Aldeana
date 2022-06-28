@@ -193,10 +193,9 @@ export default function AdvancesTable(props) {
     useEffect(()=>{
         let advancesPDF = [];
         let j = 0;
-        let elements = filteredElements.sort((a, b) => a.fullName < b.fullName ? 1 : -1);
+        let elements = filteredElements;
         let employeeBefore = elements[0];
         elements.forEach((advance,i)=>{
-            console.log(advance)
             if (employeeBefore.nroDNI === advance.nroDNI) {
                 if (i!==0){
                     advancesPDF[j].amount += advance.amount;
@@ -214,7 +213,6 @@ export default function AdvancesTable(props) {
                 advancesPDF[advancesPDF.length] = advance;
             }
         });
-        console.log(advancesPDF);
         setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={advancesPDF}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [dateInit, dateFinish, filteredElements, nameSearch])
 
@@ -248,128 +246,131 @@ export default function AdvancesTable(props) {
 
     return (
         <>
-            <div className="viewTitleBtn">
-                <h1>Adelantos</h1>
-                <button id='printAdvancesButton' onClick={showRenderPDF} type="button" className="btn btn-light printBtn"><FaFile /> Imprimir informe</button>
-                <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
-                    <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                </BeShowed>
-                <BeShowed show={permissionsAccess === 1} >
-                    <button id='editAdvancesButton' disabled type="button" className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                </BeShowed>
-            </div>
-            {isLoadingSpinner ?
-                <LoaderSpinner color="primary" loading="Cargando..." />
-                : advances.length === 0
-                    ?
-                    <div>
-                        <br />
-                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
-                    </div>
-                    : (
-                        <BeShowed show={!isEditing && !isReading}>
-                            <div className="viewBody">
-                                <label className="col-sm-6">Dinero total prestado: ${total}</label>
-                                <label className="col-sm-6">Dinero total pagado: ${pay}</label>
-                                <div className="formRow d-flex justify-content-between">
-                                    <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                                    <div className="input-group" style={{marginLeft: 'auto'}}>
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
-                                        </div>
-                                        <div  style={{ textAlign: 'right' }} >
-                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
-                                            </div>
-                                        </div>
-                                        <div className="input-group">
-                                            <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
-                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
-                                            </div>
-                                            <div style={{ textAlign: 'right' }} >
-                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="formRow title-searcher">
-                                    <h4 className="text-secondary">Adelantos:</h4>
-                                    <div className="search-input">
-                                        <div className="input-group">
+            <BeShowed show={!isEditing && !isReading}>
+                <div className="viewTitleBtn">
+                    <h1>Adelantos</h1>
+                    <button id='printAdvancesButton' onClick={showRenderPDF} type="button" className="btn btn-light printBtn"><FaFile /> Imprimir informe</button>
+                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3} >
+                        <button id='editAdvancesButton' onClick={onClickNewAdvances} type="button" className="btn btn-light newBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </BeShowed>
+                    <BeShowed show={permissionsAccess === 1} >
+                        <button id='editAdvancesButton' disabled type="button" className="btn btn-light disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                    </BeShowed>
+                </div>
+                {
+                    isLoadingSpinner ?
+                    <LoaderSpinner color="primary" loading="Cargando..." />
+                    : advances.length === 0
+                        ?
+                        <div>
+                            <br />
+                            <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron adelantos registrados hasta el momento.</h4>
+                        </div>
+                        : (<>
+                                <div className="viewBody">
+                                    <label className="col-sm-6">Dinero total prestado: ${total}</label>
+                                    <label className="col-sm-6">Dinero total pagado: ${pay}</label>
+                                    <div className="formRow d-flex justify-content-between">
+                                        <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
+                                        <div className="input-group" style={{marginLeft: 'auto'}}>
                                             <div className="input-group-prepend">
-                                                <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                                             </div>
-                                            <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                                            <div  style={{ textAlign: 'right' }} >
+                                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                                </div>
+                                            </div>
+                                            <div className="input-group">
+                                                <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                                </div>
+                                                <div style={{ textAlign: 'right' }} >
+                                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                {currentElements.length > 0 && (
-                                    <div className="table-responsive-md">
-                                        <table className="table table-control table-hover" >
-                                            <thead>
-                                                <tr>
-                                                    {columnsHeaders?.map((element, i) => {
+                                    <div className="formRow title-searcher">
+                                        <h4 className="text-secondary">Adelantos:</h4>
+                                        <div className="search-input">
+                                            <div className="input-group">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
+                                                </div>
+                                                <input id="inputSearchName" type="text" className="form-control" placeholder="Buscar por empleado..." onChange={(e) => setNameSearch(e.target.value)} aria-describedby="inputGroup-sizing-default" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {currentElements.length > 0 && (
+                                        <div className="table-responsive-md">
+                                            <table className="table table-control table-hover" >
+                                                <thead>
+                                                    <tr>
+                                                        {columnsHeaders?.map((element, i) => {
+                                                            return (
+                                                                <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
+                                                                    {element.name}
+                                                                </th>
+                                                            )
+                                                        })}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {currentElements?.map((element, i) => {
                                                         return (
-                                                            <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
-                                                                {element.name}
-                                                            </th>
+                                                            <tr key={i}>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
+                                                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.amount}</td>
+                                                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.pay}</td>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                    <ReadAdvancesButton advances={element} read={readAdvances} />
+                                                                </td>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                    <BeShowed show={permissionsAccess === 3}>
+                                                                        <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                            <EditAdvancesButton advances={element} edit={editAdvances} permissionsAccess />
+                                                                        </BeShowed>
+                                                                        <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                            <button id='editAdvancesButton' type="button" className="disabledSendBtn" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
+                                                                        </BeShowed>
+                                                                    </BeShowed>
+                                                                    <BeShowed show={permissionsAccess !== 3}>
+                                                                        <button id='editAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faEdit} /></button>
+                                                                    </BeShowed>
+
+                                                                </td>
+                                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                                    <BeShowed show={permissionsAccess === 3}>
+                                                                        <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                            <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+                                                                        </BeShowed>
+                                                                        <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
+                                                                            <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
+                                                                        </BeShowed>
+                                                                    </BeShowed>
+                                                                    <BeShowed show={permissionsAccess !== 3}>
+                                                                        <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faMinus} /></button>
+                                                                    </BeShowed>
+
+                                                                </td>
+                                                            </tr>
                                                         )
                                                     })}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {currentElements?.map((element, i) => {
-                                                    return (
-                                                        <tr key={i}>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.nroDNI}</td>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(element.date, 'Es')}</td>
-                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.amount}</td>
-                                                            <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.pay}</td>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                                <ReadAdvancesButton advances={element} read={readAdvances} />
-                                                            </td>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                                <BeShowed show={permissionsAccess === 3}>
-                                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                                        <EditAdvancesButton advances={element} edit={editAdvances} permissionsAccess />
-                                                                    </BeShowed>
-                                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                                        <button id='editAdvancesButton' type="button" className="disabledSendBtn" onClick={handleEdit}><FontAwesomeIcon icon={faEdit} /></button>
-                                                                    </BeShowed>
-                                                                </BeShowed>
-                                                                <BeShowed show={permissionsAccess !== 3}>
-                                                                    <button id='editAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faEdit} /></button>
-                                                                </BeShowed>
-
-                                                            </td>
-                                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                                <BeShowed show={permissionsAccess === 3}>
-                                                                    <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                                        <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
-                                                                    </BeShowed>
-                                                                    <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                                        <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>
-                                                                    </BeShowed>
-                                                                </BeShowed>
-                                                                <BeShowed show={permissionsAccess !== 3}>
-                                                                    <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" disabled><FontAwesomeIcon icon={faMinus} /></button>
-                                                                </BeShowed>
-
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-                                {currentElements.length === 0 && (
-                                    <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un adelanto correspondiente al empleado ingresado...</h4>
-                                )}
-                                <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
-                            </div>
-                            <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={(dateInit?(dateFinish? "(":'')  +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} reportOf='adelantos' description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
-                        </BeShowed>
-                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                    {currentElements.length === 0 && (
+                                        <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontró un adelanto correspondiente al empleado ingresado...</h4>
+                                    )}
+                                    <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                                </div>
+                                <Viewer MyDoc={MyDoc} showPdf={showPdf} cancel={cancel} title={(dateInit?(dateFinish? "(":'')  +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} reportOf='adelantos' description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} ></Viewer>
+                       </>
+                    )
+                }        
+            </BeShowed>
             <BeShowed show={isEditing}>
                 <EditAdvances cancel={cancelEditAdvances} advances={editing} />
             </BeShowed>
