@@ -1,70 +1,73 @@
+export const calculateStock = (
+    products,
+    supplies,
+    productXSupplies,
+    productSelected,
+    quantity
+) => {
+    let suppliesOfProduct = productXSupplies.filter(
+        (ps) => ps.id_product === productSelected.id_product
+    );
 
-export const calculateStock = (products, supplies, productsSupplies, productSelected, quantity) => {
-
-    console.log(products)
-    console.log(supplies)
-    console.log(productsSupplies)
-
-    // tomamos el producto que recibimos por parametro
-    // tomamos los insumos del producto recibido
-    // filtramos el array de productos con los insumos tomados anteriormente
-    // hacemos el descuento del stock y devolvemos el array actualizada
-
-    const suppliesOfProduct = productsSupplies.filter(ps => ps.id_product === productSelected.id_product)
-
-    const arrayIdSupply = []
     for (let i = 0; i < suppliesOfProduct.length; i++) {
-        arrayIdSupply.push(suppliesOfProduct.id_supply)
-    }
-
-    const arrayIdProduct = []
-    for (let i = 0; i < suppliesOfProduct.length; i++) {
-        for (let j = 0; j < productsSupplies.length; j++)
-        {
-            if (suppliesOfProduct[i].id_supply === productsSupplies[j].id_supply && !arrayIdProduct.includes(productsSupplies[j].id_product))
-            {
-                arrayIdProduct.push(productsSupplies[j].id_product)
+        for (let j = 0; j < supplies.length; j++) {
+            if (supplies[j].id_supply === suppliesOfProduct[i].id_supply) {
+                supplies[j].quantityOfSupply =
+                    quantity * suppliesOfProduct[i].number_supply;
+                break;
             }
         }
     }
 
-    const productsFilter = []
-    for (let i = 0; i < products.length; i++) {
-        for (let j = 0; j < arrayIdProduct.length; j++) {
-            if (products[i].id_product === arrayIdProduct[j]){
-                productsFilter.push(products[i])
+    const arrayIdProduct = [];
+    for (let i = 0; i < suppliesOfProduct.length; i++) {
+        for (let j = 0; j < productXSupplies.length; j++) {
+            if (
+                suppliesOfProduct[i].id_supply ===
+                    productXSupplies[j].id_supply &&
+                !arrayIdProduct.includes(productXSupplies[j].id_product)
+            ) {
+                arrayIdProduct.push(productXSupplies[j].id_product);
             }
         }
     }
 
-    // for (let i = 0; i < productsFilter.length; i++)
-    // {
-    //     productsFilter[i].stock_current = calculateMinStock()
-    // }
+    for (let i = 0; i < arrayIdProduct.length; i++) {
+        let indexProduct = products.findIndex(
+            (p) => arrayIdProduct[i] === p.id_product
+        );
 
-    
+        products[indexProduct].stock_current = calculateMinStock(
+            products[indexProduct],
+            supplies,
+            productXSupplies,
+            quantity
+        );
+    }
 
-    console.log(productSelected)
-    console.log(productsFilter)
-    /**
-     *  0:
-            id_product: 2
-            id_supply: 68
-            number_supply: 1
-        1:
-            id_product: 2
-            id_supply: 69
-            number_supply: 2
-     */
-}
+    console.log(products);
+};
 
-// const calculateMinStock = (product, ) => {
-//     let minStock;
-//     for (let i = 0; i < .length; i++) {
-        
-        
-//     }
+const calculateMinStock = (product, supplies, productXSupplies, quantity) => {
+    let minStock = [];
 
-//     return minStock
-    
-// }
+    const supplyXproduct = productXSupplies.filter(
+        (ps) => ps.id_product === product.id_product
+    );
+
+    for (let i = 0; i < supplyXproduct.length; i++) {
+        let supply = supplies.find(
+            (s) => s.id_supply === supplyXproduct[i].id_supply
+        );
+
+        minStock.push(
+            Math.trunc(
+                (parseFloat(supply.stock_unit) -
+                    parseFloat(supply.quantityOfSupply)) /
+                    parseFloat(supplyXproduct[i].number_supply)
+            )
+        );
+    }
+    console.log(minStock);
+    return Math.min(...minStock);
+};
