@@ -6,7 +6,9 @@ export const formatDateStart = (dateStart = null) => {
         let monthStart = dateStart.getMonth();
         let year = dateStart.getFullYear();
 
-        if (monthStart <= 9) startDate = `${year}-0${monthStart}-${day}`;
+        if(day <= 9 && monthStart > 9) startDate= `${year}-${monthStart}-0${day}`;
+        if(day > 9 && monthStart <= 9) startDate= `${year}-0${monthStart}-${day}`;
+        if(day <= 9 && monthStart <= 9) startDate= `${year}-0${monthStart}-0${day}`;
         else startDate = `${year}-${monthStart}-${day}`;
     }
     else startDate = dateStart
@@ -22,7 +24,9 @@ export const formatDateEnd = (dateEnd = null) => {
         let monthEnd = dateEnd.getMonth() + 1;
         let year = dateEnd.getFullYear();
 
-        if (monthEnd <= 9) endDate = `${year}-0${monthEnd}-${day}`;
+        if(day <= 9 && monthEnd > 9) endDate= `${year}-${monthEnd}-0${day}`;
+        if(day > 9 && monthEnd <= 9) endDate= `${year}-0${monthEnd}-${day}`;
+        if(day <= 9 && monthEnd <= 9) endDate= `${year}-0${monthEnd}-0${day}`;
         else endDate = `${year}-${monthEnd}-${day}`;
     }
     else endDate = dateEnd;
