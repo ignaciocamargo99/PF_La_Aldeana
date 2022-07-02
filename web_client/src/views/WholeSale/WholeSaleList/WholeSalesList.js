@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 import { useGetWholeSales } from '../customHooks/useGetWholeSales';
 import { WholeSaleFilter } from './WholeSaleFilter'
 
-export const WholeSalesList = ({ readOnly }) => {
+export const WholeSalesList = ({ permissionsAccess }) => {
     // to do cambiar hook para que traiga solo activos
     const { loadingSpinner, wholeSales } = useGetWholeSales();
 
     let newButtonStyle = 'btn btn-light newBtn';
-    if (readOnly) {
+    if (permissionsAccess === 1) {
         newButtonStyle = 'disabledNewBtn';
     }
 
@@ -27,9 +27,9 @@ export const WholeSalesList = ({ readOnly }) => {
                 <div style={{ display: 'none' }}>{document.title = "Ventas mayoristas"}</div>
                 <div className="viewTitleBtn">
                     <h1>Ventas mayoristas</h1>
-                    <Link to={readOnly ? '#' : '/app/wholesales/new'}>
+                    <Link to={permissionsAccess === 1 ? '#' : '/app/wholesales/new'}>
                         <button
-                            disabled={readOnly}
+                            disabled={permissionsAccess === 1 ? true : false}
                             type="button"
                             className={newButtonStyle}
                         >
@@ -40,7 +40,7 @@ export const WholeSalesList = ({ readOnly }) => {
                 <div className="viewBody">
                     <WholeSaleFilter
                         currentElements={wholeSales}
-                        readOnly={readOnly}
+                        permissionsAccess={permissionsAccess}
                     />
                 </div>
             </>

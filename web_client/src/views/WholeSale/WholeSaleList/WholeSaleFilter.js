@@ -3,7 +3,7 @@ import getWholeSales from '../customHooks/getWholeSales';
 import WholeSaleTablePagination from './WholeSaleTablePagination';
 import { formatDateEnd, formatDateStart } from './formatDate';
 
-export const WholeSaleFilter = ({ currentElements, readOnly }) => {
+export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     const [filteredElements, setFilteredElements] = useState([]);
     const [chkFinalSale, setChkFinalSale] = useState(false);
     const [chkPendingSale, setChkPendingSale] = useState(true);
@@ -100,7 +100,7 @@ export const WholeSaleFilter = ({ currentElements, readOnly }) => {
                 )
             }
             <WholeSaleTablePagination
-                readOnly={readOnly}
+                permissionsAccess={permissionsAccess}
                 filteredElements={filteredElements}
             />
         </>

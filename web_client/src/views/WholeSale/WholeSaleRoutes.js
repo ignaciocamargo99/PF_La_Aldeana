@@ -8,13 +8,12 @@ import WholeSalesView from "./WholeSalesView";
 
 const WholeSaleRoutes = ({ permissionsAccess }) => {
     let { path } = useRouteMatch();
-
     const readOnly = permissionsAccess === 1;
 
     return (
         <div>
             <Switch>
-                <Route exact path={path} render={() => <WholeSalesList readOnly={readOnly} />}></Route>
+                <Route exact path={path} render={() => <WholeSalesList permissionsAccess={permissionsAccess} />}></Route>
 
                 <Route exact path={`${path}/new`} render={() => {
                     if (readOnly) {
@@ -27,9 +26,9 @@ const WholeSaleRoutes = ({ permissionsAccess }) => {
                 <Route exact path={`${path}/view/:idWholesale`} component={ReadWholeSale}></Route>
 
                 <Route exact path={`${path}/edit/:idWholesale`} render={() => {
-                    if (readOnly) {
+                    if (permissionsAccess !== 3) {
                         return <NotPermissionPage />
-                    } else {
+                    } else if(permissionsAccess === 3){
                         return <EditWholeSale />
                     }
                 }}></Route>

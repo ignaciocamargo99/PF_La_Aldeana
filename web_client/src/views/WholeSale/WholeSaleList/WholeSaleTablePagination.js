@@ -4,7 +4,7 @@ import WholeSaleTable from './WholeSaleTable';
 
 const elementsPerPage = 10;
 
-const WholeSaleTablePagination = ({ readOnly, filteredElements, loadingSales }) => {
+const WholeSaleTablePagination = ({ permissionsAccess, filteredElements, loadingSales }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
@@ -22,7 +22,7 @@ const WholeSaleTablePagination = ({ readOnly, filteredElements, loadingSales }) 
         <>
             <WholeSaleTable
                 pageElements={pageElements}
-                readOnly={readOnly}
+                permissionsAccess={permissionsAccess}
             />   
             <Pagination
                 elementsperpage={elementsPerPage}

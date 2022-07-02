@@ -84,7 +84,7 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
                         <Route path={WHOLESALE_PAGE}>
-                            <WholeSaleRoutes permissionsAccess={permissionFranchises} />
+                            <WholeSaleRoutes permissionsAccess={permissionsAccessFranchises} />
                         </Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>
@@ -104,11 +104,11 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-                 reportHumanResources = 
+            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
+                reportHumanResources =
                     <>
                         <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
-                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user}/>}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user} />}></Route>
                     </>
             }
 

@@ -2,7 +2,7 @@ import SearchFilter from 'common/SearchFilter';
 import React, { useEffect, useState } from 'react';
 import FlavorTypesTablePagination from './FlavorTypesTablePagination';
 
-const FlavorTypesSearch = ({ currentElements, readOnly }) => {
+const FlavorTypesSearch = ({ currentElements, permissionsAccess }) => {
     const [filteredElements, setFilteredElements] = useState([]);
     const [nameFilterApplied, setNameFilterApplied] = useState('')
 
@@ -36,7 +36,7 @@ const FlavorTypesSearch = ({ currentElements, readOnly }) => {
                 </div>
             </div>
             <FlavorTypesTablePagination
-                readOnly={readOnly}
+                permissionsAccess={permissionsAccess}
                 filteredElements={filteredElements}
             />
 

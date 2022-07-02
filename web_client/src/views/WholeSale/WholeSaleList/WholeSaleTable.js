@@ -3,7 +3,7 @@ import { WHOLESALE_EDIT_PAGE, WHOLESALE_VIEW_PAGE } from 'routes/routes';
 import EditButton from './EditWholeSale/EditButton';
 import ReadButton from './ReadWholeSale/ReadButton';
 
-const WholeSaleTable = ({ pageElements, readOnly }) => {
+const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
     const columnsHeaders = [
         {
             name: 'Nro. de venta',
@@ -83,16 +83,13 @@ const WholeSaleTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     {pageElements[0].status === 'PENDING' && (
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <EditButton link={readOnly ? '#' : `${WHOLESALE_EDIT_PAGE}/${element.id_sale_branch}`}
-                                                disable={readOnly} />
+                                            <EditButton link={permissionsAccess !== 3 ? '#' : `${WHOLESALE_EDIT_PAGE}/${element.id_sale_branch}`}
+                                                permissionsAccess={permissionsAccess === 3 ? false : true} />
                                         </td>
                                     )}
                                     {pageElements[0].status === 'FINISH' && (
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <ReadButton link={readOnly ? '#' : `${WHOLESALE_VIEW_PAGE}/${element.id_sale_branch}`}/>
-                                            {/*    <ReadButton
-                                            link={`${FLAVOR_TYPES_LINK}/view/${element.idFlavorType}`}
-                                        /> */}
+                                            <ReadButton link={!permissionsAccess ? '#' : `${WHOLESALE_VIEW_PAGE}/${element.id_sale_branch}`} />
                                         </td>
                                     )}
                                 </tr>
