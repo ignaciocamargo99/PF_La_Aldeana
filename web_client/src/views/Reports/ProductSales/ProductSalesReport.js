@@ -6,7 +6,7 @@ import TypeProductsSales from "./components/TypeProductsSales";
 import ListProductSales from "./components/ListProductSales";
 import BeShowed from "../../../common/BeShowed";
 import React, { useEffect, useState } from 'react';
-import { dateBDToString } from '../../../utils/ConverterDate/dateBDToString';
+import dateText from 'utils/DateFormat/dateText';
 import Breadcrumb from '../../../common/Breadcrumb';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
@@ -41,7 +41,7 @@ const ProductSalesReport = (props) => {
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={props.productSales.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Productos vendidos desde {dateBDToString(from, 'Es')} hasta {dateBDToString(to, 'Es')}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Salarios desde {from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()}</h5>
                         </div>
                         <hr />
                         <div className="formRow">
@@ -57,7 +57,7 @@ const ProductSalesReport = (props) => {
                     <BeShowed show={props.productSales.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron ventas para el período ({from} - {to})</h2>
+                        <h2>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>

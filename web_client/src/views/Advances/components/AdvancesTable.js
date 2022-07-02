@@ -191,7 +191,31 @@ export default function AdvancesTable(props) {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(()=>{
-        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        let advancesPDF = [];
+        let j = 0;
+        let elements = filteredElements.sort((a, b) => a.fullName < b.fullName ? 1 : -1);
+        let employeeBefore = elements[0];
+        elements.forEach((advance,i)=>{
+            console.log(advance)
+            if (employeeBefore.nroDNI === advance.nroDNI) {
+                if (i!==0){
+                    advancesPDF[j].amount += advance.amount;
+                    advancesPDF[j].pay += advance.pay;
+                }else advancesPDF[advancesPDF.length] = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                let aux = advance;
+                aux.name = ' ';
+                advancesPDF[advancesPDF.length] = advance;
+            } else {
+                employeeBefore = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                j = advancesPDF.length;
+
+                advancesPDF[advancesPDF.length] = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                advance.name = ' ';
+                advancesPDF[advancesPDF.length] = advance;
+            }
+        });
+        console.log(advancesPDF);
+        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={advancesPDF}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [dateInit, dateFinish, filteredElements, nameSearch])
 
     const onChangeDateInit = (e) => {

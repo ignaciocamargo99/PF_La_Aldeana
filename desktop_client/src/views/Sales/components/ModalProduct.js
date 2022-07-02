@@ -142,7 +142,7 @@ const ModalProduct = (props) => {
         } else {
             if (quantity == 0) {
                 warningMessage(
-                    '¡Atención!',
+                    'Atención',
                     'Debe ingresar un cantidad mayor a 0',
                     'warning'
                 );
@@ -152,11 +152,11 @@ const ModalProduct = (props) => {
                 quantity > props.productSelected.stock_current
             )
                 warningMessage(
-                    '¡Error!',
-                    'No hay stock suficiente \n Stock aún disponible: ' +
+                    'Atención!',
+                    'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
                         props.productSelected.stock_current +
-                        '\n Stock máximo que puede ingresar en el detalle: ' +
-                        props.productSelected.stock,
+                        '\n Cantidad cargada: ' +
+                        quantity,
                     'error'
                 );
         }

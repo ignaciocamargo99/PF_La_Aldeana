@@ -19,7 +19,7 @@ export default function validationRouters(route, accesses) {
     let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport'];
 
     // RRHH Report
-    let pathsToAllReportsRRHH = ['/app/RRHHReport'];
+    let pathsToAllReportsRRHH = ['/app/RRHHReport', '/app/salariesReport'];
 
     // Purchases
     // let pathsToReadPurchases;
