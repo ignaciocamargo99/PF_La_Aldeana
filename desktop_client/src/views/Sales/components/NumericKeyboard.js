@@ -14,7 +14,7 @@ const styles = {
 }
 
 export const NumericKeyboard = (props) => {
-    const [keyboardNumber, setKeyboardNumber] = useState("0");
+    const [keyboardNumber, setKeyboardNumber] = useState(props.quantity ? props.quantity : "0");
 
     useEffect(() => {
         setKeyboardNumber(keyboardNumber)
@@ -53,7 +53,6 @@ export const NumericKeyboard = (props) => {
 
     return (
         <div style={{ display: 'inline-block'}}>
-            {/* {console.log(keyboardNumber)} */}
             <div className='formRow'>
                 <div className='col'>
                     <button className='btn btn-primary' type="button" style={styles.buttonNumberStyle}

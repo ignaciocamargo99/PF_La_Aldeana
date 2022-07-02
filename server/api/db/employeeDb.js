@@ -70,7 +70,7 @@ const employeeGetDB = (dni) => {
         sqlSelect += ` AND e.dni = ${dni}`;
     }
 
-    sqlSelect += ' ORDER BY last_name';
+    sqlSelect += ' ORDER BY e.date_admission DESC';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
