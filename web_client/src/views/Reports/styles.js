@@ -31,6 +31,12 @@ const styles = StyleSheet.create({
         margin: '-1px',
         width: '17.4cm',
     },
+    col5: {
+        borderWidth: '2px',
+        textAlign: 'center',
+        margin: '-1px',
+        width: '22.3cm',
+    },
     col3: {
         borderWidth: '2px',
         textAlign: 'center',
@@ -41,19 +47,20 @@ const styles = StyleSheet.create({
         borderWidth: '2px',
         textAlign: 'center',
         margin: '-1px',
-        width: '200em',
+        width: '10cm',
     },
     col8: {
         borderWidth: '2px',
         textAlign: 'center',
         margin: '-1px',
-        width: '100em',
+        width: '5cm',
     },
     title: {
         fontSize: 18,
         textAlign: 'center',
         color: 'grey',
         marginBottom: 10,
+        padding: '2mm',
     },
     mainTitle: {
         fontSize: 20,
@@ -114,6 +121,18 @@ const styles = StyleSheet.create({
       left: 0,
       right: 0,
       textAlign: 'center'
+    },
+    division: {
+        flexDirection: 'row',
+        backgroundColor: '#808080',
+        color: 'white',
+    },
+    total: {
+        fontSize: 10,
+        textAlign: 'right',
+        backgroundColor: '#2284B6',
+        color: 'white',
+        padding: '2mm',
     },
 });
 

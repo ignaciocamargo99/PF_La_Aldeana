@@ -52,7 +52,7 @@ export default function ReadAdvances(props) {
             <div className="viewBody">
                 <ExtraDataAdvances load={load} data={data}/>
                 <div className='buttons'>
-                    <button className='sendOk' onClick={back}>Volver</button>
+                    <button className='btn btn-light sendOk' onClick={back}>Volver</button>
                 </div>
             </div>
         </>
