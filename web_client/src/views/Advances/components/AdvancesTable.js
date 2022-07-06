@@ -276,17 +276,15 @@ export default function AdvancesTable(props) {
                                             <div className="input-group-prepend">
                                                 <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                                             </div>
-                                            <div  style={{ textAlign: 'right' }} >
-                                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
-                                                </div>
+                                                <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                        </div>
+                                    </div>
+                                    <div className="search-input">
+                                        <div className="input-group">
+                                            <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                                             </div>
-                                            <div className="input-group">
-                                                <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
-                                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
-                                                </div>
-                                                <div style={{ textAlign: 'right' }} >
-                                                    <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
-                                            </div>
+                                            <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
                                         </div>
                                     </div>
                                     <div className="formRow title-searcher">

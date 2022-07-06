@@ -131,19 +131,20 @@ const Options = (props) => {
         <>
             <div className="formRow d-flex justify-content-between">
                 <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                <div className="input-group" style={{marginLeft: 'auto'}}>
-                    <div className="input-group-prepend">
-                        <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
-                    </div>
-                    <div  style={{ textAlign: 'right' }} >
-                    <input  className="form-control" type="date" style={{ maxWidth: "9em"}} id='dateFrom' defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
+
+                <div className="search-input">
+                    <div className="input-group" style={{marginLeft: 'auto'}}>
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                         </div>
+                        <input  id='dateFrom'  className="form-control" type="date" defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
                     </div>
+                </div>
+                <div className="search-input">
                     <div className="input-group">
                         <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
                             <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                         </div>
-                        <div style={{ textAlign: 'right' }} >
                         <input type="date"  className="form-control" style={{ maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
                     </div>
                 </div>
