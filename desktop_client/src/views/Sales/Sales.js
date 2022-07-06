@@ -12,6 +12,7 @@ import ListProducts from "./components/ListProducts";
 import PaymentSale from "./components/PaymentSale";
 import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import { calculateStock } from "./components/calculateStock";
 
 const PORT = require("../../config");
 
@@ -22,11 +23,11 @@ const Sales = (props) => {
 
     useEffect(() => initialCalls(), []);
 
-
     const initialCalls = () => {
         Axios.get(`${PORT()}/api/products`)
             .then((response) => {
                 let aux = response.data;
+                console.log(response.data)
                 aux?.map((element, i) => {
                     element.listSupplies = [];
                     element.disabled = false;
@@ -66,6 +67,7 @@ const Sales = (props) => {
 
     const resetStates = () => {
         props.updateDetailsProductsClear([]);
+        setNameClient('');
         initialCalls();
         setSaleCompleted(!saleCompleted);
         props.updateSalesRegister(!props.salesRegister);
@@ -108,7 +110,8 @@ const Sales = (props) => {
                     .then((sale) => {
                         if (sale.data.Ok) {
                             resetStates();
-                            warningMessage("¡Éxito!", "Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!", "success");
+                            if (props.totalAmount < props.paymentAmount) warningMessage("¡Éxito!", "Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!", "success");
+                            else warningMessage("¡Éxito!", "Se registró la venta con éxito", "success");
                         }
                         else warningMessage("¡Error!", "Ha ocurrido un error al registrar la venta", "error");
                     })
@@ -148,7 +151,10 @@ const Sales = (props) => {
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{ height: '100%' }}>Nombre</span>
                                 </div>
-                                <input id="clientName" type="text" className="form-control" onChange={(e) => handleClientName(e)} />
+                                <input id="clientName" type="text"
+                                    className="form-control" onChange={(e) => handleClientName(e)}
+                                    value={nameClient}
+                                />
                             </div>
                         </h3>
                         <PaymentSale />

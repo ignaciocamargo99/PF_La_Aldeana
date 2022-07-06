@@ -1,24 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { updateReportDateTo, updateReportDateFrom, updateProductSales, updateTopTenProductSales, updateTypeProductSales } from '../../../../actions/ReportsActions';
-import { connect } from 'react-redux';
 import Axios from 'axios';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
 import { FaAngleRight } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa';
 import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
-import Viewer from './PDFModalViewer';
-import MyDocument from './PDFProductSalesReport';
+import Viewer from '../../ProductSales/components/PDFModalViewer';
+import MyDocument from './PDFSalariesReport';
 
 const PORT = require('../../../../config');
-
 const Options = (props) => {
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
     const [showPdf, setShowPDF] = useState(false);
     let permissionsAccess = props.permissionsAccess;
     const [MyDoc, setMyDoc] = useState('');
-    const [allSales, setAllSales] = useState('');
 
     const inputDescriptionReport = useRef();
     const [description, setDescription] = useState(null);
@@ -26,87 +22,48 @@ const Options = (props) => {
     const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     useEffect(() => {
-
         if (props.dateFrom <= props.dateTo && props.load > 0) {
             let from = props.dateFrom;
             let to = props.dateTo;
 
-            Axios.get(PORT() + `/api/salesReport?from=${from}&to=${to}`)
+            Axios.get(PORT() + `/api/salariesReport?from=${from}&to=${to}`)
                 .then((res) => {
-                    let data = res.data;
-                    let sales = [];
-                    let topTen = [];
-                    let type = [];
-                    let labels = [];
-                    let dat = [];
-                    let labelsTypes = [];
-                    let datTypes = [];
+                    let data = [[],[]];
+                    data[0] = res.data.res;
+                    data[1] = res.data.totals;
 
-                    data?.forEach((e, i) => {
-                        if (i < data.length - 1) {
-                            sales = [...sales, e];
-                        } else {
-                            props.updateTypeProductSales(e);
-                            type.push(e);
-                        }
-                    });
-
-                    sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
-                    setAllSales(sales)
-
-                    props.updateProductSales(sales);
+                    props.setSalaries(data);
                     
-                    type[0].types?.forEach((e, i) => {
-                        labelsTypes.push(e.id);
-                        datTypes.push(e.quantity);
-                    });
-
-                    if (sales.length < 10) {
-                        props.updateTopTenProductSales(sales);
-                        topTen = sales;
-
-                        sales?.forEach((e, i) => {
-                                labels.push(e.name);
-                                dat.push(e.quantity);
-                        });
-
-                        props.setLoaded(true);
-                    } else {
-                        sales?.forEach((e, i) => {
-                            if (i < 10) {
-                                topTen = [...topTen, e];
-                                labels.push(e.name);
-                                dat.push(e.quantity);
+                    if (data[0].length > 0){
+                        let salaries = data[0];
+                        let labelsTotalised = [];
+                        let datTotalised = [];
+                        let totals = [];
+                        
+                        data[1]?.forEach((e, i) => {
+                            if (i < 3 || i === 4){
+                                labelsTotalised.push(e.id);
+                                datTotalised.push(e.quantity);
+                                totals.push(e);
                             }
                         });
-                        props.updateTopTenProductSales(topTen);
 
-                        props.setLoaded(true);
+                        const totalised = {
+                            type: 'outlabeledPie',
+                            labels: labelsTotalised,
+                            datasets: [
+                            {
+                                label: '$',
+                                data: datTotalised,
+                            },
+                            ],
+                            total: data[1][5].quantity
+                        };
+                        setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
+                        salaries={salaries} totalisedChart={totalised} totals={totals} />);
                     }
-                    
-                    const top = {
-                        type: 'bar',
-                        labels: labels,
-                        datasets: [
-                        {
-                            label: 'número de unidades vendidas',
-                            data: dat,
-                        },
-                        ],
-                    };
-                    const types = {
-                        type: 'outlabeledPie',
-                        labels: labelsTypes,
-                        datasets: [
-                        {
-                            label: 'número de ventas',
-                            data: datTypes,
-                        },
-                        ],
-                        total: type[0].total
-                    };
-                    setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
+
+                    props.setLoaded(true);
 
                 })
                 .catch((error) => {
@@ -114,10 +71,11 @@ const Options = (props) => {
                     props.setLoaded(false);
                 })
         } else {
-            let date = new Date();
+            let dat = new Date();
+            let date = new Date(dat.getFullYear(), dat.getMonth() , -1);
             let dateString = dateFormat(date);
 
-            let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            let startDate = new Date(date.getFullYear(), date.getMonth(), 0);
             let prevMounth = dateFormat(startDate);
 
             inputDateFrom.current.max = dateString;
@@ -126,8 +84,8 @@ const Options = (props) => {
             inputDateTo.current.min = prevMounth;
             inputDateTo.current.value = dateString;
             inputDateFrom.current.value = prevMounth;
-            props.updateReportDateFrom(prevMounth);
-            props.updateReportDateTo(dateString);
+            props.setFrom(prevMounth);
+            props.setTo(dateString);
         }
 
     }, [props.load, description]);
@@ -136,10 +94,10 @@ const Options = (props) => {
         props.setLoad(false);
         if (inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01-01") {
             inputDateTo.current.min = inputDateFrom.current.value;
-            props.updateReportDateFrom(inputDateFrom.current.value);
+            props.setFrom(inputDateFrom.current.value);
         }
         else {
-            props.updateReportDateFrom(inputDateTo.current.value);
+            props.setFrom(inputDateTo.current.value);
             inputDateFrom.current.value = inputDateTo.current.value;
         }
     }
@@ -159,10 +117,10 @@ const Options = (props) => {
         if (inputDateTo.current.value >= "2021-01-01" && inputDateTo.current.value < dateString) {
 
             inputDateFrom.current.max = inputDateTo.current.value;
-            props.updateReportDateTo(inputDateTo.current.value);
+            props.setTo(inputDateTo.current.value);
         }
         else {
-            props.updateReportDateTo(dateString);
+            props.setTo(dateString);
             inputDateTo.current.value = dateString;
         }
     }
@@ -205,34 +163,17 @@ const Options = (props) => {
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
                         <button className="btn btn-light disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
                     </BeShowed>
-                    <BeShowed show={permissionsAccess === 3}>
+                    <BeShowed show={permissionsAccess === 3 || permissionsAccess === 'Reportes Recursos Humanos'}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1?"btn btn-light disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={"btn btn-light " + (props.dateFrom > props.dateTo || !props.load  || props.salaries?.length < 1 ?"disabledNewBtn":"newBtn")} id='printButon' disabled={props.dateFrom > props.dateTo || !props.load || props.salaries?.length < 1 } style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc} reportOf='venta de productos' showPdf={showPdf} cancel={cancel} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
+            <Viewer MyDoc={MyDoc}reportOf='salarios' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
+            " a " + !props.dateTo?new Date().toLocaleDateString():dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        dateTo: state.dateTo,
-        dateFrom: state.dateFrom,
-        productSales: state.productSales,
-        topTenProductSales: state.topTenProductSales,
-        typeProductSales: state.typeProductSales
-    }
-}
-
-const mapDispatchToProps = {
-    updateReportDateTo,
-    updateReportDateFrom,
-    updateProductSales,
-    updateTopTenProductSales,
-    updateTypeProductSales
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Options);
+export default Options;

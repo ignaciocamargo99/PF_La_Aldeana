@@ -1,14 +1,12 @@
+import errorLotSupply from "../ErrorMessages/errorLotSupply";
+import errorMultiplePrice from "../ErrorMessages/errorMultiplePrice";
 import errorNameSupply from "../ErrorMessages/errorNameSupply";
 import errorTypeSupply from "../ErrorMessages/errorTypeSupply";
-import errorSinglePrice from "../ErrorMessages/errorSinglePrice";
-import errorMultiplePrice from "../ErrorMessages/errorMultiplePrice";
-import errorLotSupply from "../ErrorMessages/errorLotSupply";
 import errorUnitPerLotSupply from "../ErrorMessages/errorUnitPerLotSupply";
 import errorUnitSupply from "../ErrorMessages/errorUnitSupply";
 
 export default function validateSupplyRegister(data) {
     const name = data.name;
-    const price_retail = data.price_retail;
     const price_wholesale = data.price_wholesale;
     const id_supply_type = data.id_supply_type;
     const stock_lot = data.stock_lot;
@@ -18,8 +16,6 @@ export default function validateSupplyRegister(data) {
     try {
 
         if (name === "null") errorNameSupply();
-
-        else if (price_retail <= 0 && data.deliverySupply) errorSinglePrice();
 
         else if (price_wholesale <= 0 && data.franchiseSupply) errorMultiplePrice();
 

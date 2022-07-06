@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     sectionFace: {
         alignContent: 'center',
         flexDirection: 'row',   
+        marginBottom: '5mm',
     },
     section: {
         margin: 10,
@@ -62,10 +63,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         textAlign: 'left',
+        padding: '2mm',
     },
     money: {
         fontSize: 10,
         textAlign: 'right',
+        padding: '2mm',
     },
     header: {
         fontSize: 12,
@@ -73,10 +76,11 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 14,
         paddingLeft: '3px',
         paddingRight: '3px',
         color: 'grey',
+        padding: '2mm',
     },
     detail: {
         fontSize: 12,

@@ -1,26 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { faIceCream } from '@fortawesome/free-solid-svg-icons';
+import Axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import {
-    updateNameSupply, updateDescriptionSupply, updateSinglePrice, updateMultiplePrice, updateTypeSupply, updateLotSupply, updateUnitPerLotSupply, updateUnitSupply,
-    isDeliverySupply, isFranchiseSupply
+    isFranchiseSupply, updateDescriptionSupply, updateLotSupply, updateMultiplePrice, updateNameSupply, updateSinglePrice, updateTypeSupply, updateUnitPerLotSupply, updateUnitSupply
 } from '../../actions/SupplyActions';
-import NameSupply from './components/NameSupply';
+import BeShowed from '../../common/BeShowed';
+import Breadcrumb from '../../common/Breadcrumb';
+import Buttons from '../../common/Buttons';
+import displayError from '../../utils/ErrorMessages/errorMessage';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import successMessage from '../../utils/SuccessMessages/successMessage';
+import validateSupplyRegister from '../../utils/Validations/validateSupplyRegister';
+import checkData from './checkData';
 import DescriptionSupply from './components/DescriptionSupply';
-import SinglePrice from './components/SinglePrice';
 import MultiplePrice from './components/MultiplePrice';
+import NameSupply from './components/NameSupply';
 import Stock from './components/Stock';
 import TypeSupply from './components/TypeSupply';
-import Buttons from '../../common/Buttons';
-import validateSupplyRegister from '../../utils/Validations/validateSupplyRegister';
-import successMessage from '../../utils/SuccessMessages/successMessage';
-import displayError from '../../utils/ErrorMessages/errorMessage';
-import Axios from 'axios';
-import BeShowed from '../../common/BeShowed';
-import checkData from './checkData';
-import Breadcrumb from '../../common/Breadcrumb';
-import { faIceCream } from '@fortawesome/free-solid-svg-icons';
-import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
-import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
@@ -32,7 +30,6 @@ const RegisterPurchaseSupplies = (props) => {
     }
 
     const resetStates = () => {
-        //successPurchaseSupplies(message)
         props.updateNameSupply(null)
         props.updateDescriptionSupply(null)
         props.updateSinglePrice(0)
@@ -45,7 +42,7 @@ const RegisterPurchaseSupplies = (props) => {
 
     const [data, setData] = useState({
         name: 'null', description: 'null', id_supply_type: -1, price_wholesale: 0,
-        price_retail: 0, stock_lot: 0, stock_unit: 0, unit_x_lot: 0, franchiseSupply: false, deliverySupply: false,
+        stock_unit: 0, franchiseSupply: false,
         reading: false
     });
     const [ready, setReady] = useState(false);
@@ -56,16 +53,12 @@ const RegisterPurchaseSupplies = (props) => {
             description: props.descriptionSupply,
             id_supply_type: props.typeSupply,
             price_wholesale: props.multiplePrice,
-            price_retail: props.singlePrice,
-            stock_lot: props.lotSupply,
             stock_unit: props.unitSupply,
-            unit_x_lot: props.unitPerLotSupply,
-            franchiseSupply: props.franchiseSupply,
-            deliverySupply: props.deliverySupply
+            franchiseSupply: props.franchiseSupply
         }
         setData(aux);
         setReady(checkData(aux));
-    }, [props.franchiseSupply, props.deliverySupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.singlePrice, props.lotSupply, props.unitSupply, props.unitPerLotSupply])
+    }, [props.franchiseSupply, props.nameSupply, props.descriptionSupply, props.typeSupply, props.multiplePrice, props.unitSupply])
 
     const registerPurchaseSupplies = async () => {
         const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${props.nameSupply}"?`)).isConfirmed;
@@ -75,11 +68,9 @@ const RegisterPurchaseSupplies = (props) => {
                 description: data.description === 'null' ? null : data.description,
                 id_supply_type: data.id_supply_type,
                 price_wholesale: data.price_wholesale <= 0 ? null : data.price_wholesale,
-                price_retail: data.price_retail <= 0 ? null : data.price_retail,
-                stock_lot: data.id_supply_type !== 2 ? null : data.stock_lot,
                 stock_unit: data.id_supply_type === 3 ? null : data.stock_unit,
-                unit_x_lot: data.id_supply_type !== 2 ? null : data.unit_x_lot
             }
+            console.log(aux)
             loadingMessage('Registrando nuevo insumo...');
             Axios.post(PORT() + '/api/supplies', aux)
                 .then(({ data }) => {
@@ -96,12 +87,9 @@ const RegisterPurchaseSupplies = (props) => {
 
     }
 
-
-    const inputIsDeliverySupply = useRef(null);
     const inputIsFranchiseSupply = useRef(null);
 
     const handlerOnChange = (e) => {
-        if (e.target.value === "isDeliverySupply") props.isDeliverySupply(!props.deliverySupply);
         if (e.target.value === "isFranchiseSupply") props.isFranchiseSupply(!props.franchiseSupply);
     }
 
@@ -118,16 +106,6 @@ const RegisterPurchaseSupplies = (props) => {
                 <div className="price-form-body ">
                     <div className="price-title">
                         <label >Precio</label>
-                    </div>
-                    <div className="price-container" style={{marginBottom:'12px'}}>
-                        <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
-                            <input className="form-check-input" type="checkbox" id="isDeliverySupply" value="isDeliverySupply" ref={inputIsDeliverySupply} onChange={(e) => handlerOnChange(e)} />
-                            <label className="price-type-label price-label" htmlFor="isDeliverySupply">¿Se envía por delivery?</label>
-                        </div>
-                        <BeShowed show={props.deliverySupply}>
-                            <SinglePrice data={data} />
-                        </BeShowed>
-
                     </div>
                     <div className="price-container">
                         <div className="form-check form-check-inline col-sm-3" style={{ alignSelf: 'center' }}>
@@ -162,7 +140,6 @@ const mapStateToProps = state => {
         lotSupply: state.lotSupply,
         unitPerLotSupply: state.unitPerLotSupply,
         unitSupply: state.unitSupply,
-        deliverySupply: state.deliverySupply,
         franchiseSupply: state.franchiseSupply
     }
 }
@@ -176,7 +153,6 @@ const mapDispatchToProps = {
     updateLotSupply,
     updateUnitPerLotSupply,
     updateUnitSupply,
-    isDeliverySupply,
     isFranchiseSupply
 }
 
