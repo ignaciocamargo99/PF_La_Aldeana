@@ -272,19 +272,21 @@ export default function AdvancesTable(props) {
                                     <label className="col-sm-6">Dinero total pagado: ${pay}</label>
                                     <div className="formRow d-flex justify-content-between">
                                         <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                                        <div className="input-group" style={{marginLeft: 'auto'}}>
-                                            <div className="input-group-prepend">
-                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                        <div className="search-input">
+                                            <div className="input-group">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                                                </div>
+                                                    <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
                                             </div>
-                                                <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
                                         </div>
-                                    </div>
-                                    <div className="search-input">
-                                        <div className="input-group">
-                                            <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
-                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                        <div className="search-input">
+                                            <div className="input-group">
+                                                <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                                                    <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                                                </div>
+                                                <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
                                             </div>
-                                            <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
                                         </div>
                                     </div>
                                     <div className="formRow title-searcher">
