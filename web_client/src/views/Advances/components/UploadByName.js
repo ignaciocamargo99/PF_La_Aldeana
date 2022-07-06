@@ -38,7 +38,7 @@ const UploadByName = (props) => {
                 </datalist>
             </BeShowed>
             <div className="form-control-input">
-                <input className={errorMessage?'form-control is-invalid':props.class}  style={{maxWidth: '100em', marginLeft: 'auto'}} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions} defaultValue={props.default}/>    
+                <input className={errorMessage?'form-control is-invalid':props.className}  style={{maxWidth: '100em', marginLeft: 'auto'}} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions} defaultValue={props.default}/>    
                 <BeShowed show={errorMessage !== "null"}>
                     <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
                 </BeShowed>
