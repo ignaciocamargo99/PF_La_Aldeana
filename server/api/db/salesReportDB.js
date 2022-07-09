@@ -8,8 +8,7 @@ const salesReportGetDB = (from, to) => {
     LEFT JOIN SALES s on s.id_sale = ds.id_sale 
     LEFT JOIN PRODUCT_TYPES pt on pt.id_product_type = p.id_product_type 
     LEFT JOIN SECTORS sc on sc.id_sector = pt.id_sector 
-    WHERE s.date_hour > '${from}' and s.date_hour <= '${to} 23:59:59'
-    ORDER BY sc.id_sector DESC, pt.name DESC`;
+    WHERE s.date_hour > '${from}' and s.date_hour <= '${to} 23:59:59'`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {

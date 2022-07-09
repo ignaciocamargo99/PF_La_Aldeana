@@ -52,6 +52,10 @@ const Options = (props) => {
                             type.push(e);
                         }
                     });
+                    
+                    aux = aux.sort((a, b) => a.name.trim().toUpperCase() > b.name.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.product_type.trim().toUpperCase() < b.product_type.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.sector.trim().toUpperCase() > b.sector.trim().toUpperCase()? 1 : -1);
 
                     setAllSales(aux);
                     props.updateProductSales(aux);
