@@ -35,7 +35,11 @@ const ListProductSales = (props) => {
     const columnsHeaders = [
         {
             name: 'Nombre',
-            width: '50%'
+            width: '40%'
+        },
+        {
+            name: 'Sector',
+            width: '20%'
         },
         {
             name: 'Tipo',
@@ -43,7 +47,7 @@ const ListProductSales = (props) => {
         },
         {
             name: 'Cant. de undidades vendidas',
-            width: '30%'
+            width: '20%'
         }
     ];
 
@@ -86,6 +90,7 @@ const ListProductSales = (props) => {
                                 return (
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.sector}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.product_type}</td>
                                         <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.quantity} uds.</td>
                                     </tr>
