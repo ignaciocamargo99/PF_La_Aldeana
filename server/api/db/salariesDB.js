@@ -289,8 +289,7 @@ const calcHs = (hs, res) => {
 }
 const isDayOff = (date, daysOff) => {
     let aux = false;
-    daysOff?.map(day => {console.log(day.date.getUTCDate() , date)
-         if (day.date.getUTCDate() === date) aux = true;});
+    daysOff?.map(day => {if (day.date.getUTCDate() === date) aux = true;});
     return aux;
 }
 const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
@@ -310,7 +309,8 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                     console.log(error);
                     reject("1:" + error);
                 }
-                else if (result.length <= 5) {
+                else if (result.length < 5) {
+                    console.log(result.length)
                     const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s LEFT JOIN EMPLOYEES e ON e.dni = s.employee WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
                     formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
