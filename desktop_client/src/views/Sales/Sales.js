@@ -22,7 +22,6 @@ import ListProducts from './components/ListProducts';
 import PaymentSale from './components/PaymentSale';
 import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
-import { calculateStock } from './components/calculateStock';
 
 const PORT = require('../../config');
 
@@ -130,7 +129,10 @@ const Sales = (props) => {
                             if (props.totalAmount < props.paymentAmount)
                                 warningMessage(
                                     '¡Éxito!',
-                                    'Se registró la venta con éxito. \n¡No se olvide de darle el vuelto al cliente!',
+                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${
+                                        parseFloat(props.paymentAmount) -
+                                        parseFloat(props.totalAmount)
+                                    } al cliente!`,
                                     'success'
                                 );
                             else

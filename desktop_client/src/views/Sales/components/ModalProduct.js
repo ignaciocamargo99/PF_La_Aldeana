@@ -7,7 +7,8 @@ import {
     updateProducts,
     updateProductSelected,
     updateProductsFiltered,
-    updateRefresh
+    updateRefresh,
+    updateSupplies
 } from '../../../actions/SalesActions';
 import Buttons from '../../../common/Buttons';
 import warningMessage from '../../../utils/warningMessage';
@@ -25,6 +26,7 @@ const styles = {
 const ModalProduct = (props) => {
     const inputQuantity = useRef();
     const [quantity, setQuantity] = useState();
+    const [previosQuantity, setPreviousQuantity] = useState(0);
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
@@ -64,7 +66,11 @@ const ModalProduct = (props) => {
                 setReady(false);
             }
         } else if (props.actionModal == 'M') {
-            if (quantity > 0 && quantity <= props.productSelected.stock) {
+            if (
+                (quantity > 0 &&
+                    quantity <= props.productSelected.stock_current) ||
+                !props.productSelected.stock_current
+            ) {
                 if (inputQuantity.current)
                     inputQuantity.current.value = quantity;
                 setReady(true);
@@ -90,6 +96,7 @@ const ModalProduct = (props) => {
             if (props.actionModal == 'M') {
                 setQuantity(props.productSelected.quantity);
                 setSubtotal(props.productSelected.subtotal);
+                setPreviousQuantity(props.productSelected.quantity);
             } else {
                 setSubtotal(null);
                 setQuantity(0);
@@ -104,20 +111,12 @@ const ModalProduct = (props) => {
                 aux.quantity = quantity;
                 aux.subtotal = subtotal;
                 aux.descriptionProduct = descriptionProduct;
-                if (aux.stock) {
-                    aux.stock_current = aux.stock - parseFloat(quantity);
-                }
                 props.updateProductSelected(aux);
                 props.updateDetailProducts(aux);
             } else if (props.actionModal == 'M') {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
                 props.productSelected.descriptionProduct = descriptionProduct;
-                if (props.productSelected.stock) {
-                    console.log(props.productSelected);
-                    props.productSelected.stock_current =
-                        props.productSelected.stock - parseFloat(quantity);
-                }
                 props.updateDetailsProductsModify(props.productSelected);
             } else if (props.actionModal == 'A') {
                 props.productSelected.quantity =
@@ -128,17 +127,24 @@ const ModalProduct = (props) => {
                     parseFloat(subtotal)
                 ).toFixed(2);
                 props.productSelected.descriptionProduct = descriptionProduct;
-                if (props.productSelected.stock) {
-                    props.productSelected.stock_current =
-                        props.productSelected.stock_current -
-                        parseFloat(quantity);
-                }
                 props.updateDetailsProductsModify(props.productSelected);
             }
             props.updateRefresh(!props.refresh);
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
             setDescriptionProduct('');
+            const { products: productNew, supplies: suppliesNew } =
+                calculateStock(
+                    props.products,
+                    props.supplies,
+                    props.productsXsupplies,
+                    props.productSelected,
+                    quantity,
+                    props.actionModal,
+                    previosQuantity
+                );
+            props.updateProducts(productNew);
+            props.updateSupplies(suppliesNew);
         } else {
             if (quantity == 0) {
                 warningMessage(
@@ -147,10 +153,7 @@ const ModalProduct = (props) => {
                     'warning'
                 );
             }
-            if (
-                quantity > props.productSelected.stock ||
-                quantity > props.productSelected.stock_current
-            )
+            if (quantity > props.productSelected.stock_current)
                 warningMessage(
                     'Atención!',
                     'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
@@ -160,13 +163,6 @@ const ModalProduct = (props) => {
                     'error'
                 );
         }
-        calculateStock(
-            props.products,
-            props.supplies,
-            props.productsXsupplies,
-            props.productSelected,
-            quantity
-        );
     };
 
     return (
@@ -285,7 +281,8 @@ const mapDispatchToProps = {
     updateDetailProducts,
     updateProductSelected,
     updateDetailsProductsModify,
-    updateRefresh
+    updateRefresh,
+    updateSupplies
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalProduct);

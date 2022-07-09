@@ -3,7 +3,9 @@ export const calculateStock = (
     supplies,
     productXSupplies,
     productSelected,
-    quantity
+    quantity,
+    action,
+    previosQuantity = 0
 ) => {
     let suppliesOfProduct = productXSupplies.filter(
         (ps) => ps.id_product === productSelected.id_product
@@ -12,9 +14,28 @@ export const calculateStock = (
     for (let i = 0; i < suppliesOfProduct.length; i++) {
         for (let j = 0; j < supplies.length; j++) {
             if (supplies[j].id_supply === suppliesOfProduct[i].id_supply) {
-                supplies[j].quantityOfSupply =
-                    quantity * suppliesOfProduct[i].number_supply;
-                break;
+                if (action === 'N' || action === 'A') {
+                    supplies[j].quantityOfSupply =
+                        quantity * suppliesOfProduct[i].number_supply;
+                    supplies[j].stock_unit -= supplies[j].quantityOfSupply;
+                    break;
+                }
+                if (action === 'M') {
+                    if (quantity !== previosQuantity) {
+                        supplies[j].quantityOfSupply =
+                            (quantity - previosQuantity) *
+                            suppliesOfProduct[i].number_supply;
+                        supplies[j].stock_unit -= supplies[j].quantityOfSupply;
+                        break;
+                    } else break;
+                }
+                if (action === 'D') {
+                    console.log('entra al delete');
+                    supplies[j].quantityOfSupply =
+                        quantity * -1 * suppliesOfProduct[i].number_supply;
+                    supplies[j].stock_unit -= supplies[j].quantityOfSupply;
+                    break;
+                }
             }
         }
     }
@@ -44,8 +65,7 @@ export const calculateStock = (
             quantity
         );
     }
-
-    console.log(products);
+    return { products, supplies };
 };
 
 const calculateMinStock = (product, supplies, productXSupplies, quantity) => {
@@ -62,12 +82,10 @@ const calculateMinStock = (product, supplies, productXSupplies, quantity) => {
 
         minStock.push(
             Math.trunc(
-                (parseFloat(supply.stock_unit) -
-                    parseFloat(supply.quantityOfSupply)) /
+                parseFloat(supply.stock_unit) /
                     parseFloat(supplyXproduct[i].number_supply)
             )
         );
     }
-    console.log(minStock);
     return Math.min(...minStock);
 };
