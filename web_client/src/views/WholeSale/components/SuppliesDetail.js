@@ -1,9 +1,12 @@
 import React from 'react'
+import calculateSuppliesSubtotal from './calculateSuppliesSubtotal';
 import SuppliesDetailsTable from './SuppliesDetailsTable';
 import SuppliesSummary from './SuppliesSummary';
 
 const SuppliesDetail = ({ supplies, modifySupplyAmountToSell, handleRemoveSupply }) => {
     const suppliesPlaceholder = supplies.length === 1 ? `${supplies.length} insumo` : `${supplies.length} insumos`;
+
+    const subtotal = calculateSuppliesSubtotal(supplies);
 
     return (
         <div className='bg-grey-jira p-2 mt-4 mb-4'>
@@ -14,7 +17,7 @@ const SuppliesDetail = ({ supplies, modifySupplyAmountToSell, handleRemoveSupply
                     handleRemoveSupply={handleRemoveSupply}
                     modifySupplyAmountToSell={modifySupplyAmountToSell}
                 />
-                <SuppliesSummary />
+                <SuppliesSummary subtotal={subtotal} />
             </div>
         </div>
     )

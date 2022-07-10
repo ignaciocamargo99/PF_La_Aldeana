@@ -1,7 +1,8 @@
 import React from 'react'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 
-const SuppliesSummary = () => {
+const SuppliesSummary = ({subtotal}) => {
+    
     return (
         <div className='me-4'>
             <TableContainer component={Paper}>
@@ -16,7 +17,7 @@ const SuppliesSummary = () => {
                             key={'subtotal'}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell align="right">$&nbsp;X</TableCell>
+                            <TableCell align="right">$&nbsp;{subtotal}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

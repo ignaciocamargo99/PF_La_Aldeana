@@ -50,8 +50,18 @@ const WholeSalesViewBody = () => {
                 <FranchiseInput wholesaleFranchise={wholesaleFranchise} setWholesaleFranchise={setWholesaleFranchise} />
             </div>
             <Tabs tabs={tabs} setTabs={setTabs} />
-            <TabFlavors allFlavors={allFlavors} setAllFlavors={setAllFlavors} loadingFlavors={loadingFlavors} showTab={tabs.showFlavorsTab} />
-            <TabSupplies showTab={tabs.showSuppliesTab} allSupplies={allSupplies} setAllSupplies={setAllSupplies} loadingSupplies={loadingSupplies} />
+            <TabFlavors
+                showTab={tabs.showFlavorsTab}
+                allFlavors={allFlavors}
+                setAllFlavors={setAllFlavors}
+                loadingFlavors={loadingFlavors}
+            />
+            <TabSupplies
+                showTab={tabs.showSuppliesTab}
+                allSupplies={allSupplies}
+                setAllSupplies={setAllSupplies}
+                loadingSupplies={loadingSupplies}
+            />
             <TabTransport showTab={tabs.showTransportTab} />
             <TabSummary showTab={tabs.showSummaryTab} />
         </>
