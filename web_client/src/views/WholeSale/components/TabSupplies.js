@@ -1,25 +1,26 @@
 import React from 'react'
+import AddSuppliesTable from './AddSuppliesTable';
 
-const TabSupplies = ({ showTab }) => {
+const TabSupplies = ({ showTab, allSupplies, loadingSupplies }) => {
 
-  console.log('TabSupplies');
+    console.log('TabSupplies');
 
-  return (
-    <>
-      {showTab && (
+    const handleAddSupply = () => { };
+
+    return (
         <>
-          <h3 className="mt-2 ">Insumos</h3>
-          <>
-            En desarrollo...
-          </>
-          <h3 className="mt-2 ">Detalle de Insumos</h3>
-          <>
-            En desarrollo...
-          </>
+            {showTab && (
+                <>
+                    <h3 className="mt-2 ">Insumos</h3>
+                    <AddSuppliesTable supplies={allSupplies} handleAddSupply={handleAddSupply} loadingSupplies={loadingSupplies} />
+                    <h3 className="mt-2 ">Detalle de Insumos</h3>
+                    <>
+                        En desarrollo...
+                    </>
+                </>
+            )}
         </>
-      )}
-    </>
-  )
+    )
 }
 
 export default TabSupplies

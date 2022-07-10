@@ -1,10 +1,11 @@
-import AmountCell from "../AmountCell";
-import getAddFlavorsTableColumnHeaders from "./getAddFlavorsTableColumnHeaders";
-import StockFlavorTable from "./StockFlavorTable";
-const columnsHeaders = getAddFlavorsTableColumnHeaders();
+import React from 'react'
+import AmountCell from '../AmountCell';
+import getAddSuppliesTableColumnHeaders from "./getAddSuppliesTableColumnHeaders";
+import StockSupplyTable from './StockSupplyTable';
 
-const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
+const columnsHeaders = getAddSuppliesTableColumnHeaders();
 
+const SuppliesTable = ({ pageElements, handleAddSupply }) => {
     return (
         <>
             {(pageElements && pageElements.length > 0)
@@ -24,6 +25,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                         </thead>
                         <tbody>
                             {pageElements?.map((element, i) => {
+                                element.stock = element.stock_unit;
 
                                 return (
                                     <tr key={i}>
@@ -31,13 +33,10 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                                             {element.name}
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.FlavorFamily.name}
+                                            {element.price_wholesale}
                                         </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            {element.FlavorType.name}
-                                        </td>
-                                        <StockFlavorTable flavor={element}></StockFlavorTable>
-                                        <AmountCell item={element} handleAddItem={handleAddFlavor}></AmountCell>
+                                        <StockSupplyTable supply={element} />
+                                        <AmountCell item={element} handleAddItem={handleAddSupply} />
                                     </tr>
                                 )
                             })}
@@ -45,10 +44,10 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                     </table>
                 </div>
                 :
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen sabores para los filtros ingresados...</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No existen insumos para los filtros ingresados...</h4>
             }
         </>
     )
-};
+}
 
-export default FlavorsTable;
+export default SuppliesTable
