@@ -12,7 +12,7 @@ import TabTransport from './components/TabTransport';
 const WholeSalesViewBody = () => {
 
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
-    const { supplies, loadingSupplies } = useGetSupplies();
+    const { supplies, loadingSupplies } = useGetSupplies({ forWholesale: true });
 
     // wholesale date
     const [wholesaleDate, setWholesaleDate] = useState('');

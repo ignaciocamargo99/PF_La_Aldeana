@@ -5,7 +5,7 @@ const TabSupplies = ({ showTab, allSupplies, loadingSupplies }) => {
 
     console.log('TabSupplies');
 
-    const handleAddSupply = () => { };
+    const handleAddSupply = () => { alert('En desarrollo...') };
 
     return (
         <>
