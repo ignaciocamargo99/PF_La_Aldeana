@@ -5,7 +5,7 @@ const WholeSalesView = () => {
     return (
         <>
             <div className="viewTitle">
-                <h1>Registrar venta mayorista</h1>
+                <h1>Registrar Venta Mayorista</h1>
             </div>
             <div className="viewBody">
                 <WholeSalesViewBody />
