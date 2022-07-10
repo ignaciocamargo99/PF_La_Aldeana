@@ -10,6 +10,10 @@ Supplies.init(
             autoIncrement: true,
             primaryKey: true,
             allowNull: false
+        },
+        stock_unit: {
+            type: DataTypes.NUMBER,
+            allowNull: true
         }
     },
     { tableName: 'SUPPLIES', sequelize, modelName: 'Supplies' }

@@ -4,12 +4,13 @@ const SalesBranches = require('../database/models/salesBranchesModel');
 const Franchise = require('../database/models/franchiseModel');
 const DetailSalesBranchFlavor = require('../database/models/detailSalesBranchFlavorsModel');
 const DetailSalesBranchTypeFlavor = require('../database/models/detailSalesBranchTypeFlavorsModel');
+const DetailSalesBranchSupplies = require('../database/models/detailSalesBranchSupplies');
 const Flavor = require('../database/models/flavor');
 const Supplies = require('../database/models/suppliesModel');
 
 const readSalesBranchDB = async (params) => {
     const { startDate, endDate, status: statusSale } = params;
-    console.log(startDate, endDate)
+    console.log(startDate, endDate);
     let whereExpresion = {
         status: {
             [Op.eq]: statusSale
@@ -81,8 +82,12 @@ const saveSalesBranchDB = async (salesData) => {
             transaction
         );
 
-        // falta esta funcion
-        await asyncForeachSupplies(supplies, id_sale_branch, transaction);
+        await asyncForeachSupplies(
+            supplies,
+            id_sale_branch,
+            status,
+            transaction
+        );
 
         console.log('success');
         await transaction.commit();
@@ -138,20 +143,17 @@ const asyncForeachFlavors = async (
             { id_sale_branch, id_flavor, quantity },
             { transaction }
         );
-    }
-    if (status === 'READY') {
-        for (let i = 0; i < flavors.length; i++) {
-            const { id_flavor, quantity } = flavors[i];
-            const flavor = await Flavor.findOne({
-                where: { id_flavor }
-            });
-            console.log(flavor);
+        if (status === 'FINISH') {
+            const flavor = await Flavor.findOne(
+                {
+                    where: { id_flavor }
+                },
+                { transaction }
+            );
             const newStock = flavor.stock - quantity;
-            console.log('nuevo stock: ', newStock);
             await Flavor.update(
                 { stock: newStock },
-                { where: { id_flavor } },
-                { transaction }
+                { where: { id_flavor }, transaction }
             );
         }
     }
@@ -171,28 +173,34 @@ const asyncForeachTypeFlavors = async (
     }
 };
 
-// falta definir esta funcion
 const asyncForeachSupplies = async (
     supplies,
     id_sale_branch,
+    status,
     transaction
-) => {};
-// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
-
-const decrease1dayToDate = (dateToFormat) => {
-    let dateFormat = new Date(dateToFormat);
-    dateFormat.setDate(dateFormat.getDate() - 1);
-    if (dateFormat.getMonth() <= 9)
-        dateFormat = `${dateFormat.getFullYear()}/0${
-            dateFormat.getMonth() + 1
-        }/${dateFormat.getDate()}`;
-    else
-        dateFormat = `${dateFormat.getFullYear()}/${
-            dateFormat.getMonth() + 1
-        }/${dateFormat.getDate()}`;
-
-    return dateFormat;
+) => {
+    for (let i = 0; i < supplies.length; i++) {
+        const { id_supply, quantity, subtotal } = supplies[i];
+        await DetailSalesBranchSupplies.create(
+            { id_sale_branch, id_supply, quantity, subtotal },
+            { transaction }
+        );
+        if (status === 'FINISH') {
+            const supply = await Supplies.findOne(
+                {
+                    where: { id_supply }
+                },
+                { transaction }
+            );
+            const newStock = supply.stock_unit - quantity;
+            await Supplies.update(
+                { stock_unit: newStock },
+                { where: { id_supply }, transaction }
+            );
+        }
+    }
 };
+// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 
 module.exports = {
     readSalesBranchDB,
