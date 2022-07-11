@@ -171,7 +171,10 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
     }
 
     const buildScheduleArray = () => {
-        let scheduleArray = schedule.slice();
+        let scheduleArray = [];
+        schedule.forEach((array) => {
+            scheduleArray.push([...array])
+        })
         let header = [[showMeMonth(monthYear.month).toUpperCase()]];
         schedule.forEach((e, i) => {
             let arrayEmployee = [employees[i].nickname];
@@ -184,14 +187,15 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
                 turn?.turns.forEach((t,i) => {
                     text = text + `${t.init_time} a ${t.finish_time} . `;
                 })
-                if(scheduleArray[i][j] === 'F') text = 'FRANCO';
-                if(scheduleArray[i][j] === 'X') text = 'LICENCIA';
+                if(schedule[i][j] === 'F') text = 'FRANCO';
+                if(schedule[i][j] === 'X') text = 'LICENCIA';
                 scheduleArray[i][j] = text;
             })
-            scheduleArray[i] = arrayEmployee.concat(schedule[i]);
+            scheduleArray[i] = arrayEmployee.concat([...scheduleArray[i]]);
         })
-        console.log(scheduleArray)
         scheduleArray = header.concat(scheduleArray);
+        console.log(schedule)
+        console.log(scheduleArray)
         return scheduleArray
     }
 
