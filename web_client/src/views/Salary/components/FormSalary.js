@@ -138,9 +138,9 @@ const FormSalary = (props) => {
                             othersPlus.forEach((inc, i) => { aux[i] = inc });
                             if (res.data.length > 0) {
                                 let max = res.data[0].total;
-                                if (res.data.length < 6) aux[0] = { name: 'SAC 1*cta 2021 Negro', price: ((max / 2) * 4) / 6, predictive: 0 };
-                                else aux[0] = { name: 'SAC 1*cta 2021 Negro', price: max / 2, predictive: 0 };
-                            } else aux[0] = { name: 'SAC 1*cta 2021 Negro', price: 0, predictive: 0 };
+                                if (res.data.length < 6) aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: ((max / 2) * 4) / 6, predictive: 0 };
+                                else aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: max / 2, predictive: 0 };
+                            } else aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: 0, predictive: 0 };
                             setOthersPlus(aux);
                         }
                     });
