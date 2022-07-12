@@ -1,6 +1,10 @@
 UPDATE CONCEPTS
 	SET predictive=1
 	WHERE id_concept=6;
+UPDATE CONCEPTS
+	SET name='SAC 1*cta 2021 monotributista'
+	WHERE id_concept=12;
+
 
 INSERT INTO
     `DB_CHANGES`
