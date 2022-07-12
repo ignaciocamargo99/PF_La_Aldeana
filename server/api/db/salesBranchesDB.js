@@ -4,20 +4,28 @@ const SalesBranches = require('../database/models/salesBranchesModel');
 const Franchise = require('../database/models/franchiseModel');
 const DetailSalesBranchFlavor = require('../database/models/detailSalesBranchFlavorsModel');
 const DetailSalesBranchTypeFlavor = require('../database/models/detailSalesBranchTypeFlavorsModel');
+const DetailSalesBranchSupplies = require('../database/models/detailSalesBranchSupplies');
 const Flavor = require('../database/models/flavor');
 const Supplies = require('../database/models/suppliesModel');
 
 const readSalesBranchDB = async (params) => {
-    const { startDate, endDate } = params;
+    const { startDate, endDate, status: statusSale } = params;
+    console.log(startDate, endDate);
+    let whereExpresion = {
+        status: {
+            [Op.eq]: statusSale
+        }
+    };
+    if (statusSale === 'FINISH') {
+        whereExpresion.date = {
+            [Op.gte]: startDate,
+            [Op.lte]: endDate
+        };
+    }
 
     const sale = await SalesBranches.findAll({
         include: Franchise,
-        where: {
-            date: {
-                [Op.gte]: startDate,
-                [Op.lte]: endDate
-            }
-        },
+        where: whereExpresion,
         attributes: ['id_sale_branch', 'date', 'status', 'amount']
     });
 
@@ -74,8 +82,12 @@ const saveSalesBranchDB = async (salesData) => {
             transaction
         );
 
-        // falta esta funcion
-        await asyncForeachSupplies(supplies, id_sale_branch, transaction);
+        await asyncForeachSupplies(
+            supplies,
+            id_sale_branch,
+            status,
+            transaction
+        );
 
         console.log('success');
         await transaction.commit();
@@ -118,6 +130,7 @@ const putSalesBranchDB = async (id_sale_branch, body) => {
     }
 };
 
+// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 const asyncForeachFlavors = async (
     flavors,
     id_sale_branch,
@@ -130,20 +143,17 @@ const asyncForeachFlavors = async (
             { id_sale_branch, id_flavor, quantity },
             { transaction }
         );
-    }
-    if (status === 'READY') {
-        for (let i = 0; i < flavors.length; i++) {
-            const { id_flavor, quantity } = flavors[i];
-            const flavor = await Flavor.findOne({
-                where: { id_flavor }
-            });
-            console.log(flavor);
+        if (status === 'FINISH') {
+            const flavor = await Flavor.findOne(
+                {
+                    where: { id_flavor }
+                },
+                { transaction }
+            );
             const newStock = flavor.stock - quantity;
-            console.log('nuevo stock: ', newStock);
             await Flavor.update(
                 { stock: newStock },
-                { where: { id_flavor } },
-                { transaction }
+                { where: { id_flavor }, transaction }
             );
         }
     }
@@ -163,12 +173,34 @@ const asyncForeachTypeFlavors = async (
     }
 };
 
-// falta definir esta funcion
 const asyncForeachSupplies = async (
     supplies,
     id_sale_branch,
+    status,
     transaction
-) => {};
+) => {
+    for (let i = 0; i < supplies.length; i++) {
+        const { id_supply, quantity, subtotal } = supplies[i];
+        await DetailSalesBranchSupplies.create(
+            { id_sale_branch, id_supply, quantity, subtotal },
+            { transaction }
+        );
+        if (status === 'FINISH') {
+            const supply = await Supplies.findOne(
+                {
+                    where: { id_supply }
+                },
+                { transaction }
+            );
+            const newStock = supply.stock_unit - quantity;
+            await Supplies.update(
+                { stock_unit: newStock },
+                { where: { id_supply }, transaction }
+            );
+        }
+    }
+};
+// -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 
 module.exports = {
     readSalesBranchDB,

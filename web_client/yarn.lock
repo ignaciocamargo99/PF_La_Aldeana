@@ -2313,11 +2313,11 @@
     "@babel/types" "^7.3.0"
 
 "@types/chart.js@^2.9.34":
-  version "2.9.37"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.37.tgz#8af70862b154fedf938b5b87debdb3a70f6e3208"
-  integrity sha512-9bosRfHhkXxKYfrw94EmyDQcdjMaQPkU1fH2tDxu8DWXxf1mjzWQAV4laJF51ZbC2ycYwNDvIm1rGez8Bug0vg==
+  "integrity" "sha512-9bosRfHhkXxKYfrw94EmyDQcdjMaQPkU1fH2tDxu8DWXxf1mjzWQAV4laJF51ZbC2ycYwNDvIm1rGez8Bug0vg=="
+  "resolved" "https://registry.npmjs.org/@types/chart.js/-/chart.js-2.9.37.tgz"
+  "version" "2.9.37"
   dependencies:
-    moment "^2.10.2"
+    "moment" "^2.10.2"
 
 "@types/cookie@^0.3.3":
   "integrity" "sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow=="
@@ -8524,7 +8524,7 @@
   "resolved" "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
-"moment@^2.29.1":
+"moment@^2.10.2", "moment@^2.29.1":
   "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
   "version" "2.29.1"
@@ -10244,6 +10244,15 @@
   "version" "6.0.2"
   dependencies:
     "inherits" "~2.0.3"
+
+"quickchart-js@^3.0.1":
+  "integrity" "sha512-QZe7pzsJDwNS+Q29yWjUSS4gvxNDPAdXwbyEqCel+jm04mNo8xAgTGtysMCXEPxCVZb/qqOX3e4Ux8Vd29sx2A=="
+  "resolved" "https://registry.npmjs.org/quickchart-js/-/quickchart-js-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "@types/chart.js" "^2.9.34"
+    "cross-fetch" "^3.1.5"
+    "javascript-stringify" "^2.1.0"
 
 "raf-schd@^4.0.2":
   "integrity" "sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ=="

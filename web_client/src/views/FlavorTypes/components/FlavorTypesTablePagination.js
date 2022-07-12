@@ -4,7 +4,7 @@ import FlavorTypesTable from './FlavorTypesTable';
 
 const elementsPerPage = 10;
 
-const FlavorTypesTablePagination = ({ readOnly, filteredElements }) => {
+const FlavorTypesTablePagination = ({ permissionsAccess, filteredElements }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
@@ -22,7 +22,7 @@ const FlavorTypesTablePagination = ({ readOnly, filteredElements }) => {
         <>
             <FlavorTypesTable
                 pageElements={pageElements}
-                readOnly={readOnly}
+                permissionsAccess={permissionsAccess}
             >   
             </FlavorTypesTable>
             <Pagination

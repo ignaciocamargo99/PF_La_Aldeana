@@ -15,7 +15,7 @@ const FlavorTypeRoutes = ({ permissionsAccess }) => {
     return (
         <div>
             <Switch>
-                <Route exact path={path} render={() => <FlavorTypesView readOnly={readOnly} />}></Route>
+                <Route exact path={path} render={() => <FlavorTypesView permissionsAccess={permissionsAccess} />}></Route>
 
                 <Route exact path={`${path}/new`} render={() => {
                     if (readOnly) {
@@ -28,9 +28,9 @@ const FlavorTypeRoutes = ({ permissionsAccess }) => {
                 <Route exact path={`${path}/view/:idFlavorType`} component={ReadFlavorType}></Route>
 
                 <Route exact path={`${path}/edit/:idFlavorType`} render={() => {
-                    if (readOnly) {
+                    if (permissionsAccess !== 3) {
                         return <NotPermissionPage />
-                    } else {
+                    } else if(permissionsAccess === 3){
                         return <EditFlavorType />
                     }
                 }}></Route>

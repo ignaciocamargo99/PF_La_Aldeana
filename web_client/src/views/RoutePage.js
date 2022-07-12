@@ -1,28 +1,5 @@
-import React from 'react';
 import { Route } from 'react-router-dom';
-import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
-import RegisterProductView from './RegisterProduct/RegisterProductView';
-import ProductsView from './ListProducts/ProductsView';
-import RegisterFranchise from './Franchises/RegisterFranchise';
-import Franchises from './Franchises/FranchiseTable';
-import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
-import RegisterProductionView from './Productions/RegisterProduction';
-import SalesReports from './Reports/Menu/SalesReports';
-import RRHHReports from './Reports/Menu/RRHHReports';
-import ProductSalesReport from './Reports/ProductSales/ProductSalesReport';
-import EmployeesView from './Employees/EmployeesView';
-import RegisterEmployee from './Employees/components/RegisterEmployee';
-import Licenses from './Licenses/components/Licenses';
-import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
-import RegisterAssistance from './EmployeeAssistance/components/RegisterAssistanceEmployee/RegisterAssistance';
-import EmployeesSchedulesView from './EmployeesSchedules/EmployeesSchedulesView';
-import ListAdvances from './Advances/ListAdvances';
-import RegisterAdvances from './Advances/components/RegisterAdvances';
-import ListProductions from './Productions/ListProductions';
-import FlavorRoutes from './Flavors/FlavorRoutes';
-import ListUsers from './Users/ListUsers';
-import RegisterUser from './Users/components/RegisterUser';
-import Salary from './Salary/components/Salary';
+import { WHOLESALE_PAGE } from 'routes/routes';
 import NotPermissionPage from '../common/NotPermissionPage';
 import SesionPage from '../common/SesionPage';
 import validationRouters from './validationRouters';
@@ -32,8 +9,31 @@ import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductVi
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import SalariesReport from './Reports/Salaries/SalariesReport';
 import WholeSalesView from './WholeSale/WholeSalesView';
-import { WHOLESALE_PAGE } from 'routes/routes';
 import { WHOLESALE_NEW_PAGE } from 'routes/routes';
+import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
+import RegisterAdvances from './Advances/components/RegisterAdvances';
+import ListAdvances from './Advances/ListAdvances';
+import RegisterAssistance from './EmployeeAssistance/components/RegisterAssistanceEmployee/RegisterAssistance';
+import ListEmployeesAssistance from './EmployeeAssistance/ListEmployeeAssistance';
+import RegisterEmployee from './Employees/components/RegisterEmployee';
+import EmployeesView from './Employees/EmployeesView';
+import EmployeesSchedulesView from './EmployeesSchedules/EmployeesSchedulesView';
+import FlavorRoutes from './Flavors/FlavorRoutes';
+import Franchises from './Franchises/FranchiseTable';
+import RegisterFranchise from './Franchises/RegisterFranchise';
+import Licenses from './Licenses/components/Licenses';
+import ProductsView from './ListProducts/ProductsView';
+import ListProductions from './Productions/ListProductions';
+import RegisterProductionView from './Productions/RegisterProduction';
+import RegisterProductView from './RegisterProduct/RegisterProductView';
+import RegisterPurchaseSupplies from './RegisterPurchaseSupplies/RegisterPurchaseSupplies';
+import RRHHReports from './Reports/Menu/RRHHReports';
+import SalesReports from './Reports/Menu/SalesReports';
+import ProductSalesReport from './Reports/ProductSales/ProductSalesReport';
+import Salary from './Salary/components/Salary';
+import RegisterUser from './Users/components/RegisterUser';
+import ListUsers from './Users/ListUsers';
+import WholeSaleRoutes from './WholeSale/WholeSaleRoutes';
 
 export default function RouterPage(props) {
 
@@ -84,8 +84,10 @@ export default function RouterPage(props) {
                 let permissionsAccessFranchises = props.accesses[5]
                 franchises =
                     <>
-                        <Route path={WHOLESALE_NEW_PAGE} component={WholeSalesView}></Route>
                         <Route path='/app/franchises' render={() => <Franchises permissionsAccess={permissionsAccessFranchises} />}></Route>
+                        <Route path={WHOLESALE_PAGE}>
+                            <WholeSaleRoutes permissionsAccess={permissionsAccessFranchises} />
+                        </Route>
                         <Route path='/app/newFranchise' component={RegisterFranchise}></Route>
                     </>
             }
@@ -104,11 +106,11 @@ export default function RouterPage(props) {
 
             const permissionReportsHumanResources = permissions.find(option => option === "Reportes Recursos Humanos");
             let reportHumanResources;
-            if(permissionReportsHumanResources === "Reportes Recursos Humanos"){
-                 reportHumanResources = 
+            if (permissionReportsHumanResources === "Reportes Recursos Humanos") {
+                reportHumanResources =
                     <>
                         <Route path='/app/RRHHReport' render={() => <RRHHReports permissionsAccess={permissionReportsHumanResources} />}></Route>
-                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user}/>}></Route>
+                        <Route path='/app/salariesReport' render={() => <SalariesReport permissionsAccess={permissionReportsHumanResources} user={props.user} />}></Route>
                     </>
             }
 

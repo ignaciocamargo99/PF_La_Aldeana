@@ -1,7 +1,10 @@
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
+import { useGetSupplies } from 'hooks/useGetSupplies';
 import { useEffect, useState } from 'react';
+import createTabsStateObject from './components/createTabsStateObject';
 import DateInput from './components/DateInput';
 import FranchiseInput from './components/FranchiseInput';
+import NextTab from './components/NextTab';
 import TabFlavors from './components/TabFlavors';
 import Tabs from './components/Tabs';
 import TabSummary from './components/TabSummary';
@@ -11,6 +14,7 @@ import TabTransport from './components/TabTransport';
 const WholeSalesViewBody = () => {
 
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
+    const { supplies, loadingSupplies } = useGetSupplies({ forWholesale: true });
 
     // wholesale date
     const [wholesaleDate, setWholesaleDate] = useState('');
@@ -18,12 +22,14 @@ const WholeSalesViewBody = () => {
     const [wholesaleFranchise, setWholesaleFranchise] = useState(null);
     // wholesale flavors (only when flavor.toSell === true)
     const [allFlavors, setAllFlavors] = useState();
+    // wholesale flavors buckets weights
+    const [bucketsWeights, setBucketsWeights] = useState([]);
     // wholesale supplies (only when supply.toSell === true)
-    // to do
+    const [allSupplies, setAllSupplies] = useState();
     // wholesale transport
-    // to do
+    const [transportCost, setTransportCost] = useState('');
 
-    const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
+    const [tabs, setTabs] = useState(createTabsStateObject(true, false, false, false));
 
     useEffect(() => {
         if (activeFlavors?.length > 0) {
@@ -33,6 +39,14 @@ const WholeSalesViewBody = () => {
         }
     }, [activeFlavors])
 
+    useEffect(() => {
+        if (supplies?.length > 0) {
+            setAllSupplies(supplies)
+        } else {
+            setAllSupplies([])
+        }
+    }, [supplies])
+
     return (
         <>
             <div style={{ maxWidth: '40em' }}>
@@ -40,10 +54,35 @@ const WholeSalesViewBody = () => {
                 <FranchiseInput wholesaleFranchise={wholesaleFranchise} setWholesaleFranchise={setWholesaleFranchise} />
             </div>
             <Tabs tabs={tabs} setTabs={setTabs} />
-            <TabFlavors allFlavors={allFlavors} setAllFlavors={setAllFlavors} loadingFlavors={loadingFlavors} showTab={tabs.showFlavorsTab} />
-            <TabSupplies showTab={tabs.showSuppliesTab} />
-            <TabTransport showTab={tabs.showTransportTab} />
-            <TabSummary showTab={tabs.showSummaryTab} />
+            <TabFlavors
+                showTab={tabs.showFlavorsTab}
+                allFlavors={allFlavors}
+                setAllFlavors={setAllFlavors}
+                bucketsWeights={bucketsWeights}
+                setBucketsWeights={setBucketsWeights}
+                loadingFlavors={loadingFlavors}
+            />
+            <TabSupplies
+                showTab={tabs.showSuppliesTab}
+                allSupplies={allSupplies}
+                setAllSupplies={setAllSupplies}
+                loadingSupplies={loadingSupplies}
+            />
+            <TabTransport
+                showTab={tabs.showTransportTab}
+                transportCost={transportCost}
+                setTransportCost={setTransportCost}
+            />
+            <TabSummary
+                showTab={tabs.showSummaryTab}
+                wholesaleDate={wholesaleDate}
+                wholesaleFranchise={wholesaleFranchise}
+                wholesaleFlavors={allFlavors?.filter(f => f.toSell)}
+                wholesaleBucketsWeights={bucketsWeights}
+                wholesaleSupplies={allSupplies?.filter(s => s.toSell)}
+                wholesaleTransportCost={transportCost}
+            />
+            <NextTab tabs={tabs} setTabs={setTabs} />
         </>
     )
 }
