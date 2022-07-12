@@ -277,7 +277,7 @@ export default function AdvancesTable(props) {
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                                                 </div>
-                                                    <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+                                                    <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateInit?dateInit:dateFormat(getLastWeeksDate())}></input>
                                             </div>
                                         </div>
                                         <div className="search-input">
@@ -285,7 +285,7 @@ export default function AdvancesTable(props) {
                                                 <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
                                                     <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                                                 </div>
-                                                <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                                <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFinish?dateFinish:dateFormat(new Date())}></input>
                                             </div>
                                         </div>
                                     </div>
