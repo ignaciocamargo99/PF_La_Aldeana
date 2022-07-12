@@ -65,7 +65,7 @@ const FormSalary = (props) => {
                     let employ = response.data.find((employee) => { return employee.dni === props.salary.dni })
                     if (employ == null) warningMessage("Error", "No se encontraron empleados activos que coincidan con el salario solicitado", "error")
                         .then((value) => {
-                            window.location.replace('/app/salary');
+                            props.setActionSalary('Listar', props.month);
                         });
                     setEmployee(employ);
 
@@ -106,28 +106,29 @@ const FormSalary = (props) => {
                         .then((response) => {
                             if (response.data.Ok === false) console.log(response.data);
                             else {
-                                let aux = [
-                                    { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0 }
-                                ];
-                                if (main.some(even)) setMain(aux);
+                                console.log(response.data)
+                                    let aux = [
+                                        { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0 },
+                                        { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0 },
+                                        { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0 },
+                                        { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0 },
+                                        { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0 }
+                                    ];
+                                    if (main.some(even)) setMain(aux);
+                                    
+                                if(props.action === 'Registrar')nroRef.current.focus();
                                 setShowSpinner(false);
-                                nroRef.current.focus();
                             }
                         })
                         .catch((err) => { console.log(err)
                             setShowSpinner(false);
                             warningMessage("Error", "El servidor no pudo procesar las horas trabajadas del empleado solicitado", "error");
-                         });
+                        });
                 })
                 .catch((err) => { console.log(err) 
                     setShowSpinner(false);
                     warningMessage("Error", "No se pudieron buscar los días feriados", "error");
-                 });
-
+                });
             if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar' && employee.employment_relationship === 2) {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
                     .then((res) => {
@@ -285,7 +286,6 @@ const FormSalary = (props) => {
     const resetStates = (showMsg) => {
         if (showMsg) {
             warningMessage('Atención', 'Se ha confirmado el salario correctamente', 'success');
-            props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
             setEmployee(employees[nro + 1]);
             setOthersPlus([]);
@@ -299,9 +299,7 @@ const FormSalary = (props) => {
             ]);
             setNro(nro + 1);
         } else {
-            props.setReloadList(!props.reloadList);
-            props.setActionSalary('Listar', null);
-            window.location.replace('/app/salary');
+            props.setActionSalary('Listar', props.month );
         }
     }
 
@@ -309,7 +307,7 @@ const FormSalary = (props) => {
         if (msg) {
             warningMessage('Atención', 'Se ha editado el salario correctamente', 'success');
         }
-        props.setActionSalary('Listar', { month: formattedDate(new Date()), employee: 0 });
+        props.setActionSalary('Listar', props.month );
     }
 
     const actionNotOK = () => {
@@ -488,7 +486,7 @@ const FormSalary = (props) => {
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <div className="input-group has-validation">
                                             <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
+                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"}/>
                                             <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
                                         </div>
                                     </div>
