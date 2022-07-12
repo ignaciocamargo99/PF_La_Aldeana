@@ -40,12 +40,12 @@ export default function MyDocument (props) {
               </View>
             </View>
             {props.advances?.map(advance => {
-              if(!advance.title){
+              if(advance.title === true){
                 total += advance.amount;
                 pay += advance.pay;
               }
               return (
-                <>{advance.title ?
+                <>{advance.title === true ?
                   <View style={styles.division}>
                     <View style={styles.col8}>
                       <Text style={styles.text}>{advance.nroDNI}</Text>
