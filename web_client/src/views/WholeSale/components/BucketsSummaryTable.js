@@ -41,7 +41,7 @@ const BucketsSummaryTable = ({
                                     style={{ maxWidth: '5em' }}
                                     type='number'
                                     value={weight}
-                                    onChange={(e) => handleWeightChange(category, e.target.value)}
+                                    onChange={(e) => handleWeightChange(category, +e.target.value)}
                                     onKeyDown={(e) => validateFloatNumbers(e)}
                                 />
                             </TableCell>

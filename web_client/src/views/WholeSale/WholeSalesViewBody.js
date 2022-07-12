@@ -27,7 +27,7 @@ const WholeSalesViewBody = () => {
     // wholesale supplies (only when supply.toSell === true)
     const [allSupplies, setAllSupplies] = useState();
     // wholesale transport
-    // to do
+    const [transportCost, setTransportCost] = useState('');
 
     const [tabs, setTabs] = useState(createTabsStateObject(true, false, false, false));
 
@@ -68,8 +68,20 @@ const WholeSalesViewBody = () => {
                 setAllSupplies={setAllSupplies}
                 loadingSupplies={loadingSupplies}
             />
-            <TabTransport showTab={tabs.showTransportTab} />
-            <TabSummary showTab={tabs.showSummaryTab} />
+            <TabTransport
+                showTab={tabs.showTransportTab}
+                transportCost={transportCost}
+                setTransportCost={setTransportCost}
+            />
+            <TabSummary
+                showTab={tabs.showSummaryTab}
+                wholesaleDate={wholesaleDate}
+                wholesaleFranchise={wholesaleFranchise}
+                wholesaleFlavors={allFlavors?.filter(f => f.toSell)}
+                wholesaleBucketsWeights={bucketsWeights}
+                wholesaleSupplies={allSupplies?.filter(s => s.toSell)}
+                wholesaleTransportCost={transportCost}
+            />
             <NextTab tabs={tabs} setTabs={setTabs} />
         </>
     )

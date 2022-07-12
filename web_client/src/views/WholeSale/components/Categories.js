@@ -12,6 +12,10 @@ const Categories = ({
     const categoriesIds = [...new Set(flavors.map(f => +f.FlavorType.idFlavorType))];
 
     const handleWeightChange = (category, newWeight) => {
+        if (newWeight < 0) {
+            return;
+        }
+
         let updated;
         let aux = [...bucketsWeights];
 
