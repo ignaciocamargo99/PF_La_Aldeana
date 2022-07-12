@@ -1,6 +1,7 @@
 import { useGetActiveFlavors } from 'hooks/useGetActiveFlavors';
 import { useGetSupplies } from 'hooks/useGetSupplies';
 import { useEffect, useState } from 'react';
+import createTabsStateObject from './components/createTabsStateObject';
 import DateInput from './components/DateInput';
 import FranchiseInput from './components/FranchiseInput';
 import NextTab from './components/NextTab';
@@ -28,7 +29,7 @@ const WholeSalesViewBody = () => {
     // wholesale transport
     // to do
 
-    const [tabs, setTabs] = useState({ showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, })
+    const [tabs, setTabs] = useState(createTabsStateObject(true, false, false, false));
 
     useEffect(() => {
         if (activeFlavors?.length > 0) {
