@@ -2,20 +2,16 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import React, { useEffect, useState } from 'react'
 import validateFloatNumbers from 'utils/validateFloatNumbers';
 
-const BucketsSummaryTable = ({ category, flavors }) => {
+const BucketsSummaryTable = ({
+    category,
+    flavors,
+    handleWeightChange,
+    weight,
+}) => {
 
     const amountOfBuckets = flavors.map(f => +f.amountToSell).reduce((aux, n) => aux + n, 0);
 
     const [subtotal, setSubtotal] = useState(0)
-    const [weight, setWeight] = useState(null);
-
-    const onChange = ({ target }) => {
-        if (target.value <= 0) {
-            setWeight('')
-            return;
-        }
-        setWeight(target.value)
-    }
 
     useEffect(() => {
         setSubtotal(weight * category.price);
@@ -45,7 +41,7 @@ const BucketsSummaryTable = ({ category, flavors }) => {
                                     style={{ maxWidth: '5em' }}
                                     type='number'
                                     value={weight}
-                                    onChange={onChange}
+                                    onChange={(e) => handleWeightChange(category, e.target.value)}
                                     onKeyDown={(e) => validateFloatNumbers(e)}
                                 />
                             </TableCell>

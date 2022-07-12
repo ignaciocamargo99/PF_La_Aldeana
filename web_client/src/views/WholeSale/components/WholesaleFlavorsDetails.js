@@ -1,7 +1,13 @@
 import React from 'react'
 import Categories from './Categories';
 
-const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell }) => {
+const WholesaleFlavorsDetails = ({
+    bucketsWeights,
+    flavors,
+    handleRemoveFlavor,
+    modifyFlavorAmountToSell,
+    setBucketsWeights,
+}) => {
 
     const thereAreFlavorsToSell = flavors?.length > 0;
 
@@ -16,6 +22,8 @@ const WholesaleFlavorsDetails = ({ flavors, handleRemoveFlavor, modifyFlavorAmou
                     flavors={flavors}
                     handleRemoveFlavor={handleRemoveFlavor}
                     modifyFlavorAmountToSell={modifyFlavorAmountToSell}
+                    bucketsWeights={bucketsWeights}
+                    setBucketsWeights={setBucketsWeights}
                 />
             )}
         </>

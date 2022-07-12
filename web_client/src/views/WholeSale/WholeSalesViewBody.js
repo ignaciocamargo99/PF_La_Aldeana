@@ -20,6 +20,8 @@ const WholeSalesViewBody = () => {
     const [wholesaleFranchise, setWholesaleFranchise] = useState(null);
     // wholesale flavors (only when flavor.toSell === true)
     const [allFlavors, setAllFlavors] = useState();
+    // wholesale flavors buckets weights
+    const [bucketsWeights, setBucketsWeights] = useState([]);
     // wholesale supplies (only when supply.toSell === true)
     const [allSupplies, setAllSupplies] = useState();
     // wholesale transport
@@ -54,6 +56,8 @@ const WholeSalesViewBody = () => {
                 showTab={tabs.showFlavorsTab}
                 allFlavors={allFlavors}
                 setAllFlavors={setAllFlavors}
+                bucketsWeights={bucketsWeights}
+                setBucketsWeights={setBucketsWeights}
                 loadingFlavors={loadingFlavors}
             />
             <TabSupplies
