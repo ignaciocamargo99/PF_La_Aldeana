@@ -1,8 +1,6 @@
 
 const Tabs = ({ tabs, setTabs }) => {
 
-    console.log('Tabs');
-
     const defaultTabStyle = 'nav-link text-dark';
     const activeTabStyle = 'nav-link active bg-la-aldeana-violeta text-white';
     const activeTabStyle2 = 'nav-link active bg-la-aldeana-naranja text-black fw-bold';

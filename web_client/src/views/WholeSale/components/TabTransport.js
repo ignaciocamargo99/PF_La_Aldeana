@@ -2,8 +2,6 @@ import React from 'react'
 
 const TabTransport = ({ showTab }) => {
 
-  console.log('TabTransport');
-
   return (
     <>
       {showTab && (

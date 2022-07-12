@@ -2,8 +2,6 @@ import React from 'react'
 
 const TabSummary = ({ showTab }) => {
 
-  console.log('TabSummary');
-
   return (
     <>
       {showTab && (

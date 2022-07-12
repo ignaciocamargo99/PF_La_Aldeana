@@ -3,6 +3,7 @@ import { useGetSupplies } from 'hooks/useGetSupplies';
 import { useEffect, useState } from 'react';
 import DateInput from './components/DateInput';
 import FranchiseInput from './components/FranchiseInput';
+import NextTab from './components/NextTab';
 import TabFlavors from './components/TabFlavors';
 import Tabs from './components/Tabs';
 import TabSummary from './components/TabSummary';
@@ -68,6 +69,7 @@ const WholeSalesViewBody = () => {
             />
             <TabTransport showTab={tabs.showTransportTab} />
             <TabSummary showTab={tabs.showSummaryTab} />
+            <NextTab tabs={tabs} setTabs={setTabs} />
         </>
     )
 }
