@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const advancesGetDB = () => {
-    const sqlSelect = "SELECT a.nroDNI, a.`date`, a.amount, a.pay, e.name, e.last_name  FROM ADVANCES a  LEFT JOIN EMPLOYEES e ON a.nroDNI = e.dni WHERE e.active = 1 ORDER BY  a.`date` DESC";
+    const sqlSelect = "SELECT a.nroDNI, a.`date`, a.amount, a.pay, e.name, e.last_name  FROM ADVANCES a  LEFT JOIN EMPLOYEES e ON a.nroDNI = e.dni WHERE e.active = 1 ORDER BY e.last_name ASC , e.name ASC ,  a.`date` DESC";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
