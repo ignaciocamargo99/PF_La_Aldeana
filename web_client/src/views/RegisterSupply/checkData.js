@@ -4,7 +4,6 @@ export default function checkData(props) {
         descriptionSupply: props.description,
         typeSupply: props.id_supply_type,
         multiplePrice: props.price_wholesale,
-        singlePrice: props.price_retail,
         lotSupply: props.stock_lot,
         unitSupply: props.stock_unit,
         unitPerLotSupply: props.unit_x_lot,
@@ -19,12 +18,12 @@ export default function checkData(props) {
         }
 
         if (data.nameSupply !== '' && data.nameSupply !== 'null' && data.deliverySupply &&
-        data.singlePrice > 0 && data.lotSupply > 0 && data.unitSupply > 0 && data.unitPerLotSupply > 0) {
+        data.lotSupply > 0 && data.unitSupply > 0 && data.unitPerLotSupply > 0) {
             return true;
         }
 
         if (data.nameSupply !== '' && data.nameSupply !== 'null' && !data.deliverySupply &&
-        !data.franchiseSupply && data.lotSupply > 0 && data.unitSupply > 0 && data.unitPerLotSupply > 0 && data.singlePrice === 0 && data.multiplePrice === 0) {
+        !data.franchiseSupply && data.lotSupply > 0 && data.unitSupply > 0 && data.unitPerLotSupply > 0 && data.multiplePrice === 0) {
             return true;
         }
     } else if(data.typeSupply === 1){
@@ -33,13 +32,12 @@ export default function checkData(props) {
             return true;
         }
 
-        if (data.nameSupply !== '' && data.nameSupply !== 'null' && data.deliverySupply &&
-        data.singlePrice > 0 && data.unitSupply > 0) {
+        if (data.nameSupply !== '' && data.nameSupply !== 'null' && data.deliverySupply && data.unitSupply > 0) {
             return true;
         }
 
         if (data.nameSupply !== '' && data.nameSupply !== 'null' && !data.deliverySupply && !data.franchiseSupply && data.unitSupply > 0 &&
-        data.singlePrice === 0 && data.multiplePrice === 0) {
+        data.multiplePrice === 0) {
             return true;
         }
     } else if(data.typeSupply === 3) {
@@ -47,17 +45,17 @@ export default function checkData(props) {
             return true;
         }
 
-        if (data.nameSupply !== '' && data.nameSupply !== 'null' && data.deliverySupply && data.singlePrice > 0) {
+        if (data.nameSupply !== '' && data.nameSupply !== 'null' && data.deliverySupply) {
             return true;
         }
 
         if (data.nameSupply !== '' && data.nameSupply !== 'null' && !data.deliverySupply && !data.franchiseSupply &&
-        data.singlePrice === 0 && data.multiplePrice === 0) {
+        data.multiplePrice === 0) {
             return true;
         }
     }
 
-    if (data.franchiseSupply && data.deliverySupply && (data.singlePrice <= 0 || data.multiplePrice <= 0)) return false;
+    if (data.franchiseSupply && data.deliverySupply && (data.multiplePrice <= 0)) return false;
     
     return false;
 }

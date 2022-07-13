@@ -41,7 +41,6 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{!element.description ? '--' : element.description}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{!element.price_wholesale ? '--' : element.price_wholesale}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{!element.price_retail ? '--' : element.price_retail}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadSupplyButton data={element} read={handleRead} />
                                         </td>

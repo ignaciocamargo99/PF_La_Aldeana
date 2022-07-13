@@ -18,7 +18,7 @@ export default function LicensesTable(props) {
     let permissionsAccess = props.permissionsAccess;
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [elementsPerPage] = useState(15);
+    const [elementsPerPage] = useState(10);
     const [filteredElements, setFilteredElements] = useState([]);
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
@@ -26,18 +26,33 @@ export default function LicensesTable(props) {
     useEffect(() => {
         if (props.licenses.length > 0) {
             let aux = props.licenses;
-            if (props.dateInit) aux = aux.filter((elem) => {
-                return elem.date_init >= props.dateInit;
-            });
-            if (props.dateFinish) aux = aux.filter((elem) => {
-                return elem.date_finish <= props.dateFinish;
+            if (props.filter === "All" || props.filter === "Finish") {
+                if (props.dateInit && props.dateFinish) {
+                    aux = aux.filter((elem) => {
+                        return elem.date_finish >= props.dateInit && elem.date_init <= props.dateFinish;
+                    });
+                } else {
+                    if (props.dateInit) aux = aux.filter((elem) => {
+                        return elem.date_init >= props.dateInit || elem.date_finish >= props.dateInit;
+                    });
+                    if (props.dateFinish) aux = aux.filter((elem) => {
+                        return elem.date_finish <= props.dateFinish || elem.date_init <= props.dateFinish;
+                    });
+                }
+            }
+            aux = aux.filter((license) => {
+                return ((props.filter === "All") ||
+                    (props.filter === "Finish" && (new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)) ||
+                    (props.filter === "Current" && (new Date(dateBDToString(license.date_init, 'En')).getTime() <= date) && (new Date(dateBDToString(license.date_finish, 'En')).getTime() >= date)) ||
+                    (props.filter === "OnComing" && (new Date(dateBDToString(license.date_init, 'En')).getTime() > date)))
             });
             setListTable(aux);
         }
-    }, [props.licenses, props.dateInit, props.dateFinish]);
+    }, [props.licenses, props.dateInit, props.dateFinish, props.filter]);
 
     useEffect(() => {
         props.setNameSearch(nameSearch);
+
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
@@ -138,60 +153,53 @@ export default function LicensesTable(props) {
                             </tr>
                         </thead>
                         {currentElements?.map((license, i) => {
-                            if (
-                                (props.filter === "All") ||
-                                (props.filter === "Finish" && (new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)) ||
-                                (props.filter === "Current" && (new Date(dateBDToString(license.date_init, 'En')).getTime() <= date) && (new Date(dateBDToString(license.date_finish, 'En')).getTime() >= date)) ||
-                                (props.filter === "OnComing" && (new Date(dateBDToString(license.date_init, 'En')).getTime() > date))
-                            ) {
-                                return (
-                                    <tbody key={i}>
-                                        <tr>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_init, 'Es')}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_finish, 'Es')}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.fullName}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.reason}</td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <button className="btn btn-warning btnRead" onClick={() => { props.setActionLicense('Ver', license) }}>
-                                                    <FontAwesomeIcon icon={faEye} />
+                            return (
+                                <tbody key={i}>
+                                    <tr>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_init, 'Es')}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{dateBDToString(license.date_finish, 'Es')}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.fullName}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{license.reason}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <button className="btn btn-warning btnRead" onClick={() => { props.setActionLicense('Ver', license) }}>
+                                                <FontAwesomeIcon icon={faEye} />
+                                            </button>
+                                        </td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <BeShowed show={permissionsAccess === 3} >
+                                                <button className="btn btn-info btnEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
+                                                    <FontAwesomeIcon icon={faEdit} />
                                                 </button>
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <BeShowed show={permissionsAccess === 3} >
-                                                    <button className="btn btn-info btnEdit" onClick={() => { props.setActionLicense('Editar', license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
-                                                        disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
-                                                        <FontAwesomeIcon icon={faEdit} />
-                                                    </button>
-                                                </BeShowed>
-                                                <BeShowed show={permissionsAccess !== 3} >
-                                                    <button className="disabledSendBtn" disabled><FontAwesomeIcon icon={faEdit} /></button>
-                                                </BeShowed>
+                                            </BeShowed>
+                                            <BeShowed show={permissionsAccess !== 3} >
+                                                <button className="disabledSendBtn" disabled><FontAwesomeIcon icon={faEdit} /></button>
+                                            </BeShowed>
 
-                                            </td>
-                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                <BeShowed show={permissionsAccess === 3}>
-                                                    <button className="btn btn-danger btnDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
-                                                        disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
-                                                        <FontAwesomeIcon icon={faMinus} />
-                                                    </button>
-                                                </BeShowed>
-                                                <BeShowed show={permissionsAccess !== 3}>
-                                                    <button className="disabledSendBtn" disabled><FontAwesomeIcon icon={faMinus} /></button>
-                                                </BeShowed>
+                                        </td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            <BeShowed show={permissionsAccess === 3}>
+                                                <button className="btn btn-danger btnDelete" onClick={() => { confirmDeleteLicense(license.id_license) }} style={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date) ? { backgroundColor: 'grey', boxShadow: '0px 4px 4px rgba(180, 208, 232, 0.25)' } : null}
+                                                    disabled={(new Date(dateBDToString(license.date_finish, 'En')).getTime() < date)}>
+                                                    <FontAwesomeIcon icon={faMinus} />
+                                                </button>
+                                            </BeShowed>
+                                            <BeShowed show={permissionsAccess !== 3}>
+                                                <button className="disabledSendBtn" disabled><FontAwesomeIcon icon={faMinus} /></button>
+                                            </BeShowed>
 
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                )
-                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            )
                         })}
                     </table>
                 </div>
-                <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+                {currentElements.length > 0 ? <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination> : null}
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.licenses.length === 0}>
+            <BeShowed show={!props.showSpinner && (props.licenses.length === 0 || currentElements.length === 0)}>
                 <br />
-                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron licencias registradas hasta el momento.</h4>
+                <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron licencias registradas hasta el momento que coincidan con los criterios solicitados.</h4>
             </BeShowed>
         </>
     );

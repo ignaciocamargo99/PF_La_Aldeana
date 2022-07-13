@@ -72,7 +72,7 @@ const EmployeesRealTable = ({ pageElements, handleRead, handleEdit, permissionsA
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <DeleteButton
-                                                disable={+permissionsAccess === 1}
+                                                disable={+permissionsAccess === 3}
                                                 onConfirm={() => { deleteEmployee(element) }}
                                                 warningTitle={`¿Seguro que desea eliminar a ${element.name}?`}
                                                 warningText={'El empleado ya no será visible para el personal de la empresa.'}

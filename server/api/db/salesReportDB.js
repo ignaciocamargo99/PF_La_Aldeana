@@ -14,6 +14,10 @@ const salesReportGetDB = (from, to) => {
                     let res = [];
                     let total = 0;
                     let types = []
+                    if (result.length < 1) {
+                        res = [...res, {total: total, types: types}];
+                        resolve(res);
+                    }
                     
                     for(const sale of result){
                         let i = res.find(resul => {return resul.id === sale.id})

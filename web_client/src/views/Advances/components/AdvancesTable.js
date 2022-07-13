@@ -191,7 +191,31 @@ export default function AdvancesTable(props) {
     const handlerLoadingSpinner = () => setIsLoadingSpinner(false);
 
     useEffect(()=>{
-        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={filteredElements}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
+        let advancesPDF = [];
+        let j = 0;
+        let elements = filteredElements.sort((a, b) => a.fullName < b.fullName ? 1 : -1);
+        let employeeBefore = elements[0];
+        elements.forEach((advance,i)=>{
+            console.log(advance)
+            if (employeeBefore.nroDNI === advance.nroDNI) {
+                if (i!==0){
+                    advancesPDF[j].amount += advance.amount;
+                    advancesPDF[j].pay += advance.pay;
+                }else advancesPDF[advancesPDF.length] = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                let aux = advance;
+                aux.name = ' ';
+                advancesPDF[advancesPDF.length] = advance;
+            } else {
+                employeeBefore = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                j = advancesPDF.length;
+
+                advancesPDF[advancesPDF.length] = {amount: advance.amount, pay: advance.pay, fullName: advance.fullName, title: true, date: advance.date, nroDNI: advance.nroDNI};
+                advance.name = ' ';
+                advancesPDF[advancesPDF.length] = advance;
+            }
+        });
+        console.log(advancesPDF);
+        setMyDoc(<MyDocument user={props.user} title={(dateInit? (dateFinish? "(":'') +dateText(dateInit, true, true):' ')+ (dateFinish&&dateInit?" a ":'')  + (dateFinish?dateText(dateFinish, true, true):' ')+(dateFinish&&dateInit?")":'')} advances={advancesPDF}  description={(nameSearch.length === 0 ? '' : 'Filtrado por nombres que coincidan con: "' + nameSearch + '"')} />);
     }, [dateInit, dateFinish, filteredElements, nameSearch])
 
     const onChangeDateInit = (e) => {
@@ -249,20 +273,21 @@ export default function AdvancesTable(props) {
                                 <label className="col-sm-6">Dinero total pagado: ${pay}</label>
                                 <div className="formRow d-flex justify-content-between">
                                     <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-                                    <div className="input-group" style={{marginLeft: 'auto'}}>
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
-                                        </div>
-                                        <div  style={{ textAlign: 'right' }} >
-                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em", marginRight: '1em' }} ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
+
+                                    <div className="search-input">
+                                        <div className="input-group" style={{marginLeft: 'auto'}}>
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                                             </div>
+                                                <input id="inputSearchName" className="form-control" type="date" ref={dateInitRef} onChange={(e) => { onChangeDateInit(e) }} defaultValue={dateFormat(getLastWeeksDate())}></input>
                                         </div>
+                                    </div>
+                                    <div className="search-input">
                                         <div className="input-group">
                                             <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
                                                 <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                                             </div>
-                                            <div style={{ textAlign: 'right' }} >
-                                                <input id="inputSearchName" className="form-control" type="date" style={{ maxWidth: "9em"}}ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
+                                            <input id="inputSearchName" className="form-control" type="date" ref={dateFinishRef}  onChange={(e) => { onChangeDateFinish(e) }} defaultValue={dateFormat(new Date())}></input>
                                         </div>
                                     </div>
                                 </div>

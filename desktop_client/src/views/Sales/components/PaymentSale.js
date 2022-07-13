@@ -57,11 +57,6 @@ const PaymentSale = (props) => {
         }
     }, [props.payType])
 
-    const onChangeAmount = () => {
-        props.updatePaymentAmount(inputPay.current.value);
-        setAmount(inputPay.current.value);
-    }
-
     const loadAmount = (e) => {
         let numberKeyboard = parseInt(e)
         setKeyboardNumber(numberKeyboard);
@@ -117,21 +112,9 @@ const PaymentSale = (props) => {
                             </div>
                         </div>
                         <div className="col-6">
-
                             <NumericKeyboard load={loadAmount} />
-
                         </div>
-
                     </div>
-
-
-
-
-
-
-
-
-
                 </BeShowed>
                 <BeShowed show={boolPayCard}>
                     <div className='formRow'>
