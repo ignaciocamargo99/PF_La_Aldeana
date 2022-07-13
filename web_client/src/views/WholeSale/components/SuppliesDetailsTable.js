@@ -13,10 +13,10 @@ const SuppliesDetailsTable = ({ supplies, handleRemoveSupply, modifySupplyAmount
                         <TableRow>
                             <TableCell></TableCell>
                             <TableCell ></TableCell>
-                            <TableCell align="center">Stock</TableCell>
-                            <TableCell align="center">Precio</TableCell>
-                            <TableCell align="center">Cantidad   </TableCell>
-                            <TableCell align="center">Subtotal insumo</TableCell>
+                            <TableCell className='fs-6' align="center">Stock</TableCell>
+                            <TableCell className='fs-6' align="center">Precio</TableCell>
+                            <TableCell className='fs-6' align="center">Cantidad   </TableCell>
+                            <TableCell className='fs-6' align="center">Subtotal insumo</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -28,17 +28,17 @@ const SuppliesDetailsTable = ({ supplies, handleRemoveSupply, modifySupplyAmount
                                     key={s.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell component="th" scope="row">
+                                    <TableCell className='fs-6' component="th" scope="row">
                                         <FontAwesomeIcon className='icon-fa-pointer' icon={faTrashRestore} onClick={() => handleRemoveSupply(s)} />
                                     </TableCell>
-                                    <TableCell >{s.name}</TableCell>
+                                    <TableCell className='fs-6'>{s.name}</TableCell>
                                     <TableCell align="center">
                                         {s.stock_unit}
                                     </TableCell>
-                                    <TableCell align="center">
+                                    <TableCell className='fs-6' align="center">
                                         {s.price_wholesale}
                                     </TableCell>
-                                    <TableCell align="center">
+                                    <TableCell className='fs-6' align="center">
                                         <div className='ps-2 pe-2 d-flex justify-content-between'>
                                             <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faMinusCircle} onClick={() => modifySupplyAmountToSell(s, -1)} />
                                             &nbsp;
@@ -47,7 +47,7 @@ const SuppliesDetailsTable = ({ supplies, handleRemoveSupply, modifySupplyAmount
                                             <FontAwesomeIcon className='icon-fa-pointer text-la-aldeana-violeta' icon={faPlusCircle} shake='true' onClick={() => modifySupplyAmountToSell(s, 1)} />
                                         </div>
                                     </TableCell>
-                                    <TableCell align="center">
+                                    <TableCell className='fs-6' align="center">
                                         $&nbsp;{subtotalSupply}
                                     </TableCell>
                                 </TableRow>

@@ -23,10 +23,10 @@ const BucketsSummaryTable = ({
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Baldes {category.name}</TableCell>
-                            <TableCell>Precio Kg {category.name}</TableCell>
-                            <TableCell>Peso Total Kg</TableCell>
-                            <TableCell>Subtotal</TableCell>
+                            <TableCell className='fs-6'>Baldes {category.name}</TableCell>
+                            <TableCell className='fs-6'>Precio Kg {category.name}</TableCell>
+                            <TableCell className='fs-6'>Peso Total Kg</TableCell>
+                            <TableCell className='fs-6'>Subtotal</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -34,9 +34,9 @@ const BucketsSummaryTable = ({
                             key={category.name}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell >{amountOfBuckets}</TableCell>
-                            <TableCell >$&nbsp;{category.price}</TableCell>
-                            <TableCell align="center">
+                            <TableCell className='fs-6'>{amountOfBuckets}</TableCell>
+                            <TableCell className='fs-6'>$&nbsp;{category.price}</TableCell>
+                            <TableCell className='fs-6' align="center">
                                 <input
                                     style={{ maxWidth: '5em' }}
                                     type='number'
@@ -45,7 +45,7 @@ const BucketsSummaryTable = ({
                                     onKeyDown={(e) => validateFloatNumbers(e)}
                                 />
                             </TableCell>
-                            <TableCell align="right">$&nbsp;{subtotal}</TableCell>
+                            <TableCell className='fs-6' align="right">$&nbsp;{subtotal}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

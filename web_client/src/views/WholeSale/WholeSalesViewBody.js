@@ -7,7 +7,7 @@ import FranchiseInput from './components/FranchiseInput';
 import NextTab from './components/NextTab';
 import TabFlavors from './components/TabFlavors';
 import Tabs from './components/Tabs';
-import TabSummary from './components/TabSummary';
+import TabSummary from './components/summaryTab/TabSummary';
 import TabSupplies from './components/TabSupplies';
 import TabTransport from './components/TabTransport';
 
