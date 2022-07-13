@@ -1,6 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import validateFloatNumbers from 'utils/validateFloatNumbers';
+import calculateCategorySubtotal from './calculateCategorySubtotal';
 
 const BucketsSummaryTable = ({
     category,
@@ -14,7 +15,7 @@ const BucketsSummaryTable = ({
     const [subtotal, setSubtotal] = useState(0)
 
     useEffect(() => {
-        setSubtotal(weight * category.price);
+        setSubtotal(calculateCategorySubtotal(weight, category.price));
     }, [weight, category])
 
     return (

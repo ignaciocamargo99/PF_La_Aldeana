@@ -1,5 +1,7 @@
 import React from 'react'
 import CategoryDetail from './CategoryDetail';
+import filterFlavorsByCategory from './filterFlavorsByCategory';
+import getCategoryWeight from './getCategoryWeight';
 
 const Categories = ({
     bucketsWeights,
@@ -45,8 +47,8 @@ const Categories = ({
     return (
         <div className='ps-3 pe-3'>
             {categoriesIds.map((categoryId) => {
-                const flavorsOfCategory = flavors.filter(f => +f.FlavorType.idFlavorType === +categoryId);
-                const catWeight = bucketsWeights.find(bw => +bw.idFlavorType === +categoryId)?.weight || '';
+                const flavorsOfCategory = filterFlavorsByCategory(categoryId, flavors);
+                const catWeight = getCategoryWeight(categoryId, bucketsWeights);
                 const category = flavorsOfCategory[0].FlavorType;
 
                 return (
