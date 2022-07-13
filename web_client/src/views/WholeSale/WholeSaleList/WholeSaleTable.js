@@ -84,7 +84,7 @@ const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
                                     {pageElements[0].status === 'PENDING' && (
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <EditButton link={permissionsAccess !== 3 ? '#' : `${WHOLESALE_EDIT_PAGE}/${element.id_sale_branch}`}
-                                                permissionsAccess={permissionsAccess === 3 ? false : true} />
+                                                permissionsAccess={permissionsAccess} />
                                         </td>
                                     )}
                                     {pageElements[0].status === 'FINISH' && (
