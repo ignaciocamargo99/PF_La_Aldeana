@@ -88,8 +88,8 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
 
     return (
         <div style={{ maxHeight: '600px', overflow: 'auto' }}>
-            <Table style={{ position: 'absolute', height: '5rem', width: '65rem' }}>
-                <thead>
+            <Table>
+                <thead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
                     <tr>
                         <th scope="col" style={{ backgroundColor: 'gray', textAlign: 'center', verticalAlign: 'middle', width: '8rem' }}>
                             <select class="form-control" onChange={(e) => { setChargeFilter(e.target.value) }}>
@@ -116,8 +116,6 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                         })}
                     </tr>
                 </thead>
-            </Table>
-            <Table style={{ marginTop: '6rem' }}>
                 <tbody style={{ margin: '0', padding: '2rem' }}>
                     {employees?.map((employee, i) => {
                         return (
