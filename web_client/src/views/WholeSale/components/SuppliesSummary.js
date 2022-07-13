@@ -9,7 +9,7 @@ const SuppliesSummary = ({subtotal}) => {
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Subotal</TableCell>
+                            <TableCell className='fs-6'>Subotal</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -17,7 +17,7 @@ const SuppliesSummary = ({subtotal}) => {
                             key={'subtotal'}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell align="right">$&nbsp;{subtotal}</TableCell>
+                            <TableCell className='fs-6' align="right">$&nbsp;{subtotal}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
