@@ -4,9 +4,10 @@ import React from 'react';
 import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import PropTypes from 'prop-types'
 
-const DeleteButton = ({ permissionsAccess, warningTitle, warningText, onConfirm }) => {
+const DeleteButton = ({ disable, warningTitle, warningText, onConfirm }) => {
+    console.log(disable)
     let buttonStyle = 'btn btn-danger btnDelete';
-    if (permissionsAccess !== 3) {
+    if (!disable) {
         buttonStyle = 'disabledSendBtn';
     }
 
@@ -20,7 +21,7 @@ const DeleteButton = ({ permissionsAccess, warningTitle, warningText, onConfirm 
     return (
         <button
             className={buttonStyle}
-            disabled={permissionsAccess !== 3 ? true : false}
+            disabled={!disable}
             onClick={handleDelete}
             type="button"
         >
