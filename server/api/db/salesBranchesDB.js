@@ -37,7 +37,8 @@ const readSalesBranchByIdDB = async (id) => {
         include: [
             Franchise,
             DetailSalesBranchFlavor,
-            DetailSalesBranchTypeFlavor
+            DetailSalesBranchTypeFlavor,
+            DetailSalesBranchSupplies
         ],
         where: { id_sale_branch: id }
     });
@@ -101,34 +102,41 @@ const saveSalesBranchDB = async (salesData) => {
     }
 };
 
-const putSalesBranchDB = async (id_sale_branch, body) => {
-    const { amount, charter, status, flavors, type_flavors, supplies } = body;
-    let transaction;
+// const putSalesBranchDB = async (id_sale_branch, body) => {
+//     const { amount, charter, status, flavors, type_flavors, supplies } = body;
+//     let transaction;
 
-    try {
-        transaction = await sequelize.transaction();
+//     try {
+//         transaction = await sequelize.transaction();
 
-        await SalesBranches.update(
-            {
-                amount,
-                charter,
-                status
-            },
-            { where: { id_sale_branch } },
-            { transaction }
-        );
+//         await SalesBranches.update(
+//             {
+//                 amount,
+//                 charter,
+//                 status
+//             },
+//             { where: { id_sale_branch } },
+//             { transaction }
+//         );
 
-        console.log('success');
-        await transaction.commit();
-    } catch (error) {
-        console.log('error');
-        console.log(error);
-        if (transaction) {
-            await transaction.rollback();
-        }
-        throw 'Se produjo un error al realizar la transacción.';
-    }
-};
+//         await asyncForeachFlavorsUpdate(
+//             flavors,
+//             id_sale_branch,
+//             status,
+//             transaction
+//         );
+
+//         console.log('success');
+//         await transaction.commit();
+//     } catch (error) {
+//         console.log('error');
+//         console.log(error);
+//         if (transaction) {
+//             await transaction.rollback();
+//         }
+//         throw 'Se produjo un error al realizar la transacción.';
+//     }
+// };
 
 // -------------------------------------- Funciones usadas por los endpoints --------------------------------------
 const asyncForeachFlavors = async (
@@ -192,11 +200,13 @@ const asyncForeachSupplies = async (
                 },
                 { transaction }
             );
-            const newStock = supply.stock_unit - quantity;
-            await Supplies.update(
-                { stock_unit: newStock },
-                { where: { id_supply }, transaction }
-            );
+            if (supply.id_supply_type === 1) {
+                const newStock = supply.stock_unit - quantity;
+                await Supplies.update(
+                    { stock_unit: newStock },
+                    { where: { id_supply }, transaction }
+                );
+            }
         }
     }
 };
@@ -205,6 +215,5 @@ const asyncForeachSupplies = async (
 module.exports = {
     readSalesBranchDB,
     readSalesBranchByIdDB,
-    saveSalesBranchDB,
-    putSalesBranchDB
+    saveSalesBranchDB
 };
