@@ -9,7 +9,6 @@ const CardSummary = ({
     subtotalSupplies,
     subtotalTransport,
     total,
-    handleSave,
     handleFinalize,
 }) => {
 
@@ -29,7 +28,6 @@ const CardSummary = ({
                     </div>
                 </CardContent>
                 <CardActions className="align-self-end">
-                    <button type="button" className="btn btn-light" onClick={handleSave}>Guardar</button>
                     <button type="button" className="btn bg-la-aldeana-violeta text-white" onClick={handleFinalize}>Finalizar</button>
                 </CardActions>
             </Card>

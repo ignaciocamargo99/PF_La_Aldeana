@@ -1,7 +1,9 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { postWholesale } from 'helpers/postWholesale';
 import calculateCategorySubtotal from '../calculateCategorySubtotal';
 import calculateSuppliesSubtotal from '../calculateSuppliesSubtotal';
+import calculateSupplySubtotal from '../calculateSupplySubtotal';
 import filterFlavorsByCategory from '../filterFlavorsByCategory';
 import getCategoryWeight from '../getCategoryWeight';
 import CardSummary from './CardSummary';
@@ -21,15 +23,19 @@ const TabSummary = ({
 
     const flavorsCategoriesIds = wholesaleFlavors?.length > 0 ? [...new Set(wholesaleFlavors.map(f => +f.FlavorType.idFlavorType))] : [];
 
+    const filterFlavorsAndCalculateItsCategorySubtotal = (categoryId) => {
+        const flavorsOfCategory = filterFlavorsByCategory(categoryId, wholesaleFlavors);
+        const categoryWeight = getCategoryWeight(categoryId, wholesaleBucketsWeights);
+        const categoryPrice = flavorsOfCategory[0].FlavorType.price;
+
+        return calculateCategorySubtotal(categoryWeight, categoryPrice);
+    }
+
     const calculateFlavorsSubtotal = () => {
         let subtotalFlavors = 0;
 
         flavorsCategoriesIds.forEach(categoryId => {
-            const flavorsOfCategory = filterFlavorsByCategory(categoryId, wholesaleFlavors);
-            const categoryWeight = getCategoryWeight(categoryId, wholesaleBucketsWeights);
-            const categoryPrice = flavorsOfCategory[0].FlavorType.price;
-
-            subtotalFlavors += calculateCategorySubtotal(categoryWeight, categoryPrice);
+            subtotalFlavors += filterFlavorsAndCalculateItsCategorySubtotal(categoryId);
         })
 
         return subtotalFlavors;
@@ -41,15 +47,53 @@ const TabSummary = ({
 
     const total = +subtotalFlavors + +wholesaleTransportCost + +subtotalSupplies;
 
-    const handleSave = () => {
-        // to do
-        alert('En desarrollo...')
-    }
-
     const handleFinalize = () => {
-        // to do
-        // armar payload
-        alert('En desarrollo...')
+
+        // to do validación
+        // to do sweet alert 
+        // to do mover funciones a otro file
+
+        const flavorsPayload = wholesaleFlavors.map((f) => {
+            return {
+                id_flavor: f.idFlavor,
+                quantity: f.amountToSell,
+            };
+        });
+
+        const categoriesPayload = wholesaleBucketsWeights.map((cat) => {
+            return {
+                id_type_flavor: cat.idFlavorType,
+                weight: cat.weight,
+                subtotal: filterFlavorsAndCalculateItsCategorySubtotal(cat.idFlavorType),
+            }
+        });
+
+        const suppliesPayload = wholesaleSupplies.map((s) => {
+            return {
+                id_supply: s.id_supply,
+                quantity: s.amountToSell,
+                subtotal: calculateSupplySubtotal(s),
+            }
+        });
+
+        let wholesalePayload = {
+            date: wholesaleDate,
+            amount: total,
+            id_franchise: wholesaleFranchise.id_franchise,
+            charter: wholesaleTransportCost,
+            flavors: flavorsPayload,
+            type_flavors: categoriesPayload,
+            supplies: suppliesPayload,
+        };
+
+        console.log(wholesalePayload)
+        postWholesale(wholesalePayload)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return (
@@ -79,7 +123,6 @@ const TabSummary = ({
                             subtotalSupplies={subtotalSupplies}
                             subtotalTransport={wholesaleTransportCost}
                             total={total}
-                            handleSave={handleSave}
                             handleFinalize={handleFinalize}
                         />
                     </div>
