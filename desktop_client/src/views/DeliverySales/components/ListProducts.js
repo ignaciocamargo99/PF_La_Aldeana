@@ -89,7 +89,7 @@ const ListProducts = (props) => {
                     <HeaderTable
                         th={<>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
-                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Precio</label></th>
+                            <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Precio ($)</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Cantidad</label></th>
                             <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
                         </>
@@ -108,7 +108,7 @@ const ListProducts = (props) => {
                                                     <input id={`quantityInput${i}`} className="form-control" style={{ textAlign: 'center' }} type='number' placeholder="0" disabled={true}></input>
                                                 </td>
                                                 <td style={{ textAlign: 'center', width: '12%', backgroundColor: '#9E9F9F' }}>
-                                                    <button type="button" className="sendAdd" style={{ backgroundColor: 'grey' }} disabled={true}><FontAwesomeIcon icon={faPlus} /></button>
+                                                    <button type="button" className="btn btn-light sendAdd" style={{ backgroundColor: 'grey' }} disabled={true}><FontAwesomeIcon icon={faPlus} /></button>
                                                 </td>
                                             </tr>
                                         </tbody>)
@@ -122,7 +122,7 @@ const ListProducts = (props) => {
                                                         <input id={`quantityInput${i}`} className="form-control" style={{ textAlign: 'center' }} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => { validateQuantity(e, i) }} onKeyDown={(e) => { validateFloatNumbers(e) }} defaultValue={productQuantity.quantity === 0 ? '' : productQuantity.quantity}></input>
                                                     </td>
                                                     <td style={{ textAlign: 'center', width: '12%' }}>
-                                                        <button type="button" className="sendAdd" onClick={() => { onClick(productQuantity.product.id_product, i) }}><FontAwesomeIcon icon={faPlus} /></button>
+                                                        <button type="button" className="btn btn-light sendAdd" onClick={() => { onClick(productQuantity.product.id_product, i) }}><FontAwesomeIcon icon={faPlus} /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -136,7 +136,8 @@ const ListProducts = (props) => {
             </BeShowed>
             <BeShowed show={noProduct}>
                 <div className={"col-md-6 offset-md-3"}>
-                    <label><b style={{ color: 'orange' }}>No hay productos con ese nombre</b></label>
+                    <br />
+                    <h4 className="row justify-content-center" style={{ color: '#C16100', width: '80%', textAlign: 'center' }}>No existen productos con los filtros ingresados...</h4>
                 </div>
             </BeShowed>
         </>

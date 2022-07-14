@@ -3,10 +3,10 @@ const pool = require('../../config/connection');
 const clientGetDB = (cellphone) => {
     console.log(cellphone)
     let sqlSelect;
-    if(cellphone !== undefined){
+    if (cellphone !== undefined) {
         sqlSelect = `SELECT * FROM CLIENTS WHERE cellphone = ${cellphone}`;
     }
-    else{
+    else {
         sqlSelect = `SELECT * FROM CLIENTS`;
     }
 
@@ -24,9 +24,9 @@ const clientGetDB = (cellphone) => {
 };
 
 const clientPostDB = (newClient) => {
-    const {cellphone,names,street_name,street_number} = newClient
+    const { cellphone, names, street_name, street_number, observation } = newClient
 
-    const sqlInsertClient = `INSERT INTO CLIENTS(cellphone,names,street_name,street_number) VALUES(${cellphone},'${names}','${street_name}',${street_number})`
+    const sqlInsertClient = `INSERT INTO CLIENTS(cellphone,names,street_name,street_number,observation) VALUES(${cellphone},'${names}','${street_name}',${street_number},'${observation}')`
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -42,11 +42,11 @@ const clientPostDB = (newClient) => {
     });
 };
 
-const clientPutDB = (cellphone,address) => {
+const clientPutDB = (cellphone, address) => {
 
-    const { street_name,street_number } = address
+    const { street_name, street_number, observation } = address
 
-    const sqlUpdateClient = `UPDATE CLIENTS SET street_name = '${street_name}', street_number = ${street_number} WHERE cellphone = ${cellphone}`
+    const sqlUpdateClient = `UPDATE CLIENTS SET street_name = '${street_name}', street_number = ${street_number}, observation = '${observation}' WHERE cellphone = ${cellphone}`
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -62,4 +62,4 @@ const clientPutDB = (cellphone,address) => {
     });
 };
 
-module.exports = { clientGetDB , clientPostDB, clientPutDB};
+module.exports = { clientGetDB, clientPostDB, clientPutDB };
