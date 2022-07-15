@@ -7,17 +7,19 @@ import { WHOLESALE_PAGE } from "routes/routes";
 import DateInput from "views/WholeSale/components/DateInput";
 import FranchiseInput from "views/WholeSale/components/FranchiseInput";
 import LoaderSpinner from "common/LoaderSpinner";
+import Summary from "./Summary";
+import { useGetActiveFlavors } from "hooks/useGetActiveFlavors";
 
 export const ReadWholeSale = () => {
     const { idWholesale } = useParams();
     const { loadingWholeSale, wholeSale } = useGetWholeSaleByID(idWholesale);
-
-    if (loadingWholeSale) {
+    const { activeFlavors, loadingFlavors } = useGetActiveFlavors()
+    if (loadingWholeSale || loadingFlavors) {
         return (
             <LoaderSpinner color="primary" loading="Cargando..." />
         )
     }
-    if (!loadingWholeSale) {
+    if (!loadingWholeSale && !loadingFlavors) {
         return (
             <>
 
@@ -34,7 +36,7 @@ export const ReadWholeSale = () => {
                 <div className="viewBody">
                     <DateInput wholesaleDate={wholeSale.date} read={true} />
                     <FranchiseInput wholesaleFranchise={wholeSale.franchise} read={true} />
-                    {console.log(wholeSale)}
+                    <Summary wholesaleSummary={wholeSale} activeFlavors={activeFlavors} />
                 </div>
             </>
         )
