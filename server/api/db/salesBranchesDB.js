@@ -26,6 +26,7 @@ const readSalesBranchDB = async (params) => {
     const sale = await SalesBranches.findAll({
         include: Franchise,
         where: whereExpresion,
+        order: [['date', 'DESC']],
         attributes: ['id_sale_branch', 'date', 'status', 'amount']
     });
 
