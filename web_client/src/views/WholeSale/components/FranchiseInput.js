@@ -1,5 +1,6 @@
 import { useGetFranchises } from 'hooks/useGetFranchises';
 import React from 'react'
+import DisabledLabelInput from './DisabledLabelInput';
 
 const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise }) => {
 
@@ -13,8 +14,8 @@ const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise }) => {
     return (
         <>
             <div className="d-flex justify-content-between mb-2">
-                <label className="align-self-center w-25 fs-6" htmlFor="date" >Franquicia</label>
-                <select defaultValue={-1} className="form-control align-self-center w-50 fs-6" onChange={onChangeFranchiseSelection}>
+                <label className="align-self-center w-25 fs-6" htmlFor="franchiseSelect" >Franquicia</label>
+                <select defaultValue={-1} id="franchiseSelect" className="form-control align-self-center w-50 fs-6" onChange={onChangeFranchiseSelection}>
                     <option disabled value='-1'>Seleccione una franquicia...</option>
                     {franchises?.map((f) => {
                         return (
@@ -28,24 +29,8 @@ const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise }) => {
                     })}
                 </select>
             </div>
-            <div className="d-flex justify-content-between mb-2">
-                <label className="align-self-center w-25 fs-6" htmlFor="date" >Ciudad</label>
-                <input
-                    className="form-control align-self-center w-50 fs-6"
-                    defaultValue={wholesaleFranchise?.city}
-                    disabled
-                >
-                </input>
-            </div>
-            <div className="d-flex justify-content-between mb-2">
-                <label className="align-self-center w-25 fs-6" htmlFor="date" >Franquiciado</label>
-                <input
-                    className="form-control align-self-center w-50 fs-6"
-                    defaultValue={wholesaleFranchise ? `${wholesaleFranchise.name_manager}, ${wholesaleFranchise.last_name_manager}` : ''}
-                    disabled
-                >
-                </input>
-            </div>
+            <DisabledLabelInput name={'Ciudad'} value={wholesaleFranchise?.city} />
+            <DisabledLabelInput name={'Franquiciado'} value={wholesaleFranchise ? `${wholesaleFranchise.name_manager}, ${wholesaleFranchise.last_name_manager}` : ''} />
         </>
     )
 }
