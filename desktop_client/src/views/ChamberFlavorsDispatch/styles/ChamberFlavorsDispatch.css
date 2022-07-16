@@ -1,9 +1,9 @@
 .viewContent {
-  padding: 10px 50px 20px;
+  padding: 20px 1px 20px;
 }
 
 .formRow {
-  margin: 1em 0;
+  margin: 0.2em 0;
   display: flex;
   flex-direction: column;
   padding-left: 0.2em;

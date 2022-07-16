@@ -2,7 +2,15 @@ import ChamberFlavorsDispatch from '../ChamberFlavorsDispatch/components/Chamber
 // import LoginUser from './LoginUser/LoginUser';
 import BeShowed from '../../common/BeShowed';
 import { connect } from 'react-redux';
-import { toRoot, toChamberFlavorsDispatch, toRegisterAttendance, lockMenu, unlockMenu, toSalesDelivery, toSalesLocal } from '../../actions/MenuActions';
+import {
+  toRoot,
+  toChamberFlavorsDispatch,
+  toRegisterAttendance,
+  lockMenu,
+  unlockMenu,
+  toSalesDelivery,
+  toSalesLocal
+} from '../../actions/MenuActions';
 import logo from '../../images/logo_expandido.png';
 import '../../assets/logo.css';
 import SideMenu from './Menu';
@@ -26,9 +34,6 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            {/* <BeShowed show={props.location === 2}>
-              <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
@@ -51,9 +56,6 @@ const Main = (props) => {
             <BeShowed show={props.location === 0}>
               <img className='logo' src={logo} alt=""></img>
             </BeShowed>
-            {/* <BeShowed show={props.location === 2}>
-              <EmployeeAssistance></EmployeeAssistance>
-            </BeShowed> */}
             <BeShowed show={props.location === 3}>
               <Sales></Sales>
             </BeShowed>
@@ -62,19 +64,17 @@ const Main = (props) => {
             </BeShowed>
           </div>
         </div>
-
       </BeShowed>
     </>
-
   );
-}
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     location: state.location,
     menu: state.menu
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
   toRoot,
@@ -84,6 +84,6 @@ const mapDispatchToProps = {
   unlockMenu,
   toSalesLocal,
   toSalesDelivery
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

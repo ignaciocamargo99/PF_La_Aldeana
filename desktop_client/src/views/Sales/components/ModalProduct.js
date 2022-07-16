@@ -1,20 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { updateDetailProducts, updateDetailsProductsModify, updateProducts, updateProductSelected, updateProductsFiltered, updateRefresh } from '../../../actions/SalesActions';
 import Buttons from "../../../common/Buttons";
-import validateFloatNumbers from '../../../utils/validateFloatNumbers';
 import warningMessage from "../../../utils/warningMessage";
 import '../styles/filterProducts.css';
 import '../styles/modalProduct.css';
+import { calculateStock } from "./calculateStock";
+import { NumericKeyboard } from "./NumericKeyboard";
+
+const styles = {
+    labelQuantity: {
+        color: "#383C77"
+    }
+}
 
 const ModalProduct = (props) => {
-
     const inputQuantity = useRef();
     const [quantity, setQuantity] = useState();
     const [subtotal, setSubtotal] = useState(null);
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
+    const [keyboardNumber, setKeyboardNumber] = useState();
+    const [descriptionProduct, setDescriptionProduct] = useState();
+
+    const handleObs = (e) => setDescriptionProduct(e.target.value);
 
     const cancel = () => {
         props.setShowModal(false);
@@ -23,10 +33,14 @@ const ModalProduct = (props) => {
         setRefreshModal(!refreshModal);
     }
 
-    const onChangeQuantity = () => {
-        const sub = parseFloat(Math.round((props.productSelected.price * inputQuantity.current.value) * 100) / 100).toFixed(2);
+    useEffect(() => setKeyboardNumber(0), [])
+
+    const loadQuantityChange = (e) => {
+        let numberKeyboard = parseInt(e)
+        setKeyboardNumber(numberKeyboard);
+        const sub = parseFloat(Math.round((props.productSelected.price * numberKeyboard) * 100) / 100).toFixed(2);
         setSubtotal(sub);
-        setQuantity(inputQuantity.current.value);
+        setQuantity(numberKeyboard);
     }
 
     useEffect(() => {
@@ -37,7 +51,6 @@ const ModalProduct = (props) => {
             else {
                 setReady(false);
             }
-            console.log(props.productSelected)
         }
         else if (props.actionModal == "M") {
             if (quantity > 0 && quantity <= props.productSelected.stock) {
@@ -47,7 +60,6 @@ const ModalProduct = (props) => {
             else {
                 setReady(false);
             }
-            console.log(props.productSelected)
         }
         else if (props.actionModal == "A") {
             if (quantity > 0 && quantity <= props.productSelected.stock_current || !props.productSelected.stock_current) {
@@ -79,6 +91,7 @@ const ModalProduct = (props) => {
                 let aux = props.productSelected;
                 aux.quantity = quantity;
                 aux.subtotal = subtotal;
+                aux.descriptionProduct = descriptionProduct;
                 if (aux.stock) {
                     aux.stock_current = aux.stock - parseFloat(quantity);
                 }
@@ -88,7 +101,9 @@ const ModalProduct = (props) => {
             else if (props.actionModal == "M") {
                 props.productSelected.quantity = quantity;
                 props.productSelected.subtotal = subtotal;
+                props.productSelected.descriptionProduct = descriptionProduct;
                 if (props.productSelected.stock) {
+                    console.log(props.productSelected)
                     props.productSelected.stock_current = props.productSelected.stock - parseFloat(quantity);
                 }
                 props.updateDetailsProductsModify(props.productSelected);
@@ -96,6 +111,7 @@ const ModalProduct = (props) => {
             else if (props.actionModal == "A") {
                 props.productSelected.quantity = parseFloat(props.productSelected.quantity) + parseFloat(quantity);
                 props.productSelected.subtotal = (parseFloat(props.productSelected.subtotal) + parseFloat(subtotal)).toFixed(2);
+                props.productSelected.descriptionProduct = descriptionProduct;
                 if (props.productSelected.stock) {
                     props.productSelected.stock_current = props.productSelected.stock_current - parseFloat(quantity);
                 }
@@ -104,55 +120,72 @@ const ModalProduct = (props) => {
             props.updateRefresh(!props.refresh);
             props.setShowModal(false);
             setRefreshModal(!refreshModal);
+            setDescriptionProduct('');
         }
         else {
             if (quantity == 0) {
-                warningMessage("¡Error!", "Debe ingresar un cantidad mayor a 0", "error");
+                warningMessage("Atención", "Debe ingresar un cantidad mayor a 0", "warning");
             }
             if (quantity > props.productSelected.stock || quantity > props.productSelected.stock_current)
-                warningMessage("¡Error!", "No hay stock suficiente \n Stock aún disponible: " + props.productSelected.stock_current + "\n Stock máximo que puede ingresar: " + props.productSelected.stock, "error");
+                warningMessage("Atención!", "La cantidad ingresada supera el stock disponible \n Stock disponible: " + props.productSelected.stock_current +
+                    "\n Cantidad cargada: " + quantity, "error");
         }
-    }
-
-    const validate = (e) => {
-        if (e.target.value.length > 4) e.target.value = e.target.value.slice(0, 4);
+        calculateStock(props.products, props.supplies, props.productsXsupplies, props.productSelected, quantity);
     }
 
     return (
         <>
-            <Modal isOpen={props.show} className="modal-sale modal-lg" >
+            <Modal isOpen={props.show} className="modal-sale modal-lg">
                 <ModalHeader>
                     <h2>{props.productSelected?.name}</h2>
                 </ModalHeader>
                 <ModalBody>
-                    <div className='formRow'>
+                    <div className='formRow' style={{ marginBottom: '10px' }}>
                         <label className='label-modal'>Descripción:&nbsp;</label>
                         <label>{props.productSelected?.description}</label>
                     </div>
-                    <div className='formRow'>
-                        <label className='label-modal'>Precio:&nbsp;$</label>
-                        <label className='label-modal'>{props.productSelected?.price}</label>
-                    </div>
-                    <div className='formRow'>
+                    <div className='formRow' style={{ marginBottom: '10px' }}>
                         <div className='col-6'>
                             <label className='label-modal'>Sector:&nbsp;</label>
                             <label>{props.productSelected?.name_sector}</label>
                         </div>
-                        <div className='col-6'>
+                        <div className='col-6' style={{ marginBottom: '10px' }}>
                             <label className='label-modal'>Tipo producto:&nbsp;</label>
                             <label>{props.productSelected?.name_product_type}</label>
                         </div>
                     </div>
-                    <div className='formRow'>
+                    <div className='row' style={{ marginBottom: '10px' }}>
                         <div className='col-6'>
-                            <label className='label-modal'>Cantidad:&nbsp;</label>
-                            <input autoFocus className={ready && quantity > 0 ? "form-control is-valid" : "form-control"} type="number" min="1"
-                                max={props.productSelected ? props.productSelected.stock_current : 10} id="id_quantity" ref={inputQuantity} value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity} placeholder="0"
-                                onChange={onChangeQuantity} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)} />
+                            <div className='formRow' >
+                                <label className='label-modal'>Cantidad:&nbsp;</label>
+                                <label className='label-modal'
+                                    style={styles.labelQuantity}
+                                    id="id_quantity"
+                                    ref={inputQuantity}
+                                // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
+                                >
+                                    {quantity}
+                                </label>
+                            </div>
+                            <div className='formRow'>
+                                <label className='label-modal'>Precio:&nbsp;$</label>
+                                <label className='label-modal'>{props.productSelected?.price}</label>
+                            </div>
+                            <div className='formRow'>
+                                <label className='label-modal'>Subtotal:&nbsp;$ </label>
+                                <label className='label-modal'>{subtotal}</label>
+                            </div>
+                            <div className='formRow'>
+                                <label className='label-modal'>Observación: </label>
+                            </div>
+                            <div className='formRow'>
+                                <textarea maxLength="200" id="productDescription"
+                                    placeholder="Ingrese una observación..."
+                                    style={{ width: '100%', height: '74px' }} onChange={(e) => handleObs(e)}></textarea>
+                            </div>
                         </div>
-                        <div className='col-6'>
-                            <label className='label-modal'>Subtotal:&nbsp;$ </label>
-                            <label className='label-modal'>{subtotal}</label>
+                        <div className='col-6' style={{ padding: '0px 0px 0px 0px' }}>
+                            <NumericKeyboard load={loadQuantityChange} keyboardNumber={keyboardNumber} quantity={quantity} />
                         </div>
                     </div>
                     <Buttons label="Confirmar" ready={ready} actionOK={registerProduct} actionNotOK={registerProduct} actionCancel={cancel}></Buttons>
@@ -160,8 +193,6 @@ const ModalProduct = (props) => {
             </Modal>
         </>
     )
-
-
 }
 
 const mapStateToProps = state => {
@@ -170,7 +201,9 @@ const mapStateToProps = state => {
         productsFiltered: state.productsFiltered,
         detailProducts: state.detailProducts,
         productSelected: state.productSelected,
-        refresh: state.refresh
+        refresh: state.refresh,
+        supplies: state.supplies,
+        productsXsupplies: state.productsXsupplies
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BeShowed from '../../common/BeShowed';
+import BeShowed from 'common/BeShowed';
 import FlavorsAmount from './components/FlavorsAmount';
 import ImageProduct from './components/ImageProduct';
 import ImageEditProduct from '../ListProducts/components/EditProducts/components/ImageProduct';
