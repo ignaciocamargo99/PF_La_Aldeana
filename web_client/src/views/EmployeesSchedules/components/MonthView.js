@@ -194,8 +194,6 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
             scheduleArray[i] = arrayEmployee.concat([...scheduleArray[i]]);
         })
         scheduleArray = header.concat(scheduleArray);
-        console.log(schedule)
-        console.log(scheduleArray)
         return scheduleArray
     }
 

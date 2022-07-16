@@ -1,19 +1,18 @@
-export const calculateEmployees = (employees, params, disabledEmployees) => {
+export const calculateEmployees = (employees, params) => {
     let sum = 0;
-    let enabledsEmployees = employees.filter((employee) => !disabledEmployees.has(employee.dni))
     params.forEach(element => {
         sum = element + sum;
     });
-    sum = enabledsEmployees.length - sum;
+    sum = employees.length - sum;
     if (sum.toString() == 'NaN') { sum = '...' }
     if (sum < 0) { sum = 'Se están cargando más empleados que los existentes' }
     return sum;
 }
 
-export const calculateTypeEmployees = (employees, charge, turns, params, disabledEmployees) => {
+export const calculateTypeEmployees = (employees, charge, turns, params) => {
     let counter = 0;
     employees?.forEach(employee => {
-        if (employee.charges[0].chargeId === charge.id_charge && !disabledEmployees.has(employee.dni)) {
+        if (employee.charges[0].chargeId === charge.id_charge) {
             counter++
         }
     })
