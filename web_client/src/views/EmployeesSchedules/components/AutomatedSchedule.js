@@ -17,7 +17,6 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
     const [typeDay, setTypeDay] = useState(0);
     const [params, setParams] = useState(null);
     const [priority, setPriority] = useState(null);
-    const [disabledsEmployees, setDisabeldsEmployees] = useState(new Set());
     const [enablesEmployeesForType, setEnablesEmployeesForType] = useState(new Array(charges.length).fill(['...']));
     const [showCharge, setShowCharge] = useState(null);
     const [initDate, setInitDate] = useState(new Date());
@@ -33,44 +32,13 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
     }, [employees])
 
     useEffect(() => {
-        if (!initDate && !finishDate) {
-            setDisabeldsEmployees([]);
-            return;
-        };
-
-        let daysOff;
-        axios.get(`${PORT()}/api/daysOff?minDate=${initDate.toISOString().slice(0, 10)}&maxDate=${finishDate.toISOString().slice(0, 10)}`)
-            .then((res) => {
-
-                daysOff = res.data.Data;
-                let disabledEmployees = new Set();
-                licenses.forEach(({ dni, date_init, date_finish }) => {
-                    let date_init_lic = new Date(date_init.slice(0, 10)).getTime();
-                    let date_finish_lic = new Date(date_finish.slice(0, 10)).getTime();
-                    if (
-                        (initDate.getTime() <= date_init_lic && (((date_init_lic < finishDate.getTime()) && (finishDate.getTime() <= date_finish_lic)))) ||
-                        (((date_init_lic < initDate.getTime()) && (initDate.getTime() <= date_finish_lic)) && date_finish_lic <= finishDate.getTime()) ||
-                        (((date_init_lic < initDate.getTime()) && (initDate.getTime() <= date_finish_lic)) && (((date_init_lic < finishDate.getTime()) && (finishDate.getTime() <= date_finish_lic)))) ||
-                        (initDate.getTime() <= date_init_lic && date_finish_lic <= finishDate.getTime())
-                    ) {
-                        disabledEmployees.add(dni)
-                    }
-                });
-                daysOff.forEach(({ dni_employee }) => {
-                    disabledEmployees.add(dni_employee);
-                });
-                setDisabeldsEmployees(disabledEmployees);
-            })
-    }, [initDate, finishDate, licenses])
-
-    useEffect(() => {
         updateEnablesEmployeesForType();
-    }, [params, typeDay, disabledsEmployees])
+    }, [params, typeDay])
 
     const updateEnablesEmployeesForType = () => {
         let newEnablesEmployesForType = [];
         charges.forEach((charge) => {
-            newEnablesEmployesForType.push(params ? calculateTypeEmployees(employees, charge, turns, params[typeDay], disabledsEmployees) : 0);
+            newEnablesEmployesForType.push(params ? calculateTypeEmployees(employees, charge, turns, params[typeDay]) : 0);
         })
         setEnablesEmployeesForType(newEnablesEmployesForType)
     }
@@ -90,13 +58,12 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
         setParams(initParams);
     }
 
-    const buildVariables = (disabledEmployees) => {
+    const buildVariables = () => {
         let variables = {};
         for (let i = 0; i < employees.length; i++) {
             for (let j = 0; j < employees[i].charges.length; j++) {
                 for (let k = 0; k < turns.length; k++) {
-                    if (employees[i].charges[j].chargeName.slice(0, 1).toUpperCase() === turns[k].name.slice(0, 1).toUpperCase()
-                        && !disabledEmployees.has(employees[i].dni)) {
+                    if (employees[i].charges[j].chargeName.slice(0, 1).toUpperCase() === turns[k].name.slice(0, 1).toUpperCase()) {
 
                         let object = {};
                         object[`${employees[i].dni}`] = 1;
@@ -202,7 +169,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                     let isWeekendDay = init.getDay() === 6 || init.getDay() === 0;
                     let typeDay = isNwD !== -1 ? 2 : isWeekendDay ? 1 : 0;
 
-                    let variables = buildVariables(disabledsEmployees);
+                    let variables = buildVariables();
                     let constraints = buildConstraints(typeDay);
                     let results = generateAutomatedDay(constraints, variables);
                     if (results.feasible === false) {
@@ -213,8 +180,10 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                             for (let j = 0; j < employees[i].charges.length; j++) {
                                 for (let k = 0; k < turns.length; k++) {
                                     if (results.hasOwnProperty(`${employees[i].dni}_${employees[i].charges[j].chargeId}_${turns[k].id}`)) {
+                                        let yesterday = new Date(init)
+                                        yesterday.setDate(yesterday.getDate() - 1)
                                         let newJDEmployee = {
-                                            date: `${init.toISOString().slice(0, 8)}${init.getDate()}`,
+                                            date: `${yesterday.toISOString().slice(0, 8)}${init.getDate()}`,
                                             employee_dni: employees[i].dni,
                                             id_compound_turn: turns[k].id
                                         }
@@ -224,7 +193,6 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                             }
                         }
                     }
-
                     init.setDate(init.getDate() + 1);
                 }
                 if (result.isConfirmed) {
@@ -293,7 +261,7 @@ const AutomatedSchedule = ({ today, nonworkingDays, employees, turns, setShowAut
                     <button className={`btn ${typeDay === 2 ? 'btn-secondary' : 'btn-primary'} col-sm-4`} onClick={() => { setTypeDay(2) }}>Feriados</button>
                 </div>
                 <br />
-                <label className='col-sm-9'>Empleados totales: <b>{params && employees ? calculateEmployees(employees, params[typeDay], disabledsEmployees) : '-'}</b></label>
+                <label className='col-sm-9'>Empleados totales: <b>{params && employees ? calculateEmployees(employees, params[typeDay]) : '-'}</b></label>
                 {charges?.map((charge, i) => {
                     return (
                         <div style={{ margin: '2%' }}>
