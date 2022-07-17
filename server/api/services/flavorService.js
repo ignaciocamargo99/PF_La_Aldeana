@@ -2,7 +2,12 @@ const {
     getFlavorDBById,
     getFlavorsDBByActiveState,
     saveFlavorDB,
+    getStockFlavorsDB
 } = require('../db/flavorDb');
+
+const searchStockFlavors = () => {
+    return getStockFlavorsDB();
+}
 
 const searchFlavorsByActiveState = (onlyActiveFlavors) => {
     return getFlavorsDBByActiveState(onlyActiveFlavors);
@@ -181,4 +186,5 @@ module.exports = {
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
+    searchStockFlavors
 };

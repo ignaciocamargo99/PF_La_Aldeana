@@ -5,11 +5,28 @@ const {
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
+    searchStockFlavors
 } = require('../services/flavorService');
 
 const { genericServerError } = require('../shared/errorMessages');
 const { INTERNAL_SERVER_ERROR, OK } = require('../shared/httpStatusCodes');
 
+// HTTP: GET /api/stockFlavorsReport
+async function getStockFlavorsReport(req, res) {
+    try {
+        const result = await searchStockFlavors();
+        res.json({
+            Ok: true,
+            Data: result,
+        });
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: genericServerError,
+        });
+    }
+}
 // HTTP: GET /api/flavors
 async function getActiveFlavors(req, res) {
     try {
@@ -101,4 +118,5 @@ module.exports = {
     postFlavors,
     updateFlavor,
     getFlavors,
+    getStockFlavorsReport
 };

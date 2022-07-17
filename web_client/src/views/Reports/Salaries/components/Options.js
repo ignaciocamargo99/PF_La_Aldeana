@@ -7,6 +7,7 @@ import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
 import Viewer from '../../ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFSalariesReport';
+import warningMessage from 'utils/WarningMessages/warningMessage';
 
 const PORT = require('../../../../config');
 const Options = (props) => {
@@ -67,8 +68,10 @@ const Options = (props) => {
 
                 })
                 .catch((error) => {
+                    props.setLoad(0);
                     console.log('Oops...', 'Error en el servidor', error);
-                    props.setLoaded(false);
+                    props.setLoaded(true);
+                    warningMessage('Error', 'Error en el servidor', 'error');
                 })
         } else {
             let dat = new Date();
