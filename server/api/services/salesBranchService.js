@@ -1,8 +1,7 @@
 const {
     readSalesBranchDB,
     readSalesBranchByIdDB,
-    saveSalesBranchDB,
-    putSalesBranchDB
+    saveSalesBranchDB
 } = require('../db/salesBranchesDB');
 
 const readSalesBranches = async (params) => {
@@ -32,18 +31,17 @@ const createSalesBranches = async (data) => {
     }
 };
 
-const updateSalesBranches = async (id, body) => {
-    try {
-        let res = await putSalesBranchDB(id, body);
-        return res;
-    } catch (error) {
-        throw Error(error);
-    }
-};
+// const updateSalesBranches = async (id, body) => {
+//     try {
+//         let res = await putSalesBranchDB(id, body);
+//         return res;
+//     } catch (error) {
+//         throw Error(error);
+//     }
+// };
 
 module.exports = {
     readSalesBranches,
     readSalesBranchesById,
-    createSalesBranches,
-    updateSalesBranches
+    createSalesBranches
 };
