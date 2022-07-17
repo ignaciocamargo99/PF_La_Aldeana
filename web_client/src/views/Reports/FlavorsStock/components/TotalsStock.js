@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 
-const TotalsSalaries = (props) => {
+const TotalsStock = (props) => {
 
   let [labels, setLabels] = useState([]);
   let [dat, setDat] = useState([]);
@@ -50,11 +50,11 @@ const TotalsSalaries = (props) => {
 
   return (
     <>
-      <h2>Análisis de salarios</h2>
+      <h2>Análisis de stock de sabores de helados</h2>
       <br/>
       <Pie data={data} />
     </>
   );
 }
 
-export default TotalsSalaries;
+export default TotalsStock;
