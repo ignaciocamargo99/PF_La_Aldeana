@@ -97,6 +97,8 @@ const ModalProduct = (props) => {
                 setQuantity(props.productSelected.quantity);
                 setSubtotal(props.productSelected.subtotal);
                 setPreviousQuantity(props.productSelected.quantity);
+                setDescriptionProduct(props.productSelected.descriptionProduct)
+                console.log(props.productSelected.descriptionProduct)
             } else {
                 setSubtotal(null);
                 setQuantity(0);
@@ -157,9 +159,9 @@ const ModalProduct = (props) => {
                 warningMessage(
                     'Atención!',
                     'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
-                        props.productSelected.stock_current +
-                        '\n Cantidad cargada: ' +
-                        quantity,
+                    props.productSelected.stock_current +
+                    '\n Cantidad cargada: ' +
+                    quantity,
                     'error'
                 );
         }
@@ -203,7 +205,7 @@ const ModalProduct = (props) => {
                                     style={styles.labelQuantity}
                                     id='id_quantity'
                                     ref={inputQuantity}
-                                    // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
+                                // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
                                 >
                                     {quantity}
                                 </label>
@@ -235,6 +237,7 @@ const ModalProduct = (props) => {
                                     id='productDescription'
                                     placeholder='Ingrese una observación...'
                                     style={{ width: '100%', height: '74px' }}
+                                    value={descriptionProduct ? descriptionProduct : ''}
                                     onChange={(e) => handleObs(e)}
                                 ></textarea>
                             </div>
