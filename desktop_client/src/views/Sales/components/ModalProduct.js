@@ -98,7 +98,6 @@ const ModalProduct = (props) => {
                 setSubtotal(props.productSelected.subtotal);
                 setPreviousQuantity(props.productSelected.quantity);
                 setDescriptionProduct(props.productSelected.descriptionProduct)
-                console.log(props.productSelected.descriptionProduct)
             } else {
                 setSubtotal(null);
                 setQuantity(0);

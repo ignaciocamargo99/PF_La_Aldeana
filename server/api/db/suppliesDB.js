@@ -100,7 +100,7 @@ const supplyDeleteDB = (id) => {
 
                 db.query(sqlDeleteSupply, [id], (error) => {
                     if (error) db.rollback(() => reject(error));
-                    
+
                     db.query(sqlDeleteProduct_X_Supply, [id], (error) => {
                         if (error) db.rollback(() => reject(error));
                         db.commit((error) => {
@@ -115,5 +115,33 @@ const supplyDeleteDB = (id) => {
     });
 };
 
+const suppliesUpdateStockDB = (supplies) => {
+    const sqlUpdateSupply =
+        `UPDATE SUPPLIES s SET s.stock_unit = ?
+        WHERE s.id_supply = ?`;
 
-module.exports = { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB };
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+                for (let i = 0; i < supplies.length; i++) {
+                    db.query(sqlUpdateSupply, [supplies[i].stock_unit, supplies[i].id_supply], (error) => {
+                        if (error) db.rollback(() => reject(error));
+                        db.commit((error) => {
+                            if (error) db.rollback(() => reject(error));
+                            else resolve();
+                        });
+                    });
+                }
+                db.release();
+            });
+        });
+    });
+};
+
+module.exports = {
+    supplyPostDB, suppliesGetDB,
+    suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB,
+    suppliesUpdateStockDB
+};

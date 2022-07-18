@@ -1,5 +1,5 @@
-const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock, 
-    modifySupply, supplyDelete } = require('../services/suppliesService');
+const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock,
+    modifySupply, supplyDelete, modifySupplyStock } = require('../services/suppliesService');
 const { isValidNumber } = require('../shared/numberValidations');
 const { BAD_REQUEST } = require('../shared/httpStatusCodes');
 
@@ -106,4 +106,24 @@ async function deleteSupply(req, res) {
     }
 }
 
-module.exports = { getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock, updateSupply, deleteSupply };
+// HTTP: PUT
+async function updateSupplyStock(req, res) {
+    try {
+        await modifySupplyStock(req.body);
+
+        res.json({
+            Ok: true,
+            Message: 'Stock actualizado exitosamente.'
+        });
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
+
+module.exports = {
+    getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock,
+    updateSupply, deleteSupply, updateSupplyStock
+};

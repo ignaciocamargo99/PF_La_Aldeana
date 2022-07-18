@@ -106,7 +106,16 @@ const Sales = (props) => {
 
     const handleClientName = (e) => setNameClient(e.target.value);
 
+    const updateStockSupplies = () => {
+        Axios.put(`${PORT()}/api/suppliesStock`, props.supplies)
+            .catch(error => console.error(error))
+    }
+
     const registerSale = async () => {
+        console.log(props.supplies)
+
+        console.log(props.products)
+
         if (ready) {
             const registrationConfirmed = (
                 await defaultQuestionSweetAlert2(`¿Confirma la venta?`)
@@ -122,16 +131,17 @@ const Sales = (props) => {
                     details: JSON.stringify(props.detailProducts)
                 };
                 loadingMessage('Registrando venta...');
+
                 Axios.post(`${PORT()}/api/sales`, sale)
                     .then((sale) => {
                         if (sale.data.Ok) {
-                            resetStates();
+                            updateStockSupplies();
+                            resetStates()
                             if (props.totalAmount < props.paymentAmount)
                                 warningMessage(
                                     '¡Éxito!',
-                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${
-                                        parseFloat(props.paymentAmount) -
-                                        parseFloat(props.totalAmount)
+                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${parseFloat(props.paymentAmount) -
+                                    parseFloat(props.totalAmount)
                                     } al cliente!`,
                                     'success'
                                 );
