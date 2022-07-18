@@ -5,41 +5,16 @@ import { formatDateEnd, formatDateStart } from './formatDate';
 
 export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     const [filteredElements, setFilteredElements] = useState([]);
-    const [chkFinalSale, setChkFinalSale] = useState(false);
-    const [chkPendingSale, setChkPendingSale] = useState(true);
     const [startDate, setStartDate] = useState(formatDateStart());
     const [endDate, setEndDate] = useState(formatDateEnd());
 
     useEffect(() => setFilteredElements(currentElements), [currentElements]);
 
     useEffect(() => {
-        localStorage.setItem('PENDING_SALES', JSON.stringify(currentElements))
-    }, []);
-
-    useEffect(() => {
-        if (chkFinalSale) {
-            getWholeSales('FINISH', startDate, endDate).then((result) => {
-                setFilteredElements(result);
-            })
-        }
-    }, [startDate, endDate, chkFinalSale]);
-
-    const handleChangePending = (e) => {
-        e.target.checked = true;
-        setChkPendingSale(true);
-        setChkFinalSale(false);
-        const pendingSales = JSON.parse(localStorage.getItem('PENDING_SALES'));
-        setFilteredElements(pendingSales);
-    }
-
-    const handleChangeFinal = (e) => {
-        e.target.checked = true;
-        setChkPendingSale(false);
-        setChkFinalSale(true);
         getWholeSales('FINISH', startDate, endDate).then((result) => {
             setFilteredElements(result);
         })
-    }
+    }, [startDate, endDate]);
 
     const handleStartDate = (e) => {
         setStartDate(formatDateStart(e.target.value));
@@ -54,26 +29,8 @@ export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     return (
         <>
             <div className="formRow">
-                <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio"
-                        name="flexRadioDefault" id="flexRadioDefault1"
-                        onChange={handleChangePending} checked={chkPendingSale}
-                    />
-                    <label className="form-check-label" htmlFor="flexRadioDefault1">
-                        Pendientes
-                    </label>
-                </div>
-                <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio"
-                        name="flexRadioDefault" id="flexRadioDefault2"
-                        onChange={handleChangeFinal} checked={chkFinalSale}
-                    />
-                    <label className="form-check-label" htmlFor="flexRadioDefault2">
-                        Finalizadas
-                    </label>
-                </div>
             </div>
-            {(chkFinalSale && startDate && endDate) &&
+            {(startDate && endDate) &&
                 (
                     <div className="formRow">
                         <div className="col-3 me-3">
