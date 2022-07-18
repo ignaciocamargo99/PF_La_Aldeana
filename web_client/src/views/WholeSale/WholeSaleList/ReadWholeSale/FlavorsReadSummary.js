@@ -12,6 +12,9 @@ const FlavorsSummaryDetail = ({ flavorsCategoriesIds, flavors, weightsByCategory
     return (
         <div>
             <h3>Sabores</h3>
+            {!flavorsSelected && (
+                <label className='text-black-50'>&nbsp;{'0 sabores vendidos'}</label>
+            )}
             {flavorsSelected && (
                 flavorsCategoriesIds.map((categoryId) => {
                     const flavorsOfCategory = filterFlavorsByCategory(categoryId, flavors);
@@ -39,26 +42,26 @@ const FlavorsSummaryDetail = ({ flavorsCategoriesIds, flavors, weightsByCategory
                     const typeFlavorDetailDescrip = `${catWeight || '---'} Kg ${category.name}`;
                     const kgPrice = ` ($${flavorDetailSubtotal / catWeight}/kg)`
                     return (
-                        <div key={categoryId}>
+                        <>
                             <div className='d-flex justify-content-between text-black-50'>
                                 <label style={{ fontWeight: 'bold' }}>&nbsp;{typeFlavorDetailDescrip}</label>
-                                <label>$&nbsp;{flavorDetailSubtotal || '---'}</label>
+                                <label>$&nbsp;{flavorDetailSubtotal || '0'}</label>
                             </div>
                             {arrToShowBucketName.map((f, i) => {
                                 return (
                                     <div className='d-flex justify-content-between text-black-50' >
-                                        <label >&nbsp;- {f.bucket + " balde/s " + f.name + kgPrice}</label>
+                                        <label>&nbsp;- {f.bucket + " balde/s " + f.name + kgPrice}</label>
                                     </div>
                                 )
                             })}
-                        </div>
+                        </>
 
                     )
                 })
             )}
             <div className={`d-flex justify-content-between`}>
                 <label>Subtotal</label>
-                <label>$&nbsp;{subtotalFlavors || '---'}</label>
+                <label>$&nbsp;{subtotalFlavors || '0'}</label>
             </div>
         </div >
     )

@@ -9,17 +9,20 @@ import FranchiseInput from "views/WholeSale/components/FranchiseInput";
 import LoaderSpinner from "common/LoaderSpinner";
 import Summary from "./Summary";
 import { useGetActiveFlavors } from "hooks/useGetActiveFlavors";
+import { useGetSupplies } from "hooks/useGetSupplies";
 
 export const ReadWholeSale = () => {
     const { idWholesale } = useParams();
     const { loadingWholeSale, wholeSale } = useGetWholeSaleByID(idWholesale);
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors()
-    if (loadingWholeSale || loadingFlavors) {
+    const { supplies, loadingSupplies } = useGetSupplies()
+
+    if (loadingWholeSale || loadingFlavors || loadingSupplies) {
         return (
             <LoaderSpinner color="primary" loading="Cargando..." />
         )
     }
-    if (!loadingWholeSale && !loadingFlavors) {
+    if (!loadingWholeSale && !loadingFlavors && !loadingSupplies) {
         return (
             <>
 
@@ -34,9 +37,10 @@ export const ReadWholeSale = () => {
                     <h1>Resumen venta N° {idWholesale}</h1>
                 </div>
                 <div className="viewBody">
+                    <h2>Franquicia</h2><br />
                     <DateInput wholesaleDate={wholeSale.date} read={true} />
                     <FranchiseInput wholesaleFranchise={wholeSale.franchise} read={true} />
-                    <Summary wholesaleSummary={wholeSale} activeFlavors={activeFlavors} />
+                    <Summary wholesaleSummary={wholeSale} activeFlavors={activeFlavors} supplies={supplies} />
                 </div>
             </>
         )

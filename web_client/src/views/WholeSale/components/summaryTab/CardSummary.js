@@ -10,6 +10,7 @@ const CardSummary = ({
     subtotalTransport,
     total,
     handleFinalize,
+    labelBtn
 }) => {
 
     // no remover div
@@ -28,7 +29,7 @@ const CardSummary = ({
                     </div>
                 </CardContent>
                 <CardActions className="align-self-end">
-                    <button type="button" className="btn bg-la-aldeana-violeta text-white" onClick={handleFinalize}>Finalizar</button>
+                    <button type="button" className="btn bg-la-aldeana-violeta text-white" onClick={handleFinalize}>{labelBtn}</button>
                 </CardActions>
             </Card>
         </div>
