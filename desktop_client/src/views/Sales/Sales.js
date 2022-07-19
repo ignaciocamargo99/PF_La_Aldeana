@@ -31,6 +31,7 @@ const Sales = (props) => {
     const [nameClient, setNameClient] = useState('');
 
     useEffect(() => {
+        props.updateDetailsProductsClear([]);
         // initialCalls()
         Axios.get(`${PORT()}/api/products`)
             .then((response) => {
