@@ -18,7 +18,7 @@ const SideMenu = (props) => {
     return (
         <>
             <ProSidebar
-                collapsed={props.menu}
+                collapsed='false'
                 className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
                 image={sidebarBg}
             >
@@ -44,7 +44,7 @@ const SideMenu = (props) => {
                         </SubMenu>
                     </Menu>
                 </SidebarContent>
-                <SidebarFooter>
+                {/* <SidebarFooter>
                     <Menu iconShape="square" className="sidebar-btn-wrapper">
                         <BeShowed show={props.menu}>
                             <MenuItem onClick={props.unlockMenu} icon={<FaLockOpen />}>Bloquear menú</MenuItem>
@@ -53,7 +53,7 @@ const SideMenu = (props) => {
                             <MenuItem onClick={props.lockMenu} icon={<FaLock />}>Desbloquear menú</MenuItem>
                         </BeShowed>
                     </Menu>
-                </SidebarFooter>
+                </SidebarFooter> */}
             </ProSidebar>
         </>
     );
