@@ -34,6 +34,7 @@ import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
 import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 import FlavorsStockReport from './Reports/FlavorsStock/FlavorsStockReport';
+import ConsuptionsOfFlavorsReport from './Reports/ConsuptionsOfFlavors/ConsuptionsOfFlavorsReport';
 
 export default function RouterPage(props) {
 
@@ -99,7 +100,7 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
                         <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
-                        <Route path='/app/flavorsSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
+                        <Route path='/app/flavorsSalesReport' render={() => <ConsuptionsOfFlavorsReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
                         <Route path='/app/stockFlavorsReport' render={() => <FlavorsStockReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
                     </>
             }
