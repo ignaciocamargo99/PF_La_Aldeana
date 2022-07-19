@@ -140,5 +140,5 @@ async function updateSupplyStock(req, res) {
 
 module.exports = {
     getSupplies, postSupply, getTypeSupplies, getSuppliesWithStock,
-    updateSupply, deleteSupply, updateSupplyStock
+    updateSupply, deleteSupply, updateSupplyStock, getSuppliesByProperties
 };
