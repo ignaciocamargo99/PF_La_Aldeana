@@ -27,7 +27,6 @@ const ListProducts = (props) => {
 
     return (
         <>
-            {console.log('entra')}
             <h2><b>Productos</b></h2>
             <DivGeneric children={props.productsFiltered?.map((product, i) => {
                 return (

@@ -31,7 +31,7 @@ const ModalProduct = (props) => {
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
     const [keyboardNumber, setKeyboardNumber] = useState();
-    const [descriptionProduct, setDescriptionProduct] = useState();
+    const [descriptionProduct, setDescriptionProduct] = useState('');
 
     const handleObs = (e) => setDescriptionProduct(e.target.value);
 
@@ -66,15 +66,12 @@ const ModalProduct = (props) => {
                 setReady(false);
             }
         } else if (props.actionModal == 'M') {
-            if (
-                (quantity > 0 &&
-                    quantity <= props.productSelected.stock_current) ||
-                !props.productSelected.stock_current
-            ) {
+            if ((quantity > 0 && quantity <= props.productSelected.stock)) {
                 if (inputQuantity.current)
                     inputQuantity.current.value = quantity;
                 setReady(true);
-            } else {
+            }
+            else {
                 setReady(false);
             }
         } else if (props.actionModal == 'A') {
@@ -156,12 +153,12 @@ const ModalProduct = (props) => {
             }
             if (quantity > props.productSelected.stock_current)
                 warningMessage(
-                    'Atención!',
+                    'Atención',
                     'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
                     props.productSelected.stock_current +
                     '\n Cantidad cargada: ' +
                     quantity,
-                    'error'
+                    'warning'
                 );
         }
     };
