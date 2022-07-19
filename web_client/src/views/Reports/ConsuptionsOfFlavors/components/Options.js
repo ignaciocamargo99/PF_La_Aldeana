@@ -32,6 +32,7 @@ const Options = (props) => {
                     let data = [[],[]];
                     data[0] = res.data.res;
                     data[1] = res.data.totals;
+                    data[2] = res.data.months;
 
                     props.setConsuptions(data);
                     

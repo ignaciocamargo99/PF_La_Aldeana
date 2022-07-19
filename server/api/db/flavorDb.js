@@ -11,21 +11,32 @@ const getFlavorsDBByActiveState = (onlyActiveFlavors) => {
         include: [FlavorFamily, FlavorType]
     });
 };
-
+const toMonth = (d_t) => {
+    let year = d_t.getFullYear();
+    let month = ('0' + (d_t.getMonth() + 1)).slice(-2);
+    return year + '-' + month + '-01';
+};
 const consuptionsReportGetDB = (from, to) => {
 
     const sqlSelect = `SELECT sb.date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM SALES_BRANCHES sb 
                 LEFT JOIN DETAIL_SALES_FLAVORS dsf ON dsf.id_sale_branch = sb.id_sale_branch 
                 LEFT JOIN FLAVORS f ON dsf.id_flavor = f.id_flavor
                 LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
-                LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor` +
-                "WHERE sb.date >= '" + (from.length > 7 ? from : (from + '-01')) + "' AND sb.date <= '" + (to.length > 7 ? to : (to + '-01')) + "' AND sb.status = 'FINISH'";
+                LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
+                WHERE sb.date >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date <= '${(to.length > 7 ? to : (to + '-01'))}' AND sb.status = 'FINISH'`;
 
-    const sqlSelect2 = `SELECT sb.date_dispatch AS date, f.id_flavor, f.name, dsf.amount AS quantity, ft.name AS type, ff.name AS family FROM CHAMBER_FLAVORS_DISPATCH sb
+    const sqlSelect2 = `SELECT sb.date_dispatch AS date, f.id_flavor, f.name, sb.amount AS quantity, ft.name AS type, ff.name AS family FROM CHAMBER_FLAVORS_DISPATCH sb
                 LEFT JOIN FLAVORS f ON sb.id_flavor = f.id_flavor 
                 LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
-                LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor` +
-                "WHERE sb.date_dispatch >= '" + (from.length > 7 ? from : (from + '-01')) + "' AND sb.date_dispatch <= '" + (to.length > 7 ? to : (to + '-01')) ;
+                LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
+                WHERE sb.date_dispatch >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date_dispatch <= '${(to.length > 7 ? to : (to + '-01'))}'`;
+    
+    const sqlSelect3 = `SELECT sb.date_production AS date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM PRODUCTIONS sb 
+                LEFT JOIN PRODUCTIONS_X_FLAVORS dsf ON dsf.id_production = sb.id_production 
+                LEFT JOIN FLAVORS f ON dsf.id_flavor = f.id_flavor 
+                LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
+                LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
+                WHERE sb.date_production >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date_production <= '${(to.length > 7 ? to : (to + '-01'))}'`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -41,42 +52,80 @@ const consuptionsReportGetDB = (from, to) => {
                             {id: 'Baldes producidos', quantity: 0},
                             {id: 'Baldes consumidos', quantity: 0},
                         ];
-                        if (result.length === 0) resolve({res, totals: totals});
+                        let months = [];
+                        if (result.length === 0) resolve({res, totals: totals, months: months});
                         
-                        db.query(sqlSelect2, (error, resul) => {
+                        db.query(sqlSelect2, (error, resu) => {
                             if (error) {
                                 console.log(error);
                                 db.rollback(()=> reject(error));
                             }
                             else {
-                                if (resul.length === 0) resolve({res, totals: totals});
-                                result?.map(detail => {
-                                    let aux = res.findIndex(element => element.id === detail.id_flavor);
-                                    if (aux === -1) {
-                                        res.push({id: detail.id_flavor, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0});
-                                        totals[1].quantity += detail.quantity;
-                                    } else {
-                                        res[aux].consum += detail.quantity;
-                                        totals[1].quantity += detail.quantity;
-                                    }
-                                });
-                                resul?.map(detail => {
-                                    let aux = res.findIndex(element => element.id === detail.id_flavor);
-                                    if (aux === -1) {
-                                        res.push({id: detail.id_flavor, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity});
-                                        totals[0].quantity += detail.quantity;
-                                    } else {
-                                        res[aux].prod += detail.quantity;
-                                        totals[0].quantity += detail.quantity;
-                                    }
-                                });
-
-                                db.commit((error) => {
+                                if (resu.length === 0) resolve({res, totals: totals, months: months});
+                                db.query(sqlSelect3, (error, resul) => {
                                     if (error) {
                                         console.log(error);
-                                        return db.rollback(() => reject(error));
+                                        db.rollback(()=> reject(error));
                                     }
-                                    else resolve({res, totals: totals});
+                                    else {
+                                        if (resul.length === 0) resolve({res, totals: totals, months: months});
+                                        result?.map(detail => {
+                                            let aux = res.findIndex(element => element.id === detail.id_flavor);
+                                            if (aux === -1) {
+                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
+                                                totals[1].quantity += detail.quantity;
+                                            } else {
+                                                res[aux].consum += detail.quantity;
+                                                totals[1].quantity += detail.quantity;
+                                            }
+                                            let monthId = months.findIndex(element => element.month == toMonth(detail.date));
+                                            if (monthId === -1) {
+                                                months[months.length] = {month: toMonth(detail.date), consum: detail.quantity, prod: 0};
+                                            } else {
+                                                months[monthId].consum += detail.quantity;
+                                            }
+                                        });
+                                        resu?.map(detail => {
+                                            let aux = res.findIndex(element => element.id === detail.id_flavor);
+                                            if (aux === -1) {
+                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
+                                                totals[1].quantity += detail.quantity;
+                                            } else {
+                                                res[aux].consum += detail.quantity;
+                                                totals[1].quantity += detail.quantity;
+                                            }
+                                            let monthId = months.findIndex(element => element.month == toMonth(detail.date));
+                                            if (monthId === -1) {
+                                                months[months.length] = {month: toMonth(detail.date), consum: detail.quantity, prod: 0};
+                                            } else {
+                                                months[monthId].consum += detail.quantity;
+                                            }
+                                        });
+                                        resul?.map(detail => {
+                                            let aux = res.findIndex(element => element.id === detail.id_flavor);
+                                            if (aux === -1) {
+                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity};
+                                                totals[0].quantity += detail.quantity;
+                                            } else {
+                                                res[aux].prod += detail.quantity;
+                                                totals[0].quantity += detail.quantity;
+                                            }
+                                            let monthId = months.findIndex(element => element.month == toMonth(detail.date));
+                                            if (monthId === -1) {
+                                                months[months.length] = {month: toMonth(detail.date), consum: 0, prod: detail.quantity};
+                                            } else {
+                                                months[monthId].prod += detail.quantity;
+                                            }
+                                        });
+
+                                        db.commit((error) => {
+                                            if (error) {
+                                                console.log(error);
+                                                return db.rollback(() => reject(error));
+                                            }
+                                            else resolve({res, totals: totals, months: months});
+                                        });
+                                    }
                                 });
                             }
                         });
