@@ -1,7 +1,9 @@
 const { createSupply, readTypeSupply, readSupplies, readSuppliesWithStock,
     modifySupply, supplyDelete, modifySupplyStock } = require('../services/suppliesService');
 const { isValidNumber } = require('../shared/numberValidations');
-const { BAD_REQUEST } = require('../shared/httpStatusCodes');
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } = require('../shared/httpStatusCodes');
+const { genericServerError } = require('../shared/errorMessages');
+const { getSuppliesDBByProperties } = require('../db/suppliesDB');
 
 // [HTTP:GET]
 async function getSupplies(req, res) {
@@ -14,6 +16,19 @@ async function getSupplies(req, res) {
             Ok: false,
             Message: e.message,
         });
+    }
+}
+
+async function getSuppliesByProperties(req, res) {
+    try {
+        const supplies = await getSuppliesDBByProperties(req.query);
+        const result = {
+            amount: supplies.length,
+            supplies: supplies,
+        };
+        res.status(OK).send(result);
+    } catch (e) {
+        res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
     }
 }
 

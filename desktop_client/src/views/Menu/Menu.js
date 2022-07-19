@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaLock, FaLockOpen } from 'react-icons/fa';
 import { GoBell, GoHome, GoTasklist } from 'react-icons/go';
 import {

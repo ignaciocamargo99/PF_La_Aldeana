@@ -5,7 +5,7 @@ import React from 'react'
 import { FLAVOR_TYPES_LINK } from '../constants';
 import { handleDeleteClicked } from './flavorTypeDeletion';
 
-const FlavorTypesTable = ({ pageElements, readOnly }) => {
+const FlavorTypesTable = ({ pageElements, permissionsAccess }) => {
 
     const columnsHeaders = [
         {
@@ -77,13 +77,13 @@ const FlavorTypesTable = ({ pageElements, readOnly }) => {
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <EditButton
-                                            link={readOnly ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
-                                            disable={readOnly}
+                                            link={permissionsAccess !== 3 ? '#' : `${FLAVOR_TYPES_LINK}/edit/${element.idFlavorType}`}
+                                            disable={permissionsAccess === 3 ? false : true}
                                         />
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         <DeleteButton
-                                            disable={readOnly}
+                                            permissionsAcces={permissionsAccess === 3 ? false : true}
                                             onConfirm={() => { handleDeleteClicked(element) }}
                                             warningTitle='¿Seguro que desea eliminar la categoría seleccionada?'
                                             warningText={`"${element.name}" ya no estará disponible.`}

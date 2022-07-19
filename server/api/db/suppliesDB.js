@@ -1,4 +1,7 @@
 const pool = require('../../config/connection');
+const Supplies = require('../database/models/suppliesModel');
+const SupplyType = require('../database/models/supplyType');
+const { Op } = require('sequelize');
 
 const suppliesGetDB = () => {
     const sqlSelect = `SELECT s.*, st.name AS name_type_supply FROM SUPPLIES  s
@@ -15,6 +18,40 @@ const suppliesGetDB = () => {
             });
             db.release();
         });
+    });
+};
+
+const getSuppliesDBByProperties = ({ onlyInactives, includeInactives, forWholesale }) => {
+    // default conditions
+    let whereCondition = {
+        active: true,
+    };
+
+    // active condition
+    if (includeInactives === 'true') {
+        delete whereCondition.active;
+    }
+
+    if (onlyInactives === 'true') {
+        whereCondition.active = false;
+    }
+
+    // price_wholesale condition
+    if (forWholesale === 'true') {
+        whereCondition.price_wholesale = {
+            [Op.not]: null,
+            [Op.gt]: 0,
+        };
+    }
+    else if (forWholesale === 'false') {
+        whereCondition.price_wholesale = {
+            [Op.is]: null,
+        };
+    }
+
+    return Supplies.findAll({
+        where: whereCondition,
+        include: [SupplyType]
     });
 };
 
@@ -143,5 +180,5 @@ const suppliesUpdateStockDB = (supplies) => {
 module.exports = {
     supplyPostDB, suppliesGetDB,
     suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB,
-    suppliesUpdateStockDB
+    suppliesUpdateStockDB, getSuppliesDBByProperties
 };

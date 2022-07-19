@@ -1,7 +1,6 @@
+import createTabsStateObject from "./createTabsStateObject";
 
 const Tabs = ({ tabs, setTabs }) => {
-
-    console.log('Tabs');
 
     const defaultTabStyle = 'nav-link text-dark';
     const activeTabStyle = 'nav-link active bg-la-aldeana-violeta text-white';
@@ -12,19 +11,19 @@ const Tabs = ({ tabs, setTabs }) => {
 
         switch (tabName) {
             case 'showFlavorsTab':
-                auxTabs = { showFlavorsTab: true, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, };
+                auxTabs = createTabsStateObject(true, false, false, false);
                 break;
             case 'showSuppliesTab':
-                auxTabs = { showFlavorsTab: false, showSuppliesTab: true, showTransportTab: false, showSummaryTab: false, };
+                auxTabs = createTabsStateObject(false, true, false, false);
                 break;
             case 'showTransportTab':
-                auxTabs = { showFlavorsTab: false, showSuppliesTab: false, showTransportTab: true, showSummaryTab: false, };
+                auxTabs = createTabsStateObject(false, false, true, false);
                 break;
             case 'showSummaryTab':
-                auxTabs = { showFlavorsTab: false, showSuppliesTab: false, showTransportTab: false, showSummaryTab: true, };
+                auxTabs = createTabsStateObject(false, false, false, true);
                 break;
             default:
-                auxTabs = { showFlavorsTab: false, showSuppliesTab: false, showTransportTab: false, showSummaryTab: false, };
+                auxTabs = createTabsStateObject(false, false, false, false);
                 break;
         }
 

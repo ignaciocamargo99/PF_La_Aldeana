@@ -259,4 +259,33 @@ const productStocksGetDB = () => {
     });
 };
 
-module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB };
+const deliveryProductGetDB = () => {
+
+    const sqlSelect = 'SELECT p.id_product AS id_product, p.name AS name, p.description AS description, p.price AS price, ' +
+        'p.id_sector AS id_sector, s.name AS name_sector, p.id_product_type AS id_product_type, pt.name AS name_product_type, p.active AS active, p.quantity_flavor AS quantity_flavor, ' +
+        `(SELECT truncate(MIN(s.stock_unit / pxs.number_supply),0)
+        FROM PRODUCT_X_SUPPLY pxs INNER JOIN SUPPLIES s ON pxs.id_supply = s.id_supply
+        WHERE pxs.id_product = p.id_product) AS stock ` +
+
+        'FROM PRODUCTS p ' +
+        'INNER JOIN SECTORS s ON p.id_sector = s.id_sector ' +
+        'INNER JOIN PRODUCT_TYPES pt ON p.id_product_type = pt.id_product_type ' +
+        'WHERE p.active = 1' +
+        ' AND p.id_product_type = pt.id_product_type' +
+        ' AND pt.send_delivery = 1' +
+        ' ORDER BY p.name';
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();
+        })
+    });
+}
+
+module.exports = { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB, deliveryProductGetDB };

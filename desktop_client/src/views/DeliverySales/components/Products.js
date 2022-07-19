@@ -13,13 +13,11 @@ import errorNextStepOne from '../../../utils/ErrorMessages/errorNextStepOne';
 import LoaderSpinner from '../../../common/LoaderSpinner';
 
 const Products = (props) => {
-
     const [filter,setFilter] = useState(0);
     const [nameShow,setNameShow] = useState('');
     const [showModal,setShowModal] = useState(false);
     const [showModalView,setShowModalView] = useState(false);
     const [quantityFlavor,setQuantityFlavor] = useState();
-
 
     const upload = (id,i) => {
         let productQuantityToAdd = props.productsQuantities.find(productQuantity => productQuantity.product.id_product === id);
@@ -67,7 +65,7 @@ const Products = (props) => {
     return(
     <>
         <div className="formRow">
-            <h3><b>Productos</b></h3>
+            <h4><b>Productos</b></h4>
         </div>
         <RadioButtons products={props.productsQuantities} setFilter={setFilter}/>
         <hr />
@@ -75,11 +73,14 @@ const Products = (props) => {
         <ModalFlavorShow show={showModalView} setShowModalShow={setShowModalView} productName={nameShow} flavorsToView={props.flavorsProduct}/>
         <div className="formRow">
             <div className="col-md-6">
-                <BeShowed show={props.productsQuantities.length === 0 }>    
+                <BeShowed show={props.productsQuantities.length === 0 && props.loadSpinner }>    
                     <LoaderSpinner color='primary' description="Cargando..."/>
                 </BeShowed>
-                <BeShowed show={props.productsQuantities.length !== 0 }>
+                <BeShowed show={props.productsQuantities.length !== 0 && !props.loadSpinner}>
                     <ListProducts onClick={upload} filter={filter}/>
+                </BeShowed>
+                <BeShowed show={props.productsQuantities.length === 0 && !props.loadSpinner }>    
+                <h4 className="row justify-content-center" style={{ color: '#C16100', width:'80%', textAlign: 'center' }}>No se encontraron productos disponibles para ser enviados por delivery...</h4>
                 </BeShowed>
             </div>
             <div className="col-md-6" style={{marginLeft:'2%'}}>
