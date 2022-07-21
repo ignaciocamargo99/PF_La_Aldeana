@@ -56,16 +56,12 @@ const Products = (props) => {
                 props.sumTotalDelivery(subtotal);
             }
             props.updateDeliveryProductQuantity({ 'product': props.productsQuantities[i].product, 'quantity': 0 }, i);
-        } else {
-            errorInputQuantities();
         }
+        else errorInputQuantities();
     }
 
     const download = (i) => {
-
         let restar = props.detailsDelivery[i].subtotal;
-
-        // console.log(props.detailsDelivery[i].quantity)
         props.subtractTotalDelivery(restar);
         props.deleteDetailDelivery(i);
         const { products: productNew, supplies: suppliesNew } =
@@ -77,7 +73,6 @@ const Products = (props) => {
                 props.detailsDelivery[i].quantity,
                 'D',
             );
-        console.log(suppliesNew, productNew)
         props.updateDeliveryProductsStocks(productNew);
         props.updateSuppliesDelivery(suppliesNew);
     }

@@ -7,12 +7,12 @@ import BeShowed from '../../../common/BeShowed';
 import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import Table from '../../../common/Table/Table';
+import errorInputQuantities from "../../../utils/ErrorMessages/errorInputQuantities";
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import warningMessage from '../../../utils/warningMessage';
 import { calculateStock } from './calculateStockDelivery'
 
 const ListProducts = (props) => {
-
     const [searchState, setSearchState] = useState('');
     const [noProduct, setNoProduct] = useState(false);
 
@@ -29,19 +29,11 @@ const ListProducts = (props) => {
         let filterProduct;
         filterProduct = props.productsStocks.filter(product => product.id_product === id);
         let quantityInput = document.getElementById(`quantityInput${i}`)
-        let detail = props.details.find(detail => detail)
+
         let quantity
-        // if (detail !== undefined) {
-        //     quantity = parseInt(quantityInput.value) + parseInt(detail.quantity)
-        // }
-        // else {
-        quantity = parseInt(quantityInput.value)
-        // }
+        if (quantityInput.value !== '') quantity = parseInt(quantityInput.value)
+        else quantity = 0
 
-
-
-        // console.log(filterProduct[0])
-        // console.log(quantity)
         if (filterProduct[0].stock_current || filterProduct[0].stock_current >= 0) {
             if (quantity <= filterProduct[0].stock_current) {
                 const { products: productNew, supplies: suppliesNew } =
@@ -58,11 +50,8 @@ const ListProducts = (props) => {
                 props.onClick(id, i);
                 quantityInput.value = '';
             }
-            else {
-                warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock_current}.\nCantidad ingresada: ${quantity}.`, 'warning')
-            }
+            else warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock_current}.\nCantidad ingresada: ${quantity}.`, 'warning')
         }
-
         else {
             if (quantity <= filterProduct[0].stock || filterProduct[0].stock === null) {
                 const { products: productNew, supplies: suppliesNew } =
@@ -79,9 +68,7 @@ const ListProducts = (props) => {
                 props.onClick(id, i);
                 quantityInput.value = '';
             }
-            else {
-                warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock}.\nCantidad ingresada: ${quantity}.`, 'warning')
-            }
+            else warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock}.\nCantidad ingresada: ${quantity}.`, 'warning')
         }
     }
 

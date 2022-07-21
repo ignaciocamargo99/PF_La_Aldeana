@@ -28,11 +28,9 @@ export const calculateStock = (
                     break;
                 }
                 if (action === 'D') {
-                    console.log('entra al delete');
                     supplies[j].quantityOfSupply =
                         quantity * -1 * suppliesOfProduct[i].number_supply;
                     supplies[j].stock_unit -= supplies[j].quantityOfSupply;
-                    console.log(supplies[j].quantityOfSupply);
                     break;
                 }
             }
@@ -78,8 +76,6 @@ const calculateMinStock = (product, supplies, productXSupplies) => {
         let supply = supplies.find(
             (s) => s.id_supply === supplyXproduct[i].id_supply
         );
-
-        console.log(supply)
 
         minStock.push(
             Math.trunc(
