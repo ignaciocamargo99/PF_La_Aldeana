@@ -157,7 +157,7 @@ const ModalFlavorSelect = (props) => {
                                                     <td style={{ textAlign: 'center', width: '10%' }}><label>{flavor.id_flavor}</label></td>
                                                     <td style={{ textAlign: 'center', width: '70%' }}><label>{flavor.name}</label></td>
                                                     <td style={{ textAlign: 'center', width: '20%' }}>
-                                                        <button type="button" className="btn btn-danger" onClick={() => { downloadFlavor(flavor.id_flavor, i) }}><FontAwesomeIcon icon={faMinus} /></button>
+                                                        <button type="button" className="btn btn-light btn-danger" onClick={() => { downloadFlavor(flavor.id_flavor, i) }}><FontAwesomeIcon icon={faMinus} /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>

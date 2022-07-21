@@ -156,7 +156,7 @@ const ModalProduct = (props) => {
                     'Atención',
                     'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
                     props.productSelected.stock_current +
-                    '\n Cantidad cargada: ' +
+                    '\n Cantidad ingresada: ' +
                     quantity,
                     'warning'
                 );
