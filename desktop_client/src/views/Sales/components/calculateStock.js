@@ -30,7 +30,6 @@ export const calculateStock = (
                     } else break;
                 }
                 if (action === 'D') {
-                    console.log('entra al delete');
                     supplies[j].quantityOfSupply =
                         quantity * -1 * suppliesOfProduct[i].number_supply;
                     supplies[j].stock_unit -= supplies[j].quantityOfSupply;
@@ -45,7 +44,7 @@ export const calculateStock = (
         for (let j = 0; j < productXSupplies.length; j++) {
             if (
                 suppliesOfProduct[i].id_supply ===
-                    productXSupplies[j].id_supply &&
+                productXSupplies[j].id_supply &&
                 !arrayIdProduct.includes(productXSupplies[j].id_product)
             ) {
                 arrayIdProduct.push(productXSupplies[j].id_product);
@@ -83,7 +82,7 @@ const calculateMinStock = (product, supplies, productXSupplies, quantity) => {
         minStock.push(
             Math.trunc(
                 parseFloat(supply.stock_unit) /
-                    parseFloat(supplyXproduct[i].number_supply)
+                parseFloat(supplyXproduct[i].number_supply)
             )
         );
     }

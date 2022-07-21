@@ -18,8 +18,10 @@ const SideMenu = (props) => {
     return (
         <>
             <ProSidebar
-                collapsed='false'
-                className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
+                collapsed={true}
+                // collapsed={props.menu}
+                // className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
+                className='menuBar'
                 image={sidebarBg}
             >
                 <SidebarContent>

@@ -134,10 +134,6 @@ const Sales = (props) => {
     }
 
     const registerSale = async () => {
-        console.log(props.supplies)
-
-        console.log(props.products)
-
         if (ready) {
             const registrationConfirmed = (
                 await defaultQuestionSweetAlert2(`¿Confirma la venta?`)

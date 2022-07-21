@@ -7,10 +7,9 @@ import BeShowed from '../../../common/BeShowed';
 import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import Table from '../../../common/Table/Table';
-import errorInputQuantities from "../../../utils/ErrorMessages/errorInputQuantities";
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import warningMessage from '../../../utils/warningMessage';
-import { calculateStock } from './calculateStockDelivery'
+import { calculateStock } from './calculateStockDelivery';
 
 const ListProducts = (props) => {
     const [searchState, setSearchState] = useState('');
@@ -154,7 +153,6 @@ const ListProducts = (props) => {
                                                     <td style={{ textAlign: 'center', width: '12%' }}>
                                                         <button type="button" className="btn btn-light sendAdd"
                                                             onClick={() => { onClick(productQuantity.product.id_product, i) }}
-                                                        // disabled={productQuantity.product.stock > 0 ? false : true}
                                                         ><FontAwesomeIcon icon={faPlus} /></button>
                                                     </td>
                                                 </tr>
