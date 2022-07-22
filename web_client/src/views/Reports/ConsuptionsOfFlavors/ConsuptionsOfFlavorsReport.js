@@ -7,6 +7,8 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
 import TotalsConsuptions from './components/TotalsConsuptions';
 import dateText from '../../../utils/DateFormat/dateText';
+import Consuptions from './components/Consuptions';
+import Productions from './components/Productions';
 
 const ConsuptionsOfFlavorsReport = (props) => {
     const [loaded, setLoaded] = useState(false);
@@ -38,11 +40,19 @@ const ConsuptionsOfFlavorsReport = (props) => {
                         </div>
                         <hr />
                         <div className="formRow">
-                            <div className="col-sm-9" style={{ paddingRight: '1em' }}>
+                            <div className="col-sm-7" style={{ paddingRight: '1em' }}>
                                 <ListConsuptions consuptions={consuptions} from={from} to={to}/>
                             </div>
-                            <div className="col-sm-3" style={{ paddingLeft: '1em' }}>
-                                <TotalsConsuptions totals={consuptions[1]}/>
+                            <div className="col-sm-5" style={{ paddingLeft: '1em' }}>
+                                <TotalsConsuptions totals={consuptions[2]}/>
+                                <div className="formRow">
+                                    <div className="col-sm-6" style={{ paddingRight: '1em' }}>
+                                        <Consuptions totals={consuptions[0]}/>
+                                    </div>
+                                    <div className="col-sm-6" style={{ paddingLeft: '1em' }}>
+                                        <Productions totals={consuptions[0]}/>
+                                    </div>  
+                                </div>
                             </div>
                         </div>
                     </BeShowed>

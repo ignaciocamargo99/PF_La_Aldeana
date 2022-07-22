@@ -41,16 +41,52 @@ const Options = (props) => {
                         let labelsTotalised = [];
                         let datTotalised = [];
                         let totals = [];
-                        
-                        data[1]?.forEach((e, i) => {
-                            if (i < 3 || i === 4){
-                                labelsTotalised.push(e.id);
-                                datTotalised.push(e.quantity);
-                                totals.push(e);
-                            }
+                        let months = [];
+                        let labels = [];
+                        let dat = [];
+                        let othersDat = [];
+                        let consum = [];
+
+                        data[2]?.forEach((e, i) => {
+                            labels.push(e.month.slice(0,-3));
+                            dat.push(e.consum);
+                            othersDat.push(e.prod);
                         });
+                        
+                        data[0]?.forEach((e, i) => {
+                            labelsTotalised.push(e.name);
+                            datTotalised.push(e.prod);
+                            consum.push(e.consum)
+                            months.push(e);
+                        });
+                        const bar = {
+                            type: 'horizontalBar',
+                            labels: labels,
+                            datasets: [
+                            {
+                                label: 'baldes consumidos',
+                                data: datTotalised,
+                            },
+                            {
+                                label: 'baldes producidos',
+                                data: datTotalised,
+                            },
+                            ],
+                        };
 
                         const totalised = {
+                            type: 'outlabeledPie',
+                            labels: labelsTotalised,
+                            datasets: [
+                            {
+                                label: 'baldes',
+                                data: consum,
+                            },
+                            ],
+                            total: data[1][0].quantity
+                        };
+
+                        const totalisedConsum = {
                             type: 'outlabeledPie',
                             labels: labelsTotalised,
                             datasets: [
@@ -59,10 +95,10 @@ const Options = (props) => {
                                 data: datTotalised,
                             },
                             ],
-                            total: data[1][5].quantity
+                            total: data[1][1].quantity
                         };
                         setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                        consuptions={consuptions} totalisedChart={totalised} totals={totals} />);
+                        consuptions={consuptions} totalisedChart={totalised} totals={totals} months={months} bar={bar} totalisedConsum={totalisedConsum} consum={consum} />);
                     }
 
                     props.setLoaded(true);

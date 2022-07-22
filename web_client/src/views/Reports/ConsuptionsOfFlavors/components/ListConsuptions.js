@@ -13,16 +13,15 @@ const ListConsuptions = (props) => {
     const [nameSearch, setNameSearch] = useState('');
 
     useEffect(() => {
-        if (props.salaries.length > 0){
-
-            setListTable(props.salaries[0]);
+        if (props.consuptions[0].length > 0){
+            setListTable(props.consuptions[0]);
         }
-    }, [props.salaries]);
+    }, [props.consuptions]);
 
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter((elem) => {
-                return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
+                return elem.name.toUpperCase().includes(nameSearch.toUpperCase());
             });
 
             setFilteredElements(filteredElementsList);
@@ -34,30 +33,26 @@ const ListConsuptions = (props) => {
     const columnsHeaders = [
         {
             name: 'Nombre',
-            width: '20%'
+            width: '25%'
         },
         {
-            name: 'Hs. trabajadas/extras',
+            name: 'Tipo',
             width: '15%'
         },
         {
-            name: 'Recibo de sueldo',
+            name: 'Familia',
             width: '15%'
         },
         {
-            name: 'Adicionales',
-            width: '10%'
-        },
-        {
-            name: 'Subtotal',
+            name: 'Producción (baldes)',
             width: '15%'
         },
         {
-            name: 'Descuentos y anticipos',
-            width: '10%'
+            name: 'Consumo (baldes)',
+            width: '15%'
         },
         {
-            name: 'Total',
+            name: 'Diferencia',
             width: '15%'
         }
     ];
@@ -71,9 +66,9 @@ const ListConsuptions = (props) => {
 
     return (
         <>
-            <BeShowed show={props.salaries.length > 0}>
+            <BeShowed show={props.consuptions.length > 0}>
                 <div className="formRow title-searcher">
-                    <h4 className="text-secondary">Empleados:</h4>
+                    <h4 className="text-secondary">Sabor de helado:</h4>
                     <div className="search-input">
                         <div className="input-group">
                             <div className="input-group-prepend">
@@ -100,19 +95,17 @@ const ListConsuptions = (props) => {
                             {currentElements?.map((element, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.salary_hs}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.paycheck}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.plus}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.subtotal}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.minus}</td>
-                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>$ {element.total}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.type}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.family}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.prod}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.consum}</td>
+                                        <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{element.prod - element.consum}</td>
                                     </tr>
                                 )
                             })}
-                            {currentElements && currentElements.length < props.salaries[0].length ?
+                            {currentElements && currentElements.length < props.consuptions[0].length ?
                                     <tr key='blanckSpace'>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
@@ -123,17 +116,22 @@ const ListConsuptions = (props) => {
                             }
                             <tr key='total'>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][0].quantity}</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][1].quantity}</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][2].quantity}</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][3].quantity}</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][4].quantity}</td>
-                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>${props.salaries[1][5].quantity}</td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.consuptions[1][0].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.consuptions[1][1].quantity}</td>
+                                <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.consuptions[1][0].quantity - props.consuptions[1][1].quantity}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
+            </BeShowed>
+            <BeShowed show={props.consuptions[0].length === 0}>
+                <br />
+                <div className="text-center">
+                    <h2>No se encontró información de sabores de helados que coincida con la búsqueda</h2>
+                </div>
             </BeShowed>
         </>
     )

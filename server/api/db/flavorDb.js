@@ -18,8 +18,8 @@ const toMonth = (d_t) => {
 };
 const consuptionsReportGetDB = (from, to) => {
 
-    const sqlSelect = `SELECT sb.date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM SALES_BRANCHES sb 
-                LEFT JOIN DETAIL_SALES_FLAVORS dsf ON dsf.id_sale_branch = sb.id_sale_branch 
+    const sqlSelect = `SELECT sb.date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM DETAIL_SALES_FLAVORS dsf
+                LEFT JOIN SALES_BRANCHES sb ON dsf.id_sale_branch = sb.id_sale_branch 
                 LEFT JOIN FLAVORS f ON dsf.id_flavor = f.id_flavor
                 LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
                 LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
@@ -72,7 +72,7 @@ const consuptionsReportGetDB = (from, to) => {
                                         result?.map(detail => {
                                             let aux = res.findIndex(element => element.id === detail.id_flavor);
                                             if (aux === -1) {
-                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
+                                                res[res.length] = {id: detail.id_flavor, name: detail.name, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
                                                 totals[1].quantity += detail.quantity;
                                             } else {
                                                 res[aux].consum += detail.quantity;
@@ -88,7 +88,7 @@ const consuptionsReportGetDB = (from, to) => {
                                         resu?.map(detail => {
                                             let aux = res.findIndex(element => element.id === detail.id_flavor);
                                             if (aux === -1) {
-                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
+                                                res[res.length] = {id: detail.id_flavor, name: detail.name, type: detail.type, family: detail.family, consum: detail.quantity, prod: 0};
                                                 totals[1].quantity += detail.quantity;
                                             } else {
                                                 res[aux].consum += detail.quantity;
@@ -104,7 +104,7 @@ const consuptionsReportGetDB = (from, to) => {
                                         resul?.map(detail => {
                                             let aux = res.findIndex(element => element.id === detail.id_flavor);
                                             if (aux === -1) {
-                                                res[res.length] = {id: detail.id_flavor, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity};
+                                                res[res.length] = {id: detail.id_flavor, name: detail.name, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity};
                                                 totals[0].quantity += detail.quantity;
                                             } else {
                                                 res[aux].prod += detail.quantity;

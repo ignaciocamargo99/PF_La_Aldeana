@@ -35,15 +35,12 @@ const Options = (props) => {
                 
                 if (data[0].length > 0){
                     let stock = data[0];
-                    let labelsTotalised = [];
                     let datTotalised = [];
                     let totals = [];
                     
                     data[1]?.forEach((e, i) => {
-                        if (i < 3 || i === 4){
-                            datTotalised.push(e.quantity);
-                            totals.push(e);
-                        }
+                        datTotalised.push(e.quantity);
+                        totals.push(e);
                     });
 
                     const totalised = {

@@ -13,7 +13,6 @@ const ListStock = (props) => {
     const [nameSearch, setNameSearch] = useState('');
 
     useEffect(() => {
-        console.log(props.stock.list)
         if (props.stock.list?.length > 0){
             console.log(props.stock.list)
             setListTable(props.stock.list);
@@ -121,7 +120,6 @@ const ListStock = (props) => {
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total</td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>.......</td>
-                                {console.log(props.stock.totals)}
                                 <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.stock.totals[0].quantity}</td>
                                 <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.stock.totals[1].quantity}</td>
                                 <td style={{ textAlign: 'right', verticalAlign: 'middle' }}>{props.stock.totals[0].quantity - props.stock.totals[1].quantity}</td>
@@ -134,7 +132,7 @@ const ListStock = (props) => {
             <BeShowed show={props.stock.list.length === 0}>
                 <br />
                 <div className="text-center">
-                    <h2>No se encontró información de stock de sabores de helados y reabastecimiento que coincida con la búsqueda</h2>
+                    <h2>No se encontró información de stock de sabores de helados que coincida con la búsqueda</h2>
                 </div>
             </BeShowed>
         </>
