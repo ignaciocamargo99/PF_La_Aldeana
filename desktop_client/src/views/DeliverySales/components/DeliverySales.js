@@ -9,7 +9,7 @@ import Products from './Products';
 import {
     updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery,
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery, resetDetailDelivery,
-    updateDeliveryProductsQuantities, subtractTotalDelivery, updateDeliveryProductsStocks
+    updateDeliveryProductsQuantities, subtractTotalDelivery, updateDeliveryProductsStocks, updateProductsXSuppliesDelivery, updateSuppliesDelivery
 } from '../../../actions/DeliverySalesActions';
 import Buttons from '../../../common/Buttons';
 import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
@@ -54,6 +54,13 @@ const DeliverySales = (props) => {
             .catch((err) => {
                 console.log(err);
             })
+        axios.get(`${PORT()}/api/productxsupply`)
+            .then((response) => props.updateProductsXSuppliesDelivery(response.data))
+            .catch((error) => console.error(error));
+
+        axios.get(`${PORT()}/api/supplies`)
+            .then((response) => props.updateSuppliesDelivery(response.data))
+            .catch((error) => console.error(error));
 
     }, [reset]);
 
@@ -123,7 +130,7 @@ const DeliverySales = (props) => {
                 </div>
 
                 <BeShowed show={step === 1}>
-                    <Products setStep={setStep} resetStates={resetStates} loadSpinner={loadSpinner}/>
+                    <Products setStep={setStep} resetStates={resetStates} loadSpinner={loadSpinner} />
                 </BeShowed>
 
                 <BeShowed show={step === 2}>
@@ -147,7 +154,8 @@ const mapStateToProps = state => {
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
         total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
-        names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
+        names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery,
+        productsXsuppliesDelivery: state.productsXsuppliesDelivery, suppliesDelivery: state.suppliesDelivery
     }
 }
 
@@ -155,7 +163,8 @@ const mapDispatchToProps = {
     updateDeliveryProductsQuantities, resetDetailDelivery, updateErrorStreetNumberDelivery,
     updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery,
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery,
-    updateAmountDelivery, subtractTotalDelivery, updateDeliveryProductsStocks
+    updateAmountDelivery, subtractTotalDelivery, updateDeliveryProductsStocks, updateProductsXSuppliesDelivery,
+    updateSuppliesDelivery
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeliverySales);

@@ -215,6 +215,7 @@ const TabSummary = ({
                             subtotalTransport={wholesaleTransportCost}
                             total={total}
                             handleFinalize={handleFinalize}
+                            labelBtn='Finalizar'
                         />
                     </div>
                 </>

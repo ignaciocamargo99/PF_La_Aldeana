@@ -1,14 +1,15 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoaderSpinner from 'common/LoaderSpinner';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useGetWholeSales } from '../customHooks/useGetWholeSales';
-import { WholeSaleFilter } from './WholeSaleFilter'
-
+import { formatDateEnd, formatDateStart } from './formatDate';
+import { WholeSaleFilter } from './WholeSaleFilter';
 export const WholeSalesList = ({ permissionsAccess }) => {
+    const startDate = formatDateStart(null);
+    const endDate = formatDateEnd(null);
     // to do cambiar hook para que traiga solo activos
-    const { loadingSpinner, wholeSales } = useGetWholeSales();
+    const { loadingSpinner, wholeSales } = useGetWholeSales(startDate, endDate);
 
     let newButtonStyle = 'btn btn-light newBtn';
     if (permissionsAccess === 1) {

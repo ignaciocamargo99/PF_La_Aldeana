@@ -1,7 +1,6 @@
 import NotPermissionPage from 'common/NotPermissionPage';
 import SesionPage from "common/SesionPage";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { EditWholeSale } from "./WholeSaleList/EditWholeSale/EditWholeSale";
 import { ReadWholeSale } from './WholeSaleList/ReadWholeSale/ReadWholeSale';
 import { WholeSalesList } from "./WholeSaleList/WholeSalesList";
 import WholeSalesView from "./WholeSalesView";
@@ -24,15 +23,6 @@ const WholeSaleRoutes = ({ permissionsAccess }) => {
                 }}></Route>
 
                 <Route exact path={`${path}/view/:idWholesale`} component={ReadWholeSale}></Route>
-
-                <Route exact path={`${path}/edit/:idWholesale`} render={() => {
-                    if (permissionsAccess !== 3) {
-                        return <NotPermissionPage />
-                    } else if(permissionsAccess === 3){
-                        return <EditWholeSale />
-                    }
-                }}></Route>
-
                 <Route path={`/`} render={() => {
                     return <SesionPage />
                 }}></Route>

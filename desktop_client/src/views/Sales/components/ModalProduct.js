@@ -31,7 +31,7 @@ const ModalProduct = (props) => {
     const [ready, setReady] = useState(false);
     const [refreshModal, setRefreshModal] = useState(false);
     const [keyboardNumber, setKeyboardNumber] = useState();
-    const [descriptionProduct, setDescriptionProduct] = useState();
+    const [descriptionProduct, setDescriptionProduct] = useState('');
 
     const handleObs = (e) => setDescriptionProduct(e.target.value);
 
@@ -66,15 +66,12 @@ const ModalProduct = (props) => {
                 setReady(false);
             }
         } else if (props.actionModal == 'M') {
-            if (
-                (quantity > 0 &&
-                    quantity <= props.productSelected.stock_current) ||
-                !props.productSelected.stock_current
-            ) {
+            if ((quantity > 0 && quantity <= props.productSelected.stock)) {
                 if (inputQuantity.current)
                     inputQuantity.current.value = quantity;
                 setReady(true);
-            } else {
+            }
+            else {
                 setReady(false);
             }
         } else if (props.actionModal == 'A') {
@@ -97,6 +94,7 @@ const ModalProduct = (props) => {
                 setQuantity(props.productSelected.quantity);
                 setSubtotal(props.productSelected.subtotal);
                 setPreviousQuantity(props.productSelected.quantity);
+                setDescriptionProduct(props.productSelected.descriptionProduct)
             } else {
                 setSubtotal(null);
                 setQuantity(0);
@@ -155,12 +153,12 @@ const ModalProduct = (props) => {
             }
             if (quantity > props.productSelected.stock_current)
                 warningMessage(
-                    'Atención!',
+                    'Atención',
                     'La cantidad ingresada supera el stock disponible \n Stock disponible: ' +
-                        props.productSelected.stock_current +
-                        '\n Cantidad cargada: ' +
-                        quantity,
-                    'error'
+                    props.productSelected.stock_current +
+                    '\n Cantidad ingresada: ' +
+                    quantity,
+                    'warning'
                 );
         }
     };
@@ -203,7 +201,7 @@ const ModalProduct = (props) => {
                                     style={styles.labelQuantity}
                                     id='id_quantity'
                                     ref={inputQuantity}
-                                    // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
+                                // value={inputQuantity.current ? inputQuantity.current.value : quantity === 0 ? "" : quantity}
                                 >
                                     {quantity}
                                 </label>
@@ -235,6 +233,7 @@ const ModalProduct = (props) => {
                                     id='productDescription'
                                     placeholder='Ingrese una observación...'
                                     style={{ width: '100%', height: '74px' }}
+                                    value={descriptionProduct ? descriptionProduct : ''}
                                     onChange={(e) => handleObs(e)}
                                 ></textarea>
                             </div>

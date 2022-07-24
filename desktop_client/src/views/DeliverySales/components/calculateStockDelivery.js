@@ -5,29 +5,27 @@ export const calculateStock = (
     productSelected,
     quantity,
     action,
-    previosQuantity = 0
 ) => {
-    let suppliesOfProduct = productXSupplies.filter(
-        (ps) => ps.id_product === productSelected.id_product
-    );
+    let suppliesOfProduct;
+    if (action === 'D') {
+        suppliesOfProduct = productXSupplies.filter(
+            (ps) => ps.id_product === productSelected.id_product
+        );
+    }
+    else {
+        suppliesOfProduct = productXSupplies.filter(
+            (ps) => ps.id_product === productSelected[0].id_product
+        );
+    }
+
 
     for (let i = 0; i < suppliesOfProduct.length; i++) {
         for (let j = 0; j < supplies.length; j++) {
             if (supplies[j].id_supply === suppliesOfProduct[i].id_supply) {
-                if (action === 'N' || action === 'A') {
-                    supplies[j].quantityOfSupply =
-                        quantity * suppliesOfProduct[i].number_supply;
+                if (action === 'N') {
+                    supplies[j].quantityOfSupply = quantity * suppliesOfProduct[i].number_supply;
                     supplies[j].stock_unit -= supplies[j].quantityOfSupply;
                     break;
-                }
-                if (action === 'M') {
-                    if (quantity !== previosQuantity) {
-                        supplies[j].quantityOfSupply =
-                            (quantity - previosQuantity) *
-                            suppliesOfProduct[i].number_supply;
-                        supplies[j].stock_unit -= supplies[j].quantityOfSupply;
-                        break;
-                    } else break;
                 }
                 if (action === 'D') {
                     supplies[j].quantityOfSupply =
@@ -63,13 +61,13 @@ export const calculateStock = (
             productXSupplies,
             quantity
         );
+
     }
     return { products, supplies };
 };
 
-const calculateMinStock = (product, supplies, productXSupplies, quantity) => {
+const calculateMinStock = (product, supplies, productXSupplies) => {
     let minStock = [];
-
     const supplyXproduct = productXSupplies.filter(
         (ps) => ps.id_product === product.id_product
     );

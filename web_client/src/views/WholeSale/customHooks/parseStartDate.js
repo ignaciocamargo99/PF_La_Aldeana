@@ -1,8 +1,11 @@
+const PORT = require('../../../config')
 
 export const parseStartDate = (strDate) => {
     let newStartDate;
+    let day;
     const dateFormat = new Date(strDate)
-    let day = dateFormat.getDate();
+    if (PORT() === '') day = dateFormat.getDate();
+    else day = dateFormat.getDate() + 1;
     let monthStart = dateFormat.getMonth() + 1;
     let year = dateFormat.getFullYear();
 

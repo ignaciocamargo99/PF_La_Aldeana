@@ -13,26 +13,26 @@ import {
     updateSupplies
 } from '../../actions/SalesActions';
 import '../../assets/Buttons.css';
-import Buttons from '../../common/Buttons';
+import BeShowed from '../../common/BeShowed';
 import dateTimeFormat from '../../utils/DateFormat/dateTimeFormat';
+import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
 import warningMessage from '../../utils/warningMessage';
 import DetailSale from './components/DetailSale';
 import FilterProducts from './components/FilterProducts';
 import ListProducts from './components/ListProducts';
 import PaymentSale from './components/PaymentSale';
-import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
-import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 
 const PORT = require('../../config');
 
 const Sales = (props) => {
     const [ready, setReady] = useState(false);
     const [saleCompleted, setSaleCompleted] = useState(false);
-    const [nameClient, setNameClient] = useState();
+    const [nameClient, setNameClient] = useState('');
 
-    useEffect(() => initialCalls(), []);
-
-    const initialCalls = () => {
+    useEffect(() => {
+        props.updateDetailsProductsClear([]);
+        // initialCalls()
         Axios.get(`${PORT()}/api/products`)
             .then((response) => {
                 let aux = response.data;
@@ -53,7 +53,32 @@ const Sales = (props) => {
         Axios.get(`${PORT()}/api/supplies`)
             .then((response) => props.updateSupplies(response.data))
             .catch((error) => console.error(error));
-    };
+
+
+    }, []);
+
+    // const initialCalls = () => {
+    //     Axios.get(`${PORT()}/api/products`)
+    //         .then((response) => {
+    //             let aux = response.data;
+    //             aux?.map((element, i) => {
+    //                 element.listSupplies = [];
+    //                 element.disabled = false;
+    //                 element.stock_current = element.stock;
+    //             });
+    //             props.updateProducts(aux);
+    //             props.updateProductsFiltered(aux);
+    //         })
+    //         .catch((error) => console.error(error));
+
+    //     Axios.get(`${PORT()}/api/productxsupply`)
+    //         .then((response) => props.updateProductsXSupplies(response.data))
+    //         .catch((error) => console.error(error));
+
+    //     Axios.get(`${PORT()}/api/supplies`)
+    //         .then((response) => props.updateSupplies(response.data))
+    //         .catch((error) => console.error(error));
+    // };
 
     useEffect(() => {
         if (
@@ -74,14 +99,14 @@ const Sales = (props) => {
         props.updateProductsFiltered(aux);
     }, [props.productsFiltered, props.detailProducts, props.refresh]);
 
-    const cancel = () => {
-        resetStates();
-    };
+    // const cancel = () => {
+    //     initialCalls();
+    //     resetStates();
+    // };
 
     const resetStates = () => {
         props.updateDetailsProductsClear([]);
         setNameClient('');
-        initialCalls();
         setSaleCompleted(!saleCompleted);
         props.updateSalesRegister(!props.salesRegister);
     };
@@ -95,16 +120,18 @@ const Sales = (props) => {
             for (let j = 0; j < suppliesXproduct.length; j++) {
                 props.detailProducts[i].listSupplies.push([
                     suppliesXproduct[j].number_supply,
-                    props.supplies.find(
-                        (supply) =>
-                            supply.id_supply == suppliesXproduct[j].id_supply
-                    )
+                    props.supplies.find((supply) => supply.id_supply == suppliesXproduct[j].id_supply)
                 ]);
             }
         }
     };
 
     const handleClientName = (e) => setNameClient(e.target.value);
+
+    const updateStockSupplies = () => {
+        Axios.put(`${PORT()}/api/suppliesStock`, props.supplies)
+            .catch(error => console.error(error))
+    }
 
     const registerSale = async () => {
         if (ready) {
@@ -122,16 +149,17 @@ const Sales = (props) => {
                     details: JSON.stringify(props.detailProducts)
                 };
                 loadingMessage('Registrando venta...');
+
                 Axios.post(`${PORT()}/api/sales`, sale)
                     .then((sale) => {
                         if (sale.data.Ok) {
-                            resetStates();
+                            updateStockSupplies();
+                            resetStates()
                             if (props.totalAmount < props.paymentAmount)
                                 warningMessage(
                                     '¡Éxito!',
-                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${
-                                        parseFloat(props.paymentAmount) -
-                                        parseFloat(props.totalAmount)
+                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${parseFloat(props.paymentAmount) -
+                                    parseFloat(props.totalAmount)
                                     } al cliente!`,
                                     'success'
                                 );
@@ -216,13 +244,14 @@ const Sales = (props) => {
                         </h3>
                         <PaymentSale />
                         <div>
-                            <Buttons
-                                label='Registrar'
-                                ready={ready}
-                                actionOK={registerSale}
-                                actionNotOK={registerSale}
-                                actionCancel={cancel}
-                            ></Buttons>
+                            <div className='buttons'>
+                                <BeShowed show={ready}>
+                                    <button className='btn btn-light sendOk' onClick={registerSale}>Finalizar</button>
+                                </BeShowed>
+                                <BeShowed show={!ready}>
+                                    <button className='btn btn-light sendNotOk' onClick={registerSale}>Finalizar</button>
+                                </BeShowed>
+                            </div>
                         </div>
                     </div>
                 </div>

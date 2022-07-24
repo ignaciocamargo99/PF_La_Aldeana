@@ -2,15 +2,16 @@ import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateDeliveryProductQuantity } from '../../../actions/DeliverySalesActions';
+import { updateDeliveryProductQuantity, updateDeliveryProductsStocks, updateSuppliesDelivery } from '../../../actions/DeliverySalesActions';
 import BeShowed from '../../../common/BeShowed';
 import BodyTable from '../../../common/Table/BodyTable';
 import HeaderTable from '../../../common/Table/HeaderTable';
 import Table from '../../../common/Table/Table';
 import validateFloatNumbers from '../../../utils/Validations/validateFloatNumbers';
 import warningMessage from '../../../utils/warningMessage';
-const ListProducts = (props) => {
+import { calculateStock } from './calculateStockDelivery';
 
+const ListProducts = (props) => {
     const [searchState, setSearchState] = useState('');
     const [noProduct, setNoProduct] = useState(false);
 
@@ -24,21 +25,49 @@ const ListProducts = (props) => {
     }
 
     const onClick = (id, i) => {
+        let filterProduct;
+        filterProduct = props.productsStocks.filter(product => product.id_product === id);
         let quantityInput = document.getElementById(`quantityInput${i}`)
-        let detail = props.details.find(detail => detail.product.id_product === id)
+
         let quantity
-        if (detail !== undefined) {
-            quantity = parseInt(quantityInput.value) + parseInt(detail.quantity)
+        if (quantityInput.value !== '') quantity = parseInt(quantityInput.value)
+        else quantity = 0
+
+        if (filterProduct[0].stock_current || filterProduct[0].stock_current >= 0) {
+            if (quantity <= filterProduct[0].stock_current) {
+                const { products: productNew, supplies: suppliesNew } =
+                    calculateStock(
+                        props.productsStocks,
+                        props.suppliesDelivery,
+                        props.productsXsuppliesDelivery,
+                        filterProduct,
+                        quantityInput.value,
+                        'N',
+                    );
+                props.updateDeliveryProductsStocks(productNew);
+                props.updateSuppliesDelivery(suppliesNew);
+                props.onClick(id, i);
+                quantityInput.value = '';
+            }
+            else warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock_current}.\nCantidad ingresada: ${quantity}.`, 'warning')
         }
         else {
-            quantity = parseInt(quantityInput.value)
-        }
-        if (quantity <= props.productsStocks[i].stock || props.productsStocks[i].stock === null) {
-            props.onClick(id, i);
-            quantityInput.value = '';
-        }
-        else {
-            warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${props.productsStocks[i].stock}.\nCantidad ya cargada: ${detail ? detail.quantity : 0}.`, 'warning')
+            if (quantity <= filterProduct[0].stock || filterProduct[0].stock === null) {
+                const { products: productNew, supplies: suppliesNew } =
+                    calculateStock(
+                        props.productsStocks,
+                        props.suppliesDelivery,
+                        props.productsXsuppliesDelivery,
+                        filterProduct,
+                        quantityInput.value,
+                        'N',
+                    );
+                props.updateDeliveryProductsStocks(productNew);
+                props.updateSuppliesDelivery(suppliesNew);
+                props.onClick(id, i);
+                quantityInput.value = '';
+            }
+            else warningMessage('Atención', `La cantidad ingresada supera el stock disponible.\nStock disponible: ${filterProduct[0].stock}.\nCantidad ingresada: ${quantity}.`, 'warning')
         }
     }
 
@@ -122,7 +151,9 @@ const ListProducts = (props) => {
                                                         <input id={`quantityInput${i}`} className="form-control" style={{ textAlign: 'center' }} type='number' placeholder="0" min={0} maxLength="4" onChange={(e) => { validateQuantity(e, i) }} onKeyDown={(e) => { validateFloatNumbers(e) }} defaultValue={productQuantity.quantity === 0 ? '' : productQuantity.quantity}></input>
                                                     </td>
                                                     <td style={{ textAlign: 'center', width: '12%' }}>
-                                                        <button type="button" className="btn btn-light sendAdd" onClick={() => { onClick(productQuantity.product.id_product, i) }}><FontAwesomeIcon icon={faPlus} /></button>
+                                                        <button type="button" className="btn btn-light sendAdd"
+                                                            onClick={() => { onClick(productQuantity.product.id_product, i) }}
+                                                        ><FontAwesomeIcon icon={faPlus} /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -147,12 +178,16 @@ const mapStateToProps = state => {
     return {
         productsQuantities: state.productsQuantitiesDelivery,
         details: state.detailsDelivery,
-        productsStocks: state.productsStocksDelivery
+        productsStocks: state.productsStocksDelivery,
+        productsXsuppliesDelivery: state.productsXsuppliesDelivery,
+        suppliesDelivery: state.suppliesDelivery
     }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProductQuantity
+    updateDeliveryProductQuantity,
+    updateDeliveryProductsStocks,
+    updateSuppliesDelivery
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListProducts);
