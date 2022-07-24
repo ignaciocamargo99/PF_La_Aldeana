@@ -24,6 +24,17 @@ class EmployeeController {
             res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
         }
     };
+    // HTTP: GET /:date
+    getEmployeesDateEntry = async (req, res) => {
+        try {
+            const { date } = req.params;
+            const result = await employeeService.employeesDateEntry(date);
+            res.status(OK).send(result);
+        }
+        catch (e) {
+            res.status(INTERNAL_SERVER_ERROR).send({ error: genericServerError });
+        }
+    };
 }
 
 module.exports = new EmployeeController();
