@@ -16,6 +16,29 @@ const PayTypesGetDB = () => {
     }); 
 }; 
 
+const OnSiteSalesGetDB = (day) => {
+    const sqlSelect = `SELECT
+                        TIME(s.date_hour) AS hour, s.total_amount, p.name  
+                    FROM 
+                        SALES s INNER JOIN PAY_TYPES p ON s.id_pay_type = p.id_pay_type 
+                    WHERE 
+                        ISNULL(cellphone_client)
+                    AND
+                        s.date_hour LIKE '${day}%'`;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+
+            db.query(sqlSelect, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            });
+            db.release();    
+        })
+    }); 
+}; 
+
 const salePostDB = (newSale) => {
     const { date_hour, total_amount, id_pay_type, details, cellphone_client } = newSale;
     let id_sale;
@@ -156,4 +179,4 @@ const saleDeliveryPostDB = (newSale) => {
     });
 };
 
-module.exports = { PayTypesGetDB, salePostDB, saleDeliveryPostDB }
+module.exports = { PayTypesGetDB, salePostDB, saleDeliveryPostDB, OnSiteSalesGetDB }

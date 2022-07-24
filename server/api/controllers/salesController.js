@@ -1,8 +1,21 @@
-const { readPayTypes, createSale, createSaleDelivery } = require('../services/salesService');
+const { readPayTypes, createSale, createSaleDelivery, readOnSiteSales } = require('../services/salesService');
 
 async function getPayTypes(req, res) {
     try {
         const result = await readPayTypes();
+        res.send(result)
+    }
+    catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        })
+    }
+}
+
+async function getOnSiteSales(req, res) {
+    try {
+        const result = await readOnSiteSales(req.query.day);
         res.send(result)
     }
     catch (e) {
@@ -47,4 +60,4 @@ async function postSaleDelivery(req, res) {
     }
 }
 
-module.exports = { getPayTypes, postSale, postSaleDelivery }
+module.exports = { getPayTypes, postSale, postSaleDelivery, getOnSiteSales }

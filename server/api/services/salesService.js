@@ -1,8 +1,18 @@
-const { PayTypesGetDB, salePostDB, saleDeliveryPostDB } = require('../db/salesDb'); 
+const { PayTypesGetDB, salePostDB, saleDeliveryPostDB, OnSiteSalesGetDB } = require('../db/salesDb'); 
 
 const readPayTypes = async () => {
     try {
         let res = await PayTypesGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
+    };
+};
+
+const readOnSiteSales = async (day) => {
+    try {
+        let res = await OnSiteSalesGetDB(day);
         return res;
     }
     catch (error) {
@@ -29,4 +39,4 @@ const createSaleDelivery = async (newSale) => {
     };
 };
 
-module.exports = { readPayTypes, createSale, createSaleDelivery }
+module.exports = { readPayTypes, createSale, createSaleDelivery, readOnSiteSales }

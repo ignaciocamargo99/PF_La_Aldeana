@@ -8,6 +8,7 @@ import SupplyRoutes from './Supplies/SupplyRoutes';
 import RegisterTypeProductView from './RegisterTypeProduct/RegisterTypeProductView';
 import FlavorTypeRoutes from './FlavorTypes/FlavorTypeRoutes';
 import SalariesReport from './Reports/Salaries/SalariesReport';
+import OnsiteSalesInform from './Reports/OnsiteSalesDuringTheDay/OnsiteSalesInform';
 import WholeSalesView from './WholeSale/WholeSalesView';
 import { WHOLESALE_NEW_PAGE } from 'routes/routes';
 import { decrypt } from '../utils/EncryptDecryptCookies/EncryptDecrypt';
@@ -101,6 +102,7 @@ export default function RouterPage(props) {
                     <>
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
                         <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
+                        <Route path='/app/onsiteSalesReport' render={() => <OnsiteSalesInform permissionsAccess={permissionsAccessSalesReports} user={props.user}/>} />
                     </>
             }
 
