@@ -11,17 +11,24 @@ import {
     updateProductsXSupplies,
     updateSalesRegister,
     updateSupplies
-} from '../../actions/SalesActions';
+} from 'actions/SalesActions';
+
 import '../../assets/Buttons.css';
-import BeShowed from '../../common/BeShowed';
-import dateTimeFormat from '../../utils/DateFormat/dateTimeFormat';
-import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
-import { defaultQuestionSweetAlert2 } from '../../utils/sweetAlert2Questions';
-import warningMessage from '../../utils/warningMessage';
+
+import BeShowed from 'common/BeShowed';
+
 import DetailSale from './components/DetailSale';
 import FilterProducts from './components/FilterProducts';
 import ListProducts from './components/ListProducts';
 import PaymentSale from './components/PaymentSale';
+
+import { printSaleTicket, printCafeteriaTicket, printHeladeriaTicket } from "ticket/print";
+
+import dateTimeFormat from 'utils/DateFormat/dateTimeFormat';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import warningMessage from 'utils/warningMessage';
+import { defaultQuestionSweetAlert2 } from 'utils/sweetAlert2Questions';
+import { formatDateToString, formatTimeToString } from "utils/DateFormat/dateTimeFormatV2";
 
 const PORT = require('../../config');
 
@@ -179,7 +186,7 @@ const Sales = (props) => {
                     .catch((error) => console.log(error));
             }
         } else {
-            if (props.detailProducts.length == 0)
+            if (props.detailProducts.length === 0)
                 warningMessage(
                     '¡Atención!',
                     'No cargó ningún producto',
@@ -202,6 +209,129 @@ const Sales = (props) => {
                 );
         }
     };
+
+    const printSaleTickets = ({ date, details, time, total }) => {
+
+        // sale ticket
+        let items = [];
+        // heladeria ticket
+        let heladeriaItems = [];
+        // cafeteria ticket
+        let cafeteriaItems = [];
+
+        for (let i = 0; i < details.length; i++) {
+            const { name, price, quantity, subtotal, id_sector } = details[i];
+            console.log(details[i])
+
+            // sale ticket
+            items.push({
+                name: name,
+                unitPrice: `${+price},00`,
+                amount: `${+quantity},00`,
+                subtotal: `${+subtotal},00`,
+            })
+
+            // heladeria ticket
+            if (+id_sector === 1) {
+                heladeriaItems.push({
+                    name: name,
+                    amount: `${+quantity},00`,
+                });
+
+                continue;
+            }
+
+            // cafeteria ticket
+            if (+id_sector === 2) {
+                cafeteriaItems.push({
+                    name: name,
+                    amount: `${+quantity},00`,
+                });
+
+                continue;
+            }
+        }
+
+        const saleDataToPrint = {
+            date: date,
+            time: time,
+            items: items,
+            total: `${+total},00`,
+        }
+
+        const heladeriaDataToPrint = {
+            date: date,
+            time: time,
+            items: heladeriaItems,
+        }
+
+        const cafeteriaDataToPrint = {
+            date: date,
+            time: time,
+            items: cafeteriaItems,
+        }
+
+        printSaleTicket(saleDataToPrint);
+
+        if (heladeriaItems.length > 0) {
+            printHeladeriaTicket(heladeriaDataToPrint);
+        }
+
+        if (cafeteriaItems.length > 0) {
+            printCafeteriaTicket(cafeteriaDataToPrint)
+        }
+    }
+
+    const getSaleModels = () => {
+        const currentDate = new Date();
+
+        const salePayload = {
+            date_hour: dateTimeFormat(currentDate),
+            details: JSON.stringify(props.detailProducts),
+            id_pay_type: props.payType,
+            total_amount: props.totalAmount,
+        };
+
+        const saleData = {
+            date: formatDateToString(currentDate),
+            details: props.detailProducts,
+            time: formatTimeToString(currentDate),
+            total: props.totalAmount,
+        };
+
+        return [salePayload, saleData];
+    }
+
+    // |------ DEPRECATED ------|
+    const registerSaleOld = () => {
+        if (ready) {
+            agg_suplies();
+
+            const [salePayload, saleData] = getSaleModels();
+
+            Axios.post(`${PORT()}/api/sales`, salePayload)
+                .then((response) => {
+                    if (response.data.Ok) {
+                        resetStates();
+                        warningMessage("Éxito!", "Se registró la venta con éxito", "success");
+                        printSaleTickets(saleData);
+                    }
+                    else warningMessage('¡Error!', 'Ha ocurrido un error al registrar la venta.', "error");
+                })
+                .catch(error => console.log(error))
+        }
+        else {
+            if (props.detailProducts.length === 0) {
+                warningMessage("¡Error!", "No se cargó ningún producto", "error");
+            }
+            else if (props.payType != 1 && props.payType != 2) {
+                warningMessage("¡Error!", "No seleccionó la forma de pago", "error");
+            }
+            else if (props.payType == 1 && props.paymentAmount <= props.totalAmount) {
+                warningMessage("¡Error!", "El monto ingresado es inferior al monto total", "error");
+            }
+        }
+    }
 
     return (
         <>
