@@ -31,6 +31,7 @@ import warningMessageV2 from 'utils/WarningMessages/warningMessageV2';
 import { defaultQuestionSweetAlert2 } from 'utils/sweetAlert2Questions';
 import { formatDateToString, formatTimeToString } from "utils/DateFormat/dateTimeFormatV2";
 import { loadingMessageV2 } from 'utils/LoadingMessages/loadingMessageV2';
+import Swal from 'sweetalert2';
 
 const PORT = require('../../config');
 
@@ -137,7 +138,7 @@ const Sales = (props) => {
                     }
 
                     successMessageV2(text);
-                    printSaleTickets(saleData, response.data.saleId);
+                    handlePrintSaleTickets(saleData, response.data.saleId);
                 } else {
                     errorMessageV2('Ha ocurrido un error al registrar la venta.');
                 }
@@ -173,19 +174,39 @@ const Sales = (props) => {
         }
     }
 
-    // |------ IN PROGRESS ------|
-    const printSaleTickets = ({ date, details, time, total }, saleId) => {
+    const printTickets = (generalDataToPrint, saleDataToPrint, heladeriaDataToPrint, cafeteriaDataToPrint) => {
+        // EMISIÓN TICKET VENTA
+        printSaleTicket(generalDataToPrint, saleDataToPrint);
 
-        // sale ticket
+        // EMISIÓN TICKET HELADERÍA
+        if (heladeriaDataToPrint?.items?.length > 0) {
+            loadingMessageV2('Emitiendo ticket...')
+            setTimeout(() => {
+                Swal.fire('Retire el ticket de venta.').then((result) => {
+                    if (result.isConfirmed) {
+                        printHeladeriaTicket(generalDataToPrint, heladeriaDataToPrint);
+                    }
+                })
+            }, 3500);
+        }
+
+        // EMISIÓN TICKET CAFETERÍA
+        if (cafeteriaDataToPrint?.items?.length > 0) {
+            printCafeteriaTicket(generalDataToPrint, cafeteriaDataToPrint)
+        }
+    }
+
+    const handlePrintSaleTickets = ({ date, details, time, total }, saleId) => {
+
+        // items venta ticket
         let items = [];
-        // heladeria ticket
+        // items heladeria ticket
         let heladeriaItems = [];
-        // cafeteria ticket
+        // items cafeteria ticket
         let cafeteriaItems = [];
 
         for (let i = 0; i < details.length; i++) {
             const { name, price, quantity, subtotal, id_sector } = details[i];
-            console.log(details[i])
 
             // sale ticket
             items.push({
@@ -216,16 +237,21 @@ const Sales = (props) => {
             }
         }
 
-        const ticketCode = String(saleId).slice(-2);
+        let ticketCode = String(saleId).slice(-2);
+        ticketCode = ticketCode.length === 1 ? `0${ticketCode}` : ticketCode
 
-        let saleDataToPrint = {
+        // 1. generalDataToPrint
+        const generalDataToPrint = {
             date: date,
             time: time,
-            items: items,
-            total: `${+total},00`,
-            ticketCode: ticketCode.length === 1 ? `0${ticketCode}` : ticketCode,
+            ticketCode: ticketCode,
         }
 
+        // 2. saleDataToPrint
+        let saleDataToPrint = {
+            items: items,
+            total: `${+total},00`,
+        }
         if (props.payType == 1) {
             // EFECTIVO
             saleDataToPrint.payInCash = true;
@@ -233,27 +259,17 @@ const Sales = (props) => {
             saleDataToPrint.cashReceived = `${+props.paymentAmount},00`;
         }
 
-        // const heladeriaDataToPrint = {
-        //     date: date,
-        //     time: time,
-        //     items: heladeriaItems,
-        // }
+        // 3. heladeriaDataToPrint
+        const heladeriaDataToPrint = {
+            items: heladeriaItems,
+        }
 
-        // const cafeteriaDataToPrint = {
-        //     date: date,
-        //     time: time,
-        //     items: cafeteriaItems,
-        // }
+        // 4. cafeteriaDataToPrint
+        const cafeteriaDataToPrint = {
+            items: cafeteriaItems,
+        }
 
-        printSaleTicket(saleDataToPrint);
-
-        // if (heladeriaItems.length > 0) {
-        //     printHeladeriaTicket(heladeriaDataToPrint);
-        // }
-
-        // if (cafeteriaItems.length > 0) {
-        //     printCafeteriaTicket(cafeteriaDataToPrint)
-        // }
+        printTickets(generalDataToPrint, saleDataToPrint, heladeriaDataToPrint, cafeteriaDataToPrint);
     }
 
     const getSaleModels = () => {

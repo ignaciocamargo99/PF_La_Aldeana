@@ -1,8 +1,7 @@
 const { ConectorPlugin } = require("./ConectorPlugin");
 const { IMPRESORA_HELADERIA, IMPRESORA_CAFETERIA } = require("./printersNames");
 
-const printSaleTicket = (saleDataToPrint) => {
-
+const getGenericConectorWithSimpleHeader = (subtitle = '') => {
     let conector = new ConectorPlugin();
 
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro)
@@ -14,17 +13,37 @@ const printSaleTicket = (saleDataToPrint) => {
         .texto("HELADERÍA Y CAFETERÍA\n")
         .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
 
+    if (subtitle) {
+        conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+            .establecerEnfatizado(1)
+            .texto(`${subtitle}\n`)
+            .establecerEnfatizado(0)
+            .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+    }
+
+    return conector;
+}
+
+const getGenericConectorWithTicketHeader = (date, time, ticketCode, subtitle = '') => {
+    let conector = getGenericConectorWithSimpleHeader(subtitle);
+
     conector.feed(1);
     conector.texto("Domicilio: San Martín 283\n");
     conector.establecerEnfatizado(1)
-        .texto(`TIQUE (Cód.${saleDataToPrint.ticketCode})\n`)
+        .texto(`TIQUE (Cód.${ticketCode})\n`)
         .establecerEnfatizado(0)
 
     conector.feed(1);
-    conector.texto(`Fecha: ${saleDataToPrint.date}\n`);
-    conector.texto(`Hora: ${saleDataToPrint.time}\n`);
+    conector.texto(`Fecha: ${date}\n`);
+    conector.texto(`Hora: ${time}\n`);
 
     conector.texto("--------------------------------\n");
+
+    return conector;
+}
+
+const printSaleTicket = (generalDataToPrint, saleDataToPrint) => {
+    let conector = getGenericConectorWithTicketHeader(generalDataToPrint.date, generalDataToPrint.time, generalDataToPrint.ticketCode);
 
     for (let i = 0; i < saleDataToPrint.items.length; i++) {
         const { name, unitPrice, amount, subtotal } = saleDataToPrint.items[i];
@@ -65,40 +84,20 @@ const printSaleTicket = (saleDataToPrint) => {
         .texto("***Gracias por su compra***")
         .feed(4);
 
-    conector.imprimirEn(IMPRESORA_HELADERIA)
-    // .then(respuestaAlImprimir => {
-    //     if (respuestaAlImprimir === true) {
-    //         // to do
-    //     } else {
-    //         // to do
-    //     }
-    // });
+    conector.imprimirEn(IMPRESORA_HELADERIA);
 }
 
-const printHeladeriaTicket = ({ date, time, items }) => {
+const printHeladeriaTicket = (generalDataToPrint, heladeriaDataToPrint) => {
 
-    let conector = new ConectorPlugin();
+    let conector = getGenericConectorWithTicketHeader(
+        generalDataToPrint.date,
+        generalDataToPrint.time,
+        generalDataToPrint.ticketCode,
+        'HELADERÍA'
+    );
 
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro)
-        .establecerTamanioFuente(2, 2)
-        .textoConAcentos(`La Aldeana\n`)
-        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
-        .establecerTamanioFuente(1, 1);
-
-    conector.feed(1);
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
-        .establecerEnfatizado(1)
-        .texto(`HELADERÍA\n`)
-        .establecerEnfatizado(0)
-        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-
-    conector.texto(`Fecha: ${date}\n`);
-    conector.texto(`Hora: ${time}\n`);
-
-    conector.texto("--------------------------------\n");
-
-    for (let i = 0; i < items.length; i++) {
-        const { name, amount } = items[i];
+    for (let i = 0; i < heladeriaDataToPrint.items.length; i++) {
+        const { name, amount } = heladeriaDataToPrint.items[i];
 
         conector.texto(`${amount}u x\n`);
         conector.texto(`${name}\n`);
@@ -108,40 +107,29 @@ const printHeladeriaTicket = ({ date, time, items }) => {
 
     conector.feed(4);
 
-    conector.imprimirEn(IMPRESORA_HELADERIA)
-    // .then(respuestaAlImprimir => {
-    //     if (respuestaAlImprimir === true) {
-    //         // to do
-    //     } else {
-    //         // to do
-    //     }
-    // });
+    conector.imprimirEn(IMPRESORA_HELADERIA);
 }
 
-const printCafeteriaTicket = ({ date, time, items }) => {
+const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
 
     let conector = new ConectorPlugin();
 
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro)
-        .establecerTamanioFuente(2, 2)
-        .textoConAcentos(`La Aldeana\n`)
-        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
-        .establecerTamanioFuente(1, 1);
-
-    conector.feed(1);
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
         .establecerEnfatizado(1)
-        .texto(`CAFETERÍA\n`)
+        .textoConAcentos('CAFETERÍA\n')
         .establecerEnfatizado(0)
         .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
 
-    conector.texto(`Fecha: ${date}\n`);
-    conector.texto(`Hora: ${time}\n`);
+    conector.feed(1);
+    conector.establecerEnfatizado(1)
+        .texto(`TIQUE (Cód.${generalDataToPrint.ticketCode})\n`)
+        .establecerEnfatizado(0)
 
+    conector.feed(1);
     conector.texto("--------------------------------\n");
 
-    for (let i = 0; i < items.length; i++) {
-        const { name, amount } = items[i];
+    for (let i = 0; i < cafeteriaDataToPrint.items.length; i++) {
+        const { name, amount } = cafeteriaDataToPrint.items[i];
 
         conector.texto(`${amount}u x\n`);
         conector.texto(`${name}\n`);
@@ -151,14 +139,7 @@ const printCafeteriaTicket = ({ date, time, items }) => {
 
     conector.feed(4);
 
-    conector.imprimirEn(IMPRESORA_CAFETERIA)
-    // .then(respuestaAlImprimir => {
-    //     if (respuestaAlImprimir === true) {
-    //         // to do
-    //     } else {
-    //         // to do
-    //     }
-    // });
+    conector.imprimirEn(IMPRESORA_CAFETERIA);
 }
 
 module.exports = {
