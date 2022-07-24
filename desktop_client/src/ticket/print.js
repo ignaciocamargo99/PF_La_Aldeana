@@ -101,7 +101,7 @@ const printHeladeriaTicket = (generalDataToPrint, heladeriaDataToPrint) => {
 
         conector.texto(`${amount}u x\n`);
         conector.texto(`${name}\n`);
-        if (obs && obs.trim()) {
+        if (obs?.trim()) {
             const observations = obs.trim().slice(0, 55);
             conector.texto(`(${observations})\n`);
         }
@@ -129,14 +129,22 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
         .texto(`TIQUE (Cód.${generalDataToPrint.ticketCode})\n`)
         .establecerEnfatizado(0)
 
+    if (cafeteriaDataToPrint.nameClient?.trim()) {
+        conector.texto(`Cliente: ${cafeteriaDataToPrint.nameClient?.trim().slice(0,20)}\n`);
+    }
+
     conector.feed(1);
     conector.texto("--------------------------------\n");
 
     for (let i = 0; i < cafeteriaDataToPrint.items.length; i++) {
-        const { name, amount } = cafeteriaDataToPrint.items[i];
+        const { name, amount, obs } = cafeteriaDataToPrint.items[i];
 
         conector.texto(`${amount}u x\n`);
         conector.texto(`${name}\n`);
+        if (obs && obs.trim()) {
+            const observations = obs.trim().slice(0, 55);
+            conector.texto(`(${observations})\n`);
+        }
     }
 
     conector.texto("--------------------------------\n");

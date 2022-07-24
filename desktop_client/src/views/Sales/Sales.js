@@ -116,7 +116,6 @@ const Sales = (props) => {
     }
 
     const registerSale = () => {
-        /* USAR saleData PARA TICKET */
         const [salePayload, saleData] = getSaleModels();
 
         agg_suplies();
@@ -232,6 +231,7 @@ const Sales = (props) => {
                 cafeteriaItems.push({
                     name: name,
                     amount: `${+quantity},00`,
+                    obs: descriptionProduct,
                 });
 
                 continue;
@@ -264,7 +264,7 @@ const Sales = (props) => {
         const heladeriaDataToPrint = { items: heladeriaItems }
 
         // 4. cafeteriaDataToPrint
-        const cafeteriaDataToPrint = { items: cafeteriaItems }
+        const cafeteriaDataToPrint = { items: cafeteriaItems, nameClient: nameClient }
 
         printTickets(generalDataToPrint, saleDataToPrint, heladeriaDataToPrint, cafeteriaDataToPrint);
     }
