@@ -25,10 +25,12 @@ import PaymentSale from './components/PaymentSale';
 import { printSaleTicket, printCafeteriaTicket, printHeladeriaTicket } from "ticket/print";
 
 import dateTimeFormat from 'utils/DateFormat/dateTimeFormat';
-import loadingMessage from 'utils/LoadingMessages/loadingMessage';
-import warningMessage from 'utils/warningMessage';
+import errorMessageV2 from 'utils/ErrorMessages/errorMessageV2';
+import successMessageV2 from 'utils/SuccessMessages/successMessageV2';
+import warningMessageV2 from 'utils/WarningMessages/warningMessageV2';
 import { defaultQuestionSweetAlert2 } from 'utils/sweetAlert2Questions';
 import { formatDateToString, formatTimeToString } from "utils/DateFormat/dateTimeFormatV2";
+import { loadingMessageV2 } from 'utils/LoadingMessages/loadingMessageV2';
 
 const PORT = require('../../config');
 
@@ -39,7 +41,7 @@ const Sales = (props) => {
 
     useEffect(() => {
         props.updateDetailsProductsClear([]);
-        // initialCalls()
+
         Axios.get(`${PORT()}/api/products`)
             .then((response) => {
                 let aux = response.data;
@@ -64,29 +66,6 @@ const Sales = (props) => {
 
     }, []);
 
-    // const initialCalls = () => {
-    //     Axios.get(`${PORT()}/api/products`)
-    //         .then((response) => {
-    //             let aux = response.data;
-    //             aux?.map((element, i) => {
-    //                 element.listSupplies = [];
-    //                 element.disabled = false;
-    //                 element.stock_current = element.stock;
-    //             });
-    //             props.updateProducts(aux);
-    //             props.updateProductsFiltered(aux);
-    //         })
-    //         .catch((error) => console.error(error));
-
-    //     Axios.get(`${PORT()}/api/productxsupply`)
-    //         .then((response) => props.updateProductsXSupplies(response.data))
-    //         .catch((error) => console.error(error));
-
-    //     Axios.get(`${PORT()}/api/supplies`)
-    //         .then((response) => props.updateSupplies(response.data))
-    //         .catch((error) => console.error(error));
-    // };
-
     useEffect(() => {
         if (
             props.detailProducts.length > 0 &&
@@ -105,11 +84,6 @@ const Sales = (props) => {
         }
         props.updateProductsFiltered(aux);
     }, [props.productsFiltered, props.detailProducts, props.refresh]);
-
-    // const cancel = () => {
-    //     initialCalls();
-    //     resetStates();
-    // };
 
     const resetStates = () => {
         props.updateDetailsProductsClear([]);
@@ -140,77 +114,67 @@ const Sales = (props) => {
             .catch(error => console.error(error))
     }
 
-    const registerSale = async () => {
-        if (ready) {
-            const registrationConfirmed = (
-                await defaultQuestionSweetAlert2(`¿Confirma la venta?`)
-            ).isConfirmed;
-            if (registrationConfirmed) {
-                /**USAR PARA TICKET */
-                // console.log(nameClient)
-                agg_suplies();
-                let sale = {
-                    date_hour: dateTimeFormat(new Date()),
-                    total_amount: props.totalAmount,
-                    id_pay_type: props.payType,
-                    details: JSON.stringify(props.detailProducts)
-                };
-                loadingMessage('Registrando venta...');
+    const registerSale = () => {
+        /* USAR saleData PARA TICKET */
+        const [salePayload, saleData] = getSaleModels();
 
-                Axios.post(`${PORT()}/api/sales`, sale)
-                    .then((sale) => {
-                        if (sale.data.Ok) {
-                            updateStockSupplies();
-                            resetStates()
-                            if (props.totalAmount < props.paymentAmount)
-                                warningMessage(
-                                    '¡Éxito!',
-                                    `Se registró la venta con éxito. \n¡No se olvide de darle el vuelto de $${parseFloat(props.paymentAmount) -
-                                    parseFloat(props.totalAmount)
-                                    } al cliente!`,
-                                    'success'
-                                );
-                            else
-                                warningMessage(
-                                    '¡Éxito!',
-                                    'Se registró la venta con éxito',
-                                    'success'
-                                );
-                        } else
-                            warningMessage(
-                                '¡Error!',
-                                'Ha ocurrido un error al registrar la venta',
-                                'error'
-                            );
-                    })
-                    .catch((error) => console.log(error));
-            }
-        } else {
-            if (props.detailProducts.length === 0)
-                warningMessage(
-                    '¡Atención!',
-                    'No cargó ningún producto',
-                    'warning'
-                );
-            else if (props.payType != 1 && props.payType != 2)
-                warningMessage(
-                    '¡Atención!',
-                    'No selecciono la forma de pago',
-                    'warning'
-                );
-            else if (
-                props.payType == 1 &&
-                props.paymentAmount <= props.totalAmount
-            )
-                warningMessage(
-                    '¡Atención!',
-                    'El monto ingresado es inferior al monto total',
-                    'warning'
-                );
+        agg_suplies();
+
+        loadingMessageV2('Registrando venta...');
+
+        Axios.post(`${PORT()}/api/sales`, salePayload)
+            .then((response) => {
+                if (response.data.Ok) {
+                    updateStockSupplies();
+                    resetStates()
+
+                    let text = 'Se registró la venta con éxito.';
+
+                    if (props.payType == 1 && props.totalAmount < props.paymentAmount) {
+                        const change = parseFloat(props.paymentAmount) - parseFloat(props.totalAmount);
+                        text += "\n"
+                        text += `¡No se olvide de darle el vuelto de $${change} al cliente!`;
+                    }
+
+                    successMessageV2(text);
+                    printSaleTickets(saleData, response.data.saleId);
+                } else {
+                    errorMessageV2('Ha ocurrido un error al registrar la venta.');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                errorMessageV2('Ha ocurrido un error al registrar la venta.');
+            });
+    }
+
+    const validateSaleRegistration = async () => {
+        if (!ready) {
+            printWarningOnRegister();
+            return;
         }
-    };
 
-    const printSaleTickets = ({ date, details, time, total }) => {
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Confirma la venta?`)).isConfirmed;
+
+        if (registrationConfirmed) {
+            registerSale();
+        }
+    }
+
+    const printWarningOnRegister = () => {
+        if (props.detailProducts.length === 0) {
+            warningMessageV2('No cargó ningún producto.');
+        }
+        else if (props.payType != 1 && props.payType != 2) {
+            warningMessageV2('No seleccionó la forma de pago.');
+        }
+        else if (props.payType == 1 && props.paymentAmount <= props.totalAmount) {
+            warningMessageV2('El monto ingresado es inferior al monto total.');
+        }
+    }
+
+    // |------ IN PROGRESS ------|
+    const printSaleTickets = ({ date, details, time, total }, saleId) => {
 
         // sale ticket
         let items = [];
@@ -252,34 +216,44 @@ const Sales = (props) => {
             }
         }
 
-        const saleDataToPrint = {
+        const ticketCode = String(saleId).slice(-2);
+
+        let saleDataToPrint = {
             date: date,
             time: time,
             items: items,
             total: `${+total},00`,
+            ticketCode: ticketCode.length === 1 ? `0${ticketCode}` : ticketCode,
         }
 
-        const heladeriaDataToPrint = {
-            date: date,
-            time: time,
-            items: heladeriaItems,
+        if (props.payType == 1) {
+            // EFECTIVO
+            saleDataToPrint.payInCash = true;
+            saleDataToPrint.change = `${+props.paymentAmount - +props.totalAmount},00`;
+            saleDataToPrint.cashReceived = `${+props.paymentAmount},00`;
         }
 
-        const cafeteriaDataToPrint = {
-            date: date,
-            time: time,
-            items: cafeteriaItems,
-        }
+        // const heladeriaDataToPrint = {
+        //     date: date,
+        //     time: time,
+        //     items: heladeriaItems,
+        // }
+
+        // const cafeteriaDataToPrint = {
+        //     date: date,
+        //     time: time,
+        //     items: cafeteriaItems,
+        // }
 
         printSaleTicket(saleDataToPrint);
 
-        if (heladeriaItems.length > 0) {
-            printHeladeriaTicket(heladeriaDataToPrint);
-        }
+        // if (heladeriaItems.length > 0) {
+        //     printHeladeriaTicket(heladeriaDataToPrint);
+        // }
 
-        if (cafeteriaItems.length > 0) {
-            printCafeteriaTicket(cafeteriaDataToPrint)
-        }
+        // if (cafeteriaItems.length > 0) {
+        //     printCafeteriaTicket(cafeteriaDataToPrint)
+        // }
     }
 
     const getSaleModels = () => {
@@ -300,37 +274,6 @@ const Sales = (props) => {
         };
 
         return [salePayload, saleData];
-    }
-
-    // |------ DEPRECATED ------|
-    const registerSaleOld = () => {
-        if (ready) {
-            agg_suplies();
-
-            const [salePayload, saleData] = getSaleModels();
-
-            Axios.post(`${PORT()}/api/sales`, salePayload)
-                .then((response) => {
-                    if (response.data.Ok) {
-                        resetStates();
-                        warningMessage("Éxito!", "Se registró la venta con éxito", "success");
-                        printSaleTickets(saleData);
-                    }
-                    else warningMessage('¡Error!', 'Ha ocurrido un error al registrar la venta.', "error");
-                })
-                .catch(error => console.log(error))
-        }
-        else {
-            if (props.detailProducts.length === 0) {
-                warningMessage("¡Error!", "No se cargó ningún producto", "error");
-            }
-            else if (props.payType != 1 && props.payType != 2) {
-                warningMessage("¡Error!", "No seleccionó la forma de pago", "error");
-            }
-            else if (props.payType == 1 && props.paymentAmount <= props.totalAmount) {
-                warningMessage("¡Error!", "El monto ingresado es inferior al monto total", "error");
-            }
-        }
     }
 
     return (
@@ -376,10 +319,10 @@ const Sales = (props) => {
                         <div>
                             <div className='buttons'>
                                 <BeShowed show={ready}>
-                                    <button className='btn btn-light sendOk' onClick={registerSale}>Finalizar</button>
+                                    <button className='btn btn-light sendOk' onClick={validateSaleRegistration}>Finalizar</button>
                                 </BeShowed>
                                 <BeShowed show={!ready}>
-                                    <button className='btn btn-light sendNotOk' onClick={registerSale}>Finalizar</button>
+                                    <button className='btn btn-light sendNotOk' onClick={validateSaleRegistration}>Finalizar</button>
                                 </BeShowed>
                             </div>
                         </div>

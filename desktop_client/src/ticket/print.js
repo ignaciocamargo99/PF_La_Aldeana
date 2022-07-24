@@ -1,24 +1,33 @@
 const { ConectorPlugin } = require("./ConectorPlugin");
 const { IMPRESORA_HELADERIA, IMPRESORA_CAFETERIA } = require("./printersNames");
 
-const printSaleTicket = ({ date, time, items, total }) => {
+const printSaleTicket = (saleDataToPrint) => {
 
     let conector = new ConectorPlugin();
 
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro)
         .establecerTamanioFuente(2, 2)
         .textoConAcentos(`La Aldeana\n`)
-        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
         .establecerTamanioFuente(1, 1);
 
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro)
+        .texto("HELADERÍA Y CAFETERÍA\n")
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+
     conector.feed(1);
-    conector.texto(`Fecha: ${date}\n`);
-    conector.texto(`Hora: ${time}\n`);
+    conector.texto("Domicilio: San Martín 283\n");
+    conector.establecerEnfatizado(1)
+        .texto(`TIQUE (Cód.${saleDataToPrint.ticketCode})\n`)
+        .establecerEnfatizado(0)
+
+    conector.feed(1);
+    conector.texto(`Fecha: ${saleDataToPrint.date}\n`);
+    conector.texto(`Hora: ${saleDataToPrint.time}\n`);
 
     conector.texto("--------------------------------\n");
 
-    for (let i = 0; i < items.length; i++) {
-        const { name, unitPrice, amount, subtotal } = items[i];
+    for (let i = 0; i < saleDataToPrint.items.length; i++) {
+        const { name, unitPrice, amount, subtotal } = saleDataToPrint.items[i];
 
         conector.texto(`${amount}u x ${unitPrice}\n`);
         conector.texto(`${name}\n`);
@@ -31,9 +40,24 @@ const printSaleTicket = ({ date, time, items, total }) => {
 
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
         .establecerEnfatizado(1)
-        .texto(`TOTAL: ${total}\n`)
+        .texto(`TOTAL: ${saleDataToPrint.total}\n`)
         .establecerEnfatizado(0)
         .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+
+    conector.texto('Recibimos\n')
+    if (saleDataToPrint.payInCash) {
+        conector.texto('PAGO EN EFECTIVO\n')
+            .texto('Efectivo:\n')
+            .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+            .texto(`${saleDataToPrint.cashReceived}\n`)
+            .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+            .texto('Su vuelto:\n')
+            .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+            .texto(`${saleDataToPrint.change}\n`)
+            .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+    } else {
+        conector.texto('PAGO CON TARJETA\n')
+    }
 
     conector.texto("--------------------------------\n");
 
