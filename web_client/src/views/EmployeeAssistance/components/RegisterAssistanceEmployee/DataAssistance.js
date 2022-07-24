@@ -126,44 +126,6 @@ export default function DataAssistance(props) {
     <>
       <div className="formRow">
         <div className="form-control-label">
-          <label htmlFor="employeeCharge">Empleado*</label>
-        </div>
-        <div className="form-control-input">
-          <BeShowed show={props.data.reading || props.data.editing}>
-            <select
-              className="form-control"
-              id="employeeCharge"
-              value={selectValue}
-              readOnly
-            >
-              <option disabled value="-1">
-                {data.name + " " + data.last_name}
-              </option>
-            </select>
-          </BeShowed>
-          <BeShowed show={!props.data.reading && !props.data.editing}>
-            <select
-              className="form-control"
-              id="employeeCharge"
-              value={selectValue}
-              onChange={handleEmployee}
-            >
-              <option disabled value="-1">
-                Seleccione un empleado
-              </option>
-              {employees?.map((element, i) => {
-                return (
-                  <option key={i} value={element.dni}>
-                    {element.name} {element.last_name}
-                  </option>
-                );
-              })}
-            </select>
-          </BeShowed>
-        </div>
-      </div>
-      <div className="formRow">
-        <div className="form-control-label">
           <label htmlFor="dateEmployee">Fecha de ingreso*</label>
         </div>
         <div className="form-control-input">
@@ -291,6 +253,44 @@ export default function DataAssistance(props) {
               style={{ color: "red", fontFamily: "Abel", fontWeight: "bold" }}
               ref={divTimeEgressValidation}
             />
+          </BeShowed>
+        </div>
+      </div>
+      <div className="formRow">
+        <div className="form-control-label">
+          <label htmlFor="employeeCharge">Empleado*</label>
+        </div>
+        <div className="form-control-input">
+          <BeShowed show={props.data.reading || props.data.editing}>
+            <select
+              className="form-control"
+              id="employeeCharge"
+              value={selectValue}
+              readOnly
+            >
+              <option disabled value="-1">
+                {data.name + " " + data.last_name}
+              </option>
+            </select>
+          </BeShowed>
+          <BeShowed show={!props.data.reading && !props.data.editing}>
+            <select
+              className="form-control"
+              id="employeeCharge"
+              value={selectValue}
+              onChange={handleEmployee}
+            >
+              <option disabled value="-1">
+                Seleccione un empleado
+              </option>
+              {employees?.map((element, i) => {
+                return (
+                  <option key={i} value={element.dni}>
+                    {element.name} {element.last_name}
+                  </option>
+                );
+              })}
+            </select>
           </BeShowed>
         </div>
       </div>
