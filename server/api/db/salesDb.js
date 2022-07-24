@@ -1,7 +1,7 @@
 const pool = require('../../config/connection');
 
 const PayTypesGetDB = () => {
-    const sqlSelect = "SELECT * FROM PAY_TYPES"
+    const sqlSelect = 'SELECT * FROM PAY_TYPES';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -11,17 +11,18 @@ const PayTypesGetDB = () => {
                 if (error) reject(error);
                 else resolve(result);
             });
-            db.release();    
+            db.release();
         })
-    }); 
-}; 
+    });
+};
 
 const salePostDB = (newSale) => {
-    const { date_hour, total_amount, id_pay_type, details, cellphone_client } = newSale;
+    const { date_hour, total_amount, id_pay_type, details } = newSale;
     let id_sale;
     let arrDetails = JSON.parse(details);
 
     const selectMaxIdSale = 'SELECT MAX(id_sale) AS last_id_sale FROM SALES';
+    const sqlInsertSale = 'INSERT INTO SALES(id_sale, date_hour, total_amount, id_pay_type) VALUES(?, ?,?,?)';
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -29,53 +30,26 @@ const salePostDB = (newSale) => {
 
             db.query(selectMaxIdSale, (error, row) => {
                 if (error) reject('1:' + error);
-
                 else id_sale = row[0].last_id_sale + 1;
-            }) 
+            });
             db.beginTransaction((error) => {
-                if (error) reject('1,5:' + error);
-                const sqlInsertSale = `INSERT INTO SALES(id_sale, date_hour, total_amount, id_pay_type) VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type})`;
-
-                db.query(sqlInsertSale, (error, result) => {
-                    if (error) {
-                        return db.rollback(() => reject('2:' + error))
-                    }
+                if (error) reject(error);
+                db.query(sqlInsertSale, [id_sale, date_hour, total_amount, id_pay_type], (error) => {
+                    if (error) return db.rollback(() => reject(error))
                     for (let i = 0; i < arrDetails.length; i++) {
-
-                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${i+1},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${ arrDetails[i].subtotal})`;
-
+                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${i + 1},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${arrDetails[i].subtotal})`;
                         db.query(sqlInsertSaleDetailSale, (error) => {
-                            if (error) { 
-                                console.log(error)
-                                return db.rollback(() => reject('3:' + error));
-                            }
-                            if (arrDetails[i].listSupplies.length > 0){
-                                for (let j = 0; j < arrDetails[i].listSupplies.length; j++) {
-                                    
-                                    let menos = parseInt(arrDetails[i].quantity) * arrDetails[i].listSupplies[j][0];
-                                    let resultado = arrDetails[i].listSupplies[j][1].stock_unit - parseInt(menos);
-                                    const sqlUpdateSupply = `UPDATE SUPPLIES SET stock_unit=${resultado} WHERE id_supply=${arrDetails[i].listSupplies[j][1].id_supply}`;
-    
-                                    db.query(sqlUpdateSupply, (error) => {
-                                        if (error) {
-                                            return db.rollback(() => reject('4:' + error));
-                                        }    
-                                        db.commit((error) => {
-                                            if (error) {
-                                                return db.rollback(() => reject('5:' + error));
-                                            }
-                                            else resolve();
-                                        });  
-                                    })        
-                                }
-                            }
-                            else resolve();
+                            if (error) return db.rollback(() => reject(error));
+                            db.commit((error) => {
+                                if (error) db.rollback(() => reject(error));
+                                else resolve();
+                            });
                         });
-                    }; 
+                    }
                 });
                 db.release();
             });
-            
+
         });
     });
 };
@@ -96,10 +70,10 @@ const saleDeliveryPostDB = (newSale) => {
                 if (error) reject('1:' + error);
 
                 else id_sale = row[0].last_id_sale + 1;
-            }) 
+            })
             db.beginTransaction((error) => {
                 if (error) reject('1,5:' + error);
-                
+
                 const sqlInsertSale = `INSERT INTO SALES(id_sale, date_hour, total_amount, id_pay_type, cellphone_client) VALUES(${id_sale}, '${date_hour}',${total_amount},${id_pay_type},${cellphone_client})`;
 
                 db.query(sqlInsertSale, (error, result) => {
@@ -112,48 +86,48 @@ const saleDeliveryPostDB = (newSale) => {
 
                         db.query(sqlSelectSuppliesToDiscount, (error, suppliesQuantities) => {
                             if (error) reject('3:' + error);
-            
+
                             else arrSuppliesToDiscount = suppliesQuantities
                         })
 
-                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${i+1},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${ arrDetails[i].subtotal})`;
+                        const sqlInsertSaleDetailSale = `INSERT INTO DETAIL_SALES VALUES(${i + 1},${id_sale},${arrDetails[i].id_product},${arrDetails[i].quantity},${arrDetails[i].subtotal})`;
 
                         db.query(sqlInsertSaleDetailSale, (error) => {
                             if (error) {
                                 return db.rollback(() => reject('4:' + error));
                             }
                             for (let j = 0; j < arrSuppliesToDiscount.length; j++) {
-                                
+
                                 let discountTotal = parseInt(arrDetails[i].quantity) * parseInt(arrSuppliesToDiscount[j].quantity)
-                                
+
                                 const sqlUpdateSupply = `UPDATE SUPPLIES s SET s.stock_unit=(s.stock_unit - ${discountTotal})  WHERE id_supply=${arrSuppliesToDiscount[j].id_supply}`;
-   
+
                                 db.query(sqlUpdateSupply, (error) => {
                                     if (error) {
                                         return db.rollback(() => reject('5:' + error));
-                                    }    
+                                    }
                                     db.commit((error) => {
                                         if (error) {
                                             return db.rollback(() => reject('6:' + error));
                                         }
                                         else resolve();
-                                    });  
-                                })        
+                                    });
+                                })
                             }
                             db.commit((error) => {
                                 if (error) {
                                     return db.rollback(() => reject('6:' + error));
                                 }
                                 else resolve();
-                            });      
+                            });
                         });
-                    }; 
+                    };
                 });
                 db.release();
             });
-            
+
         });
     });
 };
 
-module.exports = { PayTypesGetDB, salePostDB, saleDeliveryPostDB }
+module.exports = { PayTypesGetDB, salePostDB, saleDeliveryPostDB };
