@@ -206,7 +206,7 @@ const Sales = (props) => {
         let cafeteriaItems = [];
 
         for (let i = 0; i < details.length; i++) {
-            const { name, price, quantity, subtotal, id_sector } = details[i];
+            const { name, price, quantity, subtotal, id_sector, descriptionProduct } = details[i];
 
             // sale ticket
             items.push({
@@ -221,6 +221,7 @@ const Sales = (props) => {
                 heladeriaItems.push({
                     name: name,
                     amount: `${+quantity},00`,
+                    obs: descriptionProduct,
                 });
 
                 continue;
@@ -260,14 +261,10 @@ const Sales = (props) => {
         }
 
         // 3. heladeriaDataToPrint
-        const heladeriaDataToPrint = {
-            items: heladeriaItems,
-        }
+        const heladeriaDataToPrint = { items: heladeriaItems }
 
         // 4. cafeteriaDataToPrint
-        const cafeteriaDataToPrint = {
-            items: cafeteriaItems,
-        }
+        const cafeteriaDataToPrint = { items: cafeteriaItems }
 
         printTickets(generalDataToPrint, saleDataToPrint, heladeriaDataToPrint, cafeteriaDataToPrint);
     }

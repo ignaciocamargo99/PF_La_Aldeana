@@ -97,10 +97,14 @@ const printHeladeriaTicket = (generalDataToPrint, heladeriaDataToPrint) => {
     );
 
     for (let i = 0; i < heladeriaDataToPrint.items.length; i++) {
-        const { name, amount } = heladeriaDataToPrint.items[i];
+        const { name, amount, obs } = heladeriaDataToPrint.items[i];
 
         conector.texto(`${amount}u x\n`);
         conector.texto(`${name}\n`);
+        if (obs && obs.trim()) {
+            const observations = obs.trim().slice(0, 55);
+            conector.texto(`(${observations})\n`);
+        }
     }
 
     conector.texto("--------------------------------\n");
