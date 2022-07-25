@@ -24,6 +24,21 @@ export default function MyDocument (props) {
           </View>
             <Text style={styles.title}>Análisis de consumo y producción mensual de baldes de sabores de helados</Text>
             <Image style={styles.image} src={dataChartToURLWhenHaveTwoDataSets(props.bar)}></Image>
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Consumo de baldes de sabores de helados - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
+          <View style={styles.sectionFace}>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),false, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Consumo de baldes de sabores de helados ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
             <View style={styles.row}>
               <View style={styles.col}>
                 <Text style={styles.subtitle}>Mes</Text>
