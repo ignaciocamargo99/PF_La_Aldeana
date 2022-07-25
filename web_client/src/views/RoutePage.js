@@ -35,6 +35,8 @@ import Salary from './Salary/components/Salary';
 import RegisterUser from './Users/components/RegisterUser';
 import ListUsers from './Users/ListUsers';
 import WholeSaleRoutes from './WholeSale/WholeSaleRoutes';
+import FlavorsStockReport from './Reports/FlavorsStock/FlavorsStockReport';
+import ConsuptionsOfFlavorsReport from './Reports/ConsuptionsOfFlavors/ConsuptionsOfFlavorsReport';
 
 export default function RouterPage(props) {
 
@@ -103,6 +105,8 @@ export default function RouterPage(props) {
                         <Route path='/app/salesReport' render={() => <SalesReports permissionsAccess={permissionsAccessSalesReports} />}></Route>
                         <Route path='/app/productSalesReport' render={() => <ProductSalesReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
                         <Route path='/app/onsiteSalesReport' render={() => <OnsiteSalesInform permissionsAccess={permissionsAccessSalesReports} user={props.user}/>} />
+                        <Route path='/app/flavorsSalesReport' render={() => <ConsuptionsOfFlavorsReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
+                        <Route path='/app/stockFlavorsReport' render={() => <FlavorsStockReport permissionsAccess={permissionsAccessSalesReports} user={props.user} />}></Route>
                     </>
             }
 

@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: '-1px',
     },
+    col6: {
+        borderWidth: '2px',
+        textAlign: 'center',
+        margin: '-1px',
+        width: '140cm',
+    },
     col4: {
         borderWidth: '2px',
         textAlign: 'center',
