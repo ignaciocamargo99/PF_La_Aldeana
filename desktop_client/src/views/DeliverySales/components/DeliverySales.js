@@ -69,8 +69,16 @@ const DeliverySales = (props) => {
     }, [reset]);
 
     const confirmSale = () => {
-        loadingMessage('Procesando la venta')
 
+        const clientDataForTicket = {
+            name: props.names?.trim(),
+            cellphone: props.cellphone,
+            street: props.street?.trim(),
+            streetNumber: props.streetNumber,
+            obs: clientObservation?.trim(),
+        }
+
+        loadingMessage('Procesando la venta')
         if (props.client.names === '') {
             const postClientPayload = {
                 "cellphone": props.cellphone,
@@ -115,7 +123,7 @@ const DeliverySales = (props) => {
             .then((sale) => {
                 if (sale.data.Ok) {
                     resetStates(false);
-                    printDeliverySaleTicket(currentDate);
+                    printDeliverySaleTicket(currentDate, clientDataForTicket, props.details, props.total, props.amount);
                 }
                 else warningMessage('Error', 'Ha ocurrido un error al registrar la venta. \n' + sale.data.Message, "error");
             })
@@ -182,6 +190,7 @@ const mapStateToProps = state => {
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
         total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
+        amount: state.amountDelivery,
         names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery,
         productsXsuppliesDelivery: state.productsXsuppliesDelivery, suppliesDelivery: state.suppliesDelivery
     }

@@ -163,7 +163,54 @@ const printDeliveryTicket = (deliveryDataToPrint) => {
         '',
         'DELIVERY'
     );
-    
+
+    // CLIENT
+    conector.texto(`Cliente: ${deliveryDataToPrint.clientData.name}\n`);
+    conector.texto(`Domicilio: ${deliveryDataToPrint.clientData.street} ${deliveryDataToPrint.clientData.streetNumber}\n`);
+    if (deliveryDataToPrint.clientData.obs?.trim()) {
+        const obs = deliveryDataToPrint.clientData.obs?.trim().slice(0, 45);
+        conector.texto(`Observación: ${obs}\n`);
+    }
+    conector.texto(`Teléfono: ${deliveryDataToPrint.clientData.cellphone}\n`);
+    conector.texto("--------------------------------\n");
+
+    // PRODUCTS
+    for (let i = 0; i < deliveryDataToPrint.items.length; i++) {
+        const { name, unitPrice, amount, subtotal, flavors } = deliveryDataToPrint.items[i];
+
+        conector.texto(`${amount}u x ${unitPrice}\n`);
+        conector.texto(`${name}\n`);
+        for (let j = 0; j < flavors?.length; j++) {
+            if (j === 0) {
+                conector.texto(`${flavors[j]}`);
+                continue;
+            }
+            conector.texto(` - ${flavors[j]}`);
+        }
+        conector.texto(`\n`);
+        conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha);
+        conector.texto(`${subtotal}\n`);
+        conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+    }
+    conector.texto("--------------------------------\n");
+
+    // TOTAL
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .establecerEnfatizado(1)
+        .texto(`TOTAL: ${deliveryDataToPrint.total}\n`)
+        .establecerEnfatizado(0)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+
+    conector.texto('Recibimos\n')
+    conector.texto('PAGO EN EFECTIVO\n')
+        .texto('Efectivo:\n')
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .texto(`${deliveryDataToPrint.cashReceived}\n`)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+        .texto('Su vuelto:\n')
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .texto(`${deliveryDataToPrint.change}\n`)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
     conector.texto("--------------------------------\n");
 
     conector.feed(4);
