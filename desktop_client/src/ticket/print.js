@@ -29,9 +29,11 @@ const getGenericConectorWithTicketHeader = (date, time, ticketCode, subtitle = '
 
     conector.feed(1);
     conector.texto("Domicilio: San Martín 283\n");
-    conector.establecerEnfatizado(1)
-        .texto(`TIQUE (Cód.${ticketCode})\n`)
-        .establecerEnfatizado(0)
+    if (ticketCode) {
+        conector.establecerEnfatizado(1)
+            .texto(`TIQUE (Cód.${ticketCode})\n`)
+            .establecerEnfatizado(0)
+    }
 
     conector.feed(1);
     conector.texto(`Fecha: ${date}\n`);
@@ -130,7 +132,7 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
         .establecerEnfatizado(0)
 
     if (cafeteriaDataToPrint.nameClient?.trim()) {
-        conector.texto(`Cliente: ${cafeteriaDataToPrint.nameClient?.trim().slice(0,20)}\n`);
+        conector.texto(`Cliente: ${cafeteriaDataToPrint.nameClient?.trim().slice(0, 20)}\n`);
     }
 
     conector.feed(1);
@@ -154,8 +156,24 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
     conector.imprimirEn(IMPRESORA_CAFETERIA);
 }
 
+const printDeliveryTicket = (deliveryDataToPrint) => {
+    let conector = getGenericConectorWithTicketHeader(
+        deliveryDataToPrint.date,
+        deliveryDataToPrint.time,
+        '',
+        'DELIVERY'
+    );
+    
+    conector.texto("--------------------------------\n");
+
+    conector.feed(4);
+
+    conector.imprimirEn(IMPRESORA_CAFETERIA);
+}
+
 module.exports = {
     printSaleTicket,
     printHeladeriaTicket,
     printCafeteriaTicket,
+    printDeliveryTicket,
 }

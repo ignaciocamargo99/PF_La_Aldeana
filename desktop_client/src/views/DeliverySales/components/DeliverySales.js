@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import DateFormat from '../../../utils/DateFormat/dateFormat';
-import BeShowed from '../../../common/BeShowed';
+
+import BeShowed from 'common/BeShowed';
+import Buttons from 'common/Buttons';
+
 import Pay from './Pay';
 import Client from './Client';
 import Products from './Products';
@@ -11,13 +13,16 @@ import {
     updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery, resetDetailDelivery,
     updateDeliveryProductsQuantities, subtractTotalDelivery, updateDeliveryProductsStocks, updateProductsXSuppliesDelivery, updateSuppliesDelivery
 } from '../../../actions/DeliverySalesActions';
-import Buttons from '../../../common/Buttons';
-import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
-import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
-import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
-import warningMessage from '../../../utils/warningMessage';
-import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+
+import DateFormat from 'utils/DateFormat/dateFormat';
+import dateTimeFormat from 'utils/DateFormat/dateTimeFormat'
+import errorNextStepTwo from 'utils/ErrorMessages/errorNextStepTwo';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import succesMessageDeliverySale from 'utils/SuccessMessages/successMessageDeliverySale';
+import warningMessage from 'utils/warningMessage';
+
 import '../styles/DeliverySales.css';
+import { printDeliverySaleTicket } from './printDeliverySaleTicket';
 
 const PORT = require('../../../config');
 
@@ -65,14 +70,26 @@ const DeliverySales = (props) => {
 
     const confirmSale = () => {
         loadingMessage('Procesando la venta')
+
         if (props.client.names === '') {
-            axios.post(`${PORT()}/api/clients`, { "cellphone": props.cellphone, "names": props.names, "street_name": props.street, "street_number": props.streetNumber, "observation": clientObservation })
+            const postClientPayload = {
+                "cellphone": props.cellphone,
+                "names": props.names,
+                "observation": clientObservation,
+                "street_name": props.street,
+                "street_number": props.streetNumber,
+            };
+            axios.post(`${PORT()}/api/clients`, postClientPayload)
         }
-        else {
-            if (props.client.street_name !== props.street || props.client.street_number !== props.streetNumber) {
-                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`, { "street_name": props.street, "street_number": props.streetNumber, "observation": clientObservation })
-            }
+        else if (props.client.street_name !== props.street || props.client.street_number !== props.streetNumber) {
+            const putClientPayload = {
+                "street_name": props.street,
+                "street_number": props.streetNumber,
+                "observation": clientObservation,
+            };
+            axios.put(`${PORT()}/api/clients/${props.client.cellphone}`, putClientPayload)
         }
+
         let details = []
         props.details.map((detail, i) => {
             details.push(
@@ -83,11 +100,22 @@ const DeliverySales = (props) => {
                 }
             );
         });
-        let sale = { date_hour: dateTimeFormat(new Date()), total_amount: props.total, id_pay_type: 1, cellphone_client: props.cellphone, details: JSON.stringify(details) };
+
+        const currentDate = new Date();
+
+        let sale = {
+            cellphone_client: props.cellphone,
+            date_hour: dateTimeFormat(currentDate),
+            details: JSON.stringify(details),
+            id_pay_type: 1,
+            total_amount: props.total,
+        };
+
         axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
                 if (sale.data.Ok) {
                     resetStates(false);
+                    printDeliverySaleTicket(currentDate);
                 }
                 else warningMessage('Error', 'Ha ocurrido un error al registrar la venta. \n' + sale.data.Message, "error");
             })
