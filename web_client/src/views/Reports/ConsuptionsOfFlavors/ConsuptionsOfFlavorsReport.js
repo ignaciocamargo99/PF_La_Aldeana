@@ -36,7 +36,7 @@ const ConsuptionsOfFlavorsReport = (props) => {
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={consuptions[0]?.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Consumo de baldes de sabores de helados desde {from?dateText(from, false, true):new Date().toLocaleDateString()} hasta {to?dateText(to, false, true):new Date().toLocaleDateString()}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Consumo de baldes de sabores de helados desde {from?dateText(from + '-01', false, true):new Date().toLocaleDateString()} hasta {to?dateText(to + '-01', false, true):new Date().toLocaleDateString()}</h5>
                         </div>
                         <hr />
                         <div className="formRow">
@@ -59,7 +59,7 @@ const ConsuptionsOfFlavorsReport = (props) => {
                     <BeShowed show={consuptions[0]?.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron consumo de baldes de sabores de helados para el período ({from?dateText(from, false, true):new Date().toLocaleDateString()} hasta {to?dateText(to, false, true):new Date().toLocaleDateString()})</h2>
+                            <h2>No se encontraron consumo de baldes de sabores de helados para el período ({from?dateText(from + '-01', false, true):new Date().toLocaleDateString()} hasta {to?dateText(to + '-01', false, true):new Date().toLocaleDateString()})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>

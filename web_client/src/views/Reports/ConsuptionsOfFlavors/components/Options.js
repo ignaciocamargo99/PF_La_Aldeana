@@ -24,9 +24,11 @@ const Options = (props) => {
     const onChangeDescriptionReport = () => setDescription(inputDescriptionReport.current.value);
 
     useEffect(() => {
+        let from = props.dateFrom;
+        let to = props.dateTo;
+        if(props.dateFrom instanceof String) from = new Date(props.dateFrom + '-01');
+        if(props.dateTo instanceof String) to = new Date(props.dateTo + '-01');
         if (props.dateFrom <= props.dateTo && props.load > 0) {
-            let from = props.dateFrom;
-            let to = props.dateTo;
 
             Axios.get(PORT() + `/api/consuptionsReport?from=${from}&to=${to}`)
                 .then((res) => {
@@ -38,7 +40,7 @@ const Options = (props) => {
                     props.setConsuptions(data);
                     
                     if (data[0].length > 0){
-                        let consuptions = data[0];
+                        let consuptions = data;
                         let labelsTotalised = [];
                         let datTotalised = [];
                         let totals = [];
@@ -52,6 +54,7 @@ const Options = (props) => {
                             labels.push(e.month.slice(0,-3));
                             dat.push(e.consum);
                             othersDat.push(e.prod);
+                            totals.push({month: e.month.slice(0,-3), consum: e.consum, prod: e.prod})
                         });
                         
                         data[0]?.forEach((e, i) => {
@@ -65,12 +68,12 @@ const Options = (props) => {
                             labels: labels,
                             datasets: [
                             {
-                                label: 'baldes consumidos',
-                                data: datTotalised,
+                                label: 'baldes producidos',
+                                data: othersDat,
                             },
                             {
-                                label: 'baldes producidos',
-                                data: datTotalised,
+                                label: 'baldes consumidos',
+                                data: dat,
                             },
                             ],
                         };
@@ -81,7 +84,7 @@ const Options = (props) => {
                             datasets: [
                             {
                                 label: 'baldes',
-                                data: consum,
+                                data: datTotalised,
                             },
                             ],
                             total: data[1][0].quantity
@@ -93,13 +96,13 @@ const Options = (props) => {
                             datasets: [
                             {
                                 label: 'baldes',
-                                data: datTotalised,
+                                data: consum,
                             },
                             ],
                             total: data[1][1].quantity
                         };
-                        setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                        consuptions={consuptions} totalisedChart={totalised} totals={totals} months={months} bar={bar} totalisedConsum={totalisedConsum} consum={consum} />);
+                        setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom+ '-01', false, true) + " a " + dateText(props.dateTo+ '-01', false, true) + ")"} description={(!description ? '' : description)} 
+                        consuptions={consuptions} totalisedChart={totalised} totals={totals} months={months} bar={bar} totalisedConsum={totalisedConsum} />);
                     }
 
                     props.setLoaded(true);
@@ -116,7 +119,7 @@ const Options = (props) => {
             let dateString = dateFormat(date);
 
             let startDate = new Date(date.getFullYear(), date.getMonth(), 0);
-            let minDate = new Date(date.getFullYear(), date.getMonth(), -365);
+            let minDate = new Date(date.getFullYear(), date.getMonth(), -364);
             minDate = dateFormat(minDate).slice(0,-3);
             let prevMounth = dateFormat(startDate).slice(0,-3);
             dateString = dateString.slice(0, -3);
@@ -136,7 +139,7 @@ const Options = (props) => {
 
     const onChangeDateFrom = () => {
         props.setLoad(false);
-        if (inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01" && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 365) {
+        if (inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01" && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 366) {
             let maxDate = new Date(parseInt(inputDateFrom.current.value.slice(0,-3))+1, parseInt(inputDateFrom.current.value.slice(5)) -1, 1);
             if (maxDate > new Date()) maxDate = new Date();
             maxDate = dateFormat(maxDate).slice(0,-3);
@@ -163,7 +166,7 @@ const Options = (props) => {
         let date = new Date();
         let dateString = dateFormat(date);
         props.setLoad(false);
-        if (inputDateTo.current.value >= "2021-01" && inputDateTo.current.value < dateString && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 365) {
+        if (inputDateTo.current.value >= "2021-01" && inputDateTo.current.value < dateString && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 366) {
             let minDate = new Date(parseInt(inputDateTo.current.value.slice(0,-3))-1, parseInt(inputDateTo.current.value.slice(5)) -1, 1);
             minDate = dateFormat(minDate).slice(0,-3);
             inputDateFrom.current.min = minDate;
@@ -222,8 +225,8 @@ const Options = (props) => {
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc}reportOf='producción y consumo de baldes de sabores de helados' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + 
-            " a " + !props.dateTo?new Date().toLocaleDateString():dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
+            <Viewer MyDoc={MyDoc}reportOf='producción y consumo de baldes de sabores de helados' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom+ '-01', false, true) + 
+            " a " + !props.dateTo?new Date().toLocaleDateString():dateText(props.dateTo+ '-01', false, true) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }
