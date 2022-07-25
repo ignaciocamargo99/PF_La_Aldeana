@@ -1,37 +1,27 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import {
-    toRoot,
-    toChamberFlavorsDispatch,
-    lockMenu,
-    unlockMenu,
-    toRegisterAttendance,
-    toSalesDelivery,
-    toSalesLocal
-} from '../../actions/MenuActions';
-import { GoTasklist, GoHome, GoBell } from 'react-icons/go';
 import { FaLock, FaLockOpen } from 'react-icons/fa';
-import { IoFingerPrint } from 'react-icons/io5';
-import 'react-pro-sidebar/dist/css/styles.css';
+import { GoBell, GoHome, GoTasklist } from 'react-icons/go';
 import {
-    ProSidebar,
     Menu,
-    MenuItem,
-    SubMenu,
-    SidebarFooter,
-    SidebarContent
+    MenuItem, ProSidebar, SidebarContent, SidebarFooter, SubMenu
 } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
-import './Menu.css';
+import { connect } from 'react-redux';
+import {
+    lockMenu, toChamberFlavorsDispatch, toRegisterAttendance, toRoot, toSalesDelivery,
+    toSalesLocal, unlockMenu
+} from '../../actions/MenuActions';
 import BeShowed from '../../common/BeShowed';
 import sidebarBg from '../../images/background1.jpg';
+import './Menu.css';
 
 const SideMenu = (props) => {
     return (
         <>
             <ProSidebar
-                collapsed={props.menu}
-                className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
+                collapsed={true}
+                // collapsed={props.menu}
+                // className={props.menu ? 'menuBarCollapsed' : 'menuBar'}
+                className='menuBar'
                 image={sidebarBg}
             >
                 <SidebarContent>
@@ -56,7 +46,7 @@ const SideMenu = (props) => {
                         </SubMenu>
                     </Menu>
                 </SidebarContent>
-                <SidebarFooter>
+                {/* <SidebarFooter>
                     <Menu iconShape="square" className="sidebar-btn-wrapper">
                         <BeShowed show={props.menu}>
                             <MenuItem onClick={props.unlockMenu} icon={<FaLockOpen />}>Bloquear menú</MenuItem>
@@ -65,7 +55,7 @@ const SideMenu = (props) => {
                             <MenuItem onClick={props.lockMenu} icon={<FaLock />}>Desbloquear menú</MenuItem>
                         </BeShowed>
                     </Menu>
-                </SidebarFooter>
+                </SidebarFooter> */}
             </ProSidebar>
         </>
     );

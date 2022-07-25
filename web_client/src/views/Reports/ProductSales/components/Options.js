@@ -35,6 +35,7 @@ const Options = (props) => {
             Axios.get(PORT() + `/api/salesReport?from=${from}&to=${to}`)
                 .then((res) => {
                     let data = res.data;
+                    let aux = [];
                     let sales = [];
                     let topTen = [];
                     let type = [];
@@ -46,17 +47,22 @@ const Options = (props) => {
                     data?.forEach((e, i) => {
                         if (i < data.length - 1) {
                             sales = [...sales, e];
+                            aux = [...aux, e];
                         } else {
                             props.updateTypeProductSales(e);
                             type.push(e);
                         }
                     });
-
-                    sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
-                    setAllSales(sales)
-
-                    props.updateProductSales(sales);
                     
+                    aux = aux.sort((a, b) => a.name.trim().toUpperCase() > b.name.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.product_type.trim().toUpperCase() < b.product_type.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.sector.trim().toUpperCase() > b.sector.trim().toUpperCase()? 1 : -1);
+
+                    setAllSales(aux);
+                    props.updateProductSales(aux);
+                    
+                    sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
+
                     type[0].types?.forEach((e, i) => {
                         labelsTypes.push(e.id);
                         datTypes.push(e.quantity);
@@ -107,7 +113,7 @@ const Options = (props) => {
                         total: type[0].total
                     };
                     setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
+                    topChart={top} sales={aux} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })
                 .catch((error) => {

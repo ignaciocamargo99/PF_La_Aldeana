@@ -1,8 +1,7 @@
 const {
     readSalesBranches,
     readSalesBranchesById,
-    createSalesBranches,
-    updateSalesBranches
+    createSalesBranches
 } = require('../services/salesBranchService');
 
 // HTTP: GET
@@ -48,24 +47,23 @@ async function postSaleBranch(req, res) {
 }
 
 // HTTP: PUT
-async function putSaleBranch(req, res) {
-    try {
-        await updateSalesBranches(req.params.id, req.body);
-        res.json({
-            Ok: true,
-            Message: 'Venta actualizada exitosamente.'
-        });
-    } catch (e) {
-        res.json({
-            Ok: false,
-            Message: e.message
-        });
-    }
-}
+// async function putSaleBranch(req, res) {
+//     try {
+//         await updateSalesBranches(req.params.id, req.body);
+//         res.json({
+//             Ok: true,
+//             Message: 'Venta actualizada exitosamente.'
+//         });
+//     } catch (e) {
+//         res.json({
+//             Ok: false,
+//             Message: e.message
+//         });
+//     }
+// }
 
 module.exports = {
     getSalesBranches,
     getSalesBranchesByID,
-    postSaleBranch,
-    putSaleBranch
+    postSaleBranch
 };

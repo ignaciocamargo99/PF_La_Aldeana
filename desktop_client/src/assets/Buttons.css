@@ -131,6 +131,18 @@
     height: 35px;
 }
 
+.sendDisabled {
+    background: #7b7d7e;
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-family: Abel;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    width: 60px;
+    height: 35px;
+}
+
 .sendAdd:hover {
     background-color: #239cd9;
 }
