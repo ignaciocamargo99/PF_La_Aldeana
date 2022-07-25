@@ -65,7 +65,7 @@ const salePostDB = (newSale) => {
                             if (error) return db.rollback(() => reject(error));
                             db.commit((error) => {
                                 if (error) db.rollback(() => reject(error));
-                                else resolve();
+                                else resolve(id_sale);
                             });
                         });
                     }
