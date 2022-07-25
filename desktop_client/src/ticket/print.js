@@ -29,9 +29,11 @@ const getGenericConectorWithTicketHeader = (date, time, ticketCode, subtitle = '
 
     conector.feed(1);
     conector.texto("Domicilio: San Martín 283\n");
-    conector.establecerEnfatizado(1)
-        .texto(`TIQUE (Cód.${ticketCode})\n`)
-        .establecerEnfatizado(0)
+    if (ticketCode) {
+        conector.establecerEnfatizado(1)
+            .texto(`TIQUE (Cód.${ticketCode})\n`)
+            .establecerEnfatizado(0)
+    }
 
     conector.feed(1);
     conector.texto(`Fecha: ${date}\n`);
@@ -130,7 +132,7 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
         .establecerEnfatizado(0)
 
     if (cafeteriaDataToPrint.nameClient?.trim()) {
-        conector.texto(`Cliente: ${cafeteriaDataToPrint.nameClient?.trim().slice(0,20)}\n`);
+        conector.texto(`Cliente: ${cafeteriaDataToPrint.nameClient?.trim().slice(0, 20)}\n`);
     }
 
     conector.feed(1);
@@ -154,8 +156,71 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
     conector.imprimirEn(IMPRESORA_CAFETERIA);
 }
 
+const printDeliveryTicket = (deliveryDataToPrint) => {
+    let conector = getGenericConectorWithTicketHeader(
+        deliveryDataToPrint.date,
+        deliveryDataToPrint.time,
+        '',
+        'DELIVERY'
+    );
+
+    // CLIENT
+    conector.texto(`Cliente: ${deliveryDataToPrint.clientData.name}\n`);
+    conector.texto(`Domicilio: ${deliveryDataToPrint.clientData.street} ${deliveryDataToPrint.clientData.streetNumber}\n`);
+    if (deliveryDataToPrint.clientData.obs?.trim()) {
+        const obs = deliveryDataToPrint.clientData.obs?.trim().slice(0, 45);
+        conector.texto(`Observación: ${obs}\n`);
+    }
+    conector.texto(`Teléfono: ${deliveryDataToPrint.clientData.cellphone}\n`);
+    conector.texto("--------------------------------\n");
+
+    // PRODUCTS
+    for (let i = 0; i < deliveryDataToPrint.items.length; i++) {
+        const { name, unitPrice, amount, subtotal, flavors } = deliveryDataToPrint.items[i];
+
+        conector.texto(`${amount}u x ${unitPrice}\n`);
+        conector.texto(`${name}\n`);
+        for (let j = 0; j < flavors?.length; j++) {
+            if (j === 0) {
+                conector.texto(`${flavors[j]}`);
+                continue;
+            }
+            conector.texto(` - ${flavors[j]}`);
+        }
+        conector.texto(`\n`);
+        conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha);
+        conector.texto(`${subtotal}\n`);
+        conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+    }
+    conector.texto("--------------------------------\n");
+
+    // TOTAL
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .establecerEnfatizado(1)
+        .texto(`TOTAL: ${deliveryDataToPrint.total}\n`)
+        .establecerEnfatizado(0)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+
+    conector.texto('Recibimos\n')
+    conector.texto('PAGO EN EFECTIVO\n')
+        .texto('Efectivo:\n')
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .texto(`${deliveryDataToPrint.cashReceived}\n`)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+        .texto('Su vuelto:\n')
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha)
+        .texto(`${deliveryDataToPrint.change}\n`)
+        .establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda)
+    conector.texto("--------------------------------\n");
+
+    conector.feed(4);
+
+    conector.imprimirEn(IMPRESORA_CAFETERIA);
+}
+
 module.exports = {
     printSaleTicket,
     printHeladeriaTicket,
     printCafeteriaTicket,
+    printDeliveryTicket,
 }
