@@ -31,8 +31,8 @@ const consuptionsReportGetDB = (from, to) => {
                 LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
                 WHERE sb.date_dispatch >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date_dispatch <= '${(to.length > 7 ? to : (to + '-01'))}'`;
     
-    const sqlSelect3 = `SELECT sb.date_production AS date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM PRODUCTIONS sb 
-                LEFT JOIN PRODUCTIONS_X_FLAVORS dsf ON dsf.id_production = sb.id_production 
+    const sqlSelect3 = `SELECT sb.date_production AS date, f.name, dsf.quantity, f.id_flavor, ft.name AS type, ff.name AS family FROM  PRODUCTIONS sb
+                LEFT JOIN PRODUCTIONS_X_FLAVORS dsf  ON dsf.id_production = sb.id_production 
                 LEFT JOIN FLAVORS f ON dsf.id_flavor = f.id_flavor 
                 LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
                 LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
@@ -104,7 +104,7 @@ const consuptionsReportGetDB = (from, to) => {
                                         resul?.map(detail => {
                                             let aux = res.findIndex(element => element.id === detail.id_flavor);
                                             if (aux === -1) {
-                                                res[res.length] = {id: detail.id_flavor, name: detail.name, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity};
+                                                res[res.length] = {id: detail.id_flavor, name: detail.name, type: detail.type, family: detail.family, consum: 0, prod: detail.quantity, date: detail.date};
                                                 totals[0].quantity += detail.quantity;
                                             } else {
                                                 res[aux].prod += detail.quantity;
@@ -117,6 +117,13 @@ const consuptionsReportGetDB = (from, to) => {
                                                 months[monthId].prod += detail.quantity;
                                             }
                                         });
+
+                                        res.sort((a,b)=> a.name.toUpperCase().trim() > b.name.toUpperCase().trim());
+                                        res.sort((a,b)=> a.type.toUpperCase().trim() < b.type.toUpperCase().trim()?1:-1);
+                                        res.sort((a,b)=> a.family.toUpperCase().trim() > b.family.toUpperCase().trim()?1:-1);
+                                        console.log(months);
+                                        months.sort((a,b)=> a.month < b.month?1:-1);
+                                        console.log(months);
 
                                         db.commit((error) => {
                                             if (error) {

@@ -12,10 +12,8 @@ const Productions = (props) => {
     let d = []
 
     props.totals?.forEach((e, i) => {
-      if (i < 3 || i === 4){
-        l = [...l, e.name]
-        d = [...d, e.prod]
-      }
+      l = [...l, e.name]
+      d = [...d, e.prod]
     })
 
     setLabels(l)

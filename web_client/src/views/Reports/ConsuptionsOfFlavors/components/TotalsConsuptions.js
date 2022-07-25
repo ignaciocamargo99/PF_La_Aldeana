@@ -14,11 +14,9 @@ const TotalsConsuptions = (props) => {
     let c = []
 
     props.totals?.forEach((e, i) => {
-      if (i < 3 || i === 4){
-        l = [...l, e.month.slice(0,-3)]
-        d = [...d, e.prod]
-        c = [...c, e.consum]
-      }
+      l = [...l, e.month.slice(0,-3)]
+      d = [...d, e.prod]
+      c = [...c, e.consum]
     })
 
     setLabels(l)

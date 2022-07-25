@@ -8,6 +8,7 @@ import BeShowed from '../../../../common/BeShowed';
 import Viewer from '../../ProductSales/components/PDFModalViewer';
 import MyDocument from './PDFConsuptionsReport';
 import warningMessage from 'utils/WarningMessages/warningMessage';
+import { calculateDiferenceDays } from 'utils/DiferenceDate/calculateDiferenceDays';
 
 const PORT = require('../../../../config');
 const Options = (props) => {
@@ -111,16 +112,19 @@ const Options = (props) => {
                     warningMessage('Error', 'Error en el servidor', 'error');
                 })
         } else {
-            let dat = new Date();
-            let date = new Date(dat.getFullYear(), dat.getMonth() , -1);
+            let date = new Date();
             let dateString = dateFormat(date);
 
             let startDate = new Date(date.getFullYear(), date.getMonth(), 0);
-            let prevMounth = dateFormat(startDate);
+            let minDate = new Date(date.getFullYear(), date.getMonth(), -365);
+            minDate = dateFormat(minDate).slice(0,-3);
+            let prevMounth = dateFormat(startDate).slice(0,-3);
+            dateString = dateString.slice(0, -3);
+            console.log(dateString, prevMounth)
 
             inputDateFrom.current.max = dateString;
             inputDateTo.current.max = dateString;
-            inputDateFrom.current.min = '2021-01-01';
+            inputDateFrom.current.min = minDate;
             inputDateTo.current.min = prevMounth;
             inputDateTo.current.value = dateString;
             inputDateFrom.current.value = prevMounth;
@@ -132,7 +136,12 @@ const Options = (props) => {
 
     const onChangeDateFrom = () => {
         props.setLoad(false);
-        if (inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01-01") {
+        if (inputDateFrom.current.value < inputDateTo.current.value && inputDateFrom.current.value >= "2021-01" && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 365) {
+            let maxDate = new Date(parseInt(inputDateFrom.current.value.slice(0,-3))+1, parseInt(inputDateFrom.current.value.slice(5)) -1, 1);
+            if (maxDate > new Date()) maxDate = new Date();
+            maxDate = dateFormat(maxDate).slice(0,-3);
+            console.log(maxDate);
+            inputDateTo.current.max = maxDate;
             inputDateTo.current.min = inputDateFrom.current.value;
             props.setFrom(inputDateFrom.current.value);
         }
@@ -154,8 +163,11 @@ const Options = (props) => {
         let date = new Date();
         let dateString = dateFormat(date);
         props.setLoad(false);
-        if (inputDateTo.current.value >= "2021-01-01" && inputDateTo.current.value < dateString) {
-
+        if (inputDateTo.current.value >= "2021-01" && inputDateTo.current.value < dateString && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 365) {
+            let minDate = new Date(parseInt(inputDateTo.current.value.slice(0,-3))-1, parseInt(inputDateTo.current.value.slice(5)) -1, 1);
+            minDate = dateFormat(minDate).slice(0,-3);
+            inputDateFrom.current.min = minDate;
+            console.log(minDate);
             inputDateFrom.current.max = inputDateTo.current.value;
             props.setTo(inputDateTo.current.value);
         }
@@ -177,7 +189,7 @@ const Options = (props) => {
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
                         </div>
-                        <input  id='dateFrom'  className="form-control" type="date" defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
+                        <input  id='dateFrom'  className="form-control" type="month" defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01" onChange={onChangeDateFrom} ></input>
                     </div>
                 </div>
                 <div className="search-input">
@@ -185,7 +197,7 @@ const Options = (props) => {
                         <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
                             <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
                         </div>
-                        <input type="date"  className="form-control" style={{ maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                        <input type="month"  className="form-control" style={{ maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01" onChange={onChangeDateTo} ></input>
                     </div>
                 </div>
             </div>
