@@ -10,6 +10,10 @@ UPDATE CONCEPTS
 UPDATE CONCEPTS
 	SET name='Anticipos'
 	WHERE id_concept=37;
+UPDATE CONCEPTS
+	SET predictive=0
+	WHERE id_concept=6;
+
 
 
 INSERT INTO

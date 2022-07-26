@@ -71,7 +71,9 @@ const FormSalary = (props) => {
 
                     Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
                         .then((response) => {
+                            console.log(response.data);
                             let aux = response.data;
+                            let mainAux = main;
                             let plus = [];
                             let minus = [];
                             aux.forEach((detail) => {
@@ -79,6 +81,22 @@ const FormSalary = (props) => {
                                 if (detail.id_concept > 5) {
                                     if (detail.positive === 0) minus.push(detail);
                                     else plus.push(detail);
+                                } else {
+                                    let acuTotalHs = 0;
+                                    let acuSubtotal = subtotal;
+                                    let acuTotal = total;
+                                    main.forEach((hs, i) => {
+                                        if (hs === detail.id_concept - 1) mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: detail.amount, predictive: hs.predictive, id_concept: hs.id_concept };
+                                        else mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive, id_concept: hs.id_concept };
+                                        acuTotalHs += +(Math.round(i.hs * i.price + "e+2") + "e-2");
+                                    });
+                                    acuSubtotal += acuTotalHs;
+                                    acuTotal += acuSubtotal;
+
+                                    setTotalHs(acuTotalHs ? acuTotalHs : 0);
+                                    setSubtotal(acuSubtotal ? acuSubtotal : 0);
+                                    setTotal(acuTotal ? acuTotal : 0);
+                                    setMain(aux);
                                 }
                                 if (detail.id_concept === 8) setAdvances(advances.push());
                             });
@@ -151,7 +169,7 @@ const FormSalary = (props) => {
                 setOthersPlus(aux);
             }
 
-            if (props.salary.month && props.action === 'Registrar') {
+            if (props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
@@ -402,7 +420,7 @@ const FormSalary = (props) => {
         acuSubtotal += acuTotalHs;
 
         othersPlus?.forEach(i => {
-            if (i.price < 1 || i.price.toString() === 'NaN') {
+            if ((i.price < 1 || i.price.toString() === 'NaN') && i.id_concept !== 12) {
                 setErrorPrice(true);
                 flagP = true;
             }
