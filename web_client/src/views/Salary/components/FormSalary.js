@@ -86,7 +86,7 @@ const FormSalary = (props) => {
                                     let acuSubtotal = subtotal;
                                     let acuTotal = total;
                                     main.forEach((hs, i) => {
-                                        if (hs === detail.id_concept - 1) mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: detail.amount, predictive: hs.predictive, id_concept: hs.id_concept };
+                                        if (hs === detail.id_concept - 1) mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: parseInt(detail.amount), predictive: hs.predictive, id_concept: hs.id_concept };
                                         else mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive, id_concept: hs.id_concept };
                                         acuTotalHs += +(Math.round(i.hs * i.price + "e+2") + "e-2");
                                     });
@@ -96,9 +96,8 @@ const FormSalary = (props) => {
                                     setTotalHs(acuTotalHs ? acuTotalHs : 0);
                                     setSubtotal(acuSubtotal ? acuSubtotal : 0);
                                     setTotal(acuTotal ? acuTotal : 0);
-                                    setMain(aux);
+                                    setMain(mainAux);
                                 }
-                                if (detail.id_concept === 8) setAdvances(advances.push());
                             });
                             if (plus.length > 0) setOthersPlus(plus);
                             if (minus.length > 0) setOthersMinus(minus);
@@ -124,6 +123,7 @@ const FormSalary = (props) => {
                         .then((response) => {
                             if (response.data.Ok === false) console.log(response.data);
                             else {
+                                console.log(response.data)
                                 let aux = [
                                     { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
                                     { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
@@ -169,7 +169,7 @@ const FormSalary = (props) => {
                 setOthersPlus(aux);
             }
 
-            if (props.action === 'Registrar') {
+            if (props.action !== 'Ver') {
                 Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
