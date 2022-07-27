@@ -4,7 +4,14 @@ import { useGetFlavorFamilies } from 'hooks/useGetFlavorFamilies';
 import { useGetFlavorTypes } from 'hooks/useGetFlavorTypes';
 import WholesaleFlavorsDetails from './WholesaleFlavorsDetails';
 
-const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
+const TabFlavors = ({
+    allFlavors,
+    bucketsWeights,
+    loadingFlavors,
+    setAllFlavors,
+    setBucketsWeights,
+    showTab,
+}) => {
 
     const { flavorTypes } = useGetFlavorTypes();
     const { flavorFamilies } = useGetFlavorFamilies();
@@ -95,6 +102,8 @@ const TabFlavors = ({ allFlavors, setAllFlavors, loadingFlavors, showTab }) => {
                         flavors={allFlavors?.filter(f => f.toSell)}
                         handleRemoveFlavor={handleRemoveFlavor}
                         modifyFlavorAmountToSell={modifyFlavorAmountToSell}
+                        bucketsWeights={bucketsWeights}
+                        setBucketsWeights={setBucketsWeights}
                     />
                 </>
             )}

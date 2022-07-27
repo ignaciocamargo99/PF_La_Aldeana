@@ -52,6 +52,7 @@ export default function RegisterEmployee() {
         if (isEmployeeFormDataValid(data, false) && ready) {
             try {
                 const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar "${data.name}"?`)).isConfirmed;
+                console.log(registrationConfirmed)
                 if (registrationConfirmed) {
                     loadingMessage('Registrando nuevo empleado...');
                     let response = await registerEmployee(data);
@@ -68,7 +69,7 @@ export default function RegisterEmployee() {
                         displayRegisterError();
                     }
                 }
-                else warningMessage('Error', 'El número de documento ingresado ya se encuentra en uso.', 'error');
+                // else warningMessage('Error', 'El número de documento ingresado ya se encuentra en uso.', 'error');
             }
             catch {
                 displayRegisterError();

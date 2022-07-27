@@ -134,7 +134,7 @@ const ModalFlavorSelect = (props) => {
                                 return (
                                     <div className="form-check form-check-inline" key={i}>
                                         <input className="form-check-input" type="radio" name="selectedFlavors" id={`rb${i + 1}`} value={i} defaultChecked={i === 0 ? true : false} onClick={(e) => { onClickRB(e.target.value) }}></input>
-                                        <label className="form-check-label" htmlFor={`rb${i + 1}`}>{i + 1} Recipiente</label>
+                                        <label className="form-check-label" htmlFor={`rb${i + 1}`}>{i + 1} Recipiente/s</label>
                                     </div>
                                 )
                             })}
@@ -144,7 +144,7 @@ const ModalFlavorSelect = (props) => {
                             <Table>
                                 <HeaderTable th={
                                     <>
-                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>#</label></th>
+                                        <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Id</label></th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}><label>Nombre</label></th>
                                         <th scope="col" className="bg-info" style={{ textAlign: 'center' }}></th>
                                     </>
@@ -157,7 +157,7 @@ const ModalFlavorSelect = (props) => {
                                                     <td style={{ textAlign: 'center', width: '10%' }}><label>{flavor.id_flavor}</label></td>
                                                     <td style={{ textAlign: 'center', width: '70%' }}><label>{flavor.name}</label></td>
                                                     <td style={{ textAlign: 'center', width: '20%' }}>
-                                                        <button type="button" className="btn btn-danger" onClick={() => { downloadFlavor(flavor.id_flavor, i) }}><FontAwesomeIcon icon={faMinus} /></button>
+                                                        <button type="button" className="btn btn-light btn-danger" onClick={() => { downloadFlavor(flavor.id_flavor, i) }}><FontAwesomeIcon icon={faMinus} /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>

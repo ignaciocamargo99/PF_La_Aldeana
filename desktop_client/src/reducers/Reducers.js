@@ -1,11 +1,15 @@
 import { combineReducers } from "redux"
 import { flavorsDispatchDate, flavorsDispatchFilters, } from "./ChamberFlavorsDispatchReducer";
-import { clientDeliveryReducer,payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
-     cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
-     streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
-     detailsDeliveryReducer,flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer, productsStocksDeliveryReducer} from "./DeliverySalesReducers";
-import { productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer, 
-    refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer} from "./SalesReducers";
+import {
+    clientDeliveryReducer, payTypeDeliveryReducer, amountDeliveryReducer, totalDeliveryReducer, errorAmountDeliveryReducer,
+    cellphoneDeliveryReducer, errorCellphoneDeliveryReducer, namesDeliveryReducer, errorNamesDeliveryReducer,
+    streetDeliveryReducer, errorStreetDeliveryReducer, streetNumberDeliveryReducer, errorStreetNumberDeliveryReducer,
+    detailsDeliveryReducer, flavorsProductDeliveryReducer, productsQuantitiesDeliveryReducer, productsStocksDeliveryReducer, productsXsuppliesDeliveryReducer, suppliesDeliveryReducer
+} from "./DeliverySalesReducers";
+import {
+    productsReducer, productsFilteredReducer, detailProductsReducer, payTypeReducer, totalAmountReducer, productSelectedReducer,
+    refreshReducer, suppliesReducer, productsXsuppliesReducer, paymentAmountReducer, salesRegisterReducer
+} from "./SalesReducers";
 import { location, menu } from "./MenuReducers"
 import { elementsTableUp, allElements, elementsTableDown } from "./TableUpDownReducer";
 
@@ -54,4 +58,6 @@ export default combineReducers({
     productsQuantitiesDelivery: productsQuantitiesDeliveryReducer,
     clientDelivery: clientDeliveryReducer,
     productsStocksDelivery: productsStocksDeliveryReducer,
+    productsXsuppliesDelivery: productsXsuppliesDeliveryReducer,
+    suppliesDelivery: suppliesDeliveryReducer
 })

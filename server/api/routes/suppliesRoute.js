@@ -14,6 +14,8 @@ router.get('/typeSupplies', suppliesController.getTypeSupplies);
 
 router.put('/supplies/:id', suppliesController.updateSupply);
 
+router.put('/suppliesStock', suppliesController.updateSupplyStock);
+
 router.put('/supply/:id', suppliesController.deleteSupply);
 
 //#endregion

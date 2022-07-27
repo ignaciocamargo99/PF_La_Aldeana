@@ -2,9 +2,9 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const EditButton = ({ link, disable }) => {
+const EditButton = ({ link, permissionsAccess }) => {
     let buttonStyle = 'btn btn-info btnEdit';
-    if (disable) {
+    if (permissionsAccess !== 3) {
         buttonStyle = 'disabledSendBtn';
     }
 
@@ -12,7 +12,7 @@ const EditButton = ({ link, disable }) => {
         <Link to={link}>
             <button
                 className={buttonStyle}
-                disabled={disable}
+                disabled={permissionsAccess !== 3 ? true : false}
                 type="button"
             >
                 <FontAwesomeIcon icon={faEdit} />

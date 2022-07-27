@@ -23,7 +23,7 @@ export const location = (state = 0, action) => {
     return state;
 };
 
-export const menu = (state = false, action) => {
+export const menu = (state = true, action) => {
     if (action.type === 'LOCK_MENU') {
         return action.payload;
     }

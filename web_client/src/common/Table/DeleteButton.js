@@ -5,8 +5,9 @@ import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Qu
 import PropTypes from 'prop-types'
 
 const DeleteButton = ({ disable, warningTitle, warningText, onConfirm }) => {
+    console.log(disable)
     let buttonStyle = 'btn btn-danger btnDelete';
-    if (disable) {
+    if (!disable) {
         buttonStyle = 'disabledSendBtn';
     }
 
@@ -20,7 +21,7 @@ const DeleteButton = ({ disable, warningTitle, warningText, onConfirm }) => {
     return (
         <button
             className={buttonStyle}
-            disabled={disable}
+            disabled={!disable}
             onClick={handleDelete}
             type="button"
         >

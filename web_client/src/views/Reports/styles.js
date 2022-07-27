@@ -77,6 +77,18 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         padding: '2mm',
     },
+    total: {
+        fontSize: 10,
+        textAlign: 'right',
+        backgroundColor: '#2284B6',
+        color: 'white',
+        padding: '2mm',
+    },
+    division: {
+        flexDirection: 'row',
+        backgroundColor: '#808080',
+        color: 'white',
+    },
     header: {
         fontSize: 12,
         marginLeft: 'auto',

@@ -1,68 +1,105 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import DateFormat from '../../../utils/DateFormat/dateFormat';
-import BeShowed from '../../../common/BeShowed';
+
+import BeShowed from 'common/BeShowed';
+import Buttons from 'common/Buttons';
+
 import Pay from './Pay';
 import Client from './Client';
 import Products from './Products';
-import { updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
-    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery,resetDetailDelivery,
-    updateDeliveryProductsQuantities,subtractTotalDelivery, updateDeliveryProductsStocks } from '../../../actions/DeliverySalesActions';
-import Buttons from '../../../common/Buttons';
-import errorNextStepTwo from '../../../utils/ErrorMessages/errorNextStepTwo';
-import succesMessageDeliverySale from '../../../utils/SuccessMessages/successMessageDeliverySale';
-import dateTimeFormat from '../../../utils/DateFormat/dateTimeFormat'
-import warningMessage from '../../../utils/warningMessage';
-import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
+import {
+    updateErrorStreetNumberDelivery, updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery,
+    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, updateAmountDelivery, resetDetailDelivery,
+    updateDeliveryProductsQuantities, subtractTotalDelivery, updateDeliveryProductsStocks, updateProductsXSuppliesDelivery, updateSuppliesDelivery
+} from '../../../actions/DeliverySalesActions';
+
+import DateFormat from 'utils/DateFormat/dateFormat';
+import dateTimeFormat from 'utils/DateFormat/dateTimeFormat'
+import errorNextStepTwo from 'utils/ErrorMessages/errorNextStepTwo';
+import loadingMessage from 'utils/LoadingMessages/loadingMessage';
+import succesMessageDeliverySale from 'utils/SuccessMessages/successMessageDeliverySale';
+import warningMessage from 'utils/warningMessage';
+
 import '../styles/DeliverySales.css';
+import { printDeliverySaleTicket } from './printDeliverySaleTicket';
 
 const PORT = require('../../../config');
 
 const DeliverySales = (props) => {
-    const [step,setStep] = useState(1);
-    const [date,setDate] = useState('');
-    const [reset,setReset] = useState(false);
+    const [step, setStep] = useState(1);
+    const [date, setDate] = useState('');
+    const [reset, setReset] = useState(false);
+    const [loadSpinner, setLoadSpinner] = useState(true)
+    const [clientObservation, setClientObservation] = useState('');
 
     useEffect(() => {
         let date = DateFormat(new Date())
-        setDate(date)   
-    },[])
+        setDate(date)
+    }, [])
 
     useEffect(() => {
-        axios.get( PORT() + `/api/products`)
-        .then((response) => {
-            let aux = [];
-            for(let i = 0 ; i < response.data.length ; i++){
-                aux.push({'product':response.data[i],'quantity':0});
-            }
-            axios.get( PORT() + `/api/productsStocks`)
+        axios.get(PORT() + `/api/products/delivery`)
             .then((response) => {
-                props.updateDeliveryProductsStocks(response.data);
-                props.updateDeliveryProductsQuantities(aux);
+                let aux = [];
+                for (let i = 0; i < response.data.length; i++) {
+                    aux.push({ 'product': response.data[i], 'quantity': 0 });
+                }
+                axios.get(PORT() + `/api/productsStocks`)
+                    .then((response) => {
+                        props.updateDeliveryProductsStocks(response.data);
+                        props.updateDeliveryProductsQuantities(aux);
+                        setLoadSpinner(false)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
             })
             .catch((err) => {
                 console.log(err);
             })
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        axios.get(`${PORT()}/api/productxsupply`)
+            .then((response) => props.updateProductsXSuppliesDelivery(response.data))
+            .catch((error) => console.error(error));
 
-    },[reset]);
+        axios.get(`${PORT()}/api/supplies`)
+            .then((response) => props.updateSuppliesDelivery(response.data))
+            .catch((error) => console.error(error));
+
+    }, [reset]);
 
     const confirmSale = () => {
+
+        const clientDataForTicket = {
+            name: props.names?.trim(),
+            cellphone: props.cellphone,
+            street: props.street?.trim(),
+            streetNumber: props.streetNumber,
+            obs: clientObservation?.trim(),
+        }
+
         loadingMessage('Procesando la venta')
-        if(props.client.names === ''){
-            axios.post(`${PORT()}/api/clients`, {"cellphone":props.cellphone,"names":props.names,"street_name":props.street,"street_number":props.streetNumber})
+        if (props.client.names === '') {
+            const postClientPayload = {
+                "cellphone": props.cellphone,
+                "names": props.names,
+                "observation": clientObservation,
+                "street_name": props.street,
+                "street_number": props.streetNumber,
+            };
+            axios.post(`${PORT()}/api/clients`, postClientPayload)
         }
-        else{
-            if(props.client.street_name !== props.street || props.client.street_number !== props.streetNumber){
-                axios.put(`${PORT()}/api/clients/${props.client.cellphone}`,{"street_name":props.street,"street_number":props.streetNumber})
-            }
+        else if (props.client.street_name !== props.street || props.client.street_number !== props.streetNumber) {
+            const putClientPayload = {
+                "street_name": props.street,
+                "street_number": props.streetNumber,
+                "observation": clientObservation,
+            };
+            axios.put(`${PORT()}/api/clients/${props.client.cellphone}`, putClientPayload)
         }
+
         let details = []
-        props.details.map((detail,i) => {
+        props.details.map((detail, i) => {
             details.push(
                 {
                     "id_product": detail.product.id_product,
@@ -71,13 +108,24 @@ const DeliverySales = (props) => {
                 }
             );
         });
-        let sale = { date_hour: dateTimeFormat(new Date()), total_amount:props.total, id_pay_type:1, cellphone_client:props.cellphone, details:JSON.stringify(details)}; 
+
+        const currentDate = new Date();
+
+        let sale = {
+            cellphone_client: props.cellphone,
+            date_hour: dateTimeFormat(currentDate),
+            details: JSON.stringify(details),
+            id_pay_type: 1,
+            total_amount: props.total,
+        };
+
         axios.post(`${PORT()}/api/salesDelivery`, sale)
             .then((sale) => {
-                if(sale.data.Ok) {
+                if (sale.data.Ok) {
                     resetStates(false);
+                    printDeliverySaleTicket(currentDate, clientDataForTicket, props.details, props.total, props.amount);
                 }
-                else warningMessage('Error','Ha ocurrido un error al registrar la venta. \n' + sale.data.Message,"error");
+                else warningMessage('Error', 'Ha ocurrido un error al registrar la venta. \n' + sale.data.Message, "error");
             })
             .catch(error => console.log(error))
     }
@@ -96,39 +144,39 @@ const DeliverySales = (props) => {
         props.updateErrorAmountDelivery(true);
         props.updateAmountDelivery('');
         props.subtractTotalDelivery(props.total);
-        if(!cancel){
-            succesMessageDeliverySale('Se ha registrado la venta correctamente'); 
+        if (!cancel) {
+            succesMessageDeliverySale('Venta registrada exitosamente');
         }
         props.updateDeliveryProductsQuantities([])
         setReset(!reset)
     }
 
-    return(
+    return (
         <>
             <div className="viewContent">
                 <h1 className="display-5">Registrar venta por delivery</h1>
                 <hr />
-                <div className="formRow" style={{justifyContent:'flex-end'}}>
-                    <div className="form-label-no-margin" style={{marginRight:'0%'}}>
+                <div className="formRow" style={{ justifyContent: 'flex-end' }}>
+                    <div className="form-label-no-margin" style={{ marginRight: '0%' }}>
                         <label>Fecha:</label>
                     </div>
-                    <div className="" style={{width:'200px'}}>
+                    <div className="" style={{ width: '200px' }}>
                         <input type="date" className="form-control" value={date} readOnly></input>
                     </div>
                 </div>
 
-                <BeShowed show={step===1}>
-                    <Products setStep={setStep} resetStates={resetStates}/>
+                <BeShowed show={step === 1}>
+                    <Products setStep={setStep} resetStates={resetStates} loadSpinner={loadSpinner} />
                 </BeShowed>
-                
-                <BeShowed show={step===2}>
-                    <Client setStep={setStep}/>
+
+                <BeShowed show={step === 2}>
+                    <Client setStep={setStep} clientObservation={clientObservation} setClientObservation={setClientObservation} />
                     <Pay />
-                    <Buttons label='Registrar' cancel='Atrás' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => {setStep(1)}} actionNotOK={() => {errorNextStepTwo()}} actionOK={confirmSale}/>
+                    <Buttons label='Registrar' cancel='Atrás' ready={(!props.errorCellphone && !props.errorNames && !props.errorStreet && !props.errorStreetNumber && !props.errorAmount)} actionCancel={() => { setStep(1) }} actionNotOK={() => { errorNextStepTwo() }} actionOK={confirmSale} />
                 </BeShowed>
-                
-                <BeShowed show={step===3}>
-                    <Pay setStep={setStep}/>
+
+                <BeShowed show={step === 3}>
+                    <Pay setStep={setStep} />
                 </BeShowed>
 
             </div>
@@ -142,15 +190,18 @@ const mapStateToProps = state => {
         errorStreet: state.errorStreetDelivery, errorCellphone: state.errorCellphoneDelivery,
         errorAmount: state.errorAmountDelivery, details: state.detailsDelivery,
         total: state.totalDelivery, cellphone: state.cellphoneDelivery, client: state.clientDelivery,
-        names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery
+        amount: state.amountDelivery,
+        names: state.namesDelivery, street: state.streetDelivery, streetNumber: state.streetNumberDelivery,
+        productsXsuppliesDelivery: state.productsXsuppliesDelivery, suppliesDelivery: state.suppliesDelivery
     }
 }
 
 const mapDispatchToProps = {
-    updateDeliveryProductsQuantities, resetDetailDelivery,updateErrorStreetNumberDelivery, 
-    updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery, 
-    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery, 
-    updateAmountDelivery,subtractTotalDelivery, updateDeliveryProductsStocks
+    updateDeliveryProductsQuantities, resetDetailDelivery, updateErrorStreetNumberDelivery,
+    updateStreetNumberDelivery, updateErrorStreetDelivery, updateStreetDelivery, updateErrorNamesDelivery,
+    updateNamesDelivery, updateErrorCellphoneDelivery, updateCellphoneDelivery, updateErrorAmountDelivery,
+    updateAmountDelivery, subtractTotalDelivery, updateDeliveryProductsStocks, updateProductsXSuppliesDelivery,
+    updateSuppliesDelivery
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(DeliverySales);
+export default connect(mapStateToProps, mapDispatchToProps)(DeliverySales);
