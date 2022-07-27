@@ -16,7 +16,8 @@ class EmployeeRepository {
             where: {
                 date_admission:{
                     [Op.lte]: date
-                }
+                },
+                active : true
             },
             include: [EmploymentRelationshipModel]
         });

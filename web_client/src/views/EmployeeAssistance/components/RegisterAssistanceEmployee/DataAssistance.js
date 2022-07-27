@@ -140,7 +140,18 @@ export default function DataAssistance(props) {
               onChange={handleDateEntry}
             />
           </BeShowed>
-          <BeShowed show={!props.data.reading}>
+          <BeShowed show={props.data.editing}>
+            <input
+              className="form-control"
+              id="dateEmployee"
+              type="date"
+              min={props.data.inputDateEntry}
+              ref={inputDateEntry}
+              onChange={handleDateEntry}
+              defaultValue={props.data.inputDateEntry}
+            />
+          </BeShowed>
+          <BeShowed show={!props.data.reading && !props.data.editing}>
             <input
               className="form-control"
               id="dateEmployee"
@@ -294,7 +305,9 @@ export default function DataAssistance(props) {
           </BeShowed>
         </div>
       </div>
-    <label style={{color:'#F68634', fontWeight: 'bold' }}>Tenga en cuenta que solo puede registrar la asistencia de empleados cuya fecha de admisión a la empresa es menor a la fecha de ingreso seleccionada</label>
+      <BeShowed show={props.data.editing || (!props.data.editing && !props.data.reading)}>
+        <label style={{color:'#F68634', fontWeight: 'bold' }}>Tenga en cuenta que solo puede registrar la asistencia de empleados cuya fecha de admisión a la empresa es menor a la fecha de ingreso seleccionada para la asistencia.</label>
+      </BeShowed>
     </>
   );
 }
