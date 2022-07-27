@@ -46,7 +46,7 @@ export default function ReadAdvances(props) {
             <div style={{ display: 'none' }}>{document.title = "Consultar adelanto"}</div>
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Consultar adelanto" />
             <div className="viewTitle">
-                <h1>Empleado {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h1>
+                <h1>Adelanto de {props.advances.fullName + " - " + dateText(new Date(props.advances.date))}</h1>
             </div>
             <br />
             <div className="viewBody">

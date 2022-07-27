@@ -191,7 +191,7 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <BeShowed show={props.data.reading || props.data.editing}>
                     <div className="form-control-input">
-                        <input className={isValidClass} style={{maxWidth: '100em', marginLeft: 'auto'}} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.name ? props.data.name + " " + props.data.last_name : null} />
+                        <input className={isValidClass} style={{maxWidth: '100em', marginLeft: 'auto'}} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.fullName && props.data.fullName} />
                     </div>
                 </BeShowed>
                 <BeShowed show={!props.data.reading && !props.data.editing}>
