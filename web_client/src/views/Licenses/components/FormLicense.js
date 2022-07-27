@@ -170,9 +170,11 @@ const FormLicense = (props) => {
 
   const onChangeDateInit = (e) => {
     if (dateInitRef.current.value !== "") {
-      setEmployee(null)
-      setSearchState('')
-      setErrorEmployee(true);
+      if(props.action === "Registrar"){
+        setEmployee(null)
+        setSearchState('')
+        setErrorEmployee(true);
+      }
       employeesUpload();
       setErrorDateInit(false);
       dateFinishRef.current.min = e.target.value;
@@ -471,7 +473,9 @@ const FormLicense = (props) => {
             onChange={onChangeReason}
           ></textarea>
         </div>
-        <label style={{color:'#F68634', fontWeight: 'bold' }}>Tenga en cuenta que solo puede registrar licencias de empleados cuya fecha de admisión a la empresa es menor a la fecha de inicio seleccionada para la licencia.</label>
+        <BeShowed show={props.action === "Registrar"}>
+          <label style={{color:'#F68634', fontWeight: 'bold' }}>Tenga en cuenta que solo puede registrar licencias de empleados cuya fecha de admisión a la empresa es menor a la fecha de inicio seleccionada para la licencia.</label>
+        </BeShowed>
         <BeShowed show={props.action === "Registrar"}>
           <Buttons
             ready={
