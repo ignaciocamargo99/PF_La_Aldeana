@@ -75,6 +75,14 @@ const Products = (props) => {
             );
         props.updateDeliveryProductsStocks(productNew);
         props.updateSuppliesDelivery(suppliesNew);
+
+        props.productsStocks.forEach((ps) => {
+            props.productsQuantities.forEach((pq) => {
+                if(ps.id_product === pq.product.id_product){
+                    pq.stock_current = ps.stock_current
+                }
+            })
+        })
     }
 
     return (
