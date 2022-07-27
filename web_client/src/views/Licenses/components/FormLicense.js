@@ -115,13 +115,6 @@ const FormLicense = (props) => {
     employeesViewUpload();
   }, [employeesStart]);
 
-  //   useEffect(() => {
-  //     if (dateInitRef.current.value) {
-  //       employeesUpload();
-  //     }
-  //   }, [dateInitRef]);
-  //   console.log(dateInitRef);
-
   const employeesUpload = async () => {
     if (dateInitRef.current && dateInitRef.current.value !== "") {
       console.log(dateInitRef.current.value);
@@ -177,6 +170,9 @@ const FormLicense = (props) => {
 
   const onChangeDateInit = (e) => {
     if (dateInitRef.current.value !== "") {
+      setEmployee(null)
+      setSearchState('')
+      setErrorEmployee(true);
       employeesUpload();
       setErrorDateInit(false);
       dateFinishRef.current.min = e.target.value;
