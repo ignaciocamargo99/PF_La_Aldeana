@@ -87,6 +87,52 @@ const employeeGetDB = (dni) => {
     });
 };
 
+const employeeGetDateDB = (date) => {
+    let sqlSelect = `
+        SELECT
+            e.dni,
+            e.name,
+            e.last_name,
+            e.date_admission,
+            c.id_charge as chargeId,
+            c.name AS chargeName,
+            e.employment_relationship,
+            er.name AS name_emp_relationship,
+            e.number,
+            e.street,
+            e.neighborhood,
+            e.birthday,
+            e.cuil,
+            e.nickname,
+            e.city,
+            e.phone
+        FROM
+            EMPLOYEES e
+            JOIN EMPLOYMENT_RELATIONSHIP er ON e.employment_relationship = er.id_employee_relationship
+            JOIN CHARGES_X_EMPLOYEES cxe ON cxe.dni_employee = e.dni
+            JOIN CHARGES c ON cxe.id_charge = c.id_charge
+        WHERE
+            e.date_admission <= ? AND
+            e.active = 1
+        ORDER BY e.date_admission DESC
+    `;
+
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            
+            db.query(sqlSelect,[date] ,(error, result) => {
+                console.log(date)
+                if (error) reject(error);
+                else resolve(result);
+            });
+
+            db.release();
+        });
+    });
+};
+
+
 const employeeCreateDB = (newEmployee) => {
     const sqlSelect = `SELECT dni AS DNI, name AS NOMBRE, last_name AS APELLIDO
                     FROM EMPLOYEES WHERE active = 1`;
@@ -250,5 +296,6 @@ module.exports = {
     chargeGetDB,
     employeeCreateDB,
     employeeUpdateDB,
-    employeeForDesktopGetDB
+    employeeForDesktopGetDB,
+    employeeGetDateDB
 };
