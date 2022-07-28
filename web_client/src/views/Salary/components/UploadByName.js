@@ -45,7 +45,7 @@ const UploadByName = (props) => {
                     })}
                 </datalist>
             </BeShowed>
-            <input className={(props.i.name.length < 1 ? "form-control is-invalid" : "form-control") + props.class + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default ? props.default : null} />
+            <input className={(props.i.name.length < 1 ? "form-control is-invalid " : "form-control ") + props.className + props.n} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={(e) => updateShowOptions(e)} defaultValue={props.default ? props.default : null} />
         </>
     );
 }
