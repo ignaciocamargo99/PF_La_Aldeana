@@ -181,6 +181,5 @@ class ConectorPlugin {
     }
 }
 
-module.exports = {
-    ConectorPlugin,
-}
+export default ConectorPlugin
+
