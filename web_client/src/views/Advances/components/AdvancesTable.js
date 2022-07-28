@@ -123,7 +123,7 @@ export default function AdvancesTable(props) {
             return elem.date >= dateInit;
         });
         if (dateFinish) auxAdvances = auxAdvances.filter((elem) => {
-            return elem.date <= dateFinish;
+            return elem.date.slice(0,10) <= dateFinish;
         });
         auxAdvances.map(person => {
             auxTotal += person.amount;

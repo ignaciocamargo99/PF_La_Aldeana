@@ -231,7 +231,9 @@ const installmentsPayDB = (nroDNI, date, installments) => {
 const employeeGetDB = () => {
 
     const sqlSelect = `SELECT dni, name, last_name
-                    FROM EMPLOYEES e WHERE e.active = 1 ORDER BY last_name`;
+                    FROM EMPLOYEES e 
+                    WHERE e.active = 1 AND (e.date_admission <= DATE_ADD(CURDATE(), INTERVAL -7 DAY) or e.date_admission <= CURDATE())
+                    ORDER BY last_name`;
     const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 ORDER BY last_name";
 
     return new Promise((resolve, reject) => {

@@ -155,11 +155,19 @@ export default function ExtraDataAdvances(props) {
         const first = inputFirstMonth.current.value + '-01';
         if (amount > data.pay) setMinCuotes(payedCuotes + 1);
         else setMinCuotes(payedCuotes);
-
+        
         if (month !== NaN && amount != NaN && month >= minCuotes && month < 19 && amount >= month && amount >= minTotal && first.length === 10) {
             setIsValidClassAmountTotal("form-control is-valid");
             setIsValidClassMonths("form-control is-valid");
+            console.log(month,data.installments)
+            
+            if(data.installments[0].label === '' || month > 1){
+                for (let i = 0; i < month -1 ; i++) {
+                    data.installments.push(data.installments[0])
+                }
+            }
             let aux = setInstallmentsMonths(first, month, amount - data.pay, data.installments, payedCuotes);
+            
             setOption(aux);
             data.installments = aux;
         }
@@ -191,7 +199,7 @@ export default function ExtraDataAdvances(props) {
                 </div>
                 <BeShowed show={props.data.reading || props.data.editing}>
                     <div className="form-control-input">
-                        <input className={isValidClass} style={{maxWidth: '100em', marginLeft: 'auto'}} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.name ? props.data.name + " " + props.data.last_name : null} />
+                        <input className={isValidClass} style={{maxWidth: '100em', marginLeft: 'auto'}} id="employee" readOnly type="text" maxLength="80" ref={inputEmployee} defaultValue={props.data.fullName && props.data.fullName} />
                     </div>
                 </BeShowed>
                 <BeShowed show={!props.data.reading && !props.data.editing}>
