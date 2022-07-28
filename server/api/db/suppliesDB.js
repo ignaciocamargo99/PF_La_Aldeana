@@ -1,4 +1,7 @@
 const pool = require('../../config/connection');
+const Supplies = require('../database/models/suppliesModel');
+const SupplyType = require('../database/models/supplyType');
+const { Op } = require('sequelize');
 
 const suppliesGetDB = () => {
     const sqlSelect = `SELECT s.*, st.name AS name_type_supply FROM SUPPLIES  s
@@ -15,6 +18,40 @@ const suppliesGetDB = () => {
             });
             db.release();
         });
+    });
+};
+
+const getSuppliesDBByProperties = ({ onlyInactives, includeInactives, forWholesale }) => {
+    // default conditions
+    let whereCondition = {
+        active: true,
+    };
+
+    // active condition
+    if (includeInactives === 'true') {
+        delete whereCondition.active;
+    }
+
+    if (onlyInactives === 'true') {
+        whereCondition.active = false;
+    }
+
+    // price_wholesale condition
+    if (forWholesale === 'true') {
+        whereCondition.price_wholesale = {
+            [Op.not]: null,
+            [Op.gt]: 0,
+        };
+    }
+    else if (forWholesale === 'false') {
+        whereCondition.price_wholesale = {
+            [Op.is]: null,
+        };
+    }
+
+    return Supplies.findAll({
+        where: whereCondition,
+        include: [SupplyType]
     });
 };
 
@@ -100,7 +137,7 @@ const supplyDeleteDB = (id) => {
 
                 db.query(sqlDeleteSupply, [id], (error) => {
                     if (error) db.rollback(() => reject(error));
-                    
+
                     db.query(sqlDeleteProduct_X_Supply, [id], (error) => {
                         if (error) db.rollback(() => reject(error));
                         db.commit((error) => {
@@ -115,5 +152,33 @@ const supplyDeleteDB = (id) => {
     });
 };
 
+const suppliesUpdateStockDB = (supplies) => {
+    const sqlUpdateSupply =
+        `UPDATE SUPPLIES s SET s.stock_unit = ?
+        WHERE s.id_supply = ?`;
 
-module.exports = { supplyPostDB, suppliesGetDB, suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB };
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, db) => {
+            if (error) reject(error);
+            db.beginTransaction((error) => {
+                if (error) reject(error);
+                for (let i = 0; i < supplies.length; i++) {
+                    db.query(sqlUpdateSupply, [supplies[i].stock_unit, supplies[i].id_supply], (error) => {
+                        if (error) db.rollback(() => reject(error));
+                        db.commit((error) => {
+                            if (error) db.rollback(() => reject(error));
+                            else resolve();
+                        });
+                    });
+                }
+                db.release();
+            });
+        });
+    });
+};
+
+module.exports = {
+    supplyPostDB, suppliesGetDB,
+    suppliesWithStockGetDB, supplyUpdateDB, supplyDeleteDB,
+    suppliesUpdateStockDB, getSuppliesDBByProperties
+};

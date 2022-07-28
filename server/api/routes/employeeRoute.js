@@ -15,6 +15,7 @@ router.delete('/employees/:dni', employeeController.deleteEmployee);
 
 router.get('/charges', employeeController.getCharges);
 
+router.get('/employeesDate/:date', employeeController.getEmployeeByDate);
 //#endregion
 
 module.exports = router;

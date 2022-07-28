@@ -1,4 +1,4 @@
-import AmountCell from "./AmountCell";
+import AmountCell from "../AmountCell";
 import getAddFlavorsTableColumnHeaders from "./getAddFlavorsTableColumnHeaders";
 import StockFlavorTable from "./StockFlavorTable";
 const columnsHeaders = getAddFlavorsTableColumnHeaders();
@@ -37,7 +37,7 @@ const FlavorsTable = ({ pageElements, handleAddFlavor }) => {
                                             {element.FlavorType.name}
                                         </td>
                                         <StockFlavorTable flavor={element}></StockFlavorTable>
-                                        <AmountCell flavor={element} maxValue={element.stock} handleAddFlavor={handleAddFlavor}></AmountCell>
+                                        <AmountCell item={element} handleAddItem={handleAddFlavor}></AmountCell>
                                     </tr>
                                 )
                             })}

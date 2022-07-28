@@ -16,10 +16,11 @@ async function getPayTypes(req, res) {
 // HTTP: POST
 async function postSale(req, res) {
     try {
-        await createSale(req.body);
+        const newSaleId =await createSale(req.body);
         res.json({
             Ok: true,
-            Message: 'Venta registrada exitosamente.'
+            Message: 'Venta registrada exitosamente.',
+            saleId: newSaleId,
         });
     }
     catch (e) {
