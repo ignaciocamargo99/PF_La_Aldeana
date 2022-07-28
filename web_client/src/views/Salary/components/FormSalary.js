@@ -169,7 +169,7 @@ const FormSalary = (props) => {
                 setOthersPlus(aux);
             }
 
-            if (props.action !== 'Ver') {
+            if (props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
