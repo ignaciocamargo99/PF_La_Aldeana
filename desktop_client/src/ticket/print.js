@@ -1,4 +1,4 @@
-const { ConectorPlugin } = require("./ConectorPlugin");
+import ConectorPlugin from "./ConectorPlugin";
 const { IMPRESORA_HELADERIA, IMPRESORA_CAFETERIA } = require("./printersNames");
 
 const getGenericConectorWithSimpleHeader = (subtitle = '') => {
@@ -218,9 +218,4 @@ const printDeliveryTicket = (deliveryDataToPrint) => {
     conector.imprimirEn(IMPRESORA_CAFETERIA);
 }
 
-module.exports = {
-    printSaleTicket,
-    printHeladeriaTicket,
-    printCafeteriaTicket,
-    printDeliveryTicket,
-}
+export default {printSaleTicket, printHeladeriaTicket, printCafeteriaTicket, printDeliveryTicket}

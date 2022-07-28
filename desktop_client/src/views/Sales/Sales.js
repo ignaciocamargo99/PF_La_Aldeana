@@ -21,9 +21,9 @@ import DetailSale from './components/DetailSale';
 import FilterProducts from './components/FilterProducts';
 import ListProducts from './components/ListProducts';
 import PaymentSale from './components/PaymentSale';
-
-import { printSaleTicket, printCafeteriaTicket, printHeladeriaTicket } from "ticket/print";
-
+import printHeladeriaTicket from 'ticket/print';
+import printCafeteriaTicket from 'ticket/print';
+import printSaleTicket from 'ticket/print';
 import dateTimeFormat from 'utils/DateFormat/dateTimeFormat';
 import errorMessageV2 from 'utils/ErrorMessages/errorMessageV2';
 import successMessageV2 from 'utils/SuccessMessages/successMessageV2';
