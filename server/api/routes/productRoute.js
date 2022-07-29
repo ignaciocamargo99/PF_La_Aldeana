@@ -6,7 +6,7 @@ const path = require('path');
 
 const diskStorage = multer.diskStorage({
     destination: path.join(__dirname, '../images/productImages/'),
-    filename: (req, file, cb) => { 
+    filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
     }
 });
@@ -19,7 +19,9 @@ const fileUpload = multer({
 
 router.get("/products", productController.getProduct);
 
-router.post("/products", fileUpload, productController.postProduct); 
+router.get("/products/delivery", productController.getDeliveryProducts);
+
+router.post("/products", fileUpload, productController.postProduct);
 
 router.put("/products/:id", fileUpload, productController.updateProducts);
 
@@ -27,7 +29,7 @@ router.delete("/products/:id", productController.deleteProducts);
 
 router.get("/imageProduct/:id", productController.getImage);
 
-router.get("/productxsupply", productController.getProductXSupply); 
+router.get("/productxsupply", productController.getProductXSupply);
 
 router.get("/productSupply/:id", productController.getProductSupply);
 

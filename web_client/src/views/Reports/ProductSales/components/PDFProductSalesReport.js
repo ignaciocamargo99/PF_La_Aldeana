@@ -1,12 +1,13 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
 import dateFormat from '../../../../utils/DateFormat/dateFormat';
-import dataChartToURL from '../../../../utils/dataChartToURL';
+import dataChartToURL from 'utils/dataChartToURL';
 import styles from '../../styles';
 import dateText from 'utils/DateFormat/dateText';
 
 // Create Document Component
 export default function MyDocument (props) {
+  let prev = 0;
 
   return (
     <>
@@ -48,9 +49,9 @@ export default function MyDocument (props) {
               )
             })}
           </View>
-<Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
-              `${pageNumber} / ${totalPages}`
-            )} fixed />
+          <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                        `${pageNumber} / ${totalPages}`
+                      )} fixed />
         </Page>
         <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- VentaDeProductos - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
         <View style={styles.sectionFace} fixed>
@@ -65,8 +66,10 @@ export default function MyDocument (props) {
           </View>
           <View style={styles.section}>
             <Text style={styles.title}>Total de ventas de tipos productos por unidad</Text>
+            <Text style={styles.subtitle}>Análisis proporcional (% sin decimales)</Text>
             <Image style={styles.image} src={dataChartToURL(props.typesChart)}></Image>
             <Text style={styles.detail}>Total de ventas: {props.typesChart.total} uds.</Text>
+            <Text style={styles.subtitle}>Análisis nominal</Text>
             <View style={styles.row}>
               <View style={styles.col}>
                 <Text style={styles.subtitle}>Tipo de producto</Text>
@@ -118,22 +121,51 @@ export default function MyDocument (props) {
                 <Text style={styles.subtitle}>Cantidad de uds. vendidas</Text>
               </View>
             </View>
+            <View style={styles.row}>
+              <View style={styles.col}>
+                <Text style={styles.division}>{props.sales[0].sector}</Text>
+              </View>
+            </View>
             {props.sales?.map(element => {
-              return (
-                <>
-                  <View style={styles.row}>
-                    <View style={styles.col3}>
-                      <Text style={styles.text}>{element.name}</Text>
+              if(prev !== 0 && prev.id_sector !== element.id_sector){
+                prev = element;
+                return (
+                  <>
+                    <View style={styles.row}>
+                      <View style={styles.col}>
+                        <Text style={styles.division}>{element.sector}</Text>
+                      </View>
                     </View>
-                    <View style={styles.col3}>
-                      <Text style={styles.text}>{element.product_type}</Text>
+                    <View style={styles.row}>
+                      <View style={styles.col3}>
+                        <Text style={styles.text}>{element.name}</Text>
+                      </View>
+                      <View style={styles.col3}>
+                        <Text style={styles.text}>{element.product_type}</Text>
+                      </View>
+                      <View style={styles.col3}>
+                        <Text style={styles.money}>{element.quantity + ' uds.'}</Text>
+                      </View>
                     </View>
-                    <View style={styles.col3}>
-                      <Text style={styles.money}>{element.quantity + ' uds.'}</Text>
+                  </>
+              )} else {
+                prev = element;
+                return (
+                  <>
+                    <View style={styles.row}>
+                      <View style={styles.col3}>
+                        <Text style={styles.text}>{element.name}</Text>
+                      </View>
+                      <View style={styles.col3}>
+                        <Text style={styles.text}>{element.product_type}</Text>
+                      </View>
+                      <View style={styles.col3}>
+                        <Text style={styles.money}>{element.quantity + ' uds.'}</Text>
+                      </View>
                     </View>
-                  </View>
-                </>
-              )
+                  </>
+                )
+              }
             })}
             </View>
             <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (

@@ -29,11 +29,8 @@ export default function MyDocument (props) {
               <View style={styles.col8}>
                 <Text style={styles.subtitle}>DNI</Text>
               </View>
-              <View style={styles.col7}>
-                <Text style={styles.subtitle}>Empleado</Text>
-              </View>
-              <View style={styles.col7}>
-                <Text style={styles.subtitle}>Fecha de adelanto</Text>
+              <View style={styles.col4}>
+                <Text style={styles.subtitle}>Empleado / Fecha de adelanto</Text>
               </View>
               <View style={styles.col7}>
                 <Text style={styles.subtitle}>Monto total</Text>
@@ -43,39 +40,50 @@ export default function MyDocument (props) {
               </View>
             </View>
             {props.advances?.map(advance => {
-              total += advance.amount;
-              pay += advance.pay;
+              if(advance.title === true){
+                total += advance.amount;
+                pay += advance.pay;
+              }
               return (
-                <>
-                  <View style={styles.row}>
+                <>{advance.title === true ?
+                  <View style={styles.division}>
                     <View style={styles.col8}>
                       <Text style={styles.text}>{advance.nroDNI}</Text>
                     </View>
-                    <View style={styles.col7}>
+                    <View style={styles.col4}>
                       <Text style={styles.text}>{advance.fullName}</Text>
                     </View>
                     <View style={styles.col7}>
+                      <Text style={styles.money}>$ {advance.amount}</Text>
+                    </View>
+                    <View style={styles.col7}>
+                      <Text style={styles.money}>$ {advance.pay}</Text>
+                    </View>
+                  </View>:
+                  <View style={styles.row}>
+                    <View style={styles.col5}>
                       <Text style={styles.text}>{dateBDToString(advance.date, 'Es')}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{advance.amount}</Text>
+                      <Text style={styles.money}>$ {advance.amount}</Text>
                     </View>
                     <View style={styles.col7}>
-                      <Text style={styles.money}>{advance.pay}</Text>
+                      <Text style={styles.money}>$ {advance.pay}</Text>
                     </View>
                   </View>
+                  }
                 </>
               )
             })}
             <View style={styles.row}>
-              <View style={styles.col4}>
+              <View style={styles.col5}>
                 <Text style={styles.text}>Total</Text>
               </View>
               <View style={styles.col7}>
-                <Text style={styles.money}>{total}</Text>
+                <Text style={styles.total}>$ {total}</Text>
               </View>
               <View style={styles.col7}>
-                <Text style={styles.money}>{pay}</Text>
+                <Text style={styles.total}>$ {pay}</Text>
               </View>
             </View>
             </View>

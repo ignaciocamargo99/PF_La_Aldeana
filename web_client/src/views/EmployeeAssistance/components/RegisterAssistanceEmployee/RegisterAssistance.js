@@ -46,7 +46,7 @@ export default function RegisterAssistance() {
     const registerNewAssistanceEmployee = async () => {
         if (!ready) warningMessage('Atención', 'Complete los campos obligatorios o establezca un horario válido de registro', 'warning');
         else {
-            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nueva asistencia?`)).isConfirmed;
+            const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nueva asistencia?`, 'Una vez registrada la asistencia en la fecha seleccionada solo podrá modificarla para fechas de ingreso posteriores')).isConfirmed;
             if (registrationConfirmed) {
                 let validateHourEntryEgress;
                 let validateDateEntryEgressMessage = validateDateEntryEgress(data.inputDateEntry, data.date_entry, data.inputDateEgress, data.date_egress);

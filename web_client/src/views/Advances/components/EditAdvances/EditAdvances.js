@@ -100,7 +100,7 @@ export default function EditAdvances(props) {
             <Breadcrumb parentName="Adelantos" icon={faUserFriends} parentLink="advances" currentName="Editar adelanto" />
 
             <div className="viewTitle">
-                <h1>Editar adelanto  {props.advances.name + " " + props.advances.last_name + " " + dateText(new Date(props.advances.date))}</h1>
+                <h1>Editar adelanto de {props.advances.fullName + " - " + dateText(new Date(props.advances.date))}</h1>
             </div>
             <br />
             <div className="viewBody">

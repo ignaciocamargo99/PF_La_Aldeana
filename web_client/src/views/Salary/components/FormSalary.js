@@ -65,13 +65,15 @@ const FormSalary = (props) => {
                     let employ = response.data.find((employee) => { return employee.dni === props.salary.dni })
                     if (employ == null) warningMessage("Error", "No se encontraron empleados activos que coincidan con el salario solicitado", "error")
                         .then((value) => {
-                            window.location.replace('/app/salary');
+                            props.setActionSalary('Listar', props.month);
                         });
                     setEmployee(employ);
 
                     Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
                         .then((response) => {
+                            console.log(response.data);
                             let aux = response.data;
+                            let mainAux = main;
                             let plus = [];
                             let minus = [];
                             aux.forEach((detail) => {
@@ -79,8 +81,23 @@ const FormSalary = (props) => {
                                 if (detail.id_concept > 5) {
                                     if (detail.positive === 0) minus.push(detail);
                                     else plus.push(detail);
+                                } else {
+                                    let acuTotalHs = 0;
+                                    let acuSubtotal = subtotal;
+                                    let acuTotal = total;
+                                    main.forEach((hs, i) => {
+                                        if (hs === detail.id_concept - 1) mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: parseInt(detail.amount), predictive: hs.predictive, id_concept: hs.id_concept };
+                                        else mainAux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive, id_concept: hs.id_concept };
+                                        acuTotalHs += +(Math.round(i.hs * i.price + "e+2") + "e-2");
+                                    });
+                                    acuSubtotal += acuTotalHs;
+                                    acuTotal += acuSubtotal;
+
+                                    setTotalHs(acuTotalHs ? acuTotalHs : 0);
+                                    setSubtotal(acuSubtotal ? acuSubtotal : 0);
+                                    setTotal(acuTotal ? acuTotal : 0);
+                                    setMain(mainAux);
                                 }
-                                if (detail.id_concept === 8) setAdvances(advances.push());
                             });
                             if (plus.length > 0) setOthersPlus(plus);
                             if (minus.length > 0) setOthersMinus(minus);
@@ -106,28 +123,29 @@ const FormSalary = (props) => {
                         .then((response) => {
                             if (response.data.Ok === false) console.log(response.data);
                             else {
+                                console.log(response.data)
                                 let aux = [
-                                    { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0 },
-                                    { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0 }
+                                    { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
+                                    { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
+                                    { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
+                                    { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
+                                    { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept }
                                 ];
                                 if (main.some(even)) setMain(aux);
+                                    
                                 setShowSpinner(false);
-                                nroRef.current.focus();
+                                if(props.action === 'Registrar')nroRef.current.focus();
                             }
                         })
                         .catch((err) => { console.log(err)
                             setShowSpinner(false);
                             warningMessage("Error", "El servidor no pudo procesar las horas trabajadas del empleado solicitado", "error");
-                         });
+                        });
                 })
                 .catch((err) => { console.log(err) 
                     setShowSpinner(false);
                     warningMessage("Error", "No se pudieron buscar los días feriados", "error");
-                 });
-
+                });
             if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar' && employee.employment_relationship === 2) {
                 Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
                     .then((res) => {
@@ -137,15 +155,21 @@ const FormSalary = (props) => {
                             othersPlus.forEach((inc, i) => { aux[i] = inc });
                             if (res.data.length > 0) {
                                 let max = res.data[0].total;
-                                if (res.data.length < 6) aux[0] = { name: 'SAC 1*cta 2021 Negro', price: ((max / 2) * 4) / 6, predictive: 0 };
-                                else aux[0] = { name: 'SAC 1*cta 2021 Negro', price: max / 2, predictive: 0 };
-                            } else aux[0] = { name: 'SAC 1*cta 2021 Negro', price: 0, predictive: 0 };
+                                if (res.data.length < 6) aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: ((max / 2) * 4) / 6, predictive: 0, id_concept: 12 };
+                                else aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: max / 2, predictive: 0, id_concept: 12 };
+                            } else aux[0] = { name: 'SAC 1*cta 2021 monotributista', price: 0, predictive: 0, id_concept: 12 };
                             setOthersPlus(aux);
                         }
                     });
             }
+            if (props.action === 'Registrar' && employee.employment_relationship !== 2) {
+                const aux = [];
+                othersPlus.forEach((inc, i) => { aux[i] = inc });
+                aux[0] = { name: 'Recibo', price: 0, predictive: 0, id_concept: 6 };
+                setOthersPlus(aux);
+            }
 
-            if (props.salary.month && props.action === 'Registrar') {
+            if (props.action === 'Registrar') {
                 Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
@@ -159,7 +183,7 @@ const FormSalary = (props) => {
                                     dis.month = dateToString(dis.month, true);
                                     acu += dis.amount;
                                 });
-                                aux[0] = { name: 'Adelantos', price: acu, predictive: 0 };
+                                aux[0] = { name: 'Adelantos', price: acu, predictive: 0, id_concept: 8 };
                                 setOthersMinus(aux);
                                 setAdvances(r.data);
                             }
@@ -285,23 +309,20 @@ const FormSalary = (props) => {
     const resetStates = (showMsg) => {
         if (showMsg) {
             warningMessage('Atención', 'Se ha confirmado el salario correctamente', 'success');
-            props.setReloadList(!props.reloadList);
         } else if (nro + 1 < employees.length) {
             setEmployee(employees[nro + 1]);
             setOthersPlus([]);
             setOthersMinus([]);
             setMain([
-                { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price, predictive: 0 },
-                { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price, predictive: 0 },
-                { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price, predictive: 0 },
-                { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price, predictive: 0 },
-                { id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price, predictive: 0 }
+                { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price, predictive: 0, id_concept: -1 },
+                { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price, predictive: 0, id_concept: -1 },
+                { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price, predictive: 0, id_concept: -1 },
+                { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price, predictive: 0, id_concept: -1 },
+                { id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price, predictive: 0, id_concept: -1 }
             ]);
             setNro(nro + 1);
         } else {
-            props.setReloadList(!props.reloadList);
-            props.setActionSalary('Listar', null);
-            window.location.replace('/app/salary');
+            props.setActionSalary('Listar', props.month );
         }
     }
 
@@ -309,7 +330,7 @@ const FormSalary = (props) => {
         if (msg) {
             warningMessage('Atención', 'Se ha editado el salario correctamente', 'success');
         }
-        props.setActionSalary('Listar', { month: formattedDate(new Date()), employee: 0 });
+        props.setActionSalary('Listar', props.month );
     }
 
     const actionNotOK = () => {
@@ -330,22 +351,22 @@ const FormSalary = (props) => {
         if (t === 0) {
             const aux = [];
             main.forEach((hs, i) => {
-                if (hs === j) aux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: hs.predictive };
-                else aux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive };
+                if (hs === j) aux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: hs.predictive, id_concept: hs.id_concept };
+                else aux[i] = { id: hs.id, name: hs.name, hs: hs.hs, price: hs.price, predictive: hs.predictive, id_concept: hs.id_concept };
             });
             setMain(aux);
         } else if (t === 1) {
             const aux = [];
             othersPlus.forEach((inc, i) => {
-                if (inc === j) aux[i] = { name: inc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: 1 };
-                else aux[i] = { name: inc.name, price: inc.price, predictive: inc.predictive };
+                if (inc === j) aux[i] = { name: inc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: inc.predictive, id_concept: inc.id_concept };
+                else aux[i] = { name: inc.name, price: inc.price, predictive: inc.predictive, id_concept: inc.id_concept };
             });
             setOthersPlus(aux);
         } else {
             const aux = [];
             othersMinus.forEach((disc, i) => {
-                if (disc === j) aux[i] = { name: disc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: 1 };
-                else aux[i] = { name: disc.name, price: disc.price, predictive: disc.predictive };
+                if (disc === j) aux[i] = { name: disc.name, price: e.target.value.toString() === 'NaN' ? 0 : parseInt(e.target.value), predictive: disc.predictive, id_concept: disc.id_concept };
+                else aux[i] = { name: disc.name, price: disc.price, predictive: disc.predictive, id_concept: disc.id_concept };
             });
             setOthersMinus(aux);
         }
@@ -368,7 +389,7 @@ const FormSalary = (props) => {
     const deleteOtherMinus = (e) => {
         const aux = [];
         othersMinus.forEach((disc, i) => {
-            if (disc !== e) aux[i] = { name: disc.name, price: disc.price, predictive: disc.predictive }
+            if (disc !== e) aux[i] = { name: disc.name, price: disc.price, predictive: disc.predictive, id_concept: disc.id_concept }
         });
         setOthersMinus(aux);
     }
@@ -376,7 +397,7 @@ const FormSalary = (props) => {
     const deleteOtherPlus = (e) => {
         const aux = [];
         othersPlus.forEach((inc, i) => {
-            if (inc !== e) aux[i] = { name: inc.name, price: inc.price, predictive: inc.predictive }
+            if (inc !== e) aux[i] = { name: inc.name, price: inc.price, predictive: inc.predictive, id_concept: inc.id_concept }
         });
         setOthersPlus(aux);
     }
@@ -399,7 +420,7 @@ const FormSalary = (props) => {
         acuSubtotal += acuTotalHs;
 
         othersPlus?.forEach(i => {
-            if (i.price < 1 || i.price.toString() === 'NaN') {
+            if ((i.price < 1 || i.price.toString() === 'NaN') && i.id_concept !== 12) {
                 setErrorPrice(true);
                 flagP = true;
             }
@@ -488,7 +509,7 @@ const FormSalary = (props) => {
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <div className="input-group has-validation">
                                             <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} />
+                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"}/>
                                             <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
                                         </div>
                                     </div>
@@ -521,12 +542,21 @@ const FormSalary = (props) => {
                     {othersPlus?.map((i, n) => {
                         return (
                             <div className="formRow justify-content-center">
-                                <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
+                                <BeShowed show={(i.predictive === 0 && i.id_concept !== 6) || props.action === "Ver"}>
                                     <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold' }}>
                                         <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
+                                    </div>
+                                </BeShowed>
+                                <BeShowed show={i.predictive === 0 && i.id_concept === 6 && props.action !== "Ver"}>
+                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
+                                    </div>
+                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                            onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
                                     </div>
                                 </BeShowed>
                                 <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>

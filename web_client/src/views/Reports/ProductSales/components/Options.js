@@ -18,6 +18,7 @@ const Options = (props) => {
     const [showPdf, setShowPDF] = useState(false);
     let permissionsAccess = props.permissionsAccess;
     const [MyDoc, setMyDoc] = useState('');
+    const [allSales, setAllSales] = useState('');
 
     const inputDescriptionReport = useRef();
     const [description, setDescription] = useState(null);
@@ -33,6 +34,7 @@ const Options = (props) => {
             Axios.get(PORT() + `/api/salesReport?from=${from}&to=${to}`)
                 .then((res) => {
                     let data = res.data;
+                    let aux = [];
                     let sales = [];
                     let topTen = [];
                     let type = [];
@@ -44,16 +46,22 @@ const Options = (props) => {
                     data?.forEach((e, i) => {
                         if (i < data.length - 1) {
                             sales = [...sales, e];
+                            aux = [...aux, e];
                         } else {
                             props.updateTypeProductSales(e);
                             type.push(e);
                         }
                     });
+                    
+                    aux = aux.sort((a, b) => a.name.trim().toUpperCase() > b.name.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.product_type.trim().toUpperCase() < b.product_type.trim().toUpperCase() ? 1 : -1);
+                    aux = aux.sort((a, b) => a.sector.trim().toUpperCase() > b.sector.trim().toUpperCase()? 1 : -1);
 
+                    setAllSales(aux);
+                    props.updateProductSales(aux);
+                    
                     sales = sales.sort((a, b) => a.quantity < b.quantity ? 1 : -1);
 
-                    props.updateProductSales(sales);
-                    
                     type[0].types?.forEach((e, i) => {
                         labelsTypes.push(e.id);
                         datTypes.push(e.quantity);
@@ -93,7 +101,7 @@ const Options = (props) => {
                         ],
                     };
                     const types = {
-                        type: 'pie',
+                        type: 'outlabeledPie',
                         labels: labelsTypes,
                         datasets: [
                         {
@@ -104,7 +112,7 @@ const Options = (props) => {
                         total: type[0].total
                     };
                     setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
-                    topChart={top} sales={sales} typesChart={types} top={topTen} types={type[0].types} />);
+                    topChart={top} sales={aux} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })
                 .catch((error) => {
@@ -169,18 +177,24 @@ const Options = (props) => {
 
     return (
         <>
-            <div className="formRow">
-                <label>Seleccione el rango de fechas sobre el que desea generar el informe.</label>
-            </div>
             <div className="formRow d-flex justify-content-between">
-                <label htmlFor="dateFrom" className="col-sm-2">Fecha desde*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateFrom' defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
-                </div>
+                <label className="col-sm-5">Seleccione el rango de fechas sobre el que desea generar el informe.</label>
 
-                <label htmlFor="dateTo" className="col-sm-2">Fecha hasta*</label>
-                <div className="col-sm-3" style={{ textAlign: 'right' }} >
-                    <input type="date" style={{ maxWidth: "9em", marginRight: '1em' }} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                <div className="search-input">
+                    <div className="input-group" style={{marginLeft: 'auto'}}>
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha desde</span>
+                        </div>
+                        <input  id='dateFrom'  className="form-control" type="date" defaultValue={props.dateFrom} ref={inputDateFrom} min="2021-01-01" onChange={onChangeDateFrom} ></input>
+                    </div>
+                </div>
+                <div className="search-input">
+                    <div className="input-group">
+                        <div className="input-group-prepend" style={{marginLeft: 'auto'}}>
+                            <span className="input-group-text" id="inputGroup-sizing-default">Fecha hasta</span>
+                        </div>
+                        <input type="date"  className="form-control" style={{ maxWidth: "9em"}} id='dateTo' defaultValue={props.dateTo} ref={inputDateTo} min="2021-01-01" onChange={onChangeDateTo} ></input>
+                    </div>
                 </div>
             </div>
             <div className="formRow">
@@ -195,11 +209,11 @@ const Options = (props) => {
                 <div className="mx-auto">
                     <BeShowed show={permissionsAccess === 1 || permissionsAccess === 2}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className="disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
+                        <button className="btn btn-light disabledNewBtn" style={{ marginRight: '1em', minWidth: '15em' }} id='printButon' disabled><FaFile /> Imprimir informe</button>
                     </BeShowed>
                     <BeShowed show={permissionsAccess === 3}>
                         <button className="btn btn-light newBtn" id='genrateButon' style={{ marginRight: '1em', minWidth: '15em' }} onClick={handlerLoader}><FaAngleRight /> Generar informe</button>
-                        <button className="btn btn-light newBtn" id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
+                        <button className={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1?"btn btn-light disabledNewBtn":"btn btn-light newBtn"} id='printButon' disabled={props.dateFrom > props.dateTo || props.load <= 0 || allSales.length <1} style={props.dateFrom <= props.dateTo && props.load > 0 ? { minWidth: '15em' } : { minWidth: '15em', backgroundColor: 'grey' }}
                             onClick={showRenderPDF} ><FaFile /> Imprimir informe</button>
                     </BeShowed>
                 </div>

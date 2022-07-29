@@ -19,6 +19,6 @@ export default function ReadAdvancesButton (props) {
     }
     
     return (
-        <button id='readAdvancesButton' type="button" className="btn btn-warning btnRead" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
+        <button id='readAdvancesButton' type="button" className="btn btn-ligth btn-warning btnRead" onClick={handleRead}><FontAwesomeIcon icon={faEye} /></button>
     );
 }

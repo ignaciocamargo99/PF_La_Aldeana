@@ -3,15 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from 'react';
 import validateFloatNumbers from 'utils/validateFloatNumbers';
 
-const AmountCell = ({ handleAddFlavor, flavor }) => {
+const AmountCell = ({ handleAddItem, item }) => {
     const [amount, setAmount] = useState('');
 
     useEffect(() => {
         setAmount('')
-    }, [flavor])
+    }, [item])
 
     const onChange = ({ target }) => {
-        if (target.value > flavor.stock) {
+        if (target.value > item.stock) {
             return;
         }
         if (target.value <= 0) {
@@ -22,8 +22,8 @@ const AmountCell = ({ handleAddFlavor, flavor }) => {
     }
 
     const onClickAdd = () => {
-        if (amount <= flavor.stock && amount > 0) {
-            handleAddFlavor(flavor, amount)
+        if (amount <= item.stock && amount > 0) {
+            handleAddItem(item, amount)
             setAmount('')
         }
     }
@@ -38,7 +38,7 @@ const AmountCell = ({ handleAddFlavor, flavor }) => {
                     type="button"
                     className="btnAdd btn btn-info"
                     onClick={onClickAdd}
-                    disabled={+flavor.stock <= 0}
+                    disabled={+item.stock <= 0}
                 >
                     <FontAwesomeIcon icon={faPlus} />
                 </button>

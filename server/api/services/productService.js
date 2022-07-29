@@ -1,4 +1,4 @@
-const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB } = require('../db/productDB');
+const { productGetDB, productPostDB, imageProductGetDB, productDeleteDB, productUpdateDB, productSupplyGetDB, productStocksGetDB, ProductXSupplyGetDB, deliveryProductGetDB } = require('../db/productDB');
 
 const readProduct = async () => {
     try {
@@ -6,7 +6,17 @@ const readProduct = async () => {
         return res;
     }
     catch (error) {
-        throw Error(error)
+        throw Error(error);
+    };
+};
+
+const readDeliveryProduct = async () => {
+    try {
+        let res = await deliveryProductGetDB();
+        return res;
+    }
+    catch (error) {
+        throw Error(error);
     };
 };
 
@@ -55,7 +65,7 @@ const readProductXSupply = async () => {
         let res = await ProductXSupplyGetDB();
         return res;
     }
-    catch (error){
+    catch (error) {
         throw Error(error);
     };
 };
@@ -81,4 +91,4 @@ const readProductStocks = async () => {
     };
 };
 
-module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks, readProductXSupply };
+module.exports = { readProduct, createProduct, readImageProduct, deleteProduct, updateProduct, readProductSupply, readProductStocks, readProductXSupply, readDeliveryProduct };

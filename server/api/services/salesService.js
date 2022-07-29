@@ -12,7 +12,8 @@ const readPayTypes = async () => {
 
 const createSale = async (newSale) => {
     try {
-        await salePostDB(newSale);
+        const newSaleId = await salePostDB(newSale);
+        return newSaleId;
     }
     catch (error) {
         throw Error(error);

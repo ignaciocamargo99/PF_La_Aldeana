@@ -2,9 +2,15 @@ import React from 'react'
 import BucketsSummaryTable from './BucketsSummaryTable';
 import BucketsTable from './BucketsTable';
 
-const CategoryDetail = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell }) => {
+const CategoryDetail = ({
+    category,
+    flavors,
+    handleRemoveFlavor,
+    handleWeightChange,
+    modifyFlavorAmountToSell,
+    weight,
+}) => {
 
-    const category = flavors[0].FlavorType;
     const categoryPlaceholder = flavors.length === 1 ? `${flavors.length} sabor` : `${flavors.length} sabores`;
 
     return (
@@ -12,8 +18,8 @@ const CategoryDetail = ({ flavors, handleRemoveFlavor, modifyFlavorAmountToSell 
             <label className='fw-bold me-4'>{category.name}</label>
             <label className='text-black-50'>{categoryPlaceholder}</label>
             <div className='d-flex flex-wrap p-4'>
-                <BucketsTable flavors={flavors} handleRemoveFlavor={handleRemoveFlavor} modifyFlavorAmountToSell={modifyFlavorAmountToSell}/>
-                <BucketsSummaryTable category={category} flavors={flavors} />
+                <BucketsTable flavors={flavors} handleRemoveFlavor={handleRemoveFlavor} modifyFlavorAmountToSell={modifyFlavorAmountToSell} />
+                <BucketsSummaryTable category={category} flavors={flavors} weight={weight} handleWeightChange={handleWeightChange} />
             </div>
         </div>
     )
