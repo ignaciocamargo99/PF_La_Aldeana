@@ -85,18 +85,19 @@ export default function ExtraDataAdvances(props) {
 
     //find employees with amount of advances
     useEffect(() => {
-        Axios.get(PORT() + `/api/employeesadvances`)
+        Axios.get(PORT() + `/api/employeesadvances/${inputDate.current.value}`)
             .then((response) => {
                 response.data.forEach((person) => {
                     person.name += ' ';
                     person.name += person.last_name;
                 });
                 setEmployees(response.data);
+                setEmployee(null)
             })
             .catch((err) => {
                 console.log(err)
             })
-    }, [startFirstMonth]);
+    }, [startFirstMonth, (inputDate.current && inputDate.current.value)]);
 
     //employee
     useEffect(() => {
@@ -159,7 +160,6 @@ export default function ExtraDataAdvances(props) {
         if (month !== NaN && amount != NaN && month >= minCuotes && month < 19 && amount >= month && amount >= minTotal && first.length === 10) {
             setIsValidClassAmountTotal("form-control is-valid");
             setIsValidClassMonths("form-control is-valid");
-            console.log(month,data.installments)
             
             if(data.installments[0].label === '' || month > 1){
                 for (let i = 0; i < month -1 ; i++) {
@@ -203,7 +203,7 @@ export default function ExtraDataAdvances(props) {
                     </div>
                 </BeShowed>
                 <BeShowed show={!props.data.reading && !props.data.editing}>
-                    <UploadByName list={employees} upload={handleEmployee} itemName="Empleado" listName="employeeList" className={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
+                    <UploadByName list={employees} date ={inputDate} upload={handleEmployee} itemName="Empleado" listName="employeeList" className={isValidClass} default={props.data.name ? props.data.name + " " + props.data.last_name : null}
                         placeholder="Ingrese el nombre del empelado que busca..." maxLength="80" />
                 </BeShowed>
             </div>
@@ -245,7 +245,7 @@ export default function ExtraDataAdvances(props) {
             </div>
             <div className="formRow d-flex">
                 <div className="form-control-label">
-                    <label htmlFor="months" >Cantidad de cutas* </label>
+                    <label htmlFor="months" >Cantidad de cuotas* </label>
                 </div>
                 <div className="form-control-input">
                     <input className={isValidClassMonths} readOnly={props.data.reading || !inputFirstMonth.current?.value} style={{maxWidth: '100em', marginLeft: 'auto'}} id="months" type="number" ref={inputMonths} onChange={handleMonths} min={minCuotes} max={18 > amountTotal ? amountTotal : 18} placeholder="Ingrese cantidad de cuotas..." onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validateMonts(e)} defaultValue={data.months ? data.months : null} />

@@ -1,4 +1,5 @@
 import React, { useState , useRef} from 'react';
+import { useEffect } from 'react';
 import BeShowed from '../../../common/BeShowed';
 
 const UploadByName = (props) => {
@@ -8,6 +9,7 @@ const UploadByName = (props) => {
     const [errorMessage,setErrorMessage] = useState(null);
     
     const upload = () => {
+        console.log(props.list)
         let x = -1;
         props.list.forEach((item) => {
             if (item.name.toUpperCase() === input.current.value.toUpperCase()) {
@@ -27,6 +29,12 @@ const UploadByName = (props) => {
         setShowOptions(true);
         upload();
     }
+
+    useEffect(() => {
+        console.log('no hay lista')
+        input.current.value = ''
+        input.current.innerHTML = ''
+    }, [props.date.current && props.date.current.value])
 
     return(
         <>
