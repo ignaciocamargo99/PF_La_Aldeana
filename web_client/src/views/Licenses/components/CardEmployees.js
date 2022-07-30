@@ -28,7 +28,7 @@ const CardEmployees = (props) => {
             <BeShowed show={employeesFilter?.length === 0 && props.searchState.trim().length >2}>
                 <div className="formRow">
                     <div style={{ height: '200px', alignItems: 'center', display: 'flex' }}>
-                        <label><b style={{ color: '#383C77' }}>No hay empleados con ese nombre</b></label>
+                        <label><b style={{ color: '#383C77' }}>No hay empleados con los filtros ingresados</b></label>
                     </div>
                 </div>
             </BeShowed>

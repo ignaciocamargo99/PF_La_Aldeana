@@ -128,6 +128,18 @@ const styles = StyleSheet.create({
       right: 0,
       textAlign: 'center'
     },
+    division: {
+        flexDirection: 'row',
+        backgroundColor: '#808080',
+        color: 'white',
+    },
+    total: {
+        fontSize: 10,
+        textAlign: 'right',
+        backgroundColor: '#2284B6',
+        color: 'white',
+        padding: '2mm',
+    },
 });
 
 export default styles;

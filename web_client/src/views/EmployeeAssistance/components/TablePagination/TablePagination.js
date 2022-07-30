@@ -68,11 +68,8 @@ const TablePagination = ({ columnsHeaders, currentElements, handleRead, handleEd
             if (PORT() === "") {
                 const filteredNowDate = currentElements.filter((elem) => (moment(elem.date_entry).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')))
                 setFilteredElements(filteredNowDate);
-                console.log(moment().format('YYYY-MM-DD'));
             }
             else {
-                console.log(moment().format('YYYY-MM-DD'));
-
                 const filteredNowDate = currentElements.filter((elem) => (moment(elem.date_entry).add(3, 'hours').format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')));
                 setFilteredElements(filteredNowDate);
             }

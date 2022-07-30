@@ -1,4 +1,5 @@
 import React, { useState , useRef} from 'react';
+import { useEffect } from 'react';
 import BeShowed from '../../../common/BeShowed';
 
 const UploadByName = (props) => {
@@ -8,6 +9,7 @@ const UploadByName = (props) => {
     const [errorMessage,setErrorMessage] = useState(null);
     
     const upload = () => {
+        console.log(props.list)
         let x = -1;
         props.list.forEach((item) => {
             if (item.name.toUpperCase() === input.current.value.toUpperCase()) {
@@ -28,6 +30,12 @@ const UploadByName = (props) => {
         upload();
     }
 
+    useEffect(() => {
+        console.log('no hay lista')
+        input.current.value = ''
+        input.current.innerHTML = ''
+    }, [props.date.current && props.date.current.value])
+
     return(
         <>
             <BeShowed show={showOptions}>
@@ -38,7 +46,7 @@ const UploadByName = (props) => {
                 </datalist>
             </BeShowed>
             <div className="form-control-input">
-                <input className={errorMessage?'form-control is-invalid':props.class}  style={{maxWidth: '100em', marginLeft: 'auto'}} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions} defaultValue={props.default}/>    
+                <input className={errorMessage?'form-control is-invalid':props.className}  style={{maxWidth: '100em', marginLeft: 'auto'}} type="search" list={props.listName} placeholder={props.placeholder} maxLength={props.maxLength} ref={input} onChange={updateShowOptions} defaultValue={props.default}/>    
                 <BeShowed show={errorMessage !== "null"}>
                     <div><b style={{ color: 'red' }}>{errorMessage}</b></div>
                 </BeShowed>
