@@ -468,193 +468,210 @@ const FormSalary = (props) => {
             <div className="viewTitleBtn">
                 <h1>{props.action} salario: {props.action !== "Registrar" ? props.salary?.id_salary + ' - ' + props.salary?.name + ' ' + props.salary?.last_name : ''}</h1>
             </div>
-            <div className="container" >
-                <BeShowed show={showSpinner}>
-                    <br />
-                    <LoaderSpinner color="primary" loading="Calculando horas trabajadas del empleado..." />
-                </BeShowed>
-                <BeShowed show={!showSpinner}>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-6" >
-                            <label>Fecha: </label>
-                            <input ref={nroRef} value={dateText(props.month + '-01', false, true)} style={{ fontWeight: 'bold', marginLeft: '1em', border: '0px' }} readOnly></input>
-                        </div>
-                        <div className="col-sm-6" style={{ fontWeight: 'bold', textAlign: 'right' }} >
-                            <BeShowed show={props.action === 'Registrar'} >
-                                <label >{nro + 1}/{employees.length}</label>
-                            </BeShowed>
-                        </div>
-                    </div>
+
+            <BeShowed show={showSpinner}>
+                <br />
+                <LoaderSpinner color="primary" loading="Calculando horas trabajadas del empleado..." />
+            </BeShowed>
+            <BeShowed show={!showSpinner}>
+                <div className="d-flex justify-content-center pt-4">
                     <ShowSelectedEmployee selectedEmployee={employee} />
-                    <h3 style={{ paddingLeft: '1em', paddingTop: '1em' }}>Horas trabajadas</h3>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-4">
-                        </div>
-                        <div className="col-sm-2" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Horas</label>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Precio X Hs. ($)</label>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Subtotal</label>
-                        </div>
-                    </div>
-                    {main?.map((i, k) => {
-                        return (
-                            <>
+                    <div className="d-flex justify-content-center">
+                        <div style={{ marginLeft: '2em', width: '60em' }}>
+                            <div className="d-flex justify-content-between">
+                                <div>
+                                    <label>Fecha: </label>
+                                    <input
+                                        ref={nroRef}
+                                        value={dateText(props.month + '-01', false, true)}
+                                        style={{ fontWeight: 'bold', marginLeft: '1em', border: '0px' }}
+                                        readOnly
+                                    >
+                                    </input>
+                                </div>
+                                <BeShowed show={props.action === 'Registrar'} >
+                                    <label className="fw-bold">{nro + 1}/{employees.length}</label>
+                                </BeShowed>
+                            </div>
+                            <br />
+
+                            <div className="container" >
+                                <h3>Horas trabajadas</h3>
                                 <div className="formRow justify-content-center">
-                                    <div className="col-sm-4" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em' }}>{i.name}</label>
+                                    <div className="col-sm-4">
                                     </div>
                                     <div className="col-sm-2" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em' }}>{floatToHour(i.hs, true)}</label>
+                                        <label style={{ paddingLeft: '1em' }}>Horas</label>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <div className="input-group has-validation">
-                                            <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"} />
-                                            <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
-                                        </div>
+                                        <label style={{ paddingLeft: '1em' }}>Precio X Hs. ($)</label>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em' }}>${(i.hs * i.price) ? +(Math.round(i.hs * i.price + "e+2") + "e-2") : 0}</label>
+                                        <label style={{ paddingLeft: '1em' }}>Subtotal</label>
                                     </div>
                                 </div>
-                                <BeShowed show={k === warning}><div className="alert alert-warning d-flex align-items-center" role="alert" style={{ height: '1em' }}>Si cambia el precio, el valor por defecto de este se vera cambiado para futuras consultas.</div></BeShowed>
-                            </>
-                        )
-                    })}
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Total horas trabajadas</label>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${totalHs}</label>
-                        </div>
-                    </div>
-                    <br />
-                    <h3 style={{ paddingLeft: '1em', borderTop: '1px dotted', paddingTop: '1em' }}>Adicionales</h3>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Concepto </label> <small>(no se aceptan duplicados)</small>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Precio ($)</label>
-                        </div>
-                    </div>
-                    {othersPlus?.map((i, n) => {
-                        return (
-                            <div className="formRow justify-content-center">
-                                <BeShowed show={(i.predictive === 0 && i.id_concept !== 6) || props.action === "Ver"}>
+                                {main?.map((i, k) => {
+                                    return (
+                                        <div key={i.name}>
+                                            <div className="formRow justify-content-center">
+                                                <div className="col-sm-4" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em' }}>{i.name}</label>
+                                                </div>
+                                                <div className="col-sm-2" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em' }}>{floatToHour(i.hs, true)}</label>
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <div className="input-group has-validation">
+                                                        <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                                            onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"} />
+                                                        <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em' }}>${(i.hs * i.price) ? +(Math.round(i.hs * i.price + "e+2") + "e-2") : 0}</label>
+                                                </div>
+                                            </div>
+                                            <BeShowed show={k === warning}><div className="alert alert-warning d-flex align-items-center" role="alert" style={{ height: '1em' }}>Si cambia el precio, el valor por defecto de este se vera cambiado para futuras consultas.</div></BeShowed>
+                                        </div>
+                                    )
+                                })}
+                                <div className="formRow justify-content-center">
                                     <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
-                                    </div>
-                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold' }}>
-                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
-                                    </div>
-                                </BeShowed>
-                                <BeShowed show={i.predictive === 0 && i.id_concept === 6 && props.action !== "Ver"}>
-                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Total horas trabajadas</label>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                            onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${totalHs}</label>
                                     </div>
-                                </BeShowed>
-                                <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
-                                    <div className="col-sm-1">
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-danger btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
-                                    </div>
-                                    <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherPlus"} n={n} default={i.name}
-                                            placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersPlus} otherDestiny={othersMinus} />
+                                </div>
+                                <br />
+
+                                <h3>Adicionales</h3>
+                                <div className="formRow justify-content-center">
+                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em' }}>Concepto </label> <small>(no se aceptan duplicados)</small>
                                     </div>
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                            onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
+                                        <label style={{ paddingLeft: '1em' }}>Precio ($)</label>
+                                    </div>
+                                </div>
+                                {othersPlus?.map((i, n) => {
+                                    return (
+                                        <div key={i.id_concept} className="formRow justify-content-center">
+                                            <BeShowed show={(i.predictive === 0 && i.id_concept !== 6) || props.action === "Ver"}>
+                                                <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                    <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
+                                                </div>
+                                            </BeShowed>
+                                            <BeShowed show={i.predictive === 0 && i.id_concept === 6 && props.action !== "Ver"}>
+                                                <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                                        onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
+                                                </div>
+                                            </BeShowed>
+                                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
+                                                <div className="col-sm-1">
+                                                    <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-danger btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                                </div>
+                                                <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <UploadByName list={concepts} upload={setOthersPlus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherPlus"} n={n} default={i.name}
+                                                        placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersPlus} otherDestiny={othersMinus} />
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherPlus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                                        onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
+                                                </div>
+                                            </BeShowed>
+                                        </div>
+                                    )
+                                })}
+                                <BeShowed show={props.action !== "Ver"}>
+                                    <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <button id='addOtherPlusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherPlus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </div>
                                 </BeShowed>
+                                <div className="formRow justify-content-center">
+                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px', text: 'bold' }}>
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Subtotal</label>
+                                    </div>
+                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', text: 'bold' }}>
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${subtotal}</label>
+                                    </div>
+                                </div>
+                                <br />
+
+                                <h3>Descuentos</h3>
+                                <div className="formRow justify-content-center">
+                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em' }}>Concepto </label> <small>(no se aceptan duplicados)</small>
+                                    </div>
+                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em' }}>Precio ($)</label>
+                                    </div>
+                                </div>
+                                {othersMinus?.map((i, n) => {
+                                    return (
+                                        <div key={i.name} className="formRow justify-content-center">
+                                            <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
+                                                <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold' }}>
+                                                    <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
+                                                </div>
+                                            </BeShowed>
+                                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
+                                                <div className="col-sm-1" >
+                                                    <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-danger btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
+                                                </div>
+                                                <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherMinus"} n={n} default={i.name}
+                                                        placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersMinus} otherDestiny={othersPlus} />
+                                                </div>
+                                                <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                                    <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
+                                                        onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
+                                                </div>
+                                            </BeShowed>
+                                        </div>
+                                    )
+                                })}
+
+                                <BeShowed show={props.action !== "Ver"}>
+                                    <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <button id='addOtherMinusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherMinus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
+                                    </div>
+                                </BeShowed>
+                                <div className="formRow justify-content-center">
+                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Total a cobrar</label>
+                                    </div>
+                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
+                                        <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${total}</label>
+                                    </div>
+                                </div>
+                                <BeShowed show={props.action === 'Registrar'}>
+                                    <Buttons ready={(!errorName && !errorPrice)}
+                                        label='Confirmar' labelJump='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionJump={() => { jump() }} actionCancel={() => { comeBack(false) }} />
+                                </BeShowed>
+                                <BeShowed show={props.action === 'Editar'}>
+                                    <Buttons ready={(!errorName && !errorPrice)}
+                                        label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => { comeBack(false) }} />
+                                </BeShowed>
+                                <BeShowed show={props.action === 'Ver'}>
+                                    <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
+                                </BeShowed>
+
                             </div>
-                        )
-                    })}
-                    <BeShowed show={props.action !== "Ver"}>
-                        <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <button id='addOtherPlusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherPlus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                        </div>
-                    </BeShowed>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px', text: 'bold' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Subtotal</label>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', text: 'bold' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${subtotal}</label>
                         </div>
                     </div>
-                    <br />
-                    <h3 style={{ paddingLeft: '1em', borderTop: '1px dotted', paddingTop: '1em' }}>Descuentos</h3>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Concepto </label> <small>(no se aceptan duplicados)</small>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em' }}>Precio ($)</label>
-                        </div>
-                    </div>
-                    {othersMinus?.map((i, n) => {
-                        return (
-                            <div className="formRow justify-content-center">
-                                <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
-                                    <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
-                                    </div>
-                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px', textAlign: 'center', fontWeight: 'bold' }}>
-                                        <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
-                                    </div>
-                                </BeShowed>
-                                <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
-                                    <div className="col-sm-1" >
-                                        <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-danger btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
-                                    </div>
-                                    <div className="col-sm-8" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <UploadByName list={concepts} upload={setOthersMinus} i={i} itemName="Concepto" listName="conceptsList" className={" nameOtherMinus"} n={n} default={i.name}
-                                            placeholder="Ingrese el nombre del concepto..." maxLength="100" destiny={othersMinus} otherDestiny={othersPlus} />
-                                    </div>
-                                    <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                                        <input className={(i.price < 1 ? "form-control is-invalid" : "form-control") + " priceOtherMinus" + n} type="number" style={{ width: '100%' }} onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                            onChange={(e) => addPrice(i, e, 2)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
-                                    </div>
-                                </BeShowed>
-                            </div>
-                        )
-                    })}
-                    <BeShowed show={props.action !== "Ver"}>
-                        <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <button id='addOtherMinusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherMinus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
-                        </div>
-                    </BeShowed>
-                    <div className="formRow justify-content-center">
-                        <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>Total a cobrar</label>
-                        </div>
-                        <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
-                            <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${total}</label>
-                        </div>
-                    </div>
-                    <BeShowed show={props.action === 'Registrar'}>
-                        <Buttons ready={(!errorName && !errorPrice)}
-                            label='Confirmar' labelJump='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionJump={() => { jump() }} actionCancel={() => { comeBack(false) }} />
-                    </BeShowed>
-                    <BeShowed show={props.action === 'Editar'}>
-                        <Buttons ready={(!errorName && !errorPrice)}
-                            label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => { comeBack(false) }} />
-                    </BeShowed>
-                    <BeShowed show={props.action === 'Ver'}>
-                        <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
-                    </BeShowed>
-                </BeShowed>
-            </div>
+                </div>
+            </BeShowed>
         </>
     )
 }

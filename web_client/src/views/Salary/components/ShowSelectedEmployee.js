@@ -1,62 +1,46 @@
 import employeeIMG from 'common/CommonImages/Empleado_Generico.png';
 import '../styles/Licenses.css';
 
-const ShowSelectedEmployee = (props) => {
-    if (props.selectedEmployee !== null) {
+const ShowSelectedEmployee = ({ selectedEmployee }) => {
+    if (selectedEmployee) {
         let charges = "";
 
-        props.selectedEmployee.charges?.map((charge, i) => i + 1 < props.selectedEmployee.charges.length ? charges += charge.chargeName + ", " : charges += charge.chargeName);
+        selectedEmployee.charges?.map((charge, i) => i + 1 < selectedEmployee.charges.length ? charges += charge.chargeName + ", " : charges += charge.chargeName);
+
+        const employeeData = [
+            ['DNI:', selectedEmployee.dni],
+            ['Apellido y Nombre:', `${selectedEmployee.last_name}, ${selectedEmployee.name}`],
+            ['Cargo:', charges],
+            ['Relación laboral:', selectedEmployee.name_emp_relationship],
+        ]
 
         return (
-            <div>
-                <div className="row">
-                    <label>Empleado seleccionado: </label>
+            <div className='d-flex flex-column' style={{maxWidth: '18em'}}>
+                <label>Empleado seleccionado: </label>
+                <div className='ps-3'>
+                    <img
+                        alt='employeePhoto'
+                        src={employeeIMG}
+                        className='mt-3 mb-4'
+                        style={{ width: '60px', height: '60px' }}
+                    >
+                    </img>
                 </div>
-                <div className="row">
-                    <div className="col offset-sm-1">
-                        <img src={employeeIMG} className="carnet"></img>
-                    </div>
-                    <div className="col-sm-9">
+                <div className="container">
+                    {employeeData.map(([key, value]) => (
                         <div className="row">
-                            <div className="col-sm-2">
-                                <label>DNI: </label>
+                            <div className="col-5">
+                                <label >{key}</label>
                             </div>
                             <div className="col">
-                                <label>{props.selectedEmployee.dni}</label>
+                                <label className="text-muted">{value}</label>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-sm-2"   >
-                                <label>Apellido y Nombre: </label>
-                            </div>
-                            <div className="col">
-                                <label>{props.selectedEmployee.last_name}, {props.selectedEmployee.name}</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-2"   >
-                                <label>Cargo: </label>
-                            </div>
-                            <div className="col">
-                                <label>{charges}</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-2">
-                                <label>Relación laboral: </label>
-                            </div>
-                            <div className="col">
-                                <label>{props.selectedEmployee.name_emp_relationship}</label>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
-            </div>
+            </div >
         )
-    }
-    else {
-        return (<></>)
     }
 }
 
-export default ShowSelectedEmployee
+export default ShowSelectedEmployee;

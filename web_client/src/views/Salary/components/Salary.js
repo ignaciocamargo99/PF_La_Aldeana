@@ -100,7 +100,7 @@ const Salary = ({ permissionsAccess }) => {
                                 </div>
                                 <div className="form-control-input" style={{ marginRight: '2em' }}>
                                     <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0, -3)}
-                                        max={maxMonth.slice(0, -3)} value={errorDate ? null : month?.slice(0, -3)} />
+                                        max={maxMonth.slice(0, -3)} value={errorDate ? '' : month?.slice(0, -3)} />
                                 </div>
                                 <div className="form-contorl-input">
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
