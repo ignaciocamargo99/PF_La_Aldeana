@@ -1,19 +1,21 @@
 import Axios from "axios";
-import formattedDate from '../../../utils/formattedDate';
 import { useEffect, useRef, useState } from "react";
-import Buttons from '../../../common/Buttons';
-import warningMessage from "../../../utils/WarningMessages/warningMessage";
-import BeShowed from "../../../common/BeShowed";
-import LoaderSpinner from "../../../common/LoaderSpinner";
-import Breadcrumb from '../../../common/Breadcrumb';
+
+import BeShowed from "common/BeShowed";
+import Breadcrumb from 'common/Breadcrumb';
+import Buttons from 'common/Buttons';
+import LoaderSpinner from "common/LoaderSpinner";
+
+import dateText from "utils/DateFormat/dateText";
+import dateToString from "utils/ConverterDate/dateToString";
+import floatToHour from "utils/Hs/floatToHour";
+import validateFloatNumbers from "utils/validateFloatNumbers";
+import warningMessage from "utils/WarningMessages/warningMessage";
+
 import ShowSelectedEmployee from "./ShowSelectedEmployee";
-import validateFloatNumbers from "../../../utils/validateFloatNumbers";
 import '../../../assets/Buttons.css';
 import { faPlus, faMinus, faUserFriends, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import dateText from "../../../utils/DateFormat/dateText";
-import dateToString from "../../../utils/ConverterDate/dateToString";
-import floatToHour from "../../../utils/Hs/floatToHour";
 import UploadByName from "./UploadByName";
 const PORT = require('../../../config');
 
@@ -132,17 +134,19 @@ const FormSalary = (props) => {
                                     { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept }
                                 ];
                                 if (main.some(even)) setMain(aux);
-                                    
+
                                 setShowSpinner(false);
-                                if(props.action === 'Registrar')nroRef.current.focus();
+                                if (props.action === 'Registrar') nroRef.current.focus();
                             }
                         })
-                        .catch((err) => { console.log(err)
+                        .catch((err) => {
+                            console.log(err)
                             setShowSpinner(false);
                             warningMessage("Error", "El servidor no pudo procesar las horas trabajadas del empleado solicitado", "error");
                         });
                 })
-                .catch((err) => { console.log(err) 
+                .catch((err) => {
+                    console.log(err)
                     setShowSpinner(false);
                     warningMessage("Error", "No se pudieron buscar los días feriados", "error");
                 });
@@ -322,7 +326,7 @@ const FormSalary = (props) => {
             ]);
             setNro(nro + 1);
         } else {
-            props.setActionSalary('Listar', props.month );
+            props.setActionSalary('Listar', props.month);
         }
     }
 
@@ -330,7 +334,7 @@ const FormSalary = (props) => {
         if (msg) {
             warningMessage('Atención', 'Se ha editado el salario correctamente', 'success');
         }
-        props.setActionSalary('Listar', props.month );
+        props.setActionSalary('Listar', props.month);
     }
 
     const actionNotOK = () => {
@@ -509,7 +513,7 @@ const FormSalary = (props) => {
                                     <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <div className="input-group has-validation">
                                             <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"}/>
+                                                onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"} />
                                             <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
                                         </div>
                                     </div>

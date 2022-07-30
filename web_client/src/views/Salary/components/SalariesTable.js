@@ -1,10 +1,12 @@
-import BeShowed from "../../../common/BeShowed";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
 import '../../../assets/Buttons.css';
 import { useEffect, useState } from "react";
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Pagination from '../../../common/TablePagination/Pagination';
+
+import BeShowed from "common/BeShowed";
+import Pagination from 'common/TablePagination/Pagination';
+
 import Axios from "axios";
 
 const PORT = require('../../../config');

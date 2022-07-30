@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SalariesTable from './SalariesTable';
 import { useEffect, useState, useRef } from "react";
 import Axios from "axios";
-import BeShowed from '../../../common/BeShowed';
 import FormSalary from './FormSalary';
 import ListSalaryFilter from './ListSalaryFilter';
-import LoaderSpinner from "../../../common/LoaderSpinner";
-import formattedDate from '../../../utils/formattedDate';
-import dateToString from "../../../utils/ConverterDate/dateToString";
+
+import BeShowed from 'common/BeShowed';
+import LoaderSpinner from "common/LoaderSpinner";
+
+import formattedDate from 'utils/formattedDate';
 
 const PORT = require('../../../config');
 
-const Salary = (props) => {
+const Salary = ({ permissionsAccess }) => {
     const [salaries, setSalaries] = useState([]);
     const [allSalaries, setAllSalaries] = useState([]);
     const [salary, setSalary] = useState({ month: formattedDate(new Date()), employee: 0 });
@@ -25,11 +26,9 @@ const Salary = (props) => {
     const [errorDate, setErrorDate] = useState(false);
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(2021, 6, 1));
-    let startMonth = formattedDate(new Date(), 2);
     const maxMonth = formattedDate(new Date(), 0, -(new Date().getDate()));
     const inputMonth = useRef(null);
     const [isValidMonth, setIsValidMonth] = useState("form-control");
-    let permissionsAccess = props.permissionsAccess;
 
     useEffect(() => {
         if (isValidMonth !== "form-control") {
@@ -52,10 +51,10 @@ const Salary = (props) => {
                     setShowSecondSpinner(false);
                 });
         } else {
-            if(action==='Listar' &&  inputMonth.current)  inputMonth.current.value = month;
+            if (action === 'Listar' && inputMonth.current) inputMonth.current.value = month;
             setShowSpinner(false);
         }
-    }, [reloadList, month, filter, isValidMonth,action]);
+    }, [reloadList, month, filter, isValidMonth, action]);
 
     const setActionSalary = (newAction, salary) => {
         if (newAction === "Listar") {
@@ -64,7 +63,7 @@ const Salary = (props) => {
             setAction(newAction);
             setMonth(salary);
             setSalary({ month: salary, employee: 0 });
-        } else{
+        } else {
             setAction(newAction);
             setSalary(salary);
         }
@@ -81,7 +80,7 @@ const Salary = (props) => {
         }
     }
 
-    useEffect(()=>{setErrorDate(true)}, []);
+    useEffect(() => { setErrorDate(true) }, []);
 
     return (
         <>
@@ -101,11 +100,11 @@ const Salary = (props) => {
                                 </div>
                                 <div className="form-control-input" style={{ marginRight: '2em' }}>
                                     <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0, -3)}
-                                        max={maxMonth.slice(0, -3)} value={errorDate?null:month?.slice(0, -3)}/>
+                                        max={maxMonth.slice(0, -3)} value={errorDate ? null : month?.slice(0, -3)} />
                                 </div>
                                 <div className="form-contorl-input">
                                     <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='addSalaryButton' disabled={errorDate} style={errorDate ? { backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className={"btn btn-light " +(errorDate?"disabledNewBtn":"newBtn")}><FontAwesomeIcon icon={faPlus} /> Generar</button>
+                                        <button id='addSalaryButton' disabled={errorDate} style={errorDate ? { backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className={"btn btn-light " + (errorDate ? "disabledNewBtn" : "newBtn")}><FontAwesomeIcon icon={faPlus} /> Generar</button>
                                     </BeShowed>
                                     <BeShowed show={permissionsAccess === 1}>
                                         <button id='addSalaryButton' disabled className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>

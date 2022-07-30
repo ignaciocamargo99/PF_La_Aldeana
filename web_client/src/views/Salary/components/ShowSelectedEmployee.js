@@ -1,4 +1,4 @@
-import employeeIMG from '../../../common/CommonImages/Empleado_Generico.png';
+import employeeIMG from 'common/CommonImages/Empleado_Generico.png';
 import '../styles/Licenses.css';
 
 const ShowSelectedEmployee = (props) => {
