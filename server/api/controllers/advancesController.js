@@ -121,7 +121,8 @@ async function updateInstallmentsToPay(req, res) {
 // HTTP: GET
 async function getEmployee(req, res) {
     try {
-        const result = await readEmployee();
+        const date = req.params.date;
+        const result = await readEmployee(date);
         res.send(result);
     }
     catch (e) {
