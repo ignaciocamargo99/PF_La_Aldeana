@@ -86,6 +86,21 @@ export default function MyDocument (props) {
             <Text style={styles.subtitle}>Análisis proporcional (% sin decimales)</Text>
             <Image style={styles.image} src={dataChartToURL(props.totalisedChart)}></Image>
             <Text style={styles.detail}>Total de baldes: {props.totalisedChart.total}</Text>
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Consumo de baldes de sabores de helados - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
+        <View style={styles.sectionFace}>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),false, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Consumo de baldes de sabores de helados ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
             <Text style={styles.subtitle}>Análisis nominal</Text>
             <View style={styles.row}>
               <View style={styles.col}>
@@ -128,6 +143,21 @@ export default function MyDocument (props) {
             <Text style={styles.subtitle}>Análisis proporcional (% sin decimales)</Text>
             <Image style={styles.image} src={dataChartToURL(props.totalisedConsum)}></Image>
             <Text style={styles.detail}>Total de baldes: {props.totalisedConsum.total}</Text>
+            <Text style={styles.pageNumbers} render={({ pageNumber, totalPages }) => (
+                          `${pageNumber} / ${totalPages}`
+                        )} fixed />
+        </Page>
+        <Page size="A4" style={styles.page} title={dateFormat(new Date()) + '- Consumo de baldes de sabores de helados - ' + props.title + ' - ' + props.description} author={'Heladería y cafetería - La Aldeana'}>
+        <View style={styles.sectionFace}>
+            <Text style={{textAlign: 'left', width: '400px'}} fixed>
+              <Text style={styles.header}>{dateText(dateFormat(new Date()),false, true) +'\n'}</Text>
+              <Text style={styles.mainTitle}>~ Consumo de baldes de sabores de helados ~{'\n'}</Text>
+              <Text style={styles.detail}>{props.description +'\n'}</Text>
+              <Text style={styles.detail}>Generado por: {props.user +'\n'}</Text>
+              <Text style={styles.header}>{props.title}</Text>
+            </Text>
+            <Image style={styles.logo} src="/static/media/logo_expandido.1a36dfef.png" fixed/>
+          </View>
             <Text style={styles.subtitle}>Análisis nominal</Text>
             <View style={styles.row}>
               <View style={styles.col}>
