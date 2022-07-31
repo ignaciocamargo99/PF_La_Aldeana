@@ -1,17 +1,17 @@
-import '../../../assets/Buttons.css';
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SalariesTable from './SalariesTable';
-import { useEffect, useState, useRef } from "react";
 import Axios from "axios";
-import FormSalary from './FormSalary';
-import ListSalaryFilter from './ListSalaryFilter';
+import { useEffect, useRef, useState } from "react";
+import '../../../assets/Buttons.css';
 
 import BeShowed from 'common/BeShowed';
 import LoaderSpinner from "common/LoaderSpinner";
 
 import formattedDate from 'utils/formattedDate';
+
 import { CONFIRM, NON_GENEATE, ON_HOLD } from './filtersConstants';
+import FormSalary from './FormSalary';
+import GenerateButton from "./GenerateButton";
+import ListSalaryFilter from './ListSalaryFilter';
+import SalariesTable from './SalariesTable';
 
 const PORT = require('../../../config');
 
@@ -24,7 +24,7 @@ const Salary = ({ permissionsAccess }) => {
     const [action, setAction] = useState('Listar');
     const [reloadList, setReloadList] = useState(false);
     const [filter, setFilter] = useState(NON_GENEATE);
-    const [errorDate, setErrorDate] = useState(false);
+    const [errorDate, setErrorDate] = useState(true);
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(2021, 6, 1));
     const maxMonth = formattedDate(new Date(), 0, -(new Date().getDate()));
@@ -70,7 +70,9 @@ const Salary = ({ permissionsAccess }) => {
         }
     }
 
-    const onClickNewSalary = () => setAction('Registrar');
+    const onClickNewSalary = () => {
+        setAction('Registrar')
+    };
 
     const onChangeMonth = () => {
         if (inputMonth.current && inputMonth.current.value) {
@@ -80,8 +82,6 @@ const Salary = ({ permissionsAccess }) => {
             setErrorDate(false);
         }
     }
-
-    useEffect(() => { setErrorDate(true) }, []);
 
     return (
         <>
@@ -97,20 +97,24 @@ const Salary = ({ permissionsAccess }) => {
                         <div className="viewBody">
                             <div className="formRow d-flex justify-content-between align-items-center">
                                 <div className="form-control-label">
-                                    <label htmlFor="firstMonth" >Mes a generar*</label>
+                                    <label>Mes a generar*</label>
                                 </div>
                                 <div className="form-control-input" style={{ marginRight: '2em' }}>
-                                    <input className={isValidMonth} id="month" type="month" ref={inputMonth} onChange={onChangeMonth} min={startDate.slice(0, -3)}
-                                        max={maxMonth.slice(0, -3)} value={errorDate ? '' : month?.slice(0, -3)} />
+                                    <input
+                                        className={isValidMonth}
+                                        max={maxMonth.slice(0, -3)}
+                                        min={startDate.slice(0, -3)}
+                                        onChange={onChangeMonth}
+                                        ref={inputMonth}
+                                        type="month"
+                                        value={errorDate ? '' : month?.slice(0, -3)}
+                                    />
                                 </div>
-                                <div className="form-contorl-input">
-                                    <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
-                                        <button id='addSalaryButton' disabled={errorDate} style={errorDate ? { backgroundColor: 'grey' } : null} onClick={onClickNewSalary} type="button" className={"btn btn-light " + (errorDate ? "disabledNewBtn" : "newBtn")}><FontAwesomeIcon icon={faPlus} /> Generar</button>
-                                    </BeShowed>
-                                    <BeShowed show={permissionsAccess === 1}>
-                                        <button id='addSalaryButton' disabled className="disabledNewBtn"><FontAwesomeIcon icon={faPlus} /> Generar</button>
-                                    </BeShowed>
-                                </div>
+                                <GenerateButton
+                                    readOnly={permissionsAccess === 1}
+                                    errorDate={errorDate}
+                                    onClickNewSalary={onClickNewSalary}
+                                />
                             </div>
                             <ListSalaryFilter onClickRB={setFilter} filter={filter} />
                             <BeShowed show={showSecondSpinner} >
@@ -119,12 +123,11 @@ const Salary = ({ permissionsAccess }) => {
                             <BeShowed show={!showSecondSpinner && isValidMonth === "form-control is-valid"} >
                                 <SalariesTable
                                     allSalaries={inputMonth.current ? allSalaries : null}
-                                    filter={filter}
-                                    isValidSearch={isValidMonth === "form-control is-valid"}
-                                    month={inputMonth.current ? inputMonth.current.value : null}
                                     permissionsAccess={permissionsAccess}
                                     reloadList={reloadList} setReloadList={setReloadList}
                                     salaries={salaries}
+                                    selectedFilter={filter}
+                                    selectedMonth={inputMonth.current ? inputMonth.current.value : null}
                                     setActionSalary={setActionSalary}
                                     showSpinner={showSpinner}
                                 />
@@ -132,8 +135,13 @@ const Salary = ({ permissionsAccess }) => {
                         </div>
                     </BeShowed>
                     <BeShowed show={(action === 'Ver' || action === 'Editar' || action === 'Registrar') && action !== 'Listar'}>
-                        <FormSalary setActionSalary={setActionSalary} action={action} salary={salary} salaries={allSalaries}
-                            reloadList={reloadList} setReloadList={setReloadList} month={month} />
+                        <FormSalary
+                            selectedAction={action}
+                            selectedMonth={month}
+                            salaries={allSalaries}
+                            salary={salary}
+                            setActionSalary={setActionSalary}
+                        />
                     </BeShowed>
                 </div>
             }

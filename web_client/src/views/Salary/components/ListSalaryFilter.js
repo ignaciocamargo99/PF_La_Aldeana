@@ -1,16 +1,16 @@
 import { CONFIRM, NON_GENEATE, ON_HOLD } from "./filtersConstants"
 
-const ListSalaryFilter = (props) => {
+const ListSalaryFilter = ({ filter, onClickRB }) => {
 
     return (
         <div className="formRow">
             <div className="form-check form-check-inline">
                 <input
                     className="form-check-input"
-                    defaultChecked={props.filter === NON_GENEATE}
+                    defaultChecked={filter === NON_GENEATE}
                     id="rbNonGenerate"
                     name="stateSalariesRO"
-                    onClick={(e) => { props.onClickRB(e.target.value) }}
+                    onClick={(e) => { onClickRB(e.target.value) }}
                     type="radio"
                     value={NON_GENEATE}
                 >
@@ -20,10 +20,10 @@ const ListSalaryFilter = (props) => {
             <div className="form-check form-check-inline">
                 <input
                     className="form-check-input"
-                    defaultChecked={props.filter === CONFIRM}
+                    defaultChecked={filter === CONFIRM}
                     id="rbConfirm"
                     name="stateSalariesRO"
-                    onClick={(e) => { props.onClickRB(e.target.value) }}
+                    onClick={(e) => { onClickRB(e.target.value) }}
                     type="radio"
                     value={CONFIRM}
                 >
@@ -33,10 +33,10 @@ const ListSalaryFilter = (props) => {
             <div className="form-check form-check-inline">
                 <input
                     className="form-check-input"
-                    defaultChecked={props.filter === ON_HOLD}
+                    defaultChecked={filter === ON_HOLD}
                     id="rbOnHold"
                     name="stateSalariesRO"
-                    onClick={(e) => { props.onClickRB(e.target.value) }}
+                    onClick={(e) => { onClickRB(e.target.value) }}
                     type="radio"
                     value={ON_HOLD}
                 >

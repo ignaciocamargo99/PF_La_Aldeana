@@ -13,7 +13,17 @@ import { CONFIRM, NON_GENEATE, ON_HOLD } from "./filtersConstants";
 
 const PORT = require('../../../config');
 
-export default function SalariesTable(props) {
+export default function SalariesTable({
+    allSalaries,
+    permissionsAccess,
+    reloadList,
+    salaries,
+    selectedFilter,
+    selectedMonth,
+    setActionSalary,
+    showSpinner,
+}) {
+
     const [employees, setEmployees] = useState([]);
     const [nonConfirmLoader, setNonConfirmLoader] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,12 +31,11 @@ export default function SalariesTable(props) {
     const [filteredElements, setFilteredElements] = useState([]);
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
-    let permissionsAccess = props.permissionsAccess;
 
     const filterEmployeesByEmploymentDate = (employees) => {
         // date selected format: YYYY-MM
-        const yearSelected = props.month.substring(0, 4);
-        const monthSelected = props.month.substring(5, 7);
+        const yearSelected = selectedMonth.substring(0, 4);
+        const monthSelected = selectedMonth.substring(5, 7);
 
         return employees.filter((emp) => {
             // employee admission date format: YYYY-MM-DD
@@ -41,14 +50,13 @@ export default function SalariesTable(props) {
         Axios.get(PORT() + '/api/employees')
             .then((response) => {
                 let aux = filterEmployeesByEmploymentDate(response.data);
-                console.log(aux)
                 let display = [];
                 aux?.forEach((person) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    if (props.allSalaries && props.allSalaries.length > 1) {
-                        const exist = props.allSalaries?.filter((elem) => {
+                    if (allSalaries?.length > 1) {
+                        const exist = allSalaries.filter((elem) => {
                             return elem.dni === person.dni;
                         });
                         if (exist.length < 1) display.push(person);
@@ -58,24 +66,24 @@ export default function SalariesTable(props) {
                 setNonConfirmLoader(true);
             })
             .catch((error) => console.log(error));
-    }, [props.reloadList]);
+    }, [reloadList]);
 
     useEffect(() => {
-        if (props.salaries.length > 0) {
-            if (props.salaries.length !== listTable.length) setCurrentPage(1);
-            setListTable(props.salaries);
+        if (salaries.length > 0) {
+            if (salaries.length !== listTable.length) setCurrentPage(1);
+            setListTable(salaries);
         } else if (employees.length > 0) {
             if (employees.length !== listTable.length) setCurrentPage(1);
             setListTable(employees);
         }
-    }, [props.salaries, employees]);
+    }, [salaries, employees]);
 
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter(salary => {
-                if (props.filter === CONFIRM && salary.id_state == 2) return true;
-                else if (props.filter === ON_HOLD && salary.id_state == 1) return true;
-                else if (props.filter === NON_GENEATE) return true;
+                if (selectedFilter === CONFIRM && salary.id_state == 2) return true;
+                else if (selectedFilter === ON_HOLD && salary.id_state == 1) return true;
+                else if (selectedFilter === NON_GENEATE) return true;
             }).filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
@@ -83,12 +91,12 @@ export default function SalariesTable(props) {
             setFilteredElements(filteredElementsList);
         } else {
             setFilteredElements(listTable.filter(salary => {
-                if (props.filter === CONFIRM && salary.id_state == 2) return true;
-                else if (props.filter === ON_HOLD && salary.id_state == 1) return true;
-                else if (props.filter === NON_GENEATE) return true;
+                if (selectedFilter === CONFIRM && salary.id_state == 2) return true;
+                else if (selectedFilter === ON_HOLD && salary.id_state == 1) return true;
+                else if (selectedFilter === NON_GENEATE) return true;
             }));
         }
-    }, [nameSearch, listTable, props.filter]);
+    }, [nameSearch, listTable, selectedFilter]);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -99,7 +107,7 @@ export default function SalariesTable(props) {
 
     return (
         <>
-            <BeShowed show={props.salaries.length !== 0}>
+            <BeShowed show={salaries.length !== 0}>
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -139,20 +147,20 @@ export default function SalariesTable(props) {
                                                 </button>
                                             </BeShowed>
                                             <BeShowed show={permissionsAccess === 3} >
-                                                <BeShowed show={props.filter === CONFIRM && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
+                                                <BeShowed show={selectedFilter === CONFIRM && ((new Date()).getTime() - (new Date(selectedMonth)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
                                                     <button className="disabledSendBtn" disabled >
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                                 </BeShowed>
-                                                <BeShowed show={props.filter !== CONFIRM || (props.filter === CONFIRM && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
-                                                    <button className="btn btn-info btnEdit" onClick={() => { props.setActionSalary('Editar', element) }}>
+                                                <BeShowed show={selectedFilter !== CONFIRM || (selectedFilter === CONFIRM && ((new Date()).getTime() - (new Date(selectedMonth)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
+                                                    <button className="btn btn-info btnEdit" onClick={() => { setActionSalary('Editar', element) }}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                                 </BeShowed>
                                             </BeShowed>
                                         </td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="btn btn-warning btnRead" onClick={() => { props.setActionSalary('Ver', element) }}>
+                                            <button className="btn btn-warning btnRead" onClick={() => { setActionSalary('Ver', element) }}>
                                                 <FontAwesomeIcon icon={faEye} />
                                             </button>
                                         </td>
@@ -164,7 +172,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.filter === NON_GENEATE}>
+            <BeShowed show={!showSpinner && selectedFilter === NON_GENEATE}>
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -204,7 +212,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && currentElements.length === 0 && nonConfirmLoader}>
+            <BeShowed show={!showSpinner && currentElements.length === 0 && nonConfirmLoader}>
                 <br />
                 <h4 className="row justify-content-center" style={{ color: '#C16100' }}>No se encontraron salarios que coincidan con las condiciones de busqueda hasta el momento.</h4>
             </BeShowed>

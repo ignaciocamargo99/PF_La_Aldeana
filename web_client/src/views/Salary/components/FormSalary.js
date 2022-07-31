@@ -19,7 +19,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadByName from "./UploadByName";
 const PORT = require('../../../config');
 
-const FormSalary = (props) => {
+const FormSalary = ({
+    selectedAction,
+    selectedMonth,
+    salaries,
+    salary,
+    setActionSalary,
+}) => {
 
     const [showSpinner, setShowSpinner] = useState(true);
     const [employees, setEmployees] = useState([]);
@@ -53,7 +59,7 @@ const FormSalary = (props) => {
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    const exist = props.salaries?.filter((elem) => { return elem.dni === person.dni; });
+                    const exist = salaries?.filter((elem) => { return elem.dni === person.dni; });
                     if (exist.length < 1) display.push(person);
                 });
                 setEmployees(display);
@@ -62,16 +68,16 @@ const FormSalary = (props) => {
                         setConcepts(response.data);
                     })
                     .catch((error) => console.log(error));
-                if (props.action === 'Registrar') setEmployee(display[nro]);
+                if (selectedAction === 'Registrar') setEmployee(display[nro]);
                 else {
-                    let employ = response.data.find((employee) => { return employee.dni === props.salary.dni })
+                    let employ = response.data.find((employee) => { return employee.dni === salary.dni })
                     if (employ == null) warningMessage("Error", "No se encontraron empleados activos que coincidan con el salario solicitado", "error")
                         .then((value) => {
-                            props.setActionSalary('Listar', props.month);
+                            setActionSalary('Listar', selectedMonth);
                         });
                     setEmployee(employ);
 
-                    Axios.get(PORT() + `/api/salariesdetails/${props.salary.id_salary}`)
+                    Axios.get(PORT() + `/api/salariesdetails/${salary.id_salary}`)
                         .then((response) => {
                             console.log(response.data);
                             let aux = response.data;
@@ -108,7 +114,7 @@ const FormSalary = (props) => {
                 }
             })
             .catch((error) => console.log(error));
-    }, [props.action]);
+    }, [selectedAction]);
 
     const even = element => element.price === 0;
 
@@ -121,7 +127,7 @@ const FormSalary = (props) => {
                         newNonworkingDays.push({ day: nWD.dia, month: (nWD.mes - 1) })
                     })
                     setShowSpinner(true);
-                    Axios.get(`${PORT()}/api/hsWorked?monthYear=${props.month}&dni=${employee.dni}&nonWorkingDays=${JSON.stringify(newNonworkingDays)}`)
+                    Axios.get(`${PORT()}/api/hsWorked?monthYear=${selectedMonth}&dni=${employee.dni}&nonWorkingDays=${JSON.stringify(newNonworkingDays)}`)
                         .then((response) => {
                             if (response.data.Ok === false) console.log(response.data);
                             else {
@@ -136,7 +142,7 @@ const FormSalary = (props) => {
                                 if (main.some(even)) setMain(aux);
 
                                 setShowSpinner(false);
-                                if (props.action === 'Registrar') nroRef.current.focus();
+                                if (selectedAction === 'Registrar') nroRef.current.focus();
                             }
                         })
                         .catch((err) => {
@@ -150,8 +156,8 @@ const FormSalary = (props) => {
                     setShowSpinner(false);
                     warningMessage("Error", "No se pudieron buscar los días feriados", "error");
                 });
-            if (props.salary.month && (props.salary.month.slice(5, -3) === '06' || props.salary.month.slice(5, -3) === '12') && props.action === 'Registrar' && employee.employment_relationship === 2) {
-                Axios.get(`${PORT()}/api/bonus?monthYear=${props.month}&dni=${employee.dni}`)
+            if (salary.month && (salary.month.slice(5, -3) === '06' || salary.month.slice(5, -3) === '12') && selectedAction === 'Registrar' && employee.employment_relationship === 2) {
+                Axios.get(`${PORT()}/api/bonus?monthYear=${selectedMonth}&dni=${employee.dni}`)
                     .then((res) => {
                         if (res.data.Ok === false) console.log(res.data);
                         else {
@@ -166,15 +172,15 @@ const FormSalary = (props) => {
                         }
                     });
             }
-            if (props.action === 'Registrar' && employee.employment_relationship !== 2) {
+            if (selectedAction === 'Registrar' && employee.employment_relationship !== 2) {
                 const aux = [];
                 othersPlus.forEach((inc, i) => { aux[i] = inc });
                 aux[0] = { name: 'Recibo', price: 0, predictive: 0, id_concept: 6 };
                 setOthersPlus(aux);
             }
 
-            if (props.action === 'Registrar') {
-                Axios.get(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`)
+            if (selectedAction === 'Registrar') {
+                Axios.get(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
                         else {
@@ -200,12 +206,12 @@ const FormSalary = (props) => {
     const registerSalary = () => {
         setShowSpinner(true);
         if (advances.length > 0) {
-            Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, { advances })
+            Axios.put(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`, { advances })
                 .then((response) => {
                     if (response.data.Ok !== false) {
                         Axios.post(`${PORT()}/api/salaries`, {
                             "total": total, "subtotal": subtotal, "totalHs": totalHs, "details": [main, othersPlus, othersMinus],
-                            "dni": employee.dni, "monthYear": props.month, "state": 2
+                            "dni": employee.dni, "monthYear": selectedMonth, "state": 2
                         })
                             .then((res) => {
                                 if (res.data.Ok && res.data.Ok !== false) resetStates(false);
@@ -231,7 +237,7 @@ const FormSalary = (props) => {
         } else {
             Axios.post(`${PORT()}/api/salaries`, {
                 "total": total, "subtotal": subtotal, "totalHs": totalHs, "details": [main, othersPlus, othersMinus],
-                "dni": employee.dni, "monthYear": props.month, "state": 2
+                "dni": employee.dni, "monthYear": selectedMonth, "state": 2
             })
                 .then((res) => {
                     if (res.data.Ok !== false) resetStates(false);
@@ -251,7 +257,7 @@ const FormSalary = (props) => {
         setShowSpinner(true);
         Axios.post(`${PORT()}/api/salaries`, {
             "total": total, "subtotal": subtotal, "totalHs": totalHs, "details": [main, othersPlus, othersMinus],
-            "dni": employee.dni, "monthYear": props.month, "state": 1
+            "dni": employee.dni, "monthYear": selectedMonth, "state": 1
         })
             .then((res) => {
                 if (res.data.Ok && res.data.Ok !== false) resetStates(false);
@@ -269,12 +275,12 @@ const FormSalary = (props) => {
     const editSalary = () => {
         setShowSpinner(true);
         if (advances.length > 0) {
-            Axios.put(`${PORT()}/api/installmentstopay?date=${props.month}&dniEmployee=${employee.dni}`, { advances })
+            Axios.put(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`, { advances })
                 .then((response) => {
                     if (response.data.Ok !== false) {
-                        Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {
+                        Axios.put(`${PORT()}/api/salaries/${salary.id_salary}`, {
                             "total": total, "subtotal": subtotal, "totalHs": totalHs, "details": [main, othersPlus, othersMinus],
-                            "dni": employee.dni, "monthYear": props.month, "state": 2
+                            "dni": employee.dni, "monthYear": selectedMonth, "state": 2
                         })
                             .then((res) => {
                                 if (res.data.Ok && res.data.Ok !== false) comeBack(true);
@@ -295,9 +301,9 @@ const FormSalary = (props) => {
                 })
                 .catch((error) => console.error(error))
         } else {
-            Axios.put(`${PORT()}/api/salaries/${props.salary.id_salary}`, {
+            Axios.put(`${PORT()}/api/salaries/${salary.id_salary}`, {
                 "total": total, "subtotal": subtotal, "totalHs": totalHs, "details": [main, othersPlus, othersMinus],
-                "dni": employee.dni, "monthYear": props.month, "state": 2
+                "dni": employee.dni, "monthYear": selectedMonth, "state": 2
             })
                 .then((res) => {
                     if (res.data.Ok && res.data.Ok !== false) comeBack(true);
@@ -326,7 +332,7 @@ const FormSalary = (props) => {
             ]);
             setNro(nro + 1);
         } else {
-            props.setActionSalary('Listar', props.month);
+            setActionSalary('Listar', selectedMonth);
         }
     }
 
@@ -334,7 +340,7 @@ const FormSalary = (props) => {
         if (msg) {
             warningMessage('Atención', 'Se ha editado el salario correctamente', 'success');
         }
-        props.setActionSalary('Listar', props.month);
+        setActionSalary('Listar', selectedMonth);
     }
 
     const actionNotOK = () => {
@@ -463,10 +469,10 @@ const FormSalary = (props) => {
 
     return (
         <>
-            <Breadcrumb parentName="Salarios" icon={faUserFriends} parentLink="salary" currentName={`${props.action} salario`} />
-            <div style={{ display: 'none' }}>{document.title = `${props.action} salario`}</div>
+            <Breadcrumb parentName="Salarios" icon={faUserFriends} parentLink="salary" currentName={`${selectedAction} salario`} />
+            <div style={{ display: 'none' }}>{document.title = `${selectedAction} salario`}</div>
             <div className="viewTitleBtn">
-                <h1>{props.action} salario: {props.action !== "Registrar" ? props.salary?.id_salary + ' - ' + props.salary?.name + ' ' + props.salary?.last_name : ''}</h1>
+                <h1>{selectedAction} salario: {selectedAction !== "Registrar" ? salary?.id_salary + ' - ' + salary?.name + ' ' + salary?.last_name : ''}</h1>
             </div>
 
             <BeShowed show={showSpinner}>
@@ -483,13 +489,13 @@ const FormSalary = (props) => {
                                     <label>Fecha: </label>
                                     <input
                                         ref={nroRef}
-                                        value={dateText(props.month + '-01', false, true)}
+                                        value={dateText(selectedMonth + '-01', false, true)}
                                         style={{ fontWeight: 'bold', marginLeft: '1em', border: '0px' }}
                                         readOnly
                                     >
                                     </input>
                                 </div>
-                                <BeShowed show={props.action === 'Registrar'} >
+                                <BeShowed show={selectedAction === 'Registrar'} >
                                     <label className="fw-bold">{nro + 1}/{employees.length}</label>
                                 </BeShowed>
                             </div>
@@ -523,7 +529,7 @@ const FormSalary = (props) => {
                                                 <div className="col-sm-3" style={{ border: '1px solid', borderRadius: '2px' }}>
                                                     <div className="input-group has-validation">
                                                         <input className={i.price < 1 ? "form-control is-invalid" : "form-control"} id={'price' + i.id} type="number" onKeyDown={(e) => validateFloatNumbers(e)} onInput={(e) => validate(e)}
-                                                            onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={props.action === "Ver"} />
+                                                            onChange={(e) => addPrice(i, e, 0)} min='1' max='999999' value={i.price} disabled={selectedAction === "Ver"} />
                                                         <span className="input-group-text" id="inputGroupPrepend" onClick={(e) => warner(k)}><FontAwesomeIcon style={{ color: 'orange' }} icon={faExclamationCircle} /></span>
                                                     </div>
                                                 </div>
@@ -557,7 +563,7 @@ const FormSalary = (props) => {
                                 {othersPlus?.map((i, n) => {
                                     return (
                                         <div key={i.id_concept} className="formRow justify-content-center">
-                                            <BeShowed show={(i.predictive === 0 && i.id_concept !== 6) || props.action === "Ver"}>
+                                            <BeShowed show={(i.predictive === 0 && i.id_concept !== 6) || selectedAction === "Ver"}>
                                                 <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
                                                 </div>
@@ -565,7 +571,7 @@ const FormSalary = (props) => {
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
                                                 </div>
                                             </BeShowed>
-                                            <BeShowed show={i.predictive === 0 && i.id_concept === 6 && props.action !== "Ver"}>
+                                            <BeShowed show={i.predictive === 0 && i.id_concept === 6 && selectedAction !== "Ver"}>
                                                 <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
                                                 </div>
@@ -574,7 +580,7 @@ const FormSalary = (props) => {
                                                         onChange={(e) => addPrice(i, e, 1)} min='0' max='999999' defaultValue={i.price ? i.price : null} />
                                                 </div>
                                             </BeShowed>
-                                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
+                                            <BeShowed show={i.predictive === 1 && selectedAction !== "Ver"}>
                                                 <div className="col-sm-1">
                                                     <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className="btn btn-danger btnDelete" onClick={() => deleteOtherPlus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                                 </div>
@@ -590,7 +596,7 @@ const FormSalary = (props) => {
                                         </div>
                                     )
                                 })}
-                                <BeShowed show={props.action !== "Ver"}>
+                                <BeShowed show={selectedAction !== "Ver"}>
                                     <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <button id='addOtherPlusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherPlus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </div>
@@ -617,7 +623,7 @@ const FormSalary = (props) => {
                                 {othersMinus?.map((i, n) => {
                                     return (
                                         <div key={i.name} className="formRow justify-content-center">
-                                            <BeShowed show={i.predictive === 0 || props.action === "Ver"}>
+                                            <BeShowed show={i.predictive === 0 || selectedAction === "Ver"}>
                                                 <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>
                                                 </div>
@@ -625,7 +631,7 @@ const FormSalary = (props) => {
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.price}</label>
                                                 </div>
                                             </BeShowed>
-                                            <BeShowed show={i.predictive === 1 && props.action !== "Ver"}>
+                                            <BeShowed show={i.predictive === 1 && selectedAction !== "Ver"}>
                                                 <div className="col-sm-1" >
                                                     <button style={{ marginRight: '0em', marginLeft: '0.2em' }} type="button" className={"btn btn-danger btnDelete deleteOtherMinusButton" + n} onClick={() => deleteOtherMinus(i)} ><FontAwesomeIcon icon={faMinus} /></button>
                                                 </div>
@@ -642,7 +648,7 @@ const FormSalary = (props) => {
                                     )
                                 })}
 
-                                <BeShowed show={props.action !== "Ver"}>
+                                <BeShowed show={selectedAction !== "Ver"}>
                                     <div className="formRow justify-content-center" style={{ border: '1px solid', borderRadius: '2px' }}>
                                         <button id='addOtherMinusButton' type="button" className="btn btn-info btnAdd" onClick={addOtherMinus} style={{ width: '11em', marginRight: '0.2em' }} ><FontAwesomeIcon icon={faPlus} /> Nuevo</button>
                                     </div>
@@ -655,15 +661,15 @@ const FormSalary = (props) => {
                                         <label style={{ paddingLeft: '1em', fontWeight: 'bold' }}>${total}</label>
                                     </div>
                                 </div>
-                                <BeShowed show={props.action === 'Registrar'}>
+                                <BeShowed show={selectedAction === 'Registrar'}>
                                     <Buttons ready={(!errorName && !errorPrice)}
                                         label='Confirmar' labelJump='Saltar' actionNotOK={actionNotOK} actionOK={registerSalary} actionJump={() => { jump() }} actionCancel={() => { comeBack(false) }} />
                                 </BeShowed>
-                                <BeShowed show={props.action === 'Editar'}>
+                                <BeShowed show={selectedAction === 'Editar'}>
                                     <Buttons ready={(!errorName && !errorPrice)}
                                         label='Registrar' actionNotOK={actionNotOK} actionOK={editSalary} actionCancel={() => { comeBack(false) }} />
                                 </BeShowed>
-                                <BeShowed show={props.action === 'Ver'}>
+                                <BeShowed show={selectedAction === 'Ver'}>
                                     <button className="btn btn-light sendOk offset-sm-11" onClick={() => { comeBack(false) }}>Volver</button>
                                 </BeShowed>
 
