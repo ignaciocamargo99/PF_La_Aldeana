@@ -58,7 +58,7 @@ export default function AdvancesTable(props) {
                 setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
-    }, []);
+    }, [advances]);
 
     const deleteAdvances = (i) => {
         let aux = [];

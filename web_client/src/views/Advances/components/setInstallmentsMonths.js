@@ -5,7 +5,6 @@ export default function setInstallmentsMonths(month, months, amountTotal, instal
     let year = parseInt(month.slice(0,-3));
     let monthD = parseInt(month.slice(5,-3));
     let aux = 0;
-    console.log(installments)
     let monthN = year + '-' + monthD + '-' + '01';
     for (let i = 0; i < months; i ++){
 
