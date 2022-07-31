@@ -234,7 +234,7 @@ const employeeGetDB = (date) => {
                     FROM EMPLOYEES e 
                     WHERE e.active = 1 AND e.date_admission <= ?
                     ORDER BY last_name`;
-    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 ORDER BY last_name";
+    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 AND e.date_admission <= ? ORDER BY last_name";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -244,7 +244,7 @@ const employeeGetDB = (date) => {
                 if (error) reject(error);
                 else {
 
-                    db.query(sqlSelect2, (error, result) => {
+                    db.query(sqlSelect2,[date] ,(error, result) => {
                         if (error) reject(error);
                         else {
                             let aux = [];
