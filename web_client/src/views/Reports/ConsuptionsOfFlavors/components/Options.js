@@ -64,7 +64,7 @@ const Options = (props) => {
                             months.push(e);
                         });
                         const bar = {
-                            type: 'horizontalBar',
+                            type: 'bar',
                             labels: labels,
                             datasets: [
                             {
@@ -79,7 +79,7 @@ const Options = (props) => {
                         };
 
                         const totalised = {
-                            type: 'outlabeledPie',
+                            type: 'doughnut',
                             labels: labelsTotalised,
                             datasets: [
                             {
@@ -87,11 +87,12 @@ const Options = (props) => {
                                 data: datTotalised,
                             },
                             ],
-                            total: data[1][0].quantity
+                            total: data[1][0].quantity,
+                            legend: true
                         };
 
                         const totalisedConsum = {
-                            type: 'outlabeledPie',
+                            type: 'doughnut',
                             labels: labelsTotalised,
                             datasets: [
                             {
@@ -99,7 +100,8 @@ const Options = (props) => {
                                 data: consum,
                             },
                             ],
-                            total: data[1][1].quantity
+                            total: data[1][1].quantity,
+                            legend: true
                         };
                         setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom+ '-01', false, true) + " a " + dateText(props.dateTo+ '-01', false, true) + ")"} description={(!description ? '' : description)} 
                         consuptions={consuptions} totalisedChart={totalised} totals={totals} months={months} bar={bar} totalisedConsum={totalisedConsum} />);
