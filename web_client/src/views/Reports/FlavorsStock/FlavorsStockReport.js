@@ -7,12 +7,11 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import LoaderSpinner from 'common/LoaderSpinner';
 import TotalsStock from './components/TotalsStock';
 import dateText from '../../../utils/DateFormat/dateText';
-import formattedDateArg from "utils/DateFormat/formattedDateArg";
 
 const FlavorsStockReport = (props) => {
     const [loaded, setLoaded] = useState(false);
     const [load, setLoad] = useState(false);
-    const from = formattedDateArg(new Date());
+    const from = new Date();
     const [stock, setStock] = useState([[],[]]);
     let permissionsAccess = props.permissionsAccess;
 
@@ -34,7 +33,7 @@ const FlavorsStockReport = (props) => {
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={stock[0]?.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Información de stock de sabores de helados y reabastecimiento desde {from?dateText(from, true, true):new Date().toLocaleDateString()}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Información de stock de sabores de helados y reabastecimiento desde {from?dateText(from, true, false):new Date().toLocaleDateString()}</h5>
                         </div>
                         <hr />
                         <div className="formRow">
@@ -54,7 +53,7 @@ const FlavorsStockReport = (props) => {
                     <BeShowed show={stock[0]?.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontró información de stock de sabores de helados y reabastecimiento para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()})</h2>
+                            <h2>No se encontró información de stock de sabores de helados y reabastecimiento para el período ({from?dateText(from, true, false):new Date().toLocaleDateString()})</h2>
                         </div>
                     </BeShowed>
                 </BeShowed>
