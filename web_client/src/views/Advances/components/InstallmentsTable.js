@@ -84,7 +84,6 @@ export default function InstallmentTable ({ installments, reading }) {
                 <LoaderSpinner color="primary" loading="Cargando cuotas" />
                 :
                 <>
-                {console.log(currentElements)}
                     <div className="formRow title-searcher">
                         <h4 className="text-secondary">Cuotas de plan de pago:</h4>
                         <div className="search-input">

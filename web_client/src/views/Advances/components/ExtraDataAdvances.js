@@ -102,7 +102,7 @@ export default function ExtraDataAdvances(props) {
           person.name += person.last_name;
         });
         setEmployees(response.data);
-        setEmployee(null);
+        // setEmployee(null);
       })
       .catch((err) => {
         console.log(err);
