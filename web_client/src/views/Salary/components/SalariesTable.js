@@ -23,10 +23,25 @@ export default function SalariesTable(props) {
     const [nameSearch, setNameSearch] = useState('');
     let permissionsAccess = props.permissionsAccess;
 
+    const filterEmployeesByEmploymentDate = (employees) => {
+        // date selected format: YYYY-MM
+        const yearSelected = props.month.substring(0, 4);
+        const monthSelected = props.month.substring(5, 7);
+
+        return employees.filter((emp) => {
+            // employee admission date format: YYYY-MM-DD
+            let employmentYear = emp.date.substring(0, 4);
+            let employmentMonth = emp.date.substring(5, 7);
+
+            return (+yearSelected >= +employmentYear) && (+monthSelected >= +employmentMonth)
+        })
+    }
+
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
             .then((response) => {
-                let aux = response.data;
+                let aux = filterEmployeesByEmploymentDate(response.data);
+                console.log(aux)
                 let display = [];
                 aux?.forEach((person) => {
                     person.fullName = person.last_name;
