@@ -22,7 +22,7 @@ const ShowSelectedEmployee = ({ selectedEmployee }) => {
                         alt='employeePhoto'
                         src={employeeIMG}
                         className='mt-3 mb-4'
-                        style={{ width: '60px', height: '60px' }}
+                        style={{ width: '80px', height: '80px' }}
                     >
                     </img>
                 </div>

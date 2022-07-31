@@ -116,8 +116,17 @@ const Salary = ({ permissionsAccess }) => {
                                 <LoaderSpinner color="primary" loading="Cargando..." />
                             </BeShowed>
                             <BeShowed show={!showSecondSpinner && isValidMonth === "form-control is-valid"} >
-                                <SalariesTable salaries={salaries} showSpinner={showSpinner} setActionSalary={setActionSalary} allSalaries={inputMonth.current ? allSalaries : null} month={inputMonth.current ? inputMonth.current.value : null}
-                                    reloadList={reloadList} setReloadList={setReloadList} filter={filter} isValidSearch={isValidMonth === "form-control is-valid"} permissionsAccess={permissionsAccess} />
+                                <SalariesTable
+                                    allSalaries={inputMonth.current ? allSalaries : null}
+                                    filter={filter}
+                                    isValidSearch={isValidMonth === "form-control is-valid"}
+                                    month={inputMonth.current ? inputMonth.current.value : null}
+                                    permissionsAccess={permissionsAccess}
+                                    reloadList={reloadList} setReloadList={setReloadList}
+                                    salaries={salaries}
+                                    setActionSalary={setActionSalary}
+                                    showSpinner={showSpinner}
+                                />
                             </BeShowed>
                         </div>
                     </BeShowed>
