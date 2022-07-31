@@ -8,6 +8,8 @@ import BeShowed from "common/BeShowed";
 import Pagination from 'common/TablePagination/Pagination';
 
 import Axios from "axios";
+import { getSalariesTableColumunsHeaders } from "./getSalariesTableColumunsHeaders";
+import { CONFIRM, NON_GENEATE, ON_HOLD } from "./filtersConstants";
 
 const PORT = require('../../../config');
 
@@ -56,9 +58,9 @@ export default function SalariesTable(props) {
     useEffect(() => {
         if (nameSearch !== "") {
             const filteredElementsList = listTable.filter(salary => {
-                if (props.filter === 'Confirm' && salary.id_state == 2) return true;
-                else if (props.filter === 'OnHold' && salary.id_state == 1) return true;
-                else if (props.filter === 'NonGenerate') return true;
+                if (props.filter === CONFIRM && salary.id_state == 2) return true;
+                else if (props.filter === ON_HOLD && salary.id_state == 1) return true;
+                else if (props.filter === NON_GENEATE) return true;
             }).filter((elem) => {
                 return elem.fullName.toUpperCase().includes(nameSearch.toUpperCase());
             });
@@ -66,39 +68,12 @@ export default function SalariesTable(props) {
             setFilteredElements(filteredElementsList);
         } else {
             setFilteredElements(listTable.filter(salary => {
-                if (props.filter === 'Confirm' && salary.id_state == 2) return true;
-                else if (props.filter === 'OnHold' && salary.id_state == 1) return true;
-                else if (props.filter === 'NonGenerate') return true;
+                if (props.filter === CONFIRM && salary.id_state == 2) return true;
+                else if (props.filter === ON_HOLD && salary.id_state == 1) return true;
+                else if (props.filter === NON_GENEATE) return true;
             }));
         }
     }, [nameSearch, listTable, props.filter]);
-
-    const columnsHeaders = [
-        {
-            name: 'DNI',
-            width: '20%'
-        },
-        {
-            name: 'Nombre',
-            width: '30%'
-        },
-        {
-            name: 'Tipo de Relación',
-            width: '20%'
-        },
-        {
-            name: 'Total',
-            width: '10%'
-        },
-        {
-            name: 'Editar',
-            width: '10%'
-        },
-        {
-            name: 'Ver',
-            width: '10%'
-        }
-    ];
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -125,7 +100,7 @@ export default function SalariesTable(props) {
                     <table className="table table-control table-hover" >
                         <thead>
                             <tr>
-                                {columnsHeaders?.map((element, i) => {
+                                {getSalariesTableColumunsHeaders(true, true).map((element, i) => {
                                     return (
                                         <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
                                             {element.name}
@@ -149,12 +124,12 @@ export default function SalariesTable(props) {
                                                 </button>
                                             </BeShowed>
                                             <BeShowed show={permissionsAccess === 3} >
-                                                <BeShowed show={props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
+                                                <BeShowed show={props.filter === CONFIRM && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 > 15}>
                                                     <button className="disabledSendBtn" disabled >
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
                                                 </BeShowed>
-                                                <BeShowed show={props.filter !== 'Confirm' || (props.filter === 'Confirm' && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
+                                                <BeShowed show={props.filter !== CONFIRM || (props.filter === CONFIRM && ((new Date()).getTime() - (new Date(props.month)).getTime()) / 1000 / 60 / 60 / 24 <= 15)}>
                                                     <button className="btn btn-info btnEdit" onClick={() => { props.setActionSalary('Editar', element) }}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </button>
@@ -174,7 +149,7 @@ export default function SalariesTable(props) {
                 </div>
                 <Pagination elementsperpage={elementsPerPage} totalelements={filteredElements.length} paginate={paginate}></Pagination>
             </BeShowed>
-            <BeShowed show={!props.showSpinner && props.filter === 'NonGenerate'}>
+            <BeShowed show={!props.showSpinner && props.filter === NON_GENEATE}>
                 <div className="formRow title-searcher">
                     <h4 className="text-secondary">Salarios:</h4>
                     <div className="search-input">
@@ -190,7 +165,7 @@ export default function SalariesTable(props) {
                     <table className="table table-control table-hover" >
                         <thead>
                             <tr>
-                                {columnsHeaders?.map((element, i) => {
+                                {getSalariesTableColumunsHeaders().map((element, i) => {
                                     return (
                                         <th key={i} scope="col" style={{ backgroundColor: '#A5DEF9', textAlign: 'center', width: element.width }}>
                                             {element.name}
@@ -206,17 +181,6 @@ export default function SalariesTable(props) {
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.dni}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.fullName}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name_emp_relationship}</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>------</td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="disabledSendBtn" disabled >
-                                                <FontAwesomeIcon icon={faEdit} />
-                                            </button>
-                                        </td>
-                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                            <button className="disabledSendBtn" disabled>
-                                                <FontAwesomeIcon icon={faEye} />
-                                            </button>
-                                        </td>
                                     </tr>
                                 )
                             })}

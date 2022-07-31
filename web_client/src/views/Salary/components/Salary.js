@@ -11,6 +11,7 @@ import BeShowed from 'common/BeShowed';
 import LoaderSpinner from "common/LoaderSpinner";
 
 import formattedDate from 'utils/formattedDate';
+import { CONFIRM, NON_GENEATE, ON_HOLD } from './filtersConstants';
 
 const PORT = require('../../../config');
 
@@ -22,7 +23,7 @@ const Salary = ({ permissionsAccess }) => {
     const [showSecondSpinner, setShowSecondSpinner] = useState(false);
     const [action, setAction] = useState('Listar');
     const [reloadList, setReloadList] = useState(false);
-    const [filter, setFilter] = useState('NonGenerate');
+    const [filter, setFilter] = useState(NON_GENEATE);
     const [errorDate, setErrorDate] = useState(false);
     const [month, setMonth] = useState(formattedDate(new Date()));
     const startDate = formattedDate(new Date(2021, 6, 1));
@@ -36,7 +37,7 @@ const Salary = ({ permissionsAccess }) => {
             Axios.get(`${PORT()}/api/salaries?monthYear=${month}`)
                 .then((response) => {
                     const aux = [];
-                    const state = filter === 'Confirm' ? 2 : filter === 'OnHold' ? 1 : -1;
+                    const state = filter === CONFIRM ? 2 : filter === ON_HOLD ? 1 : -1;
                     if (response.data.length > 1) {
                         response.data.forEach(elem => {
                             elem.fullName = elem.last_name;
