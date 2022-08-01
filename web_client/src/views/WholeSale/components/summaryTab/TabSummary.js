@@ -165,9 +165,15 @@ const TabSummary = ({
     const saveWholesale = (wholesalePayload) => {
         sweetAlert2Loading();
         postWholesale(wholesalePayload)
-            .then(() => {
-                displaySuccess('Venta registrada exitosamente.')
-                    .then(() => window.location.replace(WHOLESALE_PAGE));
+            .then((response) => {
+                if (response.data.Ok) {
+                    displaySuccess('Venta registrada exitosamente.')
+                        .then(() => window.location.replace(WHOLESALE_PAGE));
+                }
+                else {
+                    sweetAlert2Error('', 'Ha ocurrido un error al registrar la venta.')
+                    console.log(response.data.Message);
+                }
             })
             .catch((err) => {
                 sweetAlert2Error('', 'Ha ocurrido un error en el servidor.')

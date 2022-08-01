@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import BeShowed from '../../../common/BeShowed';
+import BeShowed from 'common/BeShowed';
 
 const UploadByName = (props) => {
 
