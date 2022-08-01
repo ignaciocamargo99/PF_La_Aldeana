@@ -13,8 +13,8 @@ UPDATE CONCEPTS
 UPDATE CONCEPTS
 	SET predictive=0
 	WHERE id_concept=6;
-
-
+INSERT INTO CONCEPTS (id_concept,name,predictive)
+	VALUES (14,'Otro',1);
 
 INSERT INTO
     `DB_CHANGES`
