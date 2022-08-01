@@ -228,23 +228,23 @@ const installmentsPayDB = (nroDNI, date, installments) => {
     });
 };
 
-const employeeGetDB = () => {
+const employeeGetDB = (date) => {
 
     const sqlSelect = `SELECT dni, name, last_name
                     FROM EMPLOYEES e 
-                    WHERE e.active = 1 AND (e.date_admission <= DATE_ADD(CURDATE(), INTERVAL -7 DAY) or e.date_admission <= CURDATE())
+                    WHERE e.active = 1 AND e.date_admission <= ?
                     ORDER BY last_name`;
-    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 ORDER BY last_name";
+    const sqlSelect2 = "SELECT dni, name, last_name, a.`date` FROM EMPLOYEES e JOIN ADVANCES a ON a.nroDNI = dni WHERE e.active = 1 AND e.date_admission <= ? ORDER BY last_name";
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
             if (error) reject(error);
 
-            db.query(sqlSelect, (error, res) => {
+            db.query(sqlSelect,[date] ,(error, res) => {
                 if (error) reject(error);
                 else {
 
-                    db.query(sqlSelect2, (error, result) => {
+                    db.query(sqlSelect2,[date] ,(error, result) => {
                         if (error) reject(error);
                         else {
                             let aux = [];

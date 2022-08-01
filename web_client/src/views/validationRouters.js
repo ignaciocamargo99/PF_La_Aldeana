@@ -17,7 +17,7 @@ export default function validationRouters(route, accesses) {
     let pathsToReadRegisterFranchises = ['/app/newFranchise', WHOLESALE_NEW_PAGE].concat(pathsToReadFranchises);
 
     // Sales Report
-    let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport'];
+    let pathsToAllReportsSale = ['/app/salesReport', '/app/productSalesReport', '/app/flavorsSalesReport', '/app/stockFlavorsReport'];
 
     // RRHH Report
     let pathsToAllReportsRRHH = ['/app/RRHHReport', '/app/salariesReport'];

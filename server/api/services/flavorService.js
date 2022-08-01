@@ -2,7 +2,24 @@ const {
     getFlavorDBById,
     getFlavorsDBByActiveState,
     saveFlavorDB,
+    getStockFlavorsDB,
+    consuptionsReportGetDB
 } = require('../db/flavorDb');
+
+const searchStockFlavors = () => {
+    return getStockFlavorsDB();
+}
+
+const searchConsuptionsFlavors = async (from, to) => {
+    try {
+        let res = await consuptionsReportGetDB(from, to);
+        return res;
+    }
+    catch (error){
+        throw new Error(error);
+    };
+};
+
 
 const searchFlavorsByActiveState = (onlyActiveFlavors) => {
     return getFlavorsDBByActiveState(onlyActiveFlavors);
@@ -181,4 +198,6 @@ module.exports = {
     saveChangesToFlavor,
     searchFlavorById,
     searchFlavorsByActiveState,
+    searchStockFlavors,
+    searchConsuptionsFlavors
 };

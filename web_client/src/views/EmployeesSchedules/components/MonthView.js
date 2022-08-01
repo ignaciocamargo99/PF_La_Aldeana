@@ -7,7 +7,7 @@ import axios from 'axios';
 import loadingMessage from '../../../utils/LoadingMessages/loadingMessage';
 import calculateDays from '../../../utils/CalculateDays/calculateDays';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import {
     updateMonthYearSelectedSchedule, updateNonworkingDaysInMonthSchedule,
@@ -17,6 +17,7 @@ import swal from 'sweetalert';
 import './Employees.css';
 import BeShowed from '../../../common/BeShowed';
 
+const XLSX = require('xlsx');
 const PORT = require('../../../config');
 
 
@@ -161,6 +162,41 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
         setDay(null);
     }
 
+    const exportSchedule = () => {
+        let scheduleArray = buildScheduleArray();
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet(scheduleArray);
+        XLSX.utils.book_append_sheet(wb,ws,`Cronograma ${showMeMonth(monthYear.month)}`);
+        XLSX.writeFile(wb, `Cronograma ${showMeMonth(monthYear.month)}.xlsx`);
+    }
+
+    const buildScheduleArray = () => {
+        let scheduleArray = [];
+        schedule.forEach((array) => {
+            scheduleArray.push([...array])
+        })
+        let header = [[showMeMonth(monthYear.month).toUpperCase()]];
+        schedule.forEach((e, i) => {
+            let arrayEmployee = [employees[i].nickname];
+            schedule[i].forEach((d,j) => {
+                if(i === 0){
+                    header[0].push(j+1);
+                }
+                let text = '';
+                let turn = turns.find((t) => schedule[i][j] === t.abbreviation);
+                turn?.turns.forEach((t,i) => {
+                    text = text + `${t.init_time} a ${t.finish_time} . `;
+                })
+                if(schedule[i][j] === 'F') text = 'FRANCO';
+                if(schedule[i][j] === 'X') text = 'LICENCIA';
+                scheduleArray[i][j] = text;
+            })
+            scheduleArray[i] = arrayEmployee.concat([...scheduleArray[i]]);
+        })
+        scheduleArray = header.concat(scheduleArray);
+        return scheduleArray
+    }
+
     return (
         <>
             <div className="formRow">
@@ -169,7 +205,10 @@ const MonthView = ({ employees, turns, today, monthYear, schedule, updateSchedul
                     defaultValue={`${monthYear.year}-${monthYear.month < 9 ? '0' + (monthYear.month + 1) : (monthYear.month + 1)}`}
                 />
                 <h1 className="col-sm-2 offset-sm-2">{showMeMonth(monthYear.month)}</h1>
-                <button className='btn offset-sm-2' onClick={loadInfoTurns}><FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon></button>
+                {schedule && nonworkingDaysMonth ?
+                <button className='btn btn-success' onClick={() => {exportSchedule()}}>Exportar a Excel <FontAwesomeIcon icon={faFileExcel}></FontAwesomeIcon></button>
+                :null}
+                <button className='btn' onClick={loadInfoTurns}><FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon></button>
                 <button className={firstHalfMonth ? "btn btn-secondary" : "btn"} onClick={() => { setFirstHalfMonth(true) }}> 1er Quincena</button>
                 <button className={(!firstHalfMonth) ? "btn btn-secondary" : "btn"} onClick={() => { setFirstHalfMonth(false) }}> 2da Quincena</button>
             </div>

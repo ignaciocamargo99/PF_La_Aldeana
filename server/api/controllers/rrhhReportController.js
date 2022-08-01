@@ -10,7 +10,7 @@ async function getSalariesReport(req, res) {
     } catch (e) {
         res.json({
             Ok: false,
-            Message: 'No se pudo encontrar datos de ventas guardados.'
+            Message: 'No se pudo encontrar datos de salarios guardados.'
         });
     };
 };

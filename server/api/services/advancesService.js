@@ -71,9 +71,9 @@ const payInstallments = async (nroDNI, date, installments) => {
     };
 };
 
-const readEmployee = async () => {
+const readEmployee = async (date) => {
     try {
-        let res = await employeeGetDB();
+        let res = await employeeGetDB(date);
         return res;
     }
     catch(error) {

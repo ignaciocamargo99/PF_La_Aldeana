@@ -11,7 +11,7 @@ router.get('/installments', advancesController.getInstallments);
 router.post('/advances', advancesController.newAdvances);
 router.put('/advances', advancesController.updateAdvances);
 router.delete('/advances', advancesController.deleteAdvances);
-router.get('/employeesadvances', advancesController.getEmployee);
+router.get('/employeesadvances/:date', advancesController.getEmployee);
 
 //#endregion
 module.exports = router;

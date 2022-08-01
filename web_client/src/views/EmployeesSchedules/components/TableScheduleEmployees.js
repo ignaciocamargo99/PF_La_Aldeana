@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Table from '../../../common/Table/Table';
-import HeaderTable from '../../../common/Table/HeaderTable';
-import BodyTable from '../../../common/Table/BodyTable';
 import showMeDay from '../../../utils/ShowMeDay/showMeDay';
 import showMeCharge from '../../../utils/ShowMeCharge/showMeCharge';
 import { connect } from 'react-redux';
@@ -14,6 +12,7 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
     const [lowLimit, setLowLimit] = useState(0);
     const [upLimit, setUpLimit] = useState(15);
 
+    const [chargeFilter, setChargeFilter] = useState([1, 2, 4]);
 
     useEffect(() => {
         if (firstHalfMonth) {
@@ -88,11 +87,18 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
     }
 
     return (
-        <Table style={{ display: 'block', overflow: 'auto', height: '600px', width: '100%' }} >
-            <HeaderTable
-                th={
-                    <>
-                        <th scope="col" style={{ backgroundColor: 'gray', textAlign: 'center', verticalAlign: 'middle' }}>EMP.</th>
+        <div style={{ maxHeight: '600px', overflow: 'auto' }}>
+            <Table>
+                <thead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+                    <tr>
+                        <th scope="col" style={{ backgroundColor: 'gray', textAlign: 'center', verticalAlign: 'middle', width: '8rem' }}>
+                            <select class="form-control" onChange={(e) => { setChargeFilter(e.target.value) }}>
+                                <option value={[1, 2, 4]}>Todos</option>
+                                <option value={1}>Cajeros</option>
+                                <option value={2}>Mostrador</option>
+                                <option value={4}>Producción</option>
+                            </select>
+                        </th>
                         {schedule[0].map((iv, i) => {
                             if (lowLimit <= i + 1 && i + 1 <= upLimit) {
                                 return (
@@ -108,55 +114,55 @@ const TableScheduleEmployees = ({ nonworkingDaysMonth, employees, monthYear, fir
                                 )
                             }
                         })}
-                    </>
-                }
-            />
-            <BodyTable
-                tbody={employees?.map((employee, i) => {
-                    return (
-                        <tbody key={i}>
-                            <tr id={`rowEmployee${employee.dni}`} className={`${showMeCharge(employee.charges[0].chargeName)}`}>
-                                <td style={{ verticalAlign: 'middle' }}>
-                                    <button className="btn" style={{ width: '100%', borderStyle: 'none', borderColor: 'none', textAlign: 'left' }} onClick={() => { loadEmployeeStats(i) }}>{employee.name}</button>
-                                </td>
-                                {schedule[0].map((iv, j) => {
-                                    if (lowLimit <= j + 1 && j + 1 <= upLimit) {
-                                        return (
-                                            <>
-                                                <BeShowed show={permissionsAccess === 3}>
-                                                    <td key={j + 1 + i} style={{
-                                                        verticalAlign: 'middle', textAlign: 'center',
-                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
-                                                    }}>
-                                                        <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
-                                                            className={schedule[i][j] === 'F'?"bg-dark text-light":""}
-                                                            disabled={schedule[i][j] === 'X'} value={schedule[i][j]}
-                                                            onChange={(e) => onChangeInputValue(e, i, j)}
-                                                            onBlur={(e) => onBlurInputValue(e, i, j)}></input>
-                                                    </td>
-                                                </BeShowed>
-                                                <BeShowed show={permissionsAccess !== 3}>
-                                                    <td key={j + 1 + i} style={{
-                                                        verticalAlign: 'middle', textAlign: 'center',
-                                                        backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
-                                                    }}>
-                                                        <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
-                                                            className={schedule[i][j] === 'F'?"bg-dark text-light":""}
-                                                            disabled value={schedule[i][j]}
-                                                            onChange={(e) => onChangeInputValue(e, i, j)}
-                                                            onBlur={(e) => onBlurInputValue(e, i, j)}></input>
-                                                    </td>
-                                                </BeShowed>
-                                            </>
-                                        )
-                                    }
-                                })}
-                            </tr>
-                        </tbody>
-                    )
-                })}
-            />
-        </Table>)
+                    </tr>
+                </thead>
+                <tbody style={{ margin: '0', padding: '2rem' }}>
+                    {employees?.map((employee, i) => {
+                        return (
+                            chargeFilter.includes(employee.charges[0].chargeId) ?
+                                <tr id={`rowEmployee${employee.dni}`} className={`${showMeCharge(employee.charges[0].chargeName)}`} key={i} >
+                                    <td style={{ verticalAlign: 'middle', width: '8rem' }}>
+                                        <button className="btn" style={{ width: '100%', borderStyle: 'none', borderColor: 'none', textAlign: 'left' }} onClick={() => { loadEmployeeStats(i) }}>{employee.nickname}</button>
+                                    </td>
+                                    {schedule[0].map((iv, j) => {
+                                        if (lowLimit <= j + 1 && j + 1 <= upLimit) {
+                                            return (
+                                                <>
+                                                    <BeShowed show={permissionsAccess === 3}>
+                                                        <td key={j + 1 + i} style={{
+                                                            verticalAlign: 'middle', textAlign: 'center',
+                                                            backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
+                                                        }}>
+                                                            <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
+                                                                className={schedule[i][j] === 'F' ? "bg-dark text-light" : ""}
+                                                                disabled={schedule[i][j] === 'X'} value={schedule[i][j]}
+                                                                onChange={(e) => onChangeInputValue(e, i, j)}
+                                                                onBlur={(e) => onBlurInputValue(e, i, j)}></input>
+                                                        </td>
+                                                    </BeShowed>
+                                                    <BeShowed show={permissionsAccess !== 3}>
+                                                        <td key={j + 1 + i} style={{
+                                                            verticalAlign: 'middle', textAlign: 'center',
+                                                            backgroundColor: `${nonworkingDaysMonth.includes(j + 1) ? '#FAAD50' : new Date(monthYear.year, monthYear.month, j + 1).getDay() === 0 || new Date(monthYear.year, monthYear.month, j + 1).getDay() === 6 ? '#84F965' : ''}`
+                                                        }}>
+                                                            <input type="text" maxLength="2" style={{ textAlign: 'center', width: '100%' }}
+                                                                className={schedule[i][j] === 'F' ? "bg-dark text-light" : ""}
+                                                                disabled value={schedule[i][j]}
+                                                                onChange={(e) => onChangeInputValue(e, i, j)}
+                                                                onBlur={(e) => onBlurInputValue(e, i, j)}></input>
+                                                        </td>
+                                                    </BeShowed>
+                                                </>
+                                            )
+                                        }
+                                    })}
+                                </tr>
+                                : <></>
+                        )
+                    })}
+                </tbody>
+            </Table>
+        </div >)
 }
 
 const mapStateToProps = state => {

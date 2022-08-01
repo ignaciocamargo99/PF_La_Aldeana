@@ -44,6 +44,7 @@ const employeeGetDB = (dni) => {
             e.dni,
             e.name,
             e.last_name,
+            e.nickname,
             e.date_admission,
             c.id_charge as chargeId,
             c.name AS chargeName,

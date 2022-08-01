@@ -9,6 +9,7 @@ import dateText from '../../../../utils/DateFormat/dateText';
 import BeShowed from '../../../../common/BeShowed';
 import Viewer from './PDFModalViewer';
 import MyDocument from './PDFProductSalesReport';
+import warningMessage from 'utils/WarningMessages/warningMessage';
 
 const PORT = require('../../../../config');
 
@@ -101,7 +102,7 @@ const Options = (props) => {
                         ],
                     };
                     const types = {
-                        type: 'outlabeledPie',
+                        type: 'doughnut',
                         labels: labelsTypes,
                         datasets: [
                         {
@@ -109,15 +110,18 @@ const Options = (props) => {
                             data: datTypes,
                         },
                         ],
-                        total: type[0].total
+                        total: type[0].total,
+                        legend: true
                     };
                     setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
                     topChart={top} sales={aux} typesChart={types} top={topTen} types={type[0].types} />);
 
                 })
                 .catch((error) => {
+                    props.setLoad(0);
                     console.log('Oops...', 'Error en el servidor', error);
-                    props.setLoaded(false);
+                    props.setLoaded(true);
+                    warningMessage('Error', 'Error en el servidor', 'error');
                 })
         } else {
             let date = new Date();
