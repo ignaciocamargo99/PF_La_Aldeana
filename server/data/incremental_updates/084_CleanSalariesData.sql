@@ -14,5 +14,5 @@ VALUES
   (
     084,
     'Delete',
-    'Limpieza de todos los datos de salarios de Salarios.'
+    'Limpieza de todos los datos de Salarios.'
   );
