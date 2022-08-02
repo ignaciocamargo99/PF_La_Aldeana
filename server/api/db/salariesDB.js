@@ -57,7 +57,7 @@ const salariesCreateDB = (newSalary) => {
                                     const id = newSalary.details[0][j].id_concept?newSalary.details[0][j].id_concept:newSalary.details[0][j].id;
                                     const updateHsType = "UPDATE HS_TYPES h SET h.amount = " + price + " WHERE h.id_hs_type = " + (j+1);
                                     console.log(updateHsType);
-                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs, price], (error, r) => {
+                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs_number, price], (error, r) => {
                                         if (error) {
                                             console.log(error);
                                             db.rollback(()=> reject(error));

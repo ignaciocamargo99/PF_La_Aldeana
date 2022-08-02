@@ -1,4 +1,5 @@
 export default function floatToHour (float, notSeconds) {
+  console.log(float)
     let hs = Math.floor(float), // Obtenemos la parte entera
       restHS = Math.floor(float % 1 * 100), // Obtenemos la parde decimal
       floatMinutes = restHS * 60 / 100, // Obtenemos los minutos expresado en decimal
