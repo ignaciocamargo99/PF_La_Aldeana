@@ -85,7 +85,7 @@ const salariesCreateDB = (newSalary) => {
                                 if (newSalary.details[1].length > 0) {
                                     console.log(newSalary.details[1]);
                                     for (var k = 0; k < newSalary.details[1].length; k++){
-                                        console.log('detalle'+k+' '+newSalary.details[1][k].name);
+                                        console.log('detalle'+k+' '+newSalary.details[1]);
                                         db.query(sqlInsertDetail, [id_salary, newSalary.details[1][k].id_concept?newSalary.details[1][k].id_concept:14, newSalary.details[1][k].price, 1, newSalary.details[1][k].name], (error) => {
                                             if (error) {
                                                 console.log(error);
