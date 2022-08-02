@@ -37,11 +37,11 @@ const FormSalary = ({
     const [othersPlus, setOthersPlus] = useState([]);
     const [othersMinus, setOthersMinus] = useState([]);
     const [main, setMain] = useState([
-        { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: 0 },
-        { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: 0 },
-        { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: 0 },
-        { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0 },
-        { id: 'F', name: 'Hs. Franco', hs: 1, price: 0 }
+        { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: 0, id_concept: 1 },
+        { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: 0, id_concept: 2 },
+        { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: 0, id_concept: 3 },
+        { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: 0, id_concept: 4 },
+        { id: 'F', name: 'Hs. Franco', hs: 1, price: 0, id_concept: 5 }
     ]);
     const [totalHs, setTotalHs] = useState(0);
     const [subtotal, setSubtotal] = useState(0);
@@ -133,11 +133,11 @@ const FormSalary = ({
                             else {
                                 console.log(response.data)
                                 let aux = [
-                                    { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
-                                    { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
-                                    { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
-                                    { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept },
-                                    { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0, id_concept: response.id_concept }
+                                    { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0, id_concept: 1},
+                                    { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0, id_concept: 2 },
+                                    { id: 'FMtoF', name: 'Hs. Feriados Lunes a Viernes', hs: response.data[2].hs_number, price: response.data[2].amount, id_hs_worked: response.data[2].id_hs_worked > 0 ? response.data[2].id_hs_worked : 0, predictive: 0, id_concept: 3 },
+                                    { id: 'FSnS', name: 'Hs. Feriados Sabado y Domingo', hs: response.data[3].hs_number, price: response.data[3].amount, id_hs_worked: response.data[3].id_hs_worked > 0 ? response.data[3].id_hs_worked : 0, predictive: 0, id_concept: 4 },
+                                    { id: 'F', name: 'Hs. Franco Trabajado', hs: response.data[4].hs_number, price: response.data[4].amount, id_hs_worked: response.data[4].id_hs_worked > 0 ? response.data[4].id_hs_worked : 0, predictive: 0, id_concept: 5 }
                                 ];
                                 if (main.some(even)) setMain(aux);
 
@@ -324,11 +324,11 @@ const FormSalary = ({
             setOthersPlus([]);
             setOthersMinus([]);
             setMain([
-                { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price, predictive: 0, id_concept: -1 },
-                { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price, predictive: 0, id_concept: -1 },
-                { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price, predictive: 0, id_concept: -1 },
-                { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price, predictive: 0, id_concept: -1 },
-                { id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price, predictive: 0, id_concept: -1 }
+                { id: 'MtoF', name: 'Hs. Luneas a Viernes', hs: 1, price: main[0].price, predictive: 0, id_concept: 1 },
+                { id: 'SnS', name: 'Hs. Sabado y Domingo', hs: 1, price: main[1].price, predictive: 0, id_concept: 2 },
+                { id: 'FMtoF', name: 'Hs. Feriado Luneas a Viernes', hs: 1, price: main[2].price, predictive: 0, id_concept: 3 },
+                { id: 'FSnS', name: 'Hs. Feriado Sabado y Domingo', hs: 1, price: main[3].price, predictive: 0, id_concept: 4 },
+                { id: 'F', name: 'Hs. Franco', hs: 1, price: main[4].price, predictive: 0, id_concept: 5 }
             ]);
             setNro(nro + 1);
         } else {
