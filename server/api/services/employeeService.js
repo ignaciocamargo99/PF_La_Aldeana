@@ -61,7 +61,6 @@ const mapEmployeesData = (employeesDataDB) => {
                 neighborhood: empDB.neighborhood,
                 birthday: empDB.birthday.toISOString().split('T')[0],
                 cuil: empDB.cuil,
-                nickname: empDB.nickname,
                 city: empDB.city,
                 phone: empDB.phone,
             };
