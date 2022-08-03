@@ -33,7 +33,7 @@ const FlavorsStockReport = (props) => {
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={stock[0]?.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Información de stock de sabores de helados y reabastecimiento desde {from?dateText(from, true, false):new Date().toLocaleDateString()}</h5>
+                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Información de stock de sabores de helados y reabastecimiento del {from?dateText(from, true, false):new Date().toLocaleDateString()}</h5>
                         </div>
                         <hr />
                         <div className="formRow">
