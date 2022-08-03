@@ -133,7 +133,6 @@ const FormSalary = ({
                         .then((response) => {
                             if (response.data.Ok === false) console.log(response.data);
                             else {
-                                console.log(response.data)
                                 let aux = [
                                     { id: 'MtoF', name: 'Hs. Lunes a Viernes', hs_number: response.data[0].hs_number, price: response.data[0].amount, id_hs_worked: response.data[0].id_hs_worked > 0 ? response.data[0].id_hs_worked : 0, predictive: 0, id_concept: 1},
                                     { id: 'SnS', name: 'Hs. Sabado y Domingo', hs_number: response.data[1].hs_number, price: response.data[1].amount, id_hs_worked: response.data[1].id_hs_worked > 0 ? response.data[1].id_hs_worked : 0, predictive: 0, id_concept: 2 },
@@ -149,13 +148,11 @@ const FormSalary = ({
                             }
                         })
                         .catch((err) => {
-                            console.log(err)
                             setShowSpinner(false);
                             warningMessage("Error", "El servidor no pudo procesar las horas trabajadas del empleado solicitado", "error");
                         });
                 })
                 .catch((err) => {
-                    console.log(err)
                     setShowSpinner(false);
                     warningMessage("Error", "No se pudieron buscar los días feriados", "error");
                 });
@@ -182,22 +179,25 @@ const FormSalary = ({
                 setOthersPlus(aux);
             }
 
-            if (selectedAction === 'Registrar') {
+            if (selectedAction !== 'Ver') {
                 Axios.get(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`)
                     .then((r) => {
                         if (r.data.Ok === false) console.log(r.data);
                         else {
                             if (r.data.length > 0) {
-                                const aux = [];
-                                othersMinus.forEach((dis, i) => { aux[i] = dis });
-                                let acu = 0;
-                                r.data.forEach((dis, i) => {
-                                    dis.date = dateToString(dis.date, true);
-                                    dis.month = dateToString(dis.month, true);
-                                    acu += dis.amount;
-                                });
-                                aux[0] = { name: 'Adelantos', price: acu, predictive: 0, id_concept: 8 };
-                                setOthersMinus(aux);
+                                if(selectedAction === 'Registrar'){
+                                    const aux = [];
+                                    othersMinus.forEach((dis, i) => { aux[i] = dis });
+                                    let acu = 0;
+                                    r.data.forEach((dis, i) => {
+                                        dis.date = dateToString(dis.date, true);
+                                        dis.month = dateToString(dis.month, true);
+                                        acu += dis.amount;
+                                    });
+                                    aux[0] = { name: 'Adelantos', price: acu, predictive: 0, id_concept: 8 };
+                                    setOthersMinus(aux);
+                                }
+                                console.log(r.data)
                                 setAdvances(r.data);
                             }
                         }
@@ -278,6 +278,7 @@ const FormSalary = ({
     const editSalary = () => {
         setShowSpinner(true);
         if (advances.length > 0) {
+            console.log(advances)
             Axios.put(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`, { advances })
                 .then((response) => {
                     if (response.data.Ok !== false) {
@@ -625,7 +626,7 @@ const FormSalary = ({
                                 </div>
                                 {othersMinus?.map((i, n) => {
                                     return (
-                                        <div key={i.name} className="formRow justify-content-center">
+                                        <div key={i.id_concept} className="formRow justify-content-center">
                                             <BeShowed show={i.predictive === 0 || selectedAction === "Ver"}>
                                                 <div className="col-sm-9" style={{ border: '1px solid', borderRadius: '2px' }}>
                                                     <label style={{ paddingLeft: '1em', fontStyle: 'italic' }}>{i.name}</label>

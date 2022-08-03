@@ -58,12 +58,14 @@ export default function AdvancesTable(props) {
                 setAdvances(auxAdvances);
             })
             .catch((error) => console.log(error));
-    }, [advances]);
+    }, []);
 
     const deleteAdvances = (i) => {
+        console.log(i);
+        console.log(advances)
         let aux = [];
         advances?.forEach((e, j) => {
-            if (j !== i) {
+            if (e !== i) {
                 aux[j] = e;
             }
         });
@@ -343,7 +345,7 @@ export default function AdvancesTable(props) {
                                                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                                     <BeShowed show={permissionsAccess === 3}>
                                                                         <BeShowed show={new Date(element.date).getMonth() + 1 > new Date().getMonth() || (new Date(element.date).getDate() > new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
-                                                                            <DeleteAdvancesButton advances={element} index={i} deleteEmployee={deleteAdvances} />
+                                                                            <DeleteAdvancesButton advances={element} index={i} deleteEmployee={(element) => deleteAdvances(element)} />
                                                                         </BeShowed>
                                                                         <BeShowed show={element.pay === 1 || new Date(element.date).getMonth() + 1 < new Date().getMonth() || (new Date(element.date).getDate() <= new Date().getDate() && new Date(element.date).getMonth() + 1 === new Date().getMonth())}>
                                                                             <button id='deleteAdvancesButton' type="button" className="disabledSendBtn" onClick={handleDelete}><FontAwesomeIcon icon={faMinus} /></button>

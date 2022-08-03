@@ -183,6 +183,7 @@ const advancesUpdateDB = (nroDNI, dateOld, updateAdvances) => {
     });
 };
 const installmentsPayDB = (nroDNI, date, installments) => {
+    console.log(installments, nroDNI, date)
     const sqlUpdate = "UPDATE ADVANCES SET pay = pay + ? WHERE nroDNI = " + nroDNI + " AND  `date` = ?";
     const sqlUpdateInstallments = "UPDATE INSTALLMENTS SET pay = 1 WHERE nroDNI = " + nroDNI + " AND  `month` = '" + date + "' AND `date` = ?";
     const inst = installments.advances;
@@ -197,7 +198,7 @@ const installmentsPayDB = (nroDNI, date, installments) => {
                     reject(error);
                 } else {
                     for (var i = 0; i < inst.length; i++) {
-                        db.query(sqlUpdate, [inst[i].amount, inst[i].date], (err, result) => {
+                        db.query(sqlUpdate, [inst[i].amount, (inst[i].date).substring(0, 10)], (err, result) => {
                             if (err) {
                                 console.log(err);
                                 reject(err);
@@ -206,7 +207,7 @@ const installmentsPayDB = (nroDNI, date, installments) => {
                             }
                         });
 
-                        db.query(sqlUpdateInstallments, [inst[i].date], (error) => {
+                        db.query(sqlUpdateInstallments, (inst[i].date).substring(0, 10), (error) => {
                             if (error) {
                                 console.log(error)
                                 db.rollback(()=> reject(error));
