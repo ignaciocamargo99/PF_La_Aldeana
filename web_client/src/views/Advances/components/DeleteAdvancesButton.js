@@ -22,7 +22,7 @@ export default function DeleteAdvancesButton(props) {
         Axios.delete(PORT() + `/api/advances?dniEmployee=${props.advances.nroDNI}&date=${date}`)
             .then((response) => {
                 if (response.data.Ok) {
-                    props.deleteEmployee(props.index);
+                    props.deleteEmployee(props.advances);
                     swal("Adelanto cancelado exitosamente", {
                         icon: "success",
                     });

@@ -6,7 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import BeShowed from "common/BeShowed";
 import Pagination from 'common/TablePagination/Pagination';
-
+import {filterEmployeesByEmploymentDate} from "./filterEmployeesByEmploymentDate";
 import Axios from "axios";
 import { getSalariesTableColumunsHeaders } from "./getSalariesTableColumunsHeaders";
 import { CONFIRM, NON_GENEATE, ON_HOLD } from "./filtersConstants";
@@ -21,7 +21,7 @@ export default function SalariesTable({
     selectedFilter,
     selectedMonth,
     setActionSalary,
-    showSpinner,
+    showSpinner, 
 }) {
 
     const [employees, setEmployees] = useState([]);
@@ -32,24 +32,10 @@ export default function SalariesTable({
     const [listTable, setListTable] = useState([]);
     const [nameSearch, setNameSearch] = useState('');
 
-    const filterEmployeesByEmploymentDate = (employees) => {
-        // date selected format: YYYY-MM
-        const yearSelected = selectedMonth.substring(0, 4);
-        const monthSelected = selectedMonth.substring(5, 7);
-
-        return employees.filter((emp) => {
-            // employee admission date format: YYYY-MM-DD
-            let employmentYear = emp.date.substring(0, 4);
-            let employmentMonth = emp.date.substring(5, 7);
-
-            return (+yearSelected >= +employmentYear) && (+monthSelected >= +employmentMonth)
-        })
-    }
-
     useEffect(() => {
         Axios.get(PORT() + '/api/employees')
             .then((response) => {
-                let aux = filterEmployeesByEmploymentDate(response.data);
+                let aux = filterEmployeesByEmploymentDate(response.data, selectedMonth);
                 let display = [];
                 aux?.forEach((person) => {
                     person.fullName = person.last_name;

@@ -50,14 +50,12 @@ const salariesCreateDB = (newSalary) => {
                                 db.rollback(()=> reject(error));
                             }
                             else {
-                                console.log(newSalary.details[0]);
                                 for (var j = 0; j < newSalary.details[0].length; j++){
                                     const price = newSalary.details[0][j].price;
                                     const name = newSalary.details[0][j].name;
                                     const id = newSalary.details[0][j].id_concept?newSalary.details[0][j].id_concept:newSalary.details[0][j].id;
                                     const updateHsType = "UPDATE HS_TYPES h SET h.amount = " + price + " WHERE h.id_hs_type = " + (j+1);
-                                    console.log(updateHsType);
-                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs, price], (error, r) => {
+                                    db.query(sqlInsertHsWorked, [newSalary.dni, newSalary.monthYear.length >= 7 ? newSalary.monthYear + '-01' : newSalary.monthYear, j+1, newSalary.details[0][j].hs_number, price], (error, r) => {
                                         if (error) {
                                             console.log(error);
                                             db.rollback(()=> reject(error));
@@ -83,9 +81,7 @@ const salariesCreateDB = (newSalary) => {
                                         }});
                                 }
                                 if (newSalary.details[1].length > 0) {
-                                    console.log(newSalary.details[1]);
                                     for (var k = 0; k < newSalary.details[1].length; k++){
-                                        console.log('detalle'+k+' '+newSalary.details[1]);
                                         db.query(sqlInsertDetail, [id_salary, newSalary.details[1][k].id_concept?newSalary.details[1][k].id_concept:14, newSalary.details[1][k].price, 1, newSalary.details[1][k].name], (error) => {
                                             if (error) {
                                                 console.log(error);
@@ -237,7 +233,6 @@ const hsWorkedGetDB = (monthYear, dni, nonWorkingDays) => {
                     reject("1:" + error);
                 }
                 else if (result.length < 5) {
-                    console.log(result.length)
                     const sqlAlterSelect = "SELECT * FROM ASSISTANCE_EMPLOYEES s LEFT JOIN EMPLOYEES e ON e.dni = s.employee WHERE date_entry >= '" + monthYear + "-01' and date_egress < '" +
                     formattedDate(new Date(parseInt(monthYear.slice(0,-3)), parseInt(monthYear.slice(5)) + 1 , 1))
                     + "' AND employee = " + dni;
@@ -396,7 +391,6 @@ const salariesUpdateDB = (id, newSalary) => {
                                     const name = newSalary.details[0][j].name;
                                     const id = newSalary.details[0][j].id_concept?newSalary.details[0][j].id_concept:newSalary.details[0][j].id;
                                     const updateHsType = "UPDATE HS_TYPES h SET h.amount = " + price + " WHERE h.id_hs_type = " + (j+1);
-                                    console.log(updateHsType);
                                     db.query(sqlInsertHsWorked, [price, newSalary.details[0][j].id_hs_worked], (error, r) => {
                                         if (error) {
                                             console.log(error);
