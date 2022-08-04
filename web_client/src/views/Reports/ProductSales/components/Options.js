@@ -102,7 +102,7 @@ const Options = (props) => {
                         ],
                     };
                     const types = {
-                        type: 'outlabeledPie',
+                        type: 'doughnut',
                         labels: labelsTypes,
                         datasets: [
                         {
@@ -110,7 +110,8 @@ const Options = (props) => {
                             data: datTypes,
                         },
                         ],
-                        total: type[0].total
+                        total: type[0].total,
+                        legend: true
                     };
                     setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + " a " + dateText(props.dateTo, true, true) + ")"} description={(!description ? '' : description)} 
                     topChart={top} sales={aux} typesChart={types} top={topTen} types={type[0].types} />);

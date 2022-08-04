@@ -3,8 +3,8 @@ export default function dataChartToURL(dataChart) {
     const QuickChart = require('quickchart-js/build/quickchart.cjs');
     const qc = new QuickChart();
 
-    qc.setWidth(800);
-    qc.setHeight(900);
+    //qc.setWidth(800);
+    //qc.setHeight(900);
 
     qc.setConfig({
         type: dataChart.type,
@@ -21,7 +21,7 @@ export default function dataChartToURL(dataChart) {
         },
         options: {
             plugins: {
-                legend: false,
+                legend: dataChart.legend?dataChart.legend:false,
                 outlabels: {
                     text: "%l %p",
                     color: "white",

@@ -3,8 +3,8 @@ export default function dataChartToURLWhenHaveTwoDataSets(dataChart) {
     const QuickChart = require('quickchart-js/build/quickchart.cjs');
     const qc = new QuickChart();
 
-    qc.setWidth(800);
-    qc.setHeight(900);
+    //qc.setWidth(800);
+    //qc.setHeight(900);
 
     qc.setConfig({
         type: dataChart.type,

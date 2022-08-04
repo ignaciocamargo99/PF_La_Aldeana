@@ -54,7 +54,7 @@ const Options = (props) => {
                         ],
                         total: data[1][0].quantity + data[1][1].quantity + data[1][2].quantity
                     };
-                    setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, true) + ")"} description={(!description ? '' : description)} 
+                    setMyDoc(<MyDocument user={props.user} title={"(" + dateText(props.dateFrom, true, false) + ")"} description={(!description ? '' : description)} 
                     stock={stock} totalisedChart={totalised} totals={totals} />);
                 }
 
@@ -102,7 +102,7 @@ const Options = (props) => {
                     </BeShowed>
                 </div>
             </div>
-            <Viewer MyDoc={MyDoc}reportOf='stock' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, true) + ")"} description={(!description ? '' : description)} ></Viewer>
+            <Viewer MyDoc={MyDoc}reportOf='stock' showPdf={showPdf} cancel={cancel} title={"(" + !props.dateFrom?new Date().toLocaleDateString():dateText(props.dateFrom, true, false) + ")"} description={(!description ? '' : description)} ></Viewer>
         </>
     );
 }
