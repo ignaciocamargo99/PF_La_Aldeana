@@ -192,15 +192,6 @@ export default function RouterPage(props) {
               )}
             ></Route>
             <Route
-              path="/app/stockFlavorsReport"
-              render={() => (
-                <FlavorsStockReport
-                  permissionsAccess={permissionsAccessSalesReports}
-                  user={props.user}
-                />
-              )}
-            ></Route>
-            <Route
               path="/app/totalSalesReport"
               render={() => (
                 <TotalSalesReport
