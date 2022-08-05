@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
 import dateFormat from "../../../utils/DateFormat/dateFormat";
-import dataChartToURLWhenHaveTwoDataSets from "utils/dataChartToURLWhenHaveTwoDataSets";
+import dataChartToURL from "utils/dataChartToURL";
 import styles from "../styles";
 import dateText from "utils/DateFormat/dateText";
 
@@ -11,7 +11,7 @@ export default function MyDocument({
   description,
   user,
   chart,
-  salesData,
+  dataSales,
 }) {
   return (
     <>
@@ -21,7 +21,7 @@ export default function MyDocument({
           style={styles.page}
           title={
             dateFormat(new Date()) +
-            "- VentasEnElLocal - " +
+            "- VentasTotales - " +
             title +
             " - " +
             description
@@ -33,7 +33,7 @@ export default function MyDocument({
               <Text style={styles.header}>
                 {dateText(dateFormat(new Date()), true, true) + "\n"}
               </Text>
-              <Text style={styles.mainTitle}>~ Ventas en el local ~{"\n"}</Text>
+              <Text style={styles.mainTitle}>~ Ventas totales ~{"\n"}</Text>
               <Text style={styles.detail}>{description + "\n"}</Text>
               <Text style={styles.detail}>Generado por: {user + "\n"}</Text>
               <Text style={styles.header}>{title}</Text>
@@ -45,54 +45,60 @@ export default function MyDocument({
             />
           </View>
           <View style={styles.section}>
-            <Text style={styles.title}>Ventas en el local por turnos</Text>
-            <Image
-              style={{
-                height: "375px",
-                width: "80%",
-                marginLeft: "10%",
-                marginBottom: "10px",
-              }}
-              src={dataChartToURLWhenHaveTwoDataSets(chart)}
-            ></Image>
             <View style={styles.row}>
               <View style={styles.col}>
-                <Text style={styles.subtitle}>Tipo de pago</Text>
+                <Text style={styles.subtitle}>Tipo de venta</Text>
               </View>
               <View style={styles.col}>
-                <Text style={styles.subtitle}>Cantidad de uds. vendidas</Text>
+                <Text style={styles.subtitle}>Cantidad de ventas</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.subtitle}>Monto total (ARS)</Text>
               </View>
             </View>
-            {Object.values(salesData).map((dataSalePerPayType) => {
-              let totalPerPayType = 0;
-              dataSalePerPayType.forEach(
-                (sale) =>
-                  (totalPerPayType = totalPerPayType + sale.total_amount)
-              );
+            {dataSales.map((dataSale) => {
               return (
                 <>
                   <View style={styles.row}>
                     <View style={styles.col}>
                       <Text style={styles.text}>
-                        {dataSalePerPayType[0].name}
+                        {dataSale.isOnsite === 1
+                          ? "Venta en el local"
+                          : dataSale.isOnsite === 0
+                          ? "Venta por delivery"
+                          : "Venta a franquicia"}
                       </Text>
                     </View>
                     <View style={styles.col}>
                       <Text style={styles.money}>
-                        {dataSalePerPayType.length + " uds."}
+                        {dataSale.quantity_sales + " uds."}
                       </Text>
                     </View>
                     <View style={styles.col}>
-                      <Text style={styles.money}>{"$" + totalPerPayType}</Text>
+                      <Text style={styles.money}>
+                        {"$" + parseInt(dataSale.total)}
+                      </Text>
                     </View>
                   </View>
                 </>
               );
             })}
           </View>
+          <Text
+            style={{
+              fontSize: 18,
+              textAlign: "center",
+              color: "grey",
+              marginBottom: 0,
+              paddingBottom: 0,
+            }}
+          >
+            Porcentaje de ventas totales realizadas
+          </Text>
+          <Image
+            style={{ marginVertical: 0, marginHorizontal: 50 }}
+            src={dataChartToURL(chart)}
+          ></Image>
           <Text
             style={styles.pageNumbers}
             render={({ pageNumber, totalPages }) =>
