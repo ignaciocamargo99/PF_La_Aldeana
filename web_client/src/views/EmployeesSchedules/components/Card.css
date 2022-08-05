@@ -12,8 +12,3 @@
 .bg-light-blue {
     background-color: #A5DEF9 !important;
 }
-
-.cards-container {
-    height: 20em;
-    justify-content: space-evenly;
-}

@@ -97,12 +97,13 @@ const EmployeesSchedulesView = (props) => {
             <div className="viewBody">
                 <BeShowed show={!showMonthView && !showAutomatedSchedule}>
                     <div className="schedules-cards-container">
-                        <div className="cards-container d-flex-col">
+                        <div className="d-flex-col">
                             <Card
                                 title='Visualizar cronograma por mes'
                                 text='Visualiza los turnos asignados de tus empleados con estadísticas incluidas.'
                                 handleCardClicked={() => { setShowMonthView(true) }}
                             />
+                            <br />
                             <BeShowed show={permissionsAccess === 2 || permissionsAccess === 3}>
                                 <Card
                                     title='Generar cronograma automático'

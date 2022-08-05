@@ -4,6 +4,8 @@ const salesController = require("../controllers/salesController");
 
 router.get("/payTypes", salesController.getPayTypes);
 router.post("/sales", salesController.postSale);
-router.post("/salesDelivery", salesController.postSaleDelivery); 
+router.get("/onSiteSales", salesController.getOnSiteSales);
+router.get("/sales", salesController.getSales);
+router.post("/salesDelivery", salesController.postSaleDelivery);
 
 module.exports = router;
