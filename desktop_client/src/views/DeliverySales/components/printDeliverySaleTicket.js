@@ -1,4 +1,4 @@
-import printDeliveryTicket from "ticket/print";
+import { printDeliveryTicket } from "ticket/print";
 import { formatDateToString, formatTimeToString } from "utils/DateFormat/dateTimeFormatV2";
 
 const mapClientDataForTicket = (details) => {
@@ -36,5 +36,5 @@ export const printDeliverySaleTicket = (date, clientData, details, total, amount
         items: mapClientDataForTicket(details),
     }
 
-    printDeliveryTicket(deliveryDataToPrint);
+    return printDeliveryTicket(deliveryDataToPrint);
 }
