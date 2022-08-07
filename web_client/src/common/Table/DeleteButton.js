@@ -4,10 +4,15 @@ import React from 'react';
 import { defaultQuestionSweetAlert2 } from "utils/questionMessages/sweetAlert2Questions";
 import PropTypes from 'prop-types'
 
-const DeleteButton = ({ disable, warningTitle, warningText, onConfirm }) => {
-    console.log(disable)
+const DeleteButton = ({
+    readOnly,
+    onConfirm,
+    warningText,
+    warningTitle,
+}) => {
+
     let buttonStyle = 'btn btn-danger btnDelete';
-    if (!disable) {
+    if (readOnly) {
         buttonStyle = 'disabledSendBtn';
     }
 
@@ -21,7 +26,7 @@ const DeleteButton = ({ disable, warningTitle, warningText, onConfirm }) => {
     return (
         <button
             className={buttonStyle}
-            disabled={!disable}
+            disabled={readOnly}
             onClick={handleDelete}
             type="button"
         >
