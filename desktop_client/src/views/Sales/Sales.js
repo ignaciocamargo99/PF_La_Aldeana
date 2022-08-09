@@ -21,9 +21,7 @@ import DetailSale from './components/DetailSale';
 import FilterProducts from './components/FilterProducts';
 import ListProducts from './components/ListProducts';
 import PaymentSale from './components/PaymentSale';
-import printHeladeriaTicket from 'ticket/print';
-import printCafeteriaTicket from 'ticket/print';
-import printSaleTicket from 'ticket/print';
+import { printSaleTicket, printHeladeriaTicket, printCafeteriaTicket } from 'ticket/print';
 import dateTimeFormat from 'utils/DateFormat/dateTimeFormat';
 import errorMessageV2 from 'utils/ErrorMessages/errorMessageV2';
 import successMessageV2 from 'utils/SuccessMessages/successMessageV2';
@@ -175,23 +173,33 @@ const Sales = (props) => {
 
     const printTickets = (generalDataToPrint, saleDataToPrint, heladeriaDataToPrint, cafeteriaDataToPrint) => {
         // EMISIÓN TICKET VENTA
-        printSaleTicket(generalDataToPrint, saleDataToPrint);
-
-        // EMISIÓN TICKET HELADERÍA
-        if (heladeriaDataToPrint?.items?.length > 0) {
-            loadingMessageV2('Emitiendo ticket...')
-            setTimeout(() => {
-                Swal.fire('Retire el ticket de venta.').then((result) => {
-                    if (result.isConfirmed) {
-                        printHeladeriaTicket(generalDataToPrint, heladeriaDataToPrint);
-                    }
-                })
-            }, 3500);
-        }
+        printSaleTicket(generalDataToPrint, saleDataToPrint)
+            .then(() => {
+                // EMISIÓN TICKET HELADERÍA
+                if (heladeriaDataToPrint?.items?.length > 0) {
+                    loadingMessageV2('Emitiendo ticket...')
+                    setTimeout(() => {
+                        Swal.fire('Retire el ticket de venta.').then((result) => {
+                            if (result.isConfirmed) {
+                                printHeladeriaTicket(generalDataToPrint, heladeriaDataToPrint)
+                                    .catch((err) => {
+                                        console.error(err)
+                                    });
+                            }
+                        })
+                    }, 3500);
+                }
+            })
+            .catch((err) => {
+                console.error(err)
+            });
 
         // EMISIÓN TICKET CAFETERÍA
         if (cafeteriaDataToPrint?.items?.length > 0) {
             printCafeteriaTicket(generalDataToPrint, cafeteriaDataToPrint)
+                .catch((err) => {
+                    console.error(err)
+                });
         }
     }
 

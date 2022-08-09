@@ -44,7 +44,7 @@ const getGenericConectorWithTicketHeader = (date, time, ticketCode, subtitle = '
     return conector;
 }
 
-const printSaleTicket = (generalDataToPrint, saleDataToPrint) => {
+const printSaleTicket = async (generalDataToPrint, saleDataToPrint) => {
     let conector = getGenericConectorWithTicketHeader(generalDataToPrint.date, generalDataToPrint.time, generalDataToPrint.ticketCode);
 
     for (let i = 0; i < saleDataToPrint.items.length; i++) {
@@ -86,10 +86,15 @@ const printSaleTicket = (generalDataToPrint, saleDataToPrint) => {
         .texto("***Gracias por su compra***")
         .feed(4);
 
-    conector.imprimirEn(IMPRESORA_HELADERIA);
+    try {
+        await conector.imprimirEn(IMPRESORA_HELADERIA);
+        return 'Ok';
+    } catch {
+        throw new Error('No se pudo generar el ticket de venta.');
+    }
 }
 
-const printHeladeriaTicket = (generalDataToPrint, heladeriaDataToPrint) => {
+const printHeladeriaTicket = async (generalDataToPrint, heladeriaDataToPrint) => {
 
     let conector = getGenericConectorWithTicketHeader(
         generalDataToPrint.date,
@@ -113,10 +118,15 @@ const printHeladeriaTicket = (generalDataToPrint, heladeriaDataToPrint) => {
 
     conector.feed(4);
 
-    conector.imprimirEn(IMPRESORA_HELADERIA);
+    try {
+        await conector.imprimirEn(IMPRESORA_HELADERIA);
+        return 'Ok';
+    } catch {
+        throw new Error('No se pudo generar el ticket de heladería.');
+    }
 }
 
-const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
+const printCafeteriaTicket = async (generalDataToPrint, cafeteriaDataToPrint) => {
 
     let conector = new ConectorPlugin();
 
@@ -153,10 +163,15 @@ const printCafeteriaTicket = (generalDataToPrint, cafeteriaDataToPrint) => {
 
     conector.feed(4);
 
-    conector.imprimirEn(IMPRESORA_CAFETERIA);
+    try {
+        await conector.imprimirEn(IMPRESORA_CAFETERIA);
+        return 'Ok';
+    } catch {
+        throw new Error('No se pudo generar el ticket de cafetería.');
+    }
 }
 
-const printDeliveryTicket = (deliveryDataToPrint) => {
+const printDeliveryTicket = async (deliveryDataToPrint) => {
     let conector = getGenericConectorWithTicketHeader(
         deliveryDataToPrint.date,
         deliveryDataToPrint.time,
@@ -215,7 +230,12 @@ const printDeliveryTicket = (deliveryDataToPrint) => {
 
     conector.feed(4);
 
-    conector.imprimirEn(IMPRESORA_CAFETERIA);
+    try {
+        await conector.imprimirEn(IMPRESORA_CAFETERIA);
+        return 'Ok';
+    } catch {
+        throw new Error('No se pudo generar el ticket de delivery.');
+    }
 }
 
-export default {printSaleTicket, printHeladeriaTicket, printCafeteriaTicket, printDeliveryTicket}
+export { printSaleTicket, printHeladeriaTicket, printCafeteriaTicket, printDeliveryTicket }
