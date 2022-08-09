@@ -145,7 +145,6 @@ const Options = (props) => {
             let maxDate = new Date(parseInt(inputDateFrom.current.value.slice(0,-3))+1, parseInt(inputDateFrom.current.value.slice(5)) -1, 1);
             if (maxDate > new Date()) maxDate = new Date();
             maxDate = dateFormat(maxDate).slice(0,-3);
-            console.log(maxDate);
             inputDateTo.current.max = maxDate;
             inputDateTo.current.min = inputDateFrom.current.value;
             props.setFrom(inputDateFrom.current.value);
@@ -171,7 +170,7 @@ const Options = (props) => {
         if (inputDateTo.current.value >= "2021-01" && inputDateTo.current.value < dateString && calculateDiferenceDays(inputDateFrom.current.value +'-01', inputDateTo.current.value +'-01') <= 366) {
             let minDate = new Date(parseInt(inputDateTo.current.value.slice(0,-3))-1, parseInt(inputDateTo.current.value.slice(5)) -1, 1);
             minDate = dateFormat(minDate).slice(0,-3);
-            inputDateFrom.current.min = minDate;
+            inputDateFrom.current.min = minDate < "2021-01" ? "2021-01" : minDate;
             console.log(minDate);
             inputDateFrom.current.max = inputDateTo.current.value;
             props.setTo(inputDateTo.current.value);
