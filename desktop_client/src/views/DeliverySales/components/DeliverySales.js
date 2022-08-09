@@ -124,7 +124,10 @@ const DeliverySales = (props) => {
             .then((sale) => {
                 if (sale.data.Ok) {
                     resetStates(false);
-                    printDeliverySaleTicket(currentDate, clientDataForTicket, props.details, props.total, props.amount);
+                    printDeliverySaleTicket(currentDate, clientDataForTicket, props.details, props.total, props.amount)
+                        .catch(err => {
+                            console.error(err)
+                        })
                 }
                 else warningMessage('Error', 'Ha ocurrido un error al registrar la venta. \n' + sale.data.Message, "error");
             })
