@@ -45,7 +45,10 @@ const consuptionsReportGetDB = (from, to) => {
             db.beginTransaction((error) => {
                 if (error) reject(error);
                 db.query(sqlSelect, (error, result) => {
-                    if (error) reject(error);
+                    if (error) {
+                        console.log(error);
+                        db.rollback(()=> reject(error));
+                    }
                     else {
                         let res = [];
                         let totals = [
@@ -53,7 +56,6 @@ const consuptionsReportGetDB = (from, to) => {
                             {id: 'Baldes consumidos', quantity: 0},
                         ];
                         let months = [];
-                        if (result.length === 0) resolve({res, totals: totals, months: months});
                         
                         db.query(sqlSelect2, (error, resu) => {
                             if (error) {
@@ -61,7 +63,6 @@ const consuptionsReportGetDB = (from, to) => {
                                 db.rollback(()=> reject(error));
                             }
                             else {
-                                if (resu.length === 0) resolve({res, totals: totals, months: months});
                                 db.query(sqlSelect3, (error, resul) => {
                                     if (error) {
                                         console.log(error);
@@ -123,8 +124,7 @@ const consuptionsReportGetDB = (from, to) => {
                                         res.sort((a,b)=> a.family.toUpperCase().trim() > b.family.toUpperCase().trim()?1:-1);
                                         console.log(months);
                                         months.sort((a,b)=> a.month < b.month?1:-1);
-                                        console.log(months);
-
+                                        
                                         db.commit((error) => {
                                             if (error) {
                                                 console.log(error);
