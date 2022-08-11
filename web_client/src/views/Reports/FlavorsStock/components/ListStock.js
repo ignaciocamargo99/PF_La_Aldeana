@@ -132,7 +132,7 @@ const ListStock = (props) => {
             <BeShowed show={props.stock.list.length === 0}>
                 <br />
                 <div className="text-center">
-                    <h2>No se encontró información de stock de sabores de helados que coincida con la búsqueda</h2>
+                    <h4>No se encontró información de stock de sabores de helados que coincida con la búsqueda</h4>
                 </div>
             </BeShowed>
         </>

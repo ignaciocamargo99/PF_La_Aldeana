@@ -49,7 +49,7 @@ const TypeProductsSales = (props) => {
 
   return (
     <>
-      <h2>Ventas por tipo de producto</h2>
+      <h4 style={{fontWeight:'bold'}}>Ventas por tipo de producto</h4>
       <Pie data={data} />
     </>
   );

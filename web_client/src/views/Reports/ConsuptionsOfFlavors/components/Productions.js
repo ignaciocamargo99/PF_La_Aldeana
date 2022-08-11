@@ -61,7 +61,7 @@ const Productions = (props) => {
 
   return (
     <>
-      <h2>Análisis de Producción (por baldes)</h2>
+      <h4 style={{fontWeight:'bold'}}>Análisis de Producción (por baldes)</h4>
       <br/>
       <Pie data={data} />
     </>

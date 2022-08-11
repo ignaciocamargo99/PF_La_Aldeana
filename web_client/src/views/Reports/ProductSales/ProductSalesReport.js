@@ -41,7 +41,7 @@ const ProductSalesReport = (props) => {
                 <BeShowed show={loaded === true && load}>
                     <BeShowed show={props.productSales.length > 0}>
                         <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Salarios desde {from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()}</h5>
+                            <h4 style={{ textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold' }}>Productos vendidos desde {from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()}</h4>
                         </div>
                         <hr />
                         <div className="formRow">
@@ -57,7 +57,7 @@ const ProductSalesReport = (props) => {
                     <BeShowed show={props.productSales.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                        <h2>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h2>
+                        <h4>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h4>
                         </div>
                     </BeShowed>
                 </BeShowed>

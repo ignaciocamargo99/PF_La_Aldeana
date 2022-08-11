@@ -4,8 +4,11 @@ import getPermission from "./getPermission";
 
 export default function CheckBoxEnabled(props) {
     const [selectValue, setSelectValue] = useState('0');
+    const [access, setAccess] = useState(props.access)
     const selectorRef = useRef(null);
     let matrixValuesSelected = props.matrix;
+
+    useEffect(() => {setAccess(props.access)}, [])
 
     useEffect(() => {
         if (props.data.editing && props.matrix && props.permission) {

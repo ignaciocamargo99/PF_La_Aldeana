@@ -49,7 +49,7 @@ const SalariesReport = (props) => {
                     <BeShowed show={salaries[0]?.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h2>
+                            <h4>No se encontraron salarios para el período ({from?dateText(from, true, true):new Date().toLocaleDateString()} hasta {to?dateText(to, true, true):new Date().toLocaleDateString()})</h4>
                         </div>
                     </BeShowed>
                 </BeShowed>

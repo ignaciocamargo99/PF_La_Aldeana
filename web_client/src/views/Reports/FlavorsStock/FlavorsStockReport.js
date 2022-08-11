@@ -38,11 +38,11 @@ const FlavorsStockReport = (props) => {
                         <hr />
                         <div className="formRow">
                             <div className="col-sm-9" style={{ paddingRight: '1em' }}>
-                                <h2>Sabores sin stock</h2>
+                                <h4 style={{fontWeight:'bold'}}>Sabores sin stock</h4>
                                 <ListStock stock={stock[0][0]} from={from} />
-                                <h2>Sabores por debajo del punto de reorden</h2>
+                                <h4 style={{fontWeight:'bold'}}>Sabores por debajo del punto de reorden</h4>
                                 <ListStock stock={stock[0][1]} from={from} />
-                                <h2>Sabores por arriba del punto de reorden</h2>
+                                <h4 style={{fontWeight:'bold'}}>Sabores por arriba del punto de reorden</h4>
                                 <ListStock stock={stock[0][2]} from={from} />
                             </div>
                             <div className="col-sm-3" style={{ paddingLeft: '1em' }}>
@@ -53,7 +53,7 @@ const FlavorsStockReport = (props) => {
                     <BeShowed show={stock[0]?.length < 1 && load}>
                         <br />
                         <div className="text-center">
-                            <h2>No se encontró información de stock de sabores de helados y reabastecimiento para el período ({from?dateText(from, true, false):new Date().toLocaleDateString()})</h2>
+                            <h4>No se encontró información de stock de sabores de helados y reabastecimiento para el período ({from?dateText(from, true, false):new Date().toLocaleDateString()})</h4>
                         </div>
                     </BeShowed>
                 </BeShowed>
