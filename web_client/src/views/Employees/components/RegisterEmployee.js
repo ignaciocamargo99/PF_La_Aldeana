@@ -36,6 +36,12 @@ export default function RegisterEmployee() {
         return Axios.post(`${PORT()}/api/employees`, data);
     }
 
+    const generateNonWorkingDays = () => {
+        Axios.post(`${PORT()}/api/generateNonWorkingDays`, {}, {})
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+    }
+
     const registerDaysOff = (data) => {
         const dniEmployee = data.dni;
         const firstDayOff = data.firstDayOffDate.replaceAll("-", "/")
@@ -59,6 +65,7 @@ export default function RegisterEmployee() {
                     if (response.data.Ok) {
                         response = await registerDaysOff(data);
                         if (response.data.Ok) {
+                            generateNonWorkingDays();
                             successMessage('Atención', 'Empleado registrado exitosamente', 'success');
                         }
                         else {
