@@ -12,7 +12,7 @@ const Table = ({ pageElements, columnsHeaders, data, permission, loadMatrix, val
             <div className="formRow title-searcher">
                 <h4 className="text-secondary">Permisos establecidos:</h4>
             </div>
-            {(pageElements && pageElements.length > 0 && permission && access)
+            {(pageElements && pageElements.length > 0 && permission && access && loadMatrix)
                 ?
                 <div className="table-responsive-md">
                     <table className="table table-control table-hover" >
