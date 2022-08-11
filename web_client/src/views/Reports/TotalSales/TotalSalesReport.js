@@ -302,7 +302,7 @@ const TotalSalesReport = ({ permissionsAccess, user }) => {
               </table>
             </div>
             <div className="col-md-4 offset-md-1">
-              <h5 className="text-center">Ventas</h5>
+              <h4 style={{fontWeight:'bold'}} className="text-center">Ventas</h4>
               <Pie data={dataChart} style={{ height: "85%" }} />
             </div>
           </div>

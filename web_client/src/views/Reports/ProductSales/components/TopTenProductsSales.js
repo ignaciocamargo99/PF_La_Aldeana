@@ -60,7 +60,7 @@ const TopTenProductsSales = (props) => {
 
   return (
     <>
-      <h2>Top 10 productos más vendidos</h2>
+      <h4 style={{fontWeight:'bold'}}>Top 10 productos más vendidos</h4>
       <Bar data={data} options={options} ref={chartRef} />
     </>
   );

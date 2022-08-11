@@ -130,7 +130,7 @@ const ListConsuptions = (props) => {
             <BeShowed show={props.consuptions[0].length === 0}>
                 <br />
                 <div className="text-center">
-                    <h2>No se encontró información de sabores de helados que coincida con la búsqueda</h2>
+                    <h4>No se encontró información de sabores de helados que coincida con la búsqueda</h4>
                 </div>
             </BeShowed>
         </>

@@ -272,7 +272,7 @@ const OnsiteSalesInform = ({ permissionsAccess, user }) => {
               </table>
             </div>
             <div className="col-md-6">
-              <h5 className="text-center">Ventas en el local</h5>
+              <h4 style={{fontWeight:'bold'}} className="text-center">Ventas en el local</h4>
               <Bar data={dataChart} options={options} />
             </div>
           </div>

@@ -61,7 +61,7 @@ const Consuptions = (props) => {
 
   return (
     <>
-      <h2>Análisis de Consumo (por baldes)</h2>
+      <h4 style={{fontWeight:'bold'}}>Análisis de Consumo (por baldes)</h4>
       <br/>
       <Pie data={data} />
     </>

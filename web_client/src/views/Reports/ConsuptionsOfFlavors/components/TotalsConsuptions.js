@@ -66,7 +66,7 @@ const TotalsConsuptions = (props) => {
 
   return (
     <>
-      <h2>Análisis de Consumo de Sabores de Helado (mes por baldes)</h2>
+      <h4 style={{fontWeight:'bold'}}>Análisis de Consumo de Sabores de Helado (mes por baldes)</h4>
       <br/>
       <Bar data={data} options={options}/>
     </>
