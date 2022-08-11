@@ -12,7 +12,6 @@ export default function CheckBoxEnabled(props) {
 
     useEffect(() => {
         if (props.data.editing && matrixLoad && props.permission) {
-            console.log('matrixLoad', matrixLoad)
             let permissions1 = [];
             let idPermission = [];
             permissions1 = props.permission.find((permission) => permission.id_permission === props.index + 1);
