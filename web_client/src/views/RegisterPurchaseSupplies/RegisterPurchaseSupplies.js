@@ -80,7 +80,7 @@ const RegisterPurchaseSupplies = (props) => {
     }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 
     const registerPurchaseSupplies = async () => {
-        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nueva compra de insumos?`)).isConfirmed;
+        const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nuevo ingreso de insumos?`)).isConfirmed;
         if (registrationConfirmed) {
             let purchase = {
                 "date_purchase": props.purchaseDate,
@@ -91,7 +91,7 @@ const RegisterPurchaseSupplies = (props) => {
             loadingMessage('Registrando nueva compra...');
             axios.post(PORT() + `/api/purchases`, purchase)
                 .then((response) => {
-                    if (response.data.Ok) resetStates('Compra de insumos registrada exitosamente');
+                    if (response.data.Ok) resetStates('Ingreso de insumos registrado exitosamente');
                     else errorPurchaseSupplies(response.data.Message)
                 })
                 .catch((err) => { console.log(err) })
@@ -100,10 +100,9 @@ const RegisterPurchaseSupplies = (props) => {
 
     return (
         <>
-            <div style={{ display: 'none' }}>{document.title = "Registrar compra de insumos"}</div>
-            <Breadcrumb parentName="Compras" icon={faShoppingCart} parentLink="purchaseSupplies" currentName="Registrar compra de insumo" />
+            <div style={{ display: 'none' }}>{document.title = "Registrar ingreso de insumos"}</div>
             <div className="viewTitle">
-                <h1>Registrar Compra de Insumos</h1>
+                <h1>Registrar Ingreso de Insumos</h1>
             </div>
             <div className="viewBody">
                 <PurchaseNumber />
