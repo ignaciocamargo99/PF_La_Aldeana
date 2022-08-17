@@ -156,7 +156,7 @@ export default function Navbar(props) {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item href="/app/purchaseSupplies">
-                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Compra de insumos
+                                <FontAwesomeIcon className="drop-item-new" icon={faPlus} /> Ingreso de insumos
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

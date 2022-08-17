@@ -1,12 +1,16 @@
-export const assembleColumnHeaders = () => {
-    let columnsHeaders = [
+export const getColumnHeaders = () => {
+    return [
         {
             name: 'Nombre',
             width: '23%'
         },
         {
             name: 'Descripción',
-            width: '27%'
+            width: '25%'
+        },
+        {
+            name: 'Stock',
+            width: '8%'
         },
         {
             name: 'Precio al por mayor ($)',
@@ -14,16 +18,15 @@ export const assembleColumnHeaders = () => {
         },
         {
             name: 'Ver',
-            width: '10%'
+            width: '8%'
         },
         {
             name: 'Editar',
-            width: '10%'
+            width: '8%'
         },
         {
             name: 'Eliminar',
-            width: '10%'
+            width: '8%'
         }
     ];
-    return columnsHeaders
 }

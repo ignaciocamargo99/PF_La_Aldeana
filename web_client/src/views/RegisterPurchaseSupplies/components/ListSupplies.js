@@ -83,7 +83,7 @@ const ListSupplies = (props) => {
             </BeShowed>
             <hr></hr>
             <div className="form-control-label">
-                <h3 style={{ marginTop: '5%' }}>Detalle de compra</h3>
+                <h3 style={{ marginTop: '5%' }}>Detalle</h3>
             </div>
             <div className="viewBody">
                 <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download} />
