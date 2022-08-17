@@ -4,14 +4,14 @@ import BeShowed from 'common/BeShowed';
 import LoaderSpinner from 'common/LoaderSpinner';
 import React, { useState, useEffect } from 'react'
 import { useGetSupplies } from '../customHooks/useGetSupplies';
-import { assembleColumnHeaders } from '../customHooks/assembleColumnHeaders';
+import { getColumnHeaders } from '../customHooks/getColumnHeaders';
 import { useReadEditSupplies } from '../customHooks/useReadEditSupplies';
 import TablePagination from './TablePagination/TablePagination';
 import ReadSupplies from './ReadSupplies/ReadSupplies';
 import EditSupplies from './EditSupplies/EditSupplies';
 
 const SuppliesView = ({ permissionsAccess }) => {
-    const columnsHeaders = assembleColumnHeaders();
+    const columnsHeaders = getColumnHeaders();
     /* Destructuring the object returned by the useGetProductTypes() hook. */
     const { loadingSupplies, supplies } = useGetSupplies();
     /* A custom hook that is used to read and edit a product type. */

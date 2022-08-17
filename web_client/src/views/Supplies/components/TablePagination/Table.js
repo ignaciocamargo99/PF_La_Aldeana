@@ -6,13 +6,14 @@ import DeleteSupplyButton from "../DeleteSupplyButton";
 // import DeleteUserButton from '../DeleteProductTypeButton';
 import EditSupplyButton from '../EditSupplies/EditSupplyButton';
 import ReadSupplyButton from "../ReadSupplies/ReadSupplyButton";
+import StockSupplyTable from "./StockSupplyTable";
 
 const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handleEdit, handleDelete, permissionsAccess }) => {
 
     return (
         <>
             <div className="formRow title-searcher">
-                <h4 className="text-secondary">Tipos de producto disponibles:</h4>
+                <h4 className="text-secondary">Insumos disponibles:</h4>
                 <div className="search-input">
                     <div className="input-group">
                         <div className="input-group-prepend">
@@ -40,6 +41,7 @@ const Table = ({ setNameSearch, pageElements, columnsHeaders, handleRead, handle
                                     <tr key={i}>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{element.name}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{!element.description ? '--' : element.description}</td>
+                                        <StockSupplyTable supply={element} />
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{!element.price_wholesale ? '--' : element.price_wholesale}</td>
                                         <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <ReadSupplyButton data={element} read={handleRead} />
