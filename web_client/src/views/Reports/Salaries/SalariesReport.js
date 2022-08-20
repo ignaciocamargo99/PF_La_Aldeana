@@ -8,7 +8,7 @@ import { useState } from 'react';
 import dateText from 'utils/DateFormat/dateText';
 
 import ListSalaries from "./components/ListSalaries";
-import Options from "./components/Options";
+import SalariesReportOptions from "./components/SalariesReportOptions";
 import TotalsSalaries from './components/TotalsSalaries';
 
 const SalariesReport = ({ user, permissionsAccess }) => {
@@ -28,7 +28,7 @@ const SalariesReport = ({ user, permissionsAccess }) => {
             </div>
             <div className="viewBody">
                 <div className="row">
-                    <Options
+                    <SalariesReportOptions
                         dateFrom={dateFrom}
                         dateTo={dateTo}
                         load={load}

@@ -14,7 +14,7 @@ import MyDocument from './PDFSalariesReport';
 
 const PORT = require('../../../../config');
 
-const Options = (props) => {
+const SalariesReportOptions = (props) => {
     const inputDateFrom = useRef();
     const inputDateTo = useRef();
     const [showPdf, setShowPDF] = useState(false);
@@ -183,4 +183,4 @@ const Options = (props) => {
     );
 }
 
-export default Options;
+export default SalariesReportOptions;
