@@ -81,7 +81,6 @@ const FormSalary = ({
 
                     Axios.get(PORT() + `/api/salariesdetails/${salary.id_salary}`)
                         .then((response) => {
-                            console.log(response.data);
                             let aux = response.data;
                             let mainAux = main;
                             let plus = [];
@@ -197,7 +196,6 @@ const FormSalary = ({
                                     aux[0] = { name: 'Adelantos', price: acu, predictive: 0, id_concept: 8 };
                                     setOthersMinus(aux);
                                 }
-                                console.log(r.data)
                                 setAdvances(r.data);
                             }
                         }
@@ -278,7 +276,6 @@ const FormSalary = ({
     const editSalary = () => {
         setShowSpinner(true);
         if (advances.length > 0) {
-            console.log(advances)
             Axios.put(`${PORT()}/api/installmentstopay?date=${selectedMonth}&dniEmployee=${employee.dni}`, { advances })
                 .then((response) => {
                     if (response.data.Ok !== false) {

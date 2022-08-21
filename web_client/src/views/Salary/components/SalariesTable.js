@@ -41,7 +41,7 @@ export default function SalariesTable({
                     person.fullName = person.last_name;
                     person.fullName += ', ';
                     person.fullName += person.name;
-                    if (allSalaries?.length > 1) {
+                    if (allSalaries?.length > 0) {
                         const exist = allSalaries.filter((elem) => {
                             return elem.dni === person.dni;
                         });
