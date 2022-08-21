@@ -5,19 +5,24 @@ import Breadcrumb from 'common/Breadcrumb';
 import LoaderSpinner from 'common/LoaderSpinner';
 
 import { useState } from 'react';
-import dateText from 'utils/DateFormat/dateText';
 
+import getLastDayOfPreviousonthAsDate from './components/getLastMonthDate';
+import getSalariesRangeTitle from './components/getSalariesRangeTitle';
 import ListSalaries from "./components/ListSalaries";
 import SalariesReportOptions from "./components/SalariesReportOptions";
 import TotalsSalaries from './components/TotalsSalaries';
 
 const SalariesReport = ({ user, permissionsAccess }) => {
 
-    const [dateFrom, setDateFrom] = useState(null);
-    const [dateTo, setDateTo] = useState(null);
-    const [load, setLoad] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    const [dateFrom, setDateFrom] = useState(getLastDayOfPreviousonthAsDate());
+    const [dateTo, setDateTo] = useState(getLastDayOfPreviousonthAsDate());
+
+    const [showReportSection, setShowReportSection] = useState(false);
+    const [reportLoaded, setReportLoaded] = useState(false);
+
     const [salaries, setSalaries] = useState([]);
+
+    const salariesRangeTitle = getSalariesRangeTitle(dateFrom, dateTo);
 
     return (
         <>
@@ -31,43 +36,51 @@ const SalariesReport = ({ user, permissionsAccess }) => {
                     <SalariesReportOptions
                         dateFrom={dateFrom}
                         dateTo={dateTo}
-                        load={load}
                         permissionsAccess={permissionsAccess}
+                        reportLoaded={reportLoaded}
                         salaries={salaries[0]}
-                        setFrom={setDateFrom}
-                        setLoad={setLoad}
-                        setLoaded={setLoaded}
+                        setDateFrom={setDateFrom}
+                        setDateTo={setDateTo}
+                        setReportLoaded={setReportLoaded}
                         setSalaries={setSalaries}
-                        setTo={setDateTo}
+                        setShowReportSection={setShowReportSection}
+                        showReportSection={showReportSection}
                         user={user}
                     />
                 </div>
                 <br />
-                <BeShowed show={loaded === false && load}>
-                    <LoaderSpinner color='secondary' loading='Cargando...'></LoaderSpinner>
-                </BeShowed>
-                <BeShowed show={loaded === true && load}>
-                    <BeShowed show={salaries[0]?.length > 0}>
-                        <div className="text-center">
-                            <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>Salarios desde {dateFrom ? dateText(dateFrom, true, true) : new Date().toLocaleDateString()} hasta {dateTo ? dateText(dateTo, true, true) : new Date().toLocaleDateString()}</h5>
-                        </div>
-                        <hr />
-                        <div className="formRow">
-                            <div className="col-sm-9" style={{ paddingRight: '1em' }}>
-                                <ListSalaries salaries={salaries} from={dateFrom} to={dateTo} />
-                            </div>
-                            <div className="col-sm-3" style={{ paddingLeft: '1em' }}>
-                                <TotalsSalaries totals={salaries[1]} />
-                            </div>
-                        </div>
-                    </BeShowed>
-                    <BeShowed show={salaries[0]?.length < 1 && load}>
-                        <br />
-                        <div className="text-center">
-                            <h4>No se encontraron salarios para el período ({dateFrom ? dateText(dateFrom, true, true) : new Date().toLocaleDateString()} hasta {dateTo ? dateText(dateTo, true, true) : new Date().toLocaleDateString()})</h4>
-                        </div>
-                    </BeShowed>
-                </BeShowed>
+
+                {showReportSection && (
+                    <>
+                        {(!reportLoaded) && (
+                            <LoaderSpinner color='secondary' loading='Cargando...'></LoaderSpinner>
+                        )}
+                        {reportLoaded && (
+                            <>
+                                <BeShowed show={salaries[0]?.length > 0}>
+                                    <div className="text-center">
+                                        <h5 style={{ textAlign: 'center', verticalAlign: 'middle' }}>{salariesRangeTitle}</h5>
+                                    </div>
+                                    <hr />
+                                    <div className="formRow">
+                                        <div className="col-sm-9" style={{ paddingRight: '1em' }}>
+                                            <ListSalaries salaries={salaries} />
+                                        </div>
+                                        <div className="col-sm-3" style={{ paddingLeft: '1em' }}>
+                                            <TotalsSalaries totals={salaries[1]} />
+                                        </div>
+                                    </div>
+                                </BeShowed>
+                                <BeShowed show={salaries[0]?.length < 1}>
+                                    <br />
+                                    <div className="text-center">
+                                        <h4>No se encontraron salarios para el período seleccionado.</h4>
+                                    </div>
+                                </BeShowed>
+                            </>
+                        )}
+                    </>
+                )}
             </div>
         </>
     );
