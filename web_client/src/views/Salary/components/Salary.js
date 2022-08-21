@@ -38,7 +38,7 @@ const Salary = ({ permissionsAccess }) => {
                 .then((response) => {
                     const aux = [];
                     const state = filter === CONFIRM ? 2 : filter === ON_HOLD ? 1 : -1;
-                    if (response.data.length > 1) {
+                    if (response.data.length > 0) {
                         response.data.forEach(elem => {
                             elem.fullName = elem.last_name;
                             elem.fullName += ', ';
