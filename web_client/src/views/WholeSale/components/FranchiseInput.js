@@ -37,7 +37,7 @@ const FranchiseInput = ({ wholesaleFranchise, setWholesaleFranchise, read }) => 
                 )}
             </div>
             <DisabledLabelInput name={'Ciudad'} value={wholesaleFranchise?.city} />
-            <DisabledLabelInput name={'Franquiciado'} value={wholesaleFranchise ? `${wholesaleFranchise.name_manager}, ${wholesaleFranchise.last_name_manager}` : ''} />
+            <DisabledLabelInput name={'Franquiciado'} value={wholesaleFranchise ? `${wholesaleFranchise.last_name_manager}, ${wholesaleFranchise.name_manager}` : ''} />
         </>
     )
 }

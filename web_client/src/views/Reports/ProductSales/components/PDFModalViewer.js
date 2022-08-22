@@ -23,7 +23,7 @@ export default function Viewer(props) {
         </PDFViewer>
       </ModalBody>
       <ModalFooter>
-        <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-' + props.reportOf + '-' + props.description + '.pdf'}>
+        <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-' + props.reportOf + '-' + (props.title?(props.title + '-'):'') + (props.description?props.description:'') + '.pdf'}>
           <button className='btn btn-light sendOk' onClick={extraAction}>Descargar</button>
         </PDFDownloadLink>
         <button className='btn btn-light cancel' onClick={props.cancel}>Cancelar</button>

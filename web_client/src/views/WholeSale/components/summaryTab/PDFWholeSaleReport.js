@@ -47,6 +47,7 @@ export default function MyDocument (props) {
                 <Text style={styles.text}>{props.wholesaleFranchise.last_name_manager + ', ' + props.wholesaleFranchise.name_manager}</Text>
               </View>
             </View>
+            <Text style={{margin: '1cm'}}> </Text>
           <Text style={styles.title}>Resumen</Text>
             <>
             <View style={styles.row}>
@@ -148,7 +149,7 @@ export default function MyDocument (props) {
                         <Text style={styles.text}>{element.FlavorFamily.name}</Text>
                       </View>
                       <View style={styles.col7}>
-                        <Text style={styles.money}>{element.amountToSell}</Text>
+                        <Text style={styles.money}>{element.amountToSell} uds.</Text>
                       </View>
                     </View>
                   </>
@@ -206,7 +207,7 @@ export default function MyDocument (props) {
                 <Text style={styles.subtitle}>Nombre</Text>
               </View>
               <View style={styles.col4}>
-                <Text style={styles.subtitle}>Cantidad (und.)</Text>
+                <Text style={styles.subtitle}>Cantidad</Text>
               </View>
               <View style={styles.col4}>
                 <Text style={styles.subtitle}>Precio</Text>
@@ -223,7 +224,7 @@ export default function MyDocument (props) {
                       <Text style={styles.text}>{element.name}</Text>
                     </View>
                     <View style={styles.col4}>
-                      <Text style={styles.money}>{element.amountToSell}</Text>
+                      <Text style={styles.money}>{element.amountToSell} uds.</Text>
                     </View>
                     <View style={styles.col4}>
                       <Text style={styles.text}>$ {element.price_wholesale}</Text>

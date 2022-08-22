@@ -66,7 +66,7 @@ const TabSummary = ({
     const total = +subtotalFlavors + +wholesaleTransportCost + +subtotalSupplies;
 
     useEffect(()=>{
-        setMyDoc(<MyDocument user={''} title={"(" + dateText(wholesaleDate, false, true) + ")"} description={('')} 
+        setMyDoc(<MyDocument user={''} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} 
         wholesaleFranchise={wholesaleFranchise} wholesaleFlavors={wholesaleFlavors} wholesaleBucketsWeights={wholesaleBucketsWeights} wholesaleSupplies={wholesaleSupplies}
         wholesaleTransportCost={wholesaleTransportCost} subtotals={{subtotalFlavors: subtotalFlavors, subtotalSupplies: subtotalSupplies, total: total}} />);
     }, [wholesaleDate,
@@ -254,7 +254,7 @@ const TabSummary = ({
                             handleFinalize={handleFinalize}
                             labelBtn='Finalizar'
                         />
-                        <Viewer MyDoc={MyDoc} reportOf='comprobante de venta mayorista' showPdf={showPdf} extraAction={saveWholesale} cancel={cancel} title={"(" + dateText(wholesaleDate, false, true) + ")"} description={('')} ></Viewer>
+                        <Viewer MyDoc={MyDoc} reportOf='comprobante de venta mayorista' showPdf={showPdf} extraAction={saveWholesale} cancel={cancel} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} ></Viewer>
                     </div>
                 </>
             )}
