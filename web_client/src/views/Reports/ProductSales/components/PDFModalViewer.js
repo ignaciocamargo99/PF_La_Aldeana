@@ -5,6 +5,10 @@ import dateFormat from '../../../../utils/DateFormat/dateFormat';
 
 export default function Viewer(props) {
 
+  const extraAction = () => {
+    if(props.extraAction)props.extraAction();
+  }
+
   return (
     <Modal isOpen={props.showPdf}
       size="xl"
@@ -19,8 +23,8 @@ export default function Viewer(props) {
         </PDFViewer>
       </ModalBody>
       <ModalFooter>
-        <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-' + props.reportOf + '-' + props.description + '.pdf'}>
-          <button className='btn btn-light sendOk' >Descargar</button>
+        <PDFDownloadLink document={props.MyDoc} fileName={dateFormat(new Date()) + '-' + props.reportOf + '-' + (props.title?(props.title + '-'):'') + (props.description?props.description:'') + '.pdf'}>
+          <button className='btn btn-light sendOk' onClick={extraAction}>Descargar</button>
         </PDFDownloadLink>
         <button className='btn btn-light cancel' onClick={props.cancel}>Cancelar</button>
       </ModalFooter>

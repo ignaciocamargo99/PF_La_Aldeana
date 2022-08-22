@@ -84,7 +84,7 @@ const SalariesReportOptions = (props) => {
                     });
 
                     const totalised = {
-                        type: 'outlabeledPie',
+                        type: 'doughnut',
                         labels: labelsTotalised,
                         datasets: [
                             {
@@ -92,7 +92,8 @@ const SalariesReportOptions = (props) => {
                                 data: datTotalised,
                             },
                         ],
-                        total: data[1][5].quantity
+                        total: data[1][5].quantity,
+                        legend: true
                     };
 
                     setDocumentData({
@@ -156,6 +157,7 @@ const SalariesReportOptions = (props) => {
                 MyDoc={MyDoc}
                 cancel={cancel}
                 description={description}
+                title={documentData.title}
                 reportOf='salarios'
                 showPdf={showPdf}
             ></Viewer>

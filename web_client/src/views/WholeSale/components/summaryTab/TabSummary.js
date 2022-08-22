@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { postWholesale } from 'helpers/postWholesale';
@@ -17,6 +18,9 @@ import CardSummary from './CardSummary';
 import FlavorsSummaryDetail from './FlavorsSummaryDetail';
 import ItemSummary from './ItemSummary';
 import SuppliesSummaryDetail from './SuppliesSummaryDetail';
+import MyDocument from './PDFWholeSaleReport';
+import dateText from 'utils/DateFormat/dateText';
+import Viewer from 'views/Reports/ProductSales/components/PDFModalViewer';
 
 const TabSummary = ({
     showTab,
@@ -29,6 +33,9 @@ const TabSummary = ({
 }) => {
 
     const flavorsCategoriesIds = wholesaleFlavors?.length > 0 ? [...new Set(wholesaleFlavors.map(f => +f.FlavorType.idFlavorType))] : [];
+
+    const [showPdf, setShowPDF] = useState(false);
+    const [MyDoc, setMyDoc] = useState('');
 
     const searchCategoryNameById = (categoryId) => {
         return wholesaleFlavors?.find(f => +f.FlavorType?.idFlavorType === +categoryId)?.FlavorType.name || '';
@@ -57,6 +64,29 @@ const TabSummary = ({
     const subtotalSupplies = calculateSuppliesSubtotal(wholesaleSupplies);
 
     const total = +subtotalFlavors + +wholesaleTransportCost + +subtotalSupplies;
+
+    useEffect(()=>{
+        setMyDoc(<MyDocument user={''} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} 
+        wholesaleFranchise={wholesaleFranchise} wholesaleFlavors={wholesaleFlavors} wholesaleBucketsWeights={wholesaleBucketsWeights} wholesaleSupplies={wholesaleSupplies}
+        wholesaleTransportCost={wholesaleTransportCost} subtotals={{subtotalFlavors: subtotalFlavors, subtotalSupplies: subtotalSupplies, total: total}} />);
+    }, [wholesaleDate,
+        wholesaleFranchise,
+        wholesaleFlavors,
+        wholesaleBucketsWeights,
+        wholesaleSupplies,
+        wholesaleTransportCost,
+        subtotalFlavors,
+        subtotalSupplies,
+        total
+    ]);
+
+    const showRenderPDF = () => {
+        setShowPDF(true);
+    }
+
+    const cancel = () => {
+        setShowPDF(false);
+    }
 
     const warnNoValid = (msg) => {
         warnSweetAlert2('', msg);
@@ -162,7 +192,8 @@ const TabSummary = ({
         };
     }
 
-    const saveWholesale = (wholesalePayload) => {
+    const saveWholesale = () => {
+        const wholesalePayload = createWholesalePayload();
         sweetAlert2Loading();
         postWholesale(wholesalePayload)
             .then((response) => {
@@ -187,7 +218,7 @@ const TabSummary = ({
         if (isWholesaleDataValid(wholesalePayload)) {
             defaultQuestionSweetAlert2('¿Confirmar venta?').then((result) => {
                 if (result.isConfirmed) {
-                    saveWholesale(wholesalePayload);
+                    showRenderPDF(wholesalePayload);
                 }
             })
         }
@@ -223,6 +254,7 @@ const TabSummary = ({
                             handleFinalize={handleFinalize}
                             labelBtn='Finalizar'
                         />
+                        <Viewer MyDoc={MyDoc} reportOf='comprobante de venta mayorista' showPdf={showPdf} extraAction={saveWholesale} cancel={cancel} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} ></Viewer>
                     </div>
                 </>
             )}
