@@ -9,7 +9,7 @@ const getLastMonthDate = () => {
     const yearAsString = lastMonth.getFullYear().toString();
 
     // MM
-    let monthAsString = lastMonth.getMonth().toString();
+    let monthAsString = (lastMonth.getMonth() + 1).toString();
     if (monthAsString.length === 1) {
         monthAsString = `0${monthAsString}`;
     }
