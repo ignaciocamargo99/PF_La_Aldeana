@@ -36,7 +36,7 @@ const consuptionsReportGetDB = (from, to) => {
                 LEFT JOIN FLAVORS f ON dsf.id_flavor = f.id_flavor 
                 LEFT JOIN FLAVOR_FAMILIES ff ON ff.id_family_flavor = f.family_flavor
                 LEFT JOIN FLAVOR_TYPES ft ON ft.id_type_flavor = f.type_flavor
-                WHERE sb.date_production >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date_production <= '${(to.length > 7 ? to : (to + '-01'))}'`;
+                WHERE sb.date_production >= '${(from.length > 7 ? from : (from + '-01'))}' AND sb.date_production <= '${(to.length > 7 ? to : (to + '-01'))}' AND f.name IS NOT NULL`;
 
     return new Promise((resolve, reject) => {
         pool.getConnection((error, db) => {
@@ -118,7 +118,7 @@ const consuptionsReportGetDB = (from, to) => {
                                                 months[monthId].prod += detail.quantity;
                                             }
                                         });
-
+                                        console.log(res);
                                         res.sort((a,b)=> a.name.toUpperCase().trim() > b.name.toUpperCase().trim());
                                         res.sort((a,b)=> a.type.toUpperCase().trim() < b.type.toUpperCase().trim()?1:-1);
                                         res.sort((a,b)=> a.family.toUpperCase().trim() > b.family.toUpperCase().trim()?1:-1);
