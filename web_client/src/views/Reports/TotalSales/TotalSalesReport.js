@@ -118,16 +118,16 @@ const TotalSalesReport = ({ permissionsAccess, user }) => {
   return (
     <div className="container-fluid">
       <div style={{ display: "none" }}>
-        {(document.title = "Reporte de ventas en el local")}
+        {(document.title = "Reporte total de ventas")}
       </div>
       <Breadcrumb
         parentName="Reportes de ventas"
         icon={faClipboard}
         parentLink="salesReport"
-        currentName="Reporte de ventas en el local"
+        currentName="Reporte total de ventas"
       />
       <div className="viewTitle">
-        <h1>Reporte de ventas en el local</h1>
+        <h1>Reporte total de ventas</h1>
       </div>
       <div className="viewBody">
         <div className="d-flex flex-row justify-content-end">

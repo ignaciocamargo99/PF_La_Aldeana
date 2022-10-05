@@ -34,8 +34,8 @@ export default function SalesReports() {
         />
         <br />
         <Card
-          title="Reporte de venta en el local durante el dia"
-          text="Reporte que da información estadística de las ventas en el local durante el dia seleccionado"
+          title="Reporte de venta en el local durante el día"
+          text="Reporte que da información estadística de las ventas en el local durante el día seleccionado"
           handleCardClicked={goToOnsiteSalesReport}
         />
         <br />
