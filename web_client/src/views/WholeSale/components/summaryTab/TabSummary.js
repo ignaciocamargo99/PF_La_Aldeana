@@ -30,6 +30,7 @@ const TabSummary = ({
     wholesaleBucketsWeights,
     wholesaleSupplies,
     wholesaleTransportCost,
+    user,
 }) => {
 
     const flavorsCategoriesIds = wholesaleFlavors?.length > 0 ? [...new Set(wholesaleFlavors.map(f => +f.FlavorType.idFlavorType))] : [];
@@ -66,7 +67,7 @@ const TabSummary = ({
     const total = +subtotalFlavors + +wholesaleTransportCost + +subtotalSupplies;
 
     useEffect(()=>{
-        setMyDoc(<MyDocument user={''} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} 
+        setMyDoc(<MyDocument user={user} title={"(" + dateText(wholesaleDate, true, true) + ")"} description={('')} 
         wholesaleFranchise={wholesaleFranchise} wholesaleFlavors={wholesaleFlavors} wholesaleBucketsWeights={wholesaleBucketsWeights} wholesaleSupplies={wholesaleSupplies}
         wholesaleTransportCost={wholesaleTransportCost} subtotals={{subtotalFlavors: subtotalFlavors, subtotalSupplies: subtotalSupplies, total: total}} />);
     }, [wholesaleDate,

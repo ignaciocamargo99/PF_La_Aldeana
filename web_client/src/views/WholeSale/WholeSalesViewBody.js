@@ -11,7 +11,7 @@ import TabSummary from './components/summaryTab/TabSummary';
 import TabSupplies from './components/TabSupplies';
 import TabTransport from './components/TabTransport';
 
-const WholeSalesViewBody = () => {
+const WholeSalesViewBody = ({user}) => {
 
     const { activeFlavors, loadingFlavors } = useGetActiveFlavors();
     const { supplies, loadingSupplies } = useGetSupplies({ forWholesale: true });
@@ -74,6 +74,7 @@ const WholeSalesViewBody = () => {
                 setTransportCost={setTransportCost}
             />
             <TabSummary
+                user={user}
                 showTab={tabs.showSummaryTab}
                 wholesaleDate={wholesaleDate}
                 wholesaleFranchise={wholesaleFranchise}

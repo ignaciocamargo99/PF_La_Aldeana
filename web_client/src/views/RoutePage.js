@@ -137,6 +137,7 @@ export default function RouterPage(props) {
             <Route path={WHOLESALE_PAGE}>
               <WholeSaleRoutes
                 permissionsAccess={permissionsAccessFranchises}
+                user={props.user}
               />
             </Route>
             <Route

@@ -5,7 +5,7 @@ import { ReadWholeSale } from './WholeSaleList/ReadWholeSale/ReadWholeSale';
 import { WholeSalesList } from "./WholeSaleList/WholeSalesList";
 import WholeSalesView from "./WholeSalesView";
 
-const WholeSaleRoutes = ({ permissionsAccess }) => {
+const WholeSaleRoutes = ({ permissionsAccess, user }) => {
     let { path } = useRouteMatch();
     const readOnly = permissionsAccess === 1;
 
@@ -18,7 +18,7 @@ const WholeSaleRoutes = ({ permissionsAccess }) => {
                     if (readOnly) {
                         return <NotPermissionPage />
                     } else {
-                        return <WholeSalesView />
+                        return <WholeSalesView user={user}/>
                     }
                 }}></Route>
 

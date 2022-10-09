@@ -25,10 +25,10 @@ const ProductSalesReport = (props) => {
 
     return (
         <>
-            <div style={{ display: 'none' }}>{document.title = "Reporte de productos vendidos"}</div>
-            <Breadcrumb parentName="Reportes de ventas" icon={faClipboard} parentLink="salesReport" currentName="Reporte de productos vendidos" />
+            <div style={{ display: 'none' }}>{document.title = "Reporte de productos vendidos a mínoristas"}</div>
+            <Breadcrumb parentName="Reportes de ventas mínoristas" icon={faClipboard} parentLink="salesReport" currentName="Reporte de productos vendidos a mínoristas" />
             <div className="viewTitle">
-                <h1>Reporte de productos vendidos</h1>
+                <h1>Reporte de productos vendidos a mínoristas</h1>
             </div>
             <div className="viewBody">
                 <div className="row">
