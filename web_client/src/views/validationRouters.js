@@ -47,8 +47,8 @@ export default function validationRouters(route, accesses) {
   let pathsToAllReportsRRHH = ["/app/RRHHReport", "/app/salariesReport"];
 
   // Purchases
-  // let pathsToReadPurchases;
-  let pathsToReadRegisterPurchases = ["/app/purchaseSupplies"];
+  let pathsToReadPurchases = ["/app/purchaseSupplies"];
+  let pathsToReadRegisterPurchases = ["/app/purchaseSupplies", "/app/newPurchaseSupplies"];
 
   // Employees
   let pathsToReadEmployees = [
@@ -137,7 +137,12 @@ export default function validationRouters(route, accesses) {
       return false;
     else if (!accesses[1]) return false;
     else return true;
-  } else if (pathsToReadRegisterPurchases.indexOf(route) !== -1) {
+  } else if (pathsToReadPurchases.indexOf(route) !== -1) {
+    if ((accesses[2] === 2 || accesses[2] === 3 || accesses[2] === 1) && pathsToReadPurchases.indexOf(route) === -1)
+      return false;
+    else if (!accesses[2]) return false;
+    else return true;
+  }else if (pathsToReadRegisterPurchases.indexOf(route) !== -1) {
     if (accesses[2] === 1 && pathsToReadRegisterPurchases.indexOf(route) === -1)
       return false;
     else if (!accesses[2]) return false;

@@ -3,8 +3,10 @@ const { readPurchases, readLastPurchase, createPurchaseSupplies } = require('../
 // HTTP: GET
 async function getPurchases(req, res) {
     try {
-        const result = await readPurchases();
-        res.send(result)
+        var from = req.query.from;
+        var to = req.query.to;
+        const result = await readPurchases(from, to);
+        res.send(result);
     }
     catch (e) {
         res.json({

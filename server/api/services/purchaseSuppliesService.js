@@ -1,8 +1,8 @@
 const { purchaseSuppliesPostDB, purchasesGetDB, lastPurchaseGetDB } = require('../db/purchaseSuppliesDB');
 
-const readPurchases = async () => {
+const readPurchases = async (from, to) => {
     try {
-        let res = await purchasesGetDB();
+        let res = await purchasesGetDB(from, to);
         return res;
     }
     catch (error) {

@@ -34,6 +34,7 @@ import ListUsers from "./Users/ListUsers";
 import validationRouters from "./validationRouters";
 import WholeSaleRoutes from "./WholeSale/WholeSaleRoutes";
 import FlavorsStockReport from "./Reports/FlavorsStock/FlavorsStockReport";
+import PurchaseSuppliesRoutes from "./RegisterPurchaseSupplies/PurchaseSuppliesRoutes"
 import TotalSalesReport from "./Reports/TotalSales/TotalSalesReport";
 import ConsuptionsOfFlavorsReport from "./Reports/ConsuptionsOfFlavors/ConsuptionsOfFlavorsReport";
 
@@ -248,11 +249,20 @@ export default function RouterPage(props) {
       );
       let purchases;
       if (permissionPurchases === "Compras") {
-        // let permissionAccessPurchases = props.accesses[2];
+        let permissionAccessPurchases = props.accesses[2];
         purchases = (
           <>
             <Route
               path="/app/purchaseSupplies"
+              render={() => (
+                <PurchaseSuppliesRoutes
+                  permissionsAccess={permissionAccessPurchases}
+                  user={props.user}
+                />
+              )}
+            ></Route>
+            <Route
+              path="/app/newPurchaseSupplies"
               component={RegisterPurchaseSupplies}
             ></Route>
           </>
