@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { WHOLESALE_VIEW_PAGE } from 'routes/routes';
 import ReadButton from './ReadButton';
 
 const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
@@ -65,7 +64,7 @@ const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
                                         {element.total}
                                     </td>
                                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        <ReadButton link={!permissionsAccess ? '#' : `${WHOLESALE_VIEW_PAGE}/${element.number}`} />
+                                        <ReadButton link={!permissionsAccess ? '#' : `purchaseSupplies/view/${element.number}`} />
                                     </td>
                                 </tr>
                             )

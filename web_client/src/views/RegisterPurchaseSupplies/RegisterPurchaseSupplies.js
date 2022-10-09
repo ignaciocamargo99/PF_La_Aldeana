@@ -16,12 +16,17 @@ import Breadcrumb from '../../common/Breadcrumb';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
+import { useParams } from 'react-router-dom';
+import { useGetWholeSaleByID } from "views/WholeSale/customHooks/useGetWholeSaleByID";
+import BeShowed from 'common/BeShowed';
 
 const PORT = require('../../config');
 
 const RegisterPurchaseSupplies = (props) => {
     const [ready, setReady] = useState(false)
     const [details, setDetails] = useState([])
+    const { idWholesale } = useParams();
+    const { loadingWholeSale, wholeSale } = useGetWholeSaleByID(idWholesale);
 
     const cancel = () => window.location.href = './purchaseSupplies'
 
@@ -100,10 +105,30 @@ const RegisterPurchaseSupplies = (props) => {
 
     return (
         <>
-            <div style={{ display: 'none' }}>{document.title = "Registrar ingreso de insumos"}</div>
-            <div className="viewTitle">
-                <h1>Registrar Ingreso de Insumos</h1>
-            </div>
+            <BeShowed show={idWholesale > 0}>
+                <div style={{ display: 'none' }}>{document.title = "Consultar ingreso de insumos"}</div>
+                <Breadcrumb
+                    icon={faShoppingCart}
+                    currentName='Consultar ingreso de insumos'
+                    parentLink={'/app/purchaseSupplies'}
+                    parentName='Ingresos de insumos'
+                />
+                <div className="viewTitle">
+                    <h1>Resumen ingreso N° {idWholesale}</h1>
+                </div>
+            </BeShowed>
+            <BeShowed show={!idWholesale}>
+                <div style={{ display: 'none' }}>{document.title = "Registrar ingreso de insumos"}</div>
+                <Breadcrumb
+                    icon={faShoppingCart}
+                    currentName='Registrar ingreso de insumos'
+                    parentLink={'purchaseSupplies'}
+                    parentName='Ingresos de insumos'
+                />
+                <div className="viewTitle">
+                    <h1>Registrar Ingreso de Insumos</h1>
+                </div>
+            </BeShowed>
             <div className="viewBody">
                 <PurchaseNumber />
                 <PurchaseSupplier />
