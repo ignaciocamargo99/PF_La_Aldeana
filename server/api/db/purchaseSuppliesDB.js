@@ -2,7 +2,7 @@ const pool = require("../../config/connection");
 
 const purchasesGetDB = (from, to) => {
   const sqlSelect = from != null && to != null?`SELECT * FROM PURCHASES_SUPPLIES WHERE purchase_date <= "${to}" AND purchase_date >= "${from}"`: "SELECT * FROM PURCHASES_SUPPLIES";
-console.log(sqlSelect)
+  
   return new Promise((resolve, reject) => {
     pool.getConnection((error, db) => {
       if (error) reject(error);
@@ -16,6 +16,29 @@ console.log(sqlSelect)
   });
 };
 
+const readPurchasesByIdDB = (id) => {
+  const sqlSelect = `SELECT * FROM PURCHASES_SUPPLIES WHERE purchase_number = "${id}"`;
+  const sqlSelectDetail = `SELECT * FROM PURCHASES_SUPPLIES p LEFT JOIN DETAIL_PURCHASE_SUPPLIES d ON d.purchase_number = p.purchase_number WHERE d.purchase_number = "${id}"`;
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((error, db) => {
+      if (error) reject(error);
+      if(id != null)resolve({});
+      db.query(sqlSelect, (error, result) => {
+        if (error) reject(error);
+        else {
+          db.query(sqlSelectDetail, (error, res) => {
+            if (error) reject(error);
+            else {
+              res.details = res;
+              resolve(result);
+            }
+          });}
+      });
+      db.release();
+    });
+  });
+}
 const lastPurchaseGetDB = () => {
   const sqlSelect = `SELECT MAX(p.purchase_number) AS last_number FROM PURCHASES_SUPPLIES p`;
 
@@ -37,8 +60,9 @@ const purchaseSuppliesPostDB = (newPurchase) => {
   const supplier = newPurchase.supplier;
   const total = newPurchase.total;
   const arrDetails = newPurchase.details;
+  const number = newPurchase.number;
 
-  const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total})`;
+  const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total},${number})`;
 
   //console.log(sqlInsertPurchase)
   return new Promise((resolve, reject) => {
@@ -111,4 +135,4 @@ const purchaseSuppliesPostDB = (newPurchase) => {
   });
 };
 
-module.exports = { purchasesGetDB, lastPurchaseGetDB, purchaseSuppliesPostDB };
+module.exports = { purchasesGetDB, lastPurchaseGetDB, purchaseSuppliesPostDB, readPurchasesByIdDB };

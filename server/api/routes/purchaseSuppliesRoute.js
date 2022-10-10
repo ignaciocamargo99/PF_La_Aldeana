@@ -4,6 +4,7 @@ const purchasesSuppliesController = require("../controllers/purchaseSuppliesCont
 
 //#region APIs
 router.get("/purchases", purchasesSuppliesController.getPurchases);
+router.get('/purchases/:id', purchasesSuppliesController.getPurchasesByID);
 router.get("/lastPurchase", purchasesSuppliesController.getLastPurchase);
 router.post("/purchases", purchasesSuppliesController.postPurchaseSupplies);
 

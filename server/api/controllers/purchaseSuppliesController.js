@@ -15,6 +15,18 @@ async function getPurchases(req, res) {
         })
     }
 }
+// HTTP: GET/id
+async function getPurchasesByID(req, res) {
+    try {
+        const result = await readPurchasesById(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            Ok: false,
+            Message: e.message
+        });
+    }
+}
     
 // HTTP: GET
 async function getLastPurchase(req, res) {
@@ -49,4 +61,4 @@ async function postPurchaseSupplies(req, res) {
     }
 }
 
-module.exports = { getPurchases, getLastPurchase, postPurchaseSupplies }
+module.exports = { getPurchases, getLastPurchase, postPurchaseSupplies, getPurchasesByID }

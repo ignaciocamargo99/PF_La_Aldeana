@@ -9,6 +9,14 @@ const readPurchases = async (from, to) => {
         throw Error(error);
     };
 };
+const readPurchasesById = async (id) => {
+    try {
+        let res = await readSalesBranchByIdDB(id);
+        return res;
+    } catch (error) {
+        throw Error(error);
+    }
+};
 
 const readLastPurchase = async () => {
     try {
@@ -29,4 +37,4 @@ const createPurchaseSupplies = async (newPurchase) => {
     };
 };
 
-module.exports = { readPurchases, readLastPurchase, createPurchaseSupplies };
+module.exports = { readPurchases, readLastPurchase, createPurchaseSupplies, readPurchasesById };
