@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from 'common/TablePagination/Pagination';
-import WholeSaleTable from './WholeSaleTable';
+import PurchasesTable from './PurchasesTable';
 
 const elementsPerPage = 10;
 
-const WholeSaleTablePagination = ({ permissionsAccess, filteredElements, loadingSales }) => {
+const PurchasesTablePagination = ({ permissionsAccess, filteredElements, loadingSales }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastElement = currentPage * elementsPerPage;
@@ -20,7 +20,7 @@ const WholeSaleTablePagination = ({ permissionsAccess, filteredElements, loading
 
     return (
         <>
-            <WholeSaleTable
+            <PurchasesTable
                 pageElements={pageElements}
                 permissionsAccess={permissionsAccess}
             />   
@@ -33,4 +33,4 @@ const WholeSaleTablePagination = ({ permissionsAccess, filteredElements, loading
     )
 }
 
-export default WholeSaleTablePagination
+export default PurchasesTablePagination

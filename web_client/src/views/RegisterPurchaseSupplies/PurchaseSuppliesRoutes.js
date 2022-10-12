@@ -2,7 +2,7 @@ import NotPermissionPage from 'common/NotPermissionPage';
 import SesionPage from "common/SesionPage";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import RegisterPurchaseSupplies from './RegisterPurchaseSupplies';
-import { WholeSalesList } from "./WholeSalesList";
+import { PurchasesList } from "./PurchasesList";
 import PurchaseSuppliesView from "./PurchaseSuppliesView";
 
 const PurchaseSuppliesRoutes = ({ permissionsAccess, user }) => {
@@ -11,9 +11,8 @@ const PurchaseSuppliesRoutes = ({ permissionsAccess, user }) => {
 
     return (
         <div>
-        {console.log(permissionsAccess, user)}
             <Switch>
-                <Route exact path={path} render={() => <WholeSalesList permissionsAccess={permissionsAccess} />}></Route>
+                <Route exact path={path} render={() => <PurchasesList permissionsAccess={permissionsAccess} />}></Route>
 
                 <Route exact path={`newPurchaseSupplies`} render={() => {
                     if (readOnly) {

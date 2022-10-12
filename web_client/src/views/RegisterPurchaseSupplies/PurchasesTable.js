@@ -1,7 +1,7 @@
 import moment from 'moment';
 import ReadButton from './ReadButton';
 
-const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
+const PurchasesTable = ({ pageElements, permissionsAccess }) => {
     const columnsHeaders = [
         {
             name: 'Nro. de ingreso',
@@ -76,4 +76,4 @@ const WholeSaleTable = ({ pageElements, permissionsAccess }) => {
     }
 }
 
-export default WholeSaleTable
+export default PurchasesTable

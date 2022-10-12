@@ -1,15 +1,15 @@
 import Axios from 'axios';
-import { parseStartDate } from '../customHooks/parseStartDate'
+import { parseStartDate } from './parseStartDate'
 
 const PORT = require('../../../config');
 
-const getWholeSales = async (status, startDate, endDate) => {
-    let wholeSalesResponse = {};
+const getPurchases = async (status, startDate, endDate) => {
+    let purchaseResponse = {};
 
     if (status === 'PENDING') {
         await Axios.get(`${PORT()}/api/purchases`)
             .then(response => {
-                wholeSalesResponse = response.data
+                purchaseResponse = response.data
             })
             .catch((error) => console.log(error));
     }
@@ -17,12 +17,12 @@ const getWholeSales = async (status, startDate, endDate) => {
         let parseNewStartDate = parseStartDate(startDate)
         await Axios.get(`${PORT()}/api/purchases?from=${parseNewStartDate}&to=${endDate}`)
             .then(response => {
-                wholeSalesResponse = response.data
+                purchaseResponse = response.data
             })
             .catch((error) => console.log(error));
     }
 
-    return wholeSalesResponse;
+    return purchaseResponse;
 };
 
-export default getWholeSales;
+export default getPurchases;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import getWholeSales from './customHooks/getWholeSales';
-import WholeSaleTablePagination from './WholeSaleTablePagination';
+import getPurchases from './customHooks/getPurchases';
+import PurchasesTablePagination from './PurchasesTablePagination';
 import { formatDateEnd, formatDateStart } from './formatDate';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import validateFloatNumbers from "utils/validateFloatNumbers";
 
-export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
+export const PurchasesFilter = ({ currentElements, permissionsAccess }) => {
     const [filteredElements, setFilteredElements] = useState([]);
     const [startDate, setStartDate] = useState(formatDateStart());
     const [endDate, setEndDate] = useState(formatDateEnd());
@@ -15,7 +15,7 @@ export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     useEffect(() => setFilteredElements(currentElements), [currentElements]);
 
     useEffect(() => {
-        getWholeSales('FINISH', startDate, endDate).then((result) => {
+        getPurchases('FINISH', startDate, endDate).then((result) => {
             if (nameSearch !== "") {
                 const filteredElementsList = result.filter((elem) => {
                     return elem.number.toString().includes(nameSearch);
@@ -86,7 +86,7 @@ export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
                 </>
                 )
             }
-            <WholeSaleTablePagination
+            <PurchasesTablePagination
                 permissionsAccess={permissionsAccess}
                 filteredElements={filteredElements}
             />

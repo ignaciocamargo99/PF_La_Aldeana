@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import getWholeSales from './getWholeSales';
+import getPurchases from './getPurchases';
 
-export const useGetWholeSales = (startDate, endDate) => {
+export const useGetPurchases = (startDate, endDate) => {
     const [state, setstate] = useState({ wholeSales: [], loadingSpinner: true, });
 
     useEffect(() => {
-        getWholeSales('FINISH', startDate, endDate).then((result) => {
+        getPurchases('FINISH', startDate, endDate).then((result) => {
             setstate({
-                wholeSales: result,
+                purchases: result,
                 loadingSpinner: false,
             });
         })

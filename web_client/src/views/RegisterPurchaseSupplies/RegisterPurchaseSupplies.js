@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import { useGetPurchaseByID } from "./customHooks/useGetPurchaseByID";
 import BeShowed from 'common/BeShowed';
 import validateFloatNumbers from "utils/validateFloatNumbers";
+import Axios from 'axios';
 
 const PORT = require('../../config');
 
@@ -27,10 +28,19 @@ const RegisterPurchaseSupplies = (props) => {
     const [ready, setReady] = useState(false)
     const [details, setDetails] = useState([])
     const { idPurchase } = useParams();
+    const [purchases, setPurchases] = useState([]);
     const { loadingPurchase, purchase } = useGetPurchaseByID(idPurchase?idPurchase:-1);
     const [isValidClassNumber, setIsValidClassNumber] = useState("form-control");
     const inputNumber = useRef(null);
     const [number, setNumber] = useState("null");
+
+    useEffect(() => {
+        Axios.get(`${PORT()}/api/purchases`)
+            .then(response => {
+                setPurchases(response.data)
+            })
+            .catch((error) => console.log(error));
+    }, [true]);
 
     const cancel = () => window.location.href = '/app/purchaseSupplies'
 
@@ -68,7 +78,7 @@ const RegisterPurchaseSupplies = (props) => {
         if (idPurchase) return;
 
         const number = inputNumber.current.value.trim();
-        if (number.length > 0 && number.length <= 15) {
+        if (number.length > 0 && number.length <= 15 && (!purchases.some(purchase => purchase.number == number))) {
             setIsValidClassNumber("form-control is-valid");
             purchase.number = +number;
         }
@@ -84,7 +94,7 @@ const RegisterPurchaseSupplies = (props) => {
 
     useEffect(() => {
         let isReady = true;
-        if (props.purchaseSupplier == 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null) isReady = false
+        if (props.purchaseSupplier == 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null || isValidClassNumber === 'form-control') isReady = false
         else {
             let details = []
             if (props.purchaseSupplies.length === 0 || props.purchaseSupplies.length === null) isReady = false;
@@ -107,12 +117,11 @@ const RegisterPurchaseSupplies = (props) => {
         };
 
         setReady(isReady)
-    }, [props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
+    }, [isValidClassNumber, props.purchaseNumber, props.purchaseDate, props.purchaseSupplier, props.purchaseTotal, props.purchaseSupplies, props.purchaseQuantity, props.purchaseSubtotal, props.purchasePrice])
 
     const registerPurchaseSupplies = async () => {
         const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nuevo ingreso de insumos?`)).isConfirmed;
         if (registrationConfirmed) {
-            console.log(details)
             let purchase = {
                 "date_purchase": props.purchaseDate,
                 "supplier": props.purchaseSupplier,
@@ -161,7 +170,7 @@ const RegisterPurchaseSupplies = (props) => {
                 <PurchaseSupplier idPurchase={idPurchase} purchase={purchase}/>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label htmlFor="numberEmployee" >N°*</label>
+                        <label htmlFor="numberEmployee" >N°*<small class="text-muted">(no se aceptan duplicados)</small></label>
                     </div>
                     <div className="form-control-input-mw-50">
                         <input
@@ -188,8 +197,6 @@ const RegisterPurchaseSupplies = (props) => {
                         <button className='btn btn-light sendOk' onClick={cancel}>Volver</button>
                     </div>
                 </BeShowed>
-                {
-            console.log(details)}
             </div>
         </>
     )

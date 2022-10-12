@@ -100,7 +100,6 @@ const purchaseSuppliesPostDB = (newPurchase) => {
         console.log("error en conexión");
         reject(error);
       }
-      console.log(newPurchase)
       db.beginTransaction((error) => {
         if (error) {
           console.log("error en inicio de transacción");
@@ -112,7 +111,6 @@ const purchaseSuppliesPostDB = (newPurchase) => {
             console.log("1: ", error);
             return db.rollback(() => reject(error));
           }
-          console.log(newPurchase) 
 
           let sqlUpdateDetailsPurchase;
 
