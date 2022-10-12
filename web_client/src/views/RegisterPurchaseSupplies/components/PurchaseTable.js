@@ -8,6 +8,7 @@ import BodyTable from 'common/Table/BodyTable';
 import HeaderTable from 'common/Table/HeaderTable';
 import Table from 'common/Table/Table';
 import validateFloatNumbers from "utils/Validations/validateFloatNumbers";
+import BeShowed from "common/BeShowed";
 
 const PurchaseTable = (props) => {
 
@@ -42,15 +43,16 @@ const PurchaseTable = (props) => {
     }
 
     useEffect(() => {
-
-        let total = 0
-        props.purchaseSupplies?.map((supply, i) => {
-            total += props.purchaseSubtotal[i]
-            document.getElementById(`quantityInput${i}`).value = props.purchaseQuantity[i] == 0 ? "" : props.purchaseQuantity[i]
-            document.getElementById(`priceInput${i}`).value = props.purchasePrice[i] == 0 ? "" : props.purchasePrice[i]
-            document.getElementById(`lblSubtotal${i}`).innerText = `$${props.purchaseSubtotal[i]}`
-        })
-        props.updatePurchaseTotal(total)
+        if(!props.idPurchase){
+            let total = 0;
+            props.purchaseSupplies?.map((supply, i) => {
+                total += props.purchaseSubtotal[i]
+                document.getElementById(`quantityInput${i}`).value = props.purchaseQuantity[i] == 0 ? "" : props.purchaseQuantity[i]
+                document.getElementById(`priceInput${i}`).value = props.purchasePrice[i] == 0 ? "" : props.purchasePrice[i]
+                document.getElementById(`lblSubtotal${i}`).innerText = `$${props.purchaseSubtotal[i]}`
+            });
+            props.updatePurchaseTotal(total)
+        }
     }, [props.purchaseSupplies?.length, refreshTotal])
 
     return (
@@ -76,17 +78,24 @@ const PurchaseTable = (props) => {
                                     <tbody key={i}>
                                         <tr>
                                             <td style={{ textAlign: 'center' }}><label>{element.name}</label></td>
-                                            <td style={{ textAlign: 'center', width: '7em' }}>
-                                                <input id={`priceInput${i}`} type="number" min="0" max="99999" onChange={(e) => { changePrice(e.target.value, i) }} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
-                                            </td>
-                                            <td style={{ textAlign: 'center', width: '7em' }}>
-                                                <input id={`quantityInput${i}`} type="number" min="0" max="999" onChange={(e) => { changeQuantity(e.target.value, i) }} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
-                                            </td>
-                                            <td style={{ textAlign: 'center', width: '7em' }}>
-                                                <label id={`lblSubtotal${i}`}></label>
-                                            </td>
+                                            <BeShowed show={props.idPurchase}>
+                                                <td style={{ textAlign: 'center', width: '7em' }}><label>{element.subtotal/element.quantity}</label></td>
+                                                <td style={{ textAlign: 'center', width: '7em' }}><label>{element.quantity}</label></td>
+                                                <td style={{ textAlign: 'center', width: '7em' }}><label>{element.subtotal}</label></td>
+                                            </BeShowed>
+                                            <BeShowed show={!props.idPurchase}>
+                                                <td style={{ textAlign: 'center', width: '7em' }}>
+                                                    <input disabled={props.idPurchase} id={`priceInput${i}`} type="number" min="0" max="99999" onChange={(e) => { changePrice(e.target.value, i) }} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
+                                                </td>
+                                                <td style={{ textAlign: 'center', width: '7em' }}>
+                                                    <input disabled={props.idPurchase} id={`quantityInput${i}`} type="number" min="0" max="999" onChange={(e) => { changeQuantity(e.target.value, i) }} onKeyDown={(e) => validateFloatNumbers(e)} ></input>
+                                                </td>
+                                                <td style={{ textAlign: 'center', width: '7em' }}>
+                                                    <label id={`lblSubtotal${i}`}></label>
+                                                </td>
+                                            </BeShowed>
                                             <td style={{ textAlign: 'center' }}>
-                                                <button id={`downloadSupplyButton${i}`} type="button" className="btn btn-danger btnDelete" onClick={() => { props.download(element.id_supply, i) }}><FontAwesomeIcon icon={faMinus} /></button>
+                                                <button disabled={props.idPurchase} id={`downloadSupplyButton${i}`} type="button" className="btn btn-danger btnDelete" onClick={() => { props.download(element.id_supply, i) }}><FontAwesomeIcon icon={faMinus} /></button>
                                             </td>
                                         </tr>
                                     </tbody>

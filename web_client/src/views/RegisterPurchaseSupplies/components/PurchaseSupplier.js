@@ -33,7 +33,9 @@ const PurchaseSupplier = (props) => {
                 <label htmlFor="purchaseSupplier" >Proveedor*</label>
             </div>
             <div className="form-control-input-mw-50">
-                <input className={isValidClass} id="purchaseSupplier" type="text" ref={inputSupplier} placeholder="Ingrese el proveedor" maxLength="100" onChange={handleSupplier}>
+                <input className={isValidClass} id="purchaseSupplier" type="text" ref={inputSupplier} disabled={props.idPurchase}
+                placeholder="Ingrese el proveedor" maxLength="100" onChange={handleSupplier} 
+                defaultValue={props.purchase.supplier?props.purchase.supplier:null}>
                 </input>
                 <BeShowed show={errorMessage !== "null" && prevSupplier !== "null"}>
                     <div><b style={{ color: 'red' }}>{errorMessage}</b></div>

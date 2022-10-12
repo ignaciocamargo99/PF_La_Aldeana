@@ -23,7 +23,7 @@ const PurchaseSuppliesRoutes = ({ permissionsAccess, user }) => {
                     }
                 }}></Route>
 
-                <Route exact path={`${path}/view/:idWholesale`} component={RegisterPurchaseSupplies}></Route>
+                <Route exact path={`${path}/view/:idPurchase`} component={RegisterPurchaseSupplies}></Route>
                 <Route path={`/`} render={() => {
                     return <SesionPage />
                 }}></Route>

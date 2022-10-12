@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
-import { getWholeSaleByID } from './getWholeSaleByID'
+import { getPurchaseByID } from './getPurchaseByID'
 
-export const useGetWholeSaleByID = (wholeSaleId) => {
+export const useGetPurchaseByID = (purchaseId) => {
 
-    const createStateModel = (wholeSale, loadingWholeSale) => {
+    const createStateModel = (purchase, loadingPurchase) => {
         return {
-            wholeSale: wholeSale,
-            loadingWholeSale: loadingWholeSale,
+            purchase: purchase,
+            loadingPurchase: loadingPurchase,
         }
     }
 
     const [stateSale, setStateSale] = useState(createStateModel({}, true));
 
     useEffect(() => {
-        getWholeSaleByID(wholeSaleId)
+        getPurchaseByID(purchaseId)
             .then(({ data }) => {
                 setStateSale(createStateModel(data))
             })
             .catch(() => {
                 setStateSale(createStateModel({}, true))
             })
-    }, [wholeSaleId])
+    }, [purchaseId])
 
     return stateSale;
 };

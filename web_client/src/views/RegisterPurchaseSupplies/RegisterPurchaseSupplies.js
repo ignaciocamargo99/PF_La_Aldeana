@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { updatePurchaseNumber, updatePurchaseDate, updatePurchaseSupplier, updatePurchaseTotal, updatePurchaseSupplies, resetPurchaseQuantity, resetPurchaseSubtotal, resetPurchasePrice } from '../../actions/PurchaseSuppliesActions';
 import PurchaseNumber from './components/PurchaseNumber';
@@ -17,18 +17,22 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { defaultQuestionSweetAlert2 } from 'utils/questionMessages/sweetAlert2Questions';
 import loadingMessage from '../../utils/LoadingMessages/loadingMessage';
 import { useParams } from 'react-router-dom';
-import { useGetWholeSaleByID } from "views/WholeSale/customHooks/useGetWholeSaleByID";
+import { useGetPurchaseByID } from "./customHooks/useGetPurchaseByID";
 import BeShowed from 'common/BeShowed';
+import validateFloatNumbers from "utils/validateFloatNumbers";
 
 const PORT = require('../../config');
 
 const RegisterPurchaseSupplies = (props) => {
     const [ready, setReady] = useState(false)
     const [details, setDetails] = useState([])
-    const { idWholesale } = useParams();
-    const { loadingWholeSale, wholeSale } = useGetWholeSaleByID(idWholesale);
+    const { idPurchase } = useParams();
+    const { loadingPurchase, purchase } = useGetPurchaseByID(idPurchase?idPurchase:-1);
+    const [isValidClassNumber, setIsValidClassNumber] = useState("form-control");
+    const inputNumber = useRef(null);
+    const [number, setNumber] = useState("null");
 
-    const cancel = () => window.location.href = './purchaseSupplies'
+    const cancel = () => window.location.href = '/app/purchaseSupplies'
 
     const resetStates = (message) => {
         successPurchaseSupplies(message)
@@ -58,6 +62,26 @@ const RegisterPurchaseSupplies = (props) => {
         }
     }
 
+    const handleNumber = () => setNumber(inputNumber.current.value);
+    
+    useEffect(() => {
+        if (idPurchase) return;
+
+        const number = inputNumber.current.value.trim();
+        if (number.length > 0 && number.length <= 15) {
+            setIsValidClassNumber("form-control is-valid");
+            purchase.number = +number;
+        }
+        else {
+            setIsValidClassNumber("form-control");
+            purchase.number = number;
+        }
+    }, [number, purchase, idPurchase])
+
+    const validateNumber = (e) => {
+        if (e.target.value.length > 15) e.target.value = e.target.value.slice(0, 15);
+    }
+
     useEffect(() => {
         let isReady = true;
         if (props.purchaseSupplier == 'null' || props.purchaseSupplier === '' || props.purchaseSupplier === null) isReady = false
@@ -69,6 +93,7 @@ const RegisterPurchaseSupplies = (props) => {
                 props.purchaseSupplies.map((supply, i) => {
                     let detail = {
                         "purchase_number": props.purchaseNumber,
+                        "number": props.number,
                         "id_supply": supply.id_supply,
                         "quantity": props.purchaseQuantity[i],
                         "subtotal": props.purchaseSubtotal[i],
@@ -76,8 +101,8 @@ const RegisterPurchaseSupplies = (props) => {
                     }
                     if (detail.subtotal <= 0) isReady = false;
                     details.push(detail)
-                    setDetails(details)
                 })
+                setDetails(details)
             }
         };
 
@@ -87,10 +112,12 @@ const RegisterPurchaseSupplies = (props) => {
     const registerPurchaseSupplies = async () => {
         const registrationConfirmed = (await defaultQuestionSweetAlert2(`¿Registrar nuevo ingreso de insumos?`)).isConfirmed;
         if (registrationConfirmed) {
+            console.log(details)
             let purchase = {
                 "date_purchase": props.purchaseDate,
                 "supplier": props.purchaseSupplier,
                 "total": props.purchaseTotal,
+                "number": number,
                 "details": details
             }
             loadingMessage('Registrando nueva compra...');
@@ -105,7 +132,7 @@ const RegisterPurchaseSupplies = (props) => {
 
     return (
         <>
-            <BeShowed show={idWholesale > 0}>
+            <BeShowed show={idPurchase > 0}>
                 <div style={{ display: 'none' }}>{document.title = "Consultar ingreso de insumos"}</div>
                 <Breadcrumb
                     icon={faShoppingCart}
@@ -114,10 +141,10 @@ const RegisterPurchaseSupplies = (props) => {
                     parentName='Ingresos de insumos'
                 />
                 <div className="viewTitle">
-                    <h1>Resumen ingreso N° {idWholesale}</h1>
+                    <h1>Resumen ingreso N° {idPurchase}</h1>
                 </div>
             </BeShowed>
-            <BeShowed show={!idWholesale}>
+            <BeShowed show={!idPurchase}>
                 <div style={{ display: 'none' }}>{document.title = "Registrar ingreso de insumos"}</div>
                 <Breadcrumb
                     icon={faShoppingCart}
@@ -130,10 +157,39 @@ const RegisterPurchaseSupplies = (props) => {
                 </div>
             </BeShowed>
             <div className="viewBody">
-                <PurchaseNumber />
-                <PurchaseSupplier />
-                <ListSupplies />
-                <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validate} />
+                <PurchaseNumber idPurchase={idPurchase} purchase={purchase}/>
+                <PurchaseSupplier idPurchase={idPurchase} purchase={purchase}/>
+                <div className="formRow">
+                    <div className="form-control-label">
+                        <label htmlFor="numberEmployee" >N°*</label>
+                    </div>
+                    <div className="form-control-input-mw-50">
+                        <input
+                            className={isValidClassNumber}
+                            defaultValue={purchase.number?purchase.number:null}
+                            id="numberEmployee"
+                            min="1"
+                            onChange={handleNumber}
+                            onInput={(e) => validateNumber(e)}
+                            onKeyDown={(e) => validateFloatNumbers(e)}
+                            placeholder="Ingrese number..."
+                            disabled={idPurchase}
+                            ref={inputNumber}
+                            type="number"
+                        />
+                    </div>
+                </div>
+                <ListSupplies idPurchase={idPurchase} purchase={purchase}/>
+                <BeShowed show={!idPurchase}>
+                    <Buttons ready={ready} label={"Registrar"} actionCancel={cancel} actionOK={registerPurchaseSupplies} actionNotOK={validate} />
+                </BeShowed>
+                <BeShowed show={idPurchase}>
+                    <div className='buttons'>
+                        <button className='btn btn-light sendOk' onClick={cancel}>Volver</button>
+                    </div>
+                </BeShowed>
+                {
+            console.log(details)}
             </div>
         </>
     )

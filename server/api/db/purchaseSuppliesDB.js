@@ -17,25 +17,55 @@ const purchasesGetDB = (from, to) => {
 };
 
 const readPurchasesByIdDB = (id) => {
-  const sqlSelect = `SELECT * FROM PURCHASES_SUPPLIES WHERE purchase_number = "${id}"`;
-  const sqlSelectDetail = `SELECT * FROM PURCHASES_SUPPLIES p LEFT JOIN DETAIL_PURCHASE_SUPPLIES d ON d.purchase_number = p.purchase_number WHERE d.purchase_number = "${id}"`;
+  const sqlSelect = `SELECT * FROM PURCHASES_SUPPLIES WHERE number = "${id}"`;
+  const sqlSelectDetail = `SELECT * FROM PURCHASES_SUPPLIES p
+  LEFT JOIN DETAIL_PURCHASE_SUPPLIES d ON d.purchase_number = p.purchase_number
+  LEFT JOIN SUPPLIES s ON s.id_supply = d.id_supply
+   WHERE p.number = "${id}"`;
 
   return new Promise((resolve, reject) => {
     pool.getConnection((error, db) => {
       if (error) reject(error);
-      if(id != null)resolve({});
-      db.query(sqlSelect, (error, result) => {
-        if (error) reject(error);
-        else {
-          db.query(sqlSelectDetail, (error, res) => {
+
+      db.beginTransaction((error) => {
+          if (error) reject(error);
+          if(id < 0 || id == 'undefined'|| id == null){
+            db.commit((error) => {
+            if (error) {
+                console.log(error);
+                return db.rollback(() => reject(error));
+            }
+            else {
+              resolve({});
+            }
+        });}
+          else {
+          db.query(sqlSelect, (error, result) => {
             if (error) reject(error);
             else {
-              res.details = res;
-              resolve(result);
-            }
+              let r = result[0];
+              db.query(sqlSelectDetail, (error, res) => {
+                if (error) {
+                  console.log(error);
+                  reject(error);
+                }
+                else {
+                  r.details = res;
+                  db.commit((error) => {
+                      if (error) {
+                          console.log(error);
+                          return db.rollback(() => reject(error));
+                      }
+                      else {
+                        console.log('as ',r);
+                        resolve(r);
+                      }
+                  });
+                }
+              });}
           });}
-      });
-      db.release();
+          db.release();
+        });
     });
   });
 }
@@ -64,13 +94,13 @@ const purchaseSuppliesPostDB = (newPurchase) => {
 
   const sqlInsertPurchase = `INSERT INTO PURCHASES_SUPPLIES VALUES (${arrDetails[0].purchase_number},'${date_purchase}',?,${total},${number})`;
 
-  //console.log(sqlInsertPurchase)
   return new Promise((resolve, reject) => {
     pool.getConnection((error, db) => {
       if (error) {
         console.log("error en conexión");
         reject(error);
       }
+      console.log(newPurchase)
       db.beginTransaction((error) => {
         if (error) {
           console.log("error en inicio de transacción");
@@ -82,6 +112,7 @@ const purchaseSuppliesPostDB = (newPurchase) => {
             console.log("1: ", error);
             return db.rollback(() => reject(error));
           }
+          console.log(newPurchase) 
 
           let sqlUpdateDetailsPurchase;
 

@@ -4,6 +4,7 @@ import WholeSaleTablePagination from './WholeSaleTablePagination';
 import { formatDateEnd, formatDateStart } from './formatDate';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import validateFloatNumbers from "utils/validateFloatNumbers";
 
 export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     const [filteredElements, setFilteredElements] = useState([]);
@@ -35,6 +36,10 @@ export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
     const handleFinalDate = (e) => {
         setEndDate(formatDateEnd(e.target.value));
 
+    }
+
+    const validateNumber = (e) => {
+        if (e.target.value.length > 15) e.target.value = e.target.value.slice(0, 15);
     }
 
     return (
@@ -73,7 +78,8 @@ export const WholeSaleFilter = ({ currentElements, permissionsAccess }) => {
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" id="inputGroup-sizing-default"><FontAwesomeIcon icon={faSearch} /></span>
                                 </div>
-                                <input id="inputSearchName" aria-describedby="inputGroup-sizing-default" className="form-control" type="number" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
+                                <input id="inputSearchName" onInput={(e) => validateNumber(e)} onKeyDown={(e) => validateFloatNumbers(e)} 
+                            aria-describedby="inputGroup-sizing-default" className="form-control" type="number" placeholder="Buscar..." onChange={(e) => setNameSearch(e.target.value)}></input>
                             </div>
                         </div>
                     </div>

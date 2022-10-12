@@ -1,4 +1,4 @@
-const { readPurchases, readLastPurchase, createPurchaseSupplies } = require('../services/purchaseSuppliesService');
+const { readPurchases, readLastPurchase, createPurchaseSupplies, readPurchasesById } = require('../services/purchaseSuppliesService');
 
 // HTTP: GET
 async function getPurchases(req, res) {

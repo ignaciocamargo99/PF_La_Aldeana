@@ -52,10 +52,11 @@ const PurchaseNumber = (props) => {
                 </BeShowed>
                 <input
                     className="form-control"
-                    defaultValue={props.purchaseDate}
+                    defaultValue={props.purchase.supplier?dateFormat(new Date(props.purchase.supplier)):props.purchaseDate}
                     id='PurchaseDate'
                     min="2021-01-01"
                     onChange={onChangeDate}
+                    disabled={props.idPurchase}
                     ref={inputDate}
                     type="date"
                 >

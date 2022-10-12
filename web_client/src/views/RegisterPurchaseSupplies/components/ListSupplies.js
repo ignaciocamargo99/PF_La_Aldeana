@@ -69,28 +69,41 @@ const ListSupplies = (props) => {
                     <h3>Insumos</h3>
                 </div>
             </div>
-            <div className="formRow">
-                <TabOption handler={handlerTabSelection} select={typeOfUpload}></TabOption>
-            </div>
-            <BeShowed show={typeOfUpload === "text"}>
-                <UploadByName list={supplies} upload={upload} itemName="Insumo" listName="suppliesList"
-                    placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" id='id_supply' />
-            </BeShowed>
-            <BeShowed show={typeOfUpload === "list"}>
+            <BeShowed show={!props.idPurchase}>
+                <div className="formRow">
+                    <TabOption handler={handlerTabSelection} select={typeOfUpload}></TabOption>
+                </div>
+                <BeShowed show={typeOfUpload === "text"}>
+                    <UploadByName list={supplies} upload={upload} itemName="Insumo" listName="suppliesList"
+                        placeholder="Ingrese el nombre del insumo que busca..." maxLength="50" id='id_supply' />
+                </BeShowed>
+                <BeShowed show={typeOfUpload === "list"}>
+                    <div className="viewBody">
+                        <TablePagination columnsHeaders={columnsHeaders} currentElements={supplies} addBtnClicked={upload}></TablePagination>
+                    </div>
+                </BeShowed>
+                <hr></hr>
+                <div className="form-control-label">
+                    <h3 style={{ marginTop: '5%' }}>Detalle</h3>
+                </div>
                 <div className="viewBody">
-                    <TablePagination columnsHeaders={columnsHeaders} currentElements={supplies} addBtnClicked={upload}></TablePagination>
+                    <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download} />
+                </div>
+                <div className="offset-sm-9 col-sm-3">
+                    <label><b>Total: ${props.purchaseTotal}</b></label>
                 </div>
             </BeShowed>
-            <hr></hr>
-            <div className="form-control-label">
-                <h3 style={{ marginTop: '5%' }}>Detalle</h3>
-            </div>
-            <div className="viewBody">
-                <PurchaseTable purchaseSupplies={props.purchaseSupplies} download={download} />
-            </div>
-            <div className="offset-sm-9 col-sm-3">
-                <label><b>Total: ${props.purchaseTotal}</b></label>
-            </div>
+            <BeShowed show={props.idPurchase}>
+                <div className="form-control-label">
+                    <h3 style={{ marginTop: '5%' }}>Detalle</h3>
+                </div>
+                <div className="viewBody">
+                    <PurchaseTable purchaseSupplies={props.purchase.details} download={download} idPurchase={props.idPurchase} purchase={props.purchase}/>
+                </div>
+                <div className="offset-sm-9 col-sm-3">
+                    <label><b>Total: ${props.purchase.total}</b></label>
+                </div>
+            </BeShowed>
         </div>
     )
 }
