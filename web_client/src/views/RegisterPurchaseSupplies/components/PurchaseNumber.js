@@ -44,7 +44,7 @@ const PurchaseNumber = (props) => {
     return (
         <div className="formRow">
             <div className="form-control-label">
-                <label htmlFor="PurchaseDate" >Fecha*</label>
+                <label htmlFor="PurchaseDate" >Fecha de ingreso*</label>
             </div>
             <div className="form-control-input-mw-50">
                 <BeShowed show={props.purchaseNumber === null}>

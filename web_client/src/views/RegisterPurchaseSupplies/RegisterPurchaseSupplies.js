@@ -170,7 +170,7 @@ const RegisterPurchaseSupplies = (props) => {
                 <PurchaseSupplier idPurchase={idPurchase} purchase={purchase}/>
                 <div className="formRow">
                     <div className="form-control-label">
-                        <label htmlFor="numberEmployee" >N°*<small class="text-muted">(no se aceptan duplicados)</small></label>
+                        <label htmlFor="numberEmployee" >Número de remito*<small class="text-muted">(no se aceptan duplicados)</small></label>
                     </div>
                     <div className="form-control-input-mw-50">
                         <input

@@ -1,7 +1,7 @@
 const pool = require("../../config/connection");
 
 const purchasesGetDB = (from, to) => {
-  const sqlSelect = from != null && to != null?`SELECT * FROM PURCHASES_SUPPLIES WHERE purchase_date <= "${to}" AND purchase_date >= "${from}"`: "SELECT * FROM PURCHASES_SUPPLIES";
+  const sqlSelect = (from != null && to != null?`SELECT * FROM PURCHASES_SUPPLIES WHERE purchase_date <= "${to}" AND purchase_date >= "${from}"`:'SELECT * FROM PURCHASES_SUPPLIES')+' ORDER BY purchase_date DESC';
   
   return new Promise((resolve, reject) => {
     pool.getConnection((error, db) => {
