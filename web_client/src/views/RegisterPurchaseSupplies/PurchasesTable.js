@@ -4,7 +4,7 @@ import ReadButton from './ReadButton';
 const PurchasesTable = ({ pageElements, permissionsAccess }) => {
     const columnsHeaders = [
         {
-            name: 'Nro. de ingreso',
+            name: 'Nro. de remito',
             width: '15%'
         },
         {
