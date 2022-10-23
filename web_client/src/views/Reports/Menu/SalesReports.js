@@ -16,8 +16,8 @@ export default function SalesReports() {
     <>
       <CardMenuReport type="Ventas">
         <Card
-          title="Reporte de productos vendidos a mínoristas"
-          text="Reporte que abarca la cantidad de unidades de los productos vendidos a mínoristas en cierto periodo de tiempo"
+          title="Reporte de productos vendidos a minoristas"
+          text="Reporte que abarca la cantidad de unidades de los productos vendidos a minoristas en cierto periodo de tiempo"
           handleCardClicked={goToProductsSales}
         />
         <br />
